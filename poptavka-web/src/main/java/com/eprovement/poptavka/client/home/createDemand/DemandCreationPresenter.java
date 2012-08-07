@@ -5,7 +5,6 @@ import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.session.Constants;
-
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createDemand.FormUserRegistrationPresenter.FormRegistrationInterface;
@@ -19,13 +18,13 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -47,6 +46,7 @@ public class DemandCreationPresenter
     // module otherwise they will fall in left-over fragment
     private FormDemandBasicPresenter demandBasicForm = null;
     private FormDemandAdvPresenter demandAdvForm = null;
+    private int maxSelectedTab = -1;
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
@@ -66,7 +66,6 @@ public class DemandCreationPresenter
     @Override
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
-
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
@@ -82,8 +81,49 @@ public class DemandCreationPresenter
                 }
             }
         });
+        view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
+            @Override
+            public void onSelection(SelectionEvent<Integer> event) {
+                switch (event.getSelectedItem()) {
+                    case 0:
+                        LOGGER.info(" -> Supplier Info Form");
+                        if (maxSelectedTab < 0) {
+                            eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
+                        }
+                    case 1:
+                        LOGGER.info(" -> Category Widget");
+                        if (maxSelectedTab < 1) {
+                            eventBus.initCategoryWidget(
+                                    view.getHolderPanel(CATEGORY), Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS);
+                        }
+                        break;
+                    case 2:
+                        LOGGER.info(" -> Locality Widget");
+                        if (maxSelectedTab < 2) {
+                            eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
+                        }
+                        break;
+                    case 3:
+                        LOGGER.info(" -> init Demand Form supplierService");
+                        if (maxSelectedTab < 3) {
+                            eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
+                        }
+                        break;
+                    case 4:
+                        LOGGER.info(" -> init Login Form supplierService");
+                        if (maxSelectedTab < 4) {
+                            eventBus.initLoginForm(view.getHolderPanel(LOGIN));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (maxSelectedTab < event.getSelectedItem()) {
+                    maxSelectedTab = event.getSelectedItem();
+                }
+            }
+        });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(LOGIN)) {
@@ -111,22 +151,9 @@ public class DemandCreationPresenter
     public void onGoToCreateDemandModule() {
         Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_DEMAND);
         LOGGER.info("  INIT DemandCreation Widget");
-        view.getMainPanel().showWidget(0);
+        LOGGER.info(" -> Supplier Info Form");
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
-        eventBus.initCategoryWidget(
-                view.getHolderPanel(CATEGORY), Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS);
-        // TODO Praso - what is this method supposed to do? Does it loads widgets in advance?
-        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                //TODO praso - these methods are currently in presenter itself and there is
-                // no need to call them via eventbus.
-                eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
-                eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
-                eventBus.initLoginForm(view.getHolderPanel(LOGIN));
-            }
-        });
+        maxSelectedTab = -1;
     }
 
     /**************************************************************************/

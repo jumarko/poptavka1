@@ -7,14 +7,12 @@ import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.session.Constants;
-
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter.SupplierServiceInterface;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -46,6 +44,7 @@ public class SupplierCreationPresenter
 
     private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    private int maxSelectedTab = -1;
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
@@ -71,12 +70,10 @@ public class SupplierCreationPresenter
 
         boolean isValid();
     }
-    private SupplierInfoPresenter presenter = null;
 
     @Override
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
-
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
@@ -85,52 +82,55 @@ public class SupplierCreationPresenter
                     view.getStatusLabel(eventItem).setPassedSmall(result);
                     if (!result) {
                         event.cancel();
+                    } else {
+                        view.getStatusLabel(eventItem).setPassedSmall(result);
                     }
                 }
             }
         });
         view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
-
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
                 switch (event.getSelectedItem()) {
                     case 0:
                         LOGGER.info(" -> Supplier Info Form");
-                        //If already loaded, just activate presenter for holding requests
-                        if (view.getMainPanel().getWidget(0) instanceof SupplierInfoInterface) {
-                            eventBus.activateAddressWidgetPresenter();
-                        } else {
+                        if (maxSelectedTab < 0) {
                             //Otherwise load widget
                             eventBus.initSupplierForm(view.getSupplierInfoHolder());
+                        } else {
+                            //If already loaded, just activate presenter for holding requests
+                            eventBus.activateAddressWidgetPresenter();
                         }
                     case 1:
                         LOGGER.info(" -> Category Widget");
-                        if (!(view.getMainPanel().getWidget(1) instanceof CategorySelectorInterface)) {
+                        if (maxSelectedTab < 1) {
                             eventBus.initCategoryWidget(
                                     view.getCategoryHolder(), Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS);
                         }
                         break;
                     case 2:
                         LOGGER.info(" -> Locality Widget");
-                        if (view.getMainPanel().getWidget(2) instanceof LocalitySelectorInterface) {
-                            eventBus.activateLocalityWidgetPresenter();
-                        } else {
+                        if (maxSelectedTab < 2) {
                             eventBus.initLocalityWidget(view.getLocalityHolder());
+                        } else {
+                            eventBus.activateLocalityWidgetPresenter();
                         }
                         break;
                     case 3:
                         LOGGER.info(" -> init Service Form supplierService");
-                        if (!(view.getMainPanel().getWidget(3) instanceof SupplierServiceInterface)) {
+                        if (maxSelectedTab < 3) {
                             initServices();
                         }
                         break;
                     default:
                         break;
                 }
+                if (maxSelectedTab < event.getSelectedItem()) {
+                    maxSelectedTab = event.getSelectedItem();
+                }
             }
         });
         view.getRegisterButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(SERVICE)) {
@@ -142,7 +142,6 @@ public class SupplierCreationPresenter
             }
         });
         view.getConditionLink().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent arg0) {
                 view.showConditions();
@@ -150,15 +149,9 @@ public class SupplierCreationPresenter
         });
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * General Module events
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
         // nothing
     }
@@ -167,30 +160,19 @@ public class SupplierCreationPresenter
         eventBus.setUpSearchBar(null, false, false, false);
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Navigation events
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
     public void onGoToCreateSupplierModule() {
         Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_SUPPLIERS);
         LOGGER.info("SupplierCreationPresenter loaded");
         LOGGER.info(" -> Supplier Info Form");
         eventBus.initSupplierForm(view.getSupplierInfoHolder());
+        maxSelectedTab = -1;
     }
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Business events handled by presenter
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     private SupplierServicePresenter supplierService = null;
     private SupplierInfoPresenter supplierInfo = null;
 
@@ -210,15 +192,9 @@ public class SupplierCreationPresenter
         supplierInfo.onInitSupplierForm(supplierInfoHolder);
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Business events handled by eventbus or RPC
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* Business events handled by eventbus or RPC                             */
+    /**************************************************************************/
     private void registerSupplier() {
         SupplierInfoInterface info = (SupplierInfoInterface) view.getSupplierInfoHolder().getWidget();
         LocalitySelectorInterface locs = (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
@@ -273,14 +249,13 @@ public class SupplierCreationPresenter
 
     private void initServices() {
         supplierCreationRpcService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>() {
-
             @Override
             protected void onServiceFailure(Throwable caught) {
                 // TODO: review this failure handling code
                 // TODO create some good explanation with contact formular
                 SimpleIconLabel errorMsg =
                         new SimpleIconLabel("Unexpected Error occurred", "Something terrible happened during "
-                                + "supplierService table initialization");
+                        + "supplierService table initialization");
                 errorMsg.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
                 view.getServiceHolder().setWidget(errorMsg);
             }
