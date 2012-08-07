@@ -14,30 +14,21 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 public final class FullDemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
 
-    private static Converter<Supplier, FullSupplierDetail> supplierConverter;
-    private Converter<Locality, LocalityDetail> localityConverter;
-    private Converter<Category, CategoryDetail> categoryConverter;
+    private final Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private final Converter<Locality, LocalityDetail> localityConverter;
+    private final Converter<Category, CategoryDetail> categoryConverter;
 
-    private FullDemandConverter(Converter<Supplier, FullSupplierDetail> supplierConverter) {
+    private FullDemandConverter(
+            Converter<Supplier, FullSupplierDetail> supplierConverter,
+            Converter<Locality, LocalityDetail> localityConverter,
+            Converter<Category, CategoryDetail> categoryConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(supplierConverter);
         this.supplierConverter = supplierConverter;
-    }
-
-    @Autowired
-    public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
         this.localityConverter = localityConverter;
-    }
-
-    @Autowired
-    public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
@@ -81,12 +72,10 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     }
 
     //--------------------------------------------------- PRIVATE METHODS ----------------------------------------------
-    private static void setExcludedSuppliers(Demand demand, FullDemandDetail detail) {
+    private void setExcludedSuppliers(Demand demand, FullDemandDetail detail) {
         final List<FullSupplierDetail> excludedSuppliers = new ArrayList<FullSupplierDetail>();
         if (demand.getExcludedSuppliers() != null) {
-            for (Supplier supplier : demand.getExcludedSuppliers()) {
-                excludedSuppliers.add(supplierConverter.convertToTarget(supplier));
-            }
+            excludedSuppliers.addAll(supplierConverter.convertToTargetList(demand.getExcludedSuppliers()));
         }
         detail.setExcludedSuppliers(excludedSuppliers);
     }

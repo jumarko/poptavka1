@@ -11,21 +11,16 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.apache.commons.lang.Validate;
 
 public final class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
 
-    private Converter<Address, AddressDetail> addressConverter;
+    private final Converter<Address, AddressDetail> addressConverter;
 
-    @Autowired
-    public void setAddressConverter(
-            @Qualifier("addressConverter") Converter<Address, AddressDetail> addressConverter) {
-        this.addressConverter = addressConverter;
-    }
-
-    private SupplierConverter() {
+    private SupplierConverter(Converter<Address, AddressDetail> addressConverter) {
         // Spring instantiates converters - see converters.xml
+        Validate.notNull(addressConverter);
+        this.addressConverter = addressConverter;
     }
 
     @Override

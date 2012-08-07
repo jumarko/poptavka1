@@ -6,6 +6,10 @@
     <bean id="accessRoleConverter" class="com.eprovement.poptavka.server.converter.AccessRoleConverter">
         <constructor-arg ref="permissionConverter"/>
     </bean>
+    <bean id="searchConverter" class="com.eprovement.poptavka.server.converter.SearchConverter" >
+        <constructor-arg ref="filterConverter"/>
+    </bean>
+    <bean id="filterConverter" class="com.eprovement.poptavka.server.converter.FilterConverter" />
     <bean id="categoryConverter" class="com.eprovement.poptavka.server.converter.CategoryConverter" />
     <bean id="localityConverter" class="com.eprovement.poptavka.server.converter.LocalityConverter" />
     <bean id="activationEmailConverter" class="com.eprovement.poptavka.server.converter.ActivationEmailConverter" />
@@ -29,6 +33,8 @@
     <bean id="demandTypeConverter" class="com.eprovement.poptavka.server.converter.DemandTypeConverter"/>
     <bean id="fullDemandConverter" class="com.eprovement.poptavka.server.converter.FullDemandConverter">
         <constructor-arg ref="supplierConverter"/>
+        <constructor-arg ref="categoryConverter"/>
+        <constructor-arg ref="localityConverter"/>
     </bean>
     <bean id="fullOfferConverter" class="com.eprovement.poptavka.server.converter.FullOfferConverter">
         <constructor-arg index="0" ref="offerConverter"/>
@@ -57,7 +63,9 @@
     <bean id="settingsBusinessUserConverter" class="com.eprovement.poptavka.server.converter.SettingsBusinessUserConverter">
         <constructor-arg ref="addressConverter"/>
     </bean>
-    <bean id="supplierConverter" class="com.eprovement.poptavka.server.converter.SupplierConverter"/>
+    <bean id="supplierConverter" class="com.eprovement.poptavka.server.converter.SupplierConverter">
+        <constructor-arg ref="addressConverter"/>
+    </bean>
     <bean id="userConverter" class="com.eprovement.poptavka.server.converter.UserConverter">
         <constructor-arg index="0" ref="addressConverter"/>
         <constructor-arg index="1" ref="accessRoleConverter"/>

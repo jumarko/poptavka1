@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.homedemands;
 
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.google.gwt.core.client.GWT;
@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HomeDemandViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -56,7 +57,7 @@ public class HomeDemandViewView extends Composite implements
             filters.add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
         if (demandTypes.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("type.description", FilterItem.OPERATION_EQUALS,
                     demandTypes.getItemText(demandTypes.getSelectedIndex())));
         }
         if (!priceFrom.getText().equals("")) {
@@ -66,15 +67,35 @@ public class HomeDemandViewView extends Composite implements
             filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
         if (creationDate.getSelectedIndex() != 4) {
-            filters.add(new FilterItem("creation", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
+            filters.add(new FilterItem("createdDate", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
         }
         if (finnishDateFrom.getValue() != null) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
+            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
         }
         if (finnishDateTo.getValue() != null) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
+            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
         }
         return filters;
+    }
+
+    private Date getCreatedDate() {
+        //How to implement this? Calendar is not supported by GWT.
+        //created date
+//        Calendar calendarDate = Calendar.getInstance(); //today -> case 0
+//        switch (creationDate.getSelectedIndex()) {
+//            case 1:
+//                calendarDate.add(Calendar.DATE, -1);  //yesterday
+//                break;
+//            case 2:
+//                calendarDate.add(Calendar.DATE, -7);  //last week
+//                break;
+//            case 3:
+//                calendarDate.add(Calendar.MONTH, -1);  //last month
+//                break;
+//            default:
+//                break;
+//        }
+        return new Date(); //calendarDate.getTimeInMillis());
     }
 
     @UiHandler("priceFrom")

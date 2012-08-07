@@ -27,6 +27,7 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,6 +70,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private AuditService auditService;
     private TreeItemService treeItemService;
     private Converter<Demand, FullDemandDetail> demandConverter;
+    private Converter<Search, SearchModuleDataHolder> searchConverter;
     private FulltextSearchService fulltextSearchService;
 
     // ***********************************************************************
@@ -115,6 +117,12 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         this.demandConverter = demandConverter;
     }
 
+    @Autowired
+    public void setSearchConverter(
+            @Qualifier("searchConverter") Converter<Search, SearchModuleDataHolder> searchConverter) {
+        this.searchConverter = searchConverter;
+    }
+
     // ***********************************************************************
     // Get filtered demands
     // ***********************************************************************
@@ -131,6 +139,9 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      */
     @Override
     public long getDemandsCount(SearchModuleDataHolder detail) throws RPCException {
+//        Search search = searchConverter.converToSource(detail);
+//        search.setSearchClass(Demand.class);
+//        return (long) generalService.searchAndCount(search).getTotalCount();
         if (detail == null) {
             return filterWithoutAttributesCount(null);
         } else {
@@ -161,6 +172,18 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     @Override
     public List<FullDemandDetail> getDemands(int start, int maxResult,
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) throws RPCException {
+//        Search search = searchConverter.converToSource(detail);
+//        search.setSearchClass(Demand.class);
+//        search.setFirstResult(start);
+//        search.setMaxResults(maxResult);
+//        for (String column : orderColumns.keySet()) {
+//            if (orderColumns.get(column) == OrderType.ASC) {
+//                search.addSort(Sort.asc(column));
+//            } else {
+//                search.addSort(Sort.desc(column));
+//            }
+//        }
+//        return generalService.search(search);
         if (detail == null) {
             return filterWithoutAttributes(start, maxResult, null, orderColumns);
         } else {
@@ -199,7 +222,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private List<FullDemandDetail> getSortedDemands(int start, int maxResult, Map<String, OrderType> orderColumns) {
         final ResultCriteria resultCriteria =
                 new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).
-                        orderByColumns(orderColumns).build();
+                orderByColumns(orderColumns).build();
         List<Demand> demands = demandService.getAll(resultCriteria);
         return demandConverter.convertToTargetList(demands);
     }
@@ -239,7 +262,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         final ResultCriteria resultCriteria =
                 new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).
-                        orderByColumns(orderColumns).build();
+                orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, cats.toArray(new Category[cats.size()])));
     }
@@ -279,7 +302,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         final ResultCriteria resultCriteria =
                 new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).
-                        orderByColumns(orderColumns).build();
+                orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, locs.toArray(new Locality[locs.size()])));
     }
@@ -331,7 +354,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         final ResultCriteria resultCriteria =
                 new ResultCriteria.Builder().firstResult(start).maxResults(count).
-                        orderByColumns(orderColumns).build();
+                orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, cats.toArray(new Category[cats.size()]), locs.toArray(new Locality[locs.size()])));
     }
@@ -562,7 +585,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
                         }
                     }
                 } else {
-                    this.filter(search, prefix, item);
+//                    this.filter(search, prefix, item);
                 }
             }
         } else {
@@ -592,34 +615,34 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @param item - define that new attribute to add
      * @return update Search object
      */
-    private Search filter(Search search, String prefix, FilterItem item) {
-        prefix += ".";
+    private Filter filter(FilterItem item) {
+        Filter f;
         switch (item.getOperation()) {
             case FilterItem.OPERATION_EQUALS:
-                search.addFilterEqual(prefix + item.getItem(), item.getValue());
+                f = new Filter(item.getItem(), item.getValue(), Filter.OP_EQUAL);
                 break;
             case FilterItem.OPERATION_LIKE:
-                search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
+                f = new Filter(item.getItem(), item.getValue(), Filter.OP_LIKE);
                 break;
             case FilterItem.OPERATION_IN:
-                search.addFilterIn(prefix + item.getItem(), item.getValue());
+                f = new Filter(item.getItem(), item.getValue(), Filter.OP_IN);
                 break;
             case FilterItem.OPERATION_FROM:
-                search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
+                f = new Filter(item.getItem(), item.getValue(), Filter.OP_GREATER_OR_EQUAL);
                 break;
             case FilterItem.OPERATION_TO:
-                search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
+                f = new Filter(item.getItem(), item.getValue(), Filter.OP_LESS_OR_EQUAL);
                 break;
             default:
+                f = new Filter();
                 break;
         }
-        return search;
+        return f;
     }
 
     // ***********************************************************************
     // Other methods
     // ***********************************************************************
-
     //TODO Martin - musim stale zistovat createdDate z auditServicy, alebo sa to pridani
     //atributu createDate do Domain objektu vyplna samo?
     //TODO Martin - da sa tu pouzit converter?
