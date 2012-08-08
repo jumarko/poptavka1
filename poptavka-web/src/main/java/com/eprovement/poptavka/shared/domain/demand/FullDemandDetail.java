@@ -126,7 +126,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         }
     }
 
-    public List<CategoryDetail> getCategories() {
+    public ArrayList<CategoryDetail> getCategories() {
         return categories;
     }
 
@@ -134,7 +134,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         this.categories = categories;
     }
 
-    public List<LocalityDetail> getLocalities() {
+    public ArrayList<LocalityDetail> getLocalities() {
         return localities;
     }
 

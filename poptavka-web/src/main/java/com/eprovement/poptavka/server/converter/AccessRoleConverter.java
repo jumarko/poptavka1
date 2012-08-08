@@ -9,7 +9,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import org.apache.commons.lang.Validate;
 
 public final class AccessRoleConverter extends AbstractConverter<AccessRole, AccessRoleDetail> {
@@ -30,7 +29,7 @@ public final class AccessRoleConverter extends AbstractConverter<AccessRole, Acc
         detail.setName(source.getName());
         detail.setDescription(source.getDescription());
         detail.setCode(source.getCode());
-        List<PermissionDetail> permissions = new ArrayList<PermissionDetail>();
+        ArrayList<PermissionDetail> permissions = new ArrayList<PermissionDetail>();
         for (Iterator<Permission> it = source.getPermissions().iterator(); it.hasNext();) {
             permissions.add(permissionConverter.convertToTarget(it.next()));
         }

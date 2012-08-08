@@ -2,8 +2,9 @@ package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import java.util.ArrayList;
-
+import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -14,11 +15,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import java.util.List;
+import java.util.ArrayList;
 
 public class FormUserRegistrationView extends Composite
     implements FormUserRegistrationPresenter.FormRegistrationInterface, ProvidesValidate {
@@ -131,7 +128,7 @@ public class FormUserRegistrationView extends Composite
         address.setStreet(streetBox.getText());
         address.setZipCode(zipBox.getText());
 
-        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+        ArrayList<AddressDetail> addresses = new ArrayList<AddressDetail>();
         addresses.add(address);
         client.setAddresses(addresses);
 

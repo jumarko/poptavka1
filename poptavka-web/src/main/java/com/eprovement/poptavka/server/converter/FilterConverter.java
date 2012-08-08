@@ -7,7 +7,6 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.googlecode.genericdao.search.Filter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public final class FilterConverter implements Converter<Filter, FilterItem> {
 
@@ -47,8 +46,8 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
     }
 
     @Override
-    public List<FilterItem> convertToTargetList(Collection<Filter> sourceObjects) {
-        final List<FilterItem> detailObjects = new ArrayList<FilterItem>();
+    public ArrayList<FilterItem> convertToTargetList(Collection<Filter> sourceObjects) {
+        final ArrayList<FilterItem> detailObjects = new ArrayList<FilterItem>();
         for (Filter domainObject : sourceObjects) {
             detailObjects.add(convertToTarget(domainObject));
         }
@@ -56,8 +55,8 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
     }
 
     @Override
-    public List<Filter> convertToSourceList(List<FilterItem> targetObjects) {
-        final List<Filter> domainObjects = new ArrayList<Filter>();
+    public ArrayList<Filter> convertToSourceList(Collection<FilterItem> targetObjects) {
+        final ArrayList<Filter> domainObjects = new ArrayList<Filter>();
         for (FilterItem detailObject : targetObjects) {
             domainObjects.add(converToSource(detailObject));
         }

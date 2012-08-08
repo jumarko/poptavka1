@@ -234,7 +234,6 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
             sb.append("<b><i>CLIENT</i></b>" + br);
             sb.append("ClientID: " + user.getClientId() + br);
-            sb.append("Demand Count: " + user.getDemandsId().size() + br);
             sb.append("Demands Messages: " + "n/a" + " / " + "n/a" + br);
             sb.append("Demands Offers: " + "n/a" + " / " + "n/a" + br);
             sb.append("<i>-- -- -- --</i>" + br);

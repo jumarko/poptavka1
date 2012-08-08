@@ -38,7 +38,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -68,6 +67,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private TreeItemService treeItemService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Locality, LocalityDetail> localityConverter;
 
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -109,6 +109,12 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     public void setCategoryConverter(
             @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
+    }
+
+    @Autowired
+    public void setLocalityConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
     }
 
     /**
@@ -275,8 +281,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID, String localityCode)
-        throws RPCException {
+    public ArrayList<FullSupplierDetail> getSuppliers(
+            int start, int count, Long categoryID, String localityCode) throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
         Category[] categories = {categoryService.getById(categoryID)};
         Locality[] localities = {localityService.getLocality(localityCode)};
@@ -303,8 +309,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<FullSupplierDetail> getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns)
-        throws RPCException {
+    public ArrayList<FullSupplierDetail> getSortedSuppliers(
+            int start, int count, Map<String, OrderType> orderColumns) throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start)
                 .maxResults(count).orderByColumns(orderColumns).build();
         return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
@@ -352,29 +358,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         supplier.setVerification(Verification.valueOf(supplierDetail.getVerification()));
 
         // -- categories
-        List<Category> newCategories = new ArrayList<Category>();
-        for (Category category : supplier.getCategories()) {
-            if (supplierDetail.getCategories().containsKey(category.getId())) {
-                //add category - if there already is data, don't go to DB
-                newCategories.add(category);
-                //remove if added, the rest will be obtained from DB
-                supplierDetail.getCategories().remove(category.getId());
-            }
-        }
-        for (Long id : supplierDetail.getCategories().keySet()) {
-            newCategories.add(categoryService.getById(id));
-        }
+        List<Category> newCategories = categoryConverter.convertToSourceList(supplierDetail.getCategories());
+
         // -- localities
-        List<Locality> newLocalities = new ArrayList<Locality>();
-        for (Locality locality : supplier.getLocalities()) {
-            if (supplierDetail.getLocalities().containsKey(locality.getCode())) {
-                newLocalities.add(locality);
-                supplierDetail.getLocalities().remove(locality.getCode());
-            }
-        }
-        for (String code : supplierDetail.getLocalities().keySet()) {
-            newLocalities.add(localityService.getLocality(code));
-        }
+        List<Locality> newLocalities = localityConverter.convertToSourceList(supplierDetail.getLocalities());
 
         //TODO Martin - how to update addresses???
 //        List<Address> newAddresses = new ArrayList<Address>();
@@ -451,7 +438,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 Supplier supplierRole = (Supplier) role;
                 detail.setSupplierId(supplierRole.getId());
                 detail.addRole(BusinessRole.SUPPLIER);
-                SupplierDetail supplierDetail = new SupplierDetail();
+                FullSupplierDetail supplierDetail = new FullSupplierDetail();
 
                 // supplierServices
                 List<UserService> services = supplierRole.getBusinessUser().getUserServices();
@@ -518,9 +505,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public List<FullSupplierDetail> filterSuppliers(
-            int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns)
-        throws RPCException {
+    public List<FullSupplierDetail> filterSuppliers(int start, int count,
+            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) throws RPCException {
         List<FullSupplierDetail> searchResult = this.filter(detail, orderColumns);
         if (searchResult.size() < (start + count)) {
             return searchResult.subList(start, searchResult.size());

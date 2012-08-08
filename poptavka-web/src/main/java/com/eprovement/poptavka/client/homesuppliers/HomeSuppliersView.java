@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.TextCell;
@@ -347,8 +348,8 @@ public class HomeSuppliersView extends OverflowComposite
                     public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();
                         if (((FullSupplierDetail) object).getLocalities() != null) {
-                            for (String loc : ((FullSupplierDetail) object).getLocalities().values()) {
-                                str.append(loc);
+                            for (LocalityDetail loc : ((FullSupplierDetail) object).getLocalities()) {
+                                str.append(loc.getName());
                                 str.append(", ");
                             }
                             if (str.length() > 2) {

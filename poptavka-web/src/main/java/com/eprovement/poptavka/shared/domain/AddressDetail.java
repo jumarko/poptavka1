@@ -23,6 +23,7 @@ public class AddressDetail implements Serializable {
     //
     @NotEmpty(message = "{addressNotBlankStreet}")
     private String street;
+    private String houseNum;
     @NotEmpty(message = "{addressNotBlankZipCode}")
     @Pattern(regexp = "[0-9]+", message = "{addressPatternZipCode}")
     @Size(min = ZIP_SIZE, message = "{addressSizeZipCode}")
@@ -83,6 +84,14 @@ public class AddressDetail implements Serializable {
 
     public String getZipCode() {
         return zipCode;
+    }
+
+    public String getHouseNum() {
+        return houseNum;
+    }
+
+    public void setHouseNum(String houseNum) {
+        this.houseNum = houseNum;
     }
 
     public void setZipCode(String zipCode) {

@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * represents all types of system users
@@ -18,7 +18,7 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
         CLIENT, SUPPLIER, PARTNER//, OPERATOR, ADMIN
     }
     /** Instances of roles. **/
-    private SupplierDetail supplier = null;
+    private FullSupplierDetail supplier = null;
     //others
     /** List of roles. **/
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();
@@ -33,12 +33,11 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     private String description;
     private String taxId;
     private String website;
-    private List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-    // TODO check if used, otherwise delete
-    private ArrayList<String> demandsId = new ArrayList<String>();
+    private ArrayList<AddressDetail> addresses = new ArrayList<AddressDetail>();
     private boolean verified = false;
 
     public BusinessUserDetail() {
+        super();
     }
 
 
@@ -114,24 +113,16 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
         this.website = website;
     }
 
-    public List<AddressDetail> getAddresses() {
+    public ArrayList<AddressDetail> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<AddressDetail> addresses) {
+    public void setAddresses(ArrayList<AddressDetail> addresses) {
         this.addresses = addresses;
     }
 
     public void addAddress(AddressDetail addressDetail) {
         this.addresses.add(addressDetail);
-    }
-
-    public ArrayList<String> getDemandsId() {
-        return demandsId;
-    }
-
-    public void setDemandsId(ArrayList<String> demandsId) {
-        this.demandsId = demandsId;
     }
 
     public String getPassword() {
@@ -142,11 +133,11 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
         this.password = password;
     }
 
-    public SupplierDetail getSupplier() {
+    public FullSupplierDetail getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(SupplierDetail supplier) {
+    public void setSupplier(FullSupplierDetail supplier) {
         this.supplier = supplier;
     }
 

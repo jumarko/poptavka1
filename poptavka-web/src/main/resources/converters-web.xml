@@ -65,6 +65,8 @@
     </bean>
     <bean id="supplierConverter" class="com.eprovement.poptavka.server.converter.SupplierConverter">
         <constructor-arg ref="addressConverter"/>
+        <constructor-arg ref="categoryConverter"/>
+        <constructor-arg ref="localityConverter"/>
     </bean>
     <bean id="userConverter" class="com.eprovement.poptavka.server.converter.UserConverter">
         <constructor-arg index="0" ref="addressConverter"/>

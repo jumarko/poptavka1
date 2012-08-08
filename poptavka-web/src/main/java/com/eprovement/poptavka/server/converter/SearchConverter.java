@@ -7,8 +7,8 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import org.apache.commons.lang.Validate;
 
 public final class SearchConverter implements Converter<Search, SearchModuleDataHolder> {
@@ -44,12 +44,12 @@ public final class SearchConverter implements Converter<Search, SearchModuleData
     }
 
     @Override
-    public List<SearchModuleDataHolder> convertToTargetList(Collection<Search> sourceObjects) {
+    public ArrayList<SearchModuleDataHolder> convertToTargetList(Collection<Search> sourceObjects) {
         throw new UnsupportedOperationException("Convertion List<Search> to List<SearchModuleDataHolder> failed!");
     }
 
     @Override
-    public List<Search> convertToSourceList(List<SearchModuleDataHolder> targetObjects) {
+    public ArrayList<Search> convertToSourceList(Collection<SearchModuleDataHolder> targetObjects) {
         throw new UnsupportedOperationException("Convertion List<Search> to List<SearchModuleDataHolder> failed!");
     }
 }

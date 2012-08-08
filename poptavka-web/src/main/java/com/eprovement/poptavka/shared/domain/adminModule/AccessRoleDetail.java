@@ -1,8 +1,7 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Represents full detail of domain object <b>AccessRole</b> used in
@@ -22,7 +21,7 @@ public class AccessRoleDetail implements Serializable {
     private String name;
     private String description;
     private String code;
-    private List<PermissionDetail> permissions;
+    private ArrayList<PermissionDetail> permissions;
 
     /**
      * for serialization. *
@@ -79,13 +78,13 @@ public class AccessRoleDetail implements Serializable {
         this.code = code;
     }
 
-    public List<PermissionDetail> getPermissions() {
+    public ArrayList<PermissionDetail> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<PermissionDetail> permissions) {
+    public void setPermissions(ArrayList<PermissionDetail> permissions) {
         this.permissions = permissions;
-        Collections.sort(this.permissions);
+//        Collections.sort(this.permissions);
     }
 
     @Override

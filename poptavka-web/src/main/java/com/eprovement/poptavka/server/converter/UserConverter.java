@@ -14,7 +14,6 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import java.util.ArrayList;
-import java.util.List;
 import org.apache.commons.lang.Validate;
 
 public final class UserConverter extends AbstractConverter<BusinessUser, BusinessUserDetail> {
@@ -40,7 +39,7 @@ public final class UserConverter extends AbstractConverter<BusinessUser, Busines
         detail.setPassword(source.getPassword());
         detail.setAccessRoles(accessRoleConverter.convertToTargetList(source.getAccessRoles()));
         //BusinessUser
-        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+        ArrayList<AddressDetail> addresses = new ArrayList<AddressDetail>();
         for (Address addr : source.getAddresses()) {
             addresses.add(addressConverter.convertToTarget(addr));
         }

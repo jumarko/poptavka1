@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 
 /**
@@ -226,16 +228,16 @@ public class AdminSupplierInfoView extends Composite implements
             //Category
             categoryList.clear();
             if (supplier.getCategories() != null) {
-                for (String cat : supplier.getCategories().values()) {
-                    categoryList.addItem(cat);
+                for (CategoryDetail cat : supplier.getCategories()) {
+                    categoryList.addItem(cat.getName());
                 }
 
             }
             //Locality
             localityList.clear();
             if (supplier.getLocalities() != null) {
-                for (String loc : supplier.getLocalities().values()) {
-                    localityList.addItem(loc);
+                for (LocalityDetail loc : supplier.getLocalities()) {
+                    localityList.addItem(loc.getName());
                 }
             }
         }

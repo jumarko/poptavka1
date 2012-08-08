@@ -2,11 +2,11 @@ package com.eprovement.poptavka.shared.domain.supplier;
 
 import com.eprovement.poptavka.client.common.validation.Email;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -46,22 +46,18 @@ public class FullSupplierDetail implements Serializable {
     message = "{supplierPatternWebsite}")
     private String website;
     //Lists
-    private Map<String, String> localities; //<codes, value>
-    private Map<Long, String> categories;   //<ids, value>
-    private ArrayList<Integer> services = new ArrayList<Integer>();
-    //Martin - In poptavka 1.0 only one supplier's address is implemented, therefore
-    //for simplicity List<AddressDetail> and single String of city, street, zip added.
     @Valid
     @Size(min = 1)
-    private List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-//    @NotEmpty(message = "{supplierNotBlankStreet}")
-//    private String street;
-//    @NotEmpty(message = "{supplierNotBlankCity}")
-//    private String city;
-//    @NotEmpty(message = "{supplierNotBlankZipCode}")
-//    @Pattern(regexp = "[0-9]+", message = "{supplierPatternZipCode}")
-//    @Size(min = ZIP_SIZE, message = "{supplierSizeZipCode}")
-//    private String zipCode;
+    private ArrayList<LocalityDetail> localities;
+    @Valid
+    @Size(min = 1)
+    private ArrayList<CategoryDetail> categories;
+    @Valid
+    @Size(min = 1)
+    private ArrayList<Integer> services = new ArrayList<Integer>();
+    @Valid
+    @Size(min = 1)
+    private ArrayList<AddressDetail> addresses = new ArrayList<AddressDetail>();
     //Others
     private int overallRating = -1;
     private boolean certified = false;
@@ -81,15 +77,11 @@ public class FullSupplierDetail implements Serializable {
         certified = supplier.isCertified();
         verification = supplier.getVerification();
         //categories
-        categories = new HashMap<Long, String>();
-        for (Long catId : supplier.getCategories().keySet()) {
-            categories.put(catId, supplier.getCategories().get(catId));
-        }
+        categories = new ArrayList<CategoryDetail>(supplier.getCategories());
+
         //localities
-        localities = new HashMap<String, String>();
-        for (String locCode : supplier.getLocalities().keySet()) {
-            localities.put(locCode, supplier.getLocalities().get(locCode));
-        }
+        localities = new ArrayList<LocalityDetail>(supplier.getLocalities());
+
         addresses = new ArrayList<AddressDetail>(supplier.getAddresses());
         email = supplier.getEmail();
         description = supplier.getDescription();
@@ -117,20 +109,20 @@ public class FullSupplierDetail implements Serializable {
         this.certified = certified;
     }
 
-    public Map<Long, String> getCategories() {
+    public ArrayList<CategoryDetail> getCategories() {
         return categories;
     }
 
-    public void setCategories(Map<Long, String> categories) {
-        this.categories = categories;
+    public void setCategories(List<CategoryDetail> categories) {
+        this.categories = new ArrayList<CategoryDetail>(categories);
     }
 
-    public Map<String, String> getLocalities() {
+    public ArrayList<LocalityDetail> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(Map<String, String> localities) {
-        this.localities = localities;
+    public void setLocalities(List<LocalityDetail> localities) {
+        this.localities = new ArrayList<LocalityDetail>(localities);
     }
 
     public long getSupplierId() {
@@ -265,7 +257,7 @@ public class FullSupplierDetail implements Serializable {
         return addresses;
     }
 
-    public void setAddresses(List<AddressDetail> addresses) {
+    public void setAddresses(ArrayList<AddressDetail> addresses) {
         this.addresses = addresses;
     }
 

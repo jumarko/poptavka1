@@ -6,7 +6,6 @@ package com.eprovement.poptavka.shared.domain;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Detail object encapsulating all information provided when user is logged on.
@@ -25,19 +24,19 @@ public class UserDetail implements Serializable {
      */
     private long userId;
     private String email;
-    private List<AccessRoleDetail> accessRoles;
+    private ArrayList<AccessRoleDetail> accessRoles;
 
     /**
      * Required for GWT
      */
     public UserDetail() {
-        super();
+//        super();
     }
 
-    public UserDetail(long userId, String email, List<AccessRoleDetail> accessRoles) {
+    public UserDetail(long userId, String email, ArrayList<AccessRoleDetail> accessRoles) {
         this.userId = userId;
         this.email = email;
-        this.accessRoles = new ArrayList<AccessRoleDetail>(accessRoles);
+        this.accessRoles = accessRoles;
     }
 
 
@@ -57,11 +56,11 @@ public class UserDetail implements Serializable {
         this.email = email;
     }
 
-    public List<AccessRoleDetail> getAccessRoles() {
+    public ArrayList<AccessRoleDetail> getAccessRoles() {
         return accessRoles;
     }
 
-    public void setAccessRoles(List<AccessRoleDetail> accessRoles) {
+    public void setAccessRoles(ArrayList<AccessRoleDetail> accessRoles) {
         this.accessRoles = accessRoles;
     }
 }

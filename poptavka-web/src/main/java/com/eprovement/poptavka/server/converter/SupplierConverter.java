@@ -8,19 +8,26 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.Validate;
 
 public final class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
 
     private final Converter<Address, AddressDetail> addressConverter;
+    private final Converter<Category, CategoryDetail> categoryConverter;
+    private final Converter<Locality, LocalityDetail> localityConverter;
 
-    private SupplierConverter(Converter<Address, AddressDetail> addressConverter) {
+    private SupplierConverter(
+            Converter<Address, AddressDetail> addressConverter,
+            Converter<Category, CategoryDetail> categoryConverter,
+            Converter<Locality, LocalityDetail> localityConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(addressConverter);
         this.addressConverter = addressConverter;
+        this.categoryConverter = categoryConverter;
+        this.localityConverter = localityConverter;
     }
 
     @Override
@@ -37,17 +44,9 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
             detail.setVerification(source.getVerification().name());
         }
         //categories
-        Map<Long, String> catMap = new HashMap<Long, String>();
-        for (Category cat : source.getCategories()) {
-            catMap.put(cat.getId(), cat.getName());
-        }
-        detail.setCategories(catMap);
+        detail.setCategories(categoryConverter.convertToTargetList(source.getCategories()));
         //localities
-        Map<String, String> locMap = new HashMap<String, String>();
-        for (Locality loc : source.getLocalities()) {
-            locMap.put(loc.getCode(), loc.getName());
-        }
-        detail.setLocalities(locMap);
+        detail.setLocalities(localityConverter.convertToTargetList(source.getLocalities()));
         if (source.getBusinessUser() != null) {
             for (Address address : source.getBusinessUser().getAddresses()) {
                 detail.addAddress(addressConverter.convertToTarget(address));

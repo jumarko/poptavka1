@@ -2,12 +2,11 @@ package com.eprovement.poptavka.client.home.createSupplier.widget;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.address.AddressSelectorView;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
@@ -23,11 +22,11 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.validation.client.Validation;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -112,6 +111,18 @@ public class SupplierInfoView extends Composite
         initWidget(uiBinder.createAndBindUi(this));
         this.driver.initialize(this);
         this.driver.edit(fullSupplierDetail);
+
+        //Fake data
+        companyName.setText(COMPANY_NAME);
+        identificationNumber.setText("12345");
+        taxId.setText(TAX_ID);
+        firstName.setText(FIRST_NAME);
+        lastName.setText(LAST_NAME);
+        phone.setText("0932321");
+        email.setText("email@len.tak");
+        password.setText("kreslo");
+        passwordConfirm.setText("kreslo");
+        description.setText("Data len tak aby netrebalo furt zadavat.");
 
         //Link TextBox with Constraint
         companyName.setName(COMPANY_NAME);
@@ -228,7 +239,7 @@ public class SupplierInfoView extends Composite
         user.setCompanyName(companyName.getText());
         user.setIdentificationNumber(identificationNumber.getText());
         user.setTaxId(taxId.getText());
-        SupplierDetail supplier = new SupplierDetail();
+        FullSupplierDetail supplier = new FullSupplierDetail();
         supplier.setDescription(description.getValue());
         user.setSupplier(supplier);
         user.setFirstName(firstName.getText());

@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.product.UserService;
@@ -111,6 +112,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         setNewSupplierBusinessUserData(supplier, newSupplier);
         newSupplier.getBusinessUser().setEmail(supplier.getEmail());
         newSupplier.getBusinessUser().setPassword(supplier.getPassword());
+
         setNewSupplierAddresses(supplier, newSupplier);
         setNewSupplierLocalities(supplier, newSupplier);
         setNewSupplierCategories(supplier, newSupplier);
@@ -203,16 +205,34 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
     private List<Address> getAddressesFromSupplierCityName(BusinessUserDetail supplier) {
         List<Address> addresses = new ArrayList<Address>();
+        Search addrSearch;
         for (AddressDetail detail : supplier.getAddresses()) {
+            //Ziskaj mesto typu Locality (String -> Locality)
             Locality cityLoc = (Locality) generalService.searchUnique(
-                    new Search(Locality.class).addFilterEqual("name", detail.getCity()));
+                    new Search(Locality.class)
+                        .addFilterEqual("name", detail.getCity())
+                        .addFilterEqual("type", LocalityType.CITY));
 
-            if (cityLoc != null) {
+            //Zisti, ci sa taka adresa nachadza v DB.
+            addrSearch = new Search(Address.class);
+            //ktore lepsie pouzit?
+//            addrSearch.addFilterEqual("city.name", detail.getCity());
+            addrSearch.addFilterEqual("city", cityLoc);
+            addrSearch.addFilterEqual("street", detail.getStreet());
+            addrSearch.addFilterEqual("houseNum", detail.getHouseNum());
+            Address existingAddress = (Address) generalService.searchUnique(addrSearch);
+
+            if (existingAddress == null) {
+                //Ak sa taka adresa nenachadza v DB, vytvor ju
                 Address address = new Address();
                 address.setCity(cityLoc);
                 address.setStreet(detail.getStreet());
+                address.setHouseNum(detail.getHouseNum());
                 address.setZipCode(detail.getZipCode());
                 addresses.add(address);
+            } else {
+                //Ak ano, prirad ju
+                addresses.add(existingAddress);
             }
         }
         return addresses;
