@@ -4,12 +4,10 @@
  */
 package com.eprovement.poptavka.server.service.demands;
 
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.DemandsRPCService;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.dao.message.MessageFilter;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.Message;
@@ -31,7 +29,6 @@ import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +55,6 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
 //    public static final String OFFER_TO_POTENTIAL_DEMAND_SUBJECT = "Ponuka na vasu poptavku/nazov dodavatela";
 //    public static final String INTERNAL_MESSAGE = "Interna sprava";
-
     private DemandService demandService;
     private UserMessageService userMessageService;
     private GeneralService generalService;
@@ -66,11 +62,9 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     private RatingService ratingService;
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
-
     private Converter<UserMessage, ClientDemandMessageDetail> clientDemandMessageConverter;
     private Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter;
     private Converter<Demand, BaseDemandDetail> baseDemandConverter;
-
 
     public void setRatingService(RatingService ratingService) {
         this.ratingService = ratingService;
@@ -316,313 +310,5 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
 
         return baseDemandConverter.convertToTarget(this.demandService.getById(demandId));
 
-    }
-
-    //*************************************************************************/
-    // CLIENT Data Retrieving Methods                                         */
-    //*************************************************************************/
-    //************************* CLIENT - My Demands ***************************/
-    /**
-     * Get all demand's count that has been created by client.
-     * When new demand is created by client, will be involved here.
-     * As Client: "All demands created by me."
-     *
-     * @param clientID - client's ID
-     * @param filter - define searching criteria if any
-     * @return count
-     */
-    public long getClientDemandsCount(long clientID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * Get all demands that has been created by client.
-     * When new demand is created by client, will be involved here.
-     * As Client: "All demands created by me."
-     *
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return list of demand's detail objects
-     */
-    public List<FullDemandDetail> getClientDemands(int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<FullDemandDetail>();
-    }
-
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Client: "Questions made by suppliers to demands made by me." "How many suppliers
-     * are asing something about a certain demand."
-     *
-     * @param clientID - client's ID
-     * @param demandID - demand's ID
-     * @param filter - define searching criteria if any
-     * @return count
-     */
-    public long getClientDemandConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads. As
-     * Client: "Questions made by suppliers to demands made by me."
-     *         "How many suppliers are asing something about a certain demand."
-     *
-     * @param clientID - client's
-     * @param demandID - demand's
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
-     */
-    public List<UserMessageDetail> getClientDemandConversations(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<UserMessageDetail>();
-    }
-
-    //************************* CLIENT - My Offers ****************************/
-    /**
-     * Get all demands where have been placed an offer by some supplier.
-     * When supplier place an offer to client's demand, the demand will be involved here.
-     * As Client: "Demands that have already an offer."
-     *
-     * @param clientID
-     * @param filter
-     * @return
-     */
-    public long getClientOffersCount(long clientID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * Get all demands where have been placed an offer by some supplier.
-     * When supplier place an offer to client's demand, the demand will be involved here.
-     * As Client: "Demands that have already an offer."
-     *
-     * @param clientID - client's ID
-     * @param demandID - demands's ID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
-     */
-    public List<FullDemandDetail> getClientOffersCount(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<FullDemandDetail>();
-    }
-
-    /**
-     * Get all offers of given demand.
-     * When supplier place an offer to client's demand, the offer will be involved here.
-     * As Client: "How many suppliers placed an offers to a certain demand."
-     *
-     * @return offers count of given demand
-     */
-    public long getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * Get all offers of given demand.
-     * When supplier place an offer to client's demand, the offer will be involved here.
-     * As Client: "How many suppliers placed an offers to a certain demand."
-     *
-     * @param clientID
-     * @param demandID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
-     */
-    public List<OfferDetail> getClientDemandOffers(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<OfferDetail>();
-    }
-
-    //******************** CLIENT - My Assigned Demands ***********************/
-    /**
-     * Get all offers that were accepted by client to solve a demand.
-     * When client accept an offer, will be involved here.
-     * As Client: "All offers that were accepted by me to solve my demand."
-     *
-     * @param clientID
-     * @param filter
-     * @return
-     */
-    public long getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * Get all offers that were accepted by client to solve a demand.
-     * When client accept an offer, will be involved here.
-     * As Client: "All offers that were accepted by me to solve my demand."
-     *
-     * @param clientID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
-     */
-    public List<OfferDetail> getClientAssignedDemands(long clientID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<OfferDetail>();
-    }
-
-    //*************************************************************************/
-    // SUPPLIER Data Retrieving Methods                                       */
-    //*************************************************************************/
-    //************************ SUPPLIER - My Demands **************************/
-    /**
-     * Get demands of categories that I am interested in.
-     * When a demand is created it is assigned to certain categories.
-     * Than the system sends demands to suppliers what have registered those categories and are
-     * interested in receiving this kind of demand.
-     * As Supplier: "All potential demands that I am interested in."
-     *
-     * @param supplierID
-     * @param filter
-     * @return
-     */
-    public long getSupplierDemandsCount(long supplierID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * Get demands of categories that I am interested in.
-     * When a demand is created it is assigned to certain categories. Than the system sends
-     * demands to suppliers what have registered those categories and are
-     * interested in receiving this kind of demand.
-     * As Supplier: "All potential demands that I am interested in."
-     *
-     * @param supplierID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
-     */
-    public List<FullDemandDetail> getSupplierDemands(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<FullDemandDetail>();
-    }
-
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Supplier: "Questions made by me to demands made by clients."
-     *              "How many suppliers are asing something about a certain demand."
-     *
-     * @param supplierID
-     * @param demandID
-     * @param search
-     * @return
-     */
-    public long getSupplierDemandConversationsCount(long supplierID, long demandID,
-            SearchModuleDataHolder search) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Supplier: "Questions made by me to demands made by clients."
-     *              "How many suppliers are asing something about a certain demand."
-     *
-     * @param supplierID
-     * @param demnad
-     * @return
-     */
-    public List<UserMessageDetail> getSupplierDemandConversations(long supplierID, long demnadID,
-            int start, int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<UserMessageDetail>();
-    }
-    //************************ SUPPLIER - My Offers ***************************/
-    /**
-     * Get offers sent by supplier.
-     * When supplier sends an offer, it will be involved here.
-     * As Supplier: "Offers I sent"
-     *
-     * @param supplierID
-     * @param filter
-     * @return
-     */
-    public long getSupplierOffersCount(long supplierID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * Get offers sent by supplier.
-     * When supplier sends an offer, it will be involved here.
-     * As Supplier: "Offers I sent"
-     *
-     * @param supplierID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
-     */
-    public List<Offer> getSupplierOffers(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<Offer>();
-    }
-
-    //******************* SUPPLIER - My Assigned Demands **********************/
-    /**
-     * Get supplier's offers that have been accepted.
-     * When client accept an supplier's offer, the offer will be implemented here.
-     * As Supplier: "Offers that I 'won'."
-     *
-     * @param supplierID
-     * @param filter
-     * @return
-     */
-    public long getSupplierAssignedDemandsCount(long supplierID, SearchModuleDataHolder filter) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * Get supplier's offers that have been accepted.
-     * When client accept an supplier's offer, the offer will be implemented here.
-     * As Supplier: "Offers that I 'won'."
-     *
-     * @param supplierID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
-     */
-    public List<Offer> getSupplierAssignedDemands(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<Offer>();
     }
 }
