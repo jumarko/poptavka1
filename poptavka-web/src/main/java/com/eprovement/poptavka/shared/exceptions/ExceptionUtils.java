@@ -32,10 +32,6 @@ public final class ExceptionUtils {
             throw new IllegalArgumentException("throwable cannot be null");
         }
 
-        if (throwable instanceof RPCException && throwable.getCause() != null) {
-            return getFullErrorMessage(throwable.getCause());
-        }
-
         StringBuilder message = new StringBuilder();
         message.append("Unexpected error occured when calling the server:\n"
                 + "Error message: " + throwable.getMessage() + "\n"

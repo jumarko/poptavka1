@@ -5,6 +5,7 @@ package com.eprovement.poptavka.application.security;
 
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -46,7 +47,8 @@ public class RpcExceptionAspect {
             throw new ApplicationSecurityException("Access denied to method="
                     + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature(), ade);
         } catch (Exception e) {
-            throw new RPCException("Unknown error", e);
+            // stacktrace is passed as an exception message to recover it correctly on client
+            throw new RPCException(ExceptionUtils.getFullStackTrace(e), e);
         }
     }
 }
