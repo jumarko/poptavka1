@@ -10,11 +10,11 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientProjectsP
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
@@ -24,7 +24,6 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 import java.util.List;
-import java.util.Map;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = ClientDemandsPresenter.class, module = ClientDemandsModule.class)
@@ -134,7 +133,7 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
 
     @Override
     @Event(handlers = ClientDemandsHandler.class)
-    void getData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+    void getData(SearchDefinition searchDefinition);
 
     /**************************************************************************/
     /* Button actions - messaging.                                            */

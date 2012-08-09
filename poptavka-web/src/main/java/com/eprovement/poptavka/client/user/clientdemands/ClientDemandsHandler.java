@@ -1,23 +1,22 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCServiceAsync;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
-import java.util.Map;
 
 @EventHandler
 public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus> {
@@ -51,24 +50,23 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
         }
     }
 
-    public void onGetData(int start, int maxResults,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
-        getClientProjects(start, maxResults, detail, orderColumns);
+    public void onGetData(SearchDefinition searchDefinition) {
+        getClientProjects(searchDefinition);
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.CLIENT_PROJECTS:
-                getClientProjects(start, maxResults, detail, orderColumns);
+                getClientProjects(searchDefinition);
                 break;
             case Constants.CLIENT_PROJECT_DISCUSSIONS:
-                getClientProjectConversations(start, maxResults, detail, orderColumns);
+                getClientProjectConversations(searchDefinition);
                 break;
             case Constants.CLIENT_OFFERED_PROJECTS:
-                getClientOfferedProjects(start, maxResults, detail, orderColumns);
+                getClientOfferedProjects(searchDefinition);
                 break;
             case Constants.CLIENT_PROJECT_CONTESTANTS:
-                getClientProjectContestants(start, maxResults, detail, orderColumns);
+                getClientProjectContestants(searchDefinition);
                 break;
             case Constants.CLIENT_ASSIGNED_PROJECTS:
-                getClientAssignedProjects(start, maxResults, detail, orderColumns);
+                getClientAssignedProjects(searchDefinition);
                 break;
             default:
                 break;
@@ -88,10 +86,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                 });
     }
 
-    private void getClientProjects(int start, int maxResults,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private void getClientProjects(SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjects(
-                Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
+                Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<ClientProjectDetail>>() {
                     @Override
                     public void onSuccess(List<ClientProjectDetail> result) {
@@ -114,9 +111,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                 });
     }
 
-    private void getClientProjectConversations(int start, int maxResults,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
-        clientDemandsService.getClientProjectConversations(start, start, start, maxResults, detail, orderColumns,
+    private void getClientProjectConversations(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientProjectConversations(
+                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
                 new SecuredAsyncCallback<List<ClientProjectConversationDetail>>() {
                     @Override
                     public void onSuccess(List<ClientProjectConversationDetail> result) {
@@ -138,10 +135,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                 });
     }
 
-    private void getClientOfferedProjects(int start, int maxResults,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private void getClientOfferedProjects(SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedProjects(
-                Storage.getUser().getUserId(), Storage.getDemandId(), start, maxResults, detail, orderColumns,
+                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
                 new SecuredAsyncCallback<List<ClientProjectDetail>>() {
                     @Override
                     public void onSuccess(List<ClientProjectDetail> result) {
@@ -164,10 +160,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                 });
     }
 
-    private void getClientProjectContestants(int start, int maxResults,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private void getClientProjectContestants(SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectContestants(
-                Storage.getUser().getUserId(), Storage.getDemandId(), start, maxResults, detail, orderColumns,
+                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
                 new SecuredAsyncCallback<List<ClientProjectContestantDetail>>() {
                     @Override
                     public void onSuccess(List<ClientProjectContestantDetail> result) {
@@ -190,10 +185,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                 });
     }
 
-    private void getClientAssignedProjects(int start, int maxResults,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private void getClientAssignedProjects(SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedProjects(
-                Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
+                Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<ClientProjectContestantDetail>>() {
                     @Override
                     public void onSuccess(List<ClientProjectContestantDetail> result) {

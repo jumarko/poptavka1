@@ -1,15 +1,14 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -20,24 +19,21 @@ public interface SupplierDemandsRPCServiceAsync {
     void getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getSupplierPotentialProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getSupplierPotentialProjects(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
     //
     void getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getSupplierContests(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getSupplierContests(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
     //
     void getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getSupplierAssignedProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getSupplierAssignedProjects(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
     /**************************************************************************/

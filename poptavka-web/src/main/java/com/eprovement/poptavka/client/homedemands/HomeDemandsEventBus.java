@@ -9,8 +9,8 @@ package com.eprovement.poptavka.client.homedemands;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -19,7 +19,6 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.event.EventBus;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Martin Slavkovsky
@@ -84,7 +83,7 @@ public interface HomeDemandsEventBus extends EventBus, IEventBusData {
 
     @Override
     @Event(handlers = HomeDemandsHandler.class)
-    void getData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+    void getData(SearchDefinition searchDefinition);
 
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemands(List<FullDemandDetail> result);

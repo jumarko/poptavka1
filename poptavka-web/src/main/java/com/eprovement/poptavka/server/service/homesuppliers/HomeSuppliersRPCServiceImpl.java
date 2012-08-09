@@ -4,12 +4,11 @@
  */
 package com.eprovement.poptavka.server.service.homesuppliers;
 
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
@@ -22,10 +21,12 @@ import com.eprovement.poptavka.service.common.TreeItemService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private CategoryService categoryService;
     private SupplierService supplierService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private Converter<ResultCriteria, SearchDefinition> criteriaConverter;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -82,6 +84,12 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     public void setSupplierConverter(
             @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
         this.supplierConverter = supplierConverter;
+    }
+
+    @Autowired
+    public void setCriteriaConverter(
+            @Qualifier("criteriaConverter") Converter<ResultCriteria, SearchDefinition> criteriaConverter) {
+        this.criteriaConverter = criteriaConverter;
     }
 
     // ***********************************************************************
@@ -169,13 +177,12 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @throws RPCException
      */
     @Override
-    public List<FullSupplierDetail> getSuppliers(int start, int maxResult,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) throws RPCException {
+    public List<FullSupplierDetail> getSuppliers(SearchDefinition searchDefinition) throws RPCException {
         //TODO Martin implement fulltext search
-        if (detail == null || detail.getAttibutes().isEmpty()) {
-            return filterWithoutAttributes(start, maxResult, detail, orderColumns);
+        if (searchDefinition.getFilter() == null || searchDefinition.getFilter().getAttibutes().isEmpty()) {
+            return filterWithoutAttributes(searchDefinition);
         } else {
-            return filterWithAttributes(detail, orderColumns);
+            return filterWithAttributes(searchDefinition);
         }
     }
 
@@ -206,16 +213,13 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @param orderColumns - define ordering (attribute, type)
      * @return supplier details list of given categories
      */
-    private List<FullSupplierDetail> getSortedCategorySuppliers(List<CategoryDetail> categories,
-            int start, int maxResult, Map<String, OrderType> orderColumns) {
+    private List<FullSupplierDetail> getSortedCategorySuppliers(SearchDefinition searchDefinition) {
         List<Category> cats = new ArrayList<Category>();
-        for (CategoryDetail catDetail : categories) {
+        for (CategoryDetail catDetail : searchDefinition.getFilter().getCategories()) {
             cats.add(categoryService.getById(catDetail.getId()));
         }
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(maxResult)
-                        .orderByColumns(orderColumns).build();
         return supplierConverter.convertToTargetList(supplierService.getSuppliers(
-                resultCriteria, cats.toArray(new Category[cats.size()])));
+                criteriaConverter.convertToSource(searchDefinition), cats.toArray(new Category[cats.size()])));
     }
 
     // ***********************************************************************
@@ -253,20 +257,19 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @param orderColumns - define ordering (attribute, type)
      * @return supplier details list of given categories & localities
      */
-    private List<FullSupplierDetail> getSortedCategoryLocalitySuppliers(List<CategoryDetail> categories,
-            List<LocalityDetail> localities, int start, int count, Map<String, OrderType> orderColumns) {
+    private List<FullSupplierDetail> getSortedCategoryLocalitySuppliers(SearchDefinition searchDefinition) {
         List<Category> cats = new ArrayList<Category>();
-        for (CategoryDetail catDetail : categories) {
+        for (CategoryDetail catDetail : searchDefinition.getFilter().getCategories()) {
             cats.add(categoryService.getById(catDetail.getId()));
         }
         List<Locality> locs = new ArrayList<Locality>();
-        for (LocalityDetail catDetail : localities) {
+        for (LocalityDetail catDetail : searchDefinition.getFilter().getLocalities()) {
             locs.add(localityService.getLocality(catDetail.getCode()));
         }
-        final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(count).orderByColumns(orderColumns).build();
         return supplierConverter.convertToTargetList(supplierService.getSuppliers(
-                resultCriteria, cats.toArray(new Category[cats.size()]), locs.toArray(new Locality[locs.size()])));
+                criteriaConverter.convertToSource(searchDefinition),
+                cats.toArray(new Category[cats.size()]),
+                locs.toArray(new Locality[locs.size()])));
     }
 
     // ***********************************************************************
@@ -328,16 +331,16 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * make decision
      * @return supplier detail list
      */
-    private List<FullSupplierDetail> filterWithoutAttributes(int start, int count,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private List<FullSupplierDetail> filterWithoutAttributes(SearchDefinition searchDefinition) {
         //1 0
-        if (!detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
-            return getSortedCategorySuppliers(detail.getCategories(), start, count, orderColumns);
+        if (!searchDefinition.getFilter().getCategories().isEmpty()
+                && searchDefinition.getFilter().getLocalities().isEmpty()) {
+            return getSortedCategorySuppliers(searchDefinition);
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (!detail.getCategories().isEmpty() && !detail.getLocalities().isEmpty()) {
-            return getSortedCategoryLocalitySuppliers(detail.getCategories(), detail.getLocalities(),
-                    start, count, orderColumns);
+        if (!searchDefinition.getFilter().getCategories().isEmpty()
+                && !searchDefinition.getFilter().getLocalities().isEmpty()) {
+            return getSortedCategoryLocalitySuppliers(searchDefinition);
         }
         return null;
     }
@@ -352,20 +355,26 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * make decision
      * @return supplier detail list
      */
-    private List<FullSupplierDetail> filterWithAttributes(SearchModuleDataHolder detail,
-            Map<String, OrderType> orderColumns) {
+    private List<FullSupplierDetail> filterWithAttributes(SearchDefinition searchDefinition) {
         //1 0
-        if (!detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
-            Search search = this.getCategoryFilter(detail, orderColumns);
+        if (!searchDefinition.getFilter().getCategories().isEmpty()
+                && searchDefinition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getCategoryFilter(
+                    searchDefinition.getFilter(), searchDefinition.getOrderColumns());
             return this.createSupplierDetailListCat(this.generalService.search(search));
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (!detail.getCategories().isEmpty() && !detail.getLocalities().isEmpty()) {
+        if (!searchDefinition.getFilter().getCategories().isEmpty()
+                && !searchDefinition.getFilter().getLocalities().isEmpty()) {
             List<FullSupplierDetail> suppliersCat = this.createSupplierDetailListCat(
-                    this.generalService.searchAndCount(this.getCategoryFilter(detail, orderColumns)).getResult());
+                    this.generalService.searchAndCount(
+                    this.getCategoryFilter(searchDefinition.getFilter(), searchDefinition.getOrderColumns()))
+                    .getResult());
 
             List<FullSupplierDetail> suppliersLoc = this.createSupplierDetailListLoc(
-                    this.generalService.searchAndCount(this.getLocalityFilter(detail, orderColumns)).getResult());
+                    this.generalService.searchAndCount(
+                    this.getLocalityFilter(searchDefinition.getFilter(), searchDefinition.getOrderColumns()))
+                    .getResult());
 
             List<FullSupplierDetail> suppliers = new ArrayList<FullSupplierDetail>();
             for (FullSupplierDetail supplierCat : suppliersCat) {

@@ -1,18 +1,17 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -26,38 +25,33 @@ public interface ClientDemandsRPCServiceAsync {
     void getClientProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientProjects(long clientID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getClientProjects(long clientID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientProjectDetail>> callback);
 
     void getClientProjectConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientProjectConversations(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getClientProjectConversations(long clientID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientProjectConversationDetail>> callback);
 
     //
     void getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientOfferedProjects(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getClientOfferedProjects(long clientID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientProjectDetail>> callback);
 
     void getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientProjectContestants(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getClientProjectContestants(long clientID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientProjectContestantDetail>> callback);
 
     //
     void getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientAssignedProjects(long clientID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
+    void getClientAssignedProjects(long clientID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientProjectContestantDetail>> callback);
 
     /**************************************************************************/

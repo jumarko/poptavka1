@@ -9,6 +9,7 @@
     <bean id="searchConverter" class="com.eprovement.poptavka.server.converter.SearchConverter" >
         <constructor-arg ref="filterConverter"/>
     </bean>
+    <bean id="criteriaConverter" class="com.eprovement.poptavka.server.converter.CriteriaConverter" />
     <bean id="filterConverter" class="com.eprovement.poptavka.server.converter.FilterConverter" />
     <bean id="categoryConverter" class="com.eprovement.poptavka.server.converter.CategoryConverter" />
     <bean id="localityConverter" class="com.eprovement.poptavka.server.converter.LocalityConverter" />

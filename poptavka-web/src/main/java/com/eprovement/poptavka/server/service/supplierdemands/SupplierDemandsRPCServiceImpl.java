@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -24,12 +23,12 @@ import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
@@ -101,8 +100,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter)
-        throws ApplicationSecurityException {
+    public long getSupplierPotentialProjectsCount(long supplierID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -123,14 +122,13 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException {
+    public List<FullOfferDetail> getSupplierPotentialProjects(long supplierID,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
 
     //************************ SUPPLIER - My Offers ***************************/
-
     /**
      * Get offers sent by supplier.
      * When supplier sends an offer, it will be involved here.
@@ -142,8 +140,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter)
-        throws ApplicationSecurityException {
+    public long getSupplierContestsCount(long supplierID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -162,8 +160,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierContests(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException {
+    public List<FullOfferDetail> getSupplierContests(long supplierID,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
@@ -180,8 +178,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter)
-        throws ApplicationSecurityException {
+    public long getSupplierAssignedProjectsCount(long supplierID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -200,8 +198,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException {
+    public List<FullOfferDetail> getSupplierAssignedProjects(long supplierID,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }

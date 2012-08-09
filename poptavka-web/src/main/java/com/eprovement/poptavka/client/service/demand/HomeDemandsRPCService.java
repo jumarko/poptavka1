@@ -4,15 +4,13 @@
  */
 package com.eprovement.poptavka.client.service.demand;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -25,6 +23,5 @@ public interface HomeDemandsRPCService extends RemoteService {
 
     long getDemandsCount(SearchModuleDataHolder holder) throws RPCException;
 
-    List<FullDemandDetail> getDemands(int start, int count,
-            SearchModuleDataHolder holder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<FullDemandDetail> getDemands(SearchDefinition searchDefinition) throws RPCException;
 }

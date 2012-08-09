@@ -4,14 +4,11 @@
  */
 package com.eprovement.poptavka.client.service.demand;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.domain.enums.OrderType;
-
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import java.util.Map;
-
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +18,7 @@ import java.util.List;
  */
 public interface HomeSuppliersRPCServiceAsync {
 
-    void getSuppliers(int start, int count, SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<FullSupplierDetail>> callback);
+    void getSuppliers(SearchDefinition searchDefinition, AsyncCallback<List<FullSupplierDetail>> callback);
 
     void getSuppliersCount(SearchModuleDataHolder supplier, AsyncCallback<Long> callback);
 

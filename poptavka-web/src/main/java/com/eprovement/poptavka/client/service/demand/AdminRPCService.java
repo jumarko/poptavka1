@@ -1,14 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
-import java.util.List;
-
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
@@ -21,8 +14,11 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-
-import java.util.Map;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import java.util.List;
 
 
 @RemoteServiceRelativePath(AdminRPCService.URL)
@@ -33,8 +29,7 @@ public interface AdminRPCService extends RemoteService {
     //---------------------- DEMAND ------------------------------------------------
     Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
-    List<FullDemandDetail> getAdminDemands(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<FullDemandDetail> getAdminDemands(SearchDefinition searchDefinition) throws RPCException;
 
     void updateDemand(FullDemandDetail detailObject) throws RPCException;
 
@@ -42,8 +37,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminClientsCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<ClientDetail> getAdminClients(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<ClientDetail> getAdminClients(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateClient(ClientDetail detailObject) throws RPCException;
@@ -53,8 +47,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<FullSupplierDetail> getAdminSuppliers(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<FullSupplierDetail> getAdminSuppliers(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateSupplier(FullSupplierDetail detailObject) throws RPCException;
@@ -64,8 +57,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminOffersCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<OfferDetail> getAdminOffers(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<OfferDetail> getAdminOffers(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateOffer(OfferDetail detailObject) throws RPCException;
@@ -75,8 +67,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<AccessRoleDetail> getAdminAccessRoles(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<AccessRoleDetail> getAdminAccessRoles(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateAccessRole(AccessRoleDetail detailObject) throws RPCException;
@@ -86,8 +77,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<ActivationEmailDetail> getAdminEmailsActivation(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<ActivationEmailDetail> getAdminEmailsActivation(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateEmailActivation(ActivationEmailDetail detailObject) throws RPCException;
@@ -97,8 +87,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<InvoiceDetail> getAdminInvoices(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<InvoiceDetail> getAdminInvoices(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateInvoice(InvoiceDetail detailObject) throws RPCException;
@@ -108,8 +97,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminMessagesCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<MessageDetail> getAdminMessages(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<MessageDetail> getAdminMessages(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateMessage(MessageDetail detailObject) throws RPCException;
@@ -119,8 +107,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<PaymentDetail> getAdminOurPaymentDetails(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<PaymentDetail> getAdminOurPaymentDetails(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updateOurPaymentDetail(PaymentDetail detailObject) throws RPCException;
@@ -133,8 +120,7 @@ public interface AdminRPCService extends RemoteService {
     List<PaymentMethodDetail> getAdminPaymentMethods() throws RPCException;
 
 
-    List<PaymentMethodDetail> getAdminPaymentMethods(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<PaymentMethodDetail> getAdminPaymentMethods(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updatePaymentMethod(PaymentMethodDetail detailObject) throws RPCException;
@@ -144,8 +130,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<PermissionDetail> getAdminPermissions(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<PermissionDetail> getAdminPermissions(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updatePermission(PermissionDetail detailObject) throws RPCException;
@@ -155,8 +140,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<PreferenceDetail> getAdminPreferences(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<PreferenceDetail> getAdminPreferences(SearchDefinition searchDefinition) throws RPCException;
 
 
     void updatePreference(PreferenceDetail detailObject) throws RPCException;
@@ -166,8 +150,7 @@ public interface AdminRPCService extends RemoteService {
     Long getAdminProblemsCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
 
-    List<ProblemDetail> getAdminProblems(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
+    List<ProblemDetail> getAdminProblems(SearchDefinition searchDefinition) throws RPCException;
 
     void updateProblem(ProblemDetail detailObject) throws RPCException;
 }

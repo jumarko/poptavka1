@@ -1,16 +1,14 @@
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.AdminRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.LocalityType;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
@@ -26,11 +24,12 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
-import java.util.Map;
 
 @EventHandler
 public class AdminHandler extends BaseEventHandler<AdminEventBus> {
@@ -92,47 +91,46 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         }
     }
 
-    public void onGetData(int start, int maxResults,
-            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.ADMIN_ACCESS_ROLE:
-                getAdminAccessRoles(start, maxResults, detail, orderColumns);
+                getAdminAccessRoles(searchDefinition);
                 break;
             case Constants.ADMIN_CLIENTS:
-                getAdminClients(start, maxResults, detail, orderColumns);
+                getAdminClients(searchDefinition);
                 break;
             case Constants.ADMIN_DEMANDS:
-                getAdminDemands(start, maxResults, detail, orderColumns);
+                getAdminDemands(searchDefinition);
                 break;
             case Constants.ADMIN_EMAILS_ACTIVATION:
-                getAdminEmailsActivation(start, maxResults, detail, orderColumns);
+                getAdminEmailsActivation(searchDefinition);
                 break;
             case Constants.ADMIN_INVOICES:
-                getAdminInvoices(start, maxResults, detail, orderColumns);
+                getAdminInvoices(searchDefinition);
                 break;
             case Constants.ADMIN_MESSAGES:
-                getAdminMessages(start, maxResults, detail, orderColumns);
+                getAdminMessages(searchDefinition);
                 break;
             case Constants.ADMIN_OFFERS:
-                getAdminOffers(start, maxResults, detail, orderColumns);
+                getAdminOffers(searchDefinition);
                 break;
             case Constants.ADMIN_OUR_PAYMENT_DETAILS:
-                getAdminOurPaymentDetails(start, maxResults, detail, orderColumns);
+                getAdminOurPaymentDetails(searchDefinition);
                 break;
             case Constants.ADMIN_PAYMENT_METHODS:
-                getAdminOurPaymentDetails(start, maxResults, detail, orderColumns);
+                getAdminOurPaymentDetails(searchDefinition);
                 break;
             case Constants.ADMIN_PERMISSIONS:
-                getAdminPermissions(start, maxResults, detail, orderColumns);
+                getAdminPermissions(searchDefinition);
                 break;
             case Constants.ADMIN_PREFERENCES:
-                getAdminPreferences(start, maxResults, detail, orderColumns);
+                getAdminPreferences(searchDefinition);
                 break;
             case Constants.ADMIN_PROBLEMS:
-                getAdminProblems(start, maxResults, detail, orderColumns);
+                getAdminProblems(searchDefinition);
                 break;
             case Constants.ADMIN_SUPPLIERS:
-                getAdminSuppliers(start, maxResults, detail, orderColumns);
+                getAdminSuppliers(searchDefinition);
                 break;
             default:
                 break;
@@ -151,9 +149,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminDemands(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminDemands(start, count, searchDataHolder, orderColumns,
+    public void getAdminDemands(SearchDefinition searchDefinition) {
+        generalService.getAdminDemands(searchDefinition,
                 new SecuredAsyncCallback<List<FullDemandDetail>>() {
                     @Override
                     public void onSuccess(List<FullDemandDetail> result) {
@@ -239,9 +236,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminSuppliers(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminSuppliers(start, count, searchDataHolder, orderColumns,
+    public void getAdminSuppliers(SearchDefinition searchDefinition) {
+        generalService.getAdminSuppliers(searchDefinition,
                 new SecuredAsyncCallback<List<FullSupplierDetail>>() {
                     @Override
                     public void onSuccess(List<FullSupplierDetail> result) {
@@ -327,9 +323,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminOffers(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminOffers(start, count, searchDataHolder, orderColumns,
+    public void getAdminOffers(SearchDefinition searchDefinition) {
+        generalService.getAdminOffers(searchDefinition,
                 new SecuredAsyncCallback<List<OfferDetail>>() {
                     @Override
                     public void onSuccess(List<OfferDetail> result) {
@@ -360,9 +355,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminClients(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminClients(start, count, searchDataHolder, orderColumns,
+    public void getAdminClients(SearchDefinition searchDefinition) {
+        generalService.getAdminClients(searchDefinition,
                 new SecuredAsyncCallback<List<ClientDetail>>() {
                     @Override
                     public void onSuccess(List<ClientDetail> result) {
@@ -393,9 +387,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminAccessRoles(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminAccessRoles(start, count, searchDataHolder, orderColumns,
+    public void getAdminAccessRoles(SearchDefinition searchDefinition) {
+        generalService.getAdminAccessRoles(searchDefinition,
                 new SecuredAsyncCallback<List<AccessRoleDetail>>() {
                     @Override
                     public void onSuccess(List<AccessRoleDetail> result) {
@@ -425,9 +418,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminEmailsActivation(start, count, searchDataHolder, orderColumns,
+    public void getAdminEmailsActivation(SearchDefinition searchDefinition) {
+        generalService.getAdminEmailsActivation(searchDefinition,
                 new SecuredAsyncCallback<List<ActivationEmailDetail>>() {
                     @Override
                     public void onSuccess(List<ActivationEmailDetail> result) {
@@ -457,9 +449,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminInvoices(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminInvoices(start, count, searchDataHolder, orderColumns,
+    public void getAdminInvoices(SearchDefinition searchDefinition) {
+        generalService.getAdminInvoices(searchDefinition,
                 new SecuredAsyncCallback<List<InvoiceDetail>>() {
                     @Override
                     public void onSuccess(List<InvoiceDetail> result) {
@@ -489,9 +480,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminMessages(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminMessages(start, count, searchDataHolder, orderColumns,
+    public void getAdminMessages(SearchDefinition searchDefinition) {
+        generalService.getAdminMessages(searchDefinition,
                 new SecuredAsyncCallback<List<MessageDetail>>() {
                     @Override
                     public void onSuccess(List<MessageDetail> result) {
@@ -521,9 +511,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminOurPaymentDetails(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminOurPaymentDetails(start, count, searchDataHolder, orderColumns,
+    public void getAdminOurPaymentDetails(SearchDefinition searchDefinition) {
+        generalService.getAdminOurPaymentDetails(searchDefinition,
                 new SecuredAsyncCallback<List<PaymentDetail>>() {
                     @Override
                     public void onSuccess(List<PaymentDetail> result) {
@@ -553,9 +542,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminPaymentMethods(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminPaymentMethods(start, count, searchDataHolder, orderColumns,
+    public void getAdminPaymentMethods(SearchDefinition searchDefinition) {
+        generalService.getAdminPaymentMethods(searchDefinition,
                 new SecuredAsyncCallback<List<PaymentMethodDetail>>() {
                     @Override
                     public void onSuccess(List<PaymentMethodDetail> result) {
@@ -585,9 +573,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminPermissions(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminPermissions(start, count, searchDataHolder, orderColumns,
+    public void getAdminPermissions(SearchDefinition searchDefinition) {
+        generalService.getAdminPermissions(searchDefinition,
                 new SecuredAsyncCallback<List<PermissionDetail>>() {
                     @Override
                     public void onSuccess(List<PermissionDetail> result) {
@@ -617,9 +604,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminPreferences(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminPreferences(start, count, searchDataHolder, orderColumns,
+    public void getAdminPreferences(SearchDefinition searchDefinition) {
+        generalService.getAdminPreferences(searchDefinition,
                 new SecuredAsyncCallback<List<PreferenceDetail>>() {
                     @Override
                     public void onSuccess(List<PreferenceDetail> result) {
@@ -649,9 +635,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    public void getAdminProblems(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns) {
-        generalService.getAdminProblems(start, count, searchDataHolder, orderColumns,
+    public void getAdminProblems(SearchDefinition searchDefinition) {
+        generalService.getAdminProblems(searchDefinition,
                 new SecuredAsyncCallback<List<ProblemDetail>>() {
                     @Override
                     public void onSuccess(List<ProblemDetail> result) {

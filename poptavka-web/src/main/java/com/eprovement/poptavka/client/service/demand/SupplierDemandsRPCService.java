@@ -1,18 +1,17 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -46,14 +45,11 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * As Supplier: "All potential demands that I am interested in."
      *
      * @param supplierID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
+     * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException;
+    List<FullOfferDetail> getSupplierPotentialProjects(
+            long supplierID, SearchDefinition searchDefinition) throws ApplicationSecurityException;
 
     //************************ SUPPLIER - My Offers ***************************/
 
@@ -74,15 +70,12 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * As Supplier: "Offers I sent"
      *
      * @param supplierID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
+     * @param searchDefinition
      * @return
      */
     //TODO Martin premenovat FullOfferDetail na ContestDetail alebo nieco podobne
-    List<FullOfferDetail> getSupplierContests(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException;
+    List<FullOfferDetail> getSupplierContests(
+            long supplierID, SearchDefinition searchDefinition) throws ApplicationSecurityException;
 
     //******************* SUPPLIER - My Assigned Demands **********************/
     /**
@@ -103,14 +96,11 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * As Supplier: "Offers that I 'won'."
      *
      * @param supplierID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
+     * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException;
+    List<FullOfferDetail> getSupplierAssignedProjects(
+            long supplierID, SearchDefinition searchDefinition) throws ApplicationSecurityException;
 
     /**************************************************************************/
     /* Other getter methods                                                   */

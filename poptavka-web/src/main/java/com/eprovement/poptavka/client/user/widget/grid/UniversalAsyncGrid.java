@@ -10,6 +10,7 @@ import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
@@ -73,8 +74,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
          * @param searchDataHolder - define filtering criteria
          * @param orderColumns - define ordering
          */
-        void getData(int start, int maxResult,
-                SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns);
+        void getData(SearchDefinition searchDefinition);
     }
 
     /**
@@ -204,7 +204,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 orderColumns.clear();
                 orderColumns.put(gridColumns.get(0), OrderType.DESC);
                 //Aks for new data
-                eventBus.getData(start, start + length, searchDataHolder, orderColumns);
+                eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
             }
         };
         this.dataProvider.addDataDisplay(this);
@@ -234,7 +234,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 }
                 orderColumns.put(gridColumns.get(getColumnIndex(column)), orderType);
 
-                eventBus.getData(start, getPageSize(), searchDataHolder, orderColumns);
+                eventBus.getData(new SearchDefinition(start, getPageSize(), searchDataHolder, orderColumns));
             }
         };
         addColumnSortHandler(sortHandler);

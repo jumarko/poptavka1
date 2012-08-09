@@ -12,12 +12,11 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import java.util.List;
-import java.util.Map;
 
 @EventHandler
 public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
@@ -90,9 +89,8 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
         });
     }
 
-    public void onGetData(int start, int count, SearchModuleDataHolder search,
-            Map<String, OrderType> orderColumns) {
-        homeSuppliersService.getSuppliers(start, count, search, orderColumns,
+    public void onGetData(SearchDefinition searchDefinition) {
+        homeSuppliersService.getSuppliers(searchDefinition,
                 new SecuredAsyncCallback<List<FullSupplierDetail>>() {
                     @Override
                     public void onSuccess(List<FullSupplierDetail> result) {

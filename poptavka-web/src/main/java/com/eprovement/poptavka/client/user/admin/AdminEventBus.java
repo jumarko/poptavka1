@@ -1,18 +1,5 @@
 package com.eprovement.poptavka.client.user.admin;
 
-import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
-import java.util.List;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.Debug;
-import com.mvp4g.client.annotation.Debug.LogLevel;
-import com.mvp4g.client.annotation.Event;
-import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.Forward;
-import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
-
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminDemandInfoPresenter;
@@ -30,12 +17,12 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminSupplierInfoPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminSuppliersPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
@@ -45,7 +32,17 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import java.util.Map;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Debug;
+import com.mvp4g.client.annotation.Debug.LogLevel;
+import com.mvp4g.client.annotation.Event;
+import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Forward;
+import com.mvp4g.client.annotation.Start;
+import com.mvp4g.client.event.EventBus;
+import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
@@ -351,5 +348,5 @@ public interface AdminEventBus extends EventBus, IEventBusData {
 
     @Override
     @Event(handlers = AdminHandler.class)
-    void getData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+    void getData(SearchDefinition searchDefinition);
 }

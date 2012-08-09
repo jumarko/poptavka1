@@ -7,7 +7,6 @@ package com.eprovement.poptavka.server.service.clientdemands;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
@@ -25,18 +24,18 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +120,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return count
      */
     @Override
-    public long getClientProjectsCount(long clientID, SearchModuleDataHolder filter) {
+    public long getClientProjectsCount(long clientID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -138,8 +138,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return list of demand's detail objects
      */
     @Override
-    public List<ClientProjectDetail> getClientProjects(long clientId, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+    public List<ClientProjectDetail> getClientProjects(long clientId,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         ClientProjectDetail cdmd1 = new ClientProjectDetail();
         cdmd1.setRead(false);
@@ -167,7 +167,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return count
      */
     @Override
-    public long getClientProjectConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter) {
+    public long getClientProjectConversationsCount(long clientID, long demandID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -187,8 +188,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectConversationDetail> getClientProjectConversations(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+    public List<ClientProjectConversationDetail> getClientProjectConversations(long clientID, long demandID,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         ClientProjectConversationDetail a = new ClientProjectConversationDetail();
         a.setRead(false);
@@ -214,7 +215,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter) {
+    public long getClientOfferedProjectsCount(long clientID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 0L;
     }
@@ -233,8 +235,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectDetail> getClientOfferedProjects(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+    public List<ClientProjectDetail> getClientOfferedProjects(long clientID, long demandID,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return new ArrayList<ClientProjectDetail>();
     }
@@ -247,7 +249,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return offers count of given demand
      */
     @Override
-    public long getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter) {
+    public long getClientProjectContestantsCount(long clientID, long demandID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 0L;
     }
@@ -266,8 +269,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectContestantDetail> getClientProjectContestants(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+    public List<ClientProjectContestantDetail> getClientProjectContestants(long clientID, long demandID,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return new ArrayList<ClientProjectContestantDetail>();
     }
@@ -283,7 +286,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter) {
+    public long getClientAssignedProjectsCount(long clientID,
+            SearchModuleDataHolder filter) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -301,8 +305,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectContestantDetail> getClientAssignedProjects(long clientID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+    public List<ClientProjectContestantDetail> getClientAssignedProjects(long clientID,
+            SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         ClientProjectContestantDetail detail = new ClientProjectContestantDetail();
         detail.setDemandId(1L);
@@ -335,7 +339,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     // TODO call setMessageReadStatus in body
     public ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId) throws RPCException {
+            long threadId, long userId, long userMessageId) throws ApplicationSecurityException {
         Message threadRoot = messageService.getById(threadId);
 
         setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
@@ -359,7 +363,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException {
+    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead)
+        throws ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
@@ -372,7 +377,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * Change 'star' status of sent messages to chosen value
      */
     @Override
-    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
+    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred)
+        throws ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setStarred(isStarred);
@@ -389,7 +395,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return message
      */
     @Override
-    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws RPCException {
+    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl)
+        throws ApplicationSecurityException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
                     messageDetailImpl.getThreadRootId()),
@@ -406,7 +413,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException {
+    public OfferDetail changeOfferState(OfferDetail offerDetail) throws ApplicationSecurityException {
         Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
 
         OfferState offerState = offerService.getOfferState(offerDetail.getState().getValue());
