@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.application.security;
 
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,9 +14,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 
 /**
- * Aspect that translates spring security {@link org.springframework.security.core.AuthenticationException}
- * to the our custom {@link com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException} which
- * can be used on a client side.
+ * Aspect that translates all exceptions in RPC service methods to the serializable exceptions
+ * that can be used on client side.
+ * Spring security exceptions {@link org.springframework.security.core.AuthenticationException}
+ * and {@link AccessDeniedException} are handled specially --> transformed
+ * to the our custom {@link com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException}.
  *
  * <p>
  *     Security handling is inspired by
@@ -23,10 +26,11 @@ import org.springframework.security.core.AuthenticationException;
  *         GWT and spring security integration</a>
  * </p>
  * @see ApplicationSecurityException
+ * @see RPCException
  */
 @Aspect
-@DeclarePrecedence("SecurityExceptionAspect, *")
-public class SecurityExceptionAspect {
+@DeclarePrecedence("RpcExceptionAspect, *")
+public class RpcExceptionAspect {
 
     @Pointcut("execution(public * com.eprovement.poptavka..*RPCServiceImpl.*(..))")
     private void executionOfRpcMethod()  { }
@@ -41,6 +45,8 @@ public class SecurityExceptionAspect {
         } catch (AccessDeniedException ade) {
             throw new ApplicationSecurityException("Access denied to method="
                     + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature(), ade);
+        } catch (Exception e) {
+            throw new RPCException("Unknown error", e);
         }
     }
 }

@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.common;
 
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
+import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.logging.Level;
@@ -54,8 +55,8 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T> {
      * @param caught
      */
     protected void onServiceFailure(Throwable caught) {
-        // empty - Override to implement custom error handling
-        throw new RuntimeException(caught);
+        // TODO implement better error handling
+        new SecurityDialogBoxes.AlertBox(ExceptionUtils.getFullErrorMessage(caught)).show();
     }
 
 }

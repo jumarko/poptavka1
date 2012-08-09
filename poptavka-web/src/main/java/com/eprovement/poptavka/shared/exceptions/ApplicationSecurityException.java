@@ -12,7 +12,7 @@ import java.io.Serializable;
  *     <li>user without required permissions</li>
  * </ol>
  *
- * @see com.eprovement.poptavka.application.security.SecurityExceptionAspect
+ * @see com.eprovement.poptavka.application.security.RpcExceptionAspect
  */
 public class ApplicationSecurityException extends RuntimeException implements Serializable {
 

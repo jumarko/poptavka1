@@ -53,9 +53,7 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
             LOGGER.warn(
                     "An error occured while sending exception notification mail: ",
                     me);
-            throw new RPCException(
-                    "An error occured while sending exception notification mail: "
-                            + me.getLocalizedMessage());
+            throw me;
         }
 
         return true;
