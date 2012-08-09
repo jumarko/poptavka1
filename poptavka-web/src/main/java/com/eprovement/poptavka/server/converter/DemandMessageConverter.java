@@ -77,7 +77,7 @@ public final class DemandMessageConverter extends AbstractConverter<UserMessage,
 //    }
 
     @Override
-    public UserMessage converToSource(DemandMessageDetail demandMessageDetail) {
+    public UserMessage convertToSource(DemandMessageDetail demandMessageDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

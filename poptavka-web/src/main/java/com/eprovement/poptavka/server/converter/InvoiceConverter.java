@@ -58,7 +58,7 @@ public final class InvoiceConverter extends AbstractConverter<Invoice, InvoiceDe
     }
 
     @Override
-    public Invoice converToSource(InvoiceDetail source) {
+    public Invoice convertToSource(InvoiceDetail source) {
         throw new UnsupportedOperationException();
     }
 }

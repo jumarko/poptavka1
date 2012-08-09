@@ -139,7 +139,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      */
     @Override
     public long getDemandsCount(SearchModuleDataHolder detail) throws RPCException {
-//        Search search = searchConverter.converToSource(detail);
+//        Search search = searchConverter.convertToSource(detail);
 //        search.setSearchClass(Demand.class);
 //        return (long) generalService.searchAndCount(search).getTotalCount();
         if (detail == null) {
@@ -172,7 +172,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     @Override
     public List<FullDemandDetail> getDemands(int start, int maxResult,
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) throws RPCException {
-//        Search search = searchConverter.converToSource(detail);
+//        Search search = searchConverter.convertToSource(detail);
 //        search.setSearchClass(Demand.class);
 //        search.setFirstResult(start);
 //        search.setMaxResults(maxResult);

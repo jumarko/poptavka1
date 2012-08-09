@@ -38,7 +38,7 @@ public final class UserServiceConverter extends AbstractConverter<UserService, U
     }
 
     @Override
-    public UserService converToSource(UserServiceDetail userServiceDetail) {
+    public UserService convertToSource(UserServiceDetail userServiceDetail) {
         throw new UnsupportedOperationException("Conversion from UserServiceDetail to domain object UserService "
                + "is not implemented yet!");
     }

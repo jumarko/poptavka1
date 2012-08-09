@@ -32,7 +32,7 @@ public final class CategoryConverter extends AbstractConverter<Category, Categor
     }
 
     @Override
-    public Category converToSource(CategoryDetail categoryDetail) {
+    public Category convertToSource(CategoryDetail categoryDetail) {
         return categoryService.getById(categoryDetail.getId());
     }
 }

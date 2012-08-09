@@ -69,7 +69,7 @@ public final class UserConverter extends AbstractConverter<BusinessUser, Busines
     }
 
     @Override
-    public BusinessUser converToSource(BusinessUserDetail source) {
+    public BusinessUser convertToSource(BusinessUserDetail source) {
         throw new UnsupportedOperationException();
     }
 }

@@ -26,7 +26,7 @@ public final class ServiceConverter extends AbstractConverter<Service, ServiceDe
     }
 
     @Override
-    public Service converToSource(ServiceDetail serviceDetail) {
+    public Service convertToSource(ServiceDetail serviceDetail) {
         throw new UnsupportedOperationException("Conversion from ServiceDetail to domain object Service "
                 + "is not implemented yet!");
     }

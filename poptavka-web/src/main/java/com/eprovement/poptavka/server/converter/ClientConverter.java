@@ -50,7 +50,7 @@ public final class ClientConverter extends AbstractConverter<Client, ClientDetai
     }
 
     @Override
-    public Client converToSource(ClientDetail source) {
+    public Client convertToSource(ClientDetail source) {
         throw new UnsupportedOperationException();
     }
 }

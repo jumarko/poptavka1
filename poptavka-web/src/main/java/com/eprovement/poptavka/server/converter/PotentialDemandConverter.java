@@ -54,7 +54,7 @@ public final class PotentialDemandConverter extends AbstractConverter<UserMessag
     }
 
     @Override
-    public UserMessage converToSource(PotentialDemandDetail potentialDemandDetail) {
+    public UserMessage convertToSource(PotentialDemandDetail potentialDemandDetail) {
         throw new UnsupportedOperationException("Conversion from PotentialDemandDetail to domain object UserMessage "
                 + "is not implemented yet!");
     }

@@ -26,7 +26,7 @@ public final class PreferenceConverter extends AbstractConverter<Preference, Pre
     }
 
     @Override
-    public Preference converToSource(PreferenceDetail source) {
+    public Preference convertToSource(PreferenceDetail source) {
         throw new UnsupportedOperationException();
     }
 }

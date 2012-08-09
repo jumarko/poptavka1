@@ -26,7 +26,7 @@ public final class BaseDemandConverter extends AbstractConverter<Demand, BaseDem
     }
 
     @Override
-    public Demand converToSource(BaseDemandDetail baseDemandDetail) {
+    public Demand convertToSource(BaseDemandDetail baseDemandDetail) {
         throw new UnsupportedOperationException("Conversion from BaseDemandDetail to domain object Demand "
                 + "is not implemented yet!");
     }

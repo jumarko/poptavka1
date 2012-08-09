@@ -24,7 +24,7 @@ public final class ActivationEmailConverter extends AbstractConverter<Activation
     }
 
     @Override
-    public ActivationEmail converToSource(ActivationEmailDetail source) {
+    public ActivationEmail convertToSource(ActivationEmailDetail source) {
         throw new UnsupportedOperationException();
     }
 }

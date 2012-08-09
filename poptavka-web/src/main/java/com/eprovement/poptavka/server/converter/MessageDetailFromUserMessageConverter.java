@@ -33,7 +33,7 @@ public final class MessageDetailFromUserMessageConverter extends AbstractConvert
     }
 
     @Override
-    public UserMessage converToSource(MessageDetail messageDetail) {
+    public UserMessage convertToSource(MessageDetail messageDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

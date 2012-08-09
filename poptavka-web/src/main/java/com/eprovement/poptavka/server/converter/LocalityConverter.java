@@ -33,7 +33,7 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
     }
 
     @Override
-    public Locality converToSource(LocalityDetail localityDetail) {
+    public Locality convertToSource(LocalityDetail localityDetail) {
         return localityService.getLocality(localityDetail.getCode());
     }
 }

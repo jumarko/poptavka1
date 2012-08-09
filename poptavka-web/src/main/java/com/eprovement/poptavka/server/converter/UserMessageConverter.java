@@ -33,7 +33,7 @@ public final class UserMessageConverter extends AbstractConverter<UserMessage, U
     }
 
     @Override
-    public UserMessage converToSource(UserMessageDetail userMessageDetail) {
+    public UserMessage convertToSource(UserMessageDetail userMessageDetail) {
         throw new UnsupportedOperationException("Conversion from UserMessageDetail to domain object UserMessage "
                 + "is not implemented yet!");
     }

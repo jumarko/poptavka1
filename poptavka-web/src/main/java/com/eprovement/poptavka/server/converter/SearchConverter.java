@@ -27,7 +27,7 @@ public final class SearchConverter implements Converter<Search, SearchModuleData
     }
 
     @Override
-    public Search converToSource(SearchModuleDataHolder detail) {
+    public Search convertToSource(SearchModuleDataHolder detail) {
         Search search = new Search();
         if (detail != null) {
             if (!detail.getAttibutes().isEmpty()) {

@@ -75,7 +75,7 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
     }
 
     @Override
-    public Supplier converToSource(FullSupplierDetail source) {
+    public Supplier convertToSource(FullSupplierDetail source) {
         throw new UnsupportedOperationException();
     }
 }

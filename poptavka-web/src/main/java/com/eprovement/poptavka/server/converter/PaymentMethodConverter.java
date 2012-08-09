@@ -24,7 +24,7 @@ public final class PaymentMethodConverter extends AbstractConverter<PaymentMetho
     }
 
     @Override
-    public PaymentMethod converToSource(PaymentMethodDetail source) {
+    public PaymentMethod convertToSource(PaymentMethodDetail source) {
         throw new UnsupportedOperationException("Cannot conver from PaymentMethodDetail to PaymentMethod!");
     }
 

@@ -20,7 +20,7 @@ public final class ClientOfferConverter extends AbstractConverter<UserMessage, C
     }
 
     @Override
-    public UserMessage converToSource(ClientOfferDetail clientOfferDetail) {
+    public UserMessage convertToSource(ClientOfferDetail clientOfferDetail) {
         throw new UnsupportedOperationException("Conversion from ClientOfferDetail to domain object UserMessage "
                 + "is not implemented yet!");
     }

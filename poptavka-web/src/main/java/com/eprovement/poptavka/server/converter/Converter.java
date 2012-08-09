@@ -10,7 +10,7 @@ public interface Converter<Source, Target> {
 
     Target convertToTarget(Source source);
 
-    Source converToSource(Target target);
+    Source convertToSource(Target target);
 
     ArrayList<Target> convertToTargetList(Collection<Source> sourceObjects);
 

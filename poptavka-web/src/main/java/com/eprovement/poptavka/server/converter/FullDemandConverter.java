@@ -66,7 +66,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     }
 
     @Override
-    public Demand converToSource(FullDemandDetail source) {
+    public Demand convertToSource(FullDemandDetail source) {
         throw new UnsupportedOperationException("Conversion from FullDemandDetail to domain object Demand"
                 + " is not implemented yet!");
     }

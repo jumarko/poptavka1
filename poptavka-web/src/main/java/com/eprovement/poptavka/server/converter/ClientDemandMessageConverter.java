@@ -29,7 +29,7 @@ public final class ClientDemandMessageConverter extends AbstractConverter<UserMe
     }
 
     @Override
-    public UserMessage converToSource(ClientDemandMessageDetail clientDemandMessageDetail) {
+    public UserMessage convertToSource(ClientDemandMessageDetail clientDemandMessageDetail) {
         throw new UnsupportedOperationException("Conversion from ClientDemandMessageDetail to domain object UserMessage"
                 + " is not implemented yet!");
     }

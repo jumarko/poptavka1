@@ -20,7 +20,7 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
     }
 
     @Override
-    public Filter converToSource(FilterItem filterItem) {
+    public Filter convertToSource(FilterItem filterItem) {
         Filter filter;
         switch (filterItem.getOperation()) {
             case FilterItem.OPERATION_EQUALS:
@@ -58,7 +58,7 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
     public ArrayList<Filter> convertToSourceList(Collection<FilterItem> targetObjects) {
         final ArrayList<Filter> domainObjects = new ArrayList<Filter>();
         for (FilterItem detailObject : targetObjects) {
-            domainObjects.add(converToSource(detailObject));
+            domainObjects.add(convertToSource(detailObject));
         }
         return domainObjects;
     }

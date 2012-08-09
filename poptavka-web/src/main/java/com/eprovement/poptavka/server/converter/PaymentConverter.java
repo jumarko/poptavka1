@@ -36,7 +36,7 @@ public final class PaymentConverter extends AbstractConverter<OurPaymentDetails,
     }
 
     @Override
-    public OurPaymentDetails converToSource(PaymentDetail source) {
+    public OurPaymentDetails convertToSource(PaymentDetail source) {
         throw new UnsupportedOperationException("Cannot convert from PaymentDetail to OurPaymentDetails");
     }
 }

@@ -41,7 +41,7 @@ public final class MessageConverter extends AbstractConverter<Message, MessageDe
     }
 
     @Override
-    public Message converToSource(MessageDetail source) {
+    public Message convertToSource(MessageDetail source) {
         throw new UnsupportedOperationException("Conversion from MessageDetail to domain object Message "
                 + "is not implemented yet!");
     }

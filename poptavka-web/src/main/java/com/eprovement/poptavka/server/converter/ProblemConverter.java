@@ -23,7 +23,7 @@ public final class ProblemConverter extends AbstractConverter<Problem, ProblemDe
     }
 
     @Override
-    public Problem converToSource(ProblemDetail source) {
+    public Problem convertToSource(ProblemDetail source) {
         throw new UnsupportedOperationException();
     }
 }

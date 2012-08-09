@@ -54,7 +54,7 @@ public final class BusinessUserConverter extends AbstractConverter<BusinessUser,
     }
 
     @Override
-    public BusinessUser converToSource(BusinessUserDetail userDetail) {
+    public BusinessUser convertToSource(BusinessUserDetail userDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

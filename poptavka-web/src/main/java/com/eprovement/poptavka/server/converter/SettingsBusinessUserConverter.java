@@ -44,7 +44,7 @@ public final class SettingsBusinessUserConverter extends AbstractConverter<Busin
     }
 
     @Override
-    public BusinessUser converToSource(SettingsDetail settingsDetail) {
+    public BusinessUser convertToSource(SettingsDetail settingsDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

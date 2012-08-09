@@ -31,7 +31,7 @@ public final class OfferConverter extends AbstractConverter<Offer, OfferDetail> 
     }
 
     @Override
-    public Offer converToSource(OfferDetail source) {
+    public Offer convertToSource(OfferDetail source) {
         throw new UnsupportedOperationException();
     }
 }

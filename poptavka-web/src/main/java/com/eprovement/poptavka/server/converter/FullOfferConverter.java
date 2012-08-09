@@ -44,7 +44,7 @@ public final class FullOfferConverter extends AbstractConverter<Message, FullOff
     }
 
     @Override
-    public Message converToSource(FullOfferDetail fullOfferDetail) {
+    public Message convertToSource(FullOfferDetail fullOfferDetail) {
         throw new UnsupportedOperationException("Conversion from FullOfferDetail to domain object Message "
                 + "is not implemented yet!");
     }

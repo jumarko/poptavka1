@@ -22,7 +22,7 @@ public abstract class AbstractConverter<Domain, Detail> implements Converter<Dom
     public ArrayList<Domain> convertToSourceList(Collection<Detail> detailObjects) {
         final ArrayList<Domain> domainObjects = new ArrayList<Domain>();
         for (Detail detailObject : detailObjects) {
-            domainObjects.add(converToSource(detailObject));
+            domainObjects.add(convertToSource(detailObject));
         }
         return domainObjects;
     }
