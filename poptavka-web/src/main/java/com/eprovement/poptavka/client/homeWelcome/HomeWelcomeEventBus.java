@@ -6,6 +6,8 @@
  */
 package com.eprovement.poptavka.client.homeWelcome;
 
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -13,8 +15,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import java.util.ArrayList;
 
 @Events(startPresenter = HomeWelcomePresenter.class, module = HomeWelcomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -54,10 +55,16 @@ public interface HomeWelcomeEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
+    @Event(handlers = HomeWelcomePresenter.class)
+    void displayCategories(ArrayList<CategoryDetail> list);
+
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
+    @Event(handlers = HomeWelcomeHandler.class)
+    void getRootCategories();
 }

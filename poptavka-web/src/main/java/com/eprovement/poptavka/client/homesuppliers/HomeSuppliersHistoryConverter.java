@@ -3,9 +3,6 @@ package com.eprovement.poptavka.client.homesuppliers;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 
 /**
@@ -25,17 +22,19 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      * @return token string like module/method?param, where param like: location=home;categoryId=220
      */
     public String onAddToPath(CategoryDetail categoryDetail) {
-        StringBuilder str = new StringBuilder();
-        /* Martin - Nemusi to byt, pretoze v convertFromToken to neberiem vobec do uvahy.
-        Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
-        if (Storage.getUser() == null) {
-            str.append("location=home");
-        } else {
-            str.append("location=user");
-        }
-        str.append(";categoryId=");
-        str.append(Long.toString(categoryDetail.getId()));
-        return str.toString();
+        //TODO Martin - prerobit
+//        StringBuilder str = new StringBuilder();
+//        /* Martin - Nemusi to byt, pretoze v convertFromToken to neberiem vobec do uvahy.
+//        Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
+//        if (Storage.getUser() == null) {
+//            str.append("location=home");
+//        } else {
+//            str.append("location=user");
+//        }
+//        str.append(";categoryId=");
+//        str.append(Long.toString(categoryDetail.getId()));
+//        return str.toString();
+        return "";
     }
 
     /**
@@ -49,23 +48,24 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
-        } else {
-            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
-        }
-        String[] params = param.split(";");
-        CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(
-                params[1].replace("categoryId=", "")), null);
-
-        //ROOT
-        SearchModuleDataHolder searchModuleDataHolder = null;
-        if (categoryDetail.getId() != 0) {
-            searchModuleDataHolder = new SearchModuleDataHolder();
-            searchModuleDataHolder.getCategories().clear();
-            searchModuleDataHolder.getCategories().add(categoryDetail);
-        }
-        eventBus.displayParentOrChild(searchModuleDataHolder);
+        //TODO prerobit
+//        if (Storage.getUser() == null) {
+//            eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
+//        } else {
+//            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
+//        }
+//        String[] params = param.split(";");
+//        CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(
+//                params[1].replace("categoryId=", "")), null);
+//
+//        //ROOT
+//        SearchModuleDataHolder searchModuleDataHolder = null;
+//        if (categoryDetail.getId() != 0) {
+//            searchModuleDataHolder = new SearchModuleDataHolder();
+//            searchModuleDataHolder.getCategories().clear();
+//            searchModuleDataHolder.getCategories().add(categoryDetail);
+//        }
+////        eventBus.displayParentOrChild(searchModuleDataHolder);
     }
 
     @Override

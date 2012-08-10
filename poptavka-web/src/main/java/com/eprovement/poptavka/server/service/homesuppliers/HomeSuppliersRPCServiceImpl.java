@@ -29,6 +29,7 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.Sort;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -155,10 +156,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     @Override
     public long getSuppliersCount(SearchModuleDataHolder detail) throws RPCException {
         //TODO Martin implement fulltext search
-        if (detail == null || detail.getAttibutes().isEmpty()) {
-            return filterWithoutAttributesCount(detail);
+        if (detail == null) {
+            return supplierService.getCount();
         } else {
-            return filterWithAttributesCount(detail);
+            if (detail.getAttibutes().isEmpty()) {
+                return filterWithoutAttributesCount(detail);
+            } else {
+                return filterWithAttributesCount(detail);
+            }
         }
     }
 
@@ -177,12 +182,26 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @throws RPCException
      */
     @Override
-    public List<FullSupplierDetail> getSuppliers(SearchDefinition searchDefinition) throws RPCException {
+    public List<FullSupplierDetail> getSuppliers(SearchDefinition definition) throws RPCException {
         //TODO Martin implement fulltext search
-        if (searchDefinition.getFilter() == null || searchDefinition.getFilter().getAttibutes().isEmpty()) {
-            return filterWithoutAttributes(searchDefinition);
+        if (definition.getFilter() == null) {
+            Search search = new Search(Supplier.class);
+            search.setFirstResult(definition.getStart());
+            search.setMaxResults(definition.getMaxResult());
+            for (String column : definition.getOrderColumns().keySet()) {
+                if (definition.getOrderColumns().get(column) == OrderType.ASC) {
+                    search.addSort(Sort.asc(column));
+                } else {
+                    search.addSort(Sort.desc(column));
+                }
+            }
+            return supplierConverter.convertToTargetList(generalService.search(search));
         } else {
-            return filterWithAttributes(searchDefinition);
+            if (definition.getFilter().getAttibutes().isEmpty()) {
+                return filterWithoutAttributes(definition);
+            } else {
+                return filterWithAttributes(definition);
+            }
         }
     }
 

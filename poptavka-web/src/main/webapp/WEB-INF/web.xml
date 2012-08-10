@@ -120,6 +120,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>HomeWelcomeRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.homewelcome.HomeWelcomeRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeWelcomeRPCService</servlet-name>
+        <url-pattern>/poptavka/service/homewelcome</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>DemandCreationRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.demandcreation.DemandCreationRPCServiceImpl</servlet-class>
     </servlet>

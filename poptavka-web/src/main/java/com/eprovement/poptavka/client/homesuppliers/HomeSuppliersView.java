@@ -11,11 +11,9 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
@@ -23,9 +21,7 @@ import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
@@ -33,7 +29,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.view.ReverseViewInterface;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,7 +36,16 @@ import java.util.logging.Logger;
 public class HomeSuppliersView extends OverflowComposite
         implements ReverseViewInterface<HomeSuppliersPresenter>, HomeSuppliersPresenter.SuppliersViewInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
+    interface SuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
+    }
     private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
+
+    /**************************************************************************/
+    /* Home Supplier presenter                                                */
+    /**************************************************************************/
     private HomeSuppliersPresenter homeSuppliersPresenter;
 
     @Override
@@ -54,8 +58,9 @@ public class HomeSuppliersView extends OverflowComposite
         return homeSuppliersPresenter;
     }
 
-    interface SuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
-    }
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
     //Table constants
     private static final int SUPPLIER_NAME_COL_WIDTH = 100;
     private static final int RATING_COL_WIDTH = 30;
@@ -72,23 +77,17 @@ public class HomeSuppliersView extends OverflowComposite
     UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField(provided = true)
     SimplePager pager;
-    @UiField
-    FlowPanel path;
-    @UiField
-    HorizontalPanel root;
     @UiField(provided = true)
     ListBox pageSizeCombo;
     @UiField
-    Label reklama, filterLabel, categoryLoadingLabel;
+    Label reklama, filterLabel;
     @UiField
-    HTMLPanel detail, child;
+    HTMLPanel detail;
     @UiField
     SupplierDetailView supplierDetail;
     @UiField
     Button contactBtn;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
-            new SingleSelectionModel<CategoryDetail>();
-    private final SingleSelectionModel<CategoryDetail> selectionRootModel =
             new SingleSelectionModel<CategoryDetail>();
     private List<String> gridColumns = Arrays.asList(
             new String[]{
@@ -104,6 +103,9 @@ public class HomeSuppliersView extends OverflowComposite
         }
     };
 
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -116,7 +118,6 @@ public class HomeSuppliersView extends OverflowComposite
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
 
-        path.setStyleName(StyleResource.INSTANCE.common().hyperlinkInline());
         reklama.setVisible(true);
 
         detail.setVisible(false);
@@ -133,145 +134,7 @@ public class HomeSuppliersView extends OverflowComposite
 
     }
 
-    @Override
-    public int getPageSize() {
-        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
-    }
-
-    @Override
-    public ListBox getPageSizeCombo() {
-        return pageSizeCombo;
-    }
-
-    @Override
-    public Label getFilterLabel() {
-        return filterLabel;
-    }
-
-    @Override
-    public Label getCategoryLoadingLabel() {
-        return categoryLoadingLabel;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public FlowPanel getPath() {
-        return path;
-    }
-
-    //removes last one
-    @Override
-    public void removePath() {
-        path.remove(path.getWidgetCount() - 1);
-    }
-
-    @Override
-    public void addPath(Widget widget) {
-        path.add(widget);
-    }
-
-    @Override
-    public UniversalAsyncGrid getDataGrid() {
-        return dataGrid;
-    }
-
-    @Override
-    public CellList getCategoriesList() {
-        return categoriesList;
-    }
-
-    @Override
-    public SimplePager getPager() {
-        return pager;
-    }
-
-    @Override
-    public SingleSelectionModel getSelectionCategoryModel() {
-        return selectionCategoryModel;
-    }
-
-    @Override
-    public SplitLayoutPanel getSplitter() {
-        return null; //split;
-    }
-
-    @Override
-    public Button getContactBtn() {
-        return contactBtn;
-    }
-
-    @Override
-    public void displaySuppliersDetail(FullSupplierDetail fullSupplierDetail) {
-        reklama.setVisible(false);
-        detail.setVisible(true);
-
-        supplierDetail.setSupplierDetail(fullSupplierDetail);
-    }
-
-    @Override
-    public void hideSuppliersDetail() {
-        reklama.setVisible(true);
-        detail.setVisible(false);
-    }
-
-    @Override
-    public HTMLPanel getChildSection() {
-        return child;
-    }
-
-    //************ ROOT SECTION ********************************************
-    @Override
-    public HorizontalPanel getRootSection() {
-        return root;
-    }
-
-    @Override
-    public SingleSelectionModel getSelectionRootModel() {
-        return selectionRootModel;
-    }
-
-    @Override
-    public void displayRootCategories(int columns, ArrayList<CategoryDetail> rootCategories) {
-        if (rootCategories.isEmpty()) {
-            root.clear();
-            return;
-        }
-        root.clear();
-        int size = rootCategories.size();
-        int subSize = 0;
-        int startIdx = 0;
-        if (size < columns) {
-            columns = size;
-        }
-        while (columns != 0) {
-            if (size % columns == 0) {
-                subSize = size / columns;
-            } else {
-                subSize = size / columns + 1;
-            }
-            CellList cellList = null;
-            cellList = new CellList<CategoryDetail>(new RootCategoryCell());
-            //TOTO Martin - loading indikator nepomoze, pretoze tieto cellListy sa vytvaraju
-            //tu v case, ked su data uz k dispozicii
-            cellList.setLoadingIndicator(new Label(Storage.MSGS.loadingRootCategories()));
-            cellList.setRowCount(subSize, true);
-            cellList.setSelectionModel(selectionRootModel);
-            cellList.setRowData(rootCategories.subList(startIdx, startIdx + subSize));
-            root.add(cellList);
-            startIdx += subSize;
-            size -= subSize;
-            columns--;
-        }
-    }
-
     private void initDataGrid() {
-        categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
-        categoriesList.setSelectionModel(selectionCategoryModel);
-        categoriesList.setLoadingIndicator(new Label(Storage.MSGS.loadingCategories()));
         // Create a DataGrid.
         GWT.log("Admin Suppliers initDataGrid initialized");
         // Set a key provider that provides a unique key for each contact. If key is
@@ -360,58 +223,71 @@ public class HomeSuppliersView extends OverflowComposite
                     }
                 });
     }
-}
 
-/**
- * Root Category Cell .
- */
-class RootCategoryCell extends AbstractCell<CategoryDetail> {
-
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
     @Override
-    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
-
-        StringBuilder text = new StringBuilder();
-
-        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-        text.append(" (");
-        text.append(value.getSuppliers());
-        text.append(")");
-
-        sb.appendEscaped(text.toString());
+    public int getPageSize() {
+        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
-}
-
-/**
- * Sub Category Cell .
- */
-class SubCategoryCell extends AbstractCell<CategoryDetail> {
 
     @Override
-    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
+    public ListBox getPageSizeCombo() {
+        return pageSizeCombo;
+    }
 
-        StringBuilder text = new StringBuilder();
+    @Override
+    public Label getFilterLabel() {
+        return filterLabel;
+    }
 
-        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-        text.append(" (");
-        text.append(value.getSuppliers());
-        text.append(")");
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
 
-        sb.appendEscaped(text.toString());
+    @Override
+    public UniversalAsyncGrid getDataGrid() {
+        return dataGrid;
+    }
+
+    @Override
+    public CellList getCategoriesList() {
+        return categoriesList;
+    }
+
+    @Override
+    public SimplePager getPager() {
+        return pager;
+    }
+
+    @Override
+    public SingleSelectionModel getSelectionCategoryModel() {
+        return selectionCategoryModel;
+    }
+
+    @Override
+    public SplitLayoutPanel getSplitter() {
+        return null; //split;
+    }
+
+    @Override
+    public Button getContactBtn() {
+        return contactBtn;
+    }
+
+    @Override
+    public void displaySuppliersDetail(FullSupplierDetail fullSupplierDetail) {
+        reklama.setVisible(false);
+        detail.setVisible(true);
+
+        supplierDetail.setSupplierDetail(fullSupplierDetail);
+    }
+
+    @Override
+    public void hideSuppliersDetail() {
+        reklama.setVisible(true);
+        detail.setVisible(false);
     }
 }

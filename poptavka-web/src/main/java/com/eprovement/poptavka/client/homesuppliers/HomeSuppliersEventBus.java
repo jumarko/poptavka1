@@ -8,7 +8,6 @@ package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -19,7 +18,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,8 +55,6 @@ public interface HomeSuppliersEventBus extends EventBus, IEventBusData {
     @Event(handlers = HomeSuppliersPresenter.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void displayParentOrChild(SearchModuleDataHolder searchDataHolder);
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
@@ -77,64 +73,26 @@ public interface HomeSuppliersEventBus extends EventBus, IEventBusData {
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     /**************************************************************************/
     /* Business events handled by Presenters - Display events                 */
     /**************************************************************************/
-    // ROOT CATEGORIES
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void displayRootcategories(ArrayList<CategoryDetail> list);
-
-    // SUB CATEGORIES
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
-
     // SUPPLIERS
     @Event(handlers = HomeSuppliersPresenter.class)
     void displaySuppliers(List<FullSupplierDetail> list);
 
-    /**
-     * Display sub-categories, suppliers of selected category and detail of
-     * selected supplier.
-     */
-    // CHILD WIDGET
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void displayChildWidget(Long id);
-
-    /**************************************************************************/
-    /* Business events handled by Presenters - Path events                    */
-    /**************************************************************************/
-    // UPDATE
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void updatePath(ArrayList<CategoryDetail> categories);
-
-    /**
-     * After retrieving category, add its name to path.
-     * @param categoryDetail
-     */
-    @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
-    String addToPath(CategoryDetail categoryDetail);
-
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-    // CATEGORIES
-    @Event(handlers = HomeSuppliersHandler.class)
-    void getCategories();
-
-    @Event(handlers = HomeSuppliersHandler.class)
-    void getCategoryParents(Long categoryId);
-
-    @Event(handlers = HomeSuppliersHandler.class)
-    void getSubCategories(Long category);
-
     // SUPPLIERS
+    @Override
     @Event(handlers = HomeSuppliersHandler.class)
     void getDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail);
 
+    @Override
     @Event(handlers = HomeSuppliersHandler.class)
     void getData(SearchDefinition searchDefinition);
-
 }

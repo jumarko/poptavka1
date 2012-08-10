@@ -49,7 +49,14 @@ public class CategoryTreeViewModel implements TreeViewModel {
         @Override
         public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
             if (value != null) {
-                sb.appendEscaped(value.getName());
+                StringBuilder text = new StringBuilder();
+
+                text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
+                text.append(" (");
+                text.append(value.getSuppliers());
+                text.append(")");
+
+                sb.appendEscaped(text.toString());
             }
         }
     }
@@ -99,19 +106,6 @@ public class CategoryTreeViewModel implements TreeViewModel {
         }
     }
 
-    /**
-     * A Cell used to render the LetterCount.
-     */
-    private static class CategoryCountCell extends AbstractCell<CategoryDetail> {
-
-        @Override
-        public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-            if (value != null) {
-                sb.appendEscaped(value.getName());
-//                sb.append(" (").append(value.count).append(")");//ziskaj pocet
-            }
-        }
-    }
     /**
      * The static images used in this model.
      */
@@ -171,7 +165,6 @@ public class CategoryTreeViewModel implements TreeViewModel {
             }
         });
         categoryCell = new CompositeCell<CategoryDetail>(hasCells) {
-
             @Override
             public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
                 sb.appendHtmlConstant("<table><tbody><tr>");
@@ -236,7 +229,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
                 return new DefaultNodeInfo(dataProvider1, categoryCell, selectionModel, selectionManager, null);
             default:
                 CategoryDataProvider dataProvider2 = new CategoryDataProvider(detail, categoryService);
-                return new DefaultNodeInfo(dataProvider2, new CategoryCell());
+                return new DefaultNodeInfo(dataProvider2, new CategoryCell(), selectionModel, null);
         }
     }
 

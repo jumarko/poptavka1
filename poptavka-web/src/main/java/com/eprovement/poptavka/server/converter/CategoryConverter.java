@@ -5,27 +5,44 @@ package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.service.demand.CategoryService;
+import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public final class CategoryConverter extends AbstractConverter<Category, CategoryDetail> {
 
+    /**************************************************************************/
+    /* RPC Services                                                           */
+    /**************************************************************************/
     private CategoryService categoryService;
+    private SupplierService supplierService;
 
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
+    @Autowired
+    public void setSupplierService(SupplierService supplierService) {
+        this.supplierService = supplierService;
+    }
+
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
     private CategoryConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
     @Override
     public CategoryDetail convertToTarget(Category category) {
         CategoryDetail detail = new CategoryDetail();
         detail.setId(category.getId());
         detail.setName(category.getName());
+        detail.setSuppliers(supplierService.getSuppliersCountQuick(category));
         detail.setLeaf(category.getChildren().isEmpty());
         return detail;
 
