@@ -7,9 +7,9 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
@@ -51,7 +51,6 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     }
 
     public void onGetData(SearchDefinition searchDefinition) {
-        getClientProjects(searchDefinition);
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.CLIENT_PROJECTS:
                 getClientProjects(searchDefinition);
@@ -163,9 +162,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientProjectContestants(SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectContestants(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectContestantDetail>>() {
+                new SecuredAsyncCallback<List<FullOfferDetail>>() {
                     @Override
-                    public void onSuccess(List<ClientProjectContestantDetail> result) {
+                    public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displayClientProjectContestants(result);
                     }
                 });
@@ -188,9 +187,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientAssignedProjects(SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedProjects(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectContestantDetail>>() {
+                new SecuredAsyncCallback<List<FullOfferDetail>>() {
                     @Override
-                    public void onSuccess(List<ClientProjectContestantDetail> result) {
+                    public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displayClientAssignedProjects(result);
                     }
                 });

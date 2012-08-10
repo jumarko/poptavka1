@@ -1,11 +1,11 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -127,7 +127,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<ClientProjectContestantDetail> getClientProjectContestants(long clientID, long demandID,
+    List<FullOfferDetail> getClientProjectContestants(long clientID, long demandID,
             SearchDefinition searchDefinition) throws ApplicationSecurityException;
 
     //******************** CLIENT - My Assigned Demands ***********************/
@@ -152,7 +152,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<ClientProjectContestantDetail> getClientAssignedProjects(long clientID,
+    List<FullOfferDetail> getClientAssignedProjects(long clientID,
             SearchDefinition searchDefinition) throws ApplicationSecurityException;
 
     /**************************************************************************/

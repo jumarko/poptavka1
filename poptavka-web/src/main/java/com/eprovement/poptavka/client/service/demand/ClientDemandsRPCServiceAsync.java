@@ -1,11 +1,11 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -45,14 +45,14 @@ public interface ClientDemandsRPCServiceAsync {
             AsyncCallback<Long> callback);
 
     void getClientProjectContestants(long clientID, long demandID, SearchDefinition searchDefinition,
-            AsyncCallback<List<ClientProjectContestantDetail>> callback);
+            AsyncCallback<List<FullOfferDetail>> callback);
 
     //
     void getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
     void getClientAssignedProjects(long clientID, SearchDefinition searchDefinition,
-            AsyncCallback<List<ClientProjectContestantDetail>> callback);
+            AsyncCallback<List<FullOfferDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */

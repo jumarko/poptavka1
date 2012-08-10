@@ -125,6 +125,7 @@ public class UniversalTableWidget extends Composite {
             default:
                 break;
         }
+        initTable();
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -202,7 +203,6 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(URGENCY_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
-        initTable();
     }
 
     /**
@@ -215,7 +215,6 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(DELIVERY_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
-        initTable();
     }
 
     /**
@@ -228,7 +227,6 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(DELIVERY_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
-        initTable();
     }
 
     /**

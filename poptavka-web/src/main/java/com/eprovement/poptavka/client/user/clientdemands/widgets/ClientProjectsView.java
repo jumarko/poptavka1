@@ -144,7 +144,7 @@ public class ClientProjectsView extends Composite
         demandGrid.setHeight("500px");
 //        demandGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
         demandGrid.setRowCount(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())), true);
-        demandGrid.setPageSize(getDemandPageSize());
+        demandGrid.setPageSize(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())));
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         final SelectionModel<ClientProjectDetail> selectionModel =
@@ -357,12 +357,6 @@ public class ClientProjectsView extends Composite
     @Override
     public UniversalAsyncGrid<ClientProjectConversationDetail> getConversationGrid() {
         return conversationGrid;
-    }
-
-    //Nemusi byt override nie?
-    @Override
-    public int getDemandPageSize() {
-        return Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex()));
     }
 
     //Nemusi byt override nie?

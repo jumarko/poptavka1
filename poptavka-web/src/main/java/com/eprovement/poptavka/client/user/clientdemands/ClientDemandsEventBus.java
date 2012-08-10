@@ -11,9 +11,9 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -109,10 +109,10 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     void displayClientOfferedProjects(List<ClientProjectDetail> result);
 
     @Event(handlers = ClientContestsPresenter.class)
-    void displayClientProjectContestants(List<ClientProjectContestantDetail> result);
+    void displayClientProjectContestants(List<FullOfferDetail> result);
 
     @Event(handlers = ClientAssignedProjectsPresenter.class)
-    void displayClientAssignedProjects(List<ClientProjectContestantDetail> result);
+    void displayClientAssignedProjects(List<FullOfferDetail> result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

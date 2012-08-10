@@ -4,7 +4,6 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -180,7 +179,8 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
 
     @Override
     public OfferStateType getOfferState() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //TODO Martin - temporary , correct later - clientAssignedProjects assked for this
+        return OfferStateType.ACCEPTED;
     }
 
 

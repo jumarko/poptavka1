@@ -63,8 +63,6 @@ public class ClientProjectsPresenter
 
         UniversalAsyncGrid<ClientProjectConversationDetail> getConversationGrid();
 
-        int getDemandPageSize();
-
         int getConversationPageSize();
 
         List<Long> getSelectedIdList();

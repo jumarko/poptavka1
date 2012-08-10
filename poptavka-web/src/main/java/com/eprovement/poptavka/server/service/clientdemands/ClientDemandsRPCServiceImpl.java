@@ -7,6 +7,7 @@ package com.eprovement.poptavka.server.service.clientdemands;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
@@ -22,11 +23,11 @@ import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -269,10 +270,10 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectContestantDetail> getClientProjectContestants(long clientID, long demandID,
+    public List<FullOfferDetail> getClientProjectContestants(long clientID, long demandID,
             SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<ClientProjectContestantDetail>();
+        return new ArrayList<FullOfferDetail>();
     }
 
     //******************** CLIENT - My Assigned Demands ***********************/
@@ -305,20 +306,20 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectContestantDetail> getClientAssignedProjects(long clientID,
+    public List<FullOfferDetail> getClientAssignedProjects(long clientID,
             SearchDefinition searchDefinition) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        ClientProjectContestantDetail detail = new ClientProjectContestantDetail();
-        detail.setDemandId(1L);
-        detail.setDemandStatus(DemandStatus.ASSIGNED);
-        detail.setSupplierName("dodavatel");
-        detail.setPrice("10000");
-        detail.setReceiveDate(new Date());
-        detail.setRating(90);
-        detail.setAcceptedDate(new Date());
-        detail.setRead(false);
-        detail.setStarred(false);
-        List<ClientProjectContestantDetail> list = new ArrayList<ClientProjectContestantDetail>();
+        FullOfferDetail detail = new FullOfferDetail();
+        detail.getOfferDetail().setDemandId(1L);
+        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
+        detail.getOfferDetail().setClientName("Martin Slavkovsky");
+        detail.getOfferDetail().setSupplierName("Good Data");
+        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
+        detail.getOfferDetail().setRating(90);
+        detail.getOfferDetail().setPrice(10000);
+        detail.getOfferDetail().setFinishDate(new Date());
+        detail.getOfferDetail().setCreatedDate(new Date());
+        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
         list.add(detail);
         return list;
     }
