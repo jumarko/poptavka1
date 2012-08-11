@@ -145,13 +145,14 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * When new demand is created by client, will be involved here.
      * As Client: "All demands created by me."
      *
-     * @param clientID - client's ID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param filter - define searching criteria if any
      * @return count
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientProjectsCount(long clientID, SearchModuleDataHolder filter)
+    public long getClientProjectsCount(long userId, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
@@ -166,7 +167,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      *     It this is the issue then consider reimplementation of this method.
      * </p>
      *
-     * @param userId id of user represented by client. Note that clientId and userId are different
+     * @param userId id of user represented by client. Note that userId and userId are different
      *               If userId represents some different user than client, exception will be thrown
      * @return list of demand's detail objects
      * @throws ApplicationSecurityException if user is not authorized to call this method
@@ -178,6 +179,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
         throws RPCException, ApplicationSecurityException, IllegalArgumentException {
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
         clientDemandsSearch.addFilterEqual("status", DemandStatus.NEW);
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         return clientDemandConverter.convertToTargetList(clientDemands);
@@ -190,14 +192,15 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * As Client: "Questions made by suppliers to demands made by me." "How many suppliers
      * are asing something about a certain demand."
      *
-     * @param clientID - client's ID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID - demand's ID
      * @param filter - define searching criteria if any
      * @return count
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientProjectConversationsCount(long clientID, long demandID,
+    public long getClientProjectConversationsCount(long userId, long demandID,
             SearchModuleDataHolder filter) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
@@ -209,7 +212,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * Client: "Questions made by suppliers to demands made by me."
      * "How many suppliers are asing something about a certain demand."
      *
-     * @param clientID - client's
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID - demand's
      * @param start
      * @param maxResult
@@ -219,7 +223,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientProjectConversationDetail> getClientProjectConversations(long clientID, long demandID,
+    public List<ClientProjectConversationDetail> getClientProjectConversations(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         ClientProjectConversationDetail a = new ClientProjectConversationDetail();
@@ -241,13 +245,14 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * When supplier place an offer to client's demand, the demand will be involved here.
      * As Client: "Demands that have already an offer."
      *
-     * @param clientID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param filter
      * @return
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter)
+    public long getClientOfferedProjectsCount(long userId, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 0L;
@@ -258,7 +263,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * When supplier place an offer to client's demand, the demand will be involved here.
      * As Client: "Demands that have already an offer."
      *
-     * @param clientID - client's ID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID - demands's ID
      * @param start
      * @param maxResult
@@ -268,7 +274,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientProjectDetail> getClientOfferedProjects(long clientID, long demandID,
+    public List<ClientProjectDetail> getClientOfferedProjects(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return new ArrayList<ClientProjectDetail>();
@@ -279,11 +285,13 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @return offers count of given demand
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter)
+    public long getClientProjectContestantsCount(long userId, long demandID, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 0L;
@@ -294,17 +302,15 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
-     * @param clientID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
+     * @param searchDefinition search filter, ordering, ...
      * @return
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getClientProjectContestants(long clientID, long demandID,
+    public List<FullOfferDetail> getClientProjectContestants(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return new ArrayList<FullOfferDetail>();
@@ -316,13 +322,14 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * When client accept an offer, will be involved here.
      * As Client: "All offers that were accepted by me to solve my demand."
      *
-     * @param clientID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param filter
      * @return
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter)
+    public long getClientAssignedProjectsCount(long userId, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
@@ -333,16 +340,14 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
      * When client accept an offer, will be involved here.
      * As Client: "All offers that were accepted by me to solve my demand."
      *
-     * @param clientID
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
+     * @param searchDefinition search filters, ordering
      * @return
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getClientAssignedProjects(long clientID, SearchDefinition searchDefinition)
+    public List<FullOfferDetail> getClientAssignedProjects(long userId, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         FullOfferDetail detail = new FullOfferDetail();

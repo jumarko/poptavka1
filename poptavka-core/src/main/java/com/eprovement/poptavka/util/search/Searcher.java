@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.Validate;
 
 /**
  *
@@ -45,7 +47,11 @@ public final class Searcher {
     public static <E> List<E> searchCollection(Collection<E> haystack,
             Search search) throws SearcherException {
         List<E> result = new ArrayList<E>();
-
+        if (CollectionUtils.isEmpty(haystack)) {
+            return result;
+        }
+        Validate.notNull(search, "Search cannot be null");
+        Validate.notNull(search.getClass(), "Search class cannot be null");
         filterCollection(search, haystack, result);
         sortList(search, result);
         result = trim(search, result);

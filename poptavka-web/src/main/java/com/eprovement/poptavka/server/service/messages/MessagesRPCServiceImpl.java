@@ -137,7 +137,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         messageSearch.addFilterEqual("sender", sender);
         //ak treba, filtruj spravy poslane danym uzivatelom
         if (searchDataHolder != null) {
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 this.filter(messageSearch, "", item);
             }
         }
@@ -161,7 +161,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         messageUserRoleSearch.addFilterIn("type", MessageUserRoleType.TO);
         //ak treba, filtruj prijemcov danych sprav
         if (searchDataHolder != null) {
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 if (item.getItem().equals("email")) {
                     messageUserRoleSearch.addFilterIn("user", generalService.search(
                             this.filter(new Search(User.class), "", item)));
@@ -270,7 +270,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         Search messageSearch = new Search(Message.class);
         messageSearch.addFilterEqual("messageState", MessageState.DELETED);
         if (searchDataHolder != null) {
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 if (item.getItem().equals("email")) {
                     messageSearch.addFilterIn("sender", generalService.search(
                             this.filter(new Search(User.class), "", item)));
@@ -359,7 +359,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         Search messageSearch = null;
         if (searchDataHolder != null) {
             messageSearch = new Search(Message.class);
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 if (item.getItem().equals("email")) {
                     messageSearch.addFilterIn("sender", generalService.search(
                             this.filter(new Search(User.class), "", item)));

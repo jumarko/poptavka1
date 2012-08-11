@@ -11,6 +11,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.DeclarePrecedence;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 
@@ -33,6 +35,8 @@ import org.springframework.security.core.AuthenticationException;
 @DeclarePrecedence("RpcExceptionAspect, *")
 public class RpcExceptionAspect {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcExceptionAspect.class);
+
     @Pointcut("execution(public * com.eprovement.poptavka..*RPCServiceImpl.*(..))")
     private void executionOfRpcMethod()  { }
 
@@ -41,13 +45,18 @@ public class RpcExceptionAspect {
         try {
             return proceedingJoinPoint.proceed();
         } catch (AuthenticationException ae) {
-            throw new ApplicationSecurityException("Unauthorized access to method="
-                    + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature(), ae);
+            final String message = "Unauthorized access to method="
+                    + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature();
+            LOGGER.info(message);
+            throw new ApplicationSecurityException(message, ae);
         } catch (AccessDeniedException ade) {
-            throw new ApplicationSecurityException("Access denied to method="
-                    + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature(), ade);
+            final String message = "Access denied to method="
+                    + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature();
+            LOGGER.info(message);
+            throw new ApplicationSecurityException(message, ade);
         } catch (Exception e) {
             // stacktrace is passed as an exception message to recover it correctly on client
+            LOGGER.error("Error occurred in RPC service call", e);
             throw new RPCException(ExceptionUtils.getFullStackTrace(e), e);
         }
     }

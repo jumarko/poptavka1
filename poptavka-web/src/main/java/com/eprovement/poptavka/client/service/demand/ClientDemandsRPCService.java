@@ -34,11 +34,12 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When new demand is created by client, will be involved here.
      * As Client: "All demands created by me."
      *
-     * @param clientID - client's ID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientProjectsCount(long clientID, SearchModuleDataHolder filter)
+    long getClientProjectsCount(long userId, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException;
 
     /**
@@ -46,11 +47,11 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When new demand is created by client, will be involved here.
      * As Client: "All demands created by me."
      *
-     * @param clientID
+     * @param userId
      * @param searchDefinition
      * @return list of demand's detail objects
      */
-    List<ClientProjectDetail> getClientProjects(long clientID, SearchDefinition searchDefinition)
+    List<ClientProjectDetail> getClientProjects(long userId, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
     /**
@@ -59,12 +60,13 @@ public interface ClientDemandsRPCService extends RemoteService {
      * As Client: "Questions made by suppliers to demands made by me." "How many suppliers
      * are asing something about a certain demand."
      *
-     * @param clientID - client's ID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID - demand's ID
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientProjectConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter)
+    long getClientProjectConversationsCount(long userId, long demandID, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException;
 
     /**
@@ -73,12 +75,13 @@ public interface ClientDemandsRPCService extends RemoteService {
      * Client: "Questions made by suppliers to demands made by me."
      * "How many suppliers are asing something about a certain demand."
      *
-     * @param clientID - client's
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID - demand's
      * @param searchDefinition
      * @return
      */
-    List<ClientProjectConversationDetail> getClientProjectConversations(long clientID, long demandID,
+    List<ClientProjectConversationDetail> getClientProjectConversations(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     //************************* CLIENT - My Offers ****************************/
@@ -87,12 +90,12 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When supplier place an offer to client's demand, the demand will be involved here.
      * As Client: "Demands that have already an offer."
      *
-     *
-     * @param clientID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param filter
      * @return
      */
-    long getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter)
+    long getClientOfferedProjectsCount(long userId, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException;
 
     /**
@@ -100,12 +103,13 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When supplier place an offer to client's demand, the demand will be involved here.
      * As Client: "Demands that have already an offer."
      *
-     * @param clientID - client's ID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID - demands's ID
      * @param searchDefinition
      * @return
      */
-    List<ClientProjectDetail> getClientOfferedProjects(long clientID, long demandID, SearchDefinition searchDefinition)
+    List<ClientProjectDetail> getClientOfferedProjects(long userId, long demandID, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
     /**
@@ -113,9 +117,11 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @return offers count of given demand
      */
-    long getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter)
+    long getClientProjectContestantsCount(long userId, long demandID, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException;
 
     /**
@@ -123,12 +129,13 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
-     * @param clientID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param demandID
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getClientProjectContestants(long clientID, long demandID, SearchDefinition searchDefinition)
+    List<FullOfferDetail> getClientProjectContestants(long userId, long demandID, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
     //******************** CLIENT - My Assigned Demands ***********************/
@@ -137,11 +144,12 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When client accept an offer, will be involved here.
      * As Client: "All offers that were accepted by me to solve my demand."
      *
-     * @param clientID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param filter
      * @return
      */
-    long getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter)
+    long getClientAssignedProjectsCount(long userId, SearchModuleDataHolder filter)
         throws RPCException, ApplicationSecurityException;
 
     /**
@@ -149,11 +157,12 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When client accept an offer, will be involved here.
      * As Client: "All offers that were accepted by me to solve my demand."
      *
-     * @param clientID
+     * @param userId id of user represented by client. Note that userId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getClientAssignedProjects(long clientID, SearchDefinition searchDefinition)
+    List<FullOfferDetail> getClientAssignedProjects(long userId, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/

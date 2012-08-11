@@ -45,7 +45,7 @@ public class SearchModuleDataHolder implements Serializable {
         return localities;
     }
 
-    public ArrayList<FilterItem> getAttibutes() {
+    public ArrayList<FilterItem> getAttributes() {
         return attributes;
     }
 }

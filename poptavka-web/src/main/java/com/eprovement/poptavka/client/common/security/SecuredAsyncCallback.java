@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.login.SecurityDialogBoxes.AccessDen
 // TODO ivlcek - Jurajov kod zakomentovany kvoli prechodu na projekt dmartin
 //import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 //import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
+import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.security.SecurityResponseMessage;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
@@ -48,6 +49,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
 //            return;
 //        }
 
+        // TODO IV: such a mess - logging to logger, printing to console --> Why all this stuff ?
         ASYNC_CALLBACK_LOGGER.log(Level.INFO, "OnFailure: caught=" + caught.getMessage());
         System.err.println("SecuredAsyncCallback . onFailure: caught=" + caught.getMessage());
         if (caught == null) {
@@ -88,8 +90,13 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
      * @param caught
      */
     protected void onServiceFailure(Throwable caught) {
-        // empty - Override to implement custom error handling
-        throw new RuntimeException(caught);
+        // TODO IV why the hell you removed my dialog box ?! ]:->
+        // TODO: more reasonable message must be provided -> probably reference to error id with possibility to send
+        // message to our customer support team.
+        // error id should be generated in RpcExceptionAspect
+        new com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes.
+                AlertBox(ExceptionUtils.getFullErrorMessage(caught)).show();
+
     }
 
     protected boolean isNotAuthorized(final SecurityResponseMessage securityResponseMessage) {

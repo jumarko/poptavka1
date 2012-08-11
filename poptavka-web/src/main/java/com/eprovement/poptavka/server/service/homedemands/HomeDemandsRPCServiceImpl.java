@@ -145,7 +145,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         } else {
             if (!detail.getSearchText().isEmpty()) {
                 return fullTextSearchCount(detail.getSearchText());
-            } else if (detail.getAttibutes().isEmpty()) {
+            } else if (detail.getAttributes().isEmpty()) {
                 return filterWithoutAttributesCount(detail);
             } else {
                 return filterWithAttributesCount(detail);
@@ -176,7 +176,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             if (!filter.getSearchText().isEmpty()) {
                 return fullTextSearch(filter.getSearchText()).subList(
                         searchDefinition.getStart(), searchDefinition.getMaxResult());
-            } else if (filter.getAttibutes().isEmpty()) {
+            } else if (filter.getAttributes().isEmpty()) {
                 return filterWithoutAttributes(searchDefinition);
             } else {
                 return filterWithAttributes(searchDefinition);
@@ -536,7 +536,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
                 search = new Search(Demand.class);
             }
             //if attribute filtering is required
-            for (FilterItem item : detail.getAttibutes()) {
+            for (FilterItem item : detail.getAttributes()) {
                 if (item.getItem().equals("type")) {
                     search.addFilterEqual(prefix + "type",
                             demandService.getDemandType(item.getValue().toString()));

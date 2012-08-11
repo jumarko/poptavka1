@@ -159,7 +159,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         if (detail == null) {
             return supplierService.getCount();
         } else {
-            if (detail.getAttibutes().isEmpty()) {
+            if (detail.getAttributes().isEmpty()) {
                 return filterWithoutAttributesCount(detail);
             } else {
                 return filterWithAttributesCount(detail);
@@ -197,7 +197,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
             }
             return supplierConverter.convertToTargetList(generalService.search(search));
         } else {
-            if (definition.getFilter().getAttibutes().isEmpty()) {
+            if (definition.getFilter().getAttributes().isEmpty()) {
                 return filterWithoutAttributes(definition);
             } else {
                 return filterWithAttributes(definition);
@@ -415,7 +415,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         }
         categorySearch.addFilterIn("category", allSubCategories);
 
-        if (!detail.getAttibutes().isEmpty()) {
+        if (!detail.getAttributes().isEmpty()) {
             categorySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(detail, orderColumns)));
         }
 
@@ -431,7 +431,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         }
         localitySearch.addFilterIn("locality", allSubLocalities);
 
-        if (!detail.getAttibutes().isEmpty()) {
+        if (!detail.getAttributes().isEmpty()) {
             localitySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(detail, orderColumns)));
         }
 
@@ -441,7 +441,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private Search getSupplierFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Boolean filterApplied = false;
         Search search = new Search(Supplier.class);
-        for (FilterItem item : detail.getAttibutes()) {
+        for (FilterItem item : detail.getAttributes()) {
             if (item.getValue().equals("companyName")) {
                 Collection<BusinessUserData> data = generalService.search(
                         this.filter(new Search(BusinessUserData.class), "", item));

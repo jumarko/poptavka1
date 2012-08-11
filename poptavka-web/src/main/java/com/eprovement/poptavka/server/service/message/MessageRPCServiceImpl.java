@@ -442,7 +442,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
         Search messageSearch = null;
         if (searchDataHolder != null) {
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 messageSearch = new Search(Message.class);
                 if (item.getItem().equals("email")) {
                     messageSearch.addFilterIn("sender", generalService.search(
@@ -598,7 +598,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageSearch.addFilterEqual("sender", sender);
         //ak treba, filtruj spravy poslane danym uzivatelom
         if (searchDataHolder != null) {
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 this.filter(messageSearch, "", item);
             }
         }
@@ -622,7 +622,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageUserRoleSearch.addFilterIn("type", MessageUserRoleType.TO);
         //ak treba, filtruj prijemcov danych sprav
         if (searchDataHolder != null) {
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 messageUserRoleSearch.addFilterIn("user", generalService.search(
                         this.filter(new Search(User.class), "", item)));
             }
@@ -724,7 +724,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         Search messageSearch = null;
         if (searchDataHolder != null) {
             messageSearch = new Search(Message.class);
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 if (item.getItem().equals("email")) {
                     messageSearch.addFilterIn("sender", generalService.search(
                             this.filter(new Search(User.class), "", item)));
@@ -782,7 +782,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         Search messageSearch = new Search(Message.class);
         messageSearch.addFilterEqual("messageState", MessageState.DELETED);
         if (searchDataHolder != null) {
-            for (FilterItem item : searchDataHolder.getAttibutes()) {
+            for (FilterItem item : searchDataHolder.getAttributes()) {
                 if (item.getItem().equals("email")) {
                     messageSearch.addFilterIn("sender", generalService.search(
                             this.filter(new Search(User.class), "", item)));

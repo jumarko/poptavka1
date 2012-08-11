@@ -950,7 +950,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     private Search setFilters(SearchModuleDataHolder searchDataHolder, Search search) {
-        for (FilterItem item : searchDataHolder.getAttibutes()) {
+        for (FilterItem item : searchDataHolder.getAttributes()) {
             if (item.getItem().equals("type")) {
                 search.addFilterEqual("type", demandService.getDemandType(item.getValue().toString()));
                 //Da sa aj takto? AK ano, mozem odstanit demandService cim zmensim opat download fragment

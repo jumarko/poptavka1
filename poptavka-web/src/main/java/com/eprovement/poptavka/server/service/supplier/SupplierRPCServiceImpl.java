@@ -637,7 +637,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private Search getSupplierFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Boolean filterApplied = false;
         Search search = new Search(Supplier.class);
-        for (FilterItem item : detail.getAttibutes()) {
+        for (FilterItem item : detail.getAttributes()) {
             if (item.getItem().equals("comapnyName")) {
                 Collection<BusinessUserData> data = generalService.search(
                         this.filter(new Search(BusinessUserData.class), "", item));

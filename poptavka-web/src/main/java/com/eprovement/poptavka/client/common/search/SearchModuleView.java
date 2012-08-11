@@ -131,7 +131,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public void setFilterSearchContent() {
         if (!searchContent.getText().isEmpty()
                 && !searchContent.getText().equals(Storage.MSGS.searchContent())
-                && getFilters().getAttibutes().isEmpty()) {
+                && getFilters().getAttributes().isEmpty()) {
             filters.setSearchText(searchContent.getText());
         }
     }
@@ -205,12 +205,12 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 
     @UiHandler("searchContent")
     void handlerSearchContentMouserOverEvent(MouseOverEvent event) {
-        if (filters.getAttibutes().isEmpty()) {
+        if (filters.getAttributes().isEmpty()) {
             return;
         }
         VerticalPanel list = new VerticalPanel();
         list.add(new Label("Filter attributes:"));
-        for (String attr : filters.getAttibutes().toString().split(", ")) {
+        for (String attr : filters.getAttributes().toString().split(", ")) {
             list.add(new Label(attr));
         }
         this.createToolTipPopupWindow(event, list);
@@ -324,10 +324,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      * SearchModuleDataHolder.
      */
     private void searchAdvanced() {
-        filters.getAttibutes().clear();
+        filters.getAttributes().clear();
         SearchModulesViewInterface filtersValues =
                 (SearchModulesViewInterface) popupPanel.getWidget();
-        filters.getAttibutes().addAll(filtersValues.getFilter());
+        filters.getAttributes().addAll(filtersValues.getFilter());
     }
 
     /**
@@ -357,10 +357,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
                 }
                 break;
             case ATTRIBUTES:
-                if (filters.getAttibutes().isEmpty()) {
+                if (filters.getAttributes().isEmpty()) {
                     searchContent.setText(Storage.MSGS.searchContent());
                 } else {
-                    searchContent.setText("filter:" + filters.getAttibutes().toString());
+                    searchContent.setText("filter:" + filters.getAttributes().toString());
                 }
                 break;
             default:
