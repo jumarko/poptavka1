@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.common.locality;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -22,6 +22,7 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
     protected void onRangeChanged(HasData<LocalityDetail> display) {
         if (localityDetail == null) {
             localityService.getLocalities(LocalityType.REGION, new SecuredAsyncCallback<List<LocalityDetail>>() {
+
                 @Override
                 public void onSuccess(List<LocalityDetail> result) {
                     updateRowCount(result.size(), true);
@@ -30,6 +31,7 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
             });
         } else {
             localityService.getLocalities(localityDetail.getCode(), new SecuredAsyncCallback<List<LocalityDetail>>() {
+
                 @Override
                 public void onSuccess(List<LocalityDetail> result) {
                     updateRowCount(result.size(), true);
