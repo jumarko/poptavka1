@@ -510,8 +510,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         String prefix = "";
         if (detail != null) {
 
+            // TODO: filtering is broken, why should categories have a precedence before localities ?
+            // --> in code below
             //if category filtering is required
             if (!detail.getCategories().isEmpty()) {
+                // TODO: in this case we are filtering only be categories and ingoring localities!!!
                 search = new Search(DemandCategory.class);
                 prefix = "demand.";
 

@@ -6,12 +6,12 @@ package com.eprovement.poptavka.server.service.clientdemands;
 
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
@@ -32,7 +32,8 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import java.math.BigDecimal;
+import com.eprovement.poptavka.util.search.Searcher;
+import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -63,6 +64,8 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Message, MessageDetail> messageConverter;
+    private Converter<Search, SearchModuleDataHolder> searchConverter;
+    private Converter<Demand, ClientProjectDetail> clientDemandConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -107,6 +110,18 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
         this.messageConverter = messageConverter;
     }
 
+    @Autowired
+    public void setSearchConverter(
+            @Qualifier("searchConverter") Converter<Search, SearchModuleDataHolder> searchConverter) {
+        this.searchConverter = searchConverter;
+    }
+
+    @Autowired
+    public void setClientDemandConverter(
+            @Qualifier("clientDemandConverter") Converter<Demand, ClientProjectDetail> clientDemandConverter) {
+        this.clientDemandConverter = clientDemandConverter;
+    }
+
     /**************************************************************************/
     /* Table getter methods                                                   */
     /**************************************************************************/
@@ -132,6 +147,12 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * When new demand is created by client, will be involved here.
      * As Client: "All demands created by me."
      *
+     * <p>
+     *     PERFORMANCE: This implementation can be slow if client has large amount of demands because it loads
+     *     all his demands from DB into the memory and perform filtering afterwards.
+     *     It this is the issue then consider reimplementation of this method.
+     * </p>
+     *
      * @param start
      * @param maxResult
      * @param filter
@@ -141,19 +162,13 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public List<ClientProjectDetail> getClientProjects(long clientId,
             SearchDefinition searchDefinition) throws ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        ClientProjectDetail cdmd1 = new ClientProjectDetail();
-        cdmd1.setRead(false);
-        cdmd1.setDemandId(1L);
-        cdmd1.setDemandStatus(DemandStatus.NEW);
-        cdmd1.setDemandTitle("Poptavka1");
-        cdmd1.setPrice(BigDecimal.valueOf(10000));
-        cdmd1.setEndDate(new Date());
-        cdmd1.setValidToDate(new Date());
-
-        List<ClientProjectDetail> list = new ArrayList<ClientProjectDetail>();
-        list.add(cdmd1);
-        return list;
+        final Client client = generalService.find(Client.class, clientId);
+        if (client == null) {
+            throw new IllegalArgumentException("Client with id=" + clientId + " does not exist!");
+        }
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition.getFilter());
+        final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
+        return clientDemandConverter.convertToTargetList(clientDemands);
     }
 
     /**
