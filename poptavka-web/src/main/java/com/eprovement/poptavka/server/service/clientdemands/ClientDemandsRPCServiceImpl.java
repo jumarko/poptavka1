@@ -6,6 +6,8 @@ package com.eprovement.poptavka.server.service.clientdemands;
 
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -21,6 +23,8 @@ import com.eprovement.poptavka.server.service.demands.DemandsRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
+import com.eprovement.poptavka.service.user.ClientService;
+import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
@@ -30,6 +34,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.util.search.Searcher;
@@ -40,9 +45,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,11 +59,11 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Slavkovsky
  */
 @Configurable
-public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
-        implements ClientDemandsRPCService {
+public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService implements ClientDemandsRPCService {
 
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
     //Services
+    private ClientService clientService;
     private GeneralService generalService;
     private OfferService offerService;
     private UserMessageService userMessageService;
@@ -64,13 +72,19 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Message, MessageDetail> messageConverter;
-    private Converter<Search, SearchModuleDataHolder> searchConverter;
+    private Converter<Search, SearchDefinition> searchConverter;
     private Converter<Demand, ClientProjectDetail> clientDemandConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
     /**************************************************************************/
     //Services
+
+    @Autowired
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
+    }
+
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
@@ -112,7 +126,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
 
     @Autowired
     public void setSearchConverter(
-            @Qualifier("searchConverter") Converter<Search, SearchModuleDataHolder> searchConverter) {
+            @Qualifier("searchConverter") Converter<Search, SearchDefinition> searchConverter) {
         this.searchConverter = searchConverter;
     }
 
@@ -136,16 +150,15 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return count
      */
     @Override
-    public long getClientProjectsCount(long clientID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public long getClientProjectsCount(long clientID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
 
     /**
-     * Get all demands that has been created by client.
-     * When new demand is created by client, will be involved here.
-     * As Client: "All demands created by me."
+     * {@inheritDoc}
      *
      * <p>
      *     PERFORMANCE: This implementation can be slow if client has large amount of demands because it loads
@@ -153,23 +166,23 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      *     It this is the issue then consider reimplementation of this method.
      * </p>
      *
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
+     * @param userId id of user represented by client. Note that clientId and userId are different
+     *               If userId represents some different user than client, exception will be thrown
      * @return list of demand's detail objects
+     * @throws ApplicationSecurityException if user is not authorized to call this method
+     * @throws IllegalArgumentException if given user does not exist or it represents user other than client
      */
     @Override
-    public List<ClientProjectDetail> getClientProjects(long clientId,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
-        final Client client = generalService.find(Client.class, clientId);
-        if (client == null) {
-            throw new IllegalArgumentException("Client with id=" + clientId + " does not exist!");
-        }
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition.getFilter());
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public List<ClientProjectDetail> getClientProjects(long userId, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException, IllegalArgumentException {
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.NEW);
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         return clientDemandConverter.convertToTargetList(clientDemands);
     }
+
 
     /**
      * When supplier asks something about a demand of some client.
@@ -183,8 +196,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return count
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientProjectConversationsCount(long clientID, long demandID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+            SearchModuleDataHolder filter) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -204,8 +218,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientProjectConversationDetail> getClientProjectConversations(long clientID, long demandID,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         ClientProjectConversationDetail a = new ClientProjectConversationDetail();
         a.setRead(false);
@@ -231,8 +246,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getClientOfferedProjectsCount(long clientID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public long getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 0L;
     }
@@ -251,8 +267,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientProjectDetail> getClientOfferedProjects(long clientID, long demandID,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return new ArrayList<ClientProjectDetail>();
     }
@@ -265,8 +282,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return offers count of given demand
      */
     @Override
-    public long getClientProjectContestantsCount(long clientID, long demandID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public long getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 0L;
     }
@@ -285,8 +303,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<FullOfferDetail> getClientProjectContestants(long clientID, long demandID,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return new ArrayList<FullOfferDetail>();
     }
@@ -302,8 +321,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getClientAssignedProjectsCount(long clientID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public long getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -321,8 +341,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<FullOfferDetail> getClientAssignedProjects(long clientID,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public List<FullOfferDetail> getClientAssignedProjects(long clientID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         FullOfferDetail detail = new FullOfferDetail();
         detail.getOfferDetail().setDemandId(1L);
@@ -353,9 +374,10 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
+    // TODO is this RPC service the correct place for this and following methods ?!
     // TODO call setMessageReadStatus in body
     public ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId) throws ApplicationSecurityException {
+            long threadId, long userId, long userMessageId) throws RPCException, ApplicationSecurityException {
         Message threadRoot = messageService.getById(threadId);
 
         setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
@@ -380,7 +402,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead)
-        throws ApplicationSecurityException {
+        throws RPCException, ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
@@ -394,7 +416,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred)
-        throws ApplicationSecurityException {
+        throws RPCException, ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setStarred(isStarred);
@@ -412,7 +434,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl)
-        throws ApplicationSecurityException {
+        throws RPCException, ApplicationSecurityException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
                     messageDetailImpl.getThreadRootId()),
@@ -429,7 +451,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public OfferDetail changeOfferState(OfferDetail offerDetail) throws ApplicationSecurityException {
+    public OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
         Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
 
         OfferState offerState = offerService.getOfferState(offerDetail.getState().getValue());
@@ -438,4 +460,30 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
         offerDetail.setState(offer.getState().getType());
         return offerDetail;
     }
+
+
+    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    private Client findClient(long userId) {
+        final User user = generalService.find(User.class, userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User with id=" + userId + " does not exist!");
+        }
+        if (StringUtils.isEmpty(user.getEmail())) {
+            throw new IllegalStateException("User has no email. Invalid state of explication! Each user MUST HAVE"
+                    + " a valid email address!");
+        }
+        final List<Client> clients = this.clientService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria().withEmail(user.getEmail()).build());
+        if (CollectionUtils.isEmpty(clients)) {
+            throw new IllegalArgumentException("No client with email=" + user.getEmail() + " has been found!");
+        }
+
+        if (clients.size() > 1) {
+            throw new IllegalArgumentException("One client  with email=" + user.getEmail() + " expected, but found"
+                    + clients.size());
+        }
+
+        return clients.get(0);
+    }
+
 }
