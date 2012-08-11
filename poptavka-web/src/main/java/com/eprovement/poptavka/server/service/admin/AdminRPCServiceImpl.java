@@ -62,9 +62,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Component;
 
 /*
  * TODO Martin Vsetky count zrobit inak, ked sa bude riesit tento modul. Vsetky
@@ -73,7 +73,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Martin Slavkovsky
  */
-@Component(AdminRPCService.URL)
+@Configurable
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;

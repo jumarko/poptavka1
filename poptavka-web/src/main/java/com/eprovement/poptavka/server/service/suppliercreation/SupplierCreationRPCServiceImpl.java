@@ -38,15 +38,15 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Praso
  * TODO praso - pridat komenty, vytvorit predka pre checkFreeEmail, optimalizovat backend
  */
-@Component(SupplierCreationRPCService.URL)
+@Configurable
 public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService implements SupplierCreationRPCService {
 
     private SupplierService supplierService;

@@ -43,8 +43,8 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +52,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-@Component(SupplierRPCService.URL)
+@Configurable
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
 
     /**

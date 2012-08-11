@@ -40,8 +40,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Martin Slavkovsky
  */
-@Component(ClientDemandsRPCService.URL)
+@Configurable
 public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
         implements ClientDemandsRPCService {
 

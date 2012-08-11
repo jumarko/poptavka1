@@ -9,10 +9,10 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-@Component(HomeWelcomeRPCService.URL)
+@Configurable
 public class HomeWelcomeRPCServiceImpl extends AutoinjectingRemoteService
         implements HomeWelcomeRPCService {
 

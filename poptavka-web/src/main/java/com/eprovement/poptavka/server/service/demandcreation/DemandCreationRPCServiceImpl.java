@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
  *
  * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
-@Component(DemandCreationRPCService.URL)
+@Configurable
 public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         implements DemandCreationRPCService {
 

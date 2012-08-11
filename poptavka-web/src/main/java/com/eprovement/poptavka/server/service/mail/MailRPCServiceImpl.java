@@ -3,9 +3,9 @@ package com.eprovement.poptavka.server.service.mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Component;
 
 import com.eprovement.poptavka.client.service.demand.MailRPCService;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -18,7 +18,7 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
  * @author kolkar
  *
  */
-@Component(MailRPCService.URL)
+@Configurable
 public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
         MailRPCService {
 

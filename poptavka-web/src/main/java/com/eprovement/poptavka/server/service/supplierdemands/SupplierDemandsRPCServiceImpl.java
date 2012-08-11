@@ -30,9 +30,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Martin Slavkovsky
  */
-@Component(SupplierDemandsRPCService.URL)
+@Configurable
 public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
         implements SupplierDemandsRPCService {
 

@@ -27,10 +27,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-@Component(ClientRPCService.URL)
+@Configurable
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
     /**

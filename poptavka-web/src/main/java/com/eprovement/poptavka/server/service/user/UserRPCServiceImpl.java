@@ -14,10 +14,10 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-@Component(UserRPCService.URL)
+@Configurable
 public class UserRPCServiceImpl extends AutoinjectingRemoteService implements UserRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;

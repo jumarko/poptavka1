@@ -37,14 +37,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Praso TODO Praso - optimize this PRC service as other RPC services
  */
-@Component(HomeSuppliersRPCService.URL)
+@Configurable
 public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService implements HomeSuppliersRPCService {
 
     private static final Logger LOGGER = Logger.getLogger("HomeSuppliersRPCServiceImpl");
