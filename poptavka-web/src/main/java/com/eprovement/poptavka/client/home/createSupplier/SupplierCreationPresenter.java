@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;

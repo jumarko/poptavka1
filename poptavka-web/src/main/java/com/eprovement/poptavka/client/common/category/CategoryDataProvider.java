@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.common.category;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.view.client.AsyncDataProvider;

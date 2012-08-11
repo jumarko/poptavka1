@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeWelcomeRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.inject.Inject;

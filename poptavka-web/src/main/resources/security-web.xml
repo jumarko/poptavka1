@@ -6,9 +6,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <security:http auto-config="true">
+    <security:http entry-point-ref="customAuthenticationEntryPoint">
 
         <!-- TODO premysliet, ake vsetky zdroje chceme chranit autentizaciou -->
+        <security:intercept-url pattern="/poptavka/rpc" access="IS_AUTHENTICATED_FULLY" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <!--<intercept-url pattern="/poptavka/service/**" access="hasRole('ROLE_USER')" />-->
@@ -43,15 +44,60 @@
 		<constructor-arg ref="loginService"/>
 	</bean>
 
-    <!-- Custom entry point to indicate that the user needs to authenticate first -->
+<!-- TODO ivlcek - zakomentovany povodny kod s beaname pre GWT security. 
+
+    Custom entry point to indicate that the user needs to authenticate first 
     <bean id="customAuthenticationEntryPoint" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationEntryPoint" />
 
 
-    <!-- Custom handler to indicate that the authentication is succ`essful -->
+     Custom handler to indicate that the authentication is succ`essful 
     <bean id="customAuthenticationSuccessHandler" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationSuccessHandler" />
 
-    <!-- Custom handler to indicate that the authentication has failed -->
+     Custom handler to indicate that the authentication has failed 
     <bean id="customAuthenticationFailureHandler" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationFailureHandler" />
     
     <bean id="poptavkaAuthListener" class="com.eprovement.poptavka.server.security.PoptavkaAuthListener"/>
+    
+-->
+
+  <bean id="formLoginFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+    <property name="authenticationManager" ref="authenticationManager" />
+    <property name="authenticationSuccessHandler">
+      <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationSuccessHandler">
+        <property name="alwaysUseDefaultTargetUrl" value="false"></property>
+        <property name="defaultTargetUrl" value="/poptavka.html" /> <!-- This is the URL you'll be redirected to after a successful form login -->
+      </bean>
+    </property>
+    <property name="authenticationFailureHandler">
+      <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationFailureHandler">
+         <property name="defaultFailureUrl" value="/login.html" /> <!-- Used if authentication is out of the responsability scope of GWT -->
+      </bean>
+    </property>
+    <property name="filterProcessesUrl" value="/j_spring_security_check"></property>
+  </bean>
+  
+  <!--
+
+  <bean id="exceptionTranslator" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+    <property name="authenticationEntryPoint">
+      <bean class="com.eprovement.poptavka.server.security.GwtAwareAuthenticationEntryPoint">
+        <property name="gwtLoginForm" value="true" /> optional. If true, GWT must handle the login form (loginFormUrl is ignored). 
+      </bean>
+    </property>
+  </bean>-->
+
+<!--        Custom entry point to indicate that the user needs to authenticate first -->
+        <bean id="customAuthenticationEntryPoint" class="com.eprovement.poptavka.server.security.GwtAwareAuthenticationEntryPoint" />
+
+
+<!--     Custom handler to indicate that the authentication is succ`essful -->
+    <bean id="customAuthenticationSuccessHandler" class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationSuccessHandler" />
+
+<!--     Custom handler to indicate that the authentication has failed -->
+    <bean id="customAuthenticationFailureHandler" class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationFailureHandler" />
+    
+    <bean id="poptavkaAuthListener" class="com.eprovement.poptavka.server.security.PoptavkaAuthListener"/>
+
+    
+    
 </beans>

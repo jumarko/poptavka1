@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.user.messages;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import com.google.inject.Inject;

@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.user.demands.handler;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import java.util.ArrayList;
 import java.util.List;

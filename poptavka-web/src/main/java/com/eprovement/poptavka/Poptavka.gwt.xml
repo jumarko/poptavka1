@@ -11,6 +11,10 @@
     <inherits name='com.google.gwt.user.theme.standard.Standard'/>
     <inherits name='com.mvp4g.Mvp4gModule'/>
     <inherits name='org.adamtacy.GWTEffects'/>
+    <!-- RequestFactory and JSON module required by security pack-->
+    <inherits name="com.google.web.bindery.requestfactory.RequestFactory" />
+    <inherits name="com.google.gwt.json.JSON"/>
+    
 
     <!-- GWT validation BEGIN -->
     <inherits name='com.google.gwt.editor.Editor' />
