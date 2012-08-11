@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.user.handler;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;

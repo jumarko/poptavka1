@@ -1,9 +1,11 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.service.demand.SimpleServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -19,13 +21,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 import java.util.ArrayList;
 
 public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter> implements IHomeWelcomeView {
 
-    private static HomeWelcomeViewUiBinder uiBinder = GWT
-            .create(HomeWelcomeViewUiBinder.class);
+    private static HomeWelcomeViewUiBinder uiBinder = GWT.create(HomeWelcomeViewUiBinder.class);
+    private SimpleServiceAsync simpleService;
 
     interface HomeWelcomeViewUiBinder extends UiBinder<Widget, HomeWelcomeView> {
     }
@@ -121,6 +125,41 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    @Inject
+    void setSimpleService(SimpleServiceAsync service) {
+        simpleService = service;
+    }
+
+    @UiHandler("gwtRPCButton")
+    public void onRpcButtonClick(ClickEvent e) {
+        simpleService.getData(new SecuredAsyncCallback<String>() {
+
+            public void onServiceFailure(Throwable caught) {
+                // Show the RPC error message to the user
+                DialogBox dialogBox = new DialogBox();
+                dialogBox.center();
+                dialogBox.setModal(true);
+                dialogBox.setGlassEnabled(true);
+                dialogBox.setAutoHideEnabled(true);
+
+                dialogBox.setText("Remote Procedure Call - Failure");
+                dialogBox.show();
+            }
+
+            public void onSuccess(String result) {
+                DialogBox dialogBox = new DialogBox();
+                dialogBox.center();
+                dialogBox.setModal(true);
+                dialogBox.setGlassEnabled(true);
+                dialogBox.setAutoHideEnabled(true);
+
+                dialogBox.setText(result);
+                dialogBox.show();
+            }
+        });
+
     }
 }
 

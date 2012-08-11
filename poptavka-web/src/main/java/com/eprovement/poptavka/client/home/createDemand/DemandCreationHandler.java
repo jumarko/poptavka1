@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;

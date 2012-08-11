@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import java.util.List;
