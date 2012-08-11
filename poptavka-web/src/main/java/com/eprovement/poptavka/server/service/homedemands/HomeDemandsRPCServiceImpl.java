@@ -337,11 +337,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     // ***********************************************************************
     // Get demands by Fulltext search
     // ***********************************************************************
-    public long fullTextSearchCount(String searchText) {
+    public long fullTextSearchCount(String searchText) throws RPCException {
         return this.fulltextSearchService.searchCount(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
     }
 
-    public List<FullDemandDetail> fullTextSearch(String searchText) {
+    public List<FullDemandDetail> fullTextSearch(String searchText) throws RPCException {
         final List<Demand> foundDemands =
                 this.fulltextSearchService.search(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
         return demandConverter.convertToTargetList(foundDemands);

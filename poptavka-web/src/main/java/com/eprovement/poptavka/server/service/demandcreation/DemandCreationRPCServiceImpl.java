@@ -140,13 +140,13 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     // TODO FIX this, it's not working nullPo interException. -- who use it anyway???
-    public Locality getLocality(String code) {
+    public Locality getLocality(String code) throws RPCException {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
         return localityService.getLocality(code);
 //        return localityService.getById(10);
     }
 
-    public Category getCategory(Long id) {
+    public Category getCategory(Long id) throws RPCException {
         return categoryService.getById(id);
     }
 

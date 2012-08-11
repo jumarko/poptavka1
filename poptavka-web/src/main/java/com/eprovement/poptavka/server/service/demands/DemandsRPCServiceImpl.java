@@ -66,6 +66,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     private Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter;
     private Converter<Demand, BaseDemandDetail> baseDemandConverter;
 
+    @Autowired
     public void setRatingService(RatingService ratingService) {
         this.ratingService = ratingService;
     }

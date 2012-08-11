@@ -364,12 +364,12 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
     /* Other getter methods                                                         */
     /**************************************************************************/
     @Override
-    public FullDemandDetail getFullDemandDetail(long demandId) {
+    public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException {
         return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
     }
 
     @Override
-    public FullSupplierDetail getFullSupplierDetail(long supplierId) {
+    public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException {
         return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
     }
 

@@ -56,12 +56,11 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     /* DevelDetailWrapper widget methods                                      */
     /**************************************************************************/
-    FullDemandDetail getFullDemandDetail(long demandId);
+    FullDemandDetail getFullDemandDetail(long demandId) throws RPCException;
 
-    FullSupplierDetail getFullSupplierDetail(long supplierId);
+    FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException;
 
-    List<MessageDetail> getConversation(
-            long threadId, long userId, long userMessageId) throws RPCException;
+    List<MessageDetail> getConversation(long threadId, long userId, long userMessageId) throws RPCException;
 
     /**************************************************************************/
     /* Message methods                                                        */

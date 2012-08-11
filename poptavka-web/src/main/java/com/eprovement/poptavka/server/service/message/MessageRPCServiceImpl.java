@@ -278,7 +278,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param offer
      * @return message
      */
-    public OfferMessageDetail sendOffer(OfferMessageDetail offer) {
+    public OfferMessageDetail sendOffer(OfferMessageDetail offer) throws RPCException {
 //        Offer o = new Offer();
 //        o.setCreated(new Date());
 //        o.setDemand(this.generalService.find(Demand.class, offer.getDemandId()));
@@ -360,7 +360,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return messageDetailImpls;
     }
 
-    public ArrayList<MessageDetail> loadClientsPotentialOfferConversation(long threadId, long userId) {
+    public ArrayList<MessageDetail> loadClientsPotentialOfferConversation(long threadId, long userId)
+        throws RPCException {
         Message threadRoot = messageService.getById(threadId);
         User user = this.generalService.find(User.class, userId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialOfferConversation(

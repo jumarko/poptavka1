@@ -95,6 +95,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         this.clientService = clientService;
     }
 
+    @Autowired
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
     }

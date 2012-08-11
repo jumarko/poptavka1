@@ -1,7 +1,10 @@
 package com.eprovement.poptavka.util.reflection;
 
 import com.google.common.base.Preconditions;
+import java.io.IOException;
+import java.util.ArrayList;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +12,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.type.ClassMetadata;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.SystemPropertyUtils;
 
 /**
  * This utility class provides handy methods for reflection techniques.
@@ -95,6 +107,52 @@ public final class ReflectionUtils {
     }
 
 
+    public static List<Class> findAllClasses(String basePackage) throws RuntimeException {
+        return findClasses(basePackage, new ClassFilter() {
+            @Override
+            public boolean match(ClassMetadata classMetadata) {
+                return true;
+            }
+        });
+    }
+
+
+    public static List<Class> findClasses(String basePackage, ClassFilter classFilter) throws RuntimeException {
+        Validate.notEmpty(basePackage, "basePackage cannot be empty!");
+        Validate.notNull(classFilter, "classFilter cannot be null!");
+
+        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+        MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
+
+        List<Class> candidates = new ArrayList<Class>();
+        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
+                + resolveBasePackage(basePackage) + "/" + "**/*.class";
+        Resource[] resources = new Resource[0];
+        try {
+            resources = resourcePatternResolver.getResources(packageSearchPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (Resource resource : resources) {
+            if (resource.isReadable()) {
+                MetadataReader metadataReader = null;
+                try {
+                    metadataReader = metadataReaderFactory.getMetadataReader(resource);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    if (classFilter.match(metadataReader.getClassMetadata())) {
+                        candidates.add(Class.forName(metadataReader.getClassMetadata().getClassName()));
+                    }
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return candidates;
+    }
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
 
     private static Method getAccessor(Class aClass, String fieldName, String[] accessorPrefixes) {
@@ -132,4 +190,10 @@ public final class ReflectionUtils {
         }
         return name;
     }
+
+
+    private static String resolveBasePackage(String basePackage) {
+        return ClassUtils.convertClassNameToResourcePath(SystemPropertyUtils.resolvePlaceholders(basePackage));
+    }
+
 }

@@ -270,13 +270,13 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     // TODO FIX this, it's not working nullPointerException.
-    public Locality getLocality(String code) {
+    public Locality getLocality(String code) throws RPCException {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
         return localityService.getLocality(code);
 //        return localityService.getById(10);
     }
 
-    public Category getCategory(String id) {
+    public Category getCategory(String id) throws RPCException {
         return categoryService.getById(Long.parseLong(id));
     }
 

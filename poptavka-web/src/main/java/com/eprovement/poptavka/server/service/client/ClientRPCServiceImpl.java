@@ -44,7 +44,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private Converter<Client, ClientDetail> clientConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
-    public ArrayList<BusinessUserDetail> getAllClients() {
+    public ArrayList<BusinessUserDetail> getAllClients() throws RPCException {
         // TODO do we need this method?
         return null;
     }

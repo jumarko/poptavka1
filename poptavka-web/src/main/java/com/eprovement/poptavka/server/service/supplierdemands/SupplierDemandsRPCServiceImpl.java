@@ -100,8 +100,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierPotentialProjectsCount(long supplierID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+    public long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -122,8 +122,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierPotentialProjects(long supplierID,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
+    public List<FullOfferDetail> getSupplierPotentialProjects(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
@@ -140,8 +140,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierContestsCount(long supplierID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+    public long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -160,8 +160,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierContests(long supplierID,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
+    public List<FullOfferDetail> getSupplierContests(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
@@ -178,8 +178,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierAssignedProjectsCount(long supplierID,
-            SearchModuleDataHolder filter) throws ApplicationSecurityException {
+    public long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -198,8 +198,8 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierAssignedProjects(long supplierID,
-            SearchDefinition searchDefinition) throws ApplicationSecurityException {
+    public List<FullOfferDetail> getSupplierAssignedProjects(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
@@ -209,13 +209,13 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public FullDemandDetail getFullDemandDetail(long demandId) throws ApplicationSecurityException {
+    public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException {
         return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
     }
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public FullSupplierDetail getFullSupplierDetail(long supplierId) throws ApplicationSecurityException {
+    public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException {
         return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
     }
 
@@ -272,7 +272,7 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
         }
     }
 
-    public List<FullOfferDetail> getFakeData() {
+    public List<FullOfferDetail> getFakeData() throws RPCException {
         FullOfferDetail detail = new FullOfferDetail();
         detail.getOfferDetail().setDemandId(1L);
         detail.getOfferDetail().setState(OfferStateType.ACCEPTED);

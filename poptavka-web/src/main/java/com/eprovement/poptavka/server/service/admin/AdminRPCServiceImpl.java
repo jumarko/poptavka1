@@ -389,7 +389,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void updateOffer(OfferDetail offerDetail) {
+    public void updateOffer(OfferDetail offerDetail) throws RPCException {
         Offer offer = generalService.find(Offer.class, offerDetail.getId());
         if (!offer.getPrice().equals(offerDetail.getPrice())) {
             offer.setPrice((BigDecimal) offerDetail.getPrice());
@@ -492,7 +492,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void updateEmailActivation(ActivationEmailDetail emailActivationDetail) {
+    public void updateEmailActivation(ActivationEmailDetail emailActivationDetail) throws RPCException {
         ActivationEmail emailActivation = generalService.find(ActivationEmail.class, emailActivationDetail.getId());
         if (!emailActivation.getActivationLink().equals(emailActivationDetail.getActivationLink())) {
             emailActivation.setActivationLink(emailActivationDetail.getActivationLink());
@@ -754,7 +754,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<PaymentMethodDetail> getAdminPaymentMethods() {
+    public List<PaymentMethodDetail> getAdminPaymentMethods() throws RPCException {
         final Search search = new Search(PaymentMethod.class);
         search.addSort("id", false);
         return paymentMethodConverter.convertToTargetList(generalService.search(search));

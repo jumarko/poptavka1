@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.service.simpleservice;
 
 import com.eprovement.poptavka.client.service.demand.SimpleService;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.springframework.security.access.annotation.Secured;
 
@@ -17,7 +18,7 @@ public class SimpleServiceImpl extends RemoteServiceServlet implements SimpleSer
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public String getData() {
+    public String getData() throws RPCException {
 
         final String serverInfo = getServletContext().getServerInfo();
         final String userAgent = getThreadLocalRequest().getHeader("User-Agent");

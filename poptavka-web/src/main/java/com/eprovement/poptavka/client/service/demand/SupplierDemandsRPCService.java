@@ -35,7 +35,7 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @return
      */
     long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter)
-        throws ApplicationSecurityException;
+        throws RPCException, ApplicationSecurityException;
 
     /**
      * Get demands of categories that I am interested in.
@@ -48,8 +48,8 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierPotentialProjects(
-            long supplierID, SearchDefinition searchDefinition) throws ApplicationSecurityException;
+    List<FullOfferDetail> getSupplierPotentialProjects(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
 
     //************************ SUPPLIER - My Offers ***************************/
 
@@ -62,7 +62,8 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter) throws ApplicationSecurityException;
+    long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter)
+        throws RPCException, ApplicationSecurityException;
 
     /**
      * Get offers sent by supplier.
@@ -74,8 +75,8 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @return
      */
     //TODO Martin premenovat FullOfferDetail na ContestDetail alebo nieco podobne
-    List<FullOfferDetail> getSupplierContests(
-            long supplierID, SearchDefinition searchDefinition) throws ApplicationSecurityException;
+    List<FullOfferDetail> getSupplierContests(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
 
     //******************* SUPPLIER - My Assigned Demands **********************/
     /**
@@ -88,7 +89,7 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @return
      */
     long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter)
-        throws ApplicationSecurityException;
+        throws RPCException, ApplicationSecurityException;
 
     /**
      * Get supplier's offers that have been accepted.
@@ -99,18 +100,18 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierAssignedProjects(
-            long supplierID, SearchDefinition searchDefinition) throws ApplicationSecurityException;
+    List<FullOfferDetail> getSupplierAssignedProjects(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/
-    FullDemandDetail getFullDemandDetail(long demandId) throws ApplicationSecurityException;
+    FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException;
 
-    FullSupplierDetail getFullSupplierDetail(long supplierId) throws ApplicationSecurityException;
+    FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException;
 
-    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId,
-            long userMessageId) throws RPCException, ApplicationSecurityException;
+    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId)
+        throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Setter methods                                                         */

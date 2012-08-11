@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -13,5 +14,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("rpc")
 public interface SimpleService extends RemoteService {
 
-    String getData();
+    String getData() throws RPCException;
 }
