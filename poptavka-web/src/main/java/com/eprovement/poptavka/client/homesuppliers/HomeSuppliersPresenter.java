@@ -100,7 +100,12 @@ public class HomeSuppliersPresenter
         Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS);
         this.searchDataHolder = searchModuleDataHolder;
 
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        if (searchModuleDataHolder == null) {
+            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        } else {
+            //Always only one category is sent
+            view.getSelectionCategoryModel().setSelected(searchModuleDataHolder.getCategories().get(0), true);
+        }
     }
 
     @Override
@@ -108,7 +113,7 @@ public class HomeSuppliersPresenter
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                view.getDataGrid().getDataProvider().updateRowCount(0, false);
+                view.getDataGrid().clearData();
 
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 

@@ -4,6 +4,7 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Holds data of search module to filter data. Data are divided exactly according to
@@ -29,12 +30,30 @@ public class SearchModuleDataHolder implements Serializable {
     public SearchModuleDataHolder() {
     }
 
-    public String getSearchText() {
-        return searchText;
-    }
-
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
     public void setSearchText(String searchText) {
         this.searchText = searchText;
+    }
+
+    public void setCategories(Collection<CategoryDetail> categories) {
+        this.categories = new ArrayList<CategoryDetail>(categories);
+    }
+
+    public void setLocalities(Collection<LocalityDetail> localities) {
+        this.localities = new ArrayList<LocalityDetail>(localities);
+    }
+
+    public void setAttributes(ArrayList<FilterItem> attributes) {
+        this.attributes = attributes;
+    }
+
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    public String getSearchText() {
+        return searchText;
     }
 
     public ArrayList<CategoryDetail> getCategories() {

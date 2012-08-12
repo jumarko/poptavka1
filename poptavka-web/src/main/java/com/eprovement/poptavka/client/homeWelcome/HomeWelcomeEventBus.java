@@ -51,6 +51,9 @@ public interface HomeWelcomeEventBus extends EventBus {
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
 
     @Event(forwardToParent = true)

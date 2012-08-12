@@ -382,9 +382,22 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * @param list
      */
     public void updateRowData(List<T> list) {
-        dataProvider.updateRowData(start, list);
-        flush();
-        redraw();
+        if (dataProvider != null) {
+            dataProvider.updateRowData(start, list);
+            flush();
+            redraw();
+        }
+    }
+
+    /**
+     * Clear data before displaying new.
+     */
+    public void clearData() {
+        if (dataProvider != null) {
+            dataProvider.updateRowCount(0, false);
+            flush();
+            redraw();
+        }
     }
 
     // ***********************************************************************

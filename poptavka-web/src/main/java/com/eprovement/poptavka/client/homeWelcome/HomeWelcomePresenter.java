@@ -8,6 +8,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Presenter(view = HomeWelcomeView.class)
 public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements
@@ -44,7 +45,12 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
                 CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
 
                 if (selected != null) {
-                    //TODO - forward to homeSuppliers with filtered category
+                    if (searchDataHolder == null) {
+                        searchDataHolder = new SearchModuleDataHolder();
+                    }
+                    searchDataHolder.setCategories(
+                            Arrays.asList(view.getCategorySelectionModel().getSelectedObject()));
+                    eventBus.goToHomeSuppliersModule(searchDataHolder);
                 }
             }
         });

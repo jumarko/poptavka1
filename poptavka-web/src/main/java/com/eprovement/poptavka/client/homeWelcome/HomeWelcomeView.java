@@ -114,7 +114,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     }
 
     @Override
-    public SingleSelectionModel getCategorySelectionModel() {
+    public SingleSelectionModel<CategoryDetail> getCategorySelectionModel() {
         return selectionRootModel;
     }
 
