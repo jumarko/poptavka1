@@ -6,10 +6,11 @@ package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -92,7 +93,7 @@ public class AdminAccessRolesPresenter
         Storage.setCurrentlyLoadedView(Constants.ADMIN_ACCESS_ROLE);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
@@ -292,7 +293,7 @@ public class AdminAccessRolesPresenter
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
                     view.getDataGrid().updateRowData(new ArrayList<AccessRoleDetail>());
-                    view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+                    view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

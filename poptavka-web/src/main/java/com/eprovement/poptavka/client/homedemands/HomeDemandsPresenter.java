@@ -10,6 +10,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -120,7 +121,7 @@ public class HomeDemandsPresenter extends BasePresenter<
      */
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
-        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
     /**

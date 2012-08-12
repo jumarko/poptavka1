@@ -344,7 +344,7 @@ public interface AdminEventBus extends EventBus, IEventBusData {
     /**************************************************************************/
     @Override
     @Event(handlers = AdminHandler.class)
-    void getDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail);
+    void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
     @Override
     @Event(handlers = AdminHandler.class)

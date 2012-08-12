@@ -63,7 +63,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
          * @param grid
          * @param searchDataHolder - define filtering criteria
          */
-        void getDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder);
+        void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
         /**
          * Gets data that satisfy filtering criteria represented by given
@@ -134,7 +134,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     // providing HTML safe display
     public static final ClickableTextCell TABLE_CLICKABLE_TEXT_CELL = new ClickableTextCell(
             new SafeHtmlRenderer<String>() {
-
                 @Override
                 public SafeHtml render(String object) {
                     return SafeHtmlUtils.fromTrustedString(object);
@@ -177,11 +176,11 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * <b>getData</b> methods
      * @param searchDataHolder - define search criteria if any
      */
-    public void getDataCount(IEventBusData eventBus, SearchModuleDataHolder searchDataHolder) {
+    public void getDataCount(IEventBusData eventBus, SearchDefinition searchDefinition) {
         this.eventBus = eventBus;
-        this.searchDataHolder = searchDataHolder;
+        this.searchDataHolder = searchDefinition.getFilter();
 
-        eventBus.getDataCount(this, searchDataHolder);
+        eventBus.getDataCount(this, searchDefinition);
     }
 
     /**
@@ -194,7 +193,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     public void createAsyncDataProvider(final int resultCount) {
         this.start = 0;
         this.dataProvider = new AsyncDataProvider<T>() {
-
             @Override
             protected void onRangeChanged(HasData<T> display) {
                 display.setRowCount(resultCount);
@@ -220,7 +218,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     private void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(this) {
-
             @Override
             public void onColumnSort(ColumnSortEvent event) {
                 orderColumns.clear();
@@ -257,7 +254,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     public <C> Column<T, C> addColumn(Cell<C> cell,
             String headerText, boolean sort, int width, final GetValue<C> getter) {
         Column<T, C> column = new Column<T, C>(cell) {
-
             @Override
             public C getValue(T demand) {
                 return getter.getValue(demand);
@@ -279,7 +275,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public Column<T, Boolean> addCheckboxColumn(Header header) {
         Column<T, Boolean> checkColumn = new Column<T, Boolean>(new CheckboxCell(true, false)) {
-
             @Override
             public Boolean getValue(T object) {
                 // Get the value from the selection model.
@@ -298,7 +293,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public Column<T, OfferStateType> addOfferStateColumn(String headerText) {
         Column<T, OfferStateType> col = new Column<T, OfferStateType>(new OfferStateImageCell()) {
-
             @Override
             public OfferStateType getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
@@ -319,7 +313,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public Column<T, DemandStatus> addDemandStatusColumn(String headerText) {
         Column<T, DemandStatus> col = new Column<T, DemandStatus>(new DemandStatusImageCell()) {
-
             @Override
             public DemandStatus getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
@@ -341,7 +334,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public Column<T, Date> addUrgentColumn(String headerText) {
         Column<T, Date> urgencyColumn = new Column<T, Date>(new UrgentImageCell()) {
-
             @Override
             public Date getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
@@ -367,7 +359,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public Column<T, Boolean> addStarColumn() {
         Column<T, Boolean> col = new Column<T, Boolean>(new StarCell()) {
-
             @Override
             public Boolean getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;

@@ -28,6 +28,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,7 +120,7 @@ public class AdminInvoicesPresenter
         Storage.setCurrentlyLoadedView(Constants.ADMIN_INVOICES);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getAdminInvoiceDetail().setVisible(false);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
@@ -339,7 +340,7 @@ public class AdminInvoicesPresenter
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
                     view.getDataGrid().updateRowData(new ArrayList<InvoiceDetail>());
-                    eventBus.getDataCount(view.getDataGrid(), searchDataHolder);
+                    eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

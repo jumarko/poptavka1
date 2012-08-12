@@ -153,7 +153,7 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
     /**************************************************************************/
     @Override
     @Event(handlers = SupplierDemandsHandler.class)
-    void getDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail);
+    void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
     @Override
     @Event(handlers = SupplierDemandsHandler.class)

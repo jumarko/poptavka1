@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCServiceAs
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -22,16 +21,16 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     //*************************************************************************/
     // Overriden methods of IEventBusData interface.                          */
     //*************************************************************************/
-    public void onGetDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+    public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.SUPPLIER_POTENTIAL_PROJECTS:
-                getSupplierPotentialProjectsCount(grid, detail);
+                getSupplierPotentialProjectsCount(grid, searchDefinition);
                 break;
             case Constants.SUPPLIER_CONTESTS:
-                getSupplierContestsCount(grid, detail);
+                getSupplierContestsCount(grid, searchDefinition);
                 break;
             case Constants.SUPPLIER_ASSIGNED_PROJECTS:
-                getSupplierAssignedProjectsCount(grid, detail);
+                getSupplierAssignedProjectsCount(grid, searchDefinition);
                 break;
             default:
                 break;
@@ -57,8 +56,8 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     // Retrieving methods                                                     */
     //*************************************************************************/
 
-    private void getSupplierPotentialProjectsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
-        supplierDemandsService.getSupplierPotentialProjectsCount(Storage.getUser().getUserId(), detail,
+    private void getSupplierPotentialProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierPotentialProjectsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>() {
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -79,9 +78,9 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     }
     //
 
-    private void getSupplierContestsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+    private void getSupplierContestsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierContestsCount(
-                Storage.getUser().getUserId(), detail, new SecuredAsyncCallback<Long>() {
+                Storage.getUser().getUserId(), searchDefinition, new SecuredAsyncCallback<Long>() {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -101,9 +100,9 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     }
     //
 
-    private void getSupplierAssignedProjectsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+    private void getSupplierAssignedProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedProjectsCount(
-                Storage.getUser().getUserId(), detail,
+                Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>() {
                     @Override
                     public void onSuccess(Long result) {

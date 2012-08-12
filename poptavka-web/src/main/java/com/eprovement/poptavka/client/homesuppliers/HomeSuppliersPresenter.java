@@ -6,6 +6,7 @@ import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -99,7 +100,7 @@ public class HomeSuppliersPresenter
         Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS);
         this.searchDataHolder = searchModuleDataHolder;
 
-        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
     @Override
@@ -124,7 +125,7 @@ public class HomeSuppliersPresenter
                     view.getDataGrid().getSelectionModel().setSelected(
                             ((SingleSelectionModel) view.getDataGrid().getSelectionModel()).getSelectedObject(), false);
 
-                    view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+                    view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
                 }
             }
         });

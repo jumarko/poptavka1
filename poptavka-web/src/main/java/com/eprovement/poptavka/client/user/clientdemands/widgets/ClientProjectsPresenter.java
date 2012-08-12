@@ -12,6 +12,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -125,7 +126,7 @@ public class ClientProjectsPresenter
     public void onInitClientProjects(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECTS);
         searchDataHolder = filter;
-        view.getDemandGrid().getDataCount(eventBus, searchDataHolder);
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
         view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());

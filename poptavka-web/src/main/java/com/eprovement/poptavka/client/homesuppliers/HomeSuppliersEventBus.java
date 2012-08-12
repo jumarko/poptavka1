@@ -90,7 +90,7 @@ public interface HomeSuppliersEventBus extends EventBus, IEventBusData {
     // SUPPLIERS
     @Override
     @Event(handlers = HomeSuppliersHandler.class)
-    void getDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail);
+    void getDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
     @Override
     @Event(handlers = HomeSuppliersHandler.class)

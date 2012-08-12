@@ -12,6 +12,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -101,7 +102,7 @@ public class AdminSuppliersPresenter
         Storage.setCurrentlyLoadedView(Constants.ADMIN_SUPPLIERS);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
@@ -329,7 +330,7 @@ public class AdminSuppliersPresenter
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
                     view.getDataGrid().updateRowData(new ArrayList<FullSupplierDetail>());
-                    eventBus.getDataCount(view.getDataGrid(), searchDataHolder);
+                    eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

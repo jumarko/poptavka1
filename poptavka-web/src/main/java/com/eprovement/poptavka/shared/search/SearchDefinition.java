@@ -11,28 +11,32 @@ import java.util.Map;
  */
 public class SearchDefinition implements Serializable {
 
-    private int start;
-    private int maxResult;
-    private SearchModuleDataHolder filter;
-    private Map<String, OrderType> orderColumns;
+    private int firstResult = -1;
+    private int maxResult = -1;
+    private SearchModuleDataHolder filter = null;
+    private Map<String, OrderType> orderColumns = null;
 
     public SearchDefinition() {
     }
 
+    public SearchDefinition(SearchModuleDataHolder filter) {
+        this.filter = filter;
+    }
+
     public SearchDefinition(int start, int maxResult, SearchModuleDataHolder filter,
             Map<String, OrderType> orderColumns) {
-        this.start = start;
+        this.firstResult = start;
         this.maxResult = maxResult;
         this.filter = filter;
         this.orderColumns = orderColumns;
     }
 
-    public int getStart() {
-        return start;
+    public int getFirstResult() {
+        return firstResult;
     }
 
-    public void setStart(int start) {
-        this.start = start;
+    public void setFirstResult(int start) {
+        this.firstResult = start;
     }
 
     public int getMaxResult() {

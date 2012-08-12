@@ -34,15 +34,13 @@ public final class SearchConverter implements Converter<Search, SearchDefinition
     public Search convertToSource(SearchDefinition definition) {
         Validate.notNull(definition, "Search definition cannot be null!");
         Search search = new Search();
+        convertFirstResult(definition, search);
+        convertMaxResult(definition, search);
         convertFilters(definition, search);
-        search.setFirstResult(definition.getStart());
-        search.setMaxResults(definition.getMaxResult());
         convertOrderColumns(definition, search);
 
         return search;
     }
-
-
 
     @Override
     public ArrayList<SearchDefinition> convertToTargetList(Collection<Search> sourceObjects) {
@@ -54,8 +52,38 @@ public final class SearchConverter implements Converter<Search, SearchDefinition
         throw new UnsupportedOperationException("Convertion List<Search> to List<SearchDefinition> failed!");
     }
 
-
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    /**
+     * Converts <b>MaxResult</b>, attribute of <b>SearchDefinition</b> to attribute of <b>Search</b>.
+     * If SearchConverter is used in count methods of RPC services, maxResult is not set, because we
+     * want to get all data. Therefore converter won't add maxResult attribute to Search object.
+     *
+     * @param definition
+     * @param search
+     */
+    private void convertFirstResult(SearchDefinition definition, Search search) {
+        //Ak chcem pouzit searchConverter aj v count metodach, udaj atribut
+        //nie je vyplneny (== -1) preto ho nesmie konverter pridat do search objektu.
+        if (definition.getFirstResult() != -1) {
+            search.setFirstResult(definition.getFirstResult());
+        }
+    }
+
+    /**
+     * Converts <b>MaxResult</b>, attribute of <b>SearchDefinition</b> to attribute of <b>Search</b>.
+     * If SearchConverter is used in count methods of RPC services, maxResult is not set, because we
+     * want to get all data. Therefore converter won't add maxResult attribute to Search object.
+     *
+     * @param definition
+     * @param search
+     */
+    private void convertMaxResult(SearchDefinition definition, Search search) {
+        //Ak chcem pouzit searchConverter aj v count metodach, udaj atribut
+        //nie je vyplneny (== -1) preto ho nesmie konverter pridat do search objektu.
+        if (definition.getMaxResult() != -1) {
+            search.setMaxResults(definition.getMaxResult());
+        }
+    }
 
     private void convertFilters(SearchDefinition definition, Search search) {
         if (definition != null && definition.getFilter() != null) {
@@ -82,5 +110,4 @@ public final class SearchConverter implements Converter<Search, SearchDefinition
             }
         }
     }
-
 }

@@ -5,7 +5,6 @@
 package com.eprovement.poptavka.server.service.homedemands;
 
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -28,7 +27,6 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +34,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -46,7 +43,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * <b>HomeDemandsRPCServiceImpl</b> is RPC service for HomeDemands module. It
  * contains two methods: <ul> <li>@see #getDemandsCount(SearchModuleDataHolder
  * detail)</li> <li>@see #getDemands(int start, int count,
- * SearchModuleDataHolder detail, Map<String, OrderType> orderColumns)</li>
+ * SearchDefinition searchDefinition, Map<String, OrderType> orderColumns)</li>
  * </ul> The retriving proces is optimized by using different backend methods
  * for different situations depending on given <b>SearchModuleDataHolder</b>
  * detail.
@@ -134,21 +131,21 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * retrieving data. Therefore different set of methods is used for
      * optimizing the proces.
      *
-     * @param detail - define filter criteria
+     * @param definition - define filter criteria
      * @return demands count
      * @throws RPCException
      */
     @Override
-    public long getDemandsCount(SearchModuleDataHolder detail) throws RPCException {
-        if (detail == null) {
-            return filterWithoutAttributesCount(null);
+    public long getDemandsCount(SearchDefinition definition) throws RPCException {
+        if (definition == null || definition.getFilter() == null) {
+            return filterWithoutAttributesCount(definition);
         } else {
-            if (!detail.getSearchText().isEmpty()) {
-                return fullTextSearchCount(detail.getSearchText());
-            } else if (detail.getAttributes().isEmpty()) {
-                return filterWithoutAttributesCount(detail);
+            if (!definition.getFilter().getSearchText().isEmpty()) {
+                return fullTextSearchCount(definition.getFilter().getSearchText());
+            } else if (definition.getFilter().getAttributes().isEmpty()) {
+                return filterWithoutAttributesCount(definition);
             } else {
-                return filterWithAttributesCount(detail);
+                return filterWithAttributesCount(definition);
             }
         }
     }
@@ -168,18 +165,17 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @throws RPCException
      */
     @Override
-    public List<FullDemandDetail> getDemands(SearchDefinition searchDefinition) throws RPCException {
-        SearchModuleDataHolder filter = searchDefinition.getFilter();
-        if (filter == null) {
-            return filterWithoutAttributes(searchDefinition);
+    public List<FullDemandDetail> getDemands(SearchDefinition definition) throws RPCException {
+        if (definition == null || definition.getFilter() == null) {
+            return filterWithoutAttributes(definition);
         } else {
-            if (!filter.getSearchText().isEmpty()) {
-                return fullTextSearch(filter.getSearchText()).subList(
-                        searchDefinition.getStart(), searchDefinition.getMaxResult());
-            } else if (filter.getAttributes().isEmpty()) {
-                return filterWithoutAttributes(searchDefinition);
+            if (!definition.getFilter().getSearchText().isEmpty()) {
+                return fullTextSearch(definition.getFilter().getSearchText()).subList(
+                        definition.getFirstResult(), definition.getMaxResult());
+            } else if (definition.getFilter().getAttributes().isEmpty()) {
+                return filterWithoutAttributes(definition);
             } else {
-                return filterWithAttributes(searchDefinition);
+                return filterWithAttributes(definition);
             }
         }
     }
@@ -337,11 +333,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     // ***********************************************************************
     // Get demands by Fulltext search
     // ***********************************************************************
-    public long fullTextSearchCount(String searchText) throws RPCException {
+    public long fullTextSearchCount(String searchText) {
         return this.fulltextSearchService.searchCount(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
     }
 
-    public List<FullDemandDetail> fullTextSearch(String searchText) throws RPCException {
+    public List<FullDemandDetail> fullTextSearch(String searchText) {
         final List<Demand> foundDemands =
                 this.fulltextSearchService.search(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
         return demandConverter.convertToTargetList(foundDemands);
@@ -356,26 +352,33 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * therefore there is no need to use backend methods which use
      * <i>general.Search</i> for retrieving data.
      *
-     * @param detail - define filtering criteria, which helps this method to
+     * @param definition - define filtering criteria, which helps this method to
      * make decision
      * @return demands count
      */
-    private long filterWithoutAttributesCount(SearchModuleDataHolder detail) {
+    private long filterWithoutAttributesCount(SearchDefinition definition) {
         //null || 0 0
-        if (detail == null || (detail.getCategories().isEmpty() && detail.getLocalities().isEmpty())) {
+        if ((definition == null || definition.getFilter() == null)
+                || (definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty())) {
             return getAllDemandsCount();
         }
         //1 0
-        if (!detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
-            return getCategoryDemandsCount(detail.getCategories());
+        if (!definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty()) {
+            return getCategoryDemandsCount(definition.getFilter().getCategories());
         }
         //0 1
-        if (detail.getCategories().isEmpty() && !detail.getLocalities().isEmpty()) {
-            return getLocalityDemandsCount(detail.getLocalities());
+        if (definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            return getLocalityDemandsCount(definition.getFilter().getLocalities());
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (!detail.getCategories().isEmpty() && !detail.getLocalities().isEmpty()) {
-            return getCategoryLocalityDemandsCount(detail.getCategories(), detail.getLocalities());
+        if (!definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            return getCategoryLocalityDemandsCount(
+                    definition.getFilter().getCategories(),
+                    definition.getFilter().getLocalities());
         }
         return -1L;
     }
@@ -386,30 +389,34 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * there is need to use backend methods which use <i>general.Search</i> for
      * retrieving data.
      *
-     * @param detail - define filtering criteria, which helps this method to
+     * @param definition - define filtering criteria, which helps this method to
      * make decision
      * @return demands count
      */
-    private long filterWithAttributesCount(SearchModuleDataHolder detail) {
+    private long filterWithAttributesCount(SearchDefinition definition) {
         //0 0
-        if (detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
-            Search search = this.getFilter(detail, null);
+        if (definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getFilter(definition);
             return (long) generalService.searchAndCount(search).getTotalCount();
         }
         //1 0
-        if (!detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
-            Search search = this.getFilter(detail, null);
+        if (!definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getFilter(definition);
             return (long) generalService.searchAndCount(search).getTotalCount();
         }
         //0 1
-        if (detail.getCategories().isEmpty() && !detail.getLocalities().isEmpty()) {
-            Search search = this.getFilter(detail, null);
+        if (definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getFilter(definition);
             return (long) generalService.searchAndCount(search).getTotalCount();
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (!detail.getCategories().isEmpty() && !detail.getLocalities().isEmpty()) {
-            return generalService.searchAndCount(this.getFilter(detail, null)).getTotalCount()
-                    + generalService.searchAndCount(this.getFilter(detail, null)).getTotalCount();
+        if (!definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            return generalService.searchAndCount(this.getFilter(definition)).getTotalCount()
+                    + generalService.searchAndCount(this.getFilter(definition)).getTotalCount();
         }
         return -1L;
     }
@@ -424,23 +431,27 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * make decision
      * @return demand detail list
      */
-    private List<FullDemandDetail> filterWithoutAttributes(SearchDefinition searchDefinition) {
-        SearchModuleDataHolder filter = searchDefinition.getFilter();
+    private List<FullDemandDetail> filterWithoutAttributes(SearchDefinition definition) {
         //0 0
-        if (filter == null || (filter.getCategories().isEmpty() && filter.getLocalities().isEmpty())) {
-            return getSortedDemands(searchDefinition);
+        if ((definition == null || definition.getFilter() == null)
+                || (definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty())) {
+            return getSortedDemands(definition);
         }
         //1 0
-        if (!filter.getCategories().isEmpty() && filter.getLocalities().isEmpty()) {
-            return getSortedCategoryDemands(searchDefinition);
+        if (!definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty()) {
+            return getSortedCategoryDemands(definition);
         }
         //0 1
-        if (filter.getCategories().isEmpty() && !filter.getLocalities().isEmpty()) {
-            return getSortedLocalityDemands(searchDefinition);
+        if (definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            return getSortedLocalityDemands(definition);
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (!filter.getCategories().isEmpty() && !filter.getLocalities().isEmpty()) {
-            return getSortedCategoryLocalityDemands(searchDefinition);
+        if (!definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            return getSortedCategoryLocalityDemands(definition);
         }
         return null;
     }
@@ -456,37 +467,40 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @return demand detail list
      */
     private List<FullDemandDetail> filterWithAttributes(SearchDefinition searchDefinition) {
-        SearchModuleDataHolder filter = searchDefinition.getFilter();
         //0 0
-        if (filter.getCategories().isEmpty() && filter.getLocalities().isEmpty()) {
-            Search search = this.getFilter(filter, searchDefinition.getOrderColumns());
-            search.setFirstResult(searchDefinition.getStart());
+        if (searchDefinition.getFilter().getCategories().isEmpty()
+                && searchDefinition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getFilter(searchDefinition);
+            search.setFirstResult(searchDefinition.getFirstResult());
             search.setMaxResults(searchDefinition.getMaxResult());
             return demandConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 0
-        if (!filter.getCategories().isEmpty() && filter.getLocalities().isEmpty()) {
-            Search search = this.getFilter(filter, searchDefinition.getOrderColumns());
-            search.setFirstResult(searchDefinition.getStart());
+        if (!searchDefinition.getFilter().getCategories().isEmpty()
+                && searchDefinition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getFilter(searchDefinition);
+            search.setFirstResult(searchDefinition.getFirstResult());
             search.setMaxResults(searchDefinition.getMaxResult());
             return this.createDemandDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
         //0 1
-        if (filter.getCategories().isEmpty() && !filter.getLocalities().isEmpty()) {
-            Search search = this.getFilter(filter, searchDefinition.getOrderColumns());
-            search.setFirstResult(searchDefinition.getStart());
+        if (searchDefinition.getFilter().getCategories().isEmpty()
+                && !searchDefinition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getFilter(searchDefinition);
+            search.setFirstResult(searchDefinition.getFirstResult());
             search.setMaxResults(searchDefinition.getMaxResult());
             return this.createDemandDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (!filter.getCategories().isEmpty() && !filter.getLocalities().isEmpty()) {
+        if (!searchDefinition.getFilter().getCategories().isEmpty()
+                && !searchDefinition.getFilter().getLocalities().isEmpty()) {
             List<FullDemandDetail> demandsCat = this.createDemandDetailListCat(
                     this.generalService.searchAndCount(
-                    this.getFilter(filter, searchDefinition.getOrderColumns())).getResult());
+                    this.getFilter(searchDefinition)).getResult());
 
             List<FullDemandDetail> demandsLoc = this.createDemandDetailListLoc(
                     this.generalService.searchAndCount(
-                    this.getFilter(filter, searchDefinition.getOrderColumns())).getResult());
+                    this.getFilter(searchDefinition)).getResult());
 
             List<FullDemandDetail> demands = new ArrayList<FullDemandDetail>();
             for (FullDemandDetail demandCat : demandsCat) {
@@ -494,7 +508,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
                     demands.add(demandCat);
                 }
             }
-            return demands.subList(searchDefinition.getStart(), searchDefinition.getMaxResult());
+            return demands.subList(searchDefinition.getFirstResult(), searchDefinition.getMaxResult());
         }
         return null;
     }
@@ -505,30 +519,27 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * Search is then used in backend methods, which use generalService.Search
      * methods.
      */
-    private Search getFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private Search getFilter(SearchDefinition definition) {
         Search search = null;
         String prefix = "";
-        if (detail != null) {
+        if (definition != null) {
 
-            // TODO: filtering is broken, why should categories have a precedence before localities ?
-            // --> in code below
             //if category filtering is required
-            if (!detail.getCategories().isEmpty()) {
-                // TODO: in this case we are filtering only be categories and ingoring localities!!!
+            if (!definition.getFilter().getCategories().isEmpty()) {
                 search = new Search(DemandCategory.class);
                 prefix = "demand.";
 
                 List<Category> allSubCategories = new ArrayList<Category>();
-                for (CategoryDetail cat : detail.getCategories()) {
+                for (CategoryDetail cat : definition.getFilter().getCategories()) {
                     allSubCategories.addAll(Arrays.asList(this.getAllSubcategories(cat.getId())));
                 }
                 search.addFilterIn("category", allSubCategories);
                 //if locality filtering is required
-            } else if (!detail.getLocalities().isEmpty()) {
+            } else if (!definition.getFilter().getLocalities().isEmpty()) {
                 search = new Search(DemandLocality.class);
                 prefix = "demand.";
                 List<Locality> allSubLocalities = new ArrayList<Locality>();
-                for (LocalityDetail loc : detail.getLocalities()) {
+                for (LocalityDetail loc : definition.getFilter().getLocalities()) {
                     allSubLocalities.addAll(Arrays.asList(this.getAllSublocalities(loc.getCode())));
                 }
                 search.addFilterIn("locality", allSubLocalities);
@@ -536,7 +547,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
                 search = new Search(Demand.class);
             }
             //if attribute filtering is required
-            for (FilterItem item : detail.getAttributes()) {
+            for (FilterItem item : definition.getFilter().getAttributes()) {
                 if (item.getItem().equals("type")) {
                     search.addFilterEqual(prefix + "type",
                             demandService.getDemandType(item.getValue().toString()));
@@ -571,9 +582,9 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             search = new Search(Demand.class);
         }
         //if sorting is required
-        if (orderColumns != null) {
-            for (String item : orderColumns.keySet()) {
-                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+        if (definition.getOrderColumns() != null) {
+            for (String item : definition.getOrderColumns().keySet()) {
+                if (definition.getOrderColumns().get(item).getValue().equals(OrderType.ASC.getValue())) {
                     search.addSortAsc(prefix + item, true);
                 } else {
                     search.addSortDesc(prefix + item, true);
@@ -581,42 +592,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             }
         }
         return search;
-    }
-
-    /**
-     * This method adds new item to object Search accoriding to given inputs.
-     * This object Search is then used in backend methods using
-     * generalService.Search.
-     *
-     * @param search - object Search to which new item will be added
-     * @param prefix - in some cases a prefix have to be defined (when category
-     * or locality filtering is required)
-     * @param item - define that new attribute to add
-     * @return update Search object
-     */
-    private Filter filter(FilterItem item) {
-        Filter f;
-        switch (item.getOperation()) {
-            case FilterItem.OPERATION_EQUALS:
-                f = new Filter(item.getItem(), item.getValue(), Filter.OP_EQUAL);
-                break;
-            case FilterItem.OPERATION_LIKE:
-                f = new Filter(item.getItem(), item.getValue(), Filter.OP_LIKE);
-                break;
-            case FilterItem.OPERATION_IN:
-                f = new Filter(item.getItem(), item.getValue(), Filter.OP_IN);
-                break;
-            case FilterItem.OPERATION_FROM:
-                f = new Filter(item.getItem(), item.getValue(), Filter.OP_GREATER_OR_EQUAL);
-                break;
-            case FilterItem.OPERATION_TO:
-                f = new Filter(item.getItem(), item.getValue(), Filter.OP_LESS_OR_EQUAL);
-                break;
-            default:
-                f = new Filter();
-                break;
-        }
-        return f;
     }
 
     // ***********************************************************************

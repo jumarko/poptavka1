@@ -8,7 +8,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public interface HomeSuppliersRPCService extends RemoteService {
 
     String URL = "service/homesuppliers";
 
-    long getSuppliersCount(SearchModuleDataHolder supplier) throws RPCException;
+    long getSuppliersCount(SearchDefinition searchDefinition) throws RPCException;
 
     List<FullSupplierDetail> getSuppliers(SearchDefinition searchDefinition) throws RPCException;
 

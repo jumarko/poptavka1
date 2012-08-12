@@ -11,7 +11,6 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.MessageState;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.invoice.Invoice;
 import com.eprovement.poptavka.domain.invoice.OurPaymentDetails;
@@ -19,7 +18,6 @@ import com.eprovement.poptavka.domain.invoice.PaymentMethod;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.settings.Preference;
-import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Problem;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -47,18 +45,11 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.googlecode.genericdao.search.Search;
-import com.googlecode.genericdao.search.Sort;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +87,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Search, SearchDefinition> searchConverter;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) throws RPCException {
@@ -146,9 +138,16 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Autowired
-    public void setActivationEmailConverter(@Qualifier("activationEmailConverter") Converter<ActivationEmail,
-            ActivationEmailDetail> activationEmailConverter) {
+    public void setActivationEmailConverter(
+            @Qualifier("activationEmailConverter") Converter<ActivationEmail,
+                    ActivationEmailDetail> activationEmailConverter) {
         this.activationEmailConverter = activationEmailConverter;
+    }
+
+    @Autowired
+    public void setSearchConverter(
+            @Qualifier("searchConverter") Converter<Search, SearchDefinition> searchConverter) {
+        this.searchConverter = searchConverter;
     }
 
     @Autowired
@@ -210,26 +209,18 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Demand.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Demand.class));
-        }
+    public Long getAdminDemandsCount(SearchDefinition searchDefinition) throws RPCException {
+        searchConverter.convertToSource(searchDefinition);
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Demand.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<FullDemandDetail> getAdminDemands(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Demand.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Demand.class);
         return fullDemandConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -283,26 +274,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminClientsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Client.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Client.class));
-        }
+    public Long getAdminClientsCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Client.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ClientDetail> getAdminClients(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Client.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Client.class);
         return clientConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -326,26 +308,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Supplier.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Supplier.class));
-        }
+    public Long getAdminSuppliersCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Supplier.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<FullSupplierDetail> getAdminSuppliers(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Supplier.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Supplier.class);
         return supplierConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -364,26 +337,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminOffersCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Offer.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Offer.class));
-        }
+    public Long getAdminOffersCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Offer.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<OfferDetail> getAdminOffers(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Offer.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Offer.class);
         return offerConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -419,26 +383,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(AccessRole.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(AccessRole.class));
-        }
+    public Long getAdminAccessRolesCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(AccessRole.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<AccessRoleDetail> getAdminAccessRoles(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(AccessRole.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(AccessRole.class);
         return accessRoleConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -467,26 +422,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(ActivationEmail.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(ActivationEmail.class));
-        }
+    public Long getAdminEmailsActivationCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(ActivationEmail.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ActivationEmailDetail> getAdminEmailsActivation(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(ActivationEmail.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(ActivationEmail.class);
         return activationEmailConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -511,26 +457,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Invoice.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Invoice.class));
-        }
+    public Long getAdminInvoicesCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Invoice.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<InvoiceDetail> getAdminInvoices(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Invoice.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Invoice.class);
         return invoiceConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -592,27 +529,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminMessagesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Message.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Message.class));
-        }
+    public Long getAdminMessagesCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Message.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<MessageDetail> getAdminMessages(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Message.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
-//        search.setPage(count);
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Message.class);
         return messageConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -652,26 +579,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(OurPaymentDetails.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(OurPaymentDetails.class));
-        }
+    public Long getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(OurPaymentDetails.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PaymentDetail> getAdminOurPaymentDetails(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(OurPaymentDetails.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(OurPaymentDetails.class);
         return paymentConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -729,26 +647,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(PaymentMethod.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(PaymentMethod.class));
-        }
+    public Long getAdminPaymentMethodsCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(PaymentMethod.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PaymentMethodDetail> getAdminPaymentMethods(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(PaymentMethod.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(PaymentMethod.class);
         return paymentMethodConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -781,26 +690,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Permission.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Permission.class));
-        }
+    public Long getAdminPermissionsCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Permission.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PermissionDetail> getAdminPermissions(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Permission.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Permission.class);
         return permissionConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -828,26 +728,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Preference.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Preference.class));
-        }
+    public Long getAdminPreferencesCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Preference.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PreferenceDetail> getAdminPreferences(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Preference.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Preference.class);
         return preferenceConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -875,26 +766,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminProblemsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
-        Search search = null;
-        if (searchDataHolder == null) {
-            search = new Search(Problem.class);
-        } else {
-            search = this.setFilters(searchDataHolder, new Search(Problem.class));
-        }
+    public Long getAdminProblemsCount(SearchDefinition searchDefinition) throws RPCException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Problem.class);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ProblemDetail> getAdminProblems(SearchDefinition searchDefinition) throws RPCException {
-        Search search = new Search(Problem.class);
-        if (searchDefinition.getFilter() != null) {
-            search = this.setFilters(searchDefinition.getFilter(), search);
-        }
-        search = this.setSortSearch(searchDefinition.getOrderColumns(), search);
-        search.setFirstResult(searchDefinition.getStart());
-        search.setMaxResults(searchDefinition.getMaxResult());
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.setSearchClass(Problem.class);
         return problemConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -906,79 +788,5 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             problem.setText(problemDetail.getText());
         }
         generalService.merge(problem);
-    }
-
-    /**
-     * ********************************************************************************************
-     *********************** COMMON METHODS.
-     * *************************************************
-     *********************************************************************************************
-     */
-    private Search setSortSearch(Map<String, OrderType> orderColumns, Search search) {
-        List<Sort> sorts = new ArrayList<Sort>();
-        for (String str : orderColumns.keySet()) {
-            if (orderColumns.get(str) == OrderType.ASC) {
-                sorts.add(new Sort(str, false));
-            } else {
-                sorts.add(new Sort(str, true));
-            }
-        }
-        return search.addSorts(sorts.toArray(new Sort[sorts.size()]));
-    }
-
-    private Search filter(Search search, FilterItem item) {
-        switch (item.getOperation()) {
-            case FilterItem.OPERATION_EQUALS:
-                search.addFilterEqual(item.getItem(), item.getValue());
-                break;
-            case FilterItem.OPERATION_LIKE:
-                search.addFilterLike(item.getItem(), "%" + item.getValue().toString() + "%");
-                break;
-            case FilterItem.OPERATION_IN:
-                search.addFilterIn(item.getItem(), item.getValue());
-                break;
-            case FilterItem.OPERATION_FROM:
-                search.addFilterGreaterOrEqual(item.getItem(), item.getValue());
-                break;
-            case FilterItem.OPERATION_TO:
-                search.addFilterLessOrEqual(item.getItem(), item.getValue());
-                break;
-            default:
-                break;
-        }
-        return search;
-    }
-
-    private Search setFilters(SearchModuleDataHolder searchDataHolder, Search search) {
-        for (FilterItem item : searchDataHolder.getAttributes()) {
-            if (item.getItem().equals("type")) {
-                search.addFilterEqual("type", demandService.getDemandType(item.getValue().toString()));
-                //Da sa aj takto? AK ano, mozem odstanit demandService cim zmensim opat download fragment
-//                search.addFilterEqual("type", generalService.find(DemandType.class, item.getValue().toString()));
-            } else if (item.getItem().equals("companyName")) {
-                Collection<BusinessUserData> data = generalService.search(
-                        this.filter(new Search(BusinessUserData.class), item));
-                search.addFilterIn("businessUser.businessUserData", data);
-            } else if (item.getItem().equals("personFirstName")) {
-                Collection<BusinessUserData> data = generalService.search(
-                        this.filter(new Search(BusinessUserData.class), item));
-                search.addFilterIn("businessUser.businessUserData", data);
-            } else if (item.getItem().equals("personLastName")) {
-                List<BusinessUserData> data = generalService.search(
-                        this.filter(new Search(BusinessUserData.class), item));
-                search.addFilterIn("businessUser.businessUserData", data);
-            } else if (item.getItem().equals("description")) {
-                Collection<BusinessUserData> data = generalService.search(
-                        this.filter(new Search(BusinessUserData.class), item));
-                search.addFilterIn("businessUser.businessUserData", data);
-            } else if (item.getItem().equals("state")) {
-                //TODO skontrolovat, v message totiz list roli + ci je to rovnaky typ triedy
-                search.addFilterIn("roles.MessageUserRole.MessageUserRoleType",
-                        MessageType.valueOf(item.getValue().toString()));
-            } else {
-                this.filter(search, item);
-            }
-        }
-        return search;
     }
 }

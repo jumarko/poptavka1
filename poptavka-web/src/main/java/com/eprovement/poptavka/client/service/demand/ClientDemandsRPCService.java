@@ -10,7 +10,6 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.ArrayList;
@@ -39,8 +38,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientProjectsCount(long userId, SearchModuleDataHolder filter)
-        throws RPCException, ApplicationSecurityException;
+    long getClientProjectsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
      * Get all demands that has been created by client.
@@ -51,8 +50,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return list of demand's detail objects
      */
-    List<ClientProjectDetail> getClientProjects(long userId, SearchDefinition searchDefinition)
-        throws RPCException, ApplicationSecurityException;
+    List<ClientProjectDetail> getClientProjects(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
      * When supplier asks something about a demand of some client.
@@ -66,8 +65,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientProjectConversationsCount(long userId, long demandID, SearchModuleDataHolder filter)
-        throws RPCException, ApplicationSecurityException;
+    long getClientProjectConversationsCount(long userId, long demandID,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
      * When supplier asks something about a demand of some client.
@@ -95,8 +94,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientOfferedProjectsCount(long userId, SearchModuleDataHolder filter)
-        throws RPCException, ApplicationSecurityException;
+    long getClientOfferedProjectsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
      * Get all demands where have been placed an offer by some supplier.
@@ -109,8 +108,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<ClientProjectDetail> getClientOfferedProjects(long userId, long demandID, SearchDefinition searchDefinition)
-        throws RPCException, ApplicationSecurityException;
+    List<ClientProjectDetail> getClientOfferedProjects(long userId, long demandID,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
      * Get all contestants and their offers of given demand.
@@ -121,8 +120,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      *               If userId represents some different user than client, exception will be thrown
      * @return offers count of given demand
      */
-    long getClientProjectContestantsCount(long userId, long demandID, SearchModuleDataHolder filter)
-        throws RPCException, ApplicationSecurityException;
+    long getClientProjectContestantsCount(long userId, long demandID,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
      * Get all contestants and their offers of given demand.
@@ -135,8 +134,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getClientProjectContestants(long userId, long demandID, SearchDefinition searchDefinition)
-        throws RPCException, ApplicationSecurityException;
+    List<FullOfferDetail> getClientProjectContestants(long userId, long demandID,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     //******************** CLIENT - My Assigned Demands ***********************/
     /**
@@ -149,8 +148,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientAssignedProjectsCount(long userId, SearchModuleDataHolder filter)
-        throws RPCException, ApplicationSecurityException;
+    long getClientAssignedProjectsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
      * Get all offers that were accepted by client to solve a demand.
@@ -162,8 +161,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getClientAssignedProjects(long userId, SearchDefinition searchDefinition)
-        throws RPCException, ApplicationSecurityException;
+    List<FullOfferDetail> getClientAssignedProjects(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Other getter methods                                                   */
@@ -172,22 +171,22 @@ public interface ClientDemandsRPCService extends RemoteService {
 
     FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException;
 
-    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId)
-        throws RPCException, ApplicationSecurityException;
+    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId,
+            long userMessageId) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead)
-        throws RPCException, ApplicationSecurityException;
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
+            ApplicationSecurityException;
 
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Messages methods                                                       */
     /**************************************************************************/
-    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend)
-        throws RPCException, ApplicationSecurityException;
+    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws RPCException,
+            ApplicationSecurityException;
 
     OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException;
 }

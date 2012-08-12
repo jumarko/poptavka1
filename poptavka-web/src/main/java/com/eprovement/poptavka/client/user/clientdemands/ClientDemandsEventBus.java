@@ -129,7 +129,7 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     /**************************************************************************/
     @Override
     @Event(handlers = ClientDemandsHandler.class)
-    void getDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail);
+    void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
     @Override
     @Event(handlers = ClientDemandsHandler.class)

@@ -23,7 +23,7 @@ public final class CriteriaConverter implements Converter<ResultCriteria, Search
     public ResultCriteria convertToSource(SearchDefinition definition) {
         final ResultCriteria resultCriteria =
                 new ResultCriteria.Builder()
-                    .firstResult(definition.getStart())
+                    .firstResult(definition.getFirstResult())
                     .maxResults(definition.getMaxResult())
                     .orderByColumns(definition.getOrderColumns()).build();
         return resultCriteria;

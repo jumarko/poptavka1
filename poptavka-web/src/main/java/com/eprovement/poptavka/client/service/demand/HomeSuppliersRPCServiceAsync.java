@@ -7,7 +7,6 @@ package com.eprovement.poptavka.client.service.demand;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public interface HomeSuppliersRPCServiceAsync {
 
     void getSuppliers(SearchDefinition searchDefinition, AsyncCallback<List<FullSupplierDetail>> callback);
 
-    void getSuppliersCount(SearchModuleDataHolder supplier, AsyncCallback<Long> callback);
+    void getSuppliersCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);
 
     void getCategories(AsyncCallback<ArrayList<CategoryDetail>> callback);
 

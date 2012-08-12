@@ -10,6 +10,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -82,7 +83,7 @@ public class AdminProblemsPresenter
         Storage.setCurrentlyLoadedView(Constants.ADMIN_PROBLEMS);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -222,7 +223,7 @@ public class AdminProblemsPresenter
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
                     view.getDataGrid().updateRowData(new ArrayList<ProblemDetail>());
-                    eventBus.getDataCount(view.getDataGrid(), searchDataHolder);
+                    eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
