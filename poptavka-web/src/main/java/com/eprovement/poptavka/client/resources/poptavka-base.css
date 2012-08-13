@@ -277,16 +277,20 @@ input,textarea,select {
 }
 
 .create-tab-layout-header {
-	color: #000000;
-	padding: 15px;
-	margin-left: -10px;
-	background: url(images/stack-layout-panel-header.gif) repeat-x;
+	position: relative;
+	color: #463504;
+	background: url(images/create-tab.png) no-repeat;
+	width: 184px;
+	height: 39px;
+	line-height: 39px;
 	text-shadow: 0 2px 2px #FBF2D8;
 	font-weight: bold;
+	margin-right: -30px;
+	padding-left: 24px;
 }
 
 .create-tab-layout-header:hover {
-	background: url(images/stack-layout-panel-header-hover.gif) repeat-x;
+	background: url(images/create-tab-hover.png) no-repeat;
 	cursor: pointer;
 }
 
