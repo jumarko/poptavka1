@@ -28,7 +28,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -50,7 +50,7 @@ public class DemandCreationPresenter
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
-        StackLayoutPanel getMainPanel();
+        TabLayoutPanel getMainPanel();
 
         Widget getWidgetView();
 
@@ -69,7 +69,7 @@ public class DemandCreationPresenter
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
-                if (view.getMainPanel().getVisibleIndex() < eventItem) {
+                if (view.getMainPanel().getSelectedIndex() < eventItem) {
                     boolean result = canContinue(eventItem);
                     if (!result) {
                         // TODO change to global status changer eventBus call

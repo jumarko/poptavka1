@@ -6,7 +6,7 @@ import com.google.gwt.resources.client.CssResource;
  *
  * GWT Wrapper for base app layout.
  *
- * @author Beho
+ * @author Beho, Jaro
  *
  */
 public interface LayoutResource extends CssResource {
@@ -62,6 +62,12 @@ public interface LayoutResource extends CssResource {
     String stackLayout();
     @ClassName("stack-layout-panel-header")
     String stackLayoutPanelHeader();
+    @ClassName("create-tab-layout")
+    String createTabLayout();
+    @ClassName("create-tab-layout-header")
+    String createTabLayoutHeader();
+    @ClassName("create-tab-layout-content")
+    String createTabLayoutContent();
 
     /** DELETE AFTER THIS LINE **/
 

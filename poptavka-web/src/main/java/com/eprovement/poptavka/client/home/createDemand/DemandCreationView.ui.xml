@@ -10,16 +10,16 @@
 	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
 	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-		<g:StackLayoutPanel ui:field='mainPanel'
-			styleName='{res.layout.stackLayout}'>
-			<g:stack>
+		<g:TabLayoutPanel ui:field='mainPanel'
+			styleName='{res.layout.createTabLayout}' barUnit='PX' barHeight='3'>
+			<g:tab>
 				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader}">
 						1.
 						<ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
 					</g:HTML>
 				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
+				<g:DockLayoutPanel unit="EM" height="100%" styleName='{res.layout.createTabLayoutContent}'>
 					<g:south size="4">
 						<cm:StatusIconLabel ui:field='basicStatus'
 							style='{res.common.infoMessage}' message='{text.basicMessage}'
@@ -29,10 +29,10 @@
 						<g:SimplePanel ui:field="basicInfoHolder" />
 					</g:center>
 				</g:DockLayoutPanel>
-			</g:stack>
-			<g:stack>
+			</g:tab>
+			<g:tab>
 				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader}">
 						2.
 						<ui:msg key="catsSelection">Category selection</ui:msg>
 					</g:HTML>
@@ -47,10 +47,10 @@
 						<g:SimplePanel ui:field="categoryHolder" />
 					</g:center>
 				</g:DockLayoutPanel>
-			</g:stack>
-			<g:stack>
+			</g:tab>
+			<g:tab>
 				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader}">
 						3.
 						<ui:msg key="locsSelection">Locality selection</ui:msg>
 					</g:HTML>
@@ -65,10 +65,10 @@
 						<g:SimplePanel ui:field="localityHolder" />
 					</g:center>
 				</g:DockLayoutPanel>
-			</g:stack>
-			<g:stack>
+			</g:tab>
+			<g:tab>
 				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader}">
 						4.
 						<ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
 					</g:HTML>
@@ -83,10 +83,10 @@
 						<g:SimplePanel ui:field="advInfoHolder" />
 					</g:center>
 				</g:DockLayoutPanel>
-			</g:stack>
-			<g:stack>
+			</g:tab>
+			<g:tab>
 				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader}">
 						5.
 						<ui:msg key="loginOrRegister">Log in or register</ui:msg>
 					</g:HTML>
@@ -111,7 +111,7 @@
 						</g:HTMLPanel>
 					</g:center>
 				</g:DockLayoutPanel>
-			</g:stack>
-		</g:StackLayoutPanel>
+			</g:tab>
+		</g:TabLayoutPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

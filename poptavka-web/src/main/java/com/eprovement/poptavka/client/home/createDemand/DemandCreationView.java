@@ -17,7 +17,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.resources.StyleResource;
@@ -35,7 +35,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
 
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
 
-    @UiField StackLayoutPanel mainPanel;
+    @UiField TabLayoutPanel mainPanel;
     @UiField DockLayoutPanel userFormPanel;
 
     @UiField SimplePanel basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder;
@@ -78,7 +78,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     }
 
     @Override
-    public StackLayoutPanel getMainPanel() {
+    public TabLayoutPanel getMainPanel() {
         return mainPanel;
     }
 
