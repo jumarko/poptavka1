@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.resources.images;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
-
 public interface Images extends ClientBundle {
 
     @Source("star.png")
@@ -114,4 +113,29 @@ public interface Images extends ClientBundle {
 
     @Source("ctrl_mouseLeft.gif")
     ImageResource ctrlMouseLeft();
+
+    //Table buttons
+    @Source("reply.png")
+    ImageResource replyImage();
+
+    @Source("accept-icon16.png")
+    ImageResource acceptOfferImage();
+
+    @Source("decline.png")
+    ImageResource declineOfferImage();
+
+    @Source("close.png")
+    ImageResource closeDemandImage();
+
+    @Source("send.png")
+    ImageResource sendOfferImage();
+
+    @Source("edit.png")
+    ImageResource editOfferImage();
+
+    @Source("download.png")
+    ImageResource downloadOfferImage();
+
+    @Source("done.png")
+    ImageResource finnishedImage();
 }

@@ -19,11 +19,8 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -55,9 +52,6 @@ public class ClientProjectsPresenter
         Column<ClientProjectConversationDetail, String> getBodyPreviewColumn();
 
         Column<ClientProjectConversationDetail, String> getDateColumn();
-
-        // Buttons
-        Button getReplyButton();
 
         // Others
         UniversalAsyncGrid<ClientProjectDetail> getDemandGrid();
@@ -114,10 +108,9 @@ public class ClientProjectsPresenter
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
+//        addReplyColumnFieldUpdater();
         // Listbox actions
         addActionChangeHandler();
-        // Buttons Actions
-        addReplyButtonHandler();
     }
 
     /**************************************************************************/
@@ -255,16 +248,6 @@ public class ClientProjectsPresenter
                     default:
                         break;
                 }
-            }
-        });
-    }
-
-    // Buttons
-    private void addReplyButtonHandler() {
-        view.getReplyButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
             }
         });
     }

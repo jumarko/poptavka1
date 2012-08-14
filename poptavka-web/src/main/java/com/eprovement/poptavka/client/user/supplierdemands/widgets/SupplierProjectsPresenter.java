@@ -19,9 +19,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -40,11 +37,6 @@ public class SupplierProjectsPresenter
 
         //Table
         UniversalTableWidget getTableWidget();
-
-        //Buttons
-        Button getSendOfferToPotentialProjectButton();
-
-        Button getReplyPotentialProjectButton();
 
         //ListBox
         ListBox getActions();
@@ -85,9 +77,6 @@ public class SupplierProjectsPresenter
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
-        // Buttons Actions
-        addSendOfferToPotentialProjectButtonClickHandler();
-        addReplyPotentialProjectButtonClickHandler();
     }
 
     /**************************************************************************/
@@ -231,27 +220,6 @@ public class SupplierProjectsPresenter
                     default:
                         break;
                 }
-            }
-        });
-    }
-
-    //Buttons
-    private void addSendOfferToPotentialProjectButtonClickHandler() {
-        view.getSendOfferToPotentialProjectButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-    }
-
-    private void addReplyPotentialProjectButtonClickHandler() {
-        view.getReplyPotentialProjectButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
             }
         });
     }

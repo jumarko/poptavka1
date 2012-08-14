@@ -61,6 +61,7 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
     private static ImageResourceRenderer renderer;
     private PopupPanel popup = new PopupPanel(true);
     private boolean displayed;
+    private String explanationText;
 
     public DemandStatusImageCell() {
         super("click", "keydown", "mouseover", "mouseout");
@@ -77,40 +78,7 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
             return;
         }
 
-        switch (value) {
-            case ACTIVE:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case ASSIGNED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case CANCELED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case CLOSED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case FINISHED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case INACTIVE:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case INVALID:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case NEW:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case CRAWLED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case TO_BE_CHECKED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            default:
-                break;
-        }
+        setImageAndExplanationText(value, sb);
     }
 
     @Override
@@ -144,7 +112,7 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         popup.setWidth("150px");
         popup.setHeight("150px");
         StringBuilder sb = new StringBuilder();
-        sb.append("<center>Some explanation text?</center>");
+        sb.append(explanationText);
         popup.getElement().setInnerHTML(sb.toString());
         popup.setPopupPosition(event.getClientX() + 32, event.getClientY() + 32);
         popup.show();
@@ -154,5 +122,52 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
     private void hidePopup() {
         displayed = false;
         popup.hide();
+    }
+
+    private void setImageAndExplanationText(DemandStatus value, SafeHtmlBuilder sb) {
+        switch (value) {
+            case ACTIVE:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusActive();
+                break;
+            case ASSIGNED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusAssigned();
+                break;
+            case CANCELED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusCanceled();
+                break;
+            case CLOSED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusClosed();
+                break;
+            case FINISHED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusFinnished();
+                break;
+            case INACTIVE:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusInactive();
+                break;
+            case INVALID:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusInvalid();
+                break;
+            case NEW:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusNew();
+                break;
+            case CRAWLED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusCrawled();
+                break;
+            case TO_BE_CHECKED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.demandStatusToBeChecked();
+                break;
+            default:
+                break;
+        }
     }
 }

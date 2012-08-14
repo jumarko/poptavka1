@@ -19,9 +19,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -40,11 +37,6 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
 
         //Table
         UniversalTableWidget getTableWidget();
-
-        //Buttons
-        Button getFinnishedAssignedProjectButton();
-
-        Button getReplyAssignedProjectButton();
 
         //ListBox
         ListBox getActions();
@@ -86,9 +78,6 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
-        // Buttons Actions
-        addReplyAssignedProjectButton();
-        addFinnishedAssignedProjectButton();
     }
 
     /**************************************************************************/
@@ -228,27 +217,6 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
                     default:
                         break;
                 }
-            }
-        });
-    }
-
-    //Buttons
-    private void addFinnishedAssignedProjectButton() {
-        view.getFinnishedAssignedProjectButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-    }
-
-    private void addReplyAssignedProjectButton() {
-        view.getReplyAssignedProjectButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
             }
         });
     }

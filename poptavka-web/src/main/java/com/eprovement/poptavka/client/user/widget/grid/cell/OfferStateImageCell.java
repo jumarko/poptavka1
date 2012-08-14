@@ -15,6 +15,7 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
     private static ImageResourceRenderer renderer;
     private PopupPanel popup = new PopupPanel(true);
     private boolean displayed;
+    private String explanationText;
 
     public OfferStateImageCell() {
         super("click", "keydown", "mouseover", "mouseout");
@@ -27,15 +28,7 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
     public void render(com.google.gwt.cell.client.Cell.Context context,
             OfferStateType value, SafeHtmlBuilder sb) {
 
-        if (value == OfferStateType.ACCEPTED) {
-            sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-        }
-        if (value == OfferStateType.PENDING) {
-            sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-        }
-        if (value == OfferStateType.DECLINED) {
-            sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-        }
+        setImageAndExplanationText(value, sb);
     }
 
     @Override
@@ -79,5 +72,24 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
     private void hidePopup() {
         displayed = false;
         popup.hide();
+    }
+
+    private void setImageAndExplanationText(OfferStateType value, SafeHtmlBuilder sb) {
+        switch (value) {
+            case ACCEPTED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.offerStateAccepted();
+                break;
+            case PENDING:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.offerStatePending();
+                break;
+            case DECLINED:
+                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+                explanationText = Storage.MSGS.offerStateDeclined();
+                break;
+            default:
+                break;
+        }
     }
 }

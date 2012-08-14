@@ -19,9 +19,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -40,13 +37,6 @@ public class SupplierContestsPresenter
 
         //Table
         UniversalTableWidget getTableWidget();
-
-        //Buttons
-        Button getReplyContestOfferButton();
-
-        Button getEditContestOfferButton();
-
-        Button getCancelContestOfferButton();
 
         //ListBox
         ListBox getActions();
@@ -88,10 +78,6 @@ public class SupplierContestsPresenter
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
-        // Buttons Actions
-        addReplyContestOfferButtonClickHandler();
-        addEditContestOfferButtonClickHandler();
-        addCancelContestOfferButtonClickHandler();
     }
 
     /**************************************************************************/
@@ -231,37 +217,6 @@ public class SupplierContestsPresenter
                     default:
                         break;
                 }
-            }
-        });
-    }
-
-    //Buttons
-    private void addReplyContestOfferButtonClickHandler() {
-        view.getReplyContestOfferButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-    }
-
-    private void addEditContestOfferButtonClickHandler() {
-        view.getEditContestOfferButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-    }
-
-    private void addCancelContestOfferButtonClickHandler() {
-        view.getCancelContestOfferButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
             }
         });
     }

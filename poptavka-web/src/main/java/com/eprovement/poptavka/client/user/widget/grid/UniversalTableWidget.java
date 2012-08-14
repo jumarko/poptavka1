@@ -8,6 +8,7 @@ import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -66,11 +67,19 @@ public class UniversalTableWidget extends Composite {
     private Column<FullOfferDetail, Date> urgencyColumn;
     private Column<FullOfferDetail, String> receiveDateColumn;
     private Column<FullOfferDetail, String> deliveryDateColumn;
+    private Column<FullOfferDetail, ImageResource> replyImageColumn;
+    private Column<FullOfferDetail, ImageResource> acceptOfferImageColumn;
+    private Column<FullOfferDetail, ImageResource> declineOfferImageColumn;
+    private Column<FullOfferDetail, ImageResource> closeDemandImageColumn;
+    private Column<FullOfferDetail, ImageResource> sendOfferImageColumn;
+    private Column<FullOfferDetail, ImageResource> editOfferImageColumn;
+    private Column<FullOfferDetail, ImageResource> downloadOfferImageColumns;
+    private Column<FullOfferDetail, ImageResource> finnishedImageColumn;
     //table column width constatnts
-    private static final int NAME_COL_WIDTH = 20;
-    private static final int DEMAND_TITLE_COL_WIDTH = 30;
-    private static final int RATING_COL_WIDTH = 20;
-    private static final int PRICE_COL_WIDTH = 30;
+    private static final int NAME_COL_WIDTH = 50;
+    private static final int DEMAND_TITLE_COL_WIDTH = 50;
+    private static final int RATING_COL_WIDTH = 10;
+    private static final int PRICE_COL_WIDTH = 20;
     private static final int COL_WIDTH = 30;
     //table column contants
     private static final String CLIENT_NAME_COLUMN = "clientName";
@@ -81,6 +90,14 @@ public class UniversalTableWidget extends Composite {
     private static final String URGENCY_COLUMN = "endDate";
     private static final String RECEIVED_DATE_COLUMN = "receivedDate"; //Prijate
     private static final String DELIVERY_DATE_COLUMN = "deliveryDate"; //Dodanie/dorucenie
+    private static final String REPLY_IMAGE_COLUMN = "reply";
+    private static final String ACCEPT_OFFER_IMAGE_COLUMN = "acceptOffer";
+    private static final String DECLINE_OFFER_IMAGE_COLUMN = "declineOffer";
+    private static final String CLOSE_DEMAND_IMAGE_COLUMN = "closeDemand";
+    private static final String SEND_OFFER_IMAGE_COLUMN = "sendOffer";
+    private static final String EDIT_OFFER_IMAGE_COLUMN = "editOffer";
+    private static final String DOWNLOAD_OFFER_IMAGE_COLUMN = "downloadOffer";
+    private static final String FINNISHED_IMAGE_COLUMN = "finnished";
     private List<String> gridColumns = new ArrayList<String>();
     //pager definition
     @UiField(provided = true)
@@ -178,6 +195,9 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(DELIVERY_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(ACCEPT_OFFER_IMAGE_COLUMN);
+        gridColumns.add(DECLINE_OFFER_IMAGE_COLUMN);
+        gridColumns.add(REPLY_IMAGE_COLUMN);
     }
 
     /**
@@ -190,6 +210,8 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(DELIVERY_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(CLOSE_DEMAND_IMAGE_COLUMN);
+        gridColumns.add(REPLY_IMAGE_COLUMN);
     }
 
     /**
@@ -203,6 +225,8 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(URGENCY_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(REPLY_IMAGE_COLUMN);
+        gridColumns.add(SEND_OFFER_IMAGE_COLUMN);
     }
 
     /**
@@ -215,6 +239,9 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(DELIVERY_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(REPLY_IMAGE_COLUMN);
+        gridColumns.add(EDIT_OFFER_IMAGE_COLUMN);
+        gridColumns.add(DOWNLOAD_OFFER_IMAGE_COLUMN);
     }
 
     /**
@@ -227,6 +254,8 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(DELIVERY_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(FINNISHED_IMAGE_COLUMN);
+        gridColumns.add(REPLY_IMAGE_COLUMN);
     }
 
     /**
@@ -235,7 +264,6 @@ public class UniversalTableWidget extends Composite {
     public void initTableColumns() {
         // CheckBox column header - always create this header
         checkHeader = new Header<Boolean>(new CheckboxCell()) {
-
             @Override
             public Boolean getValue() {
                 return false;
@@ -248,12 +276,69 @@ public class UniversalTableWidget extends Composite {
         // Offer state column - always create this column
         offerStateColumn = grid.addOfferStateColumn(Storage.MSGS.state());
 
-        // Client name column
+        addImageColumns();
+        addClientNameColumn();
+        addSupplierNameColumn();
+        addDemandTitleColumn();
+        addRatingColumn();
+        addPriceColumn();
+
+        if (gridColumns.contains(URGENCY_COLUMN)) {
+            urgencyColumn = grid.addUrgentColumn(Storage.MSGS.urgency());
+        }
+
+        addReceivedDateColumn();
+        addDeliveryDateColumn();
+    }
+
+    private void addImageColumns() {
+        if (gridColumns.contains(REPLY_IMAGE_COLUMN)) {
+            replyImageColumn = grid.addImageColumn(
+                    Storage.RSCS.images().replyImage(),
+                    Storage.MSGS.replyExplanationText());
+        }
+        if (gridColumns.contains(ACCEPT_OFFER_IMAGE_COLUMN)) {
+            acceptOfferImageColumn = grid.addImageColumn(
+                    Storage.RSCS.images().acceptOfferImage(),
+                    Storage.MSGS.acceptOfferExplanationText());
+        }
+        if (gridColumns.contains(DECLINE_OFFER_IMAGE_COLUMN)) {
+            declineOfferImageColumn = grid.addImageColumn(
+                    Storage.RSCS.images().declineOfferImage(),
+                    Storage.MSGS.declineOfferExplanationText());
+        }
+        if (gridColumns.contains(CLOSE_DEMAND_IMAGE_COLUMN)) {
+            closeDemandImageColumn = grid.addImageColumn(
+                    Storage.RSCS.images().closeDemandImage(),
+                    Storage.MSGS.closeDemandExplanationText());
+        }
+        if (gridColumns.contains(SEND_OFFER_IMAGE_COLUMN)) {
+            sendOfferImageColumn = grid.addImageColumn(
+                    Storage.RSCS.images().sendOfferImage(),
+                    Storage.MSGS.sendOfferExplanationText());
+        }
+        if (gridColumns.contains(EDIT_OFFER_IMAGE_COLUMN)) {
+            editOfferImageColumn = grid.addImageColumn(
+                    Storage.RSCS.images().editOfferImage(),
+                    Storage.MSGS.editOfferExplanationText());
+        }
+        if (gridColumns.contains(DOWNLOAD_OFFER_IMAGE_COLUMN)) {
+            downloadOfferImageColumns = grid.addImageColumn(
+                    Storage.RSCS.images().downloadOfferImage(),
+                    Storage.MSGS.downloadOfferExplanationText());
+        }
+        if (gridColumns.contains(FINNISHED_IMAGE_COLUMN)) {
+            finnishedImageColumn = grid.addImageColumn(
+                    Storage.RSCS.images().finnishedImage(),
+                    Storage.MSGS.finnishedExplanationText());
+        }
+    }
+
+    private void addClientNameColumn() {
         if (gridColumns.contains(CLIENT_NAME_COLUMN)) {
             clientNameColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.client(), true, NAME_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
-
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
@@ -262,12 +347,13 @@ public class UniversalTableWidget extends Composite {
                         }
                     });
         }
-        // Supplier name column
+    }
+
+    private void addSupplierNameColumn() {
         if (gridColumns.contains(SUPPLIER_NAME_COLUMN)) {
             supplierNameColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, NAME_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
-
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
@@ -276,12 +362,13 @@ public class UniversalTableWidget extends Composite {
                         }
                     });
         }
-        // Demand title column
+    }
+
+    private void addDemandTitleColumn() {
         if (gridColumns.contains(DEMAND_TITLE_COLUMN)) {
             demandTitleColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, DEMAND_TITLE_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
-
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
@@ -290,12 +377,13 @@ public class UniversalTableWidget extends Composite {
                         }
                     });
         }
-        // Rating columne
+    }
+
+    private void addRatingColumn() {
         if (gridColumns.contains(RATING_COLUMN)) {
             ratingColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.rating(), true, RATING_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
-
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
@@ -305,12 +393,13 @@ public class UniversalTableWidget extends Composite {
                         }
                     });
         }
-        // Demand price column
+    }
+
+    private void addPriceColumn() {
         if (gridColumns.contains(PRICE_COLUMN)) {
             priceColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), false, PRICE_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
-
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
@@ -319,16 +408,13 @@ public class UniversalTableWidget extends Composite {
                         }
                     });
         }
-        // Urgency column
-        if (gridColumns.contains(URGENCY_COLUMN)) {
-            urgencyColumn = grid.addUrgentColumn(Storage.MSGS.urgency());
-        }
-        // Received date column
+    }
+
+    private void addReceivedDateColumn() {
         if (gridColumns.contains(RECEIVED_DATE_COLUMN)) {
             receiveDateColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.received(), true, COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
-
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
@@ -338,12 +424,13 @@ public class UniversalTableWidget extends Composite {
                         }
                     });
         }
-        // Delivery date column
+    }
+
+    private void addDeliveryDateColumn() {
         if (gridColumns.contains(DELIVERY_DATE_COLUMN)) {
             deliveryDateColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.deliveryDate(), true, COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
-
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
@@ -402,6 +489,38 @@ public class UniversalTableWidget extends Composite {
 
     public Column<FullOfferDetail, Date> getUrgencyColumn() {
         return urgencyColumn;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getReplyImageColumn() {
+        return replyImageColumn;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getAcceptOfferImageColumn() {
+        return acceptOfferImageColumn;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getDeclineOfferImageColumn() {
+        return declineOfferImageColumn;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getCloseDemandImageColumn() {
+        return closeDemandImageColumn;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getSendOfferImageColumn() {
+        return sendOfferImageColumn;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getEditOfferImageColumn() {
+        return editOfferImageColumn;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getDownloadOfferImageColumns() {
+        return downloadOfferImageColumns;
+    }
+
+    public Column<FullOfferDetail, ImageResource> getFinnishedImageColumn() {
+        return finnishedImageColumn;
     }
 
     //Header

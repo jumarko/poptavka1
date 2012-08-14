@@ -18,9 +18,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -39,11 +36,6 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
 
         //Table
         UniversalTableWidget getTableWidget();
-
-        //Buttons
-        Button getCloseBtn();
-
-        Button getReplyBtn();
 
         //ListBox
         ListBox getActions();
@@ -85,9 +77,6 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
         addTextColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
-        // Buttons Actions
-        addCloseBtnClickHandler();
-        addReplyBtnClickHandler();
     }
 
     /**************************************************************************/
@@ -219,27 +208,6 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
                     default:
                         break;
                 }
-            }
-        });
-    }
-
-    //Buttons
-    private void addCloseBtnClickHandler() {
-        view.getCloseBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-    }
-
-    private void addReplyBtnClickHandler() {
-        view.getReplyBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
             }
         });
     }

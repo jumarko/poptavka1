@@ -10,7 +10,6 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -50,12 +49,6 @@ public class ClientContestsPresenter
 
         //Buttons
         Button getBackBtn();
-
-        Button getAcceptBtn();
-
-        Button getDenyBtn();
-
-        Button getReplyBtn();
 
         //ListBox
         ListBox getActions();
@@ -105,10 +98,6 @@ public class ClientContestsPresenter
         // Buttons Actions
         addBackButtonHandler();
         addActionChangeHandler();
-        // Buttons - messaging
-        addAcceptButtonHandler();
-        addDenyButtonHandler();
-        addReplyButtonHandler();
     }
 
     /**************************************************************************/
@@ -262,47 +251,6 @@ public class ClientContestsPresenter
                         break;
                     default:
                         break;
-                }
-            }
-        });
-    }
-
-    //Buttons - messaging
-    private void addAcceptButtonHandler() {
-        view.getAcceptBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                for (FullOfferDetail selectedDetail: view.getContestGrid().getSelectedMessageList()) {
-                    selectedDetail.getOfferDetail().setState(OfferStateType.ACCEPTED);
-                    eventBus.getOfferStatusChange(selectedDetail.getOfferDetail());
-                }
-            }
-        });
-    }
-
-    private void addDenyButtonHandler() {
-        view.getDenyBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                for (FullOfferDetail selectedDetail: view.getContestGrid().getSelectedMessageList()) {
-                    selectedDetail.getOfferDetail().setState(OfferStateType.DECLINED);
-                    eventBus.getOfferStatusChange(selectedDetail.getOfferDetail());
-                }
-            }
-        });
-    }
-
-    private void addReplyButtonHandler() {
-        view.getReplyBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                //V starej implementacii - declined ??? is ot all right?
-                for (FullOfferDetail selectedDetail: view.getContestGrid().getSelectedMessageList()) {
-                    selectedDetail.getOfferDetail().setState(OfferStateType.DECLINED);
-                    eventBus.getOfferStatusChange(selectedDetail.getOfferDetail());
                 }
             }
         });

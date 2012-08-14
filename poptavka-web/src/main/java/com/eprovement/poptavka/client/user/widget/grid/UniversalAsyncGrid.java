@@ -1,20 +1,22 @@
 package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.widget.grid.cell.CustomImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.OfferStateImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -89,10 +91,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     //*************************************************************************/
     //                          ATTRIBUTES                                    */
     //*************************************************************************/
-    private static final int CHECKBOX_COLUMN_WIDTH = 10;
-    private static final int STAR_COLUMN_WIDTH = 10;
-    private static final int STATUS_COLUMN_WIDTH = 10;
-    private static final int URGENCY_COLUMN_WIDTH = 70;
+    private static final int COLUMN_WIDTH_ICON = 7;
+    private static final int COLUMN_WIDTH_URGENT = 15;
     /**
      * Asynchronous Data Provider. When all data count is known, asynchronous
      * data provider is created {@link #createAsyncDataProvider(final int resultCount)}.
@@ -282,7 +282,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             }
         };
         addColumn(checkColumn, header);
-        setColumnWidth(checkColumn, CHECKBOX_COLUMN_WIDTH, Unit.PX);
+        setColumnWidth(checkColumn, COLUMN_WIDTH_ICON, Unit.PX);
         return checkColumn;
     }
 
@@ -302,7 +302,21 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         //set column style
         col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
         addColumn(col, headerText);
-        setColumnWidth(col, STATUS_COLUMN_WIDTH, Unit.PX);
+        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
+        return col;
+    }
+
+    public Column<T, ImageResource> addImageColumn(final ImageResource imageResource, String explanationText) {
+        Column<T, ImageResource> col = new Column<T, ImageResource>(new CustomImageCell(explanationText)) {
+            @Override
+            public ImageResource getValue(T object) {
+                return imageResource;
+            }
+        };
+        //set column style
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
+        addColumn(col);
+        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
         return col;
     }
 
@@ -320,9 +334,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             }
         };
         //set column style
-        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        addColumn(col, headerText);
-        setColumnWidth(col, STATUS_COLUMN_WIDTH, Unit.PX);
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
+//        addColumn(col, headerText);
+        addColumn(col);
+        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
         return col;
     }
 
@@ -342,7 +357,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         };
         urgencyColumn.setSortable(true);
         addColumn(urgencyColumn, headerText);
-        setColumnWidth(urgencyColumn, URGENCY_COLUMN_WIDTH, Unit.PX);
+        setColumnWidth(urgencyColumn, COLUMN_WIDTH_URGENT, Unit.PX);
         return urgencyColumn;
     }
 
@@ -368,7 +383,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         //set column style
         col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
         addColumn(col);
-        setColumnWidth(col, STAR_COLUMN_WIDTH, Unit.PX);
+        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
         return col;
     }
 

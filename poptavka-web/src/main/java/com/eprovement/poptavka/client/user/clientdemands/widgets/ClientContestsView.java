@@ -61,7 +61,7 @@ public class ClientContestsView extends Composite
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
     //table handling buttons
     @UiField
-    Button acceptBtn, denyBtn, replyBtn, backBtn;
+    Button backBtn;
     @UiField(provided = true)
     ListBox actions;
     //detail WrapperPanel
@@ -218,21 +218,6 @@ public class ClientContestsView extends Composite
     @Override
     public Button getBackBtn() {
         return backBtn;
-    }
-
-    @Override
-    public Button getAcceptBtn() {
-        return acceptBtn;
-    }
-
-    @Override
-    public Button getDenyBtn() {
-        return denyBtn;
-    }
-
-    @Override
-    public Button getReplyBtn() {
-        return replyBtn;
     }
 
     //ListBox

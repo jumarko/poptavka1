@@ -14,7 +14,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -82,9 +81,6 @@ public class ClientProjectsView extends Composite
     /**************************************************************************/
     //TODO Martin - ako i18n format datumu?
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
-    //table handling buttons
-    @UiField
-    Button replyButton;
     //detail WrapperPanel
     @UiField
     SimplePanel wrapperPanel;
@@ -335,12 +331,6 @@ public class ClientProjectsView extends Composite
     @Override
     public Column<ClientProjectConversationDetail, String> getDateColumn() {
         return dateColumn;
-    }
-
-    // Buttons
-    @Override
-    public Button getReplyButton() {
-        return replyButton;
     }
 
     @Override

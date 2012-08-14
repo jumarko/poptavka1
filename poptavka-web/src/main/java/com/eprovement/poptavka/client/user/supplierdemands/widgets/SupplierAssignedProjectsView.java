@@ -6,7 +6,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
@@ -30,9 +29,6 @@ public class SupplierAssignedProjectsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    //table handling buttons
-    @UiField
-    Button finnishedAssignedProjectButton, replyAssignedProjectButton;
     @UiField(provided = true)
     ListBox actions;
     //detail WrapperPanel
@@ -67,17 +63,6 @@ public class SupplierAssignedProjectsView extends Composite
     @Override
     public UniversalTableWidget getTableWidget() {
         return tableWidget;
-    }
-
-    //Buttons
-    @Override
-    public Button getFinnishedAssignedProjectButton() {
-        return finnishedAssignedProjectButton;
-    }
-
-    @Override
-    public Button getReplyAssignedProjectButton() {
-        return replyAssignedProjectButton;
     }
 
     //ListBox

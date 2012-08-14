@@ -5,7 +5,7 @@
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
     <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
-        <g:west size="15">
+        <g:west size="12">
             <g:HTMLPanel>
                 <!-- Supplier submenu -->
                 <div ui:field="supplierMenu" style="display: block;">

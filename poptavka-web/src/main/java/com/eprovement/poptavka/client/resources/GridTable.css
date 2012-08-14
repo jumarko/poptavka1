@@ -1,8 +1,16 @@
 @CHARSET "UTF-8";
 
+.cell-table-icon-column {
+    border: none !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 .cell-table-hand-cursor {
     cursor: pointer;
-    background-color: green;
+    /*background-color: green;*/
 }
 
 .cell-table-hand-cursor:hover {

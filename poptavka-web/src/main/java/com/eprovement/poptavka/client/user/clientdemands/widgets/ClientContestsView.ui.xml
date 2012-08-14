@@ -7,7 +7,7 @@
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:east size="500">
+        <g:east size="400">
             <g:SimplePanel ui:field="wrapperPanel">
                 <g:HTMLPanel>
                     <div>
@@ -35,18 +35,7 @@
                                 <ui:msg key="backToClientContests">Spat na vsetky poptavky s ponukami</ui:msg>
                             </g:Button>
                             <g:Label ui:field="demandTitlelabel"/>
-                            <g:HorizontalPanel>
-                                <g:Button ui:field="acceptBtn">
-                                    <ui:msg key="acceptOfferButton">Accept offer</ui:msg>
-                                </g:Button>
-                                <g:Button ui:field="denyBtn">
-                                    <ui:msg key="denyOfferButton">Deny offer</ui:msg>
-                                </g:Button>
-                                <g:Button ui:field="replyBtn">
-                                    <ui:msg key="replyButton">Reply</ui:msg>
-                                </g:Button>
-                                <g:ListBox ui:field="actions"/>
-                            </g:HorizontalPanel>
+                            <g:ListBox ui:field="actions"/>
                         </g:VerticalPanel>
                     </g:HorizontalPanel>
                 </g:north>

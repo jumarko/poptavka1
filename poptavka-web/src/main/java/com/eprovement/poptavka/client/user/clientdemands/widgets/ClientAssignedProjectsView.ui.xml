@@ -7,7 +7,7 @@
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:east size="500">
+        <g:east size="400">
             <g:SimplePanel ui:field="wrapperPanel">
                 <g:HTMLPanel>
                     <div>
@@ -28,15 +28,7 @@
                         <g:Label>
                             <ui:msg key="clientAssignedProjectsTitle">Vypis pridelenych poptaviek</ui:msg>
                         </g:Label>
-                        <g:HorizontalPanel>
-                            <g:Button ui:field="closeBtn">
-                                <ui:msg key="closeDemandButton">Close demand</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="replyBtn">
-                                <ui:msg key="answerButton">Answer</ui:msg>
-                            </g:Button>
-                            <g:ListBox ui:field="actions"/>
-                        </g:HorizontalPanel>
+                        <g:ListBox ui:field="actions"/>
                     </g:VerticalPanel>
                 </g:HorizontalPanel>
 

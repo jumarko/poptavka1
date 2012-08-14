@@ -222,4 +222,33 @@ public interface LocalizableMessages extends Messages {
     String denyOfferButton();
     String answerButton();
     String closeDemandButton();
+
+    //Explanation texts to table image columns
+
+    //Table buttons
+    String replyExplanationText();
+    String acceptOfferExplanationText();
+    String declineOfferExplanationText();
+    String closeDemandExplanationText();
+    String sendOfferExplanationText();
+    String editOfferExplanationText();
+    String downloadOfferExplanationText();
+    String finnishedExplanationText();
+
+    //Explanation texts for DemandStatus icon column
+    String demandStatusActive();
+    String demandStatusAssigned();
+    String demandStatusCanceled();
+    String demandStatusClosed();
+    String demandStatusFinnished();
+    String demandStatusInactive();
+    String demandStatusInvalid();
+    String demandStatusNew();
+    String demandStatusCrawled();
+    String demandStatusToBeChecked();
+
+    //Explanation texts for Offer state icon column
+    String offerStateAccepted();
+    String offerStatePending();
+    String offerStateDeclined();
 }
