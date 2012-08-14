@@ -278,12 +278,12 @@ input,textarea,select {
 
 .create-tab-layout-header {
 	position: relative;
-	color: #463504;
+	color: #554107;
 	background: url(images/create-tab.png) no-repeat;
 	width: 184px;
 	height: 39px;
 	line-height: 39px;
-	text-shadow: 0 2px 2px #FBF2D8;
+	text-shadow: 0 2px 2px #ffe397;
 	font-weight: bold;
 	margin-right: -30px;
 	padding-left: 24px;
