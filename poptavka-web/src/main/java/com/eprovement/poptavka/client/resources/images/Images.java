@@ -127,7 +127,7 @@ public interface Images extends ClientBundle {
     @Source("close.png")
     ImageResource closeDemandImage();
 
-    @Source("send.png")
+    @Source("send16.png")
     ImageResource sendOfferImage();
 
     @Source("edit.png")

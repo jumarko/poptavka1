@@ -183,7 +183,7 @@ class RootCategoryCell extends AbstractCell<CategoryDetail> {
 
         text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
         text.append(" (");
-        text.append(value.getSuppliers());
+        text.append(value.getDemands());
         text.append(")");
 
         sb.appendEscaped(text.toString());

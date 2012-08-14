@@ -50,7 +50,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
                     }
                     searchDataHolder.setCategories(
                             Arrays.asList(view.getCategorySelectionModel().getSelectedObject()));
-                    eventBus.goToHomeSuppliersModule(searchDataHolder);
+                    eventBus.goToHomeDemandsModule(searchDataHolder);
                 }
             }
         });
