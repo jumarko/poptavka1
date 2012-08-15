@@ -111,7 +111,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(new HomeDemandViewView(), true, true, true);
+        eventBus.setUpSearchBar(new HomeDemandsSearchView(), true, true, true);
     }
 
     /**

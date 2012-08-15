@@ -18,13 +18,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.util.ArrayList;
 import java.util.Date;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 
-public class HomeDemandViewView extends Composite implements
+public class HomeDemandsSearchView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
-    interface SearchModulViewUiBinder extends UiBinder<Widget, HomeDemandViewView> {
+    interface SearchModulViewUiBinder extends UiBinder<Widget, HomeDemandsSearchView> {
     }
     @UiField
     TextBox demandTitle, priceFrom, priceTo;
@@ -35,7 +36,7 @@ public class HomeDemandViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    public HomeDemandViewView() {
+    public HomeDemandsSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
 
         demandTypes.addItem(Storage.MSGS.select());
@@ -67,7 +68,7 @@ public class HomeDemandViewView extends Composite implements
             filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
         if (creationDate.getSelectedIndex() != 4) {
-            filters.add(new FilterItem("createdDate", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
+            filters.add(new FilterItem("createdDate", FilterItem.OPERATION_FROM, getCreatedDate()));
         }
         if (finnishDateFrom.getValue() != null) {
             filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
@@ -79,23 +80,21 @@ public class HomeDemandViewView extends Composite implements
     }
 
     private Date getCreatedDate() {
-        //How to implement this? Calendar is not supported by GWT.
-        //created date
-//        Calendar calendarDate = Calendar.getInstance(); //today -> case 0
-//        switch (creationDate.getSelectedIndex()) {
-//            case 1:
-//                calendarDate.add(Calendar.DATE, -1);  //yesterday
-//                break;
-//            case 2:
-//                calendarDate.add(Calendar.DATE, -7);  //last week
-//                break;
-//            case 3:
-//                calendarDate.add(Calendar.MONTH, -1);  //last month
-//                break;
-//            default:
-//                break;
-//        }
-        return new Date(); //calendarDate.getTimeInMillis());
+        Date date = new Date(); //today -> case 0
+        switch (creationDate.getSelectedIndex()) {
+            case 1:
+                CalendarUtil.addDaysToDate(date, -1);   //yesterday
+                break;
+            case 2:
+                CalendarUtil.addDaysToDate(date, -7);   //last week
+                break;
+            case 3:
+                CalendarUtil.addMonthsToDate(date, -1); //last month
+                break;
+            default:
+                break;
+        }
+        return date;
     }
 
     @UiHandler("priceFrom")
