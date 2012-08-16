@@ -9,18 +9,18 @@
 	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 	
 	<ui:style>
-		.tabIndex1 { z-index: 1; width: 174px; padding-left: 34px; }
+		.tabIndex1 { z-index: 1;}
 		.tabIndex2 { z-index: 2;}
-		.tabIndex3 { z-index: 3; width: 174px; padding-left: 34px; }
-		.tabIndex4 { z-index: 4; width: 174px; padding-left: 34px; }
-		.tabIndex5 { z-index: 5;}
+		.tabIndex3 { z-index: 3;}
+		.tabIndex4 { z-index: 4;}
+		.tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
 		
-		.myStyle .gwt-TabLayoutPanelTabs { border: none;}
+		.gwt-TabLayoutPanelContentContainer { border: none;}
 	</ui:style>
 
 	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
 		<g:TabLayoutPanel ui:field='mainPanel'
-			styleName='{res.layout.createTabLayout} {style.myStyle}' barUnit='PX' barHeight='50'>
+			styleName='{res.layout.createTabLayout}' barUnit='PX' barHeight='50'>
 			<g:tab>
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex5}">

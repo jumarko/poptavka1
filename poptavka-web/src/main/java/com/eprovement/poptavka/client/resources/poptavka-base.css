@@ -279,18 +279,18 @@ input,textarea,select {
 .create-tab-layout-header {
 	position: relative;
 	color: #554107;
-	background: url(images/create-tab.png) no-repeat;
-	width: 184px;
+	background: url(images/create-tab.png) no-repeat top right;
 	height: 39px;
 	line-height: 39px;
 	text-shadow: 0 2px 2px #ffe397;
 	font-weight: bold;
 	margin-right: -30px;
-	padding-left: 24px;
+	padding: 0 35px 0 50px;
+	border-left: 1px solid #bda45d;
 }
 
 .create-tab-layout-header:hover {
-	background: url(images/create-tab-hover.png) no-repeat;
+	background: url(images/create-tab-hover.png) no-repeat top right;
 	cursor: pointer;
 }
 
