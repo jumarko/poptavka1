@@ -8,6 +8,7 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -64,6 +65,7 @@ public class ClientProjectsView extends Composite
     private Header checkHeader;
     private Column<ClientProjectConversationDetail, Boolean> checkColumn;
     private Column<ClientProjectConversationDetail, Boolean> starColumn;
+    private Column<ClientProjectConversationDetail, ImageResource> replyColumn;
     private Column<ClientProjectConversationDetail, String> supplierNameColumn;
     private Column<ClientProjectConversationDetail, String> bodyPreviewColumn;
     private Column<ClientProjectConversationDetail, String> dateColumn;
@@ -193,7 +195,6 @@ public class ClientProjectsView extends Composite
         demandGrid.addColumn(
                 demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientProjectDetail clientDetail = (ClientProjectDetail) object;
@@ -205,7 +206,6 @@ public class ClientProjectsView extends Composite
         demandGrid.addColumn(
                 demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), true, PRICE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientProjectDetail clientDetail = (ClientProjectDetail) object;
@@ -217,7 +217,6 @@ public class ClientProjectsView extends Composite
         demandGrid.addColumn(
                 demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.finnishDate(), true, FINNISH_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientProjectDetail clientDetail = (ClientProjectDetail) object;
@@ -231,7 +230,6 @@ public class ClientProjectsView extends Composite
         demandGrid.addColumn(
                 new TextCell(), Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientProjectDetail clientDetail = (ClientProjectDetail) object;
@@ -248,7 +246,6 @@ public class ClientProjectsView extends Composite
     public void initConversationTableColumns() {
         // CheckBox column
         checkHeader = new Header<Boolean>(new CheckboxCell()) {
-
             @Override
             public Boolean getValue() {
                 return false;
@@ -257,11 +254,14 @@ public class ClientProjectsView extends Composite
         checkColumn = conversationGrid.addCheckboxColumn(checkHeader);
         // Star Column
         starColumn = conversationGrid.addStarColumn();
+        // Reply Column
+        replyColumn = conversationGrid.addImageColumn(
+                Storage.RSCS.images().replyImage(),
+                Storage.MSGS.replyExplanationText());
         // Demand title column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientProjectConversationDetail detail = (ClientProjectConversationDetail) object;
@@ -273,7 +273,6 @@ public class ClientProjectsView extends Composite
         bodyPreviewColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.text(), false, BODY_PREVIEW_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientProjectConversationDetail detail = (ClientProjectConversationDetail) object;
@@ -288,7 +287,6 @@ public class ClientProjectsView extends Composite
         dateColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.date(), true, DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientProjectConversationDetail detail = (ClientProjectConversationDetail) object;
@@ -316,6 +314,10 @@ public class ClientProjectsView extends Composite
     @Override
     public Column<ClientProjectConversationDetail, Boolean> getStarColumn() {
         return starColumn;
+    }
+
+    public Column<ClientProjectConversationDetail, ImageResource> getReplyColumn() {
+        return replyColumn;
     }
 
     @Override

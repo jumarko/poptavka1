@@ -9,12 +9,14 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+import java.util.ArrayList;
 import java.util.List;
 
 @EventHandler
@@ -38,7 +40,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
             case Constants.CLIENT_OFFERED_PROJECTS:
                 getClientOfferedProjectsCount(grid, searchDefinition);
                 break;
-            case Constants.CLIENT_PROJECT_CONTESTANTS:
+            case Constants.CLIENT_OFFERED_PROJECT_CONTESTANTS:
                 getClientProjectContestantsCount(grid, searchDefinition);
                 break;
             case Constants.CLIENT_ASSIGNED_PROJECTS:
@@ -60,8 +62,8 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
             case Constants.CLIENT_OFFERED_PROJECTS:
                 getClientOfferedProjects(searchDefinition);
                 break;
-            case Constants.CLIENT_PROJECT_CONTESTANTS:
-                getClientProjectContestants(searchDefinition);
+            case Constants.CLIENT_OFFERED_PROJECT_CONTESTANTS:
+                getClientOfferedProjectContestants(searchDefinition);
                 break;
             case Constants.CLIENT_ASSIGNED_PROJECTS:
                 getClientAssignedProjects(searchDefinition);
@@ -158,7 +160,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                 });
     }
 
-    private void getClientProjectContestants(SearchDefinition searchDefinition) {
+    private void getClientOfferedProjectContestants(SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectContestants(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
                 new SecuredAsyncCallback<List<FullOfferDetail>>() {
@@ -222,6 +224,33 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
         clientDemandsService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
+                //Empty by default
+            }
+        });
+    }
+
+    public void onRequestCloseDemand(FullDemandDetail demandDetail) {
+        clientDemandsService.closeDemand(demandDetail, new SecuredAsyncCallback<ArrayList<Void>>() {
+            @Override
+            public void onSuccess(ArrayList<Void> result) {
+                //Empty by default
+            }
+        });
+    }
+
+    public void onRequestAcceptOffer(FullOfferDetail fullOfferDetail) {
+        clientDemandsService.acceptOffer(fullOfferDetail, new SecuredAsyncCallback<ArrayList<Void>>() {
+            @Override
+            public void onSuccess(ArrayList<Void> result) {
+                //Empty by default
+            }
+        });
+    }
+
+    public void onRequestDeclineOffer(OfferDetail offerDetail) {
+        clientDemandsService.declineOffer(offerDetail, new SecuredAsyncCallback<ArrayList<Void>>() {
+            @Override
+            public void onSuccess(ArrayList<Void> result) {
                 //Empty by default
             }
         });

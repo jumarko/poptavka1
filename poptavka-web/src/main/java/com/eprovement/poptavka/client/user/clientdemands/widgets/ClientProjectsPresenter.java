@@ -19,6 +19,7 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -46,6 +47,8 @@ public class ClientProjectsPresenter
         Column<ClientProjectConversationDetail, Boolean> getCheckColumn();
 
         Column<ClientProjectConversationDetail, Boolean> getStarColumn();
+
+        Column<ClientProjectConversationDetail, ImageResource> getReplyColumn();
 
         Column<ClientProjectConversationDetail, String> getSupplierNameColumn();
 
@@ -108,7 +111,7 @@ public class ClientProjectsPresenter
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
-//        addReplyColumnFieldUpdater();
+        addReplyColumnFieldUpdater();
         // Listbox actions
         addActionChangeHandler();
     }
@@ -199,11 +202,20 @@ public class ClientProjectsPresenter
 
             @Override
             public void update(int index, ClientProjectConversationDetail object, Boolean value) {
-//              TableDisplay obj = (TableDisplay) object;
                 object.setStarred(!value);
                 view.getConversationGrid().redraw();
                 Long[] item = new Long[]{object.getUserMessageId()};
                 eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
+            }
+        });
+    }
+
+    public void addReplyColumnFieldUpdater() {
+        view.getReplyColumn().setFieldUpdater(new FieldUpdater<ClientProjectConversationDetail, ImageResource>() {
+
+            @Override
+            public void update(int index, ClientProjectConversationDetail object, ImageResource value) {
+                detailSection.getView().getReplyHolder().addQuestionReply();
             }
         });
     }

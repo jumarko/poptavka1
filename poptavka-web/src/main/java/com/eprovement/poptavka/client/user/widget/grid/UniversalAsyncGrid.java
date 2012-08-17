@@ -178,7 +178,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public void getDataCount(IEventBusData eventBus, SearchDefinition searchDefinition) {
         this.eventBus = eventBus;
-        this.searchDataHolder = searchDefinition.getFilter();
+        if (searchDefinition != null) {
+            this.searchDataHolder = searchDefinition.getFilter();
+        }
 
         eventBus.getDataCount(this, searchDefinition);
     }

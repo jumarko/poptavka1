@@ -23,6 +23,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
@@ -94,6 +95,9 @@ public class ClientContestsPresenter
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
+        addReplyColumnFieldUpdater();
+        addAcceptOfferColumnFieldUpdater();
+        addDeclineOfferColumnFieldUpdater();
         addTextColumnFieldUpdaters();
         // Buttons Actions
         addBackButtonHandler();
@@ -139,8 +143,7 @@ public class ClientContestsPresenter
     public void onDisplayClientProjectContestants(List<FullOfferDetail> data) {
         GWT.log("++ onResponseClientsProjectContestants");
 
-        //TODO - ked vymeneny detail objekt v UniversalTableWIdgete tak odkomentovat
-//        view.getContestGrid().getGrid().updateRowData(data);
+        view.getContestGrid().getGrid().updateRowData(data);
     }
 
     /**
@@ -171,7 +174,6 @@ public class ClientContestsPresenter
     // Field Updaters
     public void addCheckHeaderUpdater() {
         view.getContestGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
-
             @Override
             public void update(Boolean value) {
                 List<FullOfferDetail> rows = view.getContestGrid().getGrid().getVisibleItems();
@@ -185,7 +187,6 @@ public class ClientContestsPresenter
     public void addStarColumnFieldUpdater() {
         view.getContestGrid().getStarColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, Boolean>() {
-
                     @Override
                     public void update(int index, FullOfferDetail object, Boolean value) {
                         TableDisplay obj = (TableDisplay) object;
@@ -197,9 +198,38 @@ public class ClientContestsPresenter
                 });
     }
 
+    public void addReplyColumnFieldUpdater() {
+        view.getContestGrid().getReplyImageColumn().setFieldUpdater(
+                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                    @Override
+                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                        detailSection.getView().getReplyHolder().addQuestionReply();
+                    }
+                });
+    }
+
+    public void addAcceptOfferColumnFieldUpdater() {
+        view.getContestGrid().getAcceptOfferImageColumn().setFieldUpdater(
+                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                    @Override
+                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                        eventBus.requestAcceptOffer(object);
+                    }
+                });
+    }
+
+    public void addDeclineOfferColumnFieldUpdater() {
+        view.getContestGrid().getDeclineOfferImageColumn().setFieldUpdater(
+                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                    @Override
+                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                        eventBus.requestDeclineOffer(object.getOfferDetail());
+                    }
+                });
+    }
+
     public void addTextColumnFieldUpdaters() {
         FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
-
             @Override
             public void update(int index, FullOfferDetail object, String value) {
                 if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
@@ -220,7 +250,6 @@ public class ClientContestsPresenter
     // Buttons
     private void addBackButtonHandler() {
         view.getBackBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 view.getDemandGrid().getSelectionModel().setSelected(
@@ -233,7 +262,6 @@ public class ClientContestsPresenter
 
     private void addActionChangeHandler() {
         view.getActions().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getActions().getSelectedIndex()) {
@@ -259,10 +287,9 @@ public class ClientContestsPresenter
     //SelectionHandlers
     private void addDemandTableSelectionHandler() {
         view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECT_CONTESTANTS);
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_PROJECT_CONTESTANTS);
                 ClientProjectDetail selected = (ClientProjectDetail) ((SingleSelectionModel)
                         view.getDemandGrid().getSelectionModel()).getSelectedObject();
                 if (selected != null) {

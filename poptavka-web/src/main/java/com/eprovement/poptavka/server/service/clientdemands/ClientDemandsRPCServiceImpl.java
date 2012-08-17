@@ -38,6 +38,7 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Search;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -252,8 +253,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientOfferedProjectsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        return 0L;
+        return 1L;
     }
 
     /**
@@ -274,8 +274,15 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientProjectDetail> getClientOfferedProjects(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<ClientProjectDetail>();
+        List<ClientProjectDetail> list = new ArrayList<ClientProjectDetail>();
+        ClientProjectDetail c = new ClientProjectDetail();
+        c.setDemandId(1L);
+        c.setDemandTitle("demand title");
+        c.setPrice(BigDecimal.valueOf(10200));
+        c.setEndDate(new Date());
+        c.setValidToDate(new Date());
+        list.add(c);
+        return list;
     }
 
     /**
@@ -292,7 +299,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
     public long getClientProjectContestantsCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        return 0L;
+        return 1L;
     }
 
     /**
@@ -311,7 +318,19 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
     public List<FullOfferDetail> getClientProjectContestants(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<FullOfferDetail>();
+        FullOfferDetail detail = new FullOfferDetail();
+        detail.getOfferDetail().setDemandId(1L);
+        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
+        detail.getOfferDetail().setClientName("Martin Slavkovsky");
+        detail.getOfferDetail().setSupplierName("Good Data");
+        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
+        detail.getOfferDetail().setRating(90);
+        detail.getOfferDetail().setPrice(10000);
+        detail.getOfferDetail().setFinishDate(new Date());
+        detail.getOfferDetail().setCreatedDate(new Date());
+        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
+        list.add(detail);
+        return list;
     }
 
     //******************** CLIENT - My Assigned Demands ***********************/
@@ -425,6 +444,50 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
             userMessage.setStarred(isStarred);
             this.userMessageService.update(userMessage);
         }
+    }
+
+    /**
+     * When demand is finished (when supplier delivered what client asked), client can finally close demand.
+     * At the end of whole process.
+     *
+     * @param demandDetail
+     * @throws RPCException
+     * @throws ApplicationSecurityException W
+     */
+    @Override
+    public void closeDemand(FullDemandDetail demandDetail) throws RPCException, ApplicationSecurityException {
+        //TODO Juraj - skontrolovat
+        Demand demand = demandConverter.convertToSource(demandDetail);
+        demand.setStatus(DemandStatus.CLOSED);
+        generalService.merge(demand);
+    }
+
+    /**
+     * Accept offer. When some offer is accepted, others are automatically declined.
+     *
+     * @param fullOfferDetail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    public void acceptOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException {
+        //TODO Juraj
+        //Accept given offer (offerDetail.getOfferDetail())
+        //Decline all other offers of given demand (offerDetail.getDemandDetail())
+    }
+
+    /**
+     * Decline offer. When client is not satisfied with and offer, he can decline it. It doesn't influence
+     * other offers of that demand.
+     *
+     * @param offerDetail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    public void declineOffer(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
+        //TODO Juraj
+        //Decline given offer
     }
 
     /**************************************************************************/

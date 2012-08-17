@@ -40,12 +40,18 @@ public class DevelOfferQuestionWindow extends Composite {
     public static final int RESPONSE_OFFER = 0;
     public static final int RESPONSE_QUESTION = 1;
     //UiBinder attributes
-    @UiField Element header;
-    @UiField Anchor offerReplyBtn, questionReplyBtn;
-    @UiField Anchor submitBtn, cancelBtn;
-    @UiField TextArea replyTextArea;
-    @UiField TextBox priceBox;
-    @UiField DateBox dateBox;
+    @UiField
+    Element header;
+    @UiField
+    Anchor offerReplyBtn, questionReplyBtn;
+    @UiField
+    Anchor submitBtn, cancelBtn;
+    @UiField
+    TextArea replyTextArea;
+    @UiField
+    TextBox priceBox;
+    @UiField
+    DateBox dateBox;
     //main widget part is hidden
     private boolean hiddenReplyBody = true;
     private int selectedResponse;
@@ -66,28 +72,18 @@ public class DevelOfferQuestionWindow extends Composite {
 //        DOM.sinkEvents(castedElement, Event.ONCLICK);
 //        DOM.setEventListener(castedElement, new MessageToggleHangler());
         offerReplyBtn.addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                selectedResponse = RESPONSE_OFFER;
-                replyTextArea.getElement().getNextSiblingElement()
-                    .getFirstChildElement().getStyle().setVisibility(Visibility.VISIBLE);
-                toggleWidget();
+                addOfferReply();
             }
         });
         questionReplyBtn.addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                GWT.log(" CLICK casted");
-                selectedResponse = RESPONSE_QUESTION;
-                replyTextArea.getElement().getNextSiblingElement()
-                    .getFirstChildElement().getStyle().setVisibility(Visibility.HIDDEN);
-                toggleWidget();
+                addQuestionReply();
             }
         });
         cancelBtn.addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 toggleWidget();
@@ -100,6 +96,20 @@ public class DevelOfferQuestionWindow extends Composite {
     protected void onUnload() {
         super.onUnload();
         DOM.setEventListener(castElement(header), null);
+    }
+
+    public void addQuestionReply() {
+        selectedResponse = RESPONSE_QUESTION;
+        replyTextArea.getElement().getNextSiblingElement()
+                .getFirstChildElement().getStyle().setVisibility(Visibility.HIDDEN);
+        toggleWidget();
+    }
+
+    public void addOfferReply() {
+        selectedResponse = RESPONSE_OFFER;
+        replyTextArea.getElement().getNextSiblingElement()
+                .getFirstChildElement().getStyle().setVisibility(Visibility.VISIBLE);
+        toggleWidget();
     }
 
     //Martin - neviem co to znamena, pouziva pri DOM.setEventListener

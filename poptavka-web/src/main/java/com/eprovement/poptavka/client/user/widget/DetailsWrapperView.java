@@ -42,6 +42,7 @@ public class DetailsWrapperView extends Composite
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        container.selectTab(2);
     }
 
     /**************************************************************************/

@@ -7,6 +7,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -14,9 +15,22 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public final class FullDemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
 
+    /**************************************************************************/
+    /* RPC Services                                                           */
+    /**************************************************************************/
+    private DemandService demandService;
+
+    @Autowired
+    public void setDemandService(DemandService demandService) {
+        this.demandService = demandService;
+    }
+    /**************************************************************************/
+    /* Other converters                                                       */
+    /**************************************************************************/
     private final Converter<Supplier, FullSupplierDetail> supplierConverter;
     private final Converter<Locality, LocalityDetail> localityConverter;
     private final Converter<Category, CategoryDetail> categoryConverter;
@@ -65,8 +79,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
 
     @Override
     public Demand convertToSource(FullDemandDetail source) {
-        throw new UnsupportedOperationException("Conversion from FullDemandDetail to domain object Demand"
-                + " is not implemented yet!");
+        return demandService.getById(source.getDemandId());
     }
 
     //--------------------------------------------------- PRIVATE METHODS ----------------------------------------------

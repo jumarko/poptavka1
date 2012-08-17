@@ -59,7 +59,7 @@ public final class Constants {
     public static final int CLIENT_PROJECTS = 10;
     public static final int CLIENT_PROJECT_DISCUSSIONS = 18;
     public static final int CLIENT_OFFERED_PROJECTS = 11;
-    public static final int CLIENT_PROJECT_CONTESTANTS = 19;
+    public static final int CLIENT_OFFERED_PROJECT_CONTESTANTS = 19;
     public static final int CLIENT_ASSIGNED_PROJECTS = 12;
     // Supplier
     public static final int SUPPLIER_POTENTIAL_PROJECTS = 15;
@@ -102,7 +102,7 @@ public final class Constants {
         clients.add(CLIENT_PROJECTS);
         clients.add(CLIENT_PROJECT_DISCUSSIONS);
         clients.add(CLIENT_OFFERED_PROJECTS);
-        clients.add(CLIENT_PROJECT_CONTESTANTS);
+        clients.add(CLIENT_OFFERED_PROJECT_CONTESTANTS);
         clients.add(CLIENT_ASSIGNED_PROJECTS);
         return clients;
     }

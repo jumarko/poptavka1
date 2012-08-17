@@ -40,6 +40,7 @@
     <bean id="fullOfferConverter" class="com.eprovement.poptavka.server.converter.FullOfferConverter">
         <constructor-arg index="0" ref="offerConverter"/>
         <constructor-arg index="1" ref="messageConverter"/>
+        <constructor-arg index="2" ref="fullDemandConverter"/>
     </bean>
     <bean id="invoiceConverter" class="com.eprovement.poptavka.server.converter.InvoiceConverter">
         <constructor-arg index="0" ref="paymentMethodConverter"/>

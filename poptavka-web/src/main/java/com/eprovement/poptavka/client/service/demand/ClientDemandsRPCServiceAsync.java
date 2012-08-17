@@ -70,6 +70,12 @@ public interface ClientDemandsRPCServiceAsync {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
 
+    void closeDemand(FullDemandDetail demandDetail, AsyncCallback<ArrayList<Void>> callback);
+
+    void acceptOffer(FullOfferDetail fullOfferDetail, AsyncCallback<ArrayList<Void>> callback);
+
+    void declineOffer(OfferDetail offerDetail, AsyncCallback<ArrayList<Void>> callback);
+
     /**************************************************************************/
     /* Messages methods                                                       */
     /**************************************************************************/

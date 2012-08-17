@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 
 public class CategoryDetail implements Serializable {
@@ -17,6 +18,16 @@ public class CategoryDetail implements Serializable {
     private long suppliers;
     //if parent = false, no child category exists;
     private boolean leaf = false;
+
+    /**
+     * The key provider that provides the unique ID of a FullSupplierDetail.
+     */
+    public static final ProvidesKey<CategoryDetail> KEY_PROVIDER = new ProvidesKey<CategoryDetail>() {
+        @Override
+        public Object getKey(CategoryDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
 
     public CategoryDetail() {
     }

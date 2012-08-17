@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -122,6 +123,15 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
 
     @Event(handlers = ClientDemandsHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestCloseDemand(FullDemandDetail demandDetail);
+
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestAcceptOffer(FullOfferDetail fullOfferDetail);
+
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestDeclineOffer(OfferDetail offerDetail);
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */

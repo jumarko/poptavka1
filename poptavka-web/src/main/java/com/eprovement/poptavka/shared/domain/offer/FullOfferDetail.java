@@ -2,6 +2,7 @@ package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import java.io.Serializable;
 
@@ -19,6 +20,7 @@ public class FullOfferDetail implements Serializable, TableDisplay {
     private boolean isRead;
     private MessageDetail messageDetail = new MessageDetail();
     private OfferDetail offerDetail = new OfferDetail();
+    private FullDemandDetail demandDetail = new FullDemandDetail();
 
     public FullOfferDetail() {
     }
@@ -50,6 +52,14 @@ public class FullOfferDetail implements Serializable, TableDisplay {
 
     public void setOfferDetail(OfferDetail offerDetail) {
         this.offerDetail = offerDetail;
+    }
+
+    public FullDemandDetail getDemandDetail() {
+        return demandDetail;
+    }
+
+    public void setDemandDetail(FullDemandDetail demandDetail) {
+        this.demandDetail = demandDetail;
     }
 
     /**
