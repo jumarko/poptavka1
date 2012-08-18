@@ -288,7 +288,7 @@ input,textarea,select {
 	padding: 0 35px 0 50px;
 	border-left: 1px solid #bda45d;
 }
-
+.create-tab-layout-selected,
 .create-tab-layout-header:hover {
 	background: url(images/create-tab-hover.png) no-repeat top right;
 	cursor: pointer;

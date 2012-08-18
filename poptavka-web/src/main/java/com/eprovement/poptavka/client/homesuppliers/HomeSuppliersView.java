@@ -129,9 +129,8 @@ public class HomeSuppliersView extends OverflowComposite
                 selectionCategoryModel,
                 homeSuppliersPresenter.getCategoryService(),
                 Constants.WITHOUT_CHECK_BOXES), null);
-        cellTree.setSize("300px", "100px");
+        // cellTree.setSize("300px", "100px");
         cellTree.setAnimationEnabled(true);
-
     }
 
     private void initDataGrid() {
@@ -147,7 +146,6 @@ public class HomeSuppliersView extends OverflowComposite
 
         dataGrid.setMinimumTableWidth(SUPPLIER_NAME_COL_WIDTH + RATING_COL_WIDTH
                 + ADDRESS_COL_WIDTH + LOCALITY_COL_WIDTH, Unit.PX);
-        dataGrid.setHeight(Integer.toString(TABLE_HEIGHT) + "px");
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);

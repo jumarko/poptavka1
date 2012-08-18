@@ -1,38 +1,48 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
 
-    <!-- injecting style resources -->
-    <ui:with field='res'
-                 type='com.eprovement.poptavka.client.resources.StyleResource' />
-    <!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages'
-  		/> -->
+	<!-- injecting style resources -->
+	<ui:with field='res'
+		type='com.eprovement.poptavka.client.resources.StyleResource' />
+	<!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' 
+		/> -->
 
-    <g:HTMLPanel styleName='{res.layout.bodyFullContainer}'>
-        <g:VerticalPanel>
-            <g:HorizontalPanel>
-                <c:CellTree ui:field="cellTree"/>
-                <g:ScrollPanel>
-                    <g:VerticalPanel width="600px">
-                        <g:Label ui:field="filterLabel">Search panel set, additional filters
-                            will by used.
-                        </g:Label>
-                        <c:DataGrid ui:field="dataGrid" />
-                        <g:HorizontalPanel>
-                            <c:SimplePager ui:field="pager" />
-                            <g:ListBox ui:field='pageSizeCombo' />
-                        </g:HorizontalPanel>
-                    </g:VerticalPanel>
-                </g:ScrollPanel>
-                <g:ScrollPanel>
-                    <g:HTMLPanel ui:field="detail">
-                        <g:Label ui:field="reklama">Reklama</g:Label>
-                        <d:SupplierDetailView ui:field="supplierDetail" />
-                        <g:Button ui:field="contactBtn">Contact</g:Button>
-                    </g:HTMLPanel>
-                </g:ScrollPanel>
-            </g:HorizontalPanel>
-        </g:VerticalPanel>
-    </g:HTMLPanel>
+	<g:DockLayoutPanel unit="PX"
+		styleName='{res.layout.bodyFullContainer}'>
+		<g:west size="320">
+			<g:ScrollPanel>
+				<c:CellTree ui:field="cellTree" />
+			</g:ScrollPanel>
+		</g:west>
+		<g:center>
+			<g:DockLayoutPanel unit="PX">
+				<g:north size="30">
+					<g:Label ui:field="filterLabel">Search panel set, additional filters
+						will
+						by used.
+					</g:Label>
+				</g:north>
+				<g:center>
+					<c:DataGrid ui:field="dataGrid" />
+				</g:center>
+				<g:south size="40">
+					<g:HorizontalPanel>
+						<c:SimplePager ui:field="pager" />
+						<g:ListBox ui:field='pageSizeCombo' />
+					</g:HorizontalPanel>
+				</g:south>
+			</g:DockLayoutPanel>
+		</g:center>
+		<g:east size="300">
+			<g:ScrollPanel>
+				<g:HTMLPanel ui:field="detail">
+					<g:Label ui:field="reklama">Reklama</g:Label>
+					<d:SupplierDetailView ui:field="supplierDetail" />
+					<g:Button ui:field="contactBtn">Contact</g:Button>
+				</g:HTMLPanel>
+			</g:ScrollPanel>
+		</g:east>
+	</g:DockLayoutPanel>
 </ui:UiBinder>

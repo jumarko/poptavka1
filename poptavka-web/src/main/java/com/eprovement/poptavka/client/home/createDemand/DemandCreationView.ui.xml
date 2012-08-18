@@ -13,9 +13,7 @@
 		.tabIndex2 { z-index: 2;}
 		.tabIndex3 { z-index: 3;}
 		.tabIndex4 { z-index: 4;}
-		.tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
-		
-		.gwt-TabLayoutPanelContentContainer { border: none;}
+		.tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}		
 	</ui:style>
 
 	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
