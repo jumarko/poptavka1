@@ -64,7 +64,7 @@ public class LocalitySelectorView extends Composite
         cellBrowser = new CellBrowser(new LocalityTreeViewModel(
                 cellBrowserSelectionModel,
                 localitySelectorPresenter.getLocalityService()), null);
-        cellBrowser.setSize("500px", "200px");
+        cellBrowser.setSize("950px", "350px");
         cellBrowser.setAnimationEnabled(true);
 
         cellList = new CellList<LocalityDetail>(new LocalityCell());
