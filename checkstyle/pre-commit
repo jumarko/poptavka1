@@ -15,7 +15,8 @@
 # Now, when you commit, you will be disallowed from doing so
 # until you pass your checkstyle checks.
 
-$command = "git-diff-index --name-only --cached HEAD 2>&1 | sed 's/^:.*     //' | uniq";
+#Modified command to fix issues with deleted files and getting only file name note the whole info about file change
+$command = " /usr/libexec/git-core/git-diff-index --cached HEAD 2>&1 | uniq | grep -vP ' D\t' | awk '{print \$6}'";
 open (FILES,$command . "|") || die "Cannot run '$command': $!\n";
 
 $CONFIG_CHECK_FILE = "checkstyle.checkfile";
