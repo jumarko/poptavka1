@@ -3,13 +3,13 @@
  */
 package com.eprovement.poptavka.server.service.user;
 
+import com.eprovement.poptavka.base.BasicIntegrationTest;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import org.junit.runner.RunWith;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -28,12 +28,8 @@ import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-web-test.xml" })
-public class UserRPCServiceTest {
+public class UserRPCServiceTest extends BasicIntegrationTest {
     protected static final String TEST_USER_MAIL = "test@poptavam.com";
     private UserRPCService userRPCService;
     private LoginService loginServiceMock;

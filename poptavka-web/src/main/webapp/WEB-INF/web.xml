@@ -20,6 +20,10 @@
             classpath:applicationContext-web.xml
         </param-value>
     </context-param>
+    <context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>prod</param-value>
+    </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>

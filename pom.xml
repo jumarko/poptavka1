@@ -795,26 +795,26 @@
                     <artifactId>gwt-maven-plugin</artifactId>
                     <version>${gwt.version}</version>
                 </plugin>
-                <plugin>
-                    <groupId>com.eprovement</groupId>
-                    <artifactId>dbunit-dtd-generator-mojo</artifactId>
-                    <version>1.0-SNAPSHOT</version>
-                    <executions>
-                        <execution>
-                            <id>generateDtd</id>
-                            <goals>
-                                <goal>generateDtd</goal>
-                            </goals>
-                            <configuration>
-                                <outputDirectory>${project.basedir}/integration-test-base/src/main/resources</outputDirectory>
-                                <dataSourceBeanName>poptavkaDataSource</dataSourceBeanName>
-                                <dtdFileName>test.dtd</dtdFileName>
-                                <applicationContextLocation>classpath*:applicationContext-core.xml</applicationContextLocation>
-                            </configuration>
-                            <phase>test</phase>
-                        </execution>
-                    </executions>
-                </plugin>
+                <!--<plugin>-->
+                    <!--<groupId>com.eprovement</groupId>-->
+                    <!--<artifactId>dbunit-dtd-generator-mojo</artifactId>-->
+                    <!--<version>1.0-SNAPSHOT</version>-->
+                    <!--<executions>-->
+                        <!--<execution>-->
+                            <!--<id>generateDtd</id>-->
+                            <!--<goals>-->
+                                <!--<goal>generateDtd</goal>-->
+                            <!--</goals>-->
+                            <!--<configuration>-->
+                                <!--<outputDirectory>${project.basedir}/integration-test-base/src/main/resources</outputDirectory>-->
+                                <!--<dataSourceBeanName>poptavkaDataSource</dataSourceBeanName>-->
+                                <!--<dtdFileName>test.dtd</dtdFileName>-->
+                                <!--<applicationContextLocation>classpath*:applicationContext-core.xml</applicationContextLocation>-->
+                            <!--</configuration>-->
+                            <!--<phase>test</phase>-->
+                        <!--</execution>-->
+                    <!--</executions>-->
+                <!--</plugin>-->
             </plugins>
         </pluginManagement>
 
