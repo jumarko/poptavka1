@@ -209,16 +209,6 @@
         </dependency>
         <!-- END list -->
 
-        <!-- GWT testing -->
-        <dependency>
-            <groupId>com.googlecode.gwt</groupId>
-            <artifactId>syncproxy</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-        </dependency>
-        
         <!-- GWT validation -->
 <!--        <dependency>
             <groupId>com.googlecode.gwt-validation</groupId>
