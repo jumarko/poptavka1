@@ -1,32 +1,31 @@
 package com.eprovement.poptavka.service.client;
 
-import com.eprovement.poptavka.domain.address.Address;
-import com.eprovement.poptavka.domain.user.rights.AccessRole;
-import com.eprovement.poptavka.service.address.LocalityService;
-import com.googlecode.genericdao.search.Search;
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
-import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.util.user.UserTestUtils;
+import com.googlecode.genericdao.search.Search;
 import java.util.Arrays;
+import java.util.List;
 import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  *
@@ -38,7 +37,7 @@ import java.util.List;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml" },
          dtd = "classpath:test.dtd")
-public class ClientServiceIntegrationTest extends DBUnitBaseTest {
+public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private ClientService clientService;

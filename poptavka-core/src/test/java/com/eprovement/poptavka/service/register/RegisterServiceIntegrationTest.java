@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.service.register;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.register.Register;
@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DataSet(path = "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml", dtd = "classpath:test.dtd")
-public class RegisterServiceIntegrationTest extends DBUnitBaseTest {
+public class RegisterServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private RegisterService registerService;

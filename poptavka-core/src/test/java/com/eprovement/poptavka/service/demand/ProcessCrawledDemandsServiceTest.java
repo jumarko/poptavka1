@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.service.demand;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Test of processing of incoming crawled demands.
  * <p>
- *     Must extend {@link DBUnitBaseTest} because it required some basic data to be presented when storing crawled
+ *     Must extend {@link com.eprovement.poptavka.base.integration.DBUnitBaseTest}
+ *     because it required some basic data to be presented when storing crawled
  *     demands - e.g. required {@link com.eprovement.poptavka.domain.demand.DemandType}.
  * @author Juraj Martinka
  *         Date: 16.5.11
@@ -27,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class ProcessCrawledDemandsServiceTest extends DBUnitBaseTest {
+public class ProcessCrawledDemandsServiceTest extends DBUnitIntegrationTest {
 
     @Autowired
     private ProcessCrawledDemandsService processCrawledDemandsService;

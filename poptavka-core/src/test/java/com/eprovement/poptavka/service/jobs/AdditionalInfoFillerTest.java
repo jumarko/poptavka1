@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.service.jobs;
 
-import com.google.common.base.Preconditions;
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.AdditionalInfo;
@@ -9,6 +8,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.jobs.base.JobTask;
+import com.google.common.base.Preconditions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
 @Ignore
-public class AdditionalInfoFillerTest extends DBUnitBaseTest {
+public class AdditionalInfoFillerTest extends DBUnitIntegrationTest {
 
     @Autowired
     @Qualifier(value = "additionalInfoFiller")

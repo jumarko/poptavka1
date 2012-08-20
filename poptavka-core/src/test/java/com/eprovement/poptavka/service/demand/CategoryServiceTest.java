@@ -1,22 +1,21 @@
 package com.eprovement.poptavka.service.demand;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Juraj Martinka
  *         Date: 26.2.11
  */
 @DataSet(path = "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml", dtd = "classpath:test.dtd")
-public class CategoryServiceTest extends DBUnitBaseTest {
+public class CategoryServiceTest extends DBUnitIntegrationTest {
 
     @Autowired
     private CategoryService categoryService;

@@ -1,15 +1,14 @@
 package com.eprovement.poptavka.service.common;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.TreeItem;
 import com.eprovement.poptavka.domain.demand.Category;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * @author Juraj Martinka
@@ -22,7 +21,7 @@ import java.util.List;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class TreeItemServiceIntegrationTest extends DBUnitBaseTest {
+public class TreeItemServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private TreeItemService treeItemService;

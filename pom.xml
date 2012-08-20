@@ -9,6 +9,7 @@
     <name>Poptavka</name>
     <url>http://maven.apache.org</url>
     <modules>
+        <module>integration-test-base</module>
         <module>poptavka-core</module>
         <module>poptavka-rest-api</module>
         <module>poptavka-web</module>
@@ -207,7 +208,13 @@
 
     <dependencyManagement>
         <dependencies>
-
+            <dependency>
+                <groupId>com.eprovement</groupId>
+                <artifactId>integration-test-base</artifactId>
+                <version>${project.version}</version>
+                <!--TODO: because of ApplicationContextHolder cannot use test scope-->
+                <!--<scope>test</scope>-->
+            </dependency>
             <dependency>
                 <groupId>com.eprovement</groupId>
                 <artifactId>poptavka-core</artifactId>

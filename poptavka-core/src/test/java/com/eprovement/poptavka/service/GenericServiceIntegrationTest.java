@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.service;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Demand;
@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class GenericServiceIntegrationTest extends DBUnitBaseTest {
+public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private LocalityService localityService;

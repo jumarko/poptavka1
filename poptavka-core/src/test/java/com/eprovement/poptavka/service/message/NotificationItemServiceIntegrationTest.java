@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.service.message;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
 import com.eprovement.poptavka.domain.user.Client;
@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/settings/NotificationItemsDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class NotificationItemServiceIntegrationTest extends DBUnitBaseTest {
+public class NotificationItemServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private NotificationItemService notificationItemService;

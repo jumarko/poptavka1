@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.util.orm;
 
-import com.eprovement.poptavka.application.ApplicationContextHolder;
+import com.eprovement.poptavka.base.ApplicationContextHolder;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.AdditionalInfo;
 import com.eprovement.poptavka.domain.common.AdditionalInfoAware;
@@ -113,7 +113,7 @@ public class AdditionalInfoLoadListener implements PostLoadEventListener {
      * dependencies into the listeners.
      */
     private void ensureServicesInitialization() {
-        if (! servicesInitialized) {
+        if (!servicesInitialized) {
             this.demandService =
                     (DemandService) ApplicationContextHolder.getApplicationContext().getBean("demandService");
             this.supplierService = (SupplierService) ApplicationContextHolder.getApplicationContext().

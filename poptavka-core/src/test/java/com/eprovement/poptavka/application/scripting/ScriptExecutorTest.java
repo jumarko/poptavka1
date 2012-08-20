@@ -1,15 +1,14 @@
 package com.eprovement.poptavka.application.scripting;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import java.io.IOException;
+import javax.script.ScriptException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.script.ScriptException;
-import java.io.IOException;
 
 /**
  * Dummy test of script evaluation.
@@ -26,7 +25,7 @@ import java.io.IOException;
 @Ignore
 @DataSet(path = "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         dtd = "classpath:test.dtd")
-public class ScriptExecutorTest extends DBUnitBaseTest {
+public class ScriptExecutorTest extends DBUnitIntegrationTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptExecutorTest.class);
 

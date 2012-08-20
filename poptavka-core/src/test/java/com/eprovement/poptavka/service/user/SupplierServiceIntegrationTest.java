@@ -1,36 +1,35 @@
 package com.eprovement.poptavka.service.user;
 
-import com.eprovement.poptavka.domain.address.Address;
-import com.eprovement.poptavka.domain.enums.LocalityType;
-import com.eprovement.poptavka.domain.user.rights.AccessRole;
-import com.googlecode.genericdao.search.Search;
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.enums.LocalityType;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
-import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.util.user.UserTestUtils;
+import com.googlecode.genericdao.search.Search;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Juraj Martinka
@@ -45,7 +44,7 @@ import java.util.Set;
         "classpath:com/eprovement/poptavka/domain/user/SupplierDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
+public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private SupplierService supplierService;

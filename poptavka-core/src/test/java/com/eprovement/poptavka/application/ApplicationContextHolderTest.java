@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.application;
 
+import com.eprovement.poptavka.base.ApplicationContextHolder;
 import com.eprovement.poptavka.base.integration.BasicIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;

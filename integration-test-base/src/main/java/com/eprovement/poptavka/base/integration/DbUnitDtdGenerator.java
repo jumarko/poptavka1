@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.base.integration;
 
+import com.eprovement.poptavka.base.ApplicationContextHolder;
 import com.google.common.base.Preconditions;
-import com.eprovement.poptavka.application.ApplicationContextHolder;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.slf4j.Logger;
@@ -56,14 +56,14 @@ public final class DbUnitDtdGenerator {
             LOGGER.info("Dtd file [" + GENERATED_DTD_PATH + "] for integration tests has been generated.");
         } catch (Exception e) {
             throw new DtdGenerationException("An exception occured while generating dtd from databse "
-                    + ", cause: " + e.getMessage());
+                    + ", cause: " + e.getMessage(), e);
         }
     }
 
 
     public static class DtdGenerationException extends RuntimeException {
-        public DtdGenerationException(String message) {
-            super(message);
+        public DtdGenerationException(String message, Exception e) {
+            super(message, e);
         }
     }
 }

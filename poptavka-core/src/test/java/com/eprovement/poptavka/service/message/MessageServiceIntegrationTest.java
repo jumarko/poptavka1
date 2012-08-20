@@ -1,12 +1,12 @@
 package com.eprovement.poptavka.service.message;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.dao.message.MessageFilter;
-import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.enums.MessageState;
-import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
+import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
-public class MessageServiceIntegrationTest extends DBUnitBaseTest {
+public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private MessageService messageService;

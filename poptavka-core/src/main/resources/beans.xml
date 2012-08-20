@@ -151,7 +151,7 @@
     </bean>
 
     <!-- Other -->
-    <bean id="applicationContextProvider" class="com.eprovement.poptavka.application.ApplicationContextProvider"/>
+    <bean id="applicationContextProvider" class="com.eprovement.poptavka.base.ApplicationContextProvider"/>
 
     <bean id="demandConverter" class="com.eprovement.poptavka.messaging.crawler.DemandConverter">
         <constructor-arg ref="generalService" />

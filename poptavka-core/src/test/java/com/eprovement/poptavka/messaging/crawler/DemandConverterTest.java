@@ -1,14 +1,14 @@
 package com.eprovement.poptavka.messaging.crawler;
 
 import com.eprovement.crawldemands.demand.Demand;
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.enums.AddressType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
-import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.enums.Verification;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.util.messaging.demand.TestingDemand;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Assert;
@@ -27,7 +27,7 @@ import org.springframework.core.convert.converter.Converter;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class DemandConverterTest extends DBUnitBaseTest {
+public class DemandConverterTest extends DBUnitIntegrationTest {
 
     @Autowired
     private Converter<Demand, com.eprovement.poptavka.domain.demand.Demand> demandConverter;

@@ -4,7 +4,7 @@
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.application.security.Encryptor;
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.IncorrectPasswordException;
@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 @DataSet(path = { "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class LoginServiceIntegrationTest extends DBUnitBaseTest {
+public class LoginServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private LoginService loginService;

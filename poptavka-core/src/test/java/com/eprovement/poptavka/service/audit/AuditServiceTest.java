@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.service.audit;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
@@ -40,7 +40,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 @DataSet(path = { "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class AuditServiceTest extends DBUnitBaseTest {
+public class AuditServiceTest extends DBUnitIntegrationTest {
 
     /**
      * Template used for programmatic transaction handling, because audited data must be commited before loading

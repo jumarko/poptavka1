@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.service.user;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml" },
     dtd = "classpath:test.dtd")
-public class BusinessUserVerificationServiceIntegrationTest extends DBUnitBaseTest {
+public class BusinessUserVerificationServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private BusinessUserVerificationService userVerificationService;

@@ -1,13 +1,13 @@
 package com.eprovement.poptavka.service;
 
-import com.googlecode.genericdao.search.Search;
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandCategory;
 import com.eprovement.poptavka.service.common.TreeItemService;
+import com.googlecode.genericdao.search.Search;
 import java.util.List;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
 
-public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
+public class GeneralServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private GeneralService generalService;

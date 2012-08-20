@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.util.orm;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/user/SupplierDataSet.xml" },
         dtd = "classpath:test.dtd")
 @Ignore // this test is deprecated
-public class AdditionalInfoLoadListenerTest extends DBUnitBaseTest {
+public class AdditionalInfoLoadListenerTest extends DBUnitIntegrationTest {
 
     private static final String ROOT_CATEGORY_CODE = "0";
     private static final String ROOT_LOCALITY_CODE = "CZ";

@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.service.user;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *         Date: 9.5.11
  */
 @DataSet(path = "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml", dtd = "classpath:test.dtd")
-public class BusinessUserTest extends DBUnitBaseTest {
+public class BusinessUserTest extends DBUnitIntegrationTest {
 
     @Autowired
     private GeneralService generalService;

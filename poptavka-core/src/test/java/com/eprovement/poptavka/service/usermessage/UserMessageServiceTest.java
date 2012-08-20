@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.service.usermessage;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
-public class UserMessageServiceTest extends DBUnitBaseTest {
+public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     @Autowired
     private MessageService messageService;

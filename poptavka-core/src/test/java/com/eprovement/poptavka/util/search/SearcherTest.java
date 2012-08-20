@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.util.search;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
-public class SearcherTest extends DBUnitBaseTest {
+public class SearcherTest extends DBUnitIntegrationTest {
 
     @Autowired
     private UserMessageService userMessageService;

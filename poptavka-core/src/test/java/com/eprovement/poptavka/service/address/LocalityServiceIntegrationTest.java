@@ -1,27 +1,26 @@
 package com.eprovement.poptavka.service.address;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
-import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.service.common.TreeItemService;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 /**
  * @author Juraj Martinka
  *         Date: 5.2.11
  */
 @DataSet(path = "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml", dtd = "classpath:test.dtd")
-public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
+public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private LocalityService localityService;

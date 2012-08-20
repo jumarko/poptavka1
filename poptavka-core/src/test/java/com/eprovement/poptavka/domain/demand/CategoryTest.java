@@ -1,23 +1,22 @@
 package com.eprovement.poptavka.domain.demand;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
-import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.demand.CategoryDao;
+import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.service.common.TreeItemService;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Juraj Martinka
  *         Date: 6.2.11
  */
 @DataSet(path = "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml", dtd = "classpath:test.dtd")
-public class CategoryTest extends DBUnitBaseTest {
+public class CategoryTest extends DBUnitIntegrationTest {
 
     @Autowired
     private CategoryDao categoryDao;

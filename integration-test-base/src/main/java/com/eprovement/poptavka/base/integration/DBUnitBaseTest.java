@@ -45,7 +45,7 @@ import java.util.List;
  */
 // must be transactional to roll-back the created data after each test
 @Transactional
-public abstract class DBUnitBaseTest extends BasicIntegrationTest {
+public abstract class DBUnitBaseTest {
 
     /** Default suffix which will be used when constructing default name of xml file. **/
     private static final String DEFAULT_SUFFIX = "DataSet.xml";
@@ -93,12 +93,13 @@ public abstract class DBUnitBaseTest extends BasicIntegrationTest {
         try {
             disableForeignKeyChecksIfRequired();
             DatabaseOperation.CLEAN_INSERT.execute(getConnection(), getDataSet());
-        } catch (Exception e) {
+        } catch (Exception rootCause) {
             throw new IllegalStateException("An exception occured while loading test data into the database"
-                    + ", cause: " + e.getMessage()
+                    + ", cause: " + rootCause.getMessage()
                     + ", DataSet: " + this.dataSetsFilePaths
                     + ", DTD: " + this.dataSetDtdFilePath
-                    + ". Check the paths to the xml and DTD and verify that DTD is correctly bind to the xml.");
+                    + ". Check the paths to the xml and DTD and verify that DTD is correctly bind to the xml.",
+                    rootCause);
         }
     }
 

@@ -32,8 +32,10 @@ public final class SearchConverter implements Converter<Search, SearchDefinition
 
     @Override
     public Search convertToSource(SearchDefinition definition) {
-        Validate.notNull(definition, "Search definition cannot be null!");
-        Search search = new Search();
+        final Search search = new Search();
+        if (definition == null) {
+            return search;
+        }
         convertFirstResult(definition, search);
         convertMaxResult(definition, search);
         convertFilters(definition, search);

@@ -1,17 +1,16 @@
 package com.eprovement.poptavka.service.user;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.settings.Preference;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GeneralService;
+import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * @author Juraj Martinka
@@ -21,7 +20,7 @@ import java.util.List;
         "classpath:com/eprovement/poptavka/domain/user/PreferencesDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class PreferenceServiceIntegrationTest extends DBUnitBaseTest {
+public class PreferenceServiceIntegrationTest extends DBUnitIntegrationTest {
 
     private static final String USER_COLOR_FAVOURITE = "user.color.favourite";
     private static final String USER_MAIL_DEMAND = "user.mail.demand.updated.notification";

@@ -1,16 +1,15 @@
 package com.eprovement.poptavka.service.demand;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.junit.Before;
 
 /**
  * @author Vojtech Hubr
@@ -22,7 +21,7 @@ import org.junit.Before;
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class RatingServiceTest extends DBUnitBaseTest {
+public class RatingServiceTest extends DBUnitIntegrationTest {
     private Client client11, client12, client13, client14;
     private Supplier supplier11, supplier14;
 

@@ -1,16 +1,15 @@
 package com.eprovement.poptavka.service.fulltext;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
+import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
+import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * @author Juraj Martinka
@@ -27,7 +26,7 @@ import java.util.List;
 // TODO Fulltext index is not created correctly, probably because transaction is not really commited
 // in integration tests
 @Ignore
-public class HibernateFulltextSearchIntegrationTest extends DBUnitBaseTest {
+public class HibernateFulltextSearchIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private FulltextSearchService fulltextSearchService;
