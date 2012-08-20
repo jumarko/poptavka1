@@ -15,7 +15,7 @@
 
     <!-- Connection Factory -->
     <bean id="rabbitConnFactory"
-          class="org.springframework.amqp.rabbit.connection.SingleConnectionFactory">
+          class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
         <constructor-arg><value>localhost</value></constructor-arg>
         <property name="host" value="${amqp.host}" />
         <property name="username" value="${amqp.username}" />

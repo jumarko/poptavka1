@@ -36,8 +36,7 @@
         <hibernate-search.version>4.1.1.Final</hibernate-search.version>
         <hibernate-jpamodelgen.version>1.2.0.Final</hibernate-jpamodelgen.version>
         <genericdao.version>1.1.0</genericdao.version>
-        <ehcache.version>1.2.3</ehcache.version>
-        <ehcache-spring-annotations.version>1.1.2</ehcache-spring-annotations.version>
+        <ehcache-spring-annotations.version>1.2.0</ehcache-spring-annotations.version>
         <mockito.version>1.8.5</mockito.version>
         <powermock.version>1.4.7</powermock.version>
         <mvp4g.version>1.4.0</mvp4g.version>
@@ -66,7 +65,7 @@
         <aspectj.version>1.7.0.RC1</aspectj.version>
         <aspectj-maven-plugin.version>1.4</aspectj-maven-plugin.version>
         <maven-surefire-plugin.version>2.7.1</maven-surefire-plugin.version>
-        <spring.amqp.version>1.0.0.RC1</spring.amqp.version>
+        <spring.amqp.version>1.1.1.RELEASE</spring.amqp.version>
         <rabbitmq.version>2.2.0</rabbitmq.version>
         <jackson.version>1.8.5</jackson.version>
         <gwt-syncproxy.version>2.0</gwt-syncproxy.version>
@@ -306,8 +305,20 @@
                 <version>${ehcache-spring-annotations.version}</version>
                 <exclusions>
                     <exclusion>
+                        <groupId>net.sf.ehcache</groupId>
+                        <artifactId>ehcache-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-aop</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
                     </exclusion>
                     <exclusion>
                         <groupId>org.springframework</groupId>
@@ -315,7 +326,7 @@
                     </exclusion>
                     <exclusion>
                         <groupId>org.springframework</groupId>
-                        <artifactId>spring-aop</artifactId>
+                        <artifactId>spring-expression</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -362,6 +373,13 @@
                 <groupId>com.googlecode.genericdao</groupId>
                 <artifactId>dao</artifactId>
                 <version>${genericdao.version}</version>
+                <!--Exclude persistence-api to avoid using of old version JPA 1.0-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.persistence</groupId>
+                        <artifactId>persistence-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- This second one includes the Hibernate Entity Manager plugin for the framework -->
             <dependency>
@@ -499,28 +517,110 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <!--<version>${spring.version}</version>-->
-                <!--TODO:REPLACE WITH NEWER VERSION-->
-                <version>3.1.0.RELEASE</version>
+                <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-aop</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-expression</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
-                <!--<version>${spring.version}</version>-->
-                <!--TODO:REPLACE WITH NEWER VERSION-->
-                <version>3.1.0.RELEASE</version>
+                <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-aop</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-expression</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <!--<version>${spring.version}</version>-->
-                <!--TODO:REPLACE WITH NEWER VERSION-->
-                <version>3.1.0.RELEASE</version>
+                <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-aop</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-expression</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jdbc</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-tx</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-aspects</artifactId>
-                <version>3.1.0.RELEASE</version>
+                <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!--Jasypt-->
             <dependency>
@@ -673,17 +773,33 @@
                         <groupId>com.sun.jmx</groupId>
                         <artifactId>jmxri</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.amqp</groupId>
                 <artifactId>spring-rabbit</artifactId>
                 <version>${spring.amqp.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-tx</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.amqp</groupId>
                 <artifactId>spring-erlang</artifactId>
                 <version>${spring.amqp.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.rabbitmq</groupId>
@@ -807,6 +923,8 @@
                         <!--Set spring profile to "test" to be able to resolve correct properties-->
                         <systemProperties>
                             <spring.profiles.active>test</spring.profiles.active>
+                            <!--We need to set P6SPY home directory otherwise it is not able to find spy.properties correctly-->
+                            <p6.home>${project.parent.basedir}/poptavka-core/src/main/resources</p6.home>
                         </systemProperties>
                     </configuration>
                     <executions>
