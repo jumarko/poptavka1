@@ -916,7 +916,7 @@
                     <artifactId>dbunit-dtd-generator-plugin</artifactId>
                     <version>1.0-SNAPSHOT</version>
                     <configuration>
-                        <outputDirectory>${project.basedir}/integration-test-base/src/main/resources</outputDirectory>
+                        <outputDirectory>${project.parent.basedir}/integration-test-base/src/main/resources</outputDirectory>
                         <dataSourceBeanName>poptavkaDataSource</dataSourceBeanName>
                         <dtdFileName>test.dtd</dtdFileName>
                         <applicationContextLocation>classpath*:applicationContext-core.xml</applicationContextLocation>
