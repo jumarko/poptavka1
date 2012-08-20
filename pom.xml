@@ -201,11 +201,11 @@
     <distributionManagement>
         <repository>
             <id>central</id>
-            <url>http://46.137.95.172:8081/artifactory/libs-release</url>
+            <url>http://46.137.95.172:8081/artifactory/libs-release-local</url>
         </repository>
         <snapshotRepository>
-            <id>libs-snapshot</id>
-            <url>http://46.137.95.172:8081/artifactory/libs-snapshot</url>
+            <id>snapshots</id>
+            <url>http://46.137.95.172:8081/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -215,7 +215,7 @@
 
             <dependency>
                 <groupId>com.eprovement</groupId>
-                <artifactId>dbunit-dtd-generator-mojo</artifactId>
+                <artifactId>dbunit-dtd-generator-plugin</artifactId>
                 <version>${project.version}</version>
                 <!--TODO: because of ApplicationContextHolder cannot use test scope-->
                 <!--<scope>test</scope>-->
@@ -795,26 +795,30 @@
                     <artifactId>gwt-maven-plugin</artifactId>
                     <version>${gwt.version}</version>
                 </plugin>
-                <!--<plugin>-->
-                    <!--<groupId>com.eprovement</groupId>-->
-                    <!--<artifactId>dbunit-dtd-generator-mojo</artifactId>-->
-                    <!--<version>1.0-SNAPSHOT</version>-->
-                    <!--<executions>-->
-                        <!--<execution>-->
-                            <!--<id>generateDtd</id>-->
-                            <!--<goals>-->
-                                <!--<goal>generateDtd</goal>-->
-                            <!--</goals>-->
-                            <!--<configuration>-->
-                                <!--<outputDirectory>${project.basedir}/integration-test-base/src/main/resources</outputDirectory>-->
-                                <!--<dataSourceBeanName>poptavkaDataSource</dataSourceBeanName>-->
-                                <!--<dtdFileName>test.dtd</dtdFileName>-->
-                                <!--<applicationContextLocation>classpath*:applicationContext-core.xml</applicationContextLocation>-->
-                            <!--</configuration>-->
-                            <!--<phase>test</phase>-->
-                        <!--</execution>-->
-                    <!--</executions>-->
-                <!--</plugin>-->
+                <plugin>
+                    <groupId>com.eprovement</groupId>
+                    <artifactId>dbunit-dtd-generator-plugin</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <configuration>
+                        <outputDirectory>${project.basedir}/integration-test-base/src/main/resources</outputDirectory>
+                        <dataSourceBeanName>poptavkaDataSource</dataSourceBeanName>
+                        <dtdFileName>test.dtd</dtdFileName>
+                        <applicationContextLocation>classpath*:applicationContext-core.xml</applicationContextLocation>
+                        <!--Set spring profile to "test" to be able to resolve correct properties-->
+                        <systemProperties>
+                            <spring.profiles.active>test</spring.profiles.active>
+                        </systemProperties>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>generateDtd</id>
+                            <goals>
+                                <goal>generateDtd</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -835,11 +839,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>com.eprovement</groupId>
-                <artifactId>dbunit-dtd-generator-mojo</artifactId>
             </plugin>
 
             <plugin>

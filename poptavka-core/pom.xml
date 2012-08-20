@@ -263,6 +263,12 @@
             </resource>
         </resources>
         <plugins>
+            <!--do not move to the parent pom since integration-test-base does not want to include this plugin!-->
+            <plugin>
+                <groupId>com.eprovement</groupId>
+                <artifactId>dbunit-dtd-generator-plugin</artifactId>
+            </plugin>
+
             <plugin>
                 <groupId>org.zeroturnaround</groupId>
                 <artifactId>jrebel-maven-plugin</artifactId>

@@ -262,6 +262,12 @@
             </dependencies>
             <build>
                 <plugins>
+                    <!--do not move to the parent pom since integration-test-base does not want to include this plugin!-->
+                    <plugin>
+                        <groupId>com.eprovement</groupId>
+                        <artifactId>dbunit-dtd-generator-plugin</artifactId>
+                    </plugin>
+
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>gwt-maven-plugin</artifactId>
