@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.base;
+package com.eprovement.poptavka.application;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;

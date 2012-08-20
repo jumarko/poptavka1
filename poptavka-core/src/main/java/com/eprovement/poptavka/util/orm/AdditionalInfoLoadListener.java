@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.util.orm;
 
-import com.eprovement.poptavka.base.ApplicationContextHolder;
+import com.eprovement.poptavka.application.ApplicationContextHolder;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.AdditionalInfo;
 import com.eprovement.poptavka.domain.common.AdditionalInfoAware;

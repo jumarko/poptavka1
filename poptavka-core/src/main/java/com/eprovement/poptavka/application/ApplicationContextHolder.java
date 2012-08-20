@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.base;
+package com.eprovement.poptavka.application;
 
 import org.springframework.context.ApplicationContext;
 
