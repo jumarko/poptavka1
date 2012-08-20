@@ -1,6 +1,5 @@
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.eprovement</groupId>
     <artifactId>poptavka</artifactId>
@@ -13,7 +12,7 @@
         <module>poptavka-core</module>
         <module>poptavka-rest-api</module>
         <module>poptavka-web</module>
-    </modules>
+  </modules>
 
     <properties>
         <gwt.version>2.4.0</gwt.version>
@@ -75,23 +74,15 @@
         <jasypt.version>1.9.0</jasypt.version>
         <tomcat.jdbc.version>7.0.21</tomcat.jdbc.version>
         <tomcat.juli.version>6.0.16</tomcat.juli.version>
+        <dbunit.version>2.4.8</dbunit.version>
     </properties>
 
     <pluginRepositories>
-        <!--override the built-in central and snapshots repositories of Maven, so that no request will be ever sent directly to them.-->
         <pluginRepository>
-            <id>central</id>
-            <url>http://repo1.maven.org/maven2/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>snapshots</id>
-            <url>http://repo1.maven.org/maven2/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
+            <id>Poptavka-Artifactory</id>
+            <name>Poptavka Artifactory maven repo</name>
+            <layout>default</layout>
+            <url>http://46.137.95.172:8081/artifactory/repo</url>
         </pluginRepository>
 
         <pluginRepository>
@@ -206,8 +197,30 @@
 
     </repositories>
 
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <url>http://46.137.95.172:8081/artifactory/libs-release</url>
+        </repository>
+        <snapshotRepository>
+            <id>libs-snapshot</id>
+            <url>http://46.137.95.172:8081/artifactory/libs-snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.eprovement</groupId>
+                <artifactId>dbunit-dtd-generator-mojo</artifactId>
+                <version>${project.version}</version>
+                <!--TODO: because of ApplicationContextHolder cannot use test scope-->
+                <!--<scope>test</scope>-->
+            </dependency>
+
             <dependency>
                 <groupId>com.eprovement</groupId>
                 <artifactId>integration-test-base</artifactId>
@@ -692,6 +705,11 @@
 
             <!-- Testing -->
             <dependency>
+                <groupId>org.dbunit</groupId>
+                <artifactId>dbunit</artifactId>
+                <version>${dbunit.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
@@ -736,6 +754,32 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
         </dependency>
+
+        <!--AspectJ core dependencies-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+
+        <!--Aspect libraries required by aspectj-maven-plugin-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-aspects</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -750,6 +794,26 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>gwt-maven-plugin</artifactId>
                     <version>${gwt.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.eprovement</groupId>
+                    <artifactId>dbunit-dtd-generator-mojo</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <executions>
+                        <execution>
+                            <id>generateDtd</id>
+                            <goals>
+                                <goal>generateDtd</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.basedir}/integration-test-base/src/main/resources</outputDirectory>
+                                <dataSourceBeanName>poptavkaDataSource</dataSourceBeanName>
+                                <dtdFileName>test.dtd</dtdFileName>
+                                <applicationContextLocation>classpath*:applicationContext-core.xml</applicationContextLocation>
+                            </configuration>
+                            <phase>test</phase>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -771,6 +835,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.eprovement</groupId>
+                <artifactId>dbunit-dtd-generator-mojo</artifactId>
             </plugin>
 
             <plugin>

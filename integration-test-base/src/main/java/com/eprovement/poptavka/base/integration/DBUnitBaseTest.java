@@ -17,7 +17,6 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -147,7 +146,7 @@ public abstract class DBUnitBaseTest {
      * @return
      */
     protected String getDataSetDtdPath(String xmlFilePath) {
-        Assert.isTrue(StringUtils.isNotBlank(xmlFilePath));
+        StringUtils.isNotBlank(xmlFilePath);
 
         final DataSet dataSet = this.getClass().getAnnotation(DataSet.class);
         String dtdPath = dataSet != null ? dataSet.dtd() : "";
@@ -164,8 +163,9 @@ public abstract class DBUnitBaseTest {
 
     //--------------------------------- HELPER METHODS -----------------------------------------------------------------
     private synchronized void generateDtdIfNeeded() {
-        if (! dtdGenerated) {
-            DbUnitDtdGenerator.generateDtd(this.dataSource);
+        if (!dtdGenerated) {
+            // ensured by mojo
+//            DbUnitDtdGenerator.generateDtd(this.dataSource);
             dtdGenerated = true;
         }
     }
@@ -191,7 +191,7 @@ public abstract class DBUnitBaseTest {
     private IDataSet getDataSet() throws Exception {
 
         this.dataSetsFilePaths = getDataSetPath();
-        Preconditions.checkState(! this.dataSetsFilePaths.isEmpty());
+        Preconditions.checkState(!this.dataSetsFilePaths.isEmpty());
 
         this.dataSetDtdFilePath = getDataSetDtdPath(this.dataSetsFilePaths.get(0));
 
