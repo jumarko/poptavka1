@@ -294,11 +294,6 @@ input,textarea,select {
 	cursor: pointer;
 }
 
-.create-tab-layout-content {
-	margin-top: 10px;
-	border-top: 1px dashed #666666;
-}
-
 /** DELETE AFTER THIS LINE **/
 
 /** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/

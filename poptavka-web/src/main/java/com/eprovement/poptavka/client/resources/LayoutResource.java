@@ -68,8 +68,6 @@ public interface LayoutResource extends CssResource {
     String createTabLayoutHeader();
     @ClassName("create-tab-layout-selected")
     String createTabLayoutSelected();
-    @ClassName("create-tab-layout-content")
-    String createTabLayoutContent();
 
     /** DELETE AFTER THIS LINE **/
 
