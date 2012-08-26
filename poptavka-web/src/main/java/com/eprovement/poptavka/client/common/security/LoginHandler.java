@@ -13,6 +13,8 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author dmartin
@@ -20,6 +22,8 @@ import com.google.gwt.user.client.Timer;
  */
 public class LoginHandler implements ClickHandler {
 
+    protected static final Logger LOGIN_HANDLER_LOGGER = Logger.getLogger("LoginHandler");
+    private final short timeout = 1000;
     private static final String DEFAULT_SPRING_LOGIN_URL = "j_spring_security_check";
     private LoginUICapabilities loginUIComponent;
     private String springLoginUrl = null;
@@ -51,7 +55,12 @@ public class LoginHandler implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
 
-        final String url = GWT.getModuleBaseURL() + getSpringLoginUrl();
+        // TODO ivlcek - figure out why the URL contains duplicite value of HostPageBase URL
+        String url = GWT.getModuleBaseURL() + getSpringLoginUrl();
+        url = "http://127.0.0.1:8888/j_spring_security_check";
+        LOGIN_HANDLER_LOGGER.log(Level.FINEST, "getHostPageBaseURL=" + GWT.getHostPageBaseURL());
+        LOGIN_HANDLER_LOGGER.log(Level.FINEST, "getModuleBaseURL=" + GWT.getModuleBaseURL());
+        LOGIN_HANDLER_LOGGER.log(Level.FINEST, "final URL=" + url);
 
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, url);
 
@@ -81,8 +90,9 @@ public class LoginHandler implements ClickHandler {
                                 loginUIComponent.hide();
                             }
                         };
-                        t.schedule(1000);
+                        t.schedule(timeout);
                     } else if (status == Response.SC_UNAUTHORIZED) { // 401: oups...
+                        // TODO ivlcek localize messages
                         loginUIComponent.setErrorMessage("Oups... Wrong credentials !");
                     } else { // something else ?
                         loginUIComponent.setErrorMessage("Oups... Unexpected error (" + status + ")");
@@ -91,11 +101,11 @@ public class LoginHandler implements ClickHandler {
 
                 @Override
                 public void onError(final Request request, final Throwable exception) {
-                    loginUIComponent.setErrorMessage("Oups... " + exception.getMessage());
+                    loginUIComponent.setErrorMessage("Oups Response not received... " + exception.getMessage());
                 }
             });
         } catch (RequestException exception) {
-            loginUIComponent.setErrorMessage("Oups... " + exception.getMessage());
+            loginUIComponent.setErrorMessage("Oups catch branch... " + exception.getMessage());
         }
     }
 }

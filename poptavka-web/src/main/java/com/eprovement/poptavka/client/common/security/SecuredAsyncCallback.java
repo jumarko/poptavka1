@@ -51,7 +51,6 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
 
         // TODO IV: such a mess - logging to logger, printing to console --> Why all this stuff ?
         ASYNC_CALLBACK_LOGGER.log(Level.INFO, "OnFailure: caught=" + caught.getMessage());
-        System.err.println("SecuredAsyncCallback . onFailure: caught=" + caught.getMessage());
         if (caught == null) {
             ASYNC_CALLBACK_LOGGER.log(Level.FINEST, "Received parameter 'caught' is null ?!!");
             return;
@@ -61,15 +60,13 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
 
         // If not logged, display the logging popup window and stop
         if (isNotAuthorized(message)) {
-            System.err.println("isNotAuthrized: message=" + message.toString());
-            ASYNC_CALLBACK_LOGGER.log(Level.INFO, "isNotAuthrized: message=" + message.toString());
+            ASYNC_CALLBACK_LOGGER.log(Level.INFO, "isNotAuthrized: message status=" + message.getStatus());
             onAuthorizationExpected(message.getLoginFormUrl());
             return;
         }
 
         // If access is denied, display an error message box (AccessDeniedBox)
         if (isAccessDenied(caught)) {
-            System.err.println("isAccessDenied: caught=" + caught.toString());
             ASYNC_CALLBACK_LOGGER.log(Level.INFO, "isAccessDenied: caught=" + caught.toString());
             onAccessDenied();
             return;
@@ -127,10 +124,12 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     @Override
     public void onAuthorizationExpected(final String externalLoginUrl) {
         ASYNC_CALLBACK_LOGGER.log(Level.INFO, "onAuthorizationExpected: externalLoginUrl=" + externalLoginUrl);
-        System.err.println("SecuredAsyncCallback . onAuthorizationExpected: externalLoginUrl=" + externalLoginUrl);
         if (externalLoginUrl == null) {
             new LoginDialogBox().show();
-        } else { // redirect
+        } else {
+            // redirect
+            // TODO ivlcek - this branch will never start in our system because
+            //we have asynchronous call for login widget so I can remove this part
             final SecurityDialogBoxes.AlertBox box = new SecurityDialogBoxes.AlertBox(
                     "You are not logged : you will be redirected");
             box.addCloseHandler(new CloseHandler<PopupPanel>() {

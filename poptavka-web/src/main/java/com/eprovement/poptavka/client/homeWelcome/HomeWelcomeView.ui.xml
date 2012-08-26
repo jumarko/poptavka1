@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login">
     <ui:with field='res'
              type='com.eprovement.poptavka.client.resources.StyleResource' />
     <ui:style>
@@ -13,6 +14,7 @@
         <h1>secured button calling secured RPC</h1>
         <g:Label text="Simple GWT RPC Service secured for admin role"></g:Label>
         <g:Button ui:field="gwtRPCButton">Call Simple Service</g:Button>
+        <custom:LogoutButton ui:field="logoutButton"></custom:LogoutButton>
 
         <g:Button styleName="{style.important}" ui:field="button" />
     </g:HTMLPanel>
