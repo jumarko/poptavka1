@@ -69,130 +69,130 @@
 
 
     
-   <security:user-service id="userService">
-    <security:user name="user" password="user" authorities="ROLE_USER" />
-    <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
-  </security:user-service>
+<!--    <security:user-service id="userService">
+        <security:user name="user" password="user" authorities="ROLE_USER" />
+        <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
+    </security:user-service>-->
   
-  <security:filter-security-metadata-source id="securityMetadataSource">
+    <security:filter-security-metadata-source id="securityMetadataSource">
         <security:intercept-url pattern="/poptavka/rpc" access="IS_AUTHENTICATED_FULLY" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-  </security:filter-security-metadata-source>
+    </security:filter-security-metadata-source>
   
-  <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" mode="aspectj"/>
+    <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" mode="aspectj"/>
 
-  <security:authentication-manager alias="authenticationManagerAlias">
-    <security:authentication-provider ref="rememberMeAuthenticationProvider" />
-<!--    <security:authentication-provider user-service-ref="userService" />-->
-    <security:authentication-provider ref="customAuthenticationProvider" />
-  </security:authentication-manager>
+    <security:authentication-manager alias="authenticationManagerAlias">
+        <security:authentication-provider ref="customAuthenticationProvider" />
+    </security:authentication-manager>
 
-  <alias name="filterChainProxy" alias="springSecurityFilterChain" />
+    <alias name="filterChainProxy" alias="springSecurityFilterChain" />
 
-  <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
-    <security:filter-chain-map path-type="ant">
-      <security:filter-chain
-        filters="securityContextFilter, logoutFilter, formLoginFilter, requestCacheFilter,
-            servletApiFilter, rememberMeFilter, anonFilter, sessionMgmtFilter, exceptionTranslator, filterSecurityInterceptor"
-        pattern="/**" />
-    </security:filter-chain-map>
-  </bean>
+    <!-- rememberMeFilter was removed from filterChainProxy -->
+    <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+        <security:filter-chain-map path-type="ant">
+            <security:filter-chain
+                filters="securityContextFilter, logoutFilter, formLoginFilter, requestCacheFilter,
+            servletApiFilter, anonFilter, sessionMgmtFilter, exceptionTranslator, filterSecurityInterceptor"
+                pattern="/**" />
+        </security:filter-chain-map>
+    </bean>
 
-  <bean id="securityContextFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
-    <property name="securityContextRepository" ref="securityContextRepository" />
-  </bean>
+    <bean id="securityContextFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
+        <property name="securityContextRepository" ref="securityContextRepository" />
+    </bean>
 
-  <bean id="securityContextRepository" class="org.springframework.security.web.context.HttpSessionSecurityContextRepository" />
+    <bean id="securityContextRepository" class="org.springframework.security.web.context.HttpSessionSecurityContextRepository" />
 
-  <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
-    <constructor-arg value="/" /><!-- redirect url after logging out -->
-    <constructor-arg>
-      <list>
-        <ref bean="rememberMeServices" />
-        <bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
-      </list>
-    </constructor-arg>
-  </bean>
+    <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <constructor-arg value="/" /><!-- redirect url after logging out -->
+        <constructor-arg>
+            <list>
+<!--                <ref bean="rememberMeServices" />-->
+                <bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+            </list>
+        </constructor-arg>
+    </bean>
 
-  <bean id="formLoginFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
-    <property name="authenticationManager" ref="authenticationManagerAlias" />
-    <property name="rememberMeServices" ref="rememberMeServices" />
-    <property name="authenticationSuccessHandler">
-      <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationSuccessHandler">
-        <property name="alwaysUseDefaultTargetUrl" value="false"></property>
-        <property name="defaultTargetUrl" value="/poptavka.html" /><!-- This is the URL you'll be redirected to after a successful form login -->
-      </bean>
-    </property>
-    <property name="authenticationFailureHandler">
-      <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationFailureHandler">
-        <property name="defaultFailureUrl" value="/login.html" /><!-- Used if authentication is out of the responsability scope of GWT -->
-      </bean>
-    </property>
-    <property name="filterProcessesUrl" value="/j_spring_security_check"></property>
-
-    <property name="sessionAuthenticationStrategy">
-      <bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" />
-    </property>
-  </bean>
-
-  <bean id="requestCacheFilter" class="org.springframework.security.web.savedrequest.RequestCacheAwareFilter" />
-
-  <bean id="servletApiFilter" class="org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter" />
-
-  <bean id="anonFilter" class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
-    <property name="key" value="SomeUniqueKeyForThisApplication" />
-    <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
-  </bean>
-
-  <bean id="sessionMgmtFilter" class="org.springframework.security.web.session.SessionManagementFilter">
-    <constructor-arg ref="securityContextRepository" />
-  </bean>
-
-  <bean id="rememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
-    <constructor-arg ref="authenticationManagerAlias" />
-    <constructor-arg ref="rememberMeServices" />
-  </bean>
-
-  <bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
-    <constructor-arg value="secret6" /><!-- A Secret Key -->
-    <constructor-arg ref="userService" />
-    <property name="alwaysRemember" value="true" />
-  </bean>
-
-  <bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
-    <property name="key" value="secret6" />
-  </bean>
-
-  <bean id="exceptionTranslator" class="org.springframework.security.web.access.ExceptionTranslationFilter">
-    <property name="authenticationEntryPoint">
-      <bean class="com.eprovement.poptavka.server.security.GwtAwareAuthenticationEntryPoint">
-        <property name="gwtLoginForm" value="true" /><!-- optional. If true, GWT must handle the login form (loginFormUrl is ignored). -->
-        <property name="loginFormUrl" value="/" /><!-- optional. If specified, GWT won't handle authentication but a HTML form will -->
-        <property name="alternativeEntryPoint">
-          <bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-            <property name="loginFormUrl" value="/" />
-            <property name="forceHttps" value="false"></property>
-            <!-- <property name="useForward" value="true"></property> -->
-          </bean>
+    <bean id="formLoginFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <property name="authenticationManager" ref="authenticationManagerAlias" />
+<!--        <property name="rememberMeServices" ref="rememberMeServices" />-->
+        <property name="authenticationSuccessHandler">
+            <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationSuccessHandler">
+                <property name="alwaysUseDefaultTargetUrl" value="false"></property>
+                <property name="defaultTargetUrl" value="/poptavka.html" /><!-- This is the URL you'll be redirected to after a successful form login -->
+            </bean>
         </property>
-      </bean>
-    </property>
-  </bean>
+        <property name="authenticationFailureHandler">
+            <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationFailureHandler">
+                <property name="defaultFailureUrl" value="/login.html" /><!-- Used if authentication is out of the responsability scope of GWT -->
+            </bean>
+        </property>
+        <property name="filterProcessesUrl" value="/j_spring_security_check"></property>
 
-  <bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
-    <property name="securityMetadataSource" ref="securityMetadataSource" />
-    <property name="authenticationManager" ref="authenticationManagerAlias" />
-    <property name="accessDecisionManager" ref="accessDecisionManager" />
-  </bean>
+        <property name="sessionAuthenticationStrategy">
+            <bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" />
+        </property>
+    </bean>
 
-  <bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
-    <property name="decisionVoters">
-      <list>
-        <bean class="org.springframework.security.access.vote.RoleVoter" />
-        <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
-      </list>
-    </property>
-  </bean>
+    <bean id="requestCacheFilter" class="org.springframework.security.web.savedrequest.RequestCacheAwareFilter" />
+
+    <bean id="servletApiFilter" class="org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter" />
+
+    <bean id="anonFilter" class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+        <property name="key" value="SomeUniqueKeyForThisApplication" />
+        <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
+    </bean>
+
+    <bean id="sessionMgmtFilter" class="org.springframework.security.web.session.SessionManagementFilter">
+        <constructor-arg ref="securityContextRepository" />
+    </bean>
+
+    <!-- RememberMe is not working now and will be implemented in poptavka version 2 -->
+<!--    <bean id="rememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+        <constructor-arg ref="authenticationManagerAlias" />
+        <constructor-arg ref="rememberMeServices" />
+    </bean>
+
+    <bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+        <constructor-arg value="secret12" /> A Secret Key 
+        <constructor-arg ref="loginService" />
+        <property name="alwaysRemember" value="true" />
+    </bean>
+
+    <bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <property name="key" value="secret12" />
+    </bean>-->
+
+    <bean id="exceptionTranslator" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+        <property name="authenticationEntryPoint">
+            <bean class="com.eprovement.poptavka.server.security.GwtAwareAuthenticationEntryPoint">
+                <property name="gwtLoginForm" value="true" /><!-- optional. If true, GWT must handle the login form (loginFormUrl is ignored). -->
+                <property name="loginFormUrl" value="/" /><!-- optional. If specified, GWT won't handle authentication but a HTML form will -->
+                <property name="alternativeEntryPoint">
+                    <bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+                        <property name="loginFormUrl" value="/" />
+                        <property name="forceHttps" value="false"></property>
+            <!-- <property name="useForward" value="true"></property> -->
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+        <property name="securityMetadataSource" ref="securityMetadataSource" />
+        <property name="authenticationManager" ref="authenticationManagerAlias" />
+        <property name="accessDecisionManager" ref="accessDecisionManager" />
+    </bean>
+
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+        <property name="decisionVoters">
+            <list>
+                <bean class="org.springframework.security.access.vote.RoleVoter" />
+                <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+            </list>
+        </property>
+    </bean>
 
 </beans>
