@@ -460,6 +460,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
         Demand demand = demandConverter.convertToSource(demandDetail);
         demand.setStatus(DemandStatus.CLOSED);
         generalService.merge(demand);
+        //Asi nech zmizne aj zo SupplierAssignedProjects
     }
 
     /**

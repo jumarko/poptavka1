@@ -271,6 +271,14 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
         }
     }
 
+    @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException {
+        //TODO Juraj - finish offer
+        //set OfferState to finished
+        //send message to client that offer was finished
+    }
+
     public List<FullOfferDetail> getFakeData() throws RPCException {
         FullOfferDetail detail = new FullOfferDetail();
         detail.getOfferDetail().setDemandId(1L);

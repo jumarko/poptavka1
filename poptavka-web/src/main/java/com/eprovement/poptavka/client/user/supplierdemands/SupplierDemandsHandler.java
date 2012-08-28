@@ -154,4 +154,14 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
             }
         });
     }
+
+    public void onRequestFinishOffer(FullOfferDetail fullOfferDetail) {
+        supplierDemandsService.finishOffer(fullOfferDetail, new SecuredAsyncCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void result) {
+                //Empty by default
+            }
+        });
+    }
 }

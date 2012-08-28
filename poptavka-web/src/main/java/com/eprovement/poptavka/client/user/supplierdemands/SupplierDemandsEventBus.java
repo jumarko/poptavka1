@@ -147,6 +147,9 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = SupplierDemandsHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
+    @Event(handlers = SupplierDemandsHandler.class)
+    void requestFinishOffer(FullOfferDetail fullOfferDetail);
+
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */
     /* Should be called only from UniversalAsyncGrid. */

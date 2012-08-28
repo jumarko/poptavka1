@@ -51,4 +51,6 @@ public interface SupplierDemandsRPCServiceAsync {
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
+
+    void finishOffer(FullOfferDetail fullOfferDetail, AsyncCallback<Void> callback);
 }

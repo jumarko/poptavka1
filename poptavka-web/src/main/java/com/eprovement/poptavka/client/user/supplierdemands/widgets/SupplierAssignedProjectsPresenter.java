@@ -19,6 +19,7 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -75,6 +76,8 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
+        addReplyColumnFieldUpdater();
+        addFinnishedOfferColumnFieldUpdater();
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
@@ -151,7 +154,6 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
     // Field Updaters
     public void addCheckHeaderUpdater() {
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
-
             @Override
             public void update(Boolean value) {
                 List<FullOfferDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
@@ -165,7 +167,6 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
     public void addStarColumnFieldUpdater() {
         view.getTableWidget().getStarColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, Boolean>() {
-
                     @Override
                     public void update(int index, FullOfferDetail object, Boolean value) {
                         object.getMessageDetail().setStarred(!value);
@@ -176,9 +177,28 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
                 });
     }
 
+    public void addReplyColumnFieldUpdater() {
+        view.getTableWidget().getReplyImageColumn().setFieldUpdater(
+                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                    @Override
+                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                        detailSection.getView().getReplyHolder().addQuestionReply();
+                    }
+                });
+    }
+
+    public void addFinnishedOfferColumnFieldUpdater() {
+        view.getTableWidget().getFinnishedImageColumn().setFieldUpdater(
+                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                    @Override
+                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                        eventBus.requestFinishOffer(object);
+                    }
+                });
+    }
+
     public void addColumnFieldUpdaters() {
         FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
-
             @Override
             public void update(int index, FullOfferDetail object, String value) {
                 if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
@@ -198,7 +218,6 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
 
     private void addActionChangeHandler() {
         view.getActions().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getActions().getSelectedIndex()) {

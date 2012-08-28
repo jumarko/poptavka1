@@ -118,4 +118,6 @@ public interface SupplierDemandsRPCService extends RemoteService {
             ApplicationSecurityException;
 
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException, ApplicationSecurityException;
+
+    void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException;
 }
