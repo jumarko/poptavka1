@@ -45,8 +45,6 @@ public class GwtAwareAuthenticationEntryPoint implements AuthenticationEntryPoin
     }
 
     public GwtAwareAuthenticationEntryPoint(HttpStatus status, String complementPhrase) {
-        GWT_ENTRY_POINT_LOGGER.debug("constructor: status=" + status.toString()
-                + ", complementPhrase=" + complementPhrase);
         final StringBuilder sb = new StringBuilder(status.getReasonPhrase());
         if (StringUtils.isNotBlank(complementPhrase)) {
             sb.append(complementPhrase);
@@ -55,7 +53,6 @@ public class GwtAwareAuthenticationEntryPoint implements AuthenticationEntryPoin
     }
 
     public void setAlternativeEntryPoint(final AuthenticationEntryPoint alternativeEntryPoint) {
-        GWT_ENTRY_POINT_LOGGER.debug("setAlternativeEntryPoin:" + alternativeEntryPoint.toString());
         this.alternativeEntryPoint = alternativeEntryPoint;
     }
 
@@ -76,8 +73,6 @@ public class GwtAwareAuthenticationEntryPoint implements AuthenticationEntryPoin
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException {
-        GWT_ENTRY_POINT_LOGGER.debug("commence: response=" + response.toString() + ", request=" + request.toString()
-                + ", authException=" + authException.toString());
         boolean isGwtRequest = HttpRequestUtils.containsHeaderStartingWith(request, "X-GWT");
         if (!isGwtRequest) {
             if (GWT_ENTRY_POINT_LOGGER.isDebugEnabled()) {

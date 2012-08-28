@@ -13,7 +13,6 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Timer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -55,12 +54,7 @@ public class LoginHandler implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
 
-        // TODO ivlcek - figure out why the URL contains duplicite value of HostPageBase URL
-        String url = GWT.getModuleBaseURL() + getSpringLoginUrl();
-        url = "http://127.0.0.1:8888/j_spring_security_check";
-        LOGIN_HANDLER_LOGGER.log(Level.FINEST, "getHostPageBaseURL=" + GWT.getHostPageBaseURL());
-        LOGIN_HANDLER_LOGGER.log(Level.FINEST, "getModuleBaseURL=" + GWT.getModuleBaseURL());
-        LOGIN_HANDLER_LOGGER.log(Level.FINEST, "final URL=" + url);
+        final String url = getSpringLoginUrl();
 
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, url);
 

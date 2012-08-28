@@ -29,7 +29,6 @@ public class GwtSavedRequestAwareAuthenticationSuccessHandler extends SavedReque
     public void onAuthenticationSuccess(HttpServletRequest request,
             HttpServletResponse response, Authentication authentication)
         throws ServletException, IOException {
-        System.err.println("onAuthenticationSuccesss");
         boolean isGwtRequest = HttpRequestUtils.containsHeaderStartingWith(request, "X-GWT");
 
         if (!isGwtRequest) {

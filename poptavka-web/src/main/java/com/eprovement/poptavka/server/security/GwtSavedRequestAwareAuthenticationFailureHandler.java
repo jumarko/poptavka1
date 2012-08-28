@@ -22,7 +22,6 @@ public class GwtSavedRequestAwareAuthenticationFailureHandler extends SimpleUrlA
     public void onAuthenticationFailure(HttpServletRequest request,
             HttpServletResponse response, AuthenticationException exception)
         throws IOException, ServletException {
-        System.err.println("onAuthenticationFailure");
         boolean isGwtRequest = HttpRequestUtils.containsHeaderStartingWith(request, "X-GWT");
 
         if (!isGwtRequest) {
