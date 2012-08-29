@@ -10,11 +10,14 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -24,7 +27,10 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Presenter(view = HomeSuppliersView.class)
 public class HomeSuppliersPresenter
@@ -35,7 +41,7 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     public interface SuppliersViewInterface extends LazyView, IsWidget {
 
-        Label getFilterLabel();
+        CellTree getCellTree();
 
         CellList getCategoriesList();
 
@@ -59,15 +65,13 @@ public class HomeSuppliersPresenter
 
         void hideSuppliersDetail();
     }
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    //differ if category was selected from menu, or from path
-    private Boolean wasSelection = false;
     //others
     private SearchModuleDataHolder searchDataHolder = null;
-
+    //<level, index>
+    private Map<Integer, Integer> openedHierarchy = new TreeMap<Integer, Integer>();
     /**************************************************************************/
     /* RPC Service*/
     /**************************************************************************/
@@ -110,6 +114,17 @@ public class HomeSuppliersPresenter
 
     @Override
     public void bindView() {
+        view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
+            @Override
+            public void onOpen(OpenEvent<TreeNode> event) {
+                TreeNode openedNode = event.getTarget();
+                CategoryDetail selectedCategory = (CategoryDetail) openedNode.getValue();
+                //If node is requested to be opened, select also node object - it fires selected event
+                view.getSelectionCategoryModel().setSelected(selectedCategory, true);
+
+                manageOpenedHierarchy(selectedCategory, openedNode);
+            }
+        });
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
@@ -118,7 +133,6 @@ public class HomeSuppliersPresenter
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
-                    wasSelection = true;
 
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
@@ -176,5 +190,52 @@ public class HomeSuppliersPresenter
     public void onDisplaySuppliers(List<FullSupplierDetail> list) {
         view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
         view.getDataGrid().redraw();
+    }
+
+    /**************************************************************************/
+    /* Private methods                                                        */
+    /**************************************************************************/
+    /**
+     * Manages openedHierarchy attributes due to new user selection.
+     */
+    private void manageOpenedHierarchy(CategoryDetail selectedCategory, TreeNode openedNode) {
+        List<Integer> levelsToRemove = new ArrayList<Integer>();
+        boolean was = false;
+        //remove all levels which are childrens of level that was selected by user.
+        for (Integer level : openedHierarchy.keySet()) {
+            if (selectedCategory.getLevel() < level) {
+                //define whitch items(levels) remove
+                levelsToRemove.add(level);
+            } else if (selectedCategory.getLevel() == level) {
+                was = true;
+            }
+        }
+        //Remove selected levels
+        if (!levelsToRemove.isEmpty()) {
+            for (Integer levelToRemove : levelsToRemove) {
+                openedHierarchy.remove(levelToRemove);
+            }
+        }
+        if (was) {
+            openNodesAccoirdingToHistory();
+        }
+        //replace last level index with actual one - selected by user
+        openedHierarchy.put(selectedCategory.getLevel(), openedNode.getIndex());
+    }
+
+    /**
+     * According to <b>openedHierarchy</b> attribute opens nodes except the last one from .
+     */
+    private void openNodesAccoirdingToHistory() {
+        TreeNode root = view.getCellTree().getRootTreeNode();
+        int depth = openedHierarchy.size();
+        for (int i : openedHierarchy.keySet()) {
+            //close only the last
+            if (i == depth) {
+                root = root.setChildOpen(openedHierarchy.get(i), false, false);
+            } else {
+                root = root.setChildOpen(openedHierarchy.get(i), true);
+            }
+        }
     }
 }

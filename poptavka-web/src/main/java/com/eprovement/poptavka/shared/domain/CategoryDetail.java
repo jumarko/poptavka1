@@ -9,16 +9,16 @@ public class CategoryDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -8677227400869014970L;
-
     private long id;
     private String name;
     //vyjadruje pocet alebo ID???
     private long demands;
     //vyjadruje pocet alebo ID???
     private long suppliers;
+    //category level
+    private int level = -1;
     //if parent = false, no child category exists;
     private boolean leaf = false;
-
     /**
      * The key provider that provides the unique ID of a FullSupplierDetail.
      */
@@ -62,6 +62,7 @@ public class CategoryDetail implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public long getDemands() {
         return demands;
     }
@@ -76,6 +77,14 @@ public class CategoryDetail implements Serializable {
 
     public void setSuppliers(long suppliers) {
         this.suppliers = suppliers;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public boolean isLeaf() {
@@ -112,5 +121,4 @@ public class CategoryDetail implements Serializable {
         hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
-
 }

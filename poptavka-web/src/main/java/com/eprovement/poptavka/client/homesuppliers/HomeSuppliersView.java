@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
+import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -66,10 +67,8 @@ public class HomeSuppliersView extends OverflowComposite
     private static final int RATING_COL_WIDTH = 30;
     private static final int ADDRESS_COL_WIDTH = 60;
     private static final int LOCALITY_COL_WIDTH = 50;
-    private static final int TABLE_HEIGHT = 300;
     //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
-//    @UiField(provided = true)
     CellList categoriesList;
     @UiField(provided = true)
     CellTree cellTree;
@@ -80,7 +79,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true)
     ListBox pageSizeCombo;
     @UiField
-    Label reklama, filterLabel;
+    Label reklama;
     @UiField
     HTMLPanel detail;
     @UiField
@@ -88,7 +87,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField
     Button contactBtn;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
-            new SingleSelectionModel<CategoryDetail>();
+            new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     private List<String> gridColumns = Arrays.asList(
             new String[]{
                 "businessUser.businessUserData.companyName", "overalRating", "", ""
@@ -119,7 +118,6 @@ public class HomeSuppliersView extends OverflowComposite
         initWidget(uiBinder.createAndBindUi(this));
 
         reklama.setVisible(true);
-
         detail.setVisible(false);
         LOGGER.info("CreateView pre DisplaySuppliers");
     }
@@ -128,7 +126,8 @@ public class HomeSuppliersView extends OverflowComposite
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,
                 homeSuppliersPresenter.getCategoryService(),
-                Constants.WITHOUT_CHECK_BOXES), null);
+                Constants.WITHOUT_CHECK_BOXES,
+                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS), null);
         // cellTree.setSize("300px", "100px");
         cellTree.setAnimationEnabled(true);
     }
@@ -236,11 +235,6 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     @Override
-    public Label getFilterLabel() {
-        return filterLabel;
-    }
-
-    @Override
     public Widget getWidgetView() {
         return this;
     }
@@ -253,6 +247,11 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public CellList getCategoriesList() {
         return categoriesList;
+    }
+
+    @Override
+    public CellTree getCellTree() {
+        return cellTree;
     }
 
     @Override

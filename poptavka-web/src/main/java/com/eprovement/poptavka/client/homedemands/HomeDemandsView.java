@@ -5,6 +5,9 @@
 package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
+import com.eprovement.poptavka.client.common.category.CategoryCell;
+import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
@@ -19,6 +22,7 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
@@ -27,6 +31,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.mvp4g.client.view.ReverseViewInterface;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -36,15 +41,35 @@ import java.util.List;
  *
  * @author praso
  */
-public class HomeDemandsView extends OverflowComposite implements HomeDemandsPresenter.HomeDemandsViewInterface {
+public class HomeDemandsView extends OverflowComposite
+        implements ReverseViewInterface<HomeDemandsPresenter>, HomeDemandsPresenter.HomeDemandsViewInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static HomeDemandsViewUiBinder uiBinder = GWT.create(HomeDemandsViewUiBinder.class);
 
     interface HomeDemandsViewUiBinder extends UiBinder<Widget, HomeDemandsView> {
     }
+    /**************************************************************************/
+    /* Home Supplier presenter                                                */
+    /**************************************************************************/
+    private HomeDemandsPresenter homeDemandsPresenter;
+
+    @Override
+    public void setPresenter(HomeDemandsPresenter presenter) {
+        this.homeDemandsPresenter = presenter;
+    }
+
+    @Override
+    public HomeDemandsPresenter getPresenter() {
+        return homeDemandsPresenter;
+    }
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
     //Table constants
     private static final int CREATED_DATE_COL_WIDTH = 90;
-    private static final int CATEGORY_COL_WIDTH = 130;
     private static final int TITLE_COL_WIDTH = 200;
     private static final int LOCALITY_COL_WIDTH = 150;
     private static final int PRICE_WIDTH = 80;
@@ -53,13 +78,20 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     UniversalAsyncGrid<FullDemandDetail> dataGrid;
     private List<String> gridColumns = Arrays.asList(
             new String[]{
-                "createdDate", "category", "title", "locality", "price"
+                "createdDate", "title", "locality", "price"
             });
     // Pager
     @UiField(provided = true)
     SimplePager pager;
     @UiField(provided = true)
     ListBox pageSize;
+    //CellTree
+    @UiField(provided = true)
+    CellTree cellTree;
+    //Using category detail key provider in selection model, allow us to have displayed
+    //alwas only one node. The other are automaticaly closed.
+    private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
+            new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     // Others
     @UiField
     Label bannerLabel;
@@ -72,19 +104,135 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
 
-    public HomeDemandsView() {
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
+    @Override
+    public void createView() {
         pageSize = new ListBox();
-        pageSize.addItem("5");
         pageSize.addItem("10");
-        pageSize.addItem("15");
         pageSize.addItem("20");
-        pageSize.addItem("25");
         pageSize.addItem("30");
-        pageSize.setSelectedIndex(2);
+        pageSize.setSelectedIndex(0);
+
         initCellTable();
+        initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
-        demandDetailPanel.setVisible(false);
+
+        bannerLabel.setVisible(true);
+        demandDetail.setVisible(false);
         StyleResource.INSTANCE.layout().ensureInjected();
+    }
+
+    public void initCellTree() {
+        cellTree = new CellTree(new CategoryTreeViewModel(
+                selectionCategoryModel,
+                homeDemandsPresenter.getCategoryService(),
+                Constants.WITHOUT_CHECK_BOXES,
+                CategoryCell.DISPLAY_COUNT_OF_DEMANDS), null);
+        // cellTree.setSize("300px", "100px");
+        cellTree.setAnimationEnabled(true);
+    }
+
+    /**
+     * Initialize this example.
+     */
+    private void initCellTable() {
+        // Create a CellTable.
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns);
+        dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
+        dataGrid.setWidth("700px");
+        dataGrid.setHeight("300px");
+        // Selection handler
+        dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
+
+        dataGrid.setRowCount(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())), true);
+        dataGrid.setPageSize(this.getPageSize());
+
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        pager.setDisplay(dataGrid);
+
+        initGridColumns();
+    }
+
+    /**
+     * Add the columns to the table.
+     */
+    private void initGridColumns() {
+        // Date of creation
+        dataGrid.addColumn(new TextCell(), bundle.createdDate(), true, CREATED_DATE_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        FullDemandDetail demandDetail = (FullDemandDetail) object;
+                        if (demandDetail.getCreated() == null) {
+                            return Storage.MSGS.notDefined();
+                        } else {
+                            Date now = new Date();
+                            long millis = now.getTime() - demandDetail.getCreated().getTime();
+                            if (millis < Storage.DAY_LENGTH) {
+                                return DateTimeFormat.getFormat(
+                                        DateTimeFormat.PredefinedFormat.TIME_SHORT).format(demandDetail.getCreated());
+                            } else if (Storage.DAY_LENGTH <= millis && millis < 2 * Storage.DAY_LENGTH) {
+                                return Storage.MSGS.yesterday();
+                            } else {
+                                return DateTimeFormat.getFormat(
+                                        DateTimeFormat.PredefinedFormat.DATE_SHORT).format(demandDetail.getCreated());
+                            }
+                        }
+                    }
+                });
+
+        // Demand Info
+        dataGrid.addColumn(new TextCell(), bundle.demand(), true, TITLE_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        return ((FullDemandDetail) object).getTitle();
+                    }
+                });
+
+        // Locality
+        dataGrid.addColumn(new TextCell(), bundle.locality(), false, LOCALITY_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        StringBuilder str = new StringBuilder();
+                        for (LocalityDetail loc : ((FullDemandDetail) object).getLocalities()) {
+                            str.append(loc.getName());
+                            str.append(",\n");
+                        }
+                        str.delete(str.length() - 2, str.length());
+                        return str.toString();
+                    }
+                });
+
+        // Cena
+        dataGrid.addColumn(new TextCell(), bundle.price(), true, PRICE_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        return currencyFormat.format(((FullDemandDetail) object).getPrice());
+                    }
+                });
+
+        // Urgencia
+        dataGrid.addUrgentColumn(Storage.MSGS.urgency());
+    }
+
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public CellTree getCellTree() {
+        return cellTree;
+    }
+
+    @Override
+    public SingleSelectionModel<CategoryDetail> getSelectionCategoryModel() {
+        return selectionCategoryModel;
     }
 
     @Override
@@ -117,114 +265,6 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         return pageSize;
     }
 
-    /**
-     * Initialize this example.
-     */
-    private void initCellTable() {
-        // Create a CellTable.
-        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns);
-        dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
-        //dataGrid.setWidth("800px");
-        //dataGrid.setHeight("500px");
-        // Selection handler
-        dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
-
-        dataGrid.setRowCount(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())), true);
-        dataGrid.setPageSize(this.getPageSize());
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(dataGrid);
-
-        initGridColumns();
-    }
-
-    /**
-     * Add the columns to the table.
-     */
-    private void initGridColumns() {
-        // Date of creation
-        dataGrid.addColumn(new TextCell(), bundle.createdDate(), true, CREATED_DATE_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue<String>() {
-
-                    @Override
-                    public String getValue(Object object) {
-                        FullDemandDetail demandDetail = (FullDemandDetail) object;
-                        if (demandDetail.getCreated() == null) {
-                            return Storage.MSGS.notDefined();
-                        } else {
-                            Date now = new Date();
-                            long millis = now.getTime() - demandDetail.getCreated().getTime();
-                            if (millis < Storage.DAY_LENGTH) {
-                                return DateTimeFormat.getFormat(
-                                        DateTimeFormat.PredefinedFormat.TIME_SHORT).format(demandDetail.getCreated());
-                            } else if (Storage.DAY_LENGTH <= millis && millis < 2 * Storage.DAY_LENGTH) {
-                                return Storage.MSGS.yesterday();
-                            } else {
-                                return DateTimeFormat.getFormat(
-                                        DateTimeFormat.PredefinedFormat.DATE_SHORT).format(demandDetail.getCreated());
-                            }
-                        }
-                    }
-                });
-
-        // Root category info
-        dataGrid.addColumn(new TextCell(), bundle.category(), false, CATEGORY_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue<String>() {
-
-                    @Override
-                    public String getValue(Object object) {
-                        StringBuilder str = new StringBuilder();
-                        for (CategoryDetail cat : ((FullDemandDetail) object).getCategories()) {
-                            str.append(cat.getName());
-                            str.append(",\n");
-                        }
-                        str.delete(str.length() - 2, str.length());
-                        return str.toString();
-                    }
-                });
-
-        // Demand Info
-        dataGrid.addColumn(new TextCell(), bundle.demand(), true, TITLE_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue<String>() {
-
-                    @Override
-                    public String getValue(Object object) {
-                        return ((FullDemandDetail) object).getTitle();
-                    }
-                });
-
-        // Locality
-        dataGrid.addColumn(new TextCell(), bundle.locality(), false, LOCALITY_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue<String>() {
-
-                    @Override
-                    public String getValue(Object object) {
-                        StringBuilder str = new StringBuilder();
-                        for (LocalityDetail loc : ((FullDemandDetail) object).getLocalities()) {
-                            str.append(loc.getName());
-                            str.append(",\n");
-                        }
-                        str.delete(str.length() - 2, str.length());
-                        return str.toString();
-                    }
-                });
-
-        // Cena
-        dataGrid.addColumn(new TextCell(), bundle.price(), true, PRICE_WIDTH,
-                new UniversalAsyncGrid.GetValue<String>() {
-
-                    @Override
-                    public String getValue(Object object) {
-                        return currencyFormat.format(((FullDemandDetail) object).getPrice());
-                    }
-                });
-
-        // Urgencia
-        dataGrid.addUrgentColumn(Storage.MSGS.urgency());
-    }
-
     @Override
     public Label getBannerLabel() {
         return bannerLabel;
@@ -238,5 +278,22 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     @Override
     public SimplePanel getDemandDetailPanel() {
         return demandDetailPanel;
+    }
+
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public void displayDemandDetail(FullDemandDetail fullDemandDetail) {
+        bannerLabel.setVisible(false);
+        demandDetail.setVisible(true);
+
+        demandDetail.setDemanDetail(fullDemandDetail);
+    }
+
+    @Override
+    public void hideDemandDetail() {
+        bannerLabel.setVisible(true);
+        demandDetail.setVisible(false);
     }
 }

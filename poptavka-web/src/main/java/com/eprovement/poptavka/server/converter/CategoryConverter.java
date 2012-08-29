@@ -51,6 +51,7 @@ public final class CategoryConverter extends AbstractConverter<Category, Categor
         detail.setName(category.getName());
         detail.setDemands(demandService.getDemandsCountQuick(category));
         detail.setSuppliers(supplierService.getSuppliersCountQuick(category));
+        detail.setLevel(category.getLevel());
         detail.setLeaf(category.getChildren().isEmpty());
         return detail;
 

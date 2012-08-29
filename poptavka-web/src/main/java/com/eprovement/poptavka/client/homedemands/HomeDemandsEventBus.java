@@ -87,7 +87,7 @@ public interface HomeDemandsEventBus extends EventBus, IEventBusData {
 
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemands(List<FullDemandDetail> result);
-
-    @Event(handlers = HomeDemandsPresenter.class)
-    void setDemand(FullDemandDetail demand);
+//
+//    @Event(handlers = HomeDemandsPresenter.class)
+//    void setDemand(FullDemandDetail demand);
 }

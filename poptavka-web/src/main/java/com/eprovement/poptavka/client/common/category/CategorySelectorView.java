@@ -79,7 +79,7 @@ public class CategorySelectorView extends Composite
         CellBrowser cellBrowser = new CellBrowser(new CategoryTreeViewModel(
                 cellBrowserSelectionModel,
                 categorySelectorPresenter.getCategoryService(),
-                checkboxes), null);
+                checkboxes, -1), null);
         cellBrowser.setSize("950px", "350px");
         cellBrowser.setAnimationEnabled(true);
         cellBrowserHolder.setWidget(cellBrowser);

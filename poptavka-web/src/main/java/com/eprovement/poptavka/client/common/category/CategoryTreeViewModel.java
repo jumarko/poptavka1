@@ -2,10 +2,6 @@ package com.eprovement.poptavka.client.common.category;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.view.client.SelectionModel;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
@@ -16,6 +12,7 @@ import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,107 +22,30 @@ import java.util.List;
  */
 public class CategoryTreeViewModel implements TreeViewModel {
 
-    /**
-     * The images used for this example.
-     */
-    interface Images extends ClientBundle {
-
-        ImageResource contact();
-
-        ImageResource contactsGroup();
-    }
-
-    /**
-     * The cell used to render categories.
-     */
-    private static class CategoryCell extends AbstractCell<CategoryDetail> {
-
-        /**
-         * The html of the image used for contacts.
-         */
-        public CategoryCell() {
-        }
-
-        @Override
-        public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-            if (value != null) {
-                StringBuilder text = new StringBuilder();
-
-                text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-                text.append(" (");
-                text.append(value.getSuppliers());
-                text.append(")");
-
-                sb.appendEscaped(text.toString());
-            }
-        }
-    }
-
-    /**
-     * Tracks the number of contacts in a category that begin with the same
-     * letter.
-     */
-    private static class LetterCount implements Comparable<LetterCount> {
-
-        private final CategoryDetail category;
-        private final char firstLetter;
-        private int count;
-
-        /**
-         * Construct a new {@link LetterCount} for one contact.
-         *
-         * @param category the category
-         * @param firstLetter the first letter of the contacts name
-         */
-        public LetterCount(CategoryDetail category, char firstLetter) {
-            this.category = category;
-            this.firstLetter = firstLetter;
-            this.count = 1;
-        }
-
-        @Override
-        public int compareTo(LetterCount o) {
-            return (o == null) ? -1 : (firstLetter - o.firstLetter);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return compareTo((LetterCount) o) == 0;
-        }
-
-        @Override
-        public int hashCode() {
-            return firstLetter;
-        }
-
-        /**
-         * Increment the count.
-         */
-        public void increment() {
-            count++;
-        }
-    }
-
-    /**
-     * The static images used in this model.
-     */
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
     private Cell<CategoryDetail> categoryCell = null;
     private final SelectionModel<CategoryDetail> selectionModel;
     private final DefaultSelectionEventManager<CategoryDetail> selectionManager =
             DefaultSelectionEventManager.createCheckboxManager();
     private CategoryRPCServiceAsync categoryService;
-    /**
-     * Check boxes usage.
-     * True - all levels use check box for item selection
-     * False - only last level use check box for item selection
-     */
-    private int checkboxes = -1;
+    //Holds constant values of this class.
+    private int checkboxesUsage = -1;
+    //Holds constanst values from CategoryCell class.
+    private int displayCountOfWhat = -1;
 
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
     public CategoryTreeViewModel(final SelectionModel<CategoryDetail> selectionModel,
-            CategoryRPCServiceAsync categoryService, int checkboxesUsage) {
+            CategoryRPCServiceAsync categoryService,
+            final int checkboxesUsage,
+            final int displayCountOfWhat) {
         this.selectionModel = selectionModel;
         this.categoryService = categoryService;
-        this.checkboxes = checkboxesUsage;
+        this.checkboxesUsage = checkboxesUsage;
+        this.displayCountOfWhat = displayCountOfWhat;
 
         List<HasCell<CategoryDetail, ?>> hasCells = new ArrayList<HasCell<CategoryDetail, ?>>();
         hasCells.add(new HasCell<CategoryDetail, Boolean>() {
@@ -147,7 +67,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
             }
         });
         hasCells.add(new HasCell<CategoryDetail, CategoryDetail>() {
-            private CategoryCell cell = new CategoryCell();
+            private CategoryCell cell = new CategoryCell(displayCountOfWhat);
 
             @Override
             public Cell<CategoryDetail> getCell() {
@@ -187,7 +107,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
                     SafeHtmlBuilder sb, HasCell<CategoryDetail, X> hasCell) {
                 Cell<X> cell = hasCell.getCell();
                 sb.appendHtmlConstant("<td>");
-                switch (checkboxes) {
+                switch (checkboxesUsage) {
                     case Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS:
                         if (cell instanceof CheckboxCell) {
                             //Ak je checkbox, renderuj, len ak je to list
@@ -208,6 +128,9 @@ public class CategoryTreeViewModel implements TreeViewModel {
         };
     }
 
+    /**************************************************************************/
+    /* HODE, LEAF definitions                                                 */
+    /**************************************************************************/
     /**
      * Then inside getNodeInfo(T value) of your TreeViewModel just return a new
      * DeafultNodeInfo with a new MyDataProvider. It defines type what cells to use
@@ -220,7 +143,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
     @Override
     public <T> NodeInfo<?> getNodeInfo(T value) {
         CategoryDetail detail = (CategoryDetail) value;
-        switch (checkboxes) {
+        switch (checkboxesUsage) {
             case Constants.WITH_CHECK_BOXES:
                 CategoryDataProvider dataProvider = new CategoryDataProvider(detail, categoryService);
                 return new DefaultNodeInfo(dataProvider, categoryCell, selectionModel, selectionManager, null);
@@ -229,7 +152,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
                 return new DefaultNodeInfo(dataProvider1, categoryCell, selectionModel, selectionManager, null);
             default:
                 CategoryDataProvider dataProvider2 = new CategoryDataProvider(detail, categoryService);
-                return new DefaultNodeInfo(dataProvider2, new CategoryCell(), selectionModel, null);
+                return new DefaultNodeInfo(dataProvider2, new CategoryCell(displayCountOfWhat), selectionModel, null);
         }
     }
 
