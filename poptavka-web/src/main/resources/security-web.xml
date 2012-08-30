@@ -76,7 +76,7 @@
 
     <security:filter-security-metadata-source id="securityMetadataSource">
         <security:intercept-url pattern="/poptavka/rpc" access="IS_AUTHENTICATED_FULLY" />
-        <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT, ROLE_SUPPLIER" />
+<!--        <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT, ROLE_SUPPLIER" />-->
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     </security:filter-security-metadata-source>
