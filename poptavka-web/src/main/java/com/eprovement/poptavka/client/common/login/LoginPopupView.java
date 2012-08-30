@@ -113,7 +113,7 @@ public class LoginPopupView extends PopupPanel
 
     }
 
-    /** binding real form to create login popup **/
+    /** binding real form to create login popup. **/
     private void initRealLoginForm(FlowPanel panel) {
         // Get a handle to the form and set its action to our jsni method
         FormPanel form = FormPanel.wrap(Document.get().getElementById(FORM_ID), false);
@@ -180,7 +180,7 @@ public class LoginPopupView extends PopupPanel
         if ((getLogin().length() == 0) || (getPassword().length() == 0)) {
             Element elem = (Element) Document.get().getElementById(STATUS_ID);
             clearStatusLabel(elem);
-            statusLabel = new SimpleIconLabel(MSGS.wrongLoginMessage(), true);
+            statusLabel = new SimpleIconLabel(MSGS.emptyCredentials(), true);
             statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
             elem.appendChild(statusLabel.getElement());
             return false;
@@ -189,30 +189,43 @@ public class LoginPopupView extends PopupPanel
         return true;
     }
 
+    /**
+     * Method displays the current status in the login process.
+     * Status consists of status icon and status message.
+     *
+     * @param localizableMessage - message to be displayed in LoginPopupView
+     */
     @Override
-    public void setLoadingStatus() {
+    public void setLoadingStatus(String localizableMessage) {
         Element elem = (Element) Document.get().getElementById(STATUS_ID);
         clearStatusLabel(elem);
-        statusLabel = new SimpleIconLabel(MSGS.loading(), true);
+        statusLabel = new SimpleIconLabel(localizableMessage, true);
         statusLabel.setImageResource(StyleResource.INSTANCE.images().loadIcon24());
         elem.appendChild(statusLabel.getElement());
     }
 
+    /**
+     * This method displays error status when some problem occurs in application.
+     * We ask users to try again later.
+     */
     @Override
     public void setUnknownError() {
         Element elem = (Element) Document.get().getElementById("loginStatus");
         clearStatusLabel(elem);
-        statusLabel = new SimpleIconLabel("Wrong name", true);
+        statusLabel = new SimpleIconLabel(MSGS.loginUnknownError(), true);
         statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
         elem.appendChild(statusLabel.getElement());
     }
 
+    /**
+     * This method displays error status when username or password was not found
+     * in our database.
+     */
     @Override
     public void setLoginError() {
         Element elem = (Element) Document.get().getElementById("loginStatus");
         clearStatusLabel(elem);
         statusLabel = new SimpleIconLabel(MSGS.wrongLoginMessage(), true);
-
         statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
         elem.appendChild(statusLabel.getElement());
     }
@@ -235,7 +248,7 @@ public class LoginPopupView extends PopupPanel
     }
 
     /**
-     * private class to handle close button click
+     * private class to handle close button click.
      */
     private class CloseListener implements EventListener {
 

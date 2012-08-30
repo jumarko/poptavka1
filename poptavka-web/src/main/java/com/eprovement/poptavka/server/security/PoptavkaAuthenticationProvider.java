@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.exception.LoginException;
 import com.eprovement.poptavka.service.user.LoginService;
 
 /**
@@ -59,19 +60,35 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         }
 
         LOGGER.info("authenticate calls loginService");
-        final User loggedUser = this.loginService.loginUser(username, password);
+        User loggedUser;
+        try {
+            loggedUser = this.loginService.loginUser(username, password);
+        } catch (LoginException le)  {
+            // If LoginException is thrown i.e. username or password is not correct we have to
+            // throw UsernameNotFoundException in order to cancel the spring security filter chain
+            // and forward the call to GwtSavedRequestAwareAuthenticationFailureHandler that will
+            // send SC.UNAUTHORIZED response code to LoginPopupPresenter.
+            throw new UsernameNotFoundException("Username or password is not correct");
+        }
 
         Authentication customAuthentication = new PoptavkaUserAuthentication(loggedUser, authentication);
         customAuthentication.setAuthenticated(true);
 
         return customAuthentication;
-
+        // TODO ivlcek - maybe I will use this code later tohether with support method bellow
+//        return new UsernamePasswordAuthenticationToken(customAuthentication.getName(),
+//        customAuthentication.getCredentials(), customAuthentication.getAuthorities());
     }
 
     @Override
     public boolean supports(Class<? extends Object> authentication) {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
+
+//  @Override
+//  public boolean supports(Class<?> authentication) {
+//      return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
+//  }
 
 }
 

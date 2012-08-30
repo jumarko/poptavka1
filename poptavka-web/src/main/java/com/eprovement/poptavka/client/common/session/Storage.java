@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 
 /**
@@ -42,8 +43,23 @@ public final class Storage {
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
     private static UserDetail user = null;
+    private static BusinessUserDetail businessUserDetail = null;
     //client projects - selected demand
     private static long demandId = -1L;
+
+    /**
+     * @return the businessUserDetail
+     */
+    public static BusinessUserDetail getBusinessUserDetail() {
+        return businessUserDetail;
+    }
+
+    /**
+     * @param aBusinessUserDetail the businessUserDetail to set
+     */
+    public static void setBusinessUserDetail(BusinessUserDetail aBusinessUserDetail) {
+        businessUserDetail = aBusinessUserDetail;
+    }
 
     //getters for global final classes
     public LocalizableMessages getMessages() {

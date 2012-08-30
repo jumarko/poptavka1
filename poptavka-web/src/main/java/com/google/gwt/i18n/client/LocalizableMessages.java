@@ -86,7 +86,7 @@ public interface LocalizableMessages extends Messages {
     String progressCreatingDemand();
     String progressLogingUser();
     String wrongLoginDescription();
-    String wrongLoginMessage();
+
     String close();
 
     //common
@@ -251,4 +251,12 @@ public interface LocalizableMessages extends Messages {
     String offerStateAccepted();
     String offerStatePending();
     String offerStateDeclined();
+
+    // Messages for LoginPopupPresenter & LoginPopupView
+    String loggingOut();
+    String emptyCredentials();
+    String verifyAccount();
+    String loggingIn();
+    String wrongLoginMessage();
+    String loginUnknownError();
 }

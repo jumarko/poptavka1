@@ -8,7 +8,7 @@
 
 <!--    <security:http entry-point-ref="customAuthenticationEntryPoint">
 
-         TODO premysliet, ake vsetky zdroje chceme chranit autentizaciou 
+         TODO premysliet, ake vsetky zdroje chceme chranit autentizaciou
         <security:intercept-url pattern="/poptavka/rpc" access="IS_AUTHENTICATED_FULLY" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -17,7 +17,7 @@
 
          If the user is authorized, he will be redirected to the success-handler.
            The sucess-handler is responsible of interpreting what to do next.
-           Same principle with the failure-handler 
+           Same principle with the failure-handler
 
     </security:http>-->
 
@@ -34,7 +34,7 @@
 
 
 
--->    
+-->
     <bean id="customAuthenticationProvider" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider" >
         <constructor-arg ref="loginService"/>
     </bean>
@@ -44,17 +44,17 @@
         <property name="authenticationSuccessHandler">
             <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationSuccessHandler">
                 <property name="alwaysUseDefaultTargetUrl" value="false"></property>
-                <property name="defaultTargetUrl" value="/poptavka.html" />  This is the URL you'll be redirected to after a successful form login 
+                <property name="defaultTargetUrl" value="/poptavka.html" />  This is the URL you'll be redirected to after a successful form login
             </bean>
         </property>
         <property name="authenticationFailureHandler">
             <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationFailureHandler">
-                <property name="defaultFailureUrl" value="/login.html" />  Used if authentication is out of the responsability scope of GWT 
+                <property name="defaultFailureUrl" value="/login.html" />  Used if authentication is out of the responsability scope of GWT
             </bean>
         </property>
         <property name="filterProcessesUrl" value="/j_spring_security_check"></property>
     </bean>-->
-  
+
 <!--        Custom entry point to indicate that the user needs to authenticate first -->
 <!--    <bean id="customAuthenticationEntryPoint" class="com.eprovement.poptavka.server.security.GwtAwareAuthenticationEntryPoint" />-->
 
@@ -64,22 +64,23 @@
 
 <!--     Custom handler to indicate that the authentication has failed -->
 <!--    <bean id="customAuthenticationFailureHandler" class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationFailureHandler" />
-    
+
     <bean id="poptavkaAuthListener" class="com.eprovement.poptavka.server.security.PoptavkaAuthListener"/>-->
 
 
-    
+
 <!--    <security:user-service id="userService">
         <security:user name="user" password="user" authorities="ROLE_USER" />
         <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
     </security:user-service>-->
-  
+
     <security:filter-security-metadata-source id="securityMetadataSource">
         <security:intercept-url pattern="/poptavka/rpc" access="IS_AUTHENTICATED_FULLY" />
+        <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT, ROLE_SUPPLIER" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     </security:filter-security-metadata-source>
-  
+
     <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" mode="aspectj"/>
 
     <security:authentication-manager alias="authenticationManagerAlias">
@@ -155,7 +156,7 @@
     </bean>
 
     <bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
-        <constructor-arg value="secret12" /> A Secret Key 
+        <constructor-arg value="secret12" /> A Secret Key
         <constructor-arg ref="loginService" />
         <property name="alwaysRemember" value="true" />
     </bean>
