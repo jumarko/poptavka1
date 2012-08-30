@@ -83,7 +83,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, url);
 
             rb.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            rb.setHeader("X-GWT-Secured", "Logging...");
+//            rb.setHeader("X-GWT-Secured", "Logging...");
             // rb.setHeader("X-XSRF-Cookie", Cookies.getCookie("myCookieKey"));
             // TODO : dmartin work on this, check  https://github.com/dmartinpro/gwt-security
             final StringBuilder sbParams = new StringBuilder(100);

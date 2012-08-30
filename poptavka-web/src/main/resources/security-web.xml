@@ -120,8 +120,8 @@
 <!--        <property name="rememberMeServices" ref="rememberMeServices" />-->
         <property name="authenticationSuccessHandler">
             <bean class="com.eprovement.poptavka.server.security.GwtSavedRequestAwareAuthenticationSuccessHandler">
-                <property name="alwaysUseDefaultTargetUrl" value="false"></property>
-                <property name="defaultTargetUrl" value="/poptavka.html" /><!-- This is the URL you'll be redirected to after a successful form login -->
+<!--                <property name="alwaysUseDefaultTargetUrl" value="false"></property>
+                <property name="defaultTargetUrl" value="/poptavka.html" /> This is the URL you'll be redirected to after a successful form login -->
             </bean>
         </property>
         <property name="authenticationFailureHandler">
