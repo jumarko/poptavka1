@@ -177,6 +177,8 @@ public class LoginPopupView extends PopupPanel
 
     @Override
     public boolean isValid() {
+        // TODO ivlcek - maybe we should check the lenght of email and password to avoid 1 - 4 character long values
+        // TODO ivlcek - are values somehow checked against some sort sql attacks?
         if ((getLogin().length() == 0) || (getPassword().length() == 0)) {
             Element elem = (Element) Document.get().getElementById(STATUS_ID);
             clearStatusLabel(elem);

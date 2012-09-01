@@ -22,9 +22,6 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     // TODO praso - Nemali by sme mat LocalizablaMessages ako static instanciu v Storage?
     // Preco ju vytvarame znovu na tomto mieste?
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    // TODO ivlcek - loggedIn must be setup correctly even in case user is logged in outside of
-    // header login button. A event must be prepared to set this value after each login / logout in
-    // loginpopupPresenter
     private boolean loggedIn = false;
     private LoginPopupPresenter login;
 
@@ -43,17 +40,14 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 //neda nahradid tym cookies? ... co lepsie pouzivat tie cookies ci premennu?
                 if (loggedIn) {
                     // logout
-                    // TODO praso - prerobit tak aby sme nemuseli volat logout v loginpopuppresenteri.
+                    // TODO ivlcek - neskor prerobit tak aby sme nemuseli volat logout v loginpopuppresenteri.
                     // zbytocne sa kvoli tomu musi loginpopupzobrazit kvoli volaniu addHandler(loginpopuppresetner)
                     login = eventBus.addHandler(LoginPopupPresenter.class);
                     eventBus.logout();
-                    eventBus.atHome();
-                    eventBus.goToHomeWelcomeModule(null);
                 } else {
                     // login
                     // initialize and display loginPopupView for user to login
                     login = eventBus.addHandler(LoginPopupPresenter.class);
-//                    new LoginDialogBox().show();
                 }
             }
         });

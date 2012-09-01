@@ -1,16 +1,9 @@
-/**
- *
- */
 package com.eprovement.poptavka.client.common.security;
 
 import com.eprovement.poptavka.client.common.login.LoginDialogBox;
 import com.eprovement.poptavka.client.common.login.SecurityDialogBoxes;
 import com.eprovement.poptavka.client.common.login.SecurityDialogBoxes.AccessDeniedBox;
-// TODO ivlcek - Jurajov kod zakomentovany kvoli prechodu na projekt dmartin
-//import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
-//import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.security.SecurityResponseMessage;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.http.client.Response;
@@ -30,59 +23,31 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     protected static final Logger ASYNC_CALLBACK_LOGGER = Logger.getLogger("SecuredAsyncCallback");
 
     /**
-     * @see
-     * com.google.gwt.user.client.rpc.AsyncCallback#onFailure(java.lang.Throwable)
+     * @see com.google.gwt.user.client.rpc.AsyncCallback#onFailure(java.lang.Throwable)
      */
     @Override
     public final void onFailure(final Throwable caught) {
-
-        // TODO ivlcek - Jurajov kod zakomentovany
-//        ASYNC_CALLBACK_LOGGER.log(Level.INFO, "Failure in AsyncCallback", caught);
-//        if (caught == null) {
-//            ASYNC_CALLBACK_LOGGER.log(Level.FINEST, "Received parameter 'caught' is null ?!!");
-//            return;
-//        } else if (caught instanceof ApplicationSecurityException) {
-//
-//            new SecurityDialogBoxes.AccessDeniedBox().show();
-//            ExceptionUtils.showErrorDialog("Authorization required",
-//                    "You cannot access this funcionality.<br />You are logged as user, who does not support this");
-//            return;
-//        }
-
-        // TODO IV: such a mess - logging to logger, printing to console --> Why all this stuff ?
-        ASYNC_CALLBACK_LOGGER.log(Level.INFO, "OnFailure: caught=" + caught.getMessage());
-        if (caught == null) {
-            ASYNC_CALLBACK_LOGGER.log(Level.FINEST, "Received parameter 'caught' is null ?!!");
-            return;
-        }
-
-        final SecurityResponseMessage message = SecurityCallbackUtils.extractJsonMessage(caught.getMessage());
-
-        // If not logged, display the logging popup window and stop
-        if (isNotAuthorized(message)) {
-            ASYNC_CALLBACK_LOGGER.log(Level.INFO, "isNotAuthrized: message status=" + message.getStatus());
-            onAuthorizationExpected(message.getLoginFormUrl());
+        // If not authorized display LoginPopupWindow
+        if (isNotAuthorized(caught)) {
+            ASYNC_CALLBACK_LOGGER.log(Level.WARNING, "isNotAuthrized: message status=" + caught.getLocalizedMessage());
+            onAuthorizationExpected(null);
             return;
         }
 
         // If access is denied, display an error message box (AccessDeniedBox)
         if (isAccessDenied(caught)) {
-            ASYNC_CALLBACK_LOGGER.log(Level.INFO, "isAccessDenied: caught=" + caught.toString());
+            ASYNC_CALLBACK_LOGGER.log(Level.WARNING, "isAccessDenied: caught=" + caught.toString());
             onAccessDenied();
             return;
         }
 
-
         // TODO: show other dialog for other kind of exceptions ?
-
-
         onServiceFailure(caught);
     }
 
     /**
-     * User can override this method to handle failures. Default implementation
-     * do nothing to not bother client with implementation of stuff that is not
-     * needed in most of situations.
+     * User can override this method to handle failures. Default implementation do nothing to not bother client with
+     * implementation of stuff that is not needed in most of situations.
      *
      * @param caught
      */
@@ -91,14 +56,14 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
         // TODO: more reasonable message must be provided -> probably reference to error id with possibility to send
         // message to our customer support team.
         // error id should be generated in RpcExceptionAspect
-        new com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes.
-                AlertBox(ExceptionUtils.getFullErrorMessage(caught)).show();
+        new com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes.AlertBox(
+                ExceptionUtils.getFullErrorMessage(caught)).show();
 
     }
 
-    protected boolean isNotAuthorized(final SecurityResponseMessage securityResponseMessage) {
-        // If not logged, display the logging popup window and stop
-        if (securityResponseMessage != null && securityResponseMessage.getStatus() == Response.SC_UNAUTHORIZED) {
+    protected boolean isNotAuthorized(final Throwable error) {
+        if (error instanceof StatusCodeException
+                && ((StatusCodeException) error).getStatusCode() == Response.SC_UNAUTHORIZED) {
             return true;
         }
         return false;
@@ -118,8 +83,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     }
 
     /*
-     * (non-Javadoc) @see
-     * com.gwtsecurity.client.SecurityCallbackHandler#onAuthorizationExpected(java.lang.String)
+     * (non-Javadoc) @see com.gwtsecurity.client.SecurityCallbackHandler#onAuthorizationExpected(java.lang.String)
      */
     @Override
     public void onAuthorizationExpected(final String externalLoginUrl) {
@@ -145,8 +109,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     }
 
     /*
-     * (non-Javadoc) @see
-     * com.gwtsecurity.client.SecurityCallbackHandler#onAccessDenied()
+     * (non-Javadoc) @see com.gwtsecurity.client.SecurityCallbackHandler#onAccessDenied()
      */
     @Override
     public void onAccessDenied() {

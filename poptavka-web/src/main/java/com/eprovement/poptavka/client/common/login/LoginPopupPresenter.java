@@ -17,11 +17,11 @@ import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
 
@@ -35,7 +35,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private static final int COOKIE_TIMEOUT = 1000 * 60 * 60 * 24;
     private final short timeout = 1500;
     private MailRPCServiceAsync mailService = null;
-    private ErrorDialogPopupView errorDialog;
     private String springLoginUrl = null;
     private String logoutUrl = null;
 
@@ -74,26 +73,19 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      * Real html login. SHOULD/WILL be used in prod
      */
     public void doLogin() {
-        if (view.isValid()) {
+        if (view.isValid()) { // both email and password fields are not empty
             view.setLoadingStatus(MSGS.verifyAccount());
-            final String username = view.getLogin();
-            final String password = view.getPassword();
-            final String url = getSpringLoginUrl();
-            System.err.println("url is " + url);
-            final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, url);
-
+            final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getSpringLoginUrl());
             rb.setHeader("Content-Type", "application/x-www-form-urlencoded");
-//            rb.setHeader("X-GWT-Secured", "Logging...");
-            // rb.setHeader("X-XSRF-Cookie", Cookies.getCookie("myCookieKey"));
-            // TODO : dmartin work on this, check  https://github.com/dmartinpro/gwt-security
             final StringBuilder sbParams = new StringBuilder(100);
             sbParams.append("j_username=");
-            sbParams.append(username);
+            sbParams.append(URL.encode(view.getLogin()));
             sbParams.append("&j_password=");
-            sbParams.append(password);
+            sbParams.append(URL.encode(view.getPassword()));
 
             try {
                 rb.sendRequest(sbParams.toString(), new RequestCallback() {
+
                     @Override
                     public void onError(final Request request, final Throwable exception) {
                         // Couldn't connect to server (could be timeout, SOP violation, etc.)
@@ -108,9 +100,10 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         int status = response.getStatusCode();
                         LOGGER.fine("Response status code = " + status);
                         if (status == Response.SC_OK) { // 200: everything's ok
-                            LOGGER.info("User=" + username + " has logged in!");
+                            LOGGER.info("User=" + view.getLogin() + " has logged in!");
                             view.setLoadingStatus(MSGS.loggingIn());
-
+                            // notify all interested components that uses has succesfully logged in
+                            fireAfterLoginEvent();
                         } else if (status == Response.SC_UNAUTHORIZED) { // 401: wrong credentials...
                             LOGGER.fine("User entered wrong credentials !");
                             view.setLoginError();
@@ -127,55 +120,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 view.setUnknownError();
                 // TODO jumarko - Shall we send email notifications when this happens?
             }
-
-            // TODO ivlcek - get BusinessUserDetai object at this point
-            userService.loginUser(username, password, new SecuredAsyncCallback<UserDetail>() {
-                @Override
-                protected void onServiceFailure(Throwable caught) {
-                    // TODO: review this failure handling code
-                    view.setUnknownError();
-                }
-
-                @Override
-                public void onSuccess(UserDetail loggedUser) {
-                    Storage.setUser(loggedUser);
-                    final String sessionId = "id=" + loggedUser.getUserId();
-                    if (sessionId != null) {
-                        // TODO Praso - workaround for developoment purposes
-                        setSessionID(sessionId);
-                        //Martin - musi byt kvoli histori.
-                        if (History.getToken().equals("atAccount")) {
-                            eventBus.setHistoryStoredForNextOne(false);
-                            eventBus.atAccount();
-                            History.forward();
-                            Storage.setActionLoginAccountHistory("back");
-                        }
-                        if (History.getToken().equals("atHome")) {
-                            eventBus.setHistoryStoredForNextOne(false);
-                            eventBus.atAccount();
-                            History.back();
-                            Storage.setActionLoginHomeHistory("forward");
-                        }
-                        if (!History.getToken().equals("atAccount")
-                                && !History.getToken().equals("atHome")) {
-                            eventBus.atAccount();
-
-                            eventBus.goToClientDemandsModule(null, Constants.NONE);
-                            //Odkomentovat ak Ivan dorobi setovanie businessUsera do Storage
-//                            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-//                                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
-//                                eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-//                            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-//                                    BusinessUserDetail.BusinessRole.CLIENT)) {
-//                                eventBus.goToClientDemandsModule(null, Constants.NONE);
-//                            }
-                        }
-                        hideView();
-                    } else {
-                        view.setLoginError();
-                    }
-                }
-            });
         }
     }
 
@@ -184,14 +128,16 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      */
     public void onLogout() {
         view.setLoadingStatus(MSGS.loggingOut());
-        final RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, getLogoutUrl());
+        final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getLogoutUrl());
         // rb.setHeader("Accept", "application/json"); // json expected ?
         rb.setCallback(new RequestCallback() {
+
             @Override
             public void onResponseReceived(Request request, Response response) {
                 if (response.getStatusCode() == Response.SC_OK) { // 200 everything is ok.
                     LOGGER.info("User=" + Storage.getUser().getEmail() + " has logged out!");
                     Timer t = new Timer() {
+
                         @Override
                         public void run() {
                             hideView();
@@ -200,6 +146,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     t.schedule(timeout);
                     //remove user from session management to force user input login information
                     Storage.setUser(null);
+                    // Forward user to HomeWelcomeModule
+                    eventBus.atHome();
+                    eventBus.goToHomeWelcomeModule(null);
                 } else {
                     LOGGER.severe("Unexptected response status code while logging out, code="
                             + response.getStatusCode());
@@ -240,6 +189,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
     /**
      * Logout URL can be defined in the application. For now we don't use this method.
+     *
      * @param logoutUrl
      */
     public void setLogoutUrl(final String logoutUrl) {
@@ -259,7 +209,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     }
 
     /**
-     * Hides the LoginPopupView
+     * Hides the LoginPopupView.
      */
     public void hideView() {
         eventBus.removeHandler(view.getPresenter());
@@ -267,13 +217,68 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     }
 
     /**
-     * Sets session ID.
-     * TODO ivlcek - this will be removed after we fully integrate Spring Security
+     * Sets session ID. TODO ivlcek - this will be removed after we fully integrate Spring Security
      */
     private void setSessionID(String sessionId) {
 //        LOGGER.fine("Setting SID cookie");
 //        int cookieTimeout = COOKIE_TIMEOUT;
 //        Date expires = new Date((new Date()).getTime() + cookieTimeout);
 //        Cookies.setCookie("sid", sessionId);
+    }
+
+    /**
+     * This method is initiated after successfull login. All components must be notified of this event in order to
+     * change the view etc. User is forwarded to ClientDemands module or SupplierDemands module based on his business
+     * roles. Save BusinessUserDetail into Storage
+     */
+    private void fireAfterLoginEvent() {
+        // TODO ivlcek - refactor this method
+        final String username = view.getLogin();
+        final String password = view.getPassword();
+        // TODO ivlcek - get BusinessUserDetai object at this point
+        userService.loginUser(username, password, new SecuredAsyncCallback<UserDetail>() {
+
+            @Override
+            protected void onServiceFailure(Throwable caught) {
+                // TODO: review this failure handling code
+                view.setUnknownError();
+            }
+
+            @Override
+            public void onSuccess(UserDetail loggedUser) {
+                GWT.log("user id " + loggedUser.getUserId());
+                Storage.setUser(loggedUser);
+                final String sessionId = "id=" + loggedUser.getUserId();
+//                                    if (sessionId != null) {
+//                                        setSessionID(sessionId);
+
+                //Martin - musi byt kvoli histori.
+                //Kedze tato metoda obsarava prihlasovanie, musel som ju zahrnut.
+                //Pretoze ak sa prihlasenie podari, musi sa naloadovat iny widget
+                //ako pri neuspesnom prihlaseni. Nie je sposob ako to zistit
+                //z history convertara "externe"
+                if (History.getToken().equals("atAccount")) {
+                    eventBus.setHistoryStoredForNextOne(false);
+                    eventBus.atAccount();
+                    History.forward();
+                    Storage.setActionLoginAccountHistory("back");
+                }
+                if (History.getToken().equals("atHome")) {
+                    eventBus.setHistoryStoredForNextOne(false);
+                    eventBus.atAccount();
+                    History.back();
+                    Storage.setActionLoginHomeHistory("forward");
+                }
+                if (!History.getToken().equals("atAccount")
+                        && !History.getToken().equals("atHome")) {
+                    eventBus.atAccount();
+                    //TODO Martin - podla prislusneho typu prihlaseneho uzivatela
+                    //ho presmerovat do prislusneho modulu - client, supplier
+                    eventBus.goToMessagesModule(null, Constants.NONE);
+                }
+                hideView();
+            }
+        });
+
     }
 }

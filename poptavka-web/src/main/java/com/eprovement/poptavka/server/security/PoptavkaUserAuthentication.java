@@ -13,7 +13,7 @@ import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
- * This class represents authenticated user.
+ * This class represents authenticated user and all his granted authorities
  * @author kolkar
  *
  */
@@ -30,7 +30,6 @@ public class PoptavkaUserAuthentication implements Authentication {
     public PoptavkaUserAuthentication(User loggedUser, Authentication authentication) {
         for (AccessRole role : loggedUser.getAccessRoles()) {
             this.grantedAuthority.add(new SimpleGrantedAuthority(role.getCode()));
-            System.err.println(role.getCode());
         }
         this.authentication = authentication;
         this.loggedUser = loggedUser;
@@ -38,10 +37,6 @@ public class PoptavkaUserAuthentication implements Authentication {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        System.err.println("getAuthorities called size=" + grantedAuthority.size());
-        for (GrantedAuthority g : grantedAuthority) {
-            System.err.println("getAuthorities called get Authority=" + g.getAuthority());
-        }
         return Collections.unmodifiableCollection(grantedAuthority);
     }
 

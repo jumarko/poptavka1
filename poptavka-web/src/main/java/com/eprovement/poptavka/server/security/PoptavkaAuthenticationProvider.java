@@ -16,15 +16,14 @@ import com.eprovement.poptavka.exception.LoginException;
 import com.eprovement.poptavka.service.user.LoginService;
 
 /**
- * Custom implementation of authenticationProvider.
- * This class represents authentication mechanism.
+ * Custom implementation of authenticationProvider. This class represents authentication mechanism.
+ *
  * @author kolkar
  *
  */
 public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
 
     private static final Log LOGGER = LogFactory.getLog(PoptavkaAuthenticationProvider.class);
-
     private LoginService loginService;
 
     @Autowired
@@ -38,7 +37,8 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
     }
 
     /**
-     * Method used to authenticate user
+     * Method used to authenticate user.
+     *
      * @param authentication
      * @return authentication object that represents signed in user
      * @throws AuthenticationException
@@ -63,7 +63,7 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         User loggedUser;
         try {
             loggedUser = this.loginService.loginUser(username, password);
-        } catch (LoginException le)  {
+        } catch (LoginException le) {
             // If LoginException is thrown i.e. username or password is not correct we have to
             // throw UsernameNotFoundException in order to cancel the spring security filter chain
             // and forward the call to GwtSavedRequestAwareAuthenticationFailureHandler that will
@@ -75,7 +75,8 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         customAuthentication.setAuthenticated(true);
 
         return customAuthentication;
-        // TODO ivlcek - maybe I will use this code later tohether with support method bellow
+        // TODO ivlcek - if granted roles are not assigned to SpringContet properly use this code bellow
+        // + commented support method
 //        return new UsernamePasswordAuthenticationToken(customAuthentication.getName(),
 //        customAuthentication.getCredentials(), customAuthentication.getAuthorities());
     }
@@ -84,11 +85,8 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(Class<? extends Object> authentication) {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
-
 //  @Override
 //  public boolean supports(Class<?> authentication) {
 //      return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
 //  }
-
 }
-
