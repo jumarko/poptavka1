@@ -19,7 +19,6 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.server.service.demands.DemandsRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
@@ -512,7 +511,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
-            Logger.getLogger(DemandsRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientDemandsRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }

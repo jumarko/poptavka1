@@ -94,7 +94,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
             try {
                 rb.sendRequest(sbParams.toString(), new RequestCallback() {
-
                     @Override
                     public void onError(final Request request, final Throwable exception) {
                         // Couldn't connect to server (could be timeout, SOP violation, etc.)
@@ -131,7 +130,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
             // TODO ivlcek - get BusinessUserDetai object at this point
             userService.loginUser(username, password, new SecuredAsyncCallback<UserDetail>() {
-
                 @Override
                 protected void onServiceFailure(Throwable caught) {
                     // TODO: review this failure handling code
@@ -140,21 +138,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                 @Override
                 public void onSuccess(UserDetail loggedUser) {
-                    GWT.log("user id " + loggedUser.getUserId());
                     Storage.setUser(loggedUser);
                     final String sessionId = "id=" + loggedUser.getUserId();
                     if (sessionId != null) {
                         // TODO Praso - workaround for developoment purposes
                         setSessionID(sessionId);
-                        //Martin: Change id = 149 to id = 613248 for testing new user and his demands
-//                        setSessionID("id=149");
-//                        setSessionID("id=613248");
-
                         //Martin - musi byt kvoli histori.
-                        //Kedze tato metoda obsarava prihlasovanie, musel som ju zahrnut.
-                        //Pretoze ak sa prihlasenie podari, musi sa naloadovat iny widget
-                        //ako pri neuspesnom prihlaseni. Nie je sposob ako to zistit
-                        //z history convertara "externe"
                         if (History.getToken().equals("atAccount")) {
                             eventBus.setHistoryStoredForNextOne(false);
                             eventBus.atAccount();
@@ -170,9 +159,16 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         if (!History.getToken().equals("atAccount")
                                 && !History.getToken().equals("atHome")) {
                             eventBus.atAccount();
-                            //TODO Martin - podla prislusneho typu prihlaseneho uzivatela
-                            //ho presmerovat do prislusneho modulu - client, supplier
-                            eventBus.goToMessagesModule(null, Constants.NONE);
+
+                            eventBus.goToClientDemandsModule(null, Constants.NONE);
+                            //Odkomentovat ak Ivan dorobi setovanie businessUsera do Storage
+//                            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+//                                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
+//                                eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+//                            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+//                                    BusinessUserDetail.BusinessRole.CLIENT)) {
+//                                eventBus.goToClientDemandsModule(null, Constants.NONE);
+//                            }
                         }
                         hideView();
                     } else {
@@ -191,13 +187,11 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, getLogoutUrl());
         // rb.setHeader("Accept", "application/json"); // json expected ?
         rb.setCallback(new RequestCallback() {
-
             @Override
             public void onResponseReceived(Request request, Response response) {
                 if (response.getStatusCode() == Response.SC_OK) { // 200 everything is ok.
                     LOGGER.info("User=" + Storage.getUser().getEmail() + " has logged out!");
                     Timer t = new Timer() {
-
                         @Override
                         public void run() {
                             hideView();

@@ -29,7 +29,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     public UserMenuView() {
         initWidget(uiBinder.createAndBindUi(this));
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
-        client.addStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
     /**************************************************************************/
@@ -139,14 +138,29 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         administration.addStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
+    /**
+     * Sets tab visibility. According to given attribute module appropriate tab
+     * sets its visibility according to given attribute visible.
+     * If Client or Supplier tab is going to be displayed (visible attr = true),
+     * its also sets selected style on appropriate menu button.
+     *
+     * @param module
+     * @param visible
+     */
     @Override
     public void setTabVisibility(int module, boolean visible) {
         switch (module) {
             case Constants.USER_CLIENT_MODULE:
                 client.setVisible(visible);
+                if (visible) {
+                    client.addStyleName(StyleResource.INSTANCE.layout().selected());
+                }
                 break;
             case Constants.USER_SUPPLIER_MODULE:
                 supplier.setVisible(visible);
+                if (visible) {
+                    supplier.addStyleName(StyleResource.INSTANCE.layout().selected());
+                }
                 break;
             case Constants.USER_ADMININSTRATION_MODULE:
                 administration.setVisible(visible);

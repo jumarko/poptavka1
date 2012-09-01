@@ -24,14 +24,26 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
      */
     public void onAtAccount() {
         GWT.log("User menu view loaded");
-        //Use with : SecurityContextHolder.getContext().getAuthentication().;
+        //Tab visibility must be defined here, because unlike constructor in UserMenuView
+        //this method is called each time user is logging in
+        /* ADMIN TAB */
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, true);
         } else {
             view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
         }
-        //TODO Martin - pridat podmienky pre zobrazovanie client vs supplier tabu
-        //podla business role uzivatela - viem to zistit v tejto fazi?
+        //Odkomentovat ak Ivan dorobi setovanie businessUsera do Storage
+//        /* SUPPLIER TAB */
+//        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+//                BusinessUserDetail.BusinessRole.SUPPLIER)) {
+//            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
+//            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, true);
+//            /* CLIENT TAB */
+//        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+//                BusinessUserDetail.BusinessRole.CLIENT)) {
+//            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
+//            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, false);
+//        }
         eventBus.setMenu(view);
     }
 

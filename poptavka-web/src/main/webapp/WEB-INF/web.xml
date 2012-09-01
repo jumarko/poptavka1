@@ -113,7 +113,7 @@
 
     <!--
     Mapping an RPC service defined in handler-servlet.xml
-    -->        
+    -->
     <servlet>
         <servlet-name>rpcServlet</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.simpleservice.SimpleServiceImpl</servlet-class>
@@ -123,7 +123,7 @@
         <servlet-name>rpcServlet</servlet-name>
         <url-pattern>/poptavka/rpc</url-pattern>
     </servlet-mapping>
-    
+
     <servlet>
         <servlet-name>RootRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.root.RootRPCServiceImpl</servlet-class>
@@ -197,15 +197,6 @@
         <url-pattern>/poptavka/service/messagesmodule</url-pattern>
     </servlet-mapping>
 
-
-    <servlet>
-        <servlet-name>DemandsRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.demands.DemandsRPCServiceImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DemandsRPCService</servlet-name>
-        <url-pattern>/poptavka/service/demandsmodule</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>ClientDemandsRPCService</servlet-name>
