@@ -6,14 +6,12 @@ import com.eprovement.poptavka.client.service.demand.OfferRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.client.user.UserEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import java.util.ArrayList;
 
 @EventHandler
 public class UserHandler extends BaseEventHandler<UserEventBus> {
@@ -65,11 +63,11 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onGetDemandOffers(long demandId, long threadRootId) {
-        offerService.getDemandOffers(demandId, threadRootId, new SecuredAsyncCallback<ArrayList<FullOfferDetail>>() {
-            @Override
-            public void onSuccess(ArrayList<FullOfferDetail> offers) {
-                eventBus.setDemandOffers(offers);
-            }
-        });
+//        offerService.getDemandOffers(demandId, threadRootId, new SecuredAsyncCallback<ArrayList<FullOfferDetail>>() {
+//            @Override
+//            public void onSuccess(ArrayList<FullOfferDetail> offers) {
+//                eventBus.setDemandOffers(offers);
+//            }
+//        });
     }
 }

@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.root.menu;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,6 +13,7 @@ import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView.IUserMenuPresenter;
+import com.google.gwt.dom.client.UListElement;
 
 public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> implements IUserMenuView {
 
@@ -24,12 +24,12 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @UiField
     UListElement menuList;
     @UiField
-    Button client, supplier, demands, messages, settings, administration;
+    Button client, supplier, messages, settings, administration;
 
     public UserMenuView() {
         initWidget(uiBinder.createAndBindUi(this));
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
-        demands.addStyleName(StyleResource.INSTANCE.layout().selected());
+        client.addStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
     /**************************************************************************/
@@ -45,12 +45,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     public void onClickSupplier(ClickEvent e) {
         presenter.goToSupplier();
         supplierUserMenuStyleChange();
-    }
-
-    @UiHandler("demands")
-    public void onClickDemands(ClickEvent e) {
-        presenter.goToDemands();
-        demandsUserMenuStyleChange();
     }
 
     @UiHandler("messages")
@@ -88,9 +82,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
             case Constants.USER_SUPPLIER_MODULE:
                 supplierUserMenuStyleChange();
                 break;
-            case Constants.USER_DEMANDS_MODULE:
-                demandsUserMenuStyleChange();
-                break;
             case Constants.USER_MESSAGES_MODULE:
                 messagesUserMenuStyleChange();
                 break;
@@ -111,7 +102,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void clientUserMenuStyleChange() {
         client.addStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -120,16 +110,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void supplierUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.addStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
-    }
-
-    private void demandsUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.addStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -138,7 +118,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void messagesUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.addStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -147,7 +126,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void settingsUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.addStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -156,7 +134,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void administrationUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.addStyleName(StyleResource.INSTANCE.layout().selected());

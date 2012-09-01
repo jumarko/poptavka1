@@ -24,7 +24,7 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
     private static final String MESSAGES_NONE = "messagesWelcome"; //for further usage
 
     /**
-     * Created token(URL) for goToDemandModule method.
+     * Created token(URL) for goToMessagesModule method.
      *
      * @param searchDataHolder - Provided by search module. Holds data to filter.
      * @param loadWidget - Constant from class Constants. Tells which view to load.

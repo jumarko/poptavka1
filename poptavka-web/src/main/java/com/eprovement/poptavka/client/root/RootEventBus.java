@@ -26,7 +26,6 @@ import com.eprovement.poptavka.client.root.menu.MenuPresenter;
 import com.eprovement.poptavka.client.root.menu.UserMenuPresenter;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModule;
-import com.eprovement.poptavka.client.user.demands.DemandModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
@@ -66,7 +65,6 @@ import java.util.List;
     @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = ClientDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = SupplierDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = true),
@@ -112,7 +110,6 @@ public interface RootEventBus extends EventBus {
         HomeSuppliersModule.class,
         SupplierCreationModule.class,
         DemandCreationModule.class,
-        DemandModule.class,
         ClientDemandsModule.class,
         SupplierDemandsModule.class,
         MessagesModule.class,
@@ -160,9 +157,6 @@ public interface RootEventBus extends EventBus {
 
     @Event(forwardToModules = SupplierDemandsModule.class)
     void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
-
-    @Event(forwardToModules = DemandModule.class)
-    void goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 
     /**
      * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid

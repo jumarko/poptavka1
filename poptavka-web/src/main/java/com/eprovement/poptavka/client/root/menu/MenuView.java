@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.root.menu;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,6 +13,7 @@ import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView.IMenuPresenter;
+import com.google.gwt.dom.client.UListElement;
 
 public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IMenuView {
 
@@ -41,25 +41,25 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     }
 
     @UiHandler("demands")
-    public void clickDemands(ClickEvent e) {
+    public void onClickDemands(ClickEvent e) {
         presenter.goToHomeDemands();
         demandsMenuStyleChange();
     }
 
     @UiHandler("suppliers")
-    public void clickSuppliers(ClickEvent e) {
+    public void onClickSuppliers(ClickEvent e) {
         presenter.goToHomeSuppliers();
         suppliersMenuStyleChange();
     }
 
     @UiHandler("createSupplier")
-    public void clickCreateSupplier(ClickEvent e) {
+    public void onClickCreateSupplier(ClickEvent e) {
         presenter.goToCreateSupplier();
         createSupplierMenuStyleChange();
     }
 
     @UiHandler("createDemand")
-    public void clickCreateDemand(ClickEvent e) {
+    public void onClickCreateDemand(ClickEvent e) {
         presenter.goToCreateDemand();
         createDemandMenuStyleChange();
     }

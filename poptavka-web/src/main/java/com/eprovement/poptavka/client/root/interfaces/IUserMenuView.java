@@ -12,8 +12,6 @@ public interface IUserMenuView extends IsWidget {
 
         void goToMessages();
 
-        void goToDemands();
-
         void goToClient();
 
         void goToSupplier();

@@ -11,9 +11,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.user.demands.tab.old.MyDemandsPresenter;
-import com.eprovement.poptavka.client.user.demands.tab.old.OffersPresenter;
-import com.eprovement.poptavka.client.user.demands.tab.old.PotentialDemandsPresenter;
 import com.eprovement.poptavka.client.user.handler.MessageHandler;
 import com.eprovement.poptavka.client.user.handler.UserHandler;
 import com.eprovement.poptavka.client.user.problems.MyProblemsPresenter;
@@ -22,11 +19,8 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
-import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
@@ -69,10 +63,6 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MessageHandler.class)
     void getPotentialDemands(long businessUserId);
 
-    @Event(handlers = PotentialDemandsPresenter.class)
-    void responsePotentialDemands(
-            ArrayList<PotentialDemandMessage> potentialDemandsList);
-
     /** Offer demands GETTER/SETTER. **/
     // this same method could be called to MyDemandsPresenter
     // depends on it's demandDetailType and what will be difference in data,
@@ -84,15 +74,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MessageHandler.class)
     void getClientDemandsWithOffers(Long businessUserId);
 
-    @Event(handlers = OffersPresenter.class)
-    void responseClientDemandsWithOffers(ArrayList<OfferDemandMessage> result);
-
     /** Demand Offers GETTER/SETTER. **/
     @Event(handlers = UserHandler.class)
     void getDemandOffers(long demandId, long threadRootId);
-
-    @Event(handlers = OffersPresenter.class)
-    void setDemandOffers(ArrayList<FullOfferDetail> offers);
 
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
@@ -172,9 +156,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = MessageHandler.class)
     void getOfferStatusChange(OfferDetail offerDetail);
-
-    @Event(handlers = OffersPresenter.class)
-    void setOfferDetailChange(OfferDetail offerDetail);
 
     /**
      * Bubbling offer to send to UserPresenter to get the user ID and supplier
@@ -313,14 +294,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MessageHandler.class)
     void getClientDemandWithConversations(Long userId, Long clientId);
 
-    @Event(handlers = MyDemandsPresenter.class)
-    void setClientDemandWithConversations(ArrayList<ClientDemandMessageDetail> result);
-
     @Event(handlers = MessageHandler.class)
     void requestDemandConversations(long messageId);
-
-    @Event(handlers = MyDemandsPresenter.class)
-    void setDemandConversations(ArrayList<MessageDetail> conversations);
 
     @Event(handlers = { MessageHandler.class, OldDetailWrapperPresenter.class })
     void requestSingleConversation(long threadRootId, long messageId);

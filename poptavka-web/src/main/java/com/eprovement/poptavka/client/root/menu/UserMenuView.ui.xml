@@ -28,12 +28,6 @@
 <!--                                        <ui:msg key="demands">Demands</ui:msg>-->Supplier
                             </g:Button>
                         </li>
-
-                        <li>
-                            <g:Button ui:field="demands">
-<!--                                        <ui:msg key="demands">Demands</ui:msg>-->Demands
-                            </g:Button>
-                        </li>
                         <li>
                             <g:Button ui:field="messages">
 <!--                                        <ui:msg key='messages'>Messages</ui:msg>-->Messages

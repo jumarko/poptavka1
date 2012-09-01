@@ -14,11 +14,8 @@ import com.eprovement.poptavka.client.service.demand.MessageRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.OfferRPCServiceAsync;
 import com.eprovement.poptavka.client.user.UserEventBus;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
-import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
 @EventHandler
@@ -43,23 +40,23 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetClientDemandWithConversations(Long userId, Long clientId) {
-        messageService.getListOfClientDemandMessages(userId, clientId,
-                new SecuredAsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
-                @Override
-                public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
-                    eventBus.setClientDemandWithConversations(result);
-                }
-            });
+//        messageService.getListOfClientDemandMessages(userId, clientId,
+//                new SecuredAsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
+//                @Override
+//                public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
+//                    eventBus.setClientDemandWithConversations(result);
+//                }
+//            });
     }
 
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestDemandConversations(long messageId) {
-        messageService.getClientDemandConversations(messageId, new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
-            @Override
-            public void onSuccess(ArrayList<MessageDetail> conversations) {
-                eventBus.setDemandConversations(conversations);
-            }
-        });
+//        messageService.getClientDemandConversations(messageId, new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
+//            @Override
+//            public void onSuccess(ArrayList<MessageDetail> conversations) {
+//                eventBus.setDemandConversations(conversations);
+//            }
+//        });
     }
 
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
@@ -121,13 +118,13 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     }
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetOfferStatusChange(OfferDetail offerDetail) {
-        GWT.log("STATE: " + offerDetail.getState());
-        offerService.changeOfferState(offerDetail, new SecuredAsyncCallback<OfferDetail>() {
-            @Override
-            public void onSuccess(OfferDetail result) {
-                eventBus.setOfferDetailChange(result);
-            }
-        });
+//        GWT.log("STATE: " + offerDetail.getState());
+//        offerService.changeOfferState(offerDetail, new SecuredAsyncCallback<OfferDetail>() {
+//            @Override
+//            public void onSuccess(OfferDetail result) {
+//                eventBus.setOfferDetailChange(result);
+//            }
+//        });
     }
 
     /**
@@ -137,15 +134,15 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      */
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetPotentialDemands(long businessUserId) {
-        messageService.getPotentialDemands(businessUserId,
-                new SecuredAsyncCallback<ArrayList<PotentialDemandMessage>>() {
-                    @Override
-                    public void onSuccess(
-                            ArrayList<PotentialDemandMessage> result) {
-                        GWT.log("Result size: " + result.size());
-                        eventBus.responsePotentialDemands(result);
-                    }
-                });
+//        messageService.getPotentialDemands(businessUserId,
+//                new SecuredAsyncCallback<ArrayList<PotentialDemandMessage>>() {
+//                    @Override
+//                    public void onSuccess(
+//                            ArrayList<PotentialDemandMessage> result) {
+//                        GWT.log("Result size: " + result.size());
+//                        eventBus.responsePotentialDemands(result);
+//                    }
+//                });
     }
 
     /**
@@ -155,11 +152,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      */
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetClientDemandsWithOffers(Long businessUserId) {
-        messageService.getOfferDemands(businessUserId, new SecuredAsyncCallback<ArrayList<OfferDemandMessage>>() {
-            @Override
-            public void onSuccess(ArrayList<OfferDemandMessage> result) {
-                eventBus.responseClientDemandsWithOffers(result);
-            }
-        });
+//        messageService.getOfferDemands(businessUserId, new SecuredAsyncCallback<ArrayList<OfferDemandMessage>>() {
+//            @Override
+//            public void onSuccess(ArrayList<OfferDemandMessage> result) {
+//                eventBus.responseClientDemandsWithOffers(result);
+//            }
+//        });
     }
 }

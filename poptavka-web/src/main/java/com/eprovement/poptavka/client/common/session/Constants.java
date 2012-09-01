@@ -97,7 +97,7 @@ public final class Constants {
         return admins;
     }
 
-    public static ArrayList<Integer> getClientConstants() {
+    public static ArrayList<Integer> getClientDemandsConstants() {
         ArrayList<Integer> clients = new ArrayList<Integer>();
         clients.add(CLIENT_PROJECTS);
         clients.add(CLIENT_PROJECT_DISCUSSIONS);
@@ -107,23 +107,12 @@ public final class Constants {
         return clients;
     }
 
-    public static ArrayList<Integer> getSupplierConstants() {
+    public static ArrayList<Integer> getSupplierDemandsConstants() {
         ArrayList<Integer> suppliers = new ArrayList<Integer>();
         suppliers.add(SUPPLIER_POTENTIAL_PROJECTS);
         suppliers.add(SUPPLIER_CONTESTS);
         suppliers.add(SUPPLIER_ASSIGNED_PROJECTS);
         return suppliers;
-    }
-
-    //TODO Martin - remove and redirect usage to getClientCOnstatnts and SuppliersConstants
-    public static ArrayList<Integer> getDemandsConstants() {
-        ArrayList<Integer> admins = new ArrayList<Integer>();
-        admins.add(CLIENT_ASSIGNED_PROJECTS);
-        admins.add(CLIENT_PROJECTS);
-        admins.add(SUPPLIER_ASSIGNED_PROJECTS);
-        admins.add(SUPPLIER_POTENTIAL_PROJECTS);
-        admins.add(SUPPLIER_CONTESTS);
-        return admins;
     }
 
     public static ArrayList<Integer> getMessagesConstants() {

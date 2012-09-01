@@ -170,7 +170,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         if (!History.getToken().equals("atAccount")
                                 && !History.getToken().equals("atHome")) {
                             eventBus.atAccount();
-                            eventBus.goToDemandModule(null, Constants.NONE);
+                            //TODO Martin - podla prislusneho typu prihlaseneho uzivatela
+                            //ho presmerovat do prislusneho modulu - client, supplier
+                            eventBus.goToMessagesModule(null, Constants.NONE);
                         }
                         hideView();
                     } else {

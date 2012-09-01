@@ -196,8 +196,11 @@ public class SearchModulePresenter
                         eventBus.goToHomeSuppliersModule(view.getFilters());
                         break;
                     default:
-                        if (Constants.getDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToDemandModule(view.getFilters(), Storage.getCurrentlyLoadedView());
+                        if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+                            eventBus.goToClientDemandsModule(view.getFilters(), Storage.getCurrentlyLoadedView());
+                        }
+                        if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+                            eventBus.goToSupplierDemandsModule(view.getFilters(), Storage.getCurrentlyLoadedView());
                         }
                         if (Constants.getAdminConstants().contains(Storage.getCurrentlyLoadedView())) {
                             eventBus.goToAdminModule(view.getFilters(), Storage.getCurrentlyLoadedView());

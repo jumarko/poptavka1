@@ -26,7 +26,10 @@ public interface SearchModuleEventBus extends EventBus {
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
+    void goToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget);
+
+    @Event(forwardToParent = true)
+    void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(forwardToParent = true)
     void goToAdminModule(SearchModuleDataHolder filter, int loadWidget);

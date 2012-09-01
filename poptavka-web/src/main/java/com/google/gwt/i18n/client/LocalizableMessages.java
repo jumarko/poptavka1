@@ -259,4 +259,18 @@ public interface LocalizableMessages extends Messages {
     String loggingIn();
     String wrongLoginMessage();
     String loginUnknownError();
+
+    //Menu - home
+    String menuHome();
+    String menuHomeDemands();
+    String menuHomeSuppliers();
+    String menuCreateSupplier();
+    String menuCreateDemand();
+
+    //Menu - user
+    String menuClientDemands();
+    String menuSupplierDemands();
+    String menuMessages();
+    String menuSettings();
+    String menuAdministration();
 }
