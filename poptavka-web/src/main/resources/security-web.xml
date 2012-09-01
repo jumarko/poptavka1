@@ -45,12 +45,11 @@
     <bean id="customAuthenticationSuccessHandler" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationSuccessHandler" />
     <bean id="customAuthenticationFailureHandler" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationFailureHandler" />
     <bean id="logoutSuccessHandler" class="com.eprovement.poptavka.server.security.PoptavkaLogoutSuccessHandler" />
-    <bean id="poptavkaAuthListener" class="com.eprovement.poptavka.server.security.PoptavkaAuthListener"/>
+    <!-- Automatically receives AuthenticationEvent messages -->
+   <bean id="poptavkaAuthListener" class="com.eprovement.poptavka.server.security.PoptavkaAuthListener"/>
 
     <security:authentication-manager alias="authenticationManagerAlias">
         <security:authentication-provider ref="customAuthenticationProvider" />
     </security:authentication-manager>
 
-    <!-- Automatically receives AuthenticationEvent messages -->
-    <bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
 </beans>

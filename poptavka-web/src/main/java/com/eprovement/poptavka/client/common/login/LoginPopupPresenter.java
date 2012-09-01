@@ -20,6 +20,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -233,10 +234,21 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      */
     private void fireAfterLoginEvent() {
         // TODO ivlcek - refactor this method
-        final String username = view.getLogin();
-        final String password = view.getPassword();
-        // TODO ivlcek - get BusinessUserDetai object at this point
-        userService.loginUser(username, password, new SecuredAsyncCallback<UserDetail>() {
+        userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>() {
+
+            @Override
+            public void onSuccess(UserDetail userDetail) {
+                Storage.setUser(userDetail);
+            }
+
+            @Override
+            protected void onServiceFailure(Throwable caught) {
+                view.setUnknownError();
+            }
+
+        });
+        // TODO ivlcek - Do we have to call RPC two times for userDetail and BusinessUserDetail objects?
+        userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>() {
 
             @Override
             protected void onServiceFailure(Throwable caught) {
@@ -245,9 +257,10 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             }
 
             @Override
-            public void onSuccess(UserDetail loggedUser) {
+            public void onSuccess(BusinessUserDetail loggedUser) {
                 GWT.log("user id " + loggedUser.getUserId());
-                Storage.setUser(loggedUser);
+//                Storage.setUser(loggedUser);
+                Storage.setBusinessUserDetail(loggedUser);
                 final String sessionId = "id=" + loggedUser.getUserId();
 //                                    if (sessionId != null) {
 //                                        setSessionID(sessionId);

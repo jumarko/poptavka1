@@ -29,7 +29,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     public final void onFailure(final Throwable caught) {
         // If not authorized display LoginPopupWindow
         if (isNotAuthorized(caught)) {
-            ASYNC_CALLBACK_LOGGER.log(Level.WARNING, "isNotAuthrized: message status=" + caught.getLocalizedMessage());
+            ASYNC_CALLBACK_LOGGER.log(Level.WARNING, "isNotAuthrized: message status=" + caught.toString());
             onAuthorizationExpected(null);
             return;
         }

@@ -5,6 +5,7 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.user.ClientService;
@@ -16,6 +17,7 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Configurable
 public class UserRPCServiceImpl extends AutoinjectingRemoteService implements UserRPCService {
@@ -25,7 +27,6 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private LoginService loginService;
     private ClientService clientService;
     private Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
-
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     @Autowired
@@ -71,5 +72,19 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Override
     public boolean checkFreeEmail(String email) throws RPCException {
         return clientService.checkFreeEmail(email);
+    }
+
+    @Override
+    public BusinessUserDetail getLoggedBusinessUser() throws RPCException {
+        return getUserById(
+                ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId());
+    }
+
+    @Override
+    public UserDetail getLoggedUser() throws RPCException {
+        User user = generalService.find(User.class, ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().
+                    getAuthentication()).getUserId());
+        return new UserDetail(user.getId(), user.getEmail(),
+                accessRoleConverter.convertToTargetList(user.getAccessRoles()));
     }
 }

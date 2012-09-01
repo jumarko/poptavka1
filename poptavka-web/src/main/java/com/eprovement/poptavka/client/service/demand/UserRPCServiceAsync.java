@@ -13,4 +13,8 @@ public interface UserRPCServiceAsync {
 
     /** @see UserRPCService#checkFreeEmail(String) */
     void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
+
+    void getLoggedBusinessUser(AsyncCallback<BusinessUserDetail> callback);
+
+    void getLoggedUser(AsyncCallback<UserDetail> callback);
 }
