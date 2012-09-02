@@ -55,6 +55,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
 
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();
+        StyleResource.INSTANCE.createTabPanel().ensureInjected();
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }

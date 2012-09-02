@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+
+.createTabPanel {
+	height: 100%;
+}
+
+.createTabPanel .gwt-TabLayoutPanelTab-selected .gwt-TabLayoutPanelTabInner div {
+	background: url(/images/create-tab-hover.png) no-repeat top right;
+	cursor: pointer;
+}
+
+.createTabPanel .gwt-TabLayoutPanelContentContainer {
+	margin-top: 10px;
+	border: none;
+	border-top: 1px dashed #666666;
+}

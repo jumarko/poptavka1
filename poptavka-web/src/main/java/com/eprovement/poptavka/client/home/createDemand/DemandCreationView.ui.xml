@@ -20,7 +20,7 @@
 
 	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
 		<g:TabLayoutPanel ui:field='mainPanel'
-			styleName='createTabPanel' barUnit='PX' barHeight='50'>
+			styleName='{res.createTabPanel.createTabPanel}' barUnit='PX' barHeight='50'>
 			<g:tab>
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex5}">

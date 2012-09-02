@@ -8,8 +8,7 @@
     <inherits name='com.google.gwt.inject.Inject'/>
     <inherits name="com.google.gwt.uibinder.UiBinder" />
     <inherits name="com.google.gwt.http.HTTP"/>
-    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-    <stylesheet src='createTabPanel.css'/>
+    <inherits name='com.google.gwt.user.theme.standard.Standard'/>    
     <inherits name='com.mvp4g.Mvp4gModule'/>
     <inherits name='org.adamtacy.GWTEffects'/>
     <!-- RequestFactory and JSON module required by security pack-->
