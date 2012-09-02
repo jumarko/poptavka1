@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView.IUserMenuPresenter;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 @Presenter(view = UserMenuView.class)
 public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus>
@@ -32,18 +33,17 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
         } else {
             view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
         }
-        //Odkomentovat ak Ivan dorobi setovanie businessUsera do Storage
-//        /* SUPPLIER TAB */
-//        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-//                BusinessUserDetail.BusinessRole.SUPPLIER)) {
-//            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
-//            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, true);
-//            /* CLIENT TAB */
-//        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-//                BusinessUserDetail.BusinessRole.CLIENT)) {
-//            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
-//            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, false);
-//        }
+        /* SUPPLIER TAB */
+        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.SUPPLIER)) {
+            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
+            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, true);
+            /* CLIENT TAB */
+        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.CLIENT)) {
+            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
+            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, false);
+        }
         eventBus.setMenu(view);
     }
 

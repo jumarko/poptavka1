@@ -86,7 +86,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
             try {
                 rb.sendRequest(sbParams.toString(), new RequestCallback() {
-
                     @Override
                     public void onError(final Request request, final Throwable exception) {
                         // Couldn't connect to server (could be timeout, SOP violation, etc.)
@@ -132,13 +131,11 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getLogoutUrl());
         // rb.setHeader("Accept", "application/json"); // json expected ?
         rb.setCallback(new RequestCallback() {
-
             @Override
             public void onResponseReceived(Request request, Response response) {
                 if (response.getStatusCode() == Response.SC_OK) { // 200 everything is ok.
                     LOGGER.info("User=" + Storage.getUser().getEmail() + " has logged out!");
                     Timer t = new Timer() {
-
                         @Override
                         public void run() {
                             hideView();
@@ -235,7 +232,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private void fireAfterLoginEvent() {
         // TODO ivlcek - refactor this method
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>() {
-
             @Override
             public void onSuccess(UserDetail userDetail) {
                 Storage.setUser(userDetail);
@@ -245,11 +241,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             protected void onServiceFailure(Throwable caught) {
                 view.setUnknownError();
             }
-
         });
         // TODO ivlcek - Do we have to call RPC two times for userDetail and BusinessUserDetail objects?
         userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>() {
-
             @Override
             protected void onServiceFailure(Throwable caught) {
                 // TODO: review this failure handling code
@@ -285,9 +279,15 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 if (!History.getToken().equals("atAccount")
                         && !History.getToken().equals("atHome")) {
                     eventBus.atAccount();
-                    //TODO Martin - podla prislusneho typu prihlaseneho uzivatela
-                    //ho presmerovat do prislusneho modulu - client, supplier
+
                     eventBus.goToMessagesModule(null, Constants.NONE);
+                    if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                            BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                        eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+                    } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                            BusinessUserDetail.BusinessRole.CLIENT)) {
+                        eventBus.goToClientDemandsModule(null, Constants.NONE);
+                    }
                 }
                 hideView();
             }
