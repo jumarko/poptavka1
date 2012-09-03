@@ -159,6 +159,7 @@ public final class Storage {
         setBusinessUserDetail(null);
         // TODO martin - shall we clear following values when invalidating Storage? i.e. during logout
         // Will History be working correctly if we clear these values?
+        // Martin will try to make new solution for history between login/logout
 //        setActionLoginHomeHistory(BACK);
 //        setActionLoginAccountHistory(BACK);
 //        setDemandId(-1L);

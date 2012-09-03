@@ -273,4 +273,12 @@ public interface LocalizableMessages extends Messages {
     String menuMessages();
     String menuSettings();
     String menuAdministration();
+
+    // Error messages
+    String pageNotFound();
+    String badRequest();
+    String internalError();
+    String serviceUnavailable();
+    String serverError();
+
 }
