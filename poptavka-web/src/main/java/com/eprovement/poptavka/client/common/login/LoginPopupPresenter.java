@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.common.login;
 
-import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -17,6 +16,7 @@ import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
@@ -63,11 +63,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     @Inject
     void setMailService(MailRPCServiceAsync service) {
         mailService = service;
-    }
-
-    // TODO ivlcek - remove this method
-    public void onLogin() {
-        LOGGER.info("++ Login Popup Widget initialized ++");
     }
 
     /**
@@ -231,7 +226,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      */
     private void fireAfterLoginEvent() {
         // TODO ivlcek - refactor this method
-        userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>() {
+        userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
             @Override
             public void onSuccess(UserDetail userDetail) {
                 Storage.setUser(userDetail);
@@ -243,7 +238,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             }
         });
         // TODO ivlcek - Do we have to call RPC two times for userDetail and BusinessUserDetail objects?
-        userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>() {
+        userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             protected void onServiceFailure(Throwable caught) {
                 // TODO: review this failure handling code

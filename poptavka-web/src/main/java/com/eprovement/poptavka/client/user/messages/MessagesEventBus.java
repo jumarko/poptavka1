@@ -10,7 +10,6 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.messages.tab.ComposeMessagePresenter;
@@ -20,10 +19,12 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = MessagesPresenter.class, module = MessagesModule.class)
-public interface MessagesEventBus extends EventBus {
+public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedProjectsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientContestsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientProjectsPresenter;
@@ -23,12 +24,12 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = ClientDemandsPresenter.class, module = ClientDemandsModule.class)
-public interface ClientDemandsEventBus extends EventBus, IEventBusData {
+public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
      * First event to be handled.

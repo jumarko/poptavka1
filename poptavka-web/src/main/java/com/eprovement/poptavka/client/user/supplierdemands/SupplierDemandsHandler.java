@@ -58,7 +58,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
     private void getSupplierPotentialProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialProjectsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>() {
+                new SecuredAsyncCallback<Long>(eventBus) {
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
                     }
@@ -68,7 +68,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     private void getSupplierPotentialProjects(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialProjects(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>() {
+                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
 //                        eventBus.displaySupplierPotentialProjects(result);
@@ -80,7 +80,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
     private void getSupplierContestsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierContestsCount(
-                Storage.getUser().getUserId(), searchDefinition, new SecuredAsyncCallback<Long>() {
+                Storage.getUser().getUserId(), searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -91,7 +91,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     private void getSupplierContests(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierContests(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>() {
+                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displaySupplierDemandsData(result);
@@ -103,7 +103,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     private void getSupplierAssignedProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedProjectsCount(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>() {
+                new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -114,7 +114,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     private void getSupplierAssignedProjects(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedProjects(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>() {
+                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displaySupplierDemandsData(result);
@@ -132,12 +132,13 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        supplierDemandsService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                //Empty by default
-            }
-        });
+        supplierDemandsService.setMessageReadStatus(selectedIdList, newStatus,
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        //Empty by default
+                    }
+                });
     }
 
     /**
@@ -147,16 +148,17 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        supplierDemandsService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                //Empty by default
-            }
-        });
+        supplierDemandsService.setMessageStarStatus(userMessageIdList, newStatus,
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        //Empty by default
+                    }
+                });
     }
 
     public void onRequestFinishOffer(FullOfferDetail fullOfferDetail) {
-        supplierDemandsService.finishOffer(fullOfferDetail, new SecuredAsyncCallback<Void>() {
+        supplierDemandsService.finishOffer(fullOfferDetail, new SecuredAsyncCallback<Void>(eventBus) {
 
             @Override
             public void onSuccess(Void result) {

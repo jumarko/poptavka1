@@ -48,7 +48,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      */
     public void onVerifyExistingClient(String email, String password) {
         LOGGER.fine("verify start");
-        userRpcService.loginUser(email, password, new SecuredAsyncCallback<UserDetail>() {
+        userRpcService.loginUser(email, password, new SecuredAsyncCallback<UserDetail>(eventBus) {
 
             @Override
             protected void onServiceFailure(Throwable caught) {
@@ -60,13 +60,14 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 
             @Override
             public void onSuccess(final UserDetail loggedUser) {
-                userRpcService.getUserById(loggedUser.getUserId(), new SecuredAsyncCallback<BusinessUserDetail>() {
+                userRpcService.getUserById(loggedUser.getUserId(),
+                        new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
-                    @Override
-                    public void onSuccess(BusinessUserDetail businessUserDetail) {
-                        eventBus.prepareNewDemandForNewClient(businessUserDetail);
-                    }
-                });
+                        @Override
+                        public void onSuccess(BusinessUserDetail businessUserDetail) {
+                            eventBus.prepareNewDemandForNewClient(businessUserDetail);
+                        }
+                    });
             }
         });
     }
@@ -77,7 +78,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      * @param client newly created client
      */
     public void onRegisterNewClient(BusinessUserDetail client) {
-        demandCreationService.createNewClient(client, new SecuredAsyncCallback<BusinessUserDetail>() {
+        demandCreationService.createNewClient(client, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(BusinessUserDetail client) {
                 if (client.getClientId() != -1) {
@@ -97,7 +98,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      */
     public void onCreateDemand(FullDemandDetail detail, Long clientId) {
         demandCreationService.createNewDemand(detail, clientId,
-                new SecuredAsyncCallback<FullDemandDetail>() {
+                new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
                     @Override
                     protected void onServiceFailure(Throwable caught) {
                         // TODO: this failure handling code
@@ -116,7 +117,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     }
 
     public void onCheckFreeEmail(String email) {
-        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>() {
+        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);

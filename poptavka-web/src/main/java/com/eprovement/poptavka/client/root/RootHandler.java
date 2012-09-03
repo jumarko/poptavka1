@@ -33,11 +33,17 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     private ErrorDialogPopupView errorDialog;
     private static final Logger LOGGER = Logger.getLogger("RootHandler");
 
-    /**************************************************************************/
-    /* Localities methods                                                     */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Localities methods
+     */
+    /**
+     * ***********************************************************************
+     */
     public void onGetLocalities(final LocalityType localityType, final AsyncDataProvider dataProvider) {
-        rootService.getLocalities(localityType, new SecuredAsyncCallback<List<LocalityDetail>>() {
+        rootService.getLocalities(localityType, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
 
             @Override
             public void onSuccess(List<LocalityDetail> list) {
@@ -51,7 +57,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
     public void onGetChildLocalities(final LocalityType localityType, String locCode,
             final ListDataProvider dataProvider) {
-        rootService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>() {
+        rootService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
+
             @Override
             public void onSuccess(List<LocalityDetail> list) {
                 if (dataProvider != null) {
@@ -62,11 +69,18 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         });
     }
 
-    /**************************************************************************/
-    /* Categories methods                                                     */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Categories methods
+     */
+    /**
+     * ***********************************************************************
+     */
     public void onGetRootCategories(final AsyncDataProvider dataProvider) {
-        rootService.getCategories(new SecuredAsyncCallback<List<CategoryDetail>>() {
+        rootService.getCategories(new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
+
             @Override
             public void onSuccess(List<CategoryDetail> list) {
                 if (dataProvider != null) {
@@ -78,7 +92,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     public void onGetChildCategories(long categoryId, final ListDataProvider dataProvider) {
-        rootService.getCategoryChildren(categoryId, new SecuredAsyncCallback<List<CategoryDetail>>() {
+        rootService.getCategoryChildren(categoryId, new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
 
             @Override
             public void onSuccess(List<CategoryDetail> list) {
@@ -90,14 +104,20 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         });
     }
 
-    /**************************************************************************/
-    /* User methods                                                           */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * User methods
+     */
+    /**
+     * ***********************************************************************
+     */
     /**
      * Get User according to stored sessionID from DB after login.
      */
     public void onGetUser(long userId) {
-        rootService.getUserById(userId, new SecuredAsyncCallback<BusinessUserDetail>() {
+        rootService.getUserById(userId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
             @Override
             protected void onServiceFailure(Throwable caught) {
@@ -121,11 +141,18 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         });
     }
 
-    /**************************************************************************/
-    /* DevelDetailWrapper widget methods                                      */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * DevelDetailWrapper widget methods
+     */
+    /**
+     * ***********************************************************************
+     */
     public void onRequestDemandDetail(Long demandId, final ViewType type) {
-        rootService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>() {
+        rootService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+
             @Override
             public void onSuccess(FullDemandDetail result) {
                 eventBus.responseDemandDetail(result, type);
@@ -134,7 +161,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     public void onRequestSupplierDetail(Long supplierId, final ViewType type) {
-        rootService.getFullSupplierDetail(supplierId, new SecuredAsyncCallback<FullSupplierDetail>() {
+        rootService.getFullSupplierDetail(supplierId, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
+
             @Override
             public void onSuccess(FullSupplierDetail result) {
                 eventBus.responseSupplierDetail(result, type);
@@ -150,26 +178,35 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * @param userId
      */
     public void onRequestConversation(long messageId, Long userMessageId, Long userId) {
-        rootService.getConversation(messageId, userId, userMessageId, new SecuredAsyncCallback<List<MessageDetail>>() {
-            @Override
-            public void onSuccess(List<MessageDetail> result) {
-                eventBus.responseConversation(result, ViewType.POTENTIAL);
-            }
-        });
+        rootService.getConversation(messageId, userId, userMessageId,
+                new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
+
+                    @Override
+                    public void onSuccess(List<MessageDetail> result) {
+                        eventBus.responseConversation(result, ViewType.POTENTIAL);
+                    }
+                });
     }
 
-    /**************************************************************************/
-    /* Messages methods                                                       */
-    /**************************************************************************/
     /**
-     * Send message.
-     * IMPORTANT: further implementation of other parts will show, if we need more than this method
-     * for chat related stuff
+     * ***********************************************************************
+     */
+    /*
+     * Messages methods
+     */
+    /**
+     * ***********************************************************************
+     */
+    /**
+     * Send message. IMPORTANT: further implementation of other parts will show, if we need more than this method for
+     * chat related stuff
+     *
      * @param messageToSend
      * @param type
      */
     public void onSendQuestionMessage(MessageDetail messageToSend, final ViewType type) {
-        rootService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>() {
+        rootService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
+
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.addConversationMessage(sentMessage, type);
@@ -178,7 +215,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     public void onSendOfferMessage(OfferMessageDetail offerMessageToSend, final ViewType type) {
-        rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<OfferMessageDetail>() {
+        rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<OfferMessageDetail>(eventBus) {
+
             @Override
             public void onSuccess(OfferMessageDetail sentMessage) {
                 //Zobrazit offer spravu tiez v konverzacii, alebo ta sa zobrazli
