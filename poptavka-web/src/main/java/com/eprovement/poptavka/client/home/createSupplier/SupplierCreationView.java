@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
@@ -45,7 +45,7 @@ public class SupplierCreationView extends OverflowComposite
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
     //step1
-    @UiField StackLayoutPanel mainPanel;
+    @UiField TabLayoutPanel mainPanel;
     @UiField SimplePanel supplierInfoHolder;
     @UiField HorizontalPanel agreementPanel;
     //step2
@@ -76,6 +76,7 @@ public class SupplierCreationView extends OverflowComposite
 
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();
+        StyleResource.INSTANCE.createTabPanel().ensureInjected();
         setParentOverflow(supplierInfoHolder, Overflow.AUTO);
         setParentOverflow(categoryHolder, Overflow.AUTO);
         setParentOverflow(localityHolder, Overflow.AUTO);
@@ -109,7 +110,7 @@ public class SupplierCreationView extends OverflowComposite
     }
 
     @Override
-    public StackLayoutPanel getMainPanel() {
+    public TabLayoutPanel getMainPanel() {
         return mainPanel;
     }
 

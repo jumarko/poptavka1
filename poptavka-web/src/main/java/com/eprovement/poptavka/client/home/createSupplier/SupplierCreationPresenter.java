@@ -29,7 +29,7 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -48,7 +48,7 @@ public class SupplierCreationPresenter
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
-        StackLayoutPanel getMainPanel();
+        TabLayoutPanel getMainPanel();
 
         SimplePanel getSupplierInfoHolder();
 
@@ -77,7 +77,7 @@ public class SupplierCreationPresenter
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
-                if (view.getMainPanel().getVisibleIndex() < eventItem) {
+                if (view.getMainPanel().getSelectedIndex() < eventItem) {
                     boolean result = canContinue(eventItem);
                     view.getStatusLabel(eventItem).setPassedSmall(result);
                     if (!result) {

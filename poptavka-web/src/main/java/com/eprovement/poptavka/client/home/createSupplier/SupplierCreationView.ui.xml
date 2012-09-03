@@ -9,13 +9,23 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.client.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    
+    <ui:style>
+		.tabIndex1 { z-index: 1;}
+		.tabIndex2 { z-index: 2;}
+		.tabIndex3 { z-index: 3;}
+		.tabIndex4 { z-index: 4;}
+		.tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
+		
+		.selectorLayout {width: 980px; height: 350px;}
+	</ui:style>
 
     <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-        <g:StackLayoutPanel ui:field='mainPanel'
-                            styleName='{res.layout.stackLayout}' height="90%">
-            <g:stack>
+        <g:TabLayoutPanel ui:field='mainPanel'
+			styleName='{res.createTabPanel.createTabPanel}' barUnit='PX' barHeight='50'>
+            <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex5}">
                         1.
                         <ui:msg key="supplierRegistrationInfo">Supplier Registration</ui:msg>
                     </g:HTML>
@@ -30,10 +40,10 @@
                         <g:SimplePanel ui:field="supplierInfoHolder" />
                     </g:center>
                 </g:DockLayoutPanel>
-            </g:stack>
-            <g:stack>
+            </g:tab>
+            <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex4}">
                         2.
                         <ui:msg key="catsSelection">Category selection</ui:msg>
                     </g:HTML>
@@ -48,10 +58,10 @@
                         <g:SimplePanel ui:field="categoryHolder" />
                     </g:center>
                 </g:DockLayoutPanel>
-            </g:stack>
-            <g:stack>
+            </g:tab>
+            <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex3}">
                         3.
                         <ui:msg key="locsSelection">Locality selection</ui:msg>
                     </g:HTML>
@@ -66,10 +76,10 @@
                         <g:SimplePanel ui:field="localityHolder" />
                     </g:center>
                 </g:DockLayoutPanel>
-            </g:stack>
-            <g:stack>
+            </g:tab>
+            <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex2}">
                         4.
                         <ui:msg key="serviceSelection">Service Selection</ui:msg>
                     </g:HTML>
@@ -102,7 +112,7 @@
                         </g:HTMLPanel>
                     </g:center>
                 </g:DockLayoutPanel>
-            </g:stack>
-        </g:StackLayoutPanel>
+            </g:tab>
+        </g:TabLayoutPanel>
     </g:HTMLPanel>
 </ui:UiBinder>
