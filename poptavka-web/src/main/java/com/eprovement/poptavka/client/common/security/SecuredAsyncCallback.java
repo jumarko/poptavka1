@@ -1,17 +1,13 @@
 package com.eprovement.poptavka.client.common.security;
 
-import com.eprovement.poptavka.client.common.login.SecurityDialogBoxes;
-import com.eprovement.poptavka.client.common.login.SecurityDialogBoxes.AccessDeniedBox;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
+import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes.AccessDeniedBox;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.StatusCodeException;
-import com.google.gwt.user.client.ui.PopupPanel;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
  * A new AsyncCallback that can handle security responses.
@@ -35,7 +31,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
         // If not authorized display LoginPopupWindow
         if (isNotAuthorized(caught)) {
             ASYNC_CALLBACK_LOGGER.log(Level.WARNING, "isNotAuthrized: message status=" + caught.toString());
-            onAuthorizationExpected(null);
+            onAuthorizationExpected(null); // instead of null, send message to user that he is not authorized.
             return;
         }
 
@@ -91,26 +87,9 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
      * (non-Javadoc) @see com.gwtsecurity.client.SecurityCallbackHandler#onAuthorizationExpected(java.lang.String)
      */
     @Override
-    public void onAuthorizationExpected(final String externalLoginUrl) {
-        ASYNC_CALLBACK_LOGGER.log(Level.INFO, "onAuthorizationExpected: externalLoginUrl=" + externalLoginUrl);
-        if (externalLoginUrl == null) {
-            lookupEventbus.dispatch("login");
-        } else {
-            // redirect
-            // TODO ivlcek - this branch will never start in our system because
-            //we have asynchronous call for login widget so I can remove this part
-            final SecurityDialogBoxes.AlertBox box = new SecurityDialogBoxes.AlertBox(
-                    "You are not logged : you will be redirected");
-            box.addCloseHandler(new CloseHandler<PopupPanel>() {
-
-                @Override
-                public void onClose(CloseEvent<PopupPanel> event) {
-                    ClientUtils.redirectRelative(externalLoginUrl);
-                }
-            });
-            box.show();
-        }
-
+    public void onAuthorizationExpected(String messageForUser) {
+        // TODO ivlcek - we could display a message to user that he is not authorized for this action
+        lookupEventbus.dispatch("login");
     }
 
     /*

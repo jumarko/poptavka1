@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.common.login;
 
+import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

@@ -222,10 +222,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     /**
      * This method is initiated after successfull login. All components must be notified of this event in order to
      * change the view etc. User is forwarded to ClientDemands module or SupplierDemands module based on his business
-     * roles. Save BusinessUserDetail into Storage
+     * roles.
      */
     private void fireAfterLoginEvent() {
-        // TODO ivlcek - refactor this method
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
             @Override
             public void onSuccess(UserDetail userDetail) {
