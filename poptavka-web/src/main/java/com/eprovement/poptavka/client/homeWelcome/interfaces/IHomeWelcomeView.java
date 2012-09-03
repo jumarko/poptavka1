@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.homeWelcome.interfaces;
 
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,4 +20,6 @@ public interface IHomeWelcomeView extends IsWidget {
     void displayCategories(int columns, ArrayList<CategoryDetail> categories);
 
     Widget getWidgetView();
+
+    HasClickHandlers getCreateDemandButton();
 }

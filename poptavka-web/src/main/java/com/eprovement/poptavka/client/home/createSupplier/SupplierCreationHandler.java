@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
@@ -8,6 +7,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -38,7 +38,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
     }
 
     public void onRegisterSupplier(BusinessUserDetail newSupplier) {
-        supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<BusinessUserDetail>() {
+        supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
             @Override
             protected void onServiceFailure(Throwable caught) {
@@ -55,7 +55,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
     }
 
     public void onCheckFreeEmail(String email) {
-        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>() {
+        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);

@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
@@ -11,6 +10,7 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import java.util.ArrayList;
@@ -44,6 +43,8 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     HorizontalPanel categorySection;
     @UiField
     Button button;
+    @UiField Button demandCreateBtn;
+
     //
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
             new SingleSelectionModel<CategoryDetail>();
@@ -132,35 +133,12 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
         simpleService = service;
     }
 
-    @UiHandler("gwtRPCButton")
-    public void onRpcButtonClick(ClickEvent e) {
-        simpleService.getData(new SecuredAsyncCallback<String>() {
 
-            public void onServiceFailure(Throwable caught) {
-                // Show the RPC error message to the user
-                DialogBox dialogBox = new DialogBox();
-                dialogBox.center();
-                dialogBox.setModal(true);
-                dialogBox.setGlassEnabled(true);
-                dialogBox.setAutoHideEnabled(true);
-
-                dialogBox.setText("Remote Procedure Call - Failure");
-                dialogBox.show();
-            }
-
-            public void onSuccess(String result) {
-                DialogBox dialogBox = new DialogBox();
-                dialogBox.center();
-                dialogBox.setModal(true);
-                dialogBox.setGlassEnabled(true);
-                dialogBox.setAutoHideEnabled(true);
-
-                dialogBox.setText(result);
-                dialogBox.show();
-            }
-        });
-
+    @Override
+    public HasClickHandlers getCreateDemandButton() {
+        return demandCreateBtn;
     }
+
 }
 
 /**************************************************************************/

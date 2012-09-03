@@ -12,9 +12,8 @@
     <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
         <g:HorizontalPanel ui:field="categorySection" />
         <h1>secured button calling secured RPC</h1>
-        <g:Label text="Simple GWT RPC Service secured for admin role"></g:Label>
-        <g:Button ui:field="gwtRPCButton">Call Simple Service</g:Button>
         <custom:LogoutButton ui:field="logoutButton"></custom:LogoutButton>
+        <g:Button ui:field="demandCreateBtn">Call Simple Service with Default LoginPopupPresenter</g:Button>
 
         <g:Button styleName="{style.important}" ui:field="button" />
     </g:HTMLPanel>

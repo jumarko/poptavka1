@@ -27,7 +27,7 @@ public class HomeWelcomeHandler extends BaseEventHandler<HomeWelcomeEventBus> {
      * @return list of root categories
      */
     public void onGetRootCategories() {
-        welcomeService.getRootCategories(new SecuredAsyncCallback<ArrayList<CategoryDetail>>() {
+        welcomeService.getRootCategories(new SecuredAsyncCallback<ArrayList<CategoryDetail>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
                 eventBus.displayCategories(result);

@@ -6,6 +6,7 @@
  */
 package com.eprovement.poptavka.client.homeWelcome;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -14,12 +15,12 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.ArrayList;
 
 @Events(startPresenter = HomeWelcomePresenter.class, module = HomeWelcomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeWelcomeEventBus extends EventBus {
+public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventBus {
 
     /**
      * First event to be handled.

@@ -13,9 +13,10 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
  *
@@ -23,7 +24,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
  */
 @Events(startPresenter = SupplierCreationPresenter.class, module = SupplierCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface SupplierCreationEventBus extends EventBus {
+public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.

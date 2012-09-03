@@ -248,7 +248,7 @@ public class SupplierCreationPresenter
     }
 
     private void initServices() {
-        supplierCreationRpcService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>() {
+        supplierCreationRpcService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>(eventBus) {
             @Override
             protected void onServiceFailure(Throwable caught) {
                 // TODO: review this failure handling code
