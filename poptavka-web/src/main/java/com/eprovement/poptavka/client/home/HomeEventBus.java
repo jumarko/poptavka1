@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.home;
 
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
@@ -8,7 +9,7 @@ import com.mvp4g.client.event.EventBus;
 
 @Events(startPresenter = HomePresenter.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeEventBus extends EventBus {
+public interface HomeEventBus extends EventBus, BaseChildEventBus {
 
 //    @Start
 //    @Event(handlers = HomePresenter.class)

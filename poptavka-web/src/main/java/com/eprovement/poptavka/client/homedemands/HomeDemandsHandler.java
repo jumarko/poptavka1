@@ -21,7 +21,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
     }
 
     public void onGetDataCount(final UniversalAsyncGrid grid, final SearchDefinition searchDefinition) {
-        homeDemandsService.getDemandsCount(searchDefinition, new SecuredAsyncCallback<Long>() {
+        homeDemandsService.getDemandsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -31,7 +31,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
 
     public void onGetData(SearchDefinition searchDefinition) {
         homeDemandsService.getDemands(searchDefinition,
-                new SecuredAsyncCallback<List<FullDemandDetail>>() {
+                new SecuredAsyncCallback<List<FullDemandDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullDemandDetail> result) {
                         eventBus.displayDemands(result);

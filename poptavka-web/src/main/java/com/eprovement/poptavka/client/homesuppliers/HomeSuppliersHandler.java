@@ -24,7 +24,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
     /* Get Suppliers data                                                     */
     /**************************************************************************/
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        homeSuppliersService.getSuppliersCount(searchDefinition, new SecuredAsyncCallback<Long>() {
+        homeSuppliersService.getSuppliersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -34,7 +34,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
     public void onGetData(SearchDefinition searchDefinition) {
         homeSuppliersService.getSuppliers(searchDefinition,
-                new SecuredAsyncCallback<List<FullSupplierDetail>>() {
+                new SecuredAsyncCallback<List<FullSupplierDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullSupplierDetail> result) {
                         eventBus.displaySuppliers(result);

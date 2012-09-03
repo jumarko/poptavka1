@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.search;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
@@ -10,7 +11,7 @@ import com.mvp4g.client.event.EventBus;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = SearchModulePresenter.class, module = SearchModule.class)
-public interface SearchModuleEventBus extends EventBus {
+public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
 
     // MODULES INIT METHODS
     /**************************************************************************/

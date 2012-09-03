@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.admin;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminDemandInfoPresenter;
@@ -41,12 +42,12 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
-public interface AdminEventBus extends EventBus, IEventBusData {
+public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -90,12 +91,12 @@ public interface AdminEventBus extends EventBus, IEventBusData {
     /* Business Initialization events                                         */
     /**************************************************************************/
 
-    /** Module Initializatin section **/
+    /** Module Initializatin section. **/
     //display widget in content area
     @Event(handlers = AdminPresenter.class)
     void displayView(Widget content);
 
-    /** Submodule Initializatin section **/
+    /** Submodule Initializatin section. **/
     @Event(handlers = AdminDemandsPresenter.class)
     void initDemands(SearchModuleDataHolder filter);
 

@@ -19,7 +19,7 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
 
     public void onGetLoggedUser(long userId) {
         GWT.log("HomeSettingsHandler handling user" + userId);
-        settingsService.getUserSettings(userId, new SecuredAsyncCallback<SettingsDetail>() {
+        settingsService.getUserSettings(userId, new SecuredAsyncCallback<SettingsDetail>(eventBus) {
             @Override
             public void onSuccess(SettingsDetail result) {
                 GWT.log("uspesny settingsDetail");

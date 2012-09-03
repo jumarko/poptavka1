@@ -40,7 +40,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param type
      */
     public void onSendMessage(MessageDetail messageToSend, final String action) {
-        messagesService.sendInternalMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>() {
+        messagesService.sendInternalMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 if (action.equals("composeNewForwarded")) {
@@ -61,7 +61,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
     public void onGetInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder) {
         messagesService.getInboxMessages(recipientId, searchDataHolder,
-                new SecuredAsyncCallback<List<UserMessageDetail>>() {
+                new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<UserMessageDetail> result) {
                         eventBus.displayMessages(result);
@@ -71,7 +71,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
     public void onGetSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder) {
         messagesService.getSentMessages(senderId, searchDataHolder,
-                new SecuredAsyncCallback<List<UserMessageDetail>>() {
+                new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<UserMessageDetail> result) {
                         eventBus.displayMessages(result);
@@ -81,7 +81,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
     public void onGetDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder) {
         messagesService.getDeletedMessages(userId, searchDataHolder,
-                new SecuredAsyncCallback<List<UserMessageDetail>>() {
+                new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<UserMessageDetail> result) {
                         eventBus.displayMessages(result);
@@ -91,7 +91,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
     public void onRequestConversation(Long threadRootId, Long subRootId) {
         messagesService.getConversationMessages(threadRootId, subRootId,
-                new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> result) {
                         eventBus.responseConversation(result, ViewType.EDITABLE);
@@ -106,7 +106,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        messagesService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>() {
+        messagesService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
@@ -121,7 +121,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        messagesService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>() {
+        messagesService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
@@ -130,7 +130,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     }
 
     public void onDeleteMessages(List<Long> messagesIds) {
-        messagesService.deleteMessages(messagesIds, new SecuredAsyncCallback<List<UserMessageDetail>>() {
+        messagesService.deleteMessages(messagesIds, new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
             @Override
             public void onSuccess(List<UserMessageDetail> result) {
                 GWT.log("Messages deleted.");
@@ -139,7 +139,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     }
 
     public void onRequestUserInfo(Long recipientId) {
-        userService.getUserById(recipientId, new SecuredAsyncCallback<BusinessUserDetail>() {
+        userService.getUserById(recipientId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(BusinessUserDetail result) {
                 eventBus.responseUserInfo(result);

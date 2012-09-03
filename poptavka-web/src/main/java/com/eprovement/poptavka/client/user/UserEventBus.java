@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -33,7 +34,7 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
  */
 @Events(startPresenter = UserPresenter.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface UserEventBus extends EventBusWithLookup {
+public interface UserEventBus extends EventBusWithLookup, BaseChildEventBus {
 
     /** init method. **/
     @Event(handlers = UserPresenter.class, historyConverter = UserHistoryConverter.class)

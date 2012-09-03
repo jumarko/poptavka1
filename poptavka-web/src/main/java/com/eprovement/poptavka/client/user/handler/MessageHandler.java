@@ -62,7 +62,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestSingleConversation(long threadRootId, long messageId) {
         messageService.getConversationMessages(threadRootId, messageId,
-                new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> result) {
                         eventBus.setSingleDemandConversation(result);
@@ -73,7 +73,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
-                new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> messageList) {
                         GWT.log("Conversation size: " + messageList.size());
@@ -89,7 +89,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onSendMessageToPotentialDemand(MessageDetail messageToSend, final ViewType viewType) {
-        messageService.sendQueryToPotentialDemand(messageToSend, new SecuredAsyncCallback<MessageDetail>() {
+        messageService.sendQueryToPotentialDemand(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail result) {
                 eventBus.addMessageToPotentailDemandConversation(result, viewType);
@@ -109,7 +109,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     }
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestPotentialDemandReadStatusChange(ArrayList<Long> messagesId, boolean isRead) {
-        messageService.setMessageReadStatus(messagesId, isRead, new SecuredAsyncCallback<Void>() {
+        messageService.setMessageReadStatus(messagesId, isRead, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
                 // there is nothing to do

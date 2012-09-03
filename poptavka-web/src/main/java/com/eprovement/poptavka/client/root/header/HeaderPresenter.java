@@ -39,15 +39,9 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 GWT.log("LoginPopupInitialized isUserLoggedIn=" + loggedIn);
                 //neda nahradid tym cookies? ... co lepsie pouzivat tie cookies ci premennu?
                 if (loggedIn) {
-                    // logout
-                    // TODO ivlcek - neskor prerobit tak aby sme nemuseli volat logout v loginpopuppresenteri.
-                    // zbytocne sa kvoli tomu musi loginpopupzobrazit kvoli volaniu addHandler(loginpopuppresetner)
-                    login = eventBus.addHandler(LoginPopupPresenter.class);
-                    eventBus.logout();
+                    onLogout();
                 } else {
-                    // login
-                    // initialize and display loginPopupView for user to login
-                    login = eventBus.addHandler(LoginPopupPresenter.class);
+                    onLogin();
                 }
             }
         });
@@ -74,5 +68,20 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     public void onAtAccount() {
         this.loggedIn = true;
         view.getLoginLink().setText(MSGS.logOut());
+    }
+
+    /**
+     * Method displays the LoginPoupView so that user can enter credentials and log in.
+     */
+    public void onLogin() {
+        eventBus.addHandler(LoginPopupPresenter.class);
+    }
+
+    /**
+     * Method displays the LoginPopupView while user is being logged out.
+     */
+    public void onLogout() {
+        login = eventBus.addHandler(LoginPopupPresenter.class);
+        eventBus.logout();
     }
 }

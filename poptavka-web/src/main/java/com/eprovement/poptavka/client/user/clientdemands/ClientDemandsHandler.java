@@ -78,7 +78,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     //*************************************************************************/
     private void getClientProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>() {
+                new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -89,7 +89,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientProjects(SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjects(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectDetail>>() {
+                new SecuredAsyncCallback<List<ClientProjectDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ClientProjectDetail> result) {
                         eventBus.displayClientProjects(result);
@@ -103,7 +103,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientProjectConversationsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectConversationsCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<Long>() {
+                new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -114,7 +114,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientProjectConversations(SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectConversations(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectConversationDetail>>() {
+                new SecuredAsyncCallback<List<ClientProjectConversationDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ClientProjectConversationDetail> result) {
                         eventBus.displayClientProjectConversations(result);
@@ -127,7 +127,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     //*************************************************************************/
     private void getClientOfferedProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedProjectsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>() {
+                new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -138,7 +138,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientOfferedProjects(SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedProjects(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectDetail>>() {
+                new SecuredAsyncCallback<List<ClientProjectDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ClientProjectDetail> result) {
                         eventBus.displayClientOfferedProjects(result);
@@ -152,7 +152,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientProjectContestantsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectContestantsCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<Long>() {
+                new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -163,7 +163,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientOfferedProjectContestants(SearchDefinition searchDefinition) {
         clientDemandsService.getClientProjectContestants(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>() {
+                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displayClientProjectContestants(result);
@@ -177,7 +177,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientAssignedProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedProjectsCount(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>() {
+                new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -188,7 +188,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientAssignedProjects(SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedProjects(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>() {
+                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displayClientAssignedProjects(result);
@@ -206,7 +206,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        clientDemandsService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>() {
+        clientDemandsService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
@@ -221,16 +221,17 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        clientDemandsService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                //Empty by default
-            }
-        });
+        clientDemandsService.setMessageStarStatus(userMessageIdList, newStatus,
+                new SecuredAsyncCallback<Void>(eventBus) {
+                @Override
+                public void onSuccess(Void result) {
+                    //Empty by default
+                }
+            });
     }
 
     public void onRequestCloseDemand(FullDemandDetail demandDetail) {
-        clientDemandsService.closeDemand(demandDetail, new SecuredAsyncCallback<ArrayList<Void>>() {
+        clientDemandsService.closeDemand(demandDetail, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
                 //Empty by default
@@ -239,7 +240,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     }
 
     public void onRequestAcceptOffer(FullOfferDetail fullOfferDetail) {
-        clientDemandsService.acceptOffer(fullOfferDetail, new SecuredAsyncCallback<ArrayList<Void>>() {
+        clientDemandsService.acceptOffer(fullOfferDetail, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
                 //Empty by default
@@ -248,7 +249,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     }
 
     public void onRequestDeclineOffer(OfferDetail offerDetail) {
-        clientDemandsService.declineOffer(offerDetail, new SecuredAsyncCallback<ArrayList<Void>>() {
+        clientDemandsService.declineOffer(offerDetail, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
                 //Empty by default
@@ -261,7 +262,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     /**************************************************************************/
     public void onGetOfferStatusChange(OfferDetail offerDetail) {
         GWT.log("STATE: " + offerDetail.getState());
-        clientDemandsService.changeOfferState(offerDetail, new SecuredAsyncCallback<OfferDetail>() {
+        clientDemandsService.changeOfferState(offerDetail, new SecuredAsyncCallback<OfferDetail>(eventBus) {
             @Override
             public void onSuccess(OfferDetail result) {
                 //TODO zistit ci bude treba nejaky refresh aj ked mame asyynchDataProvider, asi hej
