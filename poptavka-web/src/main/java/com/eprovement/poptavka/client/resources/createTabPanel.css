@@ -5,7 +5,7 @@
 }
 
 .createTabPanel .gwt-TabLayoutPanelTab-selected .gwt-TabLayoutPanelTabInner div {
-	background: url(/images/create-tab-hover.png) no-repeat top right;
+	background: url(images/create-tab-hover.png) no-repeat top right;
 	cursor: pointer;
 }
 
