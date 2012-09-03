@@ -1,29 +1,23 @@
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
-import java.util.List;
-import java.util.logging.Logger;
-
-import com.google.gwt.user.client.Window;
-import com.google.inject.Inject;
-import com.mvp4g.client.annotation.EventHandler;
-import com.mvp4g.client.event.BaseEventHandler;
-
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.RootRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
-import com.google.gwt.user.client.History;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.inject.Inject;
+import com.mvp4g.client.annotation.EventHandler;
+import com.mvp4g.client.event.BaseEventHandler;
+import java.util.List;
+import java.util.logging.Logger;
 
 @EventHandler
 public class RootHandler extends BaseEventHandler<RootEventBus> {
@@ -33,14 +27,9 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     private ErrorDialogPopupView errorDialog;
     private static final Logger LOGGER = Logger.getLogger("RootHandler");
 
-    /**
-     * ***********************************************************************
-     */
+
     /*
      * Localities methods
-     */
-    /**
-     * ***********************************************************************
      */
     public void onGetLocalities(final LocalityType localityType, final AsyncDataProvider dataProvider) {
         rootService.getLocalities(localityType, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
@@ -69,14 +58,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         });
     }
 
-    /**
-     * ***********************************************************************
-     */
     /*
      * Categories methods
-     */
-    /**
-     * ***********************************************************************
      */
     public void onGetRootCategories(final AsyncDataProvider dataProvider) {
         rootService.getCategories(new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
@@ -104,51 +87,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         });
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * User methods
-     */
-    /**
-     * ***********************************************************************
-     */
-    /**
-     * Get User according to stored sessionID from DB after login.
-     */
-    public void onGetUser(long userId) {
-        rootService.getUserById(userId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-
-            @Override
-            protected void onServiceFailure(Throwable caught) {
-                // TODO: review this failure handling code
-                eventBus.loadingHide();
-                Window.alert("Error during getting logged User detail\n"
-                        + caught.getMessage());
-                //Set layouts back when unsuccess login.
-                //TODO Martin - not good aproach in my opinion, onAccount method
-                //should first try to login and then change layouts
-                History.back();
-            }
-
-            @Override
-            public void onSuccess(BusinessUserDetail result) {
-                eventBus.loadingShow(Storage.MSGS.progressCreatingUserInterface());
-                Storage.setUser(result);
-                eventBus.loadingHide();
-//                eventBus.setUser(result);
-            }
-        });
-    }
-
-    /**
-     * ***********************************************************************
-     */
     /*
      * DevelDetailWrapper widget methods
-     */
-    /**
-     * ***********************************************************************
      */
     public void onRequestDemandDetail(Long demandId, final ViewType type) {
         rootService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
@@ -188,14 +128,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 });
     }
 
-    /**
-     * ***********************************************************************
-     */
     /*
      * Messages methods
-     */
-    /**
-     * ***********************************************************************
      */
     /**
      * Send message. IMPORTANT: further implementation of other parts will show, if we need more than this method for

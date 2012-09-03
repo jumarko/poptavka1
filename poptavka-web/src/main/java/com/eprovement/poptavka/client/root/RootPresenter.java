@@ -27,7 +27,6 @@ import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
-import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 
 @Presenter(view = RootView.class)
@@ -120,41 +119,12 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
-        //Po prihlaseni je v Storage ulozeny len UserDetail prihlaseneho uzivatela.
-        //Pre dalsiu pracu budeme potrebovat BusinessUserDetail, takze ho ziskaj.
-        if (Storage.getUser() instanceof UserDetail) {
-            // TODO praso - zakomentovane kvoli refaktorinu na standarny wait loading
-            // cez onBefore, onAfter eventy v Root module. Potom to bude treba znovu
-            // upravit aby sa volal cakacia smycka aj pri logovani.
-            eventBus.loadingShow(Storage.MSGS.progressGetUserDetail());
-            eventBus.getUser(Storage.getUser().getUserId());
-        }
+        // notify all components that user has logged in
     }
 
     public void onAtHome() {
-        // TODO praso - logout request was moved to loginpopuppresenter. Delete these commented lines
-//        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-//                URL.encode("/poptavka/j_spring_security_logout"));
-//        builder.setHeader("Content-type", "application/x-www-form-urlencoded");
-//        //remove user from session management to force user input login information
-//        Storage.setUser(null);
-//        try {
-//            Request request = builder.sendRequest(null,
-//                    new RequestCallback() {
-//
-//                        public void onError(Request request,
-//                                Throwable exception) {
-//                        }
-//
-//                        public void onResponseReceived(Request request,
-//                                Response response) {
-//                        }
-//                    });
-//        } catch (RequestException e) {
-//            // Couldn't connect to server
-//            GWT.log("exception during login");
-//        }
-//        GWT.log("User has logged out");
+        GWT.log("User has logged out and his user session is invalidated");
+        // notify all components that user has logged out
     }
 
     /**************************************************************************/

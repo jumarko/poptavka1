@@ -253,14 +253,11 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = HeaderPresenter.class)
     void login();
 
-    @Event(handlers = RootHandler.class)
-    void getUser(long userId);
-
     @Event(handlers = LoginPopupPresenter.class)
     void logout();
 
     /**************************************************************************/
-    /* LOADING.                                                                 */
+    /* LOADING.                                                               */
     /**************************************************************************/
     @Event(handlers = RootPresenter.class)
     void loadingShow(String loadingMessage);
