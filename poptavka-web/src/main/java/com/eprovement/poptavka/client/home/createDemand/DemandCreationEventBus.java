@@ -6,6 +6,7 @@
  */
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
@@ -13,9 +14,9 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
  *
@@ -23,7 +24,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
  */
 @Events(startPresenter = DemandCreationPresenter.class, module = DemandCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface DemandCreationEventBus extends EventBus {
+public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.

@@ -6,6 +6,7 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -17,7 +18,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.Forward;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Events(startPresenter = HomeDemandsPresenter.class, module = HomeDemandsModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeDemandsEventBus extends EventBus, IEventBusData {
+public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.

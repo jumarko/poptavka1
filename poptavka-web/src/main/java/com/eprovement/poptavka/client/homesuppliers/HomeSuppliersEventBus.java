@@ -6,6 +6,7 @@
  */
 package com.eprovement.poptavka.client.homesuppliers;
 
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -17,7 +18,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeSuppliersEventBus extends EventBus, IEventBusData {
+public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.

@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.common.security;
 
-import com.eprovement.poptavka.client.common.login.LoginDialogBox;
 import com.eprovement.poptavka.client.common.login.SecurityDialogBoxes;
 import com.eprovement.poptavka.client.common.login.SecurityDialogBoxes.AccessDeniedBox;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
@@ -12,6 +11,7 @@ import com.google.gwt.user.client.rpc.StatusCodeException;
 import com.google.gwt.user.client.ui.PopupPanel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
  * A new AsyncCallback that can handle security responses.
@@ -21,6 +21,11 @@ import java.util.logging.Logger;
 public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, SecurityCallbackHandler {
 
     protected static final Logger ASYNC_CALLBACK_LOGGER = Logger.getLogger("SecuredAsyncCallback");
+    private EventBusWithLookup lookupEventbus;
+
+    public SecuredAsyncCallback(EventBusWithLookup lookupEventbus) {
+        this.lookupEventbus = lookupEventbus;
+    }
 
     /**
      * @see com.google.gwt.user.client.rpc.AsyncCallback#onFailure(java.lang.Throwable)
@@ -89,7 +94,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     public void onAuthorizationExpected(final String externalLoginUrl) {
         ASYNC_CALLBACK_LOGGER.log(Level.INFO, "onAuthorizationExpected: externalLoginUrl=" + externalLoginUrl);
         if (externalLoginUrl == null) {
-            new LoginDialogBox().show();
+            lookupEventbus.dispatch("login");
         } else {
             // redirect
             // TODO ivlcek - this branch will never start in our system because

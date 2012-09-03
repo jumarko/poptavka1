@@ -53,7 +53,7 @@ import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Events(startPresenter = RootPresenter.class)
@@ -70,7 +70,7 @@ import java.util.List;
     @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = true) })
-public interface RootEventBus extends EventBus {
+public interface RootEventBus extends EventBusWithLookup {
 
     /**
      * When your application starts, you may want to automatically fire an event
@@ -247,9 +247,10 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     /* LOGIN - LOGOUT.                                                        */
     /**************************************************************************/
-    // TODO Praso - mozeme odstranit? No usage
-    // Martin - ano moze, pouziva ale priamo volane z prezentera
-    @Event(handlers = LoginPopupPresenter.class)
+    /**
+     * Login is handled by HeaderPresenter so that event handler can be set up before calling LoginPopupPresenter.
+     */
+    @Event(handlers = HeaderPresenter.class)
     void login();
 
     @Event(handlers = RootHandler.class)
