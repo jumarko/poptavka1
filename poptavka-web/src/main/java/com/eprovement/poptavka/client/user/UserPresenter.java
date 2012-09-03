@@ -92,7 +92,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     // init of demandLayout tab
     //TODO need revision and clean-up
     public void onSetUser(BusinessUserDetail userDetail) {
-        Storage.setUser(userDetail);
+        Storage.setUserDetail(userDetail);
         //this should be removed and all references replaces by Storage calls
         user = userDetail;
 

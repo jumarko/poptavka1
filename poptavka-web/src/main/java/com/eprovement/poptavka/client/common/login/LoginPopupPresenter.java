@@ -138,7 +138,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     };
                     t.schedule(timeout);
                     //remove user from session management to force user input login information
-                    Storage.setUser(null);
+                    Storage.invalidateStorage();
                     // Forward user to HomeWelcomeModule
                     eventBus.atHome();
                     eventBus.goToHomeWelcomeModule(null);
@@ -228,15 +228,15 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
             @Override
             public void onSuccess(UserDetail userDetail) {
-                Storage.setUser(userDetail);
+                Storage.setUserDetail(userDetail);
             }
 
             @Override
             protected void onServiceFailure(Throwable caught) {
+                // TODO: review this failure handling code
                 view.setUnknownError();
             }
         });
-        // TODO ivlcek - Do we have to call RPC two times for userDetail and BusinessUserDetail objects?
         userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             protected void onServiceFailure(Throwable caught) {
@@ -254,7 +254,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 //                                        setSessionID(sessionId);
 
                 //Martin - musi byt kvoli histori.
-                //Kedze tato metoda obsarava prihlasovanie, musel som ju zahrnut.
+                //Kedze tato metoda obstarava prihlasovanie, musel som ju zahrnut.
                 //Pretoze ak sa prihlasenie podari, musi sa naloadovat iny widget
                 //ako pri neuspesnom prihlaseni. Nie je sposob ako to zistit
                 //z history convertara "externe"
@@ -273,7 +273,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 if (!History.getToken().equals("atAccount")
                         && !History.getToken().equals("atHome")) {
                     eventBus.atAccount();
-
+                    // Forward user to appropriate Module according to his roles
                     eventBus.goToMessagesModule(null, Constants.NONE);
                     if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                             BusinessUserDetail.BusinessRole.SUPPLIER)) {

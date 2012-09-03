@@ -1,16 +1,15 @@
 package com.eprovement.poptavka.client.common.session;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
-
 import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Global controller for events such as loading and stuff like that.
@@ -23,11 +22,12 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 public final class Storage {
 
     private static final Storage INSTANCE = new Storage();
+    private static final String BACK = "back";
     // Value is set on each new module load. To prevent any further complications, set this value
     // using SearchModulePresenter constants.
     private static int currentlyLoadedView = -1;
-    private static String actionLoginHomeHistory = "back";
-    private static String actionLoginAccountHistory = "back";
+    private static String actionLoginHomeHistory = BACK;
+    private static String actionLoginAccountHistory = BACK;
 
     public static Storage get() {
         return INSTANCE;
@@ -42,7 +42,7 @@ public final class Storage {
     private static final int OFFSET_Y = 35;
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
-    private static UserDetail user = null;
+    private static UserDetail userDetail = null;
     private static BusinessUserDetail businessUserDetail = null;
     //client projects - selected demand
     private static long demandId = -1L;
@@ -106,12 +106,12 @@ public final class Storage {
         }
     }
 
-    public static void setUser(UserDetail user) {
-        Storage.user = user;
+    public static void setUserDetail(UserDetail aUserDetail) {
+        userDetail = aUserDetail;
     }
 
     public static UserDetail getUser() {
-        return user;
+        return userDetail;
     }
 
     public static int getCurrentlyLoadedView() {
@@ -149,5 +149,19 @@ public final class Storage {
 
     public static void setDemandId(long demandId) {
         Storage.demandId = demandId;
+    }
+
+    /**
+     * Method clears all data of this Storage session object.
+     */
+    public static void invalidateStorage() {
+        setUserDetail(null);
+        setBusinessUserDetail(null);
+        // TODO martin - shall we clear following values when invalidating Storage? i.e. during logout
+        // Will History be working correctly if we clear these values?
+//        setActionLoginHomeHistory(BACK);
+//        setActionLoginAccountHistory(BACK);
+//        setDemandId(-1L);
+//        setCurrentlyLoadedView(-1);
     }
 }
