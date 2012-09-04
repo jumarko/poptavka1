@@ -73,6 +73,8 @@ public class LoginPopupView extends PopupPanel
     private SimpleIconLabel statusLabel = null;
     private FormPanel form;
     private LoginPopupPresenter presenter;
+    private ButtonElement submitButton = (ButtonElement) Document.get().getElementById(BUTTON_SUBMIT_ID);
+    private ButtonElement closeButton = (ButtonElement) Document.get().getElementById(BUTTON_CLOSEB_ID);
 
     @Override
     public void createView() {
@@ -138,6 +140,9 @@ public class LoginPopupView extends PopupPanel
         DOM.sinkEvents(close, Event.ONCLICK);
         DOM.setEventListener(close, new CloseListener());
 
+        submit.setDisabled(false);
+        closeButton.setDisabled(false);
+
         // Injecting the jsni method for handling the form submit
         injectLoginFunction(presenter);
         // Add the form to the panel
@@ -185,6 +190,8 @@ public class LoginPopupView extends PopupPanel
             statusLabel = new SimpleIconLabel(MSGS.emptyCredentials(), true);
             statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
             elem.appendChild(statusLabel.getElement());
+            submitButton.setDisabled(false);
+            closeButton.setDisabled(false);
             return false;
         }
 
@@ -204,6 +211,10 @@ public class LoginPopupView extends PopupPanel
         statusLabel = new SimpleIconLabel(localizableMessage, true);
         statusLabel.setImageResource(StyleResource.INSTANCE.images().loadIcon24());
         elem.appendChild(statusLabel.getElement());
+//        ButtonElement submit = (ButtonElement) Document.get().getElementById(BUTTON_SUBMIT_ID);
+//        ButtonElement close = (ButtonElement) Document.get().getElementById(BUTTON_CLOSEB_ID);
+        submitButton.setDisabled(true);
+        closeButton.setDisabled(true);
     }
 
     /**
@@ -217,6 +228,10 @@ public class LoginPopupView extends PopupPanel
         statusLabel = new SimpleIconLabel(MSGS.loginUnknownError(), true);
         statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
         elem.appendChild(statusLabel.getElement());
+//        ButtonElement submit = (ButtonElement) Document.get().getElementById(BUTTON_SUBMIT_ID);
+//        ButtonElement close = (ButtonElement) Document.get().getElementById(BUTTON_CLOSEB_ID);
+        submitButton.setDisabled(false);
+        closeButton.setDisabled(false);
     }
 
     /**
@@ -230,6 +245,8 @@ public class LoginPopupView extends PopupPanel
         statusLabel = new SimpleIconLabel(MSGS.wrongLoginMessage(), true);
         statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
         elem.appendChild(statusLabel.getElement());
+        submitButton.setDisabled(false);
+        closeButton.setDisabled(false);
     }
 
     private void clearStatusLabel(Element parent) {
