@@ -41,12 +41,6 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
         supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
             @Override
-            protected void onServiceFailure(Throwable caught) {
-                // TODO: this failure handling code
-                eventBus.loadingHide();
-            }
-
-            @Override
             public void onSuccess(BusinessUserDetail supplier) {
                 // TODO forward to user/atAccount
                 eventBus.loadingHide();

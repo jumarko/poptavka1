@@ -51,14 +51,6 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
         userRpcService.loginUser(email, password, new SecuredAsyncCallback<UserDetail>(eventBus) {
 
             @Override
-            protected void onServiceFailure(Throwable caught) {
-                // TODO: review this failure handling code
-//                LOGGER.info("login error:" + loginException.getMessage());
-                eventBus.loadingHide();
-                eventBus.loginError();
-            }
-
-            @Override
             public void onSuccess(final UserDetail loggedUser) {
                 userRpcService.getUserById(loggedUser.getUserId(),
                         new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
@@ -99,11 +91,6 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     public void onCreateDemand(FullDemandDetail detail, Long clientId) {
         demandCreationService.createNewDemand(detail, clientId,
                 new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
-                    @Override
-                    protected void onServiceFailure(Throwable caught) {
-                        // TODO: this failure handling code
-                        eventBus.loadingHide();
-                    }
 
                     @Override
                     public void onSuccess(FullDemandDetail result) {

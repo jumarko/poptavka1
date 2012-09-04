@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
@@ -13,7 +12,6 @@ import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
-import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
@@ -249,16 +247,6 @@ public class SupplierCreationPresenter
 
     private void initServices() {
         supplierCreationRpcService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>(eventBus) {
-            @Override
-            protected void onServiceFailure(Throwable caught) {
-                // TODO: review this failure handling code
-                // TODO create some good explanation with contact formular
-                SimpleIconLabel errorMsg =
-                        new SimpleIconLabel("Unexpected Error occurred", "Something terrible happened during "
-                        + "supplierService table initialization");
-                errorMsg.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
-                view.getServiceHolder().setWidget(errorMsg);
-            }
 
             @Override
             public void onSuccess(ArrayList<ServiceDetail> data) {

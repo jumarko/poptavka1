@@ -280,5 +280,8 @@ public interface LocalizableMessages extends Messages {
     String internalError();
     String serviceUnavailable();
     String serverError();
+    String alert();
+    String accessDenied();
+    String securityError();
 
 }

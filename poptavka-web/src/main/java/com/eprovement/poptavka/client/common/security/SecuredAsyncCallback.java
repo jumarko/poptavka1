@@ -124,7 +124,6 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
      */
     @Override
     public void onAccessDenied() {
-        System.err.println("Accessdeniedbox");
         new AccessDeniedBox().show();
     }
 }

@@ -3,8 +3,10 @@
  */
 package com.eprovement.poptavka.shared.exceptions;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 
 /**
  * @author dmartin
@@ -16,7 +18,8 @@ public abstract class SecurityDialogBoxes {
 
     public static class AlertBox extends DialogBox {
 
-        private static final String TITLE = "Alert";
+        private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+        private static final String TITLE = MSGS.alert();
 
         public AlertBox(String message) {
             super();
@@ -28,12 +31,15 @@ public abstract class SecurityDialogBoxes {
 
             this.setTitle(TITLE);
             this.setText(TITLE);
-            final Label label = new Label(message);
+            final HTML label = new HTML(message);
             this.add(label);
         }
     }
 
     public static class AccessDeniedBox extends DialogBox {
+
+        private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+        private static final String TITLE = MSGS.securityError();
 
         public AccessDeniedBox() {
             super();
@@ -43,10 +49,11 @@ public abstract class SecurityDialogBoxes {
             this.setModal(true);
             this.setGlassEnabled(true);
 
-            final Label accessDeniedMessage = new Label("Access Denied");
+            final HTML accessDeniedMessage = new HTML(MSGS.accessDenied());
+//            final Label accessDeniedMessage = new Label(MSGS.accessDenied());
 
-            this.setTitle("Security Error");
-            this.setText("Security Error");
+            this.setTitle(TITLE);
+            this.setText(TITLE);
             this.add(accessDeniedMessage);
         }
     }
