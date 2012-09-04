@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.mvp4g.client.annotation.Presenter;
@@ -65,7 +64,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 if (eventBus.getHistory().getToken().contains("atAccount")) {
                     eventBus.getHistory().back();
                 }
-                Cookies.setCookie("login", "no");
+//                Cookies.setCookie("login", "no");
             }
         });
     }
