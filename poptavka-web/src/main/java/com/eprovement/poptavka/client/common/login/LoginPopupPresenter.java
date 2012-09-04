@@ -80,6 +80,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
             try {
                 rb.sendRequest(sbParams.toString(), new RequestCallback() {
+
                     @Override
                     public void onError(final Request request, final Throwable exception) {
                         // Couldn't connect to server (could be timeout, SOP violation, etc.)
@@ -153,67 +154,74 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      * roles.
      */
     private void fireAfterLoginEvent() {
+        // retrieve UserDetail and subsequently BusinessUserDetail object and store them in Storage
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
+
             @Override
             public void onSuccess(UserDetail userDetail) {
                 Storage.setUserDetail(userDetail);
-            }
+                userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
-            @Override
-            protected void onServiceFailure(Throwable caught) {
-                // TODO: review this failure handling code
-                view.setUnknownError();
-            }
-        });
-        userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-            @Override
-            protected void onServiceFailure(Throwable caught) {
-                // TODO: review this failure handling code
-                view.setUnknownError();
-            }
-
-            @Override
-            public void onSuccess(BusinessUserDetail loggedUser) {
-                GWT.log("user id " + loggedUser.getUserId());
-//                Storage.setUser(loggedUser);
-                Storage.setBusinessUserDetail(loggedUser);
-                final String sessionId = "id=" + loggedUser.getUserId();
-//                                    if (sessionId != null) {
-//                                        setSessionID(sessionId);
-
-                //Martin - musi byt kvoli histori.
-                //Kedze tato metoda obstarava prihlasovanie, musel som ju zahrnut.
-                //Pretoze ak sa prihlasenie podari, musi sa naloadovat iny widget
-                //ako pri neuspesnom prihlaseni. Nie je sposob ako to zistit
-                //z history convertara "externe"
-                if (History.getToken().equals("atAccount")) {
-                    eventBus.setHistoryStoredForNextOne(false);
-                    eventBus.atAccount();
-                    History.forward();
-                    Storage.setActionLoginAccountHistory("back");
-                }
-                if (History.getToken().equals("atHome")) {
-                    eventBus.setHistoryStoredForNextOne(false);
-                    eventBus.atAccount();
-                    History.back();
-                    Storage.setActionLoginHomeHistory("forward");
-                }
-                if (!History.getToken().equals("atAccount")
-                        && !History.getToken().equals("atHome")) {
-                    eventBus.atAccount();
-                    // Forward user to appropriate Module according to his roles
-                    eventBus.goToMessagesModule(null, Constants.NONE);
-                    if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                            BusinessUserDetail.BusinessRole.SUPPLIER)) {
-                        eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-                    } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                            BusinessUserDetail.BusinessRole.CLIENT)) {
-                        eventBus.goToClientDemandsModule(null, Constants.NONE);
+                    @Override
+                    protected void onServiceFailure(Throwable caught) {
+                        // TODO: review this failure handling code
+                        view.setUnknownError();
                     }
-                }
-                hideView();
+
+                    @Override
+                    public void onSuccess(BusinessUserDetail loggedUser) {
+                        GWT.log("user id " + loggedUser.getUserId());
+                        Storage.setBusinessUserDetail(loggedUser);
+                        final String sessionId = "id=" + loggedUser.getUserId();
+                        forwardUser();
+                        hideView();
+                    }
+                });
+            }
+
+            @Override
+            protected void onServiceFailure(Throwable caught) {
+                // TODO: review this failure handling code
+                view.setUnknownError();
             }
         });
 
+
+    }
+
+    /**
+     * TODO Martin will try to find new solution for history handing during login/logout actions.
+     */
+    private void forwardUser() {
+        //Martin - musi byt kvoli histori.
+        //Kedze tato metoda obstarava prihlasovanie, musel som ju zahrnut.
+        //Pretoze ak sa prihlasenie podari, musi sa naloadovat iny widget
+        //ako pri neuspesnom prihlaseni. Nie je sposob ako to zistit
+        //z history convertara "externe"
+        if (History.getToken().equals("atAccount")) {
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.atAccount();
+            History.forward();
+            Storage.setActionLoginAccountHistory("back");
+        }
+        if (History.getToken().equals("atHome")) {
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.atAccount();
+            History.back();
+            Storage.setActionLoginHomeHistory("forward");
+        }
+        if (!History.getToken().equals("atAccount")
+                && !History.getToken().equals("atHome")) {
+            eventBus.atAccount();
+            // Forward user to appropriate Module according to his roles
+            eventBus.goToMessagesModule(null, Constants.NONE);
+            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.CLIENT)) {
+                eventBus.goToClientDemandsModule(null, Constants.NONE);
+            }
+        }
     }
 }
