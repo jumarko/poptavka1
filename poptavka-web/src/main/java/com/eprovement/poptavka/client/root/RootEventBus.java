@@ -13,7 +13,6 @@ package com.eprovement.poptavka.client.root;
 import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
-import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
@@ -253,7 +252,7 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = HeaderPresenter.class)
     void login();
 
-    @Event(handlers = LoginPopupPresenter.class)
+    @Event(handlers = HeaderPresenter.class)
     void logout();
 
     /**************************************************************************/

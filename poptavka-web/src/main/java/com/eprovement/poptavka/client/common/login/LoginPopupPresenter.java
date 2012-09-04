@@ -24,7 +24,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.Timer;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
@@ -116,77 +115,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 // TODO jumarko - Shall we send email notifications when this happens?
             }
         }
-    }
-
-    /**
-     * Method logs out the user via RequestBuilder request. Storage session should be invalidated here.
-     */
-    public void onLogout() {
-        view.setLoadingStatus(MSGS.loggingOut());
-        final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getLogoutUrl());
-        // rb.setHeader("Accept", "application/json"); // json expected ?
-        rb.setCallback(new RequestCallback() {
-            @Override
-            public void onResponseReceived(Request request, Response response) {
-                if (response.getStatusCode() == Response.SC_OK) { // 200 everything is ok.
-                    LOGGER.info("User=" + Storage.getUser().getEmail() + " has logged out!");
-                    Timer t = new Timer() {
-                        @Override
-                        public void run() {
-                            hideView();
-                        }
-                    };
-                    t.schedule(timeout);
-                    //remove user from session management to force user input login information
-                    Storage.invalidateStorage();
-                    // Forward user to HomeWelcomeModule
-                    eventBus.atHome();
-                    eventBus.goToHomeWelcomeModule(null);
-                } else {
-                    LOGGER.severe("Unexptected response status code while logging out, code="
-                            + response.getStatusCode());
-                    view.setUnknownError();
-                    // TODO jumarko - Shall we send email notifications when this happens?
-                }
-            }
-
-            @Override
-            public void onError(Request request, Throwable exception) {
-                // Couldn't connect to server (could be timeout, SOP violation, etc.)
-                LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging out, exception="
-                        + exception.getMessage());
-                view.setUnknownError();
-                // TODO jumarko - Shall we send email notifications when this happens?
-            }
-        });
-        try {
-            rb.send();
-        } catch (RequestException exception) {
-            LOGGER.severe("RequestException thrown during user logging out, exception=" + exception.getMessage());
-            view.setUnknownError();
-            // TODO jumarko - Shall we send email notifications when this happens?
-        }
-    }
-
-    /**
-     * Method returns the logout URL that when called issues the logout process that is handled by SpringSecurity.
-     *
-     * @return gwt logout url with j_spring_security_logout postfix
-     */
-    public String getLogoutUrl() {
-        if (logoutUrl == null) {
-            logoutUrl = GWT.getHostPageBaseURL() + DEFAULT_SPRING_LOGOUT_URL;
-        }
-        return logoutUrl;
-    }
-
-    /**
-     * Logout URL can be defined in the application. For now we don't use this method.
-     *
-     * @param logoutUrl
-     */
-    public void setLogoutUrl(final String logoutUrl) {
-        this.logoutUrl = logoutUrl;
     }
 
     /**
