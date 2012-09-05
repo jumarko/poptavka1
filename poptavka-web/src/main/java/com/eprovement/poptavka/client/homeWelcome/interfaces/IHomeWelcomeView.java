@@ -24,4 +24,6 @@ public interface IHomeWelcomeView extends IsWidget {
     HasClickHandlers getCreateDemandButton();
 
     HasClickHandlers getSecuredButton();
+
+    HasClickHandlers getSendUsEmailButton();
 }

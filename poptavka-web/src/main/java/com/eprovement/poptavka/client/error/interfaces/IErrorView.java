@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.error.interfaces;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
@@ -16,4 +17,6 @@ public interface IErrorView extends IsWidget {
     }
 
     void setErrorResponseCode(int errorResponseCode);
+
+    HasClickHandlers getReportinButton();
 }

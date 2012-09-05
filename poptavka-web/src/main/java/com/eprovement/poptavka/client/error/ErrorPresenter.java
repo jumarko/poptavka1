@@ -4,8 +4,11 @@
  */
 package com.eprovement.poptavka.client.error;
 
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.error.interfaces.IErrorView;
 import com.eprovement.poptavka.client.error.interfaces.IErrorView.IErrorPresenter;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -33,9 +36,18 @@ public class ErrorPresenter extends BasePresenter<IErrorView, ErrorEventBus> imp
     /**
      * Bind objects and their action handlers.
      */
-//    @Override
-//    public void bind() {
-//    }
+    @Override
+    public void bind() {
+        view.getReportinButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                // display popup for reporting error to customer support
+                ErrorDialogPopupView errorDialog = new ErrorDialogPopupView();
+                errorDialog.show("error message");
+            }
+        });
+    }
 
     /**************************************************************************/
     /* Navigation events                                                      */

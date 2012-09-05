@@ -16,6 +16,7 @@
         <g:Label ui:field="errorDescription"></g:Label>
         <br />
         <g:VerticalPanel ui:field="messagesList"></g:VerticalPanel>
+        <g:Button ui:field="reportButton"><ui:msg key="report">Report</ui:msg></g:Button>
         </g:HTMLPanel>
     </g:DecoratorPanel>
 </ui:UiBinder>

@@ -301,6 +301,11 @@ public interface LocalizableMessages extends Messages {
     String tryRegistration();
     String tryWaiting();
     String tryOtherBrowser();
+    String report();
+    // Send us an email
+    String sendUsEmail();
+    String customerSupport();
+    String enverYourEmail();
 
 
 

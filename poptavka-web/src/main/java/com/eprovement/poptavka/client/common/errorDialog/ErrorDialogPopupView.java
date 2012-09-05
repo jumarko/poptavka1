@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ListBox;
 
 /**
  * This class represents dialog box, shown when some error occurs during RPC
@@ -25,17 +27,29 @@ public class ErrorDialogPopupView extends Composite {
 
     @UiField
     Button okButton;
-
     @UiField
     HTML errorText;
-
     @UiField
     DialogBox dialogBox;
+    // valid fields
+    @UiField
+    TextBox emailTextBox;
+    @UiField
+    ListBox subjectListBox;
+    @UiField
+    Button sendButton;
+    @UiField
+    Button closeButton;
 
     public ErrorDialogPopupView() {
         ResponseDialogUiBinder uiBinder = GWT
                 .create(ResponseDialogUiBinder.class);
         uiBinder.createAndBindUi(this);
+        // set values from caller
+        emailTextBox.setText("pras3xer@gmail.com");
+        subjectListBox.addItem("Report issue");
+        subjectListBox.addItem("Help");
+        subjectListBox.addItem("Question");
         dialogBox.center();
         dialogBox.hide();
     }

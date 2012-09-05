@@ -8,10 +8,12 @@ import com.eprovement.poptavka.client.error.interfaces.IErrorView;
 import com.eprovement.poptavka.client.error.interfaces.IErrorView.IErrorPresenter;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,6 +43,8 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
     Label errorDescription;
     @UiField(provided = false)
     VerticalPanel messagesList = new VerticalPanel();
+    @UiField(provided = false)
+    Button reportButton;
     private int errorResponseCode;
 
 
@@ -80,7 +84,6 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
                 setInternalServerErrorMessage();    // HTTP 5xx
                 break;
         }
-        // TODO add button to send us email about technical issue
     }
 
     private void setForbiddenMessage() { // also called Access Denied
@@ -141,5 +144,9 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
     /* GETTERS                                                                */
     /**************************************************************************/
 
+    @Override
+    public HasClickHandlers getReportinButton() {
+        return reportButton;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
@@ -129,6 +130,15 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
                         dialogBox.show();
                     }
                 });
+            }
+        });
+
+        view.getSendUsEmailButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                ErrorDialogPopupView erroDialog = new ErrorDialogPopupView();
+                erroDialog.show(null);
             }
         });
 
