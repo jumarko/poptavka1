@@ -14,6 +14,7 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.search.SearchModule;
+import com.eprovement.poptavka.client.error.ErrorModule;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
@@ -68,6 +69,7 @@ import java.util.List;
     @ChildModule(moduleClass = SupplierDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = ErrorModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = true) })
 public interface RootEventBus extends EventBusWithLookup {
 
@@ -113,6 +115,7 @@ public interface RootEventBus extends EventBusWithLookup {
         SupplierDemandsModule.class,
         MessagesModule.class,
         SettingsModule.class,
+        ErrorModule.class,
         AdminModule.class })
     @Event(handlers = RootPresenter.class)
     void setBody(IsWidget body);
@@ -147,6 +150,9 @@ public interface RootEventBus extends EventBusWithLookup {
     // pohladoch. Alebo je tam nejaky default filter?
     @Event(forwardToModules = DemandCreationModule.class)
     void goToCreateDemandModule();
+
+    @Event(forwardToModules = ErrorModule.class)
+    void displayError(int errorResponseCode);
 
     /**************************************************************************/
     /* Navigation events - User menu control section                          */

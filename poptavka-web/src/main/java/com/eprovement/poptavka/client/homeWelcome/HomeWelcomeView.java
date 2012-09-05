@@ -44,6 +44,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     @UiField
     Button button;
     @UiField Button demandCreateBtn;
+    @UiField Button securedButton;
 
     //
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
@@ -138,6 +139,12 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     public HasClickHandlers getCreateDemandButton() {
         return demandCreateBtn;
     }
+
+    @Override
+    public HasClickHandlers getSecuredButton() {
+        return securedButton;
+    }
+
 
 }
 

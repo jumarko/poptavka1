@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login">
+    <ui:with field='res'
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:style>
+        .important {
+        font-weight: bold;
+        }
+    </ui:style>
+    <g:DecoratorPanel>
+        <g:HTMLPanel>
+        <g:Label ui:field="errorTitle"></g:Label>
+        <br />
+        <g:Label ui:field="errorDescription"></g:Label>
+        <br />
+        <g:VerticalPanel ui:field="messagesList"></g:VerticalPanel>
+        </g:HTMLPanel>
+    </g:DecoratorPanel>
+</ui:UiBinder>

@@ -163,12 +163,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
                     @Override
-                    protected void onServiceFailure(Throwable caught) {
-                        // TODO: review this failure handling code
-                        view.setUnknownError();
-                    }
-
-                    @Override
                     public void onSuccess(BusinessUserDetail loggedUser) {
                         GWT.log("user id " + loggedUser.getUserId());
                         Storage.setBusinessUserDetail(loggedUser);
@@ -179,11 +173,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 });
             }
 
-            @Override
-            protected void onServiceFailure(Throwable caught) {
-                // TODO: review this failure handling code
-                view.setUnknownError();
-            }
         });
 
 

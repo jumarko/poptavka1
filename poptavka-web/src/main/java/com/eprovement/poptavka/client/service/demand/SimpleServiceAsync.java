@@ -14,4 +14,10 @@ public interface SimpleServiceAsync {
      */
     void getData(AsyncCallback<String> callback);
 
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface.
+     * @see com.gwtsecurity.sample.client.services.SimpleService
+     */
+    void getSecuredData(AsyncCallback<String> callback);
+
 }

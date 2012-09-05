@@ -10,4 +10,7 @@ public interface BaseChildEventBus {
     @Event(forwardToParent = true)
     void login();
 
+    @Event(forwardToParent = true)
+    void displayError(int errorResponseCode);
+
 }

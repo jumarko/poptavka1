@@ -99,6 +99,39 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
                 });
             }
         });
+
+        view.getSecuredButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // do something
+                simpleService.getSecuredData(new SecuredAsyncCallback<String>(eventBus) {
+
+                    public void onServiceFailure(Throwable caught) {
+                        // Show the RPC error message to the user
+                        DialogBox dialogBox = new DialogBox();
+                        dialogBox.center();
+                        dialogBox.setModal(true);
+                        dialogBox.setGlassEnabled(true);
+                        dialogBox.setAutoHideEnabled(true);
+
+                        dialogBox.setText("Remote Procedure Call - Failure");
+                        dialogBox.show();
+                    }
+
+                    public void onSuccess(String result) {
+                        DialogBox dialogBox = new DialogBox();
+                        dialogBox.center();
+                        dialogBox.setModal(true);
+                        dialogBox.setGlassEnabled(true);
+                        dialogBox.setAutoHideEnabled(true);
+
+                        dialogBox.setText(result);
+                        dialogBox.show();
+                    }
+                });
+            }
+        });
+
     }
 
     /**************************************************************************/

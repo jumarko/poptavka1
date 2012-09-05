@@ -41,4 +41,10 @@ public class SimpleServiceImpl extends RemoteServiceServlet implements SimpleSer
         }
         return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     }
+
+    @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public String getSecuredData() throws RPCException {
+        return "Secured Data for Supplier role only";
+    }
 }

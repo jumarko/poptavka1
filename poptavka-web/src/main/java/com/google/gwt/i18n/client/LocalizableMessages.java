@@ -274,14 +274,34 @@ public interface LocalizableMessages extends Messages {
     String menuSettings();
     String menuAdministration();
 
-    // Error messages
+    // Error messages and their descriptions
     String pageNotFound();
+    String pageNotFoundDesc();
     String badRequest();
+    String badRequestDesc();
     String internalError();
+    String internalErrorDesc();
     String serviceUnavailable();
+    String serviceUnavailableDesc();
     String serverError();
-    String alert();
+    String serverErrorDesc();
     String accessDenied();
+    String accessDeniedDesc();
+    String notAuthorized();
+    String notAuthorizedDesc();
     String securityError();
+    String alert();
+    // Error tips for users
+    String pleaseTryFollowing();
+    String checkWebAddress();
+    String tryFromHome();
+    String trySearchBox();
+    String reportIssue();
+    String checkAccount();
+    String tryRegistration();
+    String tryWaiting();
+    String tryOtherBrowser();
+
+
 
 }

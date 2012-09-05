@@ -15,4 +15,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface SimpleService extends RemoteService {
 
     String getData() throws RPCException;
+
+    String getSecuredData() throws RPCException;
 }
