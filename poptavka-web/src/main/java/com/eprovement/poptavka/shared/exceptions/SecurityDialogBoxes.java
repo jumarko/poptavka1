@@ -43,18 +43,16 @@ public abstract class SecurityDialogBoxes {
 
         public AccessDeniedBox() {
             super();
-            this.setAnimationEnabled(true);
             this.setAutoHideEnabled(true);
-            this.center();
+            this.setAnimationEnabled(true);
             this.setModal(true);
             this.setGlassEnabled(true);
-
-            final HTML accessDeniedMessage = new HTML(MSGS.accessDenied());
-//            final Label accessDeniedMessage = new Label(MSGS.accessDenied());
+            this.center();
 
             this.setTitle(TITLE);
             this.setText(TITLE);
-            this.add(accessDeniedMessage);
+            final HTML label = new HTML(MSGS.accessDenied());
+            this.add(label);
         }
     }
 
