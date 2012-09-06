@@ -48,7 +48,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
         this.searchDataHolder = searchDataHolder;
-//        eventBus.getRootCategories();
+        eventBus.getRootCategories();
     }
 
     @Override

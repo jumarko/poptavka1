@@ -8,12 +8,32 @@
 		.important {
 			font-weight: bold;
 		}
+		
+		.footer-block {
+			display: block;
+			padding: 10px;
+			color: #ffffff;
+		}
+		
+		.footer-block a {
+			color: #ffffff;
+		}
+		
+		.fl {
+			float: left;
+		}
+		
+		.fr {
+			float: right;
+		}
 	</ui:style>
 
 	<g:HTMLPanel styleName='{res.layout.fullSize} {res.layout.footerContainer}'>
-		<div style="margin: auto; width: 1075px; position: relative;">
-			<p>Footer je treba nastylovat - TODO pre Jara</p>
-			<g:Button styleName="{style.important}" ui:field="button" />
+		<div style="margin: auto; width: 1075px; position: relative; padding: 0 10px;">
+			<g:Label styleName='{style.fl} {style.footer-block}'>2012 © eProvement s.r.o.</g:Label>
+			<div style="float: right; color: #ffffff; padding: 10px;">
+				Terms &amp; Conditions | About us
+			</div>
 		</div>
 	</g:HTMLPanel>
 

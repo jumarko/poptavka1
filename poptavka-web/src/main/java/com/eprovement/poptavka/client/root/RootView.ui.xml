@@ -22,7 +22,7 @@
                 </g:HorizontalPanel>
             </g:HTMLPanel>
         </g:north>
-        <g:south size="38">
+        <g:south size="36">
             <g:SimplePanel ui:field="footer"/>
         </g:south>
         <g:center>
