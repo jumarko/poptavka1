@@ -80,7 +80,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
             try {
                 rb.sendRequest(sbParams.toString(), new RequestCallback() {
-
                     @Override
                     public void onError(final Request request, final Throwable exception) {
                         // Couldn't connect to server (could be timeout, SOP violation, etc.)
@@ -92,6 +91,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                     @Override
                     public void onResponseReceived(final Request request, final Response response) {
+                        //If loging was successfull, create token for history
+                        //But only of new token should be created - invoked by user
+                        //If login due to history was made - existed token will be used
+                        if (!Storage.isLoginDueToHistory()) {
+                            eventBus.registerLogEventForHistory();
+                        }
                         int status = response.getStatusCode();
                         LOGGER.fine("Response status code = " + status);
                         if (status == Response.SC_OK) { // 200: everything's ok
@@ -156,12 +161,10 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private void fireAfterLoginEvent() {
         // retrieve UserDetail and subsequently BusinessUserDetail object and store them in Storage
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
-
             @Override
             public void onSuccess(UserDetail userDetail) {
                 Storage.setUserDetail(userDetail);
                 userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-
                     @Override
                     public void onSuccess(BusinessUserDetail loggedUser) {
                         GWT.log("user id " + loggedUser.getUserId());
@@ -172,38 +175,26 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     }
                 });
             }
-
         });
-
-
     }
 
-    /**
-     * TODO Martin will try to find new solution for history handing during login/logout actions.
-     */
+    /**************************************************************************/
+    /* History helper methods                                                 */
+    /**************************************************************************/
     private void forwardUser() {
-        //Martin - musi byt kvoli histori.
-        //Kedze tato metoda obstarava prihlasovanie, musel som ju zahrnut.
-        //Pretoze ak sa prihlasenie podari, musi sa naloadovat iny widget
-        //ako pri neuspesnom prihlaseni. Nie je sposob ako to zistit
-        //z history convertara "externe"
-        if (History.getToken().equals("atAccount")) {
-            eventBus.setHistoryStoredForNextOne(false);
-            eventBus.atAccount();
-            History.forward();
-            Storage.setActionLoginAccountHistory("back");
-        }
-        if (History.getToken().equals("atHome")) {
-            eventBus.setHistoryStoredForNextOne(false);
-            eventBus.atAccount();
-            History.back();
-            Storage.setActionLoginHomeHistory("forward");
-        }
-        if (!History.getToken().equals("atAccount")
-                && !History.getToken().equals("atHome")) {
-            eventBus.atAccount();
-            // Forward user to appropriate Module according to his roles
-            eventBus.goToMessagesModule(null, Constants.NONE);
+        //Set account layout
+        eventBus.atAccount();
+        //If login process was invoked because of history
+        //forward history to next stored token, not default one
+        if (Storage.isLoginDueToHistory()) {
+            if (Storage.getForwardHistory().equals(Storage.BACK)) {
+                History.back();
+            } else {
+                History.forward();
+            }
+        } else {
+            //if login was not invoked because of history, but user did so,
+            //forward user to appropriate module according to his roles
             if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.SUPPLIER)) {
                 eventBus.goToSupplierDemandsModule(null, Constants.NONE);

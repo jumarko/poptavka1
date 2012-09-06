@@ -1,46 +1,33 @@
 package com.eprovement.poptavka.client.root;
 
-import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
+import com.mvp4g.client.annotation.History;
 
 /**
- * Musime pouzit history aj na methody atHome a atAccount, ktore maju na starosti
- * nastavovanie layoutov (menu, login link)
- */
-/**
- * History converter class. Handles history for RootModule.
+ * History converter class. Handles history for RootModule. Especially login/logout process.
  *
  * @author slavkovsky.martin
  */
 @History(type = HistoryConverterType.DEFAULT, name = "root")
 public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
 
+    private static final String LOGIN = "login";
+    private static final String LOGOUT = "logout";
+
     /**
-     * Kedze sme vlozili dalsi medziclanok medzi volanie modulov. Vytvara sa nam novy
-     * token ktory ma za ulohu odchitit volanie metod atHome a atAccount aby sme vedeli
-     * aky layout zobrazit, ale neloaduje ziaden dalsi modul, teda musim volat dodatocne
-     * back & forward akcie. Pre jednoznacne rozlisenie sluzi nasledujuca pomocna metoda.
-     */
-    /**
-     * To convert token for atHome method.
+     * To convert token for registerLogEventForHistory method.
      *
      * @param loadModule
      * @return token string like module/method?param
      */
-    public String onAtHome() {
-        return "";
-    }
-    /**
-     * To convert token for atAccount method.
-     *
-     * @param loadModule
-     * @return token string like module/method?param
-     */
-    public String onAtAccount() {
-        return "";
+    public String onRegisterLogEventForHistory() {
+        if (Storage.getUser() == null) {
+            return LOGIN;
+        } else {
+            return LOGOUT;
+        }
     }
 
     /**
@@ -54,24 +41,29 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, RootEventBus eventBus) {
-        if (historyName.equals("atAccount")) {
-            if (Storage.getActionLoginAccountHistory().equals("back")) {
-                eventBus.setHistoryStoredForNextOne(false);
-                eventBus.atHome();
-                eventBus.getHistory().back();
-                Storage.setActionLoginAccountHistory("forward");
+        if (historyName.equals("registerLogEventForHistory")) {
+            //LOGING
+            if (Storage.getUser() == null) {
+                if (param.equals(LOGIN)) {
+                    Storage.setForwardHistory(Storage.FORWARD);
+                } else {
+                    Storage.setForwardHistory(Storage.BACK);
+                }
+                //Set pointer to true to detect that login process is going to be invoked by history
+                Storage.setLoginDueToHistory(true);
+                //Login user and sets account layout
+                eventBus.login();
+                //LOGOUT
             } else {
-                LoginPopupPresenter login = eventBus.addHandler(LoginPopupPresenter.class);
-            }
-
-        } else { //    equals("atHome")) {
-            if (Storage.getActionLoginHomeHistory().equals("back")) {
-                LoginPopupPresenter login = eventBus.addHandler(LoginPopupPresenter.class);
-            } else {
-                eventBus.setHistoryStoredForNextOne(false);
-                eventBus.atHome();
-                eventBus.getHistory().forward();
-                Storage.setActionLoginHomeHistory("back");
+                if (param.equals(LOGIN)) {
+                    Storage.setForwardHistory(Storage.BACK);
+                } else {
+                    Storage.setForwardHistory(Storage.FORWARD);
+                }
+                //Set pointer to true to detect that logout process is going to be invoked by history
+                Storage.setLogoutDueToHistory(true);
+                //Logout user and sets home layout
+                eventBus.logout(); //sets Storage.getUser to null
             }
         }
     }

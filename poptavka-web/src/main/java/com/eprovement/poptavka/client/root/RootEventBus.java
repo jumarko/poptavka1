@@ -190,22 +190,26 @@ public interface RootEventBus extends EventBusWithLookup {
     /**
      * Logout usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka
      * a defaultny modul po prihlaseni.
-     *
-     * TODO praso - chyba tu zrejme historyConverter
      */
-    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
-    historyConverter = RootHistoryConverter.class)
-    String atHome();
+    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, MenuPresenter.class })
+    void atHome();
 
     /**
      * Login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka,
      * cookies a defaultny modul po odhlaseni
-     *
-     * TODO praso - chyba tu zrejme historyConverter
      */
-    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class },
-    historyConverter = RootHistoryConverter.class)
-    String atAccount();
+    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
+    void atAccount();
+
+    /**************************************************************************/
+    /* History events                                                         */
+    /**************************************************************************/
+    /**
+     * Creates token for history when login or logout process is invoked.
+     * @return token
+     */
+    @Event(historyConverter = RootHistoryConverter.class)
+    String registerLogEventForHistory();
 
     /**
      * This event will be called in case an error occurs while loading the

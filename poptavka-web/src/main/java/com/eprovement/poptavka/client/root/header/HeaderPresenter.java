@@ -20,6 +20,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.user.client.History;
 import java.util.logging.Logger;
 
 @Presenter(view = HeaderView.class)
@@ -33,7 +34,6 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     private String logoutUrl = null;
     private LoginPopupPresenter login;
 
-
     public void onStart() {
         GWT.log("Header presenter loaded");
         eventBus.setHeader(view);
@@ -42,28 +42,25 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     @Override
     public void bind() {
         view.getLoginLink().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 GWT.log("LoginPopupInitialized isUserLoggedIn=" + loggedIn);
                 //neda nahradid tym cookies? ... co lepsie pouzivat tie cookies ci premennu?
                 if (loggedIn) {
+                    //If user invoked logout process, set pointer to false
+                    Storage.setLogoutDueToHistory(false);
                     onLogout();
                 } else {
+                    //If user invoked login process, set pointer to false
+                    Storage.setLoginDueToHistory(false);
                     onLogin();
                 }
             }
         });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
-
             @Override
             public void onWindowClosing(ClosingEvent event) {
-                if (eventBus.getHistory().getToken().contains("atHome")) {
-                    eventBus.getHistory().forward();
-                }
-                if (eventBus.getHistory().getToken().contains("atAccount")) {
-                    eventBus.getHistory().back();
-                }
+                //TODO Martin - musi to tu byt, pouzivame vobec cookies?
 //                Cookies.setCookie("login", "no");
             }
         });
@@ -95,14 +92,15 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         rb.setCallback(new RequestCallback() {
             @Override
             public void onResponseReceived(Request request, Response response) {
+                if (!Storage.isLogoutDueToHistory()) {
+                    eventBus.registerLogEventForHistory();
+                }
                 if (response.getStatusCode() == Response.SC_OK) { // 200 everything is ok.
                     LOGGER.info("User=" + Storage.getUser().getEmail() + " has logged out!");
                     // TODO ivlcek - when usrs logs out display a message. We need some message bar in layout
                     //remove user from session management to force user input login information
                     Storage.invalidateStorage();
-                    // Forward user to HomeWelcomeModule
-                    eventBus.atHome();
-                    eventBus.goToHomeWelcomeModule(null);
+                    forwardUser();
                 } else {
                     LOGGER.severe("Unexptected response status code while logging out, code="
                             + response.getStatusCode());
@@ -141,4 +139,23 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         return logoutUrl;
     }
 
+    /**************************************************************************/
+    /* History helper methods                                                 */
+    /**************************************************************************/
+    private void forwardUser() {
+        //Set home layout
+        eventBus.atHome();
+        //If logout process was invoked because of history
+        //forward history to next stored token, not default one
+        if (Storage.isLogoutDueToHistory()) {
+            if (Storage.getForwardHistory().equals(Storage.BACK)) {
+                History.back();
+            } else {
+                History.forward();
+            }
+        } else {
+            //If logout was invoked by user, forward to default module
+            eventBus.goToHomeWelcomeModule(null);
+        }
+    }
 }

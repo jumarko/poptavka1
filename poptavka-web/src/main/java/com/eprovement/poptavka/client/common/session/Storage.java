@@ -22,16 +22,23 @@ import com.google.gwt.user.client.ui.Widget;
 public final class Storage {
 
     private static final Storage INSTANCE = new Storage();
-    private static final String BACK = "back";
-    // Value is set on each new module load. To prevent any further complications, set this value
-    // using SearchModulePresenter constants.
-    private static int currentlyLoadedView = -1;
-    private static String actionLoginHomeHistory = BACK;
-    private static String actionLoginAccountHistory = BACK;
 
     public static Storage get() {
         return INSTANCE;
     }
+    // Value is set on each new module load. To prevent any further complications, set this value
+    // using SearchModulePresenter constants.
+    private static int currentlyLoadedView = -1;
+    /**************************************************************************/
+    /* History attributes                                                     */
+    /**************************************************************************/
+    private static boolean loginDueToHistory = false;
+    private static boolean logoutDueToHistory = false;
+    private static String forwardHistory = "";
+    //
+    public static final String BACK = "back";
+    public static final String FORWARD = "forward";
+    /**************************************************************************/
     //global constants
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
@@ -47,6 +54,34 @@ public final class Storage {
     //client projects - selected demand
     private static long demandId = -1L;
 
+    /**************************************************************************/
+    /* History methods                                                        */
+    /**************************************************************************/
+    public static boolean isLogoutDueToHistory() {
+        return logoutDueToHistory;
+    }
+
+    public static void setLogoutDueToHistory(boolean logoutDueToHistory) {
+        Storage.logoutDueToHistory = logoutDueToHistory;
+    }
+
+    public static boolean isLoginDueToHistory() {
+        return loginDueToHistory;
+    }
+
+    public static void setLoginDueToHistory(boolean loginDueToHistory) {
+        Storage.loginDueToHistory = loginDueToHistory;
+    }
+
+    public static String getForwardHistory() {
+        return forwardHistory;
+    }
+
+    public static void setForwardHistory(String forwardHistory) {
+        Storage.forwardHistory = forwardHistory;
+    }
+
+    /**************************************************************************/
     /**
      * @return the businessUserDetail
      */
@@ -127,22 +162,6 @@ public final class Storage {
         Storage.currentlyLoadedView = currentlyLoadedView;
     }
 
-    public static String getActionLoginAccountHistory() {
-        return actionLoginAccountHistory;
-    }
-
-    public static void setActionLoginAccountHistory(String actionLoginAccountHistory) {
-        Storage.actionLoginAccountHistory = actionLoginAccountHistory;
-    }
-
-    public static String getActionLoginHomeHistory() {
-        return actionLoginHomeHistory;
-    }
-
-    public static void setActionLoginHomeHistory(String actionLoginHomeHistory) {
-        Storage.actionLoginHomeHistory = actionLoginHomeHistory;
-    }
-
     public static long getDemandId() {
         return demandId;
     }
@@ -160,8 +179,6 @@ public final class Storage {
         // TODO martin - shall we clear following values when invalidating Storage? i.e. during logout
         // Will History be working correctly if we clear these values?
         // Martin will try to make new solution for history between login/logout
-//        setActionLoginHomeHistory(BACK);
-//        setActionLoginAccountHistory(BACK);
 //        setDemandId(-1L);
 //        setCurrentlyLoadedView(-1);
     }
