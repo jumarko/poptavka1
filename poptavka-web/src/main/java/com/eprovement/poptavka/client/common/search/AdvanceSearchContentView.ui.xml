@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cat="urn:import:com.eprovement.poptavka.client.common.category">
+    <ui:with field='res'
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
+
+    <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='25' animationDuration="1000">
+        <g:tab>
+            <g:header>
+                <ui:msg key="attributes">Attributes</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="attributeSelectorWidgetPanel" />
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="categories">Categories</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="categorySelectorWidgetPanel" />
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="localities">Localities</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="localitySelectorWidgetPanel" />
+        </g:tab>
+    </g:TabLayoutPanel>
+</ui:UiBinder>

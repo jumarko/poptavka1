@@ -142,7 +142,7 @@ public class DemandCreationPresenter
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(null, false, false, false);
+        eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/

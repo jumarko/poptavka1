@@ -90,7 +90,7 @@ public class HomeSuppliersPresenter
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(new HomeSuppliersViewView(), false, true, true);
+        eventBus.setUpSearchBar(new HomeSuppliersViewView());
     }
 
     /**************************************************************************/

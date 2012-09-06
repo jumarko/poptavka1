@@ -105,7 +105,7 @@ public class HomeDemandsPresenter extends LazyPresenter<
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(new HomeDemandsSearchView(), true, true, true);
+        eventBus.setUpSearchBar(new HomeDemandsSearchView());
     }
 
     /**************************************************************************/

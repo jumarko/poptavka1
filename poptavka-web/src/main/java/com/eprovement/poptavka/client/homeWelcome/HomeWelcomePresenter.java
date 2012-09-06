@@ -40,7 +40,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(null, false, false, false);
+        eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/

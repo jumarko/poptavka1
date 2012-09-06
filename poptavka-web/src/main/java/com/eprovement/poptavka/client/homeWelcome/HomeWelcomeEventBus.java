@@ -55,7 +55,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
+    void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);

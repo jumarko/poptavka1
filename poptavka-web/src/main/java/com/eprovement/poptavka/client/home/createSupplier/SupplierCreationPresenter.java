@@ -155,7 +155,7 @@ public class SupplierCreationPresenter
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(null, false, false, false);
+        eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/

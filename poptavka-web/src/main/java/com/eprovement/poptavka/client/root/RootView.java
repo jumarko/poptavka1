@@ -91,9 +91,8 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
      * @param loadedWidget
      */
     @Override
-    public void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn) {
+    public void setUpSearchBar(IsWidget advanceSearchWidget) {
         SearchModuleView searchBarView = (SearchModuleView) searchBar.getWidget();
-        searchBarView.setAttributeSelector(searchView);
-        searchBarView.setSearchBarEnables(cat, loc, advBtn);
+        searchBarView.setAttributeSelectorWidget(advanceSearchWidget);
     }
 }

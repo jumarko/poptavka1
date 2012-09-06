@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.search;
 
+import com.eprovement.poptavka.client.common.search.AdvanceSearchContentPresenter.AdvanceSearchContentInterface;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -18,8 +19,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.category.CategorySelectorView;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.user.admin.searchViews.AdminInvoicesViewView;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
@@ -47,19 +46,11 @@ public class SearchModulePresenter
 
         void setFilterSearchContent();
 
+        void setAttributeSelectorWidget(IsWidget attributeSearchViewWidget);
+
+        IsWidget getAttributeSelectorWidget();
+
         TextBox getSearchContent();
-
-        TextBox getSearchCategory();
-
-        TextBox getSearchLocality();
-
-        SearchModuleDataHolder getFilters();
-
-        IsWidget getAttributeSelector();
-
-        CategorySelectorView getCategorySelector();
-
-        LocalitySelectorView getLocalitySelector();
     }
 
     //Neviem zatial preco, ale nemoze to byt lazy, pretoze sa neinicializuci advace
@@ -75,39 +66,11 @@ public class SearchModulePresenter
     public void bindView() {
         this.addSearchBtnClickHandler();
         this.addAdvSearchBtnClickHandler();
-        view.getSearchCategory().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                //If not yet initialized, do it
-                if (view.getCategorySelector() == null) {
-                    eventBus.initCategoryWidget(view.getPopupPanel(), Constants.WITH_CHECK_BOXES);
-                }
-                showPopupPanel();
-            }
-        });
-        view.getSearchLocality().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                //If not yet initialized, do it
-                if (view.getLocalitySelector() == null) {
-                    eventBus.initLocalityWidget(view.getPopupPanel());
-                }
-                showPopupPanel();
-            }
-        });
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * General Module events
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /** General Module events                                                 */
+    /**************************************************************************/
     public void onStart() {
         // nothing
     }
@@ -116,28 +79,16 @@ public class SearchModulePresenter
         // nothing
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Navigation events
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /** Navigation events                                                     */
+    /**************************************************************************/
     public void onGoToSearchModule() {
         GWT.log("SearchModule loaded");
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Business events handled by presenter
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /** Business events handled by presenter                                  */
+    /**************************************************************************/
     public void onClearSearchContent() {
         view.getSearchContent().setText(Storage.MSGS.searchContent());
     }
@@ -147,7 +98,6 @@ public class SearchModulePresenter
         box.clear();
         box.setVisible(true);
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
             @Override
             public void execute() {
                 box.addItem("select method...");
@@ -160,53 +110,35 @@ public class SearchModulePresenter
         });
     }
 
-    public void onSetSearchBarEnables(boolean category, boolean locality, boolean advanceBtn) {
-        view.getSearchCategory().setEnabled(category);
-        view.getSearchLocality().setEnabled(locality);
-        view.getAdvSearchBtn().setEnabled(advanceBtn);
-    }
-
-    private void showPopupPanel() {
-        int left = view.getSearchContent().getElement().getAbsoluteLeft();
-        int top = view.getSearchContent().getElement().getAbsoluteTop() + 30;
-        view.getPopupPanel().setPopupPosition(left, top);
-        view.getPopupPanel().show();
-    }
-
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Additional events used in bind method
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /** Additional events used in bind method                                 */
+    /**************************************************************************/
     private void addSearchBtnClickHandler() {
         view.getSearchBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
+                SearchModuleDataHolder filter =
+                        ((AdvanceSearchContentInterface) view.getPopupPanel()).getSearchModuleDataHolder();
                 view.setFilterSearchContent();
                 switch (Storage.getCurrentlyLoadedView()) {
                     case Constants.HOME_DEMANDS:
-                        eventBus.goToHomeDemandsModule(view.getFilters());
+                        eventBus.goToHomeDemandsModule(filter);
                         break;
                     case Constants.HOME_SUPPLIERS:
-                        eventBus.goToHomeSuppliersModule(view.getFilters());
+                        eventBus.goToHomeSuppliersModule(filter);
                         break;
                     default:
                         if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToClientDemandsModule(view.getFilters(), Storage.getCurrentlyLoadedView());
+                            eventBus.goToClientDemandsModule(filter, Storage.getCurrentlyLoadedView());
                         }
                         if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToSupplierDemandsModule(view.getFilters(), Storage.getCurrentlyLoadedView());
+                            eventBus.goToSupplierDemandsModule(filter, Storage.getCurrentlyLoadedView());
                         }
                         if (Constants.getAdminConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToAdminModule(view.getFilters(), Storage.getCurrentlyLoadedView());
+                            eventBus.goToAdminModule(filter, Storage.getCurrentlyLoadedView());
                         }
                         if (Constants.getMessagesConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToMessagesModule(view.getFilters(), Storage.getCurrentlyLoadedView());
+                            eventBus.goToMessagesModule(filter, Storage.getCurrentlyLoadedView());
                         }
                 }
             }
@@ -215,10 +147,14 @@ public class SearchModulePresenter
 
     private void addAdvSearchBtnClickHandler() {
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                showPopupPanel();
+                int left = view.getSearchContent().getElement().getAbsoluteLeft();
+                int top = view.getSearchContent().getElement().getAbsoluteTop() + 30;
+                eventBus.initAdvanceSearchContent(view.getPopupPanel(), view.getAttributeSelectorWidget());
+                view.getPopupPanel().setSize("400px", "300px");
+                view.getPopupPanel().setPopupPosition(left, top);
+                view.getPopupPanel().show();
             }
         });
     }

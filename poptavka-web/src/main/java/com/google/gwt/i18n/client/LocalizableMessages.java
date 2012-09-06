@@ -90,6 +90,11 @@ public interface LocalizableMessages extends Messages {
     String close();
 
     //common
+    String categories();
+    String localities();
+    String attributes();
+    String demands();
+    String suppliers();
     String id();
     String cid();
     String rid();
