@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.SettingsRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 
@@ -15,7 +15,7 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
 
     @Inject
     SettingsRPCServiceAsync settingsService;
-    private ErrorDialogPopupView errorDialog;
+    private EmailDialogPopupView errorDialog;
 
     public void onGetLoggedUser(long userId) {
         GWT.log("HomeSettingsHandler handling user" + userId);

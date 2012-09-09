@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.service.demand.SimpleServiceAsync;
@@ -48,7 +48,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
         this.searchDataHolder = searchDataHolder;
-        eventBus.getRootCategories();
+//        eventBus.getRootCategories();
     }
 
     @Override
@@ -137,8 +137,8 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
             @Override
             public void onClick(ClickEvent event) {
-                ErrorDialogPopupView erroDialog = new ErrorDialogPopupView();
-                erroDialog.show(null);
+                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, 0L);
+
             }
         });
 
