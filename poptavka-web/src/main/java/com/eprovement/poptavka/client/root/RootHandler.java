@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.RootRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.LocalityType;
@@ -24,7 +23,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
     @Inject
     private RootRPCServiceAsync rootService;
-    private ErrorDialogPopupView errorDialog;
     private static final Logger LOGGER = Logger.getLogger("RootHandler");
 
 

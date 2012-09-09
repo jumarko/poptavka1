@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.client.error;
 
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.error.interfaces.IErrorView;
 import com.eprovement.poptavka.client.error.interfaces.IErrorView.IErrorPresenter;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,6 +19,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 @Presenter(view = ErrorView.class)
 public class ErrorPresenter extends BasePresenter<IErrorView, ErrorEventBus> implements
         IErrorPresenter {
+
+    private long errorId = 0L;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -43,8 +45,7 @@ public class ErrorPresenter extends BasePresenter<IErrorView, ErrorEventBus> imp
             @Override
             public void onClick(ClickEvent event) {
                 // display popup for reporting error to customer support
-                ErrorDialogPopupView errorDialog = new ErrorDialogPopupView();
-                errorDialog.show("error message");
+                eventBus.sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, errorId);
             }
         });
     }
@@ -52,8 +53,10 @@ public class ErrorPresenter extends BasePresenter<IErrorView, ErrorEventBus> imp
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onDisplayError(int errorResponseCode) {
+    public void onDisplayError(int errorResponseCode, long errorId) {
+        this.errorId = errorId;
         view.setErrorResponseCode(errorResponseCode);
+        view.setErrorId(errorId);
     }
 
     /**************************************************************************/

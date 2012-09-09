@@ -46,6 +46,7 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
     @UiField(provided = false)
     Button reportButton;
     private int errorResponseCode;
+    private long errorId;
 
 
     /**************************************************************************/
@@ -84,6 +85,10 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
                 setInternalServerErrorMessage();    // HTTP 5xx
                 break;
         }
+    }
+
+    public void setErrorId(long errorId) {
+        this.errorId = errorId;
     }
 
     private void setForbiddenMessage() { // also called Access Denied
