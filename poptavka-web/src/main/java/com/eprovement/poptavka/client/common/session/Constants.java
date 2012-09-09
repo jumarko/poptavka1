@@ -150,4 +150,14 @@ public final class Constants {
     public static final int WITHOUT_CHECK_BOXES = 1000;
     public static final int WITH_CHECK_BOXES = 1001;
     public static final int WITH_CHECK_BOXES_ONLY_ON_LEAFS = 1002;
+
+    /**************************************************************************/
+    /* Constants for subject name in Send us an email widget                  */
+    /**************************************************************************/
+    public static final int SUBJECT_REPORT_USER = 4;
+    public static final int SUBJECT_REPORT_ISSUE = 3;
+    public static final int SUBJECT_PARTNERSHIP = 2;
+    public static final int SUBJECT_HELP = 1;
+    public static final int SUBJECT_GENERAL_QUESTION = 0;
+
 }

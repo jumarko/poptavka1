@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -28,7 +28,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     private DemandCreationRPCServiceAsync demandCreationService = null;
     private UserRPCServiceAsync userRpcService;
 
-    private ErrorDialogPopupView errorDialog;
+    private EmailDialogPopupView errorDialog;
 
     @Inject
     void setDemandCreationModuleRPCServiceAsync(DemandCreationRPCServiceAsync service) {

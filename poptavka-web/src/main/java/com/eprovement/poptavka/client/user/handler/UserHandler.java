@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.user.handler;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.OfferRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.client.user.UserEventBus;
@@ -20,7 +20,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     private UserRPCServiceAsync userService = null;
     @Inject
     private OfferRPCServiceAsync offerService = null;
-    private ErrorDialogPopupView errorDialog;
+    private EmailDialogPopupView errorDialog;
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
