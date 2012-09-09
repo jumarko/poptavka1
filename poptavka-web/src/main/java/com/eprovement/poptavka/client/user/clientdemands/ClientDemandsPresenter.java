@@ -48,7 +48,8 @@ public class ClientDemandsPresenter
     }
 
     public void onForward() {
-        // nothing
+        //No current view searching available here
+        eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/

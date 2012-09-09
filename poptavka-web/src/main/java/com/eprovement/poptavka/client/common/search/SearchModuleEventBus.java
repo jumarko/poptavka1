@@ -2,7 +2,6 @@ package com.eprovement.poptavka.client.common.search;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -54,9 +53,6 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedWidget);
-
-    @Event(handlers = AdvanceSearchContentPresenter.class)
-    void initAdvanceSearchContent(SimplePanel embedWidget, IsWidget attributeSelector);
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */

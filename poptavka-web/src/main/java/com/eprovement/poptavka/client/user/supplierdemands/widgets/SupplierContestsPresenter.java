@@ -21,6 +21,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -48,16 +49,6 @@ public class SupplierContestsPresenter
         IsWidget getWidgetView();
     }
 
-    /**************************************************************************/
-    /* General Module events                                                  */
-    /**************************************************************************/
-    public void onStart() {
-        // nothing
-    }
-
-    public void onForward() {
-        // nothing
-    }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -89,10 +80,10 @@ public class SupplierContestsPresenter
     /**************************************************************************/
     public void onInitSupplierContests(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_CONTESTS);
+        eventBus.setUpSearchBar(new Label("Supplier's contests attibure's selector will be here."));
         searchDataHolder = filter;
         view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
-        view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (this.detailSection == null) {

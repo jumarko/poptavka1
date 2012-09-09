@@ -92,7 +92,6 @@ public interface LocalizableMessages extends Messages {
     //common
     String categories();
     String localities();
-    String attributes();
     String demands();
     String suppliers();
     String id();
@@ -312,6 +311,10 @@ public interface LocalizableMessages extends Messages {
     String customerSupport();
     String enverYourEmail();
 
-
-
+    //Search
+    String noAttributeSelector();
+    String reset();
+    String demandAttributes();
+    String supplierAttributes();
+    String currViewAttributes();
 }

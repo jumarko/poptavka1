@@ -90,7 +90,10 @@ public class HomeSuppliersPresenter
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(new HomeSuppliersViewView());
+        //This sets content of tab: current view attribute selector (fourth tab) in popup.
+        //However supplier attribute selector is loaded loaded by default in second tab,
+        //another setting in fourth tab is not needed
+        eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/

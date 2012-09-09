@@ -23,6 +23,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -90,17 +91,6 @@ public class ClientProjectsPresenter
     private long lastOpenedProjectConversation = -1;
 
     /**************************************************************************/
-    /* General Module events                                                  */
-    /**************************************************************************/
-    public void onStart() {
-        // nothing
-    }
-
-    public void onForward() {
-        // nothing
-    }
-
-    /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override
@@ -121,10 +111,10 @@ public class ClientProjectsPresenter
     /**************************************************************************/
     public void onInitClientProjects(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECTS);
+        eventBus.setUpSearchBar(new Label("Client's projects attibure's selector will be here."));
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
-        view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (this.detailSection == null) {

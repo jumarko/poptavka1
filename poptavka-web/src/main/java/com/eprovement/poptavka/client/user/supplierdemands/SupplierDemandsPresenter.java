@@ -48,7 +48,7 @@ public class SupplierDemandsPresenter
     }
 
     public void onForward() {
-        // nothing
+        eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/

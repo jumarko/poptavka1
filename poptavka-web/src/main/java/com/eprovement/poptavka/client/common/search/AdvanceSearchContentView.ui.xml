@@ -1,28 +1,52 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:cat="urn:import:com.eprovement.poptavka.client.common.category">
+             xmlns:cat="urn:import:com.eprovement.poptavka.client.common.category"
+             xmlns:homeDemands="urn:import:com.eprovement.poptavka.client.homedemands"
+             xmlns:homeSuppliers="urn:import:com.eprovement.poptavka.client.homesuppliers">
     <ui:with field='res'
              type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-    <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='25' animationDuration="1000">
-        <g:tab>
-            <g:header>
-                <ui:msg key="attributes">Attributes</ui:msg>
-            </g:header>
-            <g:SimplePanel ui:field="attributeSelectorWidgetPanel" />
-        </g:tab>
-        <g:tab>
-            <g:header>
-                <ui:msg key="categories">Categories</ui:msg>
-            </g:header>
-            <g:SimplePanel ui:field="categorySelectorWidgetPanel" />
-        </g:tab>
-        <g:tab>
-            <g:header>
-                <ui:msg key="localities">Localities</ui:msg>
-            </g:header>
-            <g:SimplePanel ui:field="localitySelectorWidgetPanel" />
-        </g:tab>
-    </g:TabLayoutPanel>
+    <g:VerticalPanel>
+        <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='25' animationDuration="1000">
+            <g:tab>
+                <g:header>
+                    <ui:msg key="demandAttributes">Demand Attributes</ui:msg>
+                </g:header>
+                <homeDemands:HomeDemandsSearchView ui:field="demandsAttributeSelectorWidget" />
+            </g:tab>
+            <g:tab>
+                <g:header>
+                    <ui:msg key="supplierAttributes">Supplier Attributes</ui:msg>
+                </g:header>
+                <homeSuppliers:HomeSuppliersSearchView ui:field="suppliersAttributeSelectorWidget" />
+            </g:tab>
+            <g:tab>
+                <g:header>
+                    <ui:msg key="categories">Categories</ui:msg>
+                </g:header>
+                <g:SimplePanel ui:field="categorySelectorWidgetPanel" />
+            </g:tab>
+            <g:tab>
+                <g:header>
+                    <ui:msg key="localities">Localities</ui:msg>
+                </g:header>
+                <g:SimplePanel ui:field="localitySelectorWidgetPanel" />
+            </g:tab>
+            <g:tab>
+                <g:header>
+                    <ui:msg key="currentViewAttributes">Current View Attributes</ui:msg>
+                </g:header>
+                <g:SimplePanel ui:field="attributeSelectorWidgetPanel" />
+            </g:tab>
+        </g:TabLayoutPanel>
+        <!--        <g:HorizontalPanel>
+            <g:Button ui:field="resetBtn">
+                <ui:msg key="reset">Reset</ui:msg>
+            </g:Button>
+            <g:Button ui:field="searchBtn">
+                <ui:msg key="search">Search</ui:msg>
+            </g:Button>
+        </g:HorizontalPanel>-->
+    </g:VerticalPanel>
 </ui:UiBinder>

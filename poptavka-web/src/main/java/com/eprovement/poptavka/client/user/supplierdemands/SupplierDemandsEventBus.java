@@ -88,6 +88,8 @@ public interface SupplierDemandsEventBus extends EventBusWithLookup, IEventBusDa
     @Event(forwardToParent = true)
     void goToCreateSupplierModule();
 
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
     /**************************************************************************/
     /* Business events handled by Presenters. */
     /**************************************************************************/

@@ -31,9 +31,8 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     ListBox searchWhat;
     @UiField
     PopupPanel popupPanel;
-    //Pamataj, kym uzivatel neklikne AdvBtn az potom vytvor intanciu AdvanceSearchConventWidgetu
-    //a nastav prislusny attributeSelector widget
-    IsWidget attribureSelectorWidget = null;
+    @UiField
+    AdvanceSearchContentView advanceSearchContentView;
     //Holds data
     private SearchModuleDataHolder filters = new SearchModuleDataHolder();
 
@@ -60,12 +59,17 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 
     @Override
     public void setAttributeSelectorWidget(IsWidget attributeSearchViewWidget) {
-        attribureSelectorWidget = attributeSearchViewWidget;
-    }
-
-    @Override
-    public IsWidget getAttributeSelectorWidget() {
-        return attribureSelectorWidget;
+        advanceSearchContentView.getAttributeSelectorPanel().setWidget(attributeSearchViewWidget);
+        boolean widgetVisible = true;
+        if (attributeSearchViewWidget == null) {
+            widgetVisible = false;
+        } else {
+            advanceSearchContentView.getTabLayoutPanel()
+                    .selectTab(AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET);
+        }
+        advanceSearchContentView.getTabLayoutPanel()
+                    .getTabWidget(AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET)
+                    .getParent().setVisible(widgetVisible);
     }
 
     // Buttons
@@ -80,6 +84,11 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     @Override
+    public ListBox getSearchWhat() {
+        return searchWhat;
+    }
+
+    @Override
     public TextBox getSearchContent() {
         return searchContent;
     }
@@ -87,6 +96,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @Override
     public PopupPanel getPopupPanel() {
         return popupPanel;
+    }
+
+    public AdvanceSearchContentView getAdvanceSearchContentView() {
+        return advanceSearchContentView;
     }
 
     /**

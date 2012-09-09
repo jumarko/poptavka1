@@ -14,19 +14,19 @@ import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import java.util.ArrayList;
 
-public class HomeSuppliersViewView extends Composite implements
+public class HomeSuppliersSearchView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
-    interface SearchModulViewUiBinder extends UiBinder<Widget, HomeSuppliersViewView> {
+    interface SearchModulViewUiBinder extends UiBinder<Widget, HomeSuppliersSearchView> {
     }
     @UiField
     TextBox companyName, ratingFrom, ratingTo, supplierDescription;
     @UiField
     Button clearBtn;
 
-    public HomeSuppliersViewView() {
+    public HomeSuppliersSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
         ratingFrom.setText("0");
         ratingTo.setText("100");

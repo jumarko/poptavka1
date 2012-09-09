@@ -105,7 +105,10 @@ public class HomeDemandsPresenter extends LazyPresenter<
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(new HomeDemandsSearchView());
+        //This sets content of tab: current view attribute selector in popup.
+        //However demands attribute selector is already loaded by default in first tab,
+        //another setting in fourth tab is not needed
+        eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/
@@ -120,6 +123,17 @@ public class HomeDemandsPresenter extends LazyPresenter<
             //Always only one category is sent
             view.getSelectionCategoryModel().setSelected(searchDataHolder.getCategories().get(0), true);
         }
+    }
+
+    public void onGoToHomeDemandsBySearch(SearchModuleDataHolder searchDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
+
+        //celltree visible false
+        view.getCellTree().setVisible(false);
+        //display message that search was performed
+
+        //getData
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
     /**

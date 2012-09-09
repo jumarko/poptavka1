@@ -24,7 +24,9 @@
                     </g:Button>
                     <g:Button ui:field="advSearchBtn">Advanced</g:Button>
                 </g:HorizontalPanel>
-                <g:PopupPanel ui:field="popupPanel"/>
+                <g:PopupPanel ui:field="popupPanel">
+                    <adv:AdvanceSearchContentView ui:field="advanceSearchContentView"/>
+                </g:PopupPanel>
             </div>
         </g:HTMLPanel>
     </g:DecoratorPanel>

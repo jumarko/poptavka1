@@ -91,6 +91,9 @@ public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData
     @Event(forwardToParent = true)
     void goToCreateSupplierModule();
 
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
     /**************************************************************************/
     /* Business events handled by DemandModulePresenter.                      */
     /**************************************************************************/

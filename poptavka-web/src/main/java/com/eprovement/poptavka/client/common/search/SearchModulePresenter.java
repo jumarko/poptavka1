@@ -1,27 +1,32 @@
 package com.eprovement.poptavka.client.common.search;
 
-import com.eprovement.poptavka.client.common.search.AdvanceSearchContentPresenter.AdvanceSearchContentInterface;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
+import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersSearchView;
+import com.eprovement.poptavka.client.user.admin.searchViews.AdminInvoicesViewView;
+import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-
-
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.admin.searchViews.AdminInvoicesViewView;
-import com.eprovement.poptavka.shared.search.FilterItem;
-import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,15 +47,37 @@ public class SearchModulePresenter
 
         Button getAdvSearchBtn();
 
+        ListBox getSearchWhat();
+
         PopupPanel getPopupPanel();
+
+        AdvanceSearchContentView getAdvanceSearchContentView();
 
         void setFilterSearchContent();
 
         void setAttributeSelectorWidget(IsWidget attributeSearchViewWidget);
 
-        IsWidget getAttributeSelectorWidget();
-
         TextBox getSearchContent();
+    }
+
+    public interface AdvanceSearchContentInterface {
+
+        //Getters
+        TabLayoutPanel getTabLayoutPanel();
+
+        HomeDemandsSearchView getDemandsAttributeSelectorWidget();
+
+        HomeSuppliersSearchView getSuppliersAttributeSelectorWidget();
+
+        SimplePanel getAttributeSelectorPanel();
+
+        SimplePanel getCategorySelectorPanel();
+
+        SimplePanel getLocalitySelectorPanel();
+
+        SearchModuleDataHolder getSearchModuleDataHolder();
+
+        Widget getWidgetView();
     }
 
     //Neviem zatial preco, ale nemoze to byt lazy, pretoze sa neinicializuci advace
@@ -66,6 +93,8 @@ public class SearchModulePresenter
     public void bindView() {
         this.addSearchBtnClickHandler();
         this.addAdvSearchBtnClickHandler();
+        this.addTabLayoutPanelBeforeSelectionHandler();
+        this.addSearchWhatSelectionHandler();
     }
 
     /**************************************************************************/
@@ -151,10 +180,55 @@ public class SearchModulePresenter
             public void onClick(ClickEvent event) {
                 int left = view.getSearchContent().getElement().getAbsoluteLeft();
                 int top = view.getSearchContent().getElement().getAbsoluteTop() + 30;
-                eventBus.initAdvanceSearchContent(view.getPopupPanel(), view.getAttributeSelectorWidget());
-                view.getPopupPanel().setSize("400px", "300px");
+                view.getPopupPanel().setSize("500px", "300px");
                 view.getPopupPanel().setPopupPosition(left, top);
                 view.getPopupPanel().show();
+            }
+        });
+    }
+
+    private void addTabLayoutPanelBeforeSelectionHandler() {
+        view.getAdvanceSearchContentView().getTabLayoutPanel().addBeforeSelectionHandler(
+                new BeforeSelectionHandler<Integer>() {
+                    @Override
+                    public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
+                        switch (event.getItem()) {
+                            case AdvanceSearchContentView.CATEGORY_SELECTOR_WIDGET:
+                                //If not yet initialized, do it
+                                if (view.getAdvanceSearchContentView()
+                                        .getCategorySelectorPanel().getWidget() == null) {
+                                    eventBus.initCategoryWidget(
+                                            view.getAdvanceSearchContentView().getCategorySelectorPanel(),
+                                            Constants.WITH_CHECK_BOXES);
+                                }
+                                break;
+                            case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
+                                //If not yet initialized, do it
+                                if (view.getAdvanceSearchContentView()
+                                        .getLocalitySelectorPanel().getWidget() == null) {
+                                    eventBus.initLocalityWidget(
+                                            view.getAdvanceSearchContentView().getLocalitySelectorPanel());
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+    }
+
+    private void addSearchWhatSelectionHandler() {
+        view.getSearchWhat().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                int selectedWidgetIdx = view.getSearchWhat().getSelectedIndex();
+                int notSelectedWidgetIdx = (selectedWidgetIdx + 1) % 2;
+                view.getAdvanceSearchContentView().getTabLayoutPanel()
+                        .selectTab(selectedWidgetIdx);
+                view.getAdvanceSearchContentView().getTabLayoutPanel()
+                        .getTabWidget(selectedWidgetIdx).getParent().setVisible(true);
+                view.getAdvanceSearchContentView().getTabLayoutPanel()
+                        .getTabWidget(notSelectedWidgetIdx).getParent().setVisible(false);
             }
         });
     }
