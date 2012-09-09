@@ -136,6 +136,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
      * @param errorResponse error response code
      */
     private void displayError(int errorResponseCode) {
-        lookupEventbus.dispatch("displayError", errorResponseCode);
+        long errorId = 999L;
+        lookupEventbus.dispatch("displayError", errorResponseCode, errorId);
     }
 }

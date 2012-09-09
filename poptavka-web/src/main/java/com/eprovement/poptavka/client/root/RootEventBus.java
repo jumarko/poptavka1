@@ -20,6 +20,7 @@ import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
+import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.menu.MenuPresenter;
@@ -152,7 +153,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void goToCreateDemandModule();
 
     @Event(forwardToModules = ErrorModule.class)
-    void displayError(int errorResponseCode);
+    void displayError(int errorResponseCode, long errorId);
 
     /**************************************************************************/
     /* Navigation events - User menu control section                          */
@@ -183,6 +184,9 @@ public interface RootEventBus extends EventBusWithLookup {
     // TODO Praso - mozeme odstranit? No usage
     @Event(forwardToModules = SearchModule.class)
     void clearSearchContent();
+
+    @Event(handlers = EmailDialogPopupPresenter.class)
+    void sendUsEmail(int subject, long errorId);
 
     /**************************************************************************/
     /* Navigation events - Other control sections                             */

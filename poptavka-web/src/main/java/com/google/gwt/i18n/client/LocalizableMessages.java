@@ -310,11 +310,10 @@ public interface LocalizableMessages extends Messages {
     String sendUsEmail();
     String customerSupport();
     String enverYourEmail();
-
-    //Search
-    String noAttributeSelector();
-    String reset();
-    String demandAttributes();
-    String supplierAttributes();
-    String currViewAttributes();
+    String subjectGeneralQuestion();
+    String subjectHelp();
+    String subjectPartnership();
+    String subjectReportIssue();
+    String subjectReportUser();
+    String thanksForMessage();
 }

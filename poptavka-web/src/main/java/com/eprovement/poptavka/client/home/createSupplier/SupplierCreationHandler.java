@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
@@ -25,7 +25,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
     private UserRPCServiceAsync userRpcService;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
-    private ErrorDialogPopupView errorDialog;
+    private EmailDialogPopupView errorDialog;
 
     @Inject
     void setSupplierCreationRPCService(SupplierCreationRPCServiceAsync service) {
