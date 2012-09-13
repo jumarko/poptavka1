@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.server.service.supplierdemands;
 
-import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCService;
+import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
@@ -40,8 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Slavkovsky
  */
 @Configurable
-public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
-        implements SupplierDemandsRPCService {
+public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteService
+        implements SupplierDemandsModuleRPCService {
 
     //Services
     private GeneralService generalService;

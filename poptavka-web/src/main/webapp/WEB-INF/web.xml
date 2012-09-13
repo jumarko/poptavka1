@@ -208,11 +208,11 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>SupplierDemandsRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.supplierdemands.SupplierDemandsRPCServiceImpl</servlet-class>
+        <servlet-name>SupplierDemandsModuleRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.supplierdemands.SupplierDemandsModuleRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SupplierDemandsRPCService</servlet-name>
+        <servlet-name>SupplierDemandsModuleRPCService</servlet-name>
         <url-pattern>/poptavka/service/supplierdemandsmodule</url-pattern>
     </servlet-mapping>
 

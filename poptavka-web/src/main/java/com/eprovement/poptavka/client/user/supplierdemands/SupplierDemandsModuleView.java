@@ -9,12 +9,12 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SupplierDemandsView extends Composite
-        implements SupplierDemandsPresenter.SupplierDemandsLayoutInterface {
+public class SupplierDemandsModuleView extends Composite
+        implements SupplierDemandsModulePresenter.SupplierDemandsLayoutInterface {
 
     private static SupplierDemandsLayoutViewUiBinder uiBinder = GWT.create(SupplierDemandsLayoutViewUiBinder.class);
 
-    interface SupplierDemandsLayoutViewUiBinder extends UiBinder<Widget, SupplierDemandsView> {
+    interface SupplierDemandsLayoutViewUiBinder extends UiBinder<Widget, SupplierDemandsModuleView> {
     }
     /**************************************************************************/
     /* Attrinbutes                                                            */

@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsEventBus;
+import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -32,8 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Presenter(view = SupplierContestsView.class)
-public class SupplierContestsPresenter
-        extends LazyPresenter<SupplierContestsPresenter.SupplierContestsLayoutInterface, SupplierDemandsEventBus> {
+public class SupplierContestsPresenter extends LazyPresenter<
+        SupplierContestsPresenter.SupplierContestsLayoutInterface, SupplierDemandsModuleEventBus> {
 
     public interface SupplierContestsLayoutInterface extends LazyView, IsWidget {
 

@@ -12,10 +12,10 @@ import com.mvp4g.client.history.HistoryConverter;
  */
 
 @History(type = HistoryConverterType.NONE)
-public class SupplierDemandsHistoryConverter implements HistoryConverter<SupplierDemandsEventBus> {
+public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<SupplierDemandsModuleEventBus> {
 
     @Override
-    public void convertFromToken(String historyName, String param, SupplierDemandsEventBus eventBus) {
+    public void convertFromToken(String historyName, String param, SupplierDemandsModuleEventBus eventBus) {
     }
 
     @Override

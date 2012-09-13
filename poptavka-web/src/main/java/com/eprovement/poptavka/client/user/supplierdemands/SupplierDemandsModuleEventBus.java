@@ -24,14 +24,14 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@Events(startPresenter = SupplierDemandsPresenter.class, module = SupplierDemandsModule.class)
-public interface SupplierDemandsEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
+@Events(startPresenter = SupplierDemandsModulePresenter.class, module = SupplierDemandsModule.class)
+public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
      * First event to be handled.
      */
     @Start
-    @Event(handlers = SupplierDemandsPresenter.class)
+    @Event(handlers = SupplierDemandsModulePresenter.class)
     void start();
 
     /**
@@ -39,7 +39,7 @@ public interface SupplierDemandsEventBus extends EventBusWithLookup, IEventBusDa
      * in this method we should remove forward event to save the number of method invocations.
      */
     @Forward
-    @Event(handlers = SupplierDemandsPresenter.class)
+    @Event(handlers = SupplierDemandsModulePresenter.class)
     void forward();
 
     /**************************************************************************/
@@ -61,7 +61,8 @@ public interface SupplierDemandsEventBus extends EventBusWithLookup, IEventBusDa
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = SupplierDemandsPresenter.class, historyConverter = SupplierDemandsHistoryConverter.class)
+    @Event(handlers = SupplierDemandsModulePresenter.class,
+            historyConverter = SupplierDemandsModuleHistoryConverter.class)
     String goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(handlers = SupplierProjectsPresenter.class)
@@ -93,7 +94,7 @@ public interface SupplierDemandsEventBus extends EventBusWithLookup, IEventBusDa
     /**************************************************************************/
     /* Business events handled by Presenters. */
     /**************************************************************************/
-    @Event(handlers = SupplierDemandsPresenter.class)
+    @Event(handlers = SupplierDemandsModulePresenter.class)
     void displayView(IsWidget content);
 
     @Event(handlers = {SupplierProjectsPresenter.class, SupplierContestsPresenter.class,
@@ -144,13 +145,13 @@ public interface SupplierDemandsEventBus extends EventBusWithLookup, IEventBusDa
     /**************************************************************************/
     /* Business events handled by Handlers. */
     /**************************************************************************/
-    @Event(handlers = SupplierDemandsHandler.class)
+    @Event(handlers = SupplierDemandsModuleHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
 
-    @Event(handlers = SupplierDemandsHandler.class)
+    @Event(handlers = SupplierDemandsModuleHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
-    @Event(handlers = SupplierDemandsHandler.class)
+    @Event(handlers = SupplierDemandsModuleHandler.class)
     void requestFinishOffer(FullOfferDetail fullOfferDetail);
 
     /**************************************************************************/
@@ -158,10 +159,10 @@ public interface SupplierDemandsEventBus extends EventBusWithLookup, IEventBusDa
     /* Should be called only from UniversalAsyncGrid. */
     /**************************************************************************/
     @Override
-    @Event(handlers = SupplierDemandsHandler.class)
+    @Event(handlers = SupplierDemandsModuleHandler.class)
     void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
     @Override
-    @Event(handlers = SupplierDemandsHandler.class)
+    @Event(handlers = SupplierDemandsModuleHandler.class)
     void getData(SearchDefinition searchDefinition);
 }

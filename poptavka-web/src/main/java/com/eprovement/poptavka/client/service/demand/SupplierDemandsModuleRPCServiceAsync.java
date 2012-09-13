@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-public interface SupplierDemandsRPCServiceAsync {
+public interface SupplierDemandsModuleRPCServiceAsync {
 
     void getSupplierPotentialProjectsCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);

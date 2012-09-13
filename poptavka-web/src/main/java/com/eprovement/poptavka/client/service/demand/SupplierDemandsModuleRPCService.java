@@ -16,8 +16,8 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-@RemoteServiceRelativePath(SupplierDemandsRPCService.URL)
-public interface SupplierDemandsRPCService extends RemoteService {
+@RemoteServiceRelativePath(SupplierDemandsModuleRPCService.URL)
+public interface SupplierDemandsModuleRPCService extends RemoteService {
 
     String URL = "service/supplierdemandsmodule";
 

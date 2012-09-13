@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.user.supplierdemands;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCServiceAsync;
+import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -13,10 +13,10 @@ import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
 
 @EventHandler
-public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEventBus> {
+public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDemandsModuleEventBus> {
 
     @Inject
-    private SupplierDemandsRPCServiceAsync supplierDemandsService = null;
+    private SupplierDemandsModuleRPCServiceAsync supplierDemandsService = null;
 
     //*************************************************************************/
     // Overriden methods of IEventBusData interface.                          */
