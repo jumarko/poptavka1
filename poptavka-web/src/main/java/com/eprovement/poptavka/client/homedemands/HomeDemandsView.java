@@ -73,14 +73,14 @@ public class HomeDemandsView extends OverflowComposite
     private static final int TITLE_COL_WIDTH = 200;
     private static final int LOCALITY_COL_WIDTH = 150;
     private static final int PRICE_WIDTH = 80;
-    // Table definitions
+    //Table definitions
     @UiField(provided = true)
     UniversalAsyncGrid<FullDemandDetail> dataGrid;
     private List<String> gridColumns = Arrays.asList(
             new String[]{
                 "createdDate", "title", "locality", "price"
             });
-    // Pager
+    //Pager
     @UiField(provided = true)
     SimplePager pager;
     @UiField(provided = true)
@@ -94,7 +94,7 @@ public class HomeDemandsView extends OverflowComposite
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     // Others
     @UiField
-    Label bannerLabel;
+    Label bannerLabel, filterLabel;
     @UiField
     DemandDetailView demandDetail;
     @UiField
@@ -268,6 +268,11 @@ public class HomeDemandsView extends OverflowComposite
     @Override
     public Label getBannerLabel() {
         return bannerLabel;
+    }
+
+    @Override
+    public Label getFilterLabel() {
+        return filterLabel;
     }
 
     @Override

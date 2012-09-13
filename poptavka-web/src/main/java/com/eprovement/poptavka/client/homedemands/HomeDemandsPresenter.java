@@ -79,12 +79,13 @@ public class HomeDemandsPresenter extends LazyPresenter<
 
         Label getBannerLabel();
 
+        Label getFilterLabel();
+
         Widget getWidgetView();
     }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private SearchModuleDataHolder searchDataHolder = null;
     //<level, index>
     private Map<Integer, Integer> openedHierarchy = new TreeMap<Integer, Integer>();
     /**************************************************************************/
@@ -114,28 +115,73 @@ public class HomeDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
-
-        if (searchDataHolder == null) {
-            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        } else {
-            //Always only one category is sent
-            view.getSelectionCategoryModel().setSelected(searchDataHolder.getCategories().get(0), true);
+    /**
+     * Navigate processing according to given view type: depends if forwarded from menu, welcome, search.
+     *
+     * @param filter
+     * @param homeDemandsViewType
+     */
+    public void onGoToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType) {
+        switch(homeDemandsViewType) {
+            case Constants.HOME_DEMANDS_BY_DEFAULT:
+                goToHomeDemands();
+                break;
+            case Constants.HOME_DEMANDS_BY_WELCOME:
+                goToHomeDemands(filter.getCategories().get(0));
+                break;
+            case Constants.HOME_DEMANDS_BY_SEARCH:
+                goToHomeDemands(filter);
+                break;
+            default:
+                break;
         }
     }
 
-    public void onGoToHomeDemandsBySearch(SearchModuleDataHolder searchDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
+    /**
+     * Forwarded from menu selection.
+     */
+    private void goToHomeDemands() {
+        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_DEFAULT);
+        //Set visibility
+        view.getFilterLabel().setVisible(false);
+        view.getCellTree().setVisible(true);
+        //get data
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
+    }
+    /**
+     * Forwarded from welcome view - root category selection
+     * @param rootCategoryDetail - category detail object selected from root categories menu on welcome view
+     */
+    private void goToHomeDemands(CategoryDetail rootCategoryDetail) {
+        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
+        //Set visibility
+        view.getFilterLabel().setVisible(false);
+        view.getCellTree().setVisible(true);
 
-        //celltree visible false
-        view.getCellTree().setVisible(false);
+        //select category in cellTree, which fires an event, which gets data
+        view.getSelectionCategoryModel().setSelected(rootCategoryDetail, true);
+    }
+
+    /**
+     * Forwarded from search module, when searching criteria were provided.
+     * @param searchDataHolder - searching criteria
+     */
+    private void goToHomeDemands(SearchModuleDataHolder searchDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_SEARCH);
+        //Set visibility
         //display message that search was performed
-
+        //Ak bude text stale rovnaky, nemusi sa setovat tu,
+        //ale ak bude dynamicky (zobrazia searching criteria), tak ano
+        view.getFilterLabel().setText("Results satisfying searching criteria:");
+        view.getFilterLabel().setVisible(true);
+        view.getCellTree().setVisible(false);
         //getData
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
+    /**************************************************************************/
+    /* Bind events                                                            */
+    /**************************************************************************/
     /**
      * Bind objects and their action handlers.
      */
@@ -161,10 +207,7 @@ public class HomeDemandsPresenter extends LazyPresenter<
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
-                    if (searchDataHolder == null) {
-                        searchDataHolder = new SearchModuleDataHolder();
-                    }
-                    searchDataHolder.getCategories().clear();
+                    SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
                     searchDataHolder.getCategories().add(selected);
 
                     view.hideDemandDetail();

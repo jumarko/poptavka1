@@ -96,14 +96,14 @@ public class ClientDemandsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeDemandsModule(null);
+                eventBus.goToHomeDemandsModule(null, Constants.HOME_DEMANDS_BY_DEFAULT);
             }
         });
         view.getAllSuppliers().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliersModule(null);
+                eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
             }
         });
     }

@@ -52,7 +52,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType);
 
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);

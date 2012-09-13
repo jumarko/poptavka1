@@ -20,6 +20,7 @@ public interface LocalizableMessages extends Messages {
     String searchContent();
     String searchInDemands();
     String searchInSuppliers();
+    String noSearchingCriteria();
     String today();
     String yesterday();
     String lastWeek();

@@ -47,10 +47,14 @@ public final class Constants {
     /**************************************************************************/
     /* Table Views Contants                                                   */
     /**************************************************************************/
-    /* Home demands module */
-    public static final int HOME_DEMANDS = 8;
-    /* Home suppliers module */
-    public static final int HOME_SUPPLIERS = 9;
+    /* Home demands module - view types */
+    public static final int HOME_DEMANDS_BY_DEFAULT = 80;
+    public static final int HOME_DEMANDS_BY_WELCOME = 81;
+    public static final int HOME_DEMANDS_BY_SEARCH = 82;
+    /* Home suppliers module - view types */
+    public static final int HOME_SUPPLIERS_BY_DEFAULT = 90;
+    public static final int HOME_SUPPLIERS_BY_SEARCH = 91;
+    //
     public static final int HOME_CREATE_SUPPLIERS = 1;
     public static final int HOME_CREATE_DEMAND = 2;
 
@@ -92,8 +96,8 @@ public final class Constants {
 
     public static ArrayList<Integer> getHomeConstants() {
         ArrayList<Integer> admins = new ArrayList<Integer>();
-        admins.add(HOME_DEMANDS);
-        admins.add(HOME_SUPPLIERS);
+        admins.add(HOME_DEMANDS_BY_DEFAULT);
+        admins.add(HOME_SUPPLIERS_BY_DEFAULT);
         return admins;
     }
 

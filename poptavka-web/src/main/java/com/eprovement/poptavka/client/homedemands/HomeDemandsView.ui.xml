@@ -1,7 +1,7 @@
 <!-- Uncomment this for XHTML entities <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent"> -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:ug="urn:import:com.eprovement.poptavka.client.user.widget.grid"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
 
 	<ui:with field='res'
@@ -11,12 +11,12 @@
 			font-weight: bold;
 			width: auto;
 		}
-		
+
 		.panel {
 			width: 400px;
 			spacing: 5;
 		}
-		
+
 		.list {
 			width: 100px;
 		}
@@ -32,13 +32,16 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="40">
-					<g:HorizontalPanel>
-						<c:SimplePager ui:field='pager' />
-						<g:ListBox ui:field='pageSize' />
-					</g:HorizontalPanel>
+                                        <g:VerticalPanel>
+                                            <g:Label ui:field="filterLabel"/>
+                                            <g:HorizontalPanel>
+                                                    <c:SimplePager ui:field='pager' />
+                                                    <g:ListBox ui:field='pageSize' />
+                                            </g:HorizontalPanel>
+                                        </g:VerticalPanel>
 				</g:north>
 				<g:center>
-					<ug:UniversalAsyncGrid ui:field='dataGrid' />
+                                        <c:DataGrid ui:field="dataGrid" />
 				</g:center>
 			</g:DockLayoutPanel>
 		</g:center>

@@ -137,10 +137,10 @@ public interface RootEventBus extends EventBusWithLookup {
 //    String goToHomeWelcomeModule(SearchModuleDataHolder filter);
 
     @Event(forwardToModules = HomeDemandsModule.class)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType);
 
     @Event(forwardToModules = HomeSuppliersModule.class)
-    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter, int homeSuppliersViewType);
 
     // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
     // pohladoch. Alebo je tam nejaky default filter?

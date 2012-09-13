@@ -43,7 +43,6 @@ public class HomeSuppliersView extends OverflowComposite
     interface SuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
     }
     private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
-
     /**************************************************************************/
     /* Home Supplier presenter                                                */
     /**************************************************************************/
@@ -58,7 +57,6 @@ public class HomeSuppliersView extends OverflowComposite
     public HomeSuppliersPresenter getPresenter() {
         return homeSuppliersPresenter;
     }
-
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -79,7 +77,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true)
     ListBox pageSizeCombo;
     @UiField
-    Label reklama;
+    Label reklama, filterLabel;
     @UiField
     HTMLPanel detail;
     @UiField
@@ -257,6 +255,11 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public SimplePager getPager() {
         return pager;
+    }
+
+    @Override
+    public Label getFilterLabel() {
+        return filterLabel;
     }
 
     @Override

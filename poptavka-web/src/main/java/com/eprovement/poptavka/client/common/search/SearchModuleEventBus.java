@@ -28,10 +28,10 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
     // zadani vyhladavacich kriterii do search panelu. Po kliknuti search uzivatelia
     // presmerujeme na jeden z pohladov suppliers/demands/messages
     @Event(forwardToParent = true)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType);
 
     @Event(forwardToParent = true)
-    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter, int homeSuppliersViewType);
 
     @Event(forwardToParent = true)
     void goToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget);

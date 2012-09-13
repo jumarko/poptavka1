@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -181,7 +182,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         if (searchDefinition != null) {
             this.searchDataHolder = searchDefinition.getFilter();
         }
-
+        if (dataProvider != null) {
+            dataProvider.updateRowData(0, new ArrayList<T>());
+        }
         eventBus.getDataCount(this, searchDefinition);
     }
 

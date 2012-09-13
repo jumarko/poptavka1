@@ -15,7 +15,6 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @Presenter(view = HomeWelcomeView.class)
 public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements
@@ -23,7 +22,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
-    private SearchModuleDataHolder searchDataHolder = null;
     private SimpleServiceAsync simpleService;
 
 
@@ -47,8 +45,8 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
-        this.searchDataHolder = searchDataHolder;
-//        eventBus.getRootCategories();
+        //Martin Temporary commented - not to load categories at application startup
+        //eventBus.getRootCategories();
     }
 
     @Override
@@ -59,12 +57,9 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
                 CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
 
                 if (selected != null) {
-                    if (searchDataHolder == null) {
-                        searchDataHolder = new SearchModuleDataHolder();
-                    }
-                    searchDataHolder.setCategories(
-                            Arrays.asList(view.getCategorySelectionModel().getSelectedObject()));
-                    eventBus.goToHomeDemandsModule(searchDataHolder);
+                    SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
+                    searchDataHolder.getCategories().add(selected);
+                    eventBus.goToHomeDemandsModule(searchDataHolder, Constants.HOME_DEMANDS_BY_WELCOME);
                 }
             }
         });

@@ -81,12 +81,21 @@ public class AdvanceSearchContentView extends Composite
                     .getFilter());
         }
         if (categorySelectorWidgetPanel != null) {
-            search.setCategories(((CategorySelectorView) categorySelectorWidgetPanel.getWidget())
-                    .getCellListDataProvider().getList());
+            CategorySelectorView categorySelector = (CategorySelectorView) categorySelectorWidgetPanel.getWidget();
+            if (categorySelector != null) {
+                search.setCategories(categorySelector.getCellListDataProvider().getList());
+            }
         }
         if (localitySelectorWidgetPanel != null) {
-            search.setLocalities(((LocalitySelectorView) localitySelectorWidgetPanel.getWidget())
-                    .getCellListDataProvider().getList());
+            LocalitySelectorView localitySelector = (LocalitySelectorView) localitySelectorWidgetPanel.getWidget();
+            if (localitySelector != null) {
+                search.setLocalities(localitySelector.getCellListDataProvider().getList());
+            }
+        }
+        if (search.getAttributes().isEmpty()
+                && search.getCategories().isEmpty()
+                && search.getLocalities().isEmpty()) {
+            return null;
         }
         return search;
     }

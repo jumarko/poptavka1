@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root.menu;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -36,12 +37,12 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
 
     @Override
     public void goToHomeDemands() {
-        eventBus.goToHomeDemandsModule(null);
+        eventBus.goToHomeDemandsModule(null, Constants.HOME_DEMANDS_BY_DEFAULT);
     }
 
     @Override
     public void goToHomeSuppliers() {
-        eventBus.goToHomeSuppliersModule(null);
+        eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
     }
 
     @Override

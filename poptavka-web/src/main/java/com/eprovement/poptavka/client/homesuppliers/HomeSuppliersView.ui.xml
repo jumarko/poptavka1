@@ -6,7 +6,7 @@
 	<!-- injecting style resources -->
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
-	<!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' 
+	<!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages'
 		/> -->
 
 	<g:DockLayoutPanel unit="PX"
@@ -19,10 +19,13 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="40">
-					<g:HorizontalPanel>
-						<c:SimplePager ui:field="pager" />
-						<g:ListBox ui:field='pageSizeCombo' />
-					</g:HorizontalPanel>
+                                        <g:VerticalPanel>
+                                            <g:Label ui:field="filterLabel"/>
+                                            <g:HorizontalPanel>
+                                                    <c:SimplePager ui:field="pager" />
+                                                    <g:ListBox ui:field='pageSizeCombo' />
+                                            </g:HorizontalPanel>
+                                        </g:VerticalPanel>
 				</g:north>
 				<g:center>
 					<c:DataGrid ui:field="dataGrid" />

@@ -54,7 +54,7 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
      * fragment.
      */
     @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
-    String goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
+    String goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, int homeSuppliersViewType);
 
     /**************************************************************************/
     /* Parent events                                                          */

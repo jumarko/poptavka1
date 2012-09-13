@@ -18,6 +18,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -61,6 +62,8 @@ public class HomeSuppliersPresenter
 
         SplitLayoutPanel getSplitter();
 
+        Label getFilterLabel();
+
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
         void hideSuppliersDetail();
@@ -68,8 +71,6 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    //others
-    private SearchModuleDataHolder searchDataHolder = null;
     //<level, index>
     private Map<Integer, Integer> openedHierarchy = new TreeMap<Integer, Integer>();
     /**************************************************************************/
@@ -103,18 +104,53 @@ public class HomeSuppliersPresenter
      * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
      *                               - it's also used as pointer to differ root and child sections
      */
-    public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS);
-        this.searchDataHolder = searchModuleDataHolder;
-
-        if (searchModuleDataHolder == null) {
-            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        } else {
-            //Always only one category is sent
-            view.getSelectionCategoryModel().setSelected(searchModuleDataHolder.getCategories().get(0), true);
+    public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder, int homeSuppliersViewType) {
+        switch (homeSuppliersViewType) {
+            case Constants.HOME_SUPPLIERS_BY_DEFAULT:
+                goToHomeSuppliers();
+                break;
+            case Constants.HOME_SUPPLIERS_BY_SEARCH:
+                goToHomeSuppliers(searchModuleDataHolder);
+                break;
+            default:
+                break;
         }
     }
 
+    /**
+     * Forwarded from menu.
+     */
+    private void goToHomeSuppliers() {
+        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
+        //Set visibility
+        view.getFilterLabel().setVisible(false);
+        view.getCellTree().setVisible(true);
+
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
+    }
+
+    /**
+     * Forwarded from search module.
+     *
+     * @param searchDataHolder
+     */
+    public void goToHomeSuppliers(SearchModuleDataHolder searchDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
+        //Set visibility
+        //display message that search was performed
+        //Ak bude text stale rovnaky, nemusi sa setovat tu,
+        //ale ak bude dynamicky (zobrazia searching criteria), tak ano
+        view.getFilterLabel().setText("Results satisfying searching criteria:");
+        view.getFilterLabel().setVisible(true);
+        view.getCellTree().setVisible(false);
+
+        //getData
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+    }
+
+    /**************************************************************************/
+    /* Bind events                                                            */
+    /**************************************************************************/
     @Override
     public void bindView() {
         view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
@@ -137,10 +173,7 @@ public class HomeSuppliersPresenter
 
                 if (selected != null) {
 
-                    if (searchDataHolder == null) {
-                        searchDataHolder = new SearchModuleDataHolder();
-                    }
-                    searchDataHolder.getCategories().clear();
+                    SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
                     searchDataHolder.getCategories().add(selected);
 
                     view.hideSuppliersDetail();

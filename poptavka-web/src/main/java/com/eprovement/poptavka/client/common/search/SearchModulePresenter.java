@@ -18,6 +18,7 @@ import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -146,17 +147,25 @@ public class SearchModulePresenter
         view.getSearchBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                SearchModuleDataHolder filter =
-                        ((AdvanceSearchContentInterface) view.getPopupPanel()).getSearchModuleDataHolder();
+                AdvanceSearchContentInterface advSearchContent
+                    = (AdvanceSearchContentInterface) view.getPopupPanel().getWidget();
+                SearchModuleDataHolder filter = advSearchContent.getSearchModuleDataHolder();
+                //if popup was shown, but no filters were set
+                if (filter == null) {
+                    showPopupNoSearchCriteria();
+                    return;
+                }
                 view.setFilterSearchContent();
-                switch (Storage.getCurrentlyLoadedView()) {
-                    case Constants.HOME_DEMANDS:
-                        eventBus.goToHomeDemandsModule(filter);
+                switch (view.getSearchWhat().getSelectedIndex()) {
+                    case 0:
+                        eventBus.goToHomeDemandsModule(filter, Constants.HOME_DEMANDS_BY_SEARCH);
                         break;
-                    case Constants.HOME_SUPPLIERS:
-                        eventBus.goToHomeSuppliersModule(filter);
+                    case 1:
+                        eventBus.goToHomeSuppliersModule(filter, Constants.HOME_SUPPLIERS_BY_SEARCH);
                         break;
                     default:
+                        //if current item is available in searchWhat listbox, folowing code is invoked
+                        //if not, processing don't come this far
                         if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
                             eventBus.goToClientDemandsModule(filter, Storage.getCurrentlyLoadedView());
                         }
@@ -169,6 +178,7 @@ public class SearchModulePresenter
                         if (Constants.getMessagesConstants().contains(Storage.getCurrentlyLoadedView())) {
                             eventBus.goToMessagesModule(filter, Storage.getCurrentlyLoadedView());
                         }
+                        break;
                 }
             }
         });
@@ -231,5 +241,14 @@ public class SearchModulePresenter
                         .getTabWidget(notSelectedWidgetIdx).getParent().setVisible(false);
             }
         });
+    }
+
+    private void showPopupNoSearchCriteria() {
+        int left = view.getSearchContent().getElement().getAbsoluteLeft();
+        int top = view.getSearchContent().getElement().getAbsoluteTop() + 30;
+        PopupPanel popup = new PopupPanel(true);
+        popup.setWidget(new Label(Storage.MSGS.noSearchingCriteria()));
+        popup.setPopupPosition(left, top);
+        popup.show();
     }
 }
