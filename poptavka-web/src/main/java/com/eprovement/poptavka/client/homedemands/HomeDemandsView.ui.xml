@@ -35,8 +35,9 @@
                                         <g:VerticalPanel>
                                             <g:Label ui:field="filterLabel"/>
                                             <g:HorizontalPanel>
-                                                    <c:SimplePager ui:field='pager' />
-                                                    <g:ListBox ui:field='pageSize' />
+                                                    <g:Button ui:field="offerBtn1">Send Offer</g:Button>
+                                                    <c:SimplePager styleName="float:right" ui:field='pager' />
+                                                    <g:ListBox styleName="float:right" ui:field='pageSize' />
                                             </g:HorizontalPanel>
                                         </g:VerticalPanel>
 				</g:north>
@@ -53,7 +54,7 @@
 						<g:SimplePanel ui:field="demandDetailPanel">
 							<d:DemandDetailView ui:field="demandDetail" />
 						</g:SimplePanel>
-						<g:Button ui:field="offerBtn">Send Offer</g:Button>
+						<g:Button ui:field="offerBtn2">Send Offer</g:Button>
 					</g:VerticalPanel>
 				</g:HTMLPanel>
 			</g:ScrollPanel>

@@ -100,7 +100,7 @@ public class HomeDemandsView extends OverflowComposite
     @UiField
     SimplePanel demandDetailPanel;
     @UiField
-    Button offerBtn;
+    Button offerBtn1, offerBtn2;
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
 
@@ -121,6 +121,12 @@ public class HomeDemandsView extends OverflowComposite
 
         bannerLabel.setVisible(true);
         demandDetail.setVisible(false);
+        //disable editing demand in this widget
+        demandDetail.getChoiceButtonsPanel().setVisible(false);
+        //set offerBtn1 enabled to false as default
+        offerBtn1.setEnabled(false);
+        offerBtn2.setVisible(false);
+
         StyleResource.INSTANCE.layout().ensureInjected();
     }
 
@@ -236,8 +242,13 @@ public class HomeDemandsView extends OverflowComposite
     }
 
     @Override
-    public Button getOfferBtn() {
-        return offerBtn;
+    public Button getOfferBtn1() {
+        return offerBtn1;
+    }
+
+    @Override
+    public Button getOfferBtn2() {
+        return offerBtn2;
     }
 
     @Override

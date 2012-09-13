@@ -75,7 +75,9 @@ public class HomeDemandsPresenter extends LazyPresenter<
         void hideDemandDetail();
 
         //Other
-        Button getOfferBtn();
+        Button getOfferBtn1();
+
+        Button getOfferBtn2();
 
         Label getBannerLabel();
 
@@ -228,7 +230,12 @@ public class HomeDemandsPresenter extends LazyPresenter<
                         (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
                         .getSelectedObject();
                 if (selected != null) {
+                    view.getOfferBtn1().setEnabled(true);
+                    view.getOfferBtn2().setVisible(true);
                     view.displayDemandDetail(selected);
+                } else {
+                    view.getOfferBtn1().setEnabled(false);
+                    view.getOfferBtn2().setVisible(false);
                 }
             }
         });
@@ -249,6 +256,7 @@ public class HomeDemandsPresenter extends LazyPresenter<
                 view.getPager().setPageSize(newPage);
             }
         });
+
     }
 
     /**************************************************************************/
