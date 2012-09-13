@@ -4,7 +4,7 @@ import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCServiceAsync;
+import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsModuleEventBus> {
 
     @Inject
-    private ClientDemandsRPCServiceAsync clientDemandsService;
+    private ClientDemandsModuleRPCServiceAsync clientDemandsService;
     private EmailDialogPopupView errorDialog;
 
     //*************************************************************************/

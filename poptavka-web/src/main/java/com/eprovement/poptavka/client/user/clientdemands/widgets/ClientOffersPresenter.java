@@ -38,9 +38,9 @@ import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
 
-@Presenter(view = ClientContestsView.class)
-public class ClientContestsPresenter
-        extends LazyPresenter<ClientContestsPresenter.ClientContestsLayoutInterface, ClientDemandsModuleEventBus> {
+@Presenter(view = ClientOffersView.class)
+public class ClientOffersPresenter
+        extends LazyPresenter<ClientOffersPresenter.ClientContestsLayoutInterface, ClientDemandsModuleEventBus> {
 
     public interface ClientContestsLayoutInterface extends LazyView, IsWidget {
 

@@ -13,13 +13,13 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ClientAssignedProjectsView extends Composite
-        implements ClientAssignedProjectsPresenter.ClientAssignedProjectsLayoutInterface {
+public class ClientAssignedDemandsView extends Composite
+        implements ClientAssignedDemandsPresenter.ClientAssignedProjectsLayoutInterface {
 
     private static ClientAssignedProjectsLayoutViewUiBinder uiBinder =
             GWT.create(ClientAssignedProjectsLayoutViewUiBinder.class);
 
-    interface ClientAssignedProjectsLayoutViewUiBinder extends UiBinder<Widget, ClientAssignedProjectsView> {
+    interface ClientAssignedProjectsLayoutViewUiBinder extends UiBinder<Widget, ClientAssignedDemandsView> {
     }
     /**************************************************************************/
     /* DemandContestTable Attrinbutes                                         */

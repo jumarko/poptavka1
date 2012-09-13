@@ -7,7 +7,7 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider;
-import com.eprovement.poptavka.server.service.clientdemands.ClientDemandsRPCServiceImpl;
+import com.eprovement.poptavka.server.service.clientdemands.ClientDemandsModuleRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
@@ -86,7 +86,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
     private LoginService loginService;
 
 
-    private ClientDemandsRPCServiceImpl clientDemandsRPCService;
+    private ClientDemandsModuleRPCServiceImpl clientDemandsRPCService;
 
 
     @Before
@@ -94,7 +94,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
 
         authenticateClient();
 
-        clientDemandsRPCService = new ClientDemandsRPCServiceImpl();
+        clientDemandsRPCService = new ClientDemandsModuleRPCServiceImpl();
         // converters
         clientDemandsRPCService.setClientDemandConverter(clientDemandConverter);
         clientDemandsRPCService.setDemandConverter(demandConverter);

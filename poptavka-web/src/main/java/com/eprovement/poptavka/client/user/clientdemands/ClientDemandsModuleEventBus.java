@@ -5,9 +5,9 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedProjectsPresenter;
-import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientContestsPresenter;
-import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientProjectsPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -53,8 +53,8 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void requestDetailWrapperPresenter();
 
     //Pozor, staci prezenter zavolat raz a uz je aktivny
-    @Event(handlers = {ClientProjectsPresenter.class, ClientContestsPresenter.class,
-            ClientAssignedProjectsPresenter.class }, passive = true)
+    @Event(handlers = {ClientDemandsPresenter.class, ClientOffersPresenter.class,
+            ClientAssignedDemandsPresenter.class }, passive = true)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
     /**************************************************************************/
     /* Navigation events.                                                     */
@@ -67,13 +67,13 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModulePresenter.class, historyConverter = ClientDemandsModuleHistoryConverter.class)
     String goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
-    @Event(handlers = ClientProjectsPresenter.class)
+    @Event(handlers = ClientDemandsPresenter.class)
     void initClientProjects(SearchModuleDataHolder filter);
 
-    @Event(handlers = ClientContestsPresenter.class)
+    @Event(handlers = ClientOffersPresenter.class)
     void initClientContests(SearchModuleDataHolder filter);
 
-    @Event(handlers = ClientAssignedProjectsPresenter.class)
+    @Event(handlers = ClientAssignedDemandsPresenter.class)
     void initClientAssignedProjects(SearchModuleDataHolder filter);
 
     /**************************************************************************/
@@ -104,19 +104,19 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /**************************************************************************/
     /* Business events handled by ListPresenters.                             */
     /**************************************************************************/
-    @Event(handlers = ClientProjectsPresenter.class)
+    @Event(handlers = ClientDemandsPresenter.class)
     void displayClientProjects(List<ClientProjectDetail> result);
 
-    @Event(handlers = ClientProjectsPresenter.class)
+    @Event(handlers = ClientDemandsPresenter.class)
     void displayClientProjectConversations(List<ClientProjectConversationDetail> result);
 
-    @Event(handlers = ClientContestsPresenter.class)
+    @Event(handlers = ClientOffersPresenter.class)
     void displayClientOfferedProjects(List<ClientProjectDetail> result);
 
-    @Event(handlers = ClientContestsPresenter.class)
+    @Event(handlers = ClientOffersPresenter.class)
     void displayClientProjectContestants(List<FullOfferDetail> result);
 
-    @Event(handlers = ClientAssignedProjectsPresenter.class)
+    @Event(handlers = ClientAssignedDemandsPresenter.class)
     void displayClientAssignedProjects(List<FullOfferDetail> result);
 
     /**************************************************************************/

@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.server.service.clientdemands;
 
-import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCService;
+import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
@@ -58,7 +58,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Martin Slavkovsky
  */
 @Configurable
-public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService implements ClientDemandsRPCService {
+public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteService
+        implements ClientDemandsModuleRPCService {
 
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
     //Services
@@ -511,7 +512,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService impl
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
-            Logger.getLogger(ClientDemandsRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientDemandsModuleRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }

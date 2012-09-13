@@ -32,12 +32,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class ClientProjectsView extends Composite
-        implements ClientProjectsPresenter.ClientProjectsLayoutInterface {
+public class ClientDemandsView extends Composite
+        implements ClientDemandsPresenter.ClientProjectsLayoutInterface {
 
     private static ClientProjectsLayoutViewUiBinder uiBinder = GWT.create(ClientProjectsLayoutViewUiBinder.class);
 
-    interface ClientProjectsLayoutViewUiBinder extends UiBinder<Widget, ClientProjectsView> {
+    interface ClientProjectsLayoutViewUiBinder extends UiBinder<Widget, ClientDemandsView> {
     }
     /**************************************************************************/
     /* DemandTable Attrinbutes                                                */

@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-public interface ClientDemandsRPCServiceAsync {
+public interface ClientDemandsModuleRPCServiceAsync {
 
     /**************************************************************************/
     /* Table getter methods                                                   */

@@ -25,12 +25,12 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.Arrays;
 import java.util.List;
 
-public class ClientContestsView extends Composite
-        implements ClientContestsPresenter.ClientContestsLayoutInterface {
+public class ClientOffersView extends Composite
+        implements ClientOffersPresenter.ClientContestsLayoutInterface {
 
     private static ClientContestsLayoutViewUiBinder uiBinder = GWT.create(ClientContestsLayoutViewUiBinder.class);
 
-    interface ClientContestsLayoutViewUiBinder extends UiBinder<Widget, ClientContestsView> {
+    interface ClientContestsLayoutViewUiBinder extends UiBinder<Widget, ClientOffersView> {
     }
     /**************************************************************************/
     /* DemandTable Attrinbutes                                                */

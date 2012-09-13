@@ -199,11 +199,11 @@
 
 
     <servlet>
-        <servlet-name>ClientDemandsRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.clientdemands.ClientDemandsRPCServiceImpl</servlet-class>
+        <servlet-name>ClientDemandsModuleRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.clientdemands.ClientDemandsModuleRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ClientDemandsRPCService</servlet-name>
+        <servlet-name>ClientDemandsModuleRPCService</servlet-name>
         <url-pattern>/poptavka/service/clientdemandsmodule</url-pattern>
     </servlet-mapping>
 
