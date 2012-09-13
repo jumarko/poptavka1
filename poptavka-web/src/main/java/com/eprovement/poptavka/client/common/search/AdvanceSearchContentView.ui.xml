@@ -23,6 +23,12 @@
             </g:tab>
             <g:tab>
                 <g:header>
+                    <ui:msg key="currentViewAttributes">Current View Attributes</ui:msg>
+                </g:header>
+                <g:SimplePanel ui:field="attributeSelectorWidgetPanel" />
+            </g:tab>
+            <g:tab>
+                <g:header>
                     <ui:msg key="categories">Categories</ui:msg>
                 </g:header>
                 <g:SimplePanel ui:field="categorySelectorWidgetPanel" />
@@ -32,12 +38,6 @@
                     <ui:msg key="localities">Localities</ui:msg>
                 </g:header>
                 <g:SimplePanel ui:field="localitySelectorWidgetPanel" />
-            </g:tab>
-            <g:tab>
-                <g:header>
-                    <ui:msg key="currentViewAttributes">Current View Attributes</ui:msg>
-                </g:header>
-                <g:SimplePanel ui:field="attributeSelectorWidgetPanel" />
             </g:tab>
         </g:TabLayoutPanel>
         <!--        <g:HorizontalPanel>

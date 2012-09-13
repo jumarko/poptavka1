@@ -1,8 +1,12 @@
 package com.eprovement.poptavka.client.common.search;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -11,18 +15,23 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.eprovement.poptavka.client.common.session.Storage;
-import com.google.gwt.user.client.ui.ListBox;
 
 public class SearchModuleView extends Composite implements SearchModulePresenter.SearchModuleInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, SearchModuleView> {
     }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     @UiField
     Button searchBtn, advSearchBtn;
     @UiField
@@ -36,13 +45,17 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     //Holds data
     private SearchModuleDataHolder filters = new SearchModuleDataHolder();
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        searchWhat.addItem(Storage.MSGS.demands());
-        searchWhat.addItem(Storage.MSGS.suppliers());
+        searchWhat.addItem(Storage.MSGS.searchInDemands());
+        searchWhat.addItem(Storage.MSGS.searchInSuppliers());
         searchWhat.setSelectedIndex(0);
+        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), searchWhat);
 
         popupPanel.setAutoHideEnabled(true);
         popupPanel.setAnimationEnabled(true);
@@ -52,54 +65,20 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         popupPanel.hide();
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
     @Override
     public void setAttributeSelectorWidget(IsWidget attributeSearchViewWidget) {
+        //If attributeSearchViewWidget is not null -> current view searching is available
+        //Therefore set widget to popup
         advanceSearchContentView.getAttributeSelectorPanel().setWidget(attributeSearchViewWidget);
-        boolean widgetVisible = true;
+        //and add new item to searchWhat listbox
         if (attributeSearchViewWidget == null) {
-            widgetVisible = false;
+            addCustomItemToSearchWhatBox(false);
         } else {
-            advanceSearchContentView.getTabLayoutPanel()
-                    .selectTab(AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET);
+            addCustomItemToSearchWhatBox(true);
         }
-        advanceSearchContentView.getTabLayoutPanel()
-                    .getTabWidget(AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET)
-                    .getParent().setVisible(widgetVisible);
-    }
-
-    // Buttons
-    @Override
-    public Button getSearchBtn() {
-        return searchBtn;
-    }
-
-    @Override
-    public Button getAdvSearchBtn() {
-        return advSearchBtn;
-    }
-
-    @Override
-    public ListBox getSearchWhat() {
-        return searchWhat;
-    }
-
-    @Override
-    public TextBox getSearchContent() {
-        return searchContent;
-    }
-
-    @Override
-    public PopupPanel getPopupPanel() {
-        return popupPanel;
-    }
-
-    public AdvanceSearchContentView getAdvanceSearchContentView() {
-        return advanceSearchContentView;
     }
 
     /**
@@ -115,6 +94,67 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         }
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    // Search Bar items
+    @Override
+    public TextBox getSearchContent() {
+        return searchContent;
+    }
+
+    @Override
+    public ListBox getSearchWhat() {
+        return searchWhat;
+    }
+
+    @Override
+    public Button getSearchBtn() {
+        return searchBtn;
+    }
+
+    @Override
+    public Button getAdvSearchBtn() {
+        return advSearchBtn;
+    }
+
+    // Layouts & Panels
+    @Override
+    public PopupPanel getPopupPanel() {
+        return popupPanel;
+    }
+
+    @Override
+    public AdvanceSearchContentView getAdvanceSearchContentView() {
+        return advanceSearchContentView;
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
+
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    @UiHandler("searchWhat")
+    public void searchWhatChangeHandler(ChangeEvent event) {
+        int selectedWidgetIdx = searchWhat.getSelectedIndex();
+        switch (selectedWidgetIdx) {
+            case AdvanceSearchContentView.DEMANDS_SELECTOR_WIDGET:
+                setAdvanceContentTabsVisibility(true, false, false);
+                break;
+            case AdvanceSearchContentView.SUPPLIER_SELECTOR_WIDGET:
+                setAdvanceContentTabsVisibility(false, true, false);
+                break;
+            case AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET:
+                setAdvanceContentTabsVisibility(false, false, true);
+                break;
+            default:
+                break;
+        }
+        advanceSearchContentView.getTabLayoutPanel().selectTab(selectedWidgetIdx);
+    }
     /*
      * CLICK HANDLERS
      *
@@ -122,15 +162,16 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      * data from appropiate view loaded in popup window. See
      * handlerPopupPanelCloserEvent methods.
      */
+
     @UiHandler("searchContent")
-    void handleSearchContentFocusClick(FocusEvent event) {
+    public void handleSearchContentFocusClick(FocusEvent event) {
         if (searchContent.getText().equals(Storage.MSGS.searchContent())) {
             searchContent.setText("");
         }
     }
 
     @UiHandler("searchContent")
-    void handleSearchContentBlurClick(BlurEvent event) {
+    public void handleSearchContentBlurClick(BlurEvent event) {
         if (searchContent.getText().equals("")) {
             searchContent.setText(Storage.MSGS.searchContent());
         }
@@ -145,7 +186,33 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      * - categories, localities, attributes.
      */
     @UiHandler("popupPanel")
-    void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
+    public void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
         //Change adv button icon to - selected
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void addCustomItemToSearchWhatBox(boolean addOrRemove) {
+        if (addOrRemove) {
+            searchWhat.addItem(Storage.MSGS.searchInCurrentView());
+            searchWhat.setSelectedIndex(2);
+        } else {
+            if (searchWhat.getItemCount() == 3) {
+                searchWhat.removeItem(2);
+            }
+            searchWhat.setSelectedIndex(0);
+        }
+        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), searchWhat);
+    }
+
+    private void setAdvanceContentTabsVisibility(
+            boolean demandsTabVisible, boolean suppliersTabVisible, boolean currentViewTabVisible) {
+        advanceSearchContentView.getTabLayoutPanel().getTabWidget(
+                AdvanceSearchContentView.DEMANDS_SELECTOR_WIDGET).getParent().setVisible(demandsTabVisible);
+        advanceSearchContentView.getTabLayoutPanel().getTabWidget(
+                AdvanceSearchContentView.SUPPLIER_SELECTOR_WIDGET).getParent().setVisible(suppliersTabVisible);
+        advanceSearchContentView.getTabLayoutPanel().getTabWidget(
+                AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET).getParent().setVisible(currentViewTabVisible);
     }
 }

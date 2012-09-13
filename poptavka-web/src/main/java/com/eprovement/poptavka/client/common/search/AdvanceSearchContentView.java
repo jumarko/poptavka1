@@ -17,10 +17,16 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 public class AdvanceSearchContentView extends Composite
         implements SearchModulePresenter.AdvanceSearchContentInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static AdvanceSearchContentViewUiBinder uiBinder = GWT.create(AdvanceSearchContentViewUiBinder.class);
 
     interface AdvanceSearchContentViewUiBinder extends UiBinder<Widget, AdvanceSearchContentView> {
     }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     @UiField
     TabLayoutPanel mainPanel;
     @UiField
@@ -29,12 +35,18 @@ public class AdvanceSearchContentView extends Composite
     HomeDemandsSearchView demandsAttributeSelectorWidget;
     @UiField
     HomeSuppliersSearchView suppliersAttributeSelectorWidget;
-    //Tab constants
+    /**************************************************************************/
+    /* Tab constants                                                          */
+    /**************************************************************************/
+    public static final int DEMANDS_SELECTOR_WIDGET = 0;
     public static final int SUPPLIER_SELECTOR_WIDGET = 1;
-    public static final int CATEGORY_SELECTOR_WIDGET = 2;
-    public static final int LOCALITY_SELECTOR_WIDGET = 3;
-    public static final int CURRENT_SELECTOR_WIDGET = 4;
+    public static final int CURRENT_SELECTOR_WIDGET = 2;
+    public static final int CATEGORY_SELECTOR_WIDGET = 3;
+    public static final int LOCALITY_SELECTOR_WIDGET = 4;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     public AdvanceSearchContentView() {
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.setSize("500px", "300px");
@@ -43,6 +55,12 @@ public class AdvanceSearchContentView extends Composite
         mainPanel.getTabWidget(SUPPLIER_SELECTOR_WIDGET).getParent().setVisible(false);
     }
 
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
     @Override
     public HomeDemandsSearchView getDemandsAttributeSelectorWidget() {
         return demandsAttributeSelectorWidget;

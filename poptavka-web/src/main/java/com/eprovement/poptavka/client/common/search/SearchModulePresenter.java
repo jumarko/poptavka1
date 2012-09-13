@@ -10,8 +10,6 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
@@ -42,23 +40,26 @@ public class SearchModulePresenter
 
     public interface SearchModuleInterface extends LazyView, IsWidget {
 
-        Widget getWidgetView();
+        //GETTERS - search bar items
+        TextBox getSearchContent();
+
+        ListBox getSearchWhat();
 
         Button getSearchBtn();
 
         Button getAdvSearchBtn();
 
-        ListBox getSearchWhat();
+        //GETTERS - widgets & panel
+        AdvanceSearchContentView getAdvanceSearchContentView();
 
         PopupPanel getPopupPanel();
 
-        AdvanceSearchContentView getAdvanceSearchContentView();
+        Widget getWidgetView();
 
+        //SETTERS
         void setFilterSearchContent();
 
         void setAttributeSelectorWidget(IsWidget attributeSearchViewWidget);
-
-        TextBox getSearchContent();
     }
 
     public interface AdvanceSearchContentInterface {
@@ -95,7 +96,6 @@ public class SearchModulePresenter
         this.addSearchBtnClickHandler();
         this.addAdvSearchBtnClickHandler();
         this.addTabLayoutPanelBeforeSelectionHandler();
-        this.addSearchWhatSelectionHandler();
     }
 
     /**************************************************************************/
@@ -225,22 +225,6 @@ public class SearchModulePresenter
                         }
                     }
                 });
-    }
-
-    private void addSearchWhatSelectionHandler() {
-        view.getSearchWhat().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                int selectedWidgetIdx = view.getSearchWhat().getSelectedIndex();
-                int notSelectedWidgetIdx = (selectedWidgetIdx + 1) % 2;
-                view.getAdvanceSearchContentView().getTabLayoutPanel()
-                        .selectTab(selectedWidgetIdx);
-                view.getAdvanceSearchContentView().getTabLayoutPanel()
-                        .getTabWidget(selectedWidgetIdx).getParent().setVisible(true);
-                view.getAdvanceSearchContentView().getTabLayoutPanel()
-                        .getTabWidget(notSelectedWidgetIdx).getParent().setVisible(false);
-            }
-        });
     }
 
     private void showPopupNoSearchCriteria() {
