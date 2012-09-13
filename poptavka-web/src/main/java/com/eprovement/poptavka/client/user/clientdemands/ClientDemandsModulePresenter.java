@@ -15,9 +15,9 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-@Presenter(view = ClientDemandsView.class)
-public class ClientDemandsPresenter
-        extends LazyPresenter<ClientDemandsPresenter.ClientDemandsLayoutInterface, ClientDemandsEventBus> {
+@Presenter(view = ClientDemandsModuleView.class)
+public class ClientDemandsModulePresenter
+        extends LazyPresenter<ClientDemandsModulePresenter.ClientDemandsLayoutInterface, ClientDemandsModuleEventBus> {
 
     public interface ClientDemandsLayoutInterface extends LazyView, IsWidget {
 
@@ -124,7 +124,7 @@ public class ClientDemandsPresenter
                 break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);
-                view.setContent(new ClientDemandsWelcomeView());
+                view.setContent(new ClientDemandsModuleWelcomeView());
                 break;
         }
     }

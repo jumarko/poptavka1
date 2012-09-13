@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EventHandler
-public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus> {
+public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsModuleEventBus> {
 
     @Inject
     private ClientDemandsRPCServiceAsync clientDemandsService;

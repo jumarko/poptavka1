@@ -28,14 +28,14 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@Events(startPresenter = ClientDemandsPresenter.class, module = ClientDemandsModule.class)
-public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
+@Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class)
+public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
      * First event to be handled.
      */
     @Start
-    @Event(handlers = ClientDemandsPresenter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class)
     void start();
 
     /**
@@ -43,7 +43,7 @@ public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData
      * in this method we should remove forward event to save the number of method invocations.
      */
     @Forward
-    @Event(handlers = ClientDemandsPresenter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class)
     void forward();
 
     /**************************************************************************/
@@ -64,7 +64,7 @@ public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = ClientDemandsPresenter.class, historyConverter = ClientDemandsHistoryConverter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class, historyConverter = ClientDemandsModuleHistoryConverter.class)
     String goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(handlers = ClientProjectsPresenter.class)
@@ -98,7 +98,7 @@ public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData
     /* Business events handled by DemandModulePresenter.                      */
     /**************************************************************************/
     // Forward methods don't need history converter because they have its owns
-    @Event(handlers = ClientDemandsPresenter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class)
     void displayView(IsWidget content);
 
     /**************************************************************************/
@@ -122,19 +122,19 @@ public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
 
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void requestCloseDemand(FullDemandDetail demandDetail);
 
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void requestAcceptOffer(FullOfferDetail fullOfferDetail);
 
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void requestDeclineOffer(OfferDetail offerDetail);
 
     /**************************************************************************/
@@ -142,16 +142,16 @@ public interface ClientDemandsEventBus extends EventBusWithLookup, IEventBusData
     /* Should be called only from UniversalAsyncGrid. */
     /**************************************************************************/
     @Override
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
     @Override
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void getData(SearchDefinition searchDefinition);
 
     /**************************************************************************/
     /* Button actions - messaging.                                            */
     /**************************************************************************/
-    @Event(handlers = ClientDemandsHandler.class)
+    @Event(handlers = ClientDemandsModuleHandler.class)
     void getOfferStatusChange(OfferDetail offerDetail);
 }
