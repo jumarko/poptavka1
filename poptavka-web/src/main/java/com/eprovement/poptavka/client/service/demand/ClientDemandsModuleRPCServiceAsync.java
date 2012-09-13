@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -21,36 +21,37 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     /* Table getter methods                                                   */
     /**************************************************************************/
-    void getClientProjectsCount(long clientID, SearchDefinition searchDefinition,
+    //ClientDemands widget
+    void getClientDemandsCount(long clientID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientProjects(long clientID, SearchDefinition searchDefinition,
-            AsyncCallback<List<ClientProjectDetail>> callback);
+    void getClientDemands(long clientID, SearchDefinition searchDefinition,
+            AsyncCallback<List<ClientDemandDetail>> callback);
 
-    void getClientProjectConversationsCount(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientDemandConversationsCount(long clientID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientProjectConversations(long clientID, long demandID, SearchDefinition searchDefinition,
-            AsyncCallback<List<ClientProjectConversationDetail>> callback);
+    void getClientDemandConversations(long clientID, long demandID, SearchDefinition searchDefinition,
+            AsyncCallback<List<ClientDemandConversationDetail>> callback);
 
-    //
-    void getClientOfferedProjectsCount(long clientID, SearchDefinition searchDefinition,
+    //ClientOffers widget
+    void getClientOfferedDemandsCount(long clientID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientOfferedProjects(long clientID, long demandID, SearchDefinition searchDefinition,
-            AsyncCallback<List<ClientProjectDetail>> callback);
+    void getClientOfferedDemands(long clientID, long demandID, SearchDefinition searchDefinition,
+            AsyncCallback<List<ClientDemandDetail>> callback);
 
-    void getClientProjectContestantsCount(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientOfferedDemandOffersCount(long clientID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientProjectContestants(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientOfferedDemandOffers(long clientID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
-    //
-    void getClientAssignedProjectsCount(long clientID, SearchDefinition searchDefinition,
+    //ClientAssignedDemands widget
+    void getClientAssignedDemandsCount(long clientID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientAssignedProjects(long clientID, SearchDefinition searchDefinition,
+    void getClientAssignedDemands(long clientID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
     /**************************************************************************/

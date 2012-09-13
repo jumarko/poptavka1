@@ -9,8 +9,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -38,35 +38,35 @@ import java.util.Set;
 
 @Presenter(view = ClientDemandsView.class)
 public class ClientDemandsPresenter
-        extends LazyPresenter<ClientDemandsPresenter.ClientProjectsLayoutInterface, ClientDemandsModuleEventBus> {
+        extends LazyPresenter<ClientDemandsPresenter.ClientDemandsLayoutInterface, ClientDemandsModuleEventBus> {
 
-    public interface ClientProjectsLayoutInterface extends LazyView, IsWidget {
+    public interface ClientDemandsLayoutInterface extends LazyView, IsWidget {
 
         // Columns
         Header getCheckHeader();
 
-        Column<ClientProjectConversationDetail, Boolean> getCheckColumn();
+        Column<ClientDemandConversationDetail, Boolean> getCheckColumn();
 
-        Column<ClientProjectConversationDetail, Boolean> getStarColumn();
+        Column<ClientDemandConversationDetail, Boolean> getStarColumn();
 
-        Column<ClientProjectConversationDetail, ImageResource> getReplyColumn();
+        Column<ClientDemandConversationDetail, ImageResource> getReplyColumn();
 
-        Column<ClientProjectConversationDetail, String> getSupplierNameColumn();
+        Column<ClientDemandConversationDetail, String> getSupplierNameColumn();
 
-        Column<ClientProjectConversationDetail, String> getBodyPreviewColumn();
+        Column<ClientDemandConversationDetail, String> getBodyPreviewColumn();
 
-        Column<ClientProjectConversationDetail, String> getDateColumn();
+        Column<ClientDemandConversationDetail, String> getDateColumn();
 
         // Others
-        UniversalAsyncGrid<ClientProjectDetail> getDemandGrid();
+        UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
 
-        UniversalAsyncGrid<ClientProjectConversationDetail> getConversationGrid();
+        UniversalAsyncGrid<ClientDemandConversationDetail> getConversationGrid();
 
         int getConversationPageSize();
 
         List<Long> getSelectedIdList();
 
-        Set<ClientProjectConversationDetail> getSelectedMessageList();
+        Set<ClientDemandConversationDetail> getSelectedMessageList();
 
         //ListBox
         ListBox getActions();
@@ -88,7 +88,7 @@ public class ClientDemandsPresenter
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedProjectConversation = -1;
+    private long lastOpenedDemandConversation = -1;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -109,8 +109,8 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
-    public void onInitClientProjects(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECTS);
+    public void onInitClientDemands(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         eventBus.setUpSearchBar(new Label("Client's projects attibure's selector will be here."));
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
@@ -136,14 +136,14 @@ public class ClientDemandsPresenter
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplayClientProjects(List<ClientProjectDetail> data) {
-        GWT.log("++ onResponseClientsProjects");
+    public void onDisplayClientDemands(List<ClientDemandDetail> data) {
+        GWT.log("++ onResponseClientsDemands");
 
         view.getDemandGrid().updateRowData(data);
     }
 
-    public void onDisplayClientProjectConversations(List<ClientProjectConversationDetail> data) {
-        GWT.log("++ onResponseClientsProjects");
+    public void onDisplayClientDemandConversations(List<ClientDemandConversationDetail> data) {
+        GWT.log("++ onResponseClientsDemands");
 
         view.getConversationGrid().updateRowData(data);
     }
@@ -155,7 +155,7 @@ public class ClientDemandsPresenter
      * @param messageId ID for demand related conversation
      * @param userMessageId ID for demand related conversation
      */
-    public void displayDetailContent(ClientProjectConversationDetail detail) {
+    public void displayDetailContent(ClientDemandConversationDetail detail) {
 //        detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestDemandDetail(123L, type);
 
@@ -179,8 +179,8 @@ public class ClientDemandsPresenter
 
             @Override
             public void update(Boolean value) {
-                List<ClientProjectConversationDetail> rows = view.getConversationGrid().getVisibleItems();
-                for (ClientProjectConversationDetail row : rows) {
+                List<ClientDemandConversationDetail> rows = view.getConversationGrid().getVisibleItems();
+                for (ClientDemandConversationDetail row : rows) {
                     ((MultiSelectionModel) view.getConversationGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
@@ -188,10 +188,10 @@ public class ClientDemandsPresenter
     }
 
     public void addStarColumnFieldUpdater() {
-        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientProjectConversationDetail, Boolean>() {
+        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientDemandConversationDetail, Boolean>() {
 
             @Override
-            public void update(int index, ClientProjectConversationDetail object, Boolean value) {
+            public void update(int index, ClientDemandConversationDetail object, Boolean value) {
                 object.setStarred(!value);
                 view.getConversationGrid().redraw();
                 Long[] item = new Long[]{object.getUserMessageId()};
@@ -201,22 +201,22 @@ public class ClientDemandsPresenter
     }
 
     public void addReplyColumnFieldUpdater() {
-        view.getReplyColumn().setFieldUpdater(new FieldUpdater<ClientProjectConversationDetail, ImageResource>() {
+        view.getReplyColumn().setFieldUpdater(new FieldUpdater<ClientDemandConversationDetail, ImageResource>() {
 
             @Override
-            public void update(int index, ClientProjectConversationDetail object, ImageResource value) {
+            public void update(int index, ClientDemandConversationDetail object, ImageResource value) {
                 detailSection.getView().getReplyHolder().addQuestionReply();
             }
         });
     }
 
     public void addTextColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<ClientProjectConversationDetail, String>() {
+        FieldUpdater textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
 
             @Override
-            public void update(int index, ClientProjectConversationDetail object, String value) {
-                if (lastOpenedProjectConversation != object.getUserMessageId()) {
-                    lastOpenedProjectConversation = object.getUserMessageId();
+            public void update(int index, ClientDemandConversationDetail object, String value) {
+                if (lastOpenedDemandConversation != object.getUserMessageId()) {
+                    lastOpenedDemandConversation = object.getUserMessageId();
                     object.setRead(true);
                     view.getConversationGrid().redraw();
                     displayDetailContent(object);
@@ -260,8 +260,8 @@ public class ClientDemandsPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECT_DISCUSSIONS);
-                ClientProjectDetail selected = (ClientProjectDetail) ((SingleSelectionModel)
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS_DISCUSSIONS);
+                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel)
                         view.getDemandGrid().getSelectionModel()).getSelectedObject();
                 if (selected != null) {
                     selected.setRead(true);

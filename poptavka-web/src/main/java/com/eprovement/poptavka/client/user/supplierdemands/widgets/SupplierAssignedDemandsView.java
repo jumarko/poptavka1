@@ -13,15 +13,15 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SupplierAssignedDemandsView extends Composite
-        implements SupplierAssignedDemandsPresenter.SupplierAssignedProjectsLayoutInterface {
+        implements SupplierAssignedDemandsPresenter.SupplierAssignedDemandsLayoutInterface {
 
-    private static SupplierAssignedProjectsLayoutViewUiBinder uiBinder =
-            GWT.create(SupplierAssignedProjectsLayoutViewUiBinder.class);
+    private static SupplierAssignedDemandsLayoutViewUiBinder uiBinder =
+            GWT.create(SupplierAssignedDemandsLayoutViewUiBinder.class);
 
-    interface SupplierAssignedProjectsLayoutViewUiBinder extends UiBinder<Widget, SupplierAssignedDemandsView> {
+    interface SupplierAssignedDemandsLayoutViewUiBinder extends UiBinder<Widget, SupplierAssignedDemandsView> {
     }
     /**************************************************************************/
-    /* DemandContestTable Attrinbutes                                         */
+    /* AssignedDemandTable Attributes                                         */
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
@@ -43,7 +43,7 @@ public class SupplierAssignedDemandsView extends Composite
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
 
-        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_ASSIGNED_PROJECTS);
+        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_ASSIGNED_DEMANDS);
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());

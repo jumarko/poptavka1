@@ -66,13 +66,13 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     String goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(handlers = SupplierDemandsPresenter.class)
-    void initSupplierProjects(SearchModuleDataHolder filter);
+    void initSupplierDemands(SearchModuleDataHolder filter);
 
     @Event(handlers = SupplierOffersPresenter.class)
-    void initSupplierContests(SearchModuleDataHolder filter);
+    void initSupplierOffers(SearchModuleDataHolder filter);
 
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
-    void initSupplierAssignedProjects(SearchModuleDataHolder filter);
+    void initSupplierAssignedDemands(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Parent events */
@@ -101,14 +101,14 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
             SupplierAssignedDemandsPresenter.class }, passive = true)
     void displaySupplierDemandsData(List<FullOfferDetail> result);
 
-//    @Event(handlers = SupplierProjectsPresenter.class)
-//    void displaySupplierPotentialProjects(List<FullOfferDetail> result);
+//    @Event(handlers = SupplierDemandsPresenter.class)
+//    void displaySupplierPotentialDemands(List<FullOfferDetail> result);
 //
-//    @Event(handlers = SupplierContestsPresenter.class)
-//    void displaySupplierContests(List<FullOfferDetail> result);
+//    @Event(handlers = SupplierOffersPresenter.class)
+//    void displaySupplierOffers(List<FullOfferDetail> result);
 //
-//    @Event(handlers = SupplierAssignedProjectsPresenter.class)
-//    void displaySupplierAssignedProjects(List<FullOfferDetail> result);
+//    @Event(handlers = SupplierAssignedDemandsPresenter.class)
+//    void displaySupplierAssignedDemands(List<FullOfferDetail> result);
     /**************************************************************************/
     /* Business events handled by DevelDetailWrapperPresenter.                */
     /**************************************************************************/

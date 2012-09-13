@@ -13,15 +13,15 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SupplierOffersView extends Composite
-        implements SupplierOffersPresenter.SupplierContestsLayoutInterface {
+        implements SupplierOffersPresenter.SupplierOffersLayoutInterface {
 
-    private static SupplierContestsLayoutViewUiBinder uiBinder =
-            GWT.create(SupplierContestsLayoutViewUiBinder.class);
+    private static SupplierOffersLayoutViewUiBinder uiBinder =
+            GWT.create(SupplierOffersLayoutViewUiBinder.class);
 
-    interface SupplierContestsLayoutViewUiBinder extends UiBinder<Widget, SupplierOffersView> {
+    interface SupplierOffersLayoutViewUiBinder extends UiBinder<Widget, SupplierOffersView> {
     }
     /**************************************************************************/
-    /* DemandContestTable Attrinbutes                                         */
+    /* DemandOfferTable Attributes                                            */
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
@@ -43,7 +43,7 @@ public class SupplierOffersView extends Composite
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
 
-        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_CONTESTS);
+        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_OFFERS);
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());

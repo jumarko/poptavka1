@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.user.widget.grid;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
@@ -124,19 +124,19 @@ public class UniversalTableWidget extends Composite {
      */
     public UniversalTableWidget(int loadedView) {
         switch (loadedView) {
-            case Constants.CLIENT_OFFERED_PROJECTS:
+            case Constants.CLIENT_OFFERED_DEMANDS:
                 initClientOffers();
                 break;
-            case Constants.CLIENT_ASSIGNED_PROJECTS:
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
                 initClientAcceptedOffers();
                 break;
-            case Constants.SUPPLIER_POTENTIAL_PROJECTS:
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
                 initSupplierPotentialProjects();
                 break;
-            case Constants.SUPPLIER_CONTESTS:
+            case Constants.SUPPLIER_OFFERS:
                 initSupplierContests();
                 break;
-            case Constants.SUPPLIER_ASSIGNED_PROJECTS:
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 initSupplierAssignedProjects();
                 break;
             default:
@@ -387,7 +387,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
-                            return ClientProjectDetail.displayHtml(
+                            return ClientDemandDetail.displayHtml(
                                     Integer.toString(detail.getOfferDetail().getRating()),
                                     detail.isRead());
                         }
@@ -418,7 +418,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
-                            return ClientProjectDetail.displayHtml(
+                            return ClientDemandDetail.displayHtml(
                                     formatter.format(detail.getOfferDetail().getCreatedDate()),
                                     detail.isRead());
                         }
@@ -434,7 +434,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             FullOfferDetail detail = (FullOfferDetail) object;
-                            return ClientProjectDetail.displayHtml(
+                            return ClientDemandDetail.displayHtml(
                                     formatter.format(detail.getOfferDetail().getFinishDate()),
                                     detail.isRead());
                         }

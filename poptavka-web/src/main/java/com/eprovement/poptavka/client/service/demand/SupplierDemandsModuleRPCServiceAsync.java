@@ -15,24 +15,25 @@ import java.util.List;
  */
 public interface SupplierDemandsModuleRPCServiceAsync {
 
-    void getSupplierPotentialProjectsCount(long supplierID, SearchDefinition searchDefinition,
+    //SupplierDemands widget
+    void getSupplierPotentialDemandsCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getSupplierPotentialProjects(long supplierID, SearchDefinition searchDefinition,
+    void getSupplierPotentialDemands(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
-    //
-    void getSupplierContestsCount(long supplierID, SearchDefinition searchDefinition,
+    //SupplierOffers widget
+    void getSupplierOffersCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getSupplierContests(long supplierID, SearchDefinition searchDefinition,
+    void getSupplierOffers(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
-    //
-    void getSupplierAssignedProjectsCount(long supplierID, SearchDefinition searchDefinition,
+    //SupplierAssignedDemands widget
+    void getSupplierAssignedDemandsCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getSupplierAssignedProjects(long supplierID, SearchDefinition searchDefinition,
+    void getSupplierAssignedDemands(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
     /**************************************************************************/

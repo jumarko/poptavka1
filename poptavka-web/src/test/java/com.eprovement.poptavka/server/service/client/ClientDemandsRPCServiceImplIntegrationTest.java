@@ -14,7 +14,7 @@ import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -49,7 +49,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
 
     @Autowired
     @Qualifier("clientDemandConverter")
-    private Converter<Demand, ClientProjectDetail> clientDemandConverter;
+    private Converter<Demand, ClientDemandDetail> clientDemandConverter;
 
     @Autowired
     @Qualifier("fullDemandConverter")
@@ -121,11 +121,11 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
 
 
     @Test
-    public void testGetAllClientProjects() {
-        final List<ClientProjectDetail> allClientProjects = clientDemandsRPCService.getClientProjects(111111111L, null);
-        assertNotNull(allClientProjects);
+    public void testGetAllClientDemands() {
+        final List<ClientDemandDetail> allClientDemands = clientDemandsRPCService.getClientDemands(111111111L, null);
+        assertNotNull(allClientDemands);
         // check that there is only one new demand - see DemandsDataSet.xml
-        assertThat(allClientProjects.size(), is(1));
+        assertThat(allClientDemands.size(), is(1));
     }
 
 }

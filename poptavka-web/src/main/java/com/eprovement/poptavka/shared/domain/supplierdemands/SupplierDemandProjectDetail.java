@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.shared.domain.clientdemands;
+package com.eprovement.poptavka.shared.domain.supplierdemands;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientProjectDetail implements Serializable, TableDisplay {
+public class SupplierDemandProjectDetail implements Serializable, TableDisplay {
 
     /**
      * Generated serialVersionUID.
@@ -23,25 +23,24 @@ public class ClientProjectDetail implements Serializable, TableDisplay {
     private long demandId;
     private long messageId;
     private long userMessageId;
-    private DemandStatus demandStatus;
+    private String clientName;
+    private String supplierName;
     private String demandTitle; //title
+    private int rating;
     private BigDecimal price = null;
-    private Date endDate;
-    private Date validToDate;
+    private Date endDate; //urgency
+    private Date receivedDate;
+    private Date deliveryDate;
     private boolean read = false;
     private boolean starred = false;
-    private int messageCount = -1;
-    private int unreadSubmessages = -1;
-
-    public static final ProvidesKey<ClientProjectDetail> KEY_PROVIDER =
-            new ProvidesKey<ClientProjectDetail>() {
+    public static final ProvidesKey<SupplierDemandProjectDetail> KEY_PROVIDER =
+            new ProvidesKey<SupplierDemandProjectDetail>() {
 
                 @Override
-                public Object getKey(ClientProjectDetail item) {
+                public Object getKey(SupplierDemandProjectDetail item) {
                     return item == null ? null : item.getDemandId();
                 }
             };
-
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public long getDemandId() {
@@ -68,28 +67,12 @@ public class ClientProjectDetail implements Serializable, TableDisplay {
         this.userMessageId = userMessageId;
     }
 
-    public DemandStatus getDemandStatus() {
-        return demandStatus;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setDemandStatus(DemandStatus demandStatus) {
-        this.demandStatus = demandStatus;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Date getValidToDate() {
-        return validToDate;
-    }
-
-    public void setValidToDate(Date validToDate) {
-        this.validToDate = validToDate;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public boolean isRead() {
@@ -112,10 +95,6 @@ public class ClientProjectDetail implements Serializable, TableDisplay {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-//    @Override
-//    public String getTitle() {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
     public Date getCreated() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -128,32 +107,12 @@ public class ClientProjectDetail implements Serializable, TableDisplay {
         this.price = price;
     }
 
-    public int getMessageCount() {
-        return messageCount;
-    }
-
-    public void setMessageCount(int messageCount) {
-        this.messageCount = messageCount;
-    }
-
-    public int getUnreadSubmessages() {
-        return unreadSubmessages;
-    }
-
-    public void setUnreadSubmessages(int unreadSubmessages) {
-        this.unreadSubmessages = unreadSubmessages;
-    }
-
-    public String getFormattedMessageCount() {
-        return "(" + getMessageCount() + "/" + getUnreadSubmessages() + ")";
-    }
-
     public String getSender() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public int getRating() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return rating;
     }
 
     public Date getExpireDate() {
@@ -161,11 +120,27 @@ public class ClientProjectDetail implements Serializable, TableDisplay {
     }
 
     public Date getReceivedDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return receivedDate;
     }
 
     public Date getAcceptedDate() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
     public String getTitle() {
@@ -192,5 +167,31 @@ public class ClientProjectDetail implements Serializable, TableDisplay {
         } else {
             return "<strong>" + trustedHtml + "</strong>";
         }
+    }
+
+    @Override
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setMessageId(long messageId) {
+        this.messageId = messageId;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    @Override
+    public DemandStatus getDemandStatus() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

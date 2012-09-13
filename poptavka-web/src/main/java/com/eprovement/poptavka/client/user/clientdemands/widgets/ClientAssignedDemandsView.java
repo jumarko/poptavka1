@@ -14,15 +14,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ClientAssignedDemandsView extends Composite
-        implements ClientAssignedDemandsPresenter.ClientAssignedProjectsLayoutInterface {
+        implements ClientAssignedDemandsPresenter.ClientAssignedDemandsLayoutInterface {
 
-    private static ClientAssignedProjectsLayoutViewUiBinder uiBinder =
-            GWT.create(ClientAssignedProjectsLayoutViewUiBinder.class);
+    private static ClientAssignedDemandsLayoutViewUiBinder uiBinder =
+            GWT.create(ClientAssignedDemandsLayoutViewUiBinder.class);
 
-    interface ClientAssignedProjectsLayoutViewUiBinder extends UiBinder<Widget, ClientAssignedDemandsView> {
+    interface ClientAssignedDemandsLayoutViewUiBinder extends UiBinder<Widget, ClientAssignedDemandsView> {
     }
     /**************************************************************************/
-    /* DemandContestTable Attrinbutes                                         */
+    /* DemandOfferTable Attrinbutes                                         */
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
@@ -46,7 +46,7 @@ public class ClientAssignedDemandsView extends Composite
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
 
-        tableWidget = new UniversalTableWidget(Constants.CLIENT_ASSIGNED_PROJECTS);
+        tableWidget = new UniversalTableWidget(Constants.CLIENT_ASSIGNED_DEMANDS);
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());

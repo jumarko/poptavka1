@@ -61,21 +61,21 @@ public class ClientDemandsModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_PROJECTS);
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
             }
         });
         view.getClientOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_OFFERED_PROJECTS);
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_OFFERED_DEMANDS);
             }
         });
         view.getClientAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_PROJECTS);
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
             }
         });
         view.getClientCreateDemand().addClickHandler(new ClickHandler() {
@@ -113,14 +113,14 @@ public class ClientDemandsModulePresenter
     /**************************************************************************/
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         switch (loadWidget) {
-            case Constants.CLIENT_PROJECTS:
-                eventBus.initClientProjects(filter);
+            case Constants.CLIENT_DEMANDS:
+                eventBus.initClientDemands(filter);
                 break;
-            case Constants.CLIENT_OFFERED_PROJECTS:
-                eventBus.initClientContests(filter);
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                eventBus.initClientOffers(filter);
                 break;
-            case Constants.CLIENT_ASSIGNED_PROJECTS:
-                eventBus.initClientAssignedProjects(filter);
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                eventBus.initClientAssignedDemands(filter);
                 break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);

@@ -2,8 +2,10 @@ package com.eprovement.poptavka.shared.domain.clientdemands;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,7 +14,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientProjectContestantDetail implements Serializable, TableDisplay {
+public class ClientDemandConversationDetail implements Serializable, TableDisplay {
 
     /**
      * Generated serialVersionUID.
@@ -22,22 +24,19 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
     private long messageId;
     private long userMessageId;
     private long supplierId;
-    private DemandStatus demandStatus;
     private String supplierName;
-    private String price;
-    private Date receiveDate;
-    private Date acceptedDate;
-    private int rating;
+    private MessageDetail messageDetail;
+    private Date date;
     private boolean read = false;
     private boolean starred = false;
     private int messageCount = -1;
     private int unreadSubmessages = -1;
 
-    public static final ProvidesKey<ClientProjectContestantDetail> KEY_PROVIDER =
-            new ProvidesKey<ClientProjectContestantDetail>() {
+    public static final ProvidesKey<ClientDemandConversationDetail> KEY_PROVIDER =
+            new ProvidesKey<ClientDemandConversationDetail>() {
 
                 @Override
-                public Object getKey(ClientProjectContestantDetail item) {
+                public Object getKey(ClientDemandConversationDetail item) {
                     return item == null ? null : item.getUserMessageId();
                 }
             };
@@ -53,36 +52,12 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
         this.demandId = demandId;
     }
 
-    public Date getAcceptedDate() {
-        return acceptedDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setAcceptedDate(Date acceptedDate) {
-        this.acceptedDate = acceptedDate;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public Date getReceiveDate() {
-        return receiveDate;
-    }
-
-    public void setReceiveDate(Date receiveDate) {
-        this.receiveDate = receiveDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public int getMessageCount() {
@@ -149,6 +124,14 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
         this.userMessageId = userMessageId;
     }
 
+    public MessageDetail getMessageDetail() {
+        return messageDetail;
+    }
+
+    public void setMessageDetail(MessageDetail messageDetail) {
+        this.messageDetail = messageDetail;
+    }
+
     /**
      * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
      * User CANNOT call this nethod due to security issues.
@@ -170,18 +153,11 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
 
     @Override
     public DemandStatus getDemandStatus() {
-        return demandStatus;
-    }
-
-    public void setDemandStatus(DemandStatus demandStatus) {
-        this.demandStatus = demandStatus;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public OfferStateType getOfferState() {
-        //TODO Martin - temporary , correct later - clientAssignedProjects assked for this
-        return OfferStateType.ACCEPTED;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
 }

@@ -12,8 +12,8 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -68,13 +68,13 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     String goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(handlers = ClientDemandsPresenter.class)
-    void initClientProjects(SearchModuleDataHolder filter);
+    void initClientDemands(SearchModuleDataHolder filter);
 
     @Event(handlers = ClientOffersPresenter.class)
-    void initClientContests(SearchModuleDataHolder filter);
+    void initClientOffers(SearchModuleDataHolder filter);
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void initClientAssignedProjects(SearchModuleDataHolder filter);
+    void initClientAssignedDemands(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Navigation Parent events */
@@ -105,19 +105,19 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Business events handled by ListPresenters.                             */
     /**************************************************************************/
     @Event(handlers = ClientDemandsPresenter.class)
-    void displayClientProjects(List<ClientProjectDetail> result);
+    void displayClientDemands(List<ClientDemandDetail> result);
 
     @Event(handlers = ClientDemandsPresenter.class)
-    void displayClientProjectConversations(List<ClientProjectConversationDetail> result);
+    void displayClientDemandConversations(List<ClientDemandConversationDetail> result);
 
     @Event(handlers = ClientOffersPresenter.class)
-    void displayClientOfferedProjects(List<ClientProjectDetail> result);
+    void displayClientOfferedDemands(List<ClientDemandDetail> result);
 
     @Event(handlers = ClientOffersPresenter.class)
-    void displayClientProjectContestants(List<FullOfferDetail> result);
+    void displayClientOfferedDemandOffers(List<FullOfferDetail> result);
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void displayClientAssignedProjects(List<FullOfferDetail> result);
+    void displayClientAssignedDemands(List<FullOfferDetail> result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

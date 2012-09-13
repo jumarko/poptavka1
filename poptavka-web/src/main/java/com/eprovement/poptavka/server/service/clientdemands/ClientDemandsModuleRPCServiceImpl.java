@@ -26,8 +26,8 @@ import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -73,7 +73,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<Search, SearchDefinition> searchConverter;
-    private Converter<Demand, ClientProjectDetail> clientDemandConverter;
+    private Converter<Demand, ClientDemandDetail> clientDemandConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -131,7 +131,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     @Autowired
     public void setClientDemandConverter(
-            @Qualifier("clientDemandConverter") Converter<Demand, ClientProjectDetail> clientDemandConverter) {
+            @Qualifier("clientDemandConverter") Converter<Demand, ClientDemandDetail> clientDemandConverter) {
         this.clientDemandConverter = clientDemandConverter;
     }
 
@@ -151,7 +151,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientProjectsCount(long userId,
+    public long getClientDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
@@ -174,7 +174,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientProjectDetail> getClientProjects(long userId,
+    public List<ClientDemandDetail> getClientDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException,
             ApplicationSecurityException, IllegalArgumentException {
         final Client client = findClient(userId);
@@ -199,7 +199,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientProjectConversationsCount(long userId, long demandID,
+    public long getClientDemandConversationsCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
@@ -222,10 +222,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientProjectConversationDetail> getClientProjectConversations(long userId, long demandID,
+    public List<ClientDemandConversationDetail> getClientDemandConversations(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        ClientProjectConversationDetail a = new ClientProjectConversationDetail();
+        ClientDemandConversationDetail a = new ClientDemandConversationDetail();
         a.setRead(false);
         a.setUserMessageId(1L);
         a.setSupplierName("Good Data");
@@ -233,7 +233,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         md.setBody("Tak ak date cenu o 10% dole ta to beriem.");
         a.setMessageDetail(md);
         a.setDate(new Date());
-        List<ClientProjectConversationDetail> list = new ArrayList<ClientProjectConversationDetail>();
+        List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
         list.add(a);
         return list;
     }
@@ -251,7 +251,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientOfferedProjectsCount(long userId,
+    public long getClientOfferedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         return 1L;
     }
@@ -272,10 +272,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientProjectDetail> getClientOfferedProjects(long userId, long demandID,
+    public List<ClientDemandDetail> getClientOfferedDemands(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        List<ClientProjectDetail> list = new ArrayList<ClientProjectDetail>();
-        ClientProjectDetail c = new ClientProjectDetail();
+        List<ClientDemandDetail> list = new ArrayList<ClientDemandDetail>();
+        ClientDemandDetail c = new ClientDemandDetail();
         c.setDemandId(1L);
         c.setDemandTitle("demand title");
         c.setPrice(BigDecimal.valueOf(10200));
@@ -296,7 +296,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientProjectContestantsCount(long userId, long demandID,
+    public long getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
@@ -315,7 +315,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getClientProjectContestants(long userId, long demandID,
+    public List<FullOfferDetail> getClientOfferedDemandOffers(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         FullOfferDetail detail = new FullOfferDetail();
@@ -346,7 +346,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientAssignedProjectsCount(long userId,
+    public long getClientAssignedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
@@ -364,7 +364,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getClientAssignedProjects(long userId,
+    public List<FullOfferDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         FullOfferDetail detail = new FullOfferDetail();
@@ -460,7 +460,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Demand demand = demandConverter.convertToSource(demandDetail);
         demand.setStatus(DemandStatus.CLOSED);
         generalService.merge(demand);
-        //Asi nech zmizne aj zo SupplierAssignedProjects
+        //Asi nech zmizne aj zo SupplierAssignedDemands
     }
 
     /**

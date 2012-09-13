@@ -2,8 +2,8 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -33,18 +33,18 @@ import java.util.List;
 import java.util.Set;
 
 public class ClientDemandsView extends Composite
-        implements ClientDemandsPresenter.ClientProjectsLayoutInterface {
+        implements ClientDemandsPresenter.ClientDemandsLayoutInterface {
 
-    private static ClientProjectsLayoutViewUiBinder uiBinder = GWT.create(ClientProjectsLayoutViewUiBinder.class);
+    private static ClientDemandsLayoutViewUiBinder uiBinder = GWT.create(ClientDemandsLayoutViewUiBinder.class);
 
-    interface ClientProjectsLayoutViewUiBinder extends UiBinder<Widget, ClientDemandsView> {
+    interface ClientDemandsLayoutViewUiBinder extends UiBinder<Widget, ClientDemandsView> {
     }
     /**************************************************************************/
-    /* DemandTable Attrinbutes                                                */
+    /* DemandTable Attributes                                                 */
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
-    UniversalAsyncGrid<ClientProjectDetail> demandGrid;
+    UniversalAsyncGrid<ClientDemandDetail> demandGrid;
     //table column width constatnts
     private static final int TITLE_COL_WIDTH = 50;
     private static final int PRICE_COL_WIDTH = 30;
@@ -60,15 +60,15 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
-    UniversalAsyncGrid<ClientProjectConversationDetail> conversationGrid;
+    UniversalAsyncGrid<ClientDemandConversationDetail> conversationGrid;
     //table columns
     private Header checkHeader;
-    private Column<ClientProjectConversationDetail, Boolean> checkColumn;
-    private Column<ClientProjectConversationDetail, Boolean> starColumn;
-    private Column<ClientProjectConversationDetail, ImageResource> replyColumn;
-    private Column<ClientProjectConversationDetail, String> supplierNameColumn;
-    private Column<ClientProjectConversationDetail, String> bodyPreviewColumn;
-    private Column<ClientProjectConversationDetail, String> dateColumn;
+    private Column<ClientDemandConversationDetail, Boolean> checkColumn;
+    private Column<ClientDemandConversationDetail, Boolean> starColumn;
+    private Column<ClientDemandConversationDetail, ImageResource> replyColumn;
+    private Column<ClientDemandConversationDetail, String> supplierNameColumn;
+    private Column<ClientDemandConversationDetail, String> bodyPreviewColumn;
+    private Column<ClientDemandConversationDetail, String> dateColumn;
     //table column width constatnts
     private static final int SUPPLIER_NAME_COL_WIDTH = 20;
     private static final int BODY_PREVIEW_COL_WIDTH = 30;
@@ -137,7 +137,7 @@ public class ClientDemandsView extends Composite
                     "status", "title", "price", "finnishDate", "validTo"
                 });
         // Create a CellTable.
-        demandGrid = new UniversalAsyncGrid<ClientProjectDetail>(gridColumns);
+        demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(gridColumns);
         demandGrid.setWidth("800px");
         demandGrid.setHeight("500px");
 //        demandGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
@@ -145,8 +145,8 @@ public class ClientDemandsView extends Composite
         demandGrid.setPageSize(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())));
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        final SelectionModel<ClientProjectDetail> selectionModel =
-                new SingleSelectionModel<ClientProjectDetail>(ClientProjectDetail.KEY_PROVIDER);
+        final SelectionModel<ClientDemandDetail> selectionModel =
+                new SingleSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
         demandGrid.setSelectionModel(selectionModel);
 
         // Create a Pager to control the table.
@@ -163,7 +163,7 @@ public class ClientDemandsView extends Composite
     private void initConversationTable() {
         List<String> gridColumns = Arrays.asList(new String[]{"supplierName", "body", "date"});
         // Create a CellTable.
-        conversationGrid = new UniversalAsyncGrid<ClientProjectConversationDetail>(gridColumns);
+        conversationGrid = new UniversalAsyncGrid<ClientDemandConversationDetail>(gridColumns);
         conversationGrid.setWidth("800px");
         conversationGrid.setHeight("500px");
 
@@ -172,10 +172,10 @@ public class ClientDemandsView extends Composite
         conversationGrid.setPageSize(getConversationPageSize());
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        final SelectionModel<ClientProjectConversationDetail> selectionModel =
-                new MultiSelectionModel<ClientProjectConversationDetail>(ClientProjectConversationDetail.KEY_PROVIDER);
+        final SelectionModel<ClientDemandConversationDetail> selectionModel =
+                new MultiSelectionModel<ClientDemandConversationDetail>(ClientDemandConversationDetail.KEY_PROVIDER);
         conversationGrid.setSelectionModel(
-                selectionModel, DefaultSelectionEventManager.<ClientProjectConversationDetail>createCheckboxManager());
+                selectionModel, DefaultSelectionEventManager.<ClientDemandConversationDetail>createCheckboxManager());
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -197,8 +197,8 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(clientDetail.getTitle(), clientDetail.isRead());
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(clientDetail.getTitle(), clientDetail.isRead());
                     }
                 });
 
@@ -208,8 +208,8 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(clientDetail.getPrice(), clientDetail.isRead());
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(clientDetail.getPrice(), clientDetail.isRead());
                     }
                 });
 
@@ -219,8 +219,8 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getEndDate()),
                                 clientDetail.isRead());
                     }
@@ -232,8 +232,8 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getValidToDate()),
                                 clientDetail.isRead());
                     }
@@ -264,8 +264,8 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectConversationDetail detail = (ClientProjectConversationDetail) object;
-                        return ClientProjectConversationDetail.displayHtml(detail.getSupplierName(), detail.isRead());
+                        ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
+                        return ClientDemandConversationDetail.displayHtml(detail.getSupplierName(), detail.isRead());
                     }
                 });
 
@@ -275,11 +275,11 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectConversationDetail detail = (ClientProjectConversationDetail) object;
+                        ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
                         StringBuilder str = new StringBuilder();
-                        str.append(((ClientProjectConversationDetail) object).getMessageDetail().getBody());
+                        str.append(((ClientDemandConversationDetail) object).getMessageDetail().getBody());
                         str.append("...");
-                        return ClientProjectConversationDetail.displayHtml(str.toString(), detail.isRead());
+                        return ClientDemandConversationDetail.displayHtml(str.toString(), detail.isRead());
                     }
                 });
 
@@ -289,8 +289,8 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectConversationDetail detail = (ClientProjectConversationDetail) object;
-                        return ClientProjectConversationDetail.displayHtml(
+                        ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
+                        return ClientDemandConversationDetail.displayHtml(
                                 formatter.format(detail.getDate()),
                                 detail.isRead());
                     }
@@ -307,31 +307,31 @@ public class ClientDemandsView extends Composite
     }
 
     @Override
-    public Column<ClientProjectConversationDetail, Boolean> getCheckColumn() {
+    public Column<ClientDemandConversationDetail, Boolean> getCheckColumn() {
         return checkColumn;
     }
 
     @Override
-    public Column<ClientProjectConversationDetail, Boolean> getStarColumn() {
+    public Column<ClientDemandConversationDetail, Boolean> getStarColumn() {
         return starColumn;
     }
 
-    public Column<ClientProjectConversationDetail, ImageResource> getReplyColumn() {
+    public Column<ClientDemandConversationDetail, ImageResource> getReplyColumn() {
         return replyColumn;
     }
 
     @Override
-    public Column<ClientProjectConversationDetail, String> getSupplierNameColumn() {
+    public Column<ClientDemandConversationDetail, String> getSupplierNameColumn() {
         return supplierNameColumn;
     }
 
     @Override
-    public Column<ClientProjectConversationDetail, String> getBodyPreviewColumn() {
+    public Column<ClientDemandConversationDetail, String> getBodyPreviewColumn() {
         return bodyPreviewColumn;
     }
 
     @Override
-    public Column<ClientProjectConversationDetail, String> getDateColumn() {
+    public Column<ClientDemandConversationDetail, String> getDateColumn() {
         return dateColumn;
     }
 
@@ -342,12 +342,12 @@ public class ClientDemandsView extends Composite
 
     // Others
     @Override
-    public UniversalAsyncGrid<ClientProjectDetail> getDemandGrid() {
+    public UniversalAsyncGrid<ClientDemandDetail> getDemandGrid() {
         return demandGrid;
     }
 
     @Override
-    public UniversalAsyncGrid<ClientProjectConversationDetail> getConversationGrid() {
+    public UniversalAsyncGrid<ClientDemandConversationDetail> getConversationGrid() {
         return conversationGrid;
     }
 
@@ -360,8 +360,8 @@ public class ClientDemandsView extends Composite
     @Override
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
-        Set<ClientProjectConversationDetail> set = getSelectedMessageList();
-        Iterator<ClientProjectConversationDetail> it = set.iterator();
+        Set<ClientDemandConversationDetail> set = getSelectedMessageList();
+        Iterator<ClientDemandConversationDetail> it = set.iterator();
         while (it.hasNext()) {
             idList.add(it.next().getUserMessageId());
         }
@@ -370,9 +370,9 @@ public class ClientDemandsView extends Composite
 
     @SuppressWarnings("unchecked")
     @Override
-    public Set<ClientProjectConversationDetail> getSelectedMessageList() {
-        MultiSelectionModel<ClientProjectConversationDetail> model =
-                (MultiSelectionModel<ClientProjectConversationDetail>) conversationGrid.getSelectionModel();
+    public Set<ClientDemandConversationDetail> getSelectedMessageList() {
+        MultiSelectionModel<ClientDemandConversationDetail> model =
+                (MultiSelectionModel<ClientDemandConversationDetail>) conversationGrid.getSelectionModel();
         return model.getSelectedSet();
     }
 

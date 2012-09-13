@@ -10,7 +10,7 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEven
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
@@ -40,14 +40,14 @@ import java.util.List;
 
 @Presenter(view = ClientOffersView.class)
 public class ClientOffersPresenter
-        extends LazyPresenter<ClientOffersPresenter.ClientContestsLayoutInterface, ClientDemandsModuleEventBus> {
+        extends LazyPresenter<ClientOffersPresenter.ClientOffersLayoutInterface, ClientDemandsModuleEventBus> {
 
-    public interface ClientContestsLayoutInterface extends LazyView, IsWidget {
+    public interface ClientOffersLayoutInterface extends LazyView, IsWidget {
 
         //Table
-        UniversalAsyncGrid<ClientProjectDetail> getDemandGrid();
+        UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
 
-        UniversalTableWidget getContestGrid();
+        UniversalTableWidget getOfferGrid();
 
         //Buttons
         Button getBackBtn();
@@ -61,7 +61,7 @@ public class ClientOffersPresenter
         IsWidget getWidgetView();
 
         //Setter
-        void setContestTableVisible(boolean visible);
+        void setOfferTableVisible(boolean visible);
 
         void setDemandTitleLabel(String text);
     }
@@ -73,7 +73,7 @@ public class ClientOffersPresenter
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedProjectContest = -1;
+    private long lastOpenedDemandOffer = -1;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -97,8 +97,8 @@ public class ClientOffersPresenter
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
-    public void onInitClientContests(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_PROJECTS);
+    public void onInitClientOffers(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
@@ -124,16 +124,16 @@ public class ClientOffersPresenter
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplayClientOfferedProjects(List<ClientProjectDetail> data) {
-        GWT.log("++ onResponseClientsOfferedProjects");
+    public void onDisplayClientOfferedDemands(List<ClientDemandDetail> data) {
+        GWT.log("++ onResponseClientsOfferedDemands");
 
         view.getDemandGrid().updateRowData(data);
     }
 
-    public void onDisplayClientProjectContestants(List<FullOfferDetail> data) {
-        GWT.log("++ onResponseClientsProjectContestants");
+    public void onDisplayClientOfferedDemandOffers(List<FullOfferDetail> data) {
+        GWT.log("++ onResponseClientsOfferedDemandOffers");
 
-        view.getContestGrid().getGrid().updateRowData(data);
+        view.getOfferGrid().getGrid().updateRowData(data);
     }
 
     /**
@@ -150,7 +150,7 @@ public class ClientOffersPresenter
 //        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
         detailSection.requestSupplierDetail(142811L, type);
 
-//        detailSection.requestContest(detail.getMessageId(),
+//        detailSection.requestOffer(detail.getMessageId(),
 //                detail.getUserMessageId(), Storage.getUser().getUserId());
         detailSection.requestConversation(124L, 289L, 149L);
     }
@@ -163,25 +163,25 @@ public class ClientOffersPresenter
     /**************************************************************************/
     // Field Updaters
     public void addCheckHeaderUpdater() {
-        view.getContestGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
+        view.getOfferGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
-                List<FullOfferDetail> rows = view.getContestGrid().getGrid().getVisibleItems();
+                List<FullOfferDetail> rows = view.getOfferGrid().getGrid().getVisibleItems();
                 for (FullOfferDetail row : rows) {
-                    ((MultiSelectionModel) view.getContestGrid().getGrid().getSelectionModel()).setSelected(row, value);
+                    ((MultiSelectionModel) view.getOfferGrid().getGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
         });
     }
 
     public void addStarColumnFieldUpdater() {
-        view.getContestGrid().getStarColumn().setFieldUpdater(
+        view.getOfferGrid().getStarColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, Boolean>() {
                     @Override
                     public void update(int index, FullOfferDetail object, Boolean value) {
                         TableDisplay obj = (TableDisplay) object;
                         object.setStarred(!value);
-                        view.getContestGrid().getGrid().redraw();
+                        view.getOfferGrid().getGrid().redraw();
                         Long[] item = new Long[]{object.getMessageDetail().getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
@@ -189,7 +189,7 @@ public class ClientOffersPresenter
     }
 
     public void addReplyColumnFieldUpdater() {
-        view.getContestGrid().getReplyImageColumn().setFieldUpdater(
+        view.getOfferGrid().getReplyImageColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, ImageResource>() {
                     @Override
                     public void update(int index, FullOfferDetail object, ImageResource value) {
@@ -199,7 +199,7 @@ public class ClientOffersPresenter
     }
 
     public void addAcceptOfferColumnFieldUpdater() {
-        view.getContestGrid().getAcceptOfferImageColumn().setFieldUpdater(
+        view.getOfferGrid().getAcceptOfferImageColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, ImageResource>() {
                     @Override
                     public void update(int index, FullOfferDetail object, ImageResource value) {
@@ -209,7 +209,7 @@ public class ClientOffersPresenter
     }
 
     public void addDeclineOfferColumnFieldUpdater() {
-        view.getContestGrid().getDeclineOfferImageColumn().setFieldUpdater(
+        view.getOfferGrid().getDeclineOfferImageColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, ImageResource>() {
                     @Override
                     public void update(int index, FullOfferDetail object, ImageResource value) {
@@ -222,19 +222,19 @@ public class ClientOffersPresenter
         FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {
-                if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
-                    lastOpenedProjectContest = object.getMessageDetail().getUserMessageId();
+                if (lastOpenedDemandOffer != object.getMessageDetail().getUserMessageId()) {
+                    lastOpenedDemandOffer = object.getMessageDetail().getUserMessageId();
                     object.setRead(true);
-                    view.getContestGrid().getGrid().redraw();
+                    view.getOfferGrid().getGrid().redraw();
                     displayDetailContent(object);
                 }
             }
         };
-        view.getContestGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
-        view.getContestGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
-        view.getContestGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getContestGrid().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
-        view.getContestGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
     // Buttons
@@ -243,9 +243,9 @@ public class ClientOffersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 view.getDemandGrid().getSelectionModel().setSelected(
-                        (ClientProjectDetail) ((SingleSelectionModel)
+                        (ClientDemandDetail) ((SingleSelectionModel)
                         view.getDemandGrid().getSelectionModel()).getSelectedObject(), false);
-                view.setContestTableVisible(false);
+                view.setOfferTableVisible(false);
             }
         });
     }
@@ -256,16 +256,16 @@ public class ClientOffersPresenter
             public void onChange(ChangeEvent event) {
                 switch (view.getActions().getSelectedIndex()) {
                     case 1:
-                        eventBus.requestReadStatusUpdate(view.getContestGrid().getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
                         break;
                     case 2:
-                        eventBus.requestReadStatusUpdate(view.getContestGrid().getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), false);
                         break;
                     case 3:
-                        eventBus.requestStarStatusUpdate(view.getContestGrid().getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
                         break;
                     case 4:
-                        eventBus.requestStarStatusUpdate(view.getContestGrid().getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedIdList(), false);
                         break;
                     default:
                         break;
@@ -279,15 +279,15 @@ public class ClientOffersPresenter
         view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_PROJECT_CONTESTANTS);
-                ClientProjectDetail selected = (ClientProjectDetail) ((SingleSelectionModel)
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
+                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel)
                         view.getDemandGrid().getSelectionModel()).getSelectedObject();
                 if (selected != null) {
                     selected.setRead(true);
                     Storage.setDemandId(selected.getDemandId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
-                    view.setContestTableVisible(true);
-                    view.getContestGrid().getGrid().getDataCount(eventBus, null);
+                    view.setOfferTableVisible(true);
+                    view.getOfferGrid().getGrid().getDataCount(eventBus, null);
                 }
             }
         });

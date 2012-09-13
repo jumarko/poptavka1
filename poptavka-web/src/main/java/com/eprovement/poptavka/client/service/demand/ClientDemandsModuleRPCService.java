@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -38,7 +38,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientProjectsCount(long userId,
+    long getClientDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -50,7 +50,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return list of demand's detail objects
      */
-    List<ClientProjectDetail> getClientProjects(long userId,
+    List<ClientDemandDetail> getClientDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -65,7 +65,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientProjectConversationsCount(long userId, long demandID,
+    long getClientDemandConversationsCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -80,7 +80,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<ClientProjectConversationDetail> getClientProjectConversations(long userId, long demandID,
+    List<ClientDemandConversationDetail> getClientDemandConversations(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     //************************* CLIENT - My Offers ****************************/
@@ -94,7 +94,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientOfferedProjectsCount(long userId,
+    long getClientOfferedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -108,11 +108,11 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<ClientProjectDetail> getClientOfferedProjects(long userId, long demandID,
+    List<ClientDemandDetail> getClientOfferedDemands(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
-     * Get all contestants and their offers of given demand.
+     * Get all suppliers and their offers of given demand.
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
@@ -120,11 +120,11 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      *               If userId represents some different user than client, exception will be thrown
      * @return offers count of given demand
      */
-    long getClientProjectContestantsCount(long userId, long demandID,
+    long getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
-     * Get all contestants and their offers of given demand.
+     * Get all suppliers and their offers of given demand.
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
@@ -134,7 +134,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getClientProjectContestants(long userId, long demandID,
+    List<FullOfferDetail> getClientOfferedDemandOffers(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     //******************** CLIENT - My Assigned Demands ***********************/
@@ -148,7 +148,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientAssignedProjectsCount(long userId,
+    long getClientAssignedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -161,7 +161,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getClientAssignedProjects(long userId,
+    List<FullOfferDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/

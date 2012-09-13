@@ -60,21 +60,21 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_POTENTIAL_PROJECTS);
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_POTENTIAL_DEMANDS);
             }
         });
         view.getSupplierOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CONTESTS);
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_OFFERS);
             }
         });
         view.getSupplierAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_PROJECTS);
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
         });
         view.getSupplierCreateDemand().addClickHandler(new ClickHandler() {
@@ -112,14 +112,14 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /**************************************************************************/
     public void onGoToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         switch (loadWidget) {
-            case Constants.SUPPLIER_POTENTIAL_PROJECTS:
-                eventBus.initSupplierProjects(filter);
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                eventBus.initSupplierDemands(filter);
                 break;
-            case Constants.SUPPLIER_CONTESTS:
-                eventBus.initSupplierContests(filter);
+            case Constants.SUPPLIER_OFFERS:
+                eventBus.initSupplierOffers(filter);
                 break;
-            case Constants.SUPPLIER_ASSIGNED_PROJECTS:
-                eventBus.initSupplierAssignedProjects(filter);
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                eventBus.initSupplierAssignedDemands(filter);
                 break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);

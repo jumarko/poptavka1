@@ -7,8 +7,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -31,20 +31,20 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.CLIENT_PROJECTS:
-                getClientProjectsCount(grid, searchDefinition);
+            case Constants.CLIENT_DEMANDS:
+                getClientDemandsCount(grid, searchDefinition);
                 break;
-            case Constants.CLIENT_PROJECT_DISCUSSIONS:
-                getClientProjectConversationsCount(grid, searchDefinition);
+            case Constants.CLIENT_DEMANDS_DISCUSSIONS:
+                getClientDemandConversationsCount(grid, searchDefinition);
                 break;
-            case Constants.CLIENT_OFFERED_PROJECTS:
-                getClientOfferedProjectsCount(grid, searchDefinition);
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                getClientOfferedDemandsCount(grid, searchDefinition);
                 break;
-            case Constants.CLIENT_OFFERED_PROJECT_CONTESTANTS:
-                getClientProjectContestantsCount(grid, searchDefinition);
+            case Constants.CLIENT_OFFERED_DEMAND_OFFERS:
+                getClientOfferedDemandOffersCount(grid, searchDefinition);
                 break;
-            case Constants.CLIENT_ASSIGNED_PROJECTS:
-                getClientAssignedProjectsCount(grid, searchDefinition);
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                getClientAssignedDemandsCount(grid, searchDefinition);
                 break;
             default:
                 break;
@@ -53,20 +53,20 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.CLIENT_PROJECTS:
-                getClientProjects(searchDefinition);
+            case Constants.CLIENT_DEMANDS:
+                getClientDemands(searchDefinition);
                 break;
-            case Constants.CLIENT_PROJECT_DISCUSSIONS:
-                getClientProjectConversations(searchDefinition);
+            case Constants.CLIENT_DEMANDS_DISCUSSIONS:
+                getClientDemandConversations(searchDefinition);
                 break;
-            case Constants.CLIENT_OFFERED_PROJECTS:
-                getClientOfferedProjects(searchDefinition);
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                getClientOfferedDemands(searchDefinition);
                 break;
-            case Constants.CLIENT_OFFERED_PROJECT_CONTESTANTS:
-                getClientOfferedProjectContestants(searchDefinition);
+            case Constants.CLIENT_OFFERED_DEMAND_OFFERS:
+                getClientOfferedDemandOffers(searchDefinition);
                 break;
-            case Constants.CLIENT_ASSIGNED_PROJECTS:
-                getClientAssignedProjects(searchDefinition);
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                getClientAssignedDemands(searchDefinition);
                 break;
             default:
                 break;
@@ -76,8 +76,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT PROJECTS                                   */
     //*************************************************************************/
-    private void getClientProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        clientDemandsService.getClientProjectsCount(Storage.getUser().getUserId(), searchDefinition,
+    private void getClientDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
@@ -86,13 +86,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    private void getClientProjects(SearchDefinition searchDefinition) {
-        clientDemandsService.getClientProjects(
+    private void getClientDemands(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientDemands(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<ClientProjectDetail> result) {
-                        eventBus.displayClientProjects(result);
+                    public void onSuccess(List<ClientDemandDetail> result) {
+                        eventBus.displayClientDemands(result);
                     }
                 });
     }
@@ -100,8 +100,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT PROJECT CONVERSATIONS                      */
     //*************************************************************************/
-    private void getClientProjectConversationsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        clientDemandsService.getClientProjectConversationsCount(
+    private void getClientDemandConversationsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientDemandConversationsCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
@@ -111,13 +111,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    private void getClientProjectConversations(SearchDefinition searchDefinition) {
-        clientDemandsService.getClientProjectConversations(
+    private void getClientDemandConversations(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientDemandConversations(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectConversationDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<ClientDemandConversationDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<ClientProjectConversationDetail> result) {
-                        eventBus.displayClientProjectConversations(result);
+                    public void onSuccess(List<ClientDemandConversationDetail> result) {
+                        eventBus.displayClientDemandConversations(result);
                     }
                 });
     }
@@ -125,8 +125,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT OFFERED PROJECTS                           */
     //*************************************************************************/
-    private void getClientOfferedProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        clientDemandsService.getClientOfferedProjectsCount(Storage.getUser().getUserId(), searchDefinition,
+    private void getClientOfferedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientOfferedDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
@@ -135,13 +135,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    private void getClientOfferedProjects(SearchDefinition searchDefinition) {
-        clientDemandsService.getClientOfferedProjects(
+    private void getClientOfferedDemands(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientOfferedDemands(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientProjectDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<ClientProjectDetail> result) {
-                        eventBus.displayClientOfferedProjects(result);
+                    public void onSuccess(List<ClientDemandDetail> result) {
+                        eventBus.displayClientOfferedDemands(result);
                     }
                 });
     }
@@ -149,8 +149,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT PROJECT CONTESTANTS                        */
     //*************************************************************************/
-    private void getClientProjectContestantsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        clientDemandsService.getClientProjectContestantsCount(
+    private void getClientOfferedDemandOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientOfferedDemandOffersCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
@@ -160,13 +160,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    private void getClientOfferedProjectContestants(SearchDefinition searchDefinition) {
-        clientDemandsService.getClientProjectContestants(
+    private void getClientOfferedDemandOffers(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientOfferedDemandOffers(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-                        eventBus.displayClientProjectContestants(result);
+                        eventBus.displayClientOfferedDemandOffers(result);
                     }
                 });
     }
@@ -174,8 +174,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Retrieving methods - CLIENT PROJECTS                                   */
     /**************************************************************************/
-    private void getClientAssignedProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        clientDemandsService.getClientAssignedProjectsCount(
+    private void getClientAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientAssignedDemandsCount(
                 Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
@@ -185,13 +185,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    private void getClientAssignedProjects(SearchDefinition searchDefinition) {
-        clientDemandsService.getClientAssignedProjects(
+    private void getClientAssignedDemands(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientAssignedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-                        eventBus.displayClientAssignedProjects(result);
+                        eventBus.displayClientAssignedDemands(result);
                     }
                 });
     }

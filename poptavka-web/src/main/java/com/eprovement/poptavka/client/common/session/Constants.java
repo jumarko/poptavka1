@@ -60,15 +60,15 @@ public final class Constants {
 
     /* Demands module */
     // Client
-    public static final int CLIENT_PROJECTS = 10;
-    public static final int CLIENT_PROJECT_DISCUSSIONS = 18;
-    public static final int CLIENT_OFFERED_PROJECTS = 11;
-    public static final int CLIENT_OFFERED_PROJECT_CONTESTANTS = 19;
-    public static final int CLIENT_ASSIGNED_PROJECTS = 12;
+    public static final int CLIENT_DEMANDS = 10;
+    public static final int CLIENT_DEMANDS_DISCUSSIONS = 18;
+    public static final int CLIENT_OFFERED_DEMANDS = 11;
+    public static final int CLIENT_OFFERED_DEMAND_OFFERS = 19;
+    public static final int CLIENT_ASSIGNED_DEMANDS = 12;
     // Supplier
-    public static final int SUPPLIER_POTENTIAL_PROJECTS = 15;
-    public static final int SUPPLIER_CONTESTS = 16;
-    public static final int SUPPLIER_ASSIGNED_PROJECTS = 17;
+    public static final int SUPPLIER_POTENTIAL_DEMANDS = 15;
+    public static final int SUPPLIER_OFFERS = 16;
+    public static final int SUPPLIER_ASSIGNED_DEMANDS = 17;
 
     /* Messages module constants */
     public static final int MESSAGES_INBOX = 20;
@@ -103,19 +103,19 @@ public final class Constants {
 
     public static ArrayList<Integer> getClientDemandsConstants() {
         ArrayList<Integer> clients = new ArrayList<Integer>();
-        clients.add(CLIENT_PROJECTS);
-        clients.add(CLIENT_PROJECT_DISCUSSIONS);
-        clients.add(CLIENT_OFFERED_PROJECTS);
-        clients.add(CLIENT_OFFERED_PROJECT_CONTESTANTS);
-        clients.add(CLIENT_ASSIGNED_PROJECTS);
+        clients.add(CLIENT_DEMANDS);
+        clients.add(CLIENT_DEMANDS_DISCUSSIONS);
+        clients.add(CLIENT_OFFERED_DEMANDS);
+        clients.add(CLIENT_OFFERED_DEMAND_OFFERS);
+        clients.add(CLIENT_ASSIGNED_DEMANDS);
         return clients;
     }
 
     public static ArrayList<Integer> getSupplierDemandsConstants() {
         ArrayList<Integer> suppliers = new ArrayList<Integer>();
-        suppliers.add(SUPPLIER_POTENTIAL_PROJECTS);
-        suppliers.add(SUPPLIER_CONTESTS);
-        suppliers.add(SUPPLIER_ASSIGNED_PROJECTS);
+        suppliers.add(SUPPLIER_POTENTIAL_DEMANDS);
+        suppliers.add(SUPPLIER_OFFERS);
+        suppliers.add(SUPPLIER_ASSIGNED_DEMANDS);
         return suppliers;
     }
 

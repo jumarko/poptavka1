@@ -33,9 +33,9 @@ import java.util.List;
 
 @Presenter(view = SupplierDemandsView.class)
 public class SupplierDemandsPresenter extends LazyPresenter<
-        SupplierDemandsPresenter.SupplierProjectsLayoutInterface, SupplierDemandsModuleEventBus> {
+        SupplierDemandsPresenter.SupplierDemandsLayoutInterface, SupplierDemandsModuleEventBus> {
 
-    public interface SupplierProjectsLayoutInterface extends LazyView, IsWidget {
+    public interface SupplierDemandsLayoutInterface extends LazyView, IsWidget {
 
         //Table
         UniversalTableWidget getTableWidget();
@@ -56,7 +56,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedProjectContest = -1;
+    private long lastOpenedDemandContest = -1;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -76,8 +76,8 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
-    public void onInitSupplierProjects(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_PROJECTS);
+    public void onInitSupplierDemands(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_DEMANDS);
         eventBus.setUpSearchBar(new Label("Supplier's projects attibure's selector will be here."));
         searchDataHolder = filter;
         view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
@@ -105,7 +105,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
      * @param data
      */
     public void onDisplaySupplierDemandsData(List<FullOfferDetail> data) {
-        GWT.log("++ onResponseSupplierAssignedProjects");
+        GWT.log("++ onResponseSupplierAssignedDemands");
 
         view.getTableWidget().getGrid().updateRowData(data);
     }
@@ -192,8 +192,8 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, Object>() {
             @Override
             public void update(int index, FullOfferDetail object, Object value) {
-                if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
-                    lastOpenedProjectContest = object.getMessageDetail().getUserMessageId();
+                if (lastOpenedDemandContest != object.getMessageDetail().getUserMessageId()) {
+                    lastOpenedDemandContest = object.getMessageDetail().getUserMessageId();
                     object.getMessageDetail().setRead(true);
                     view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);

@@ -4,7 +4,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -26,18 +26,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ClientOffersView extends Composite
-        implements ClientOffersPresenter.ClientContestsLayoutInterface {
+        implements ClientOffersPresenter.ClientOffersLayoutInterface {
 
-    private static ClientContestsLayoutViewUiBinder uiBinder = GWT.create(ClientContestsLayoutViewUiBinder.class);
+    private static ClientOffersLayoutViewUiBinder uiBinder = GWT.create(ClientOffersLayoutViewUiBinder.class);
 
-    interface ClientContestsLayoutViewUiBinder extends UiBinder<Widget, ClientOffersView> {
+    interface ClientOffersLayoutViewUiBinder extends UiBinder<Widget, ClientOffersView> {
     }
     /**************************************************************************/
-    /* DemandTable Attrinbutes                                                */
+    /* OfferedDemandsTable Attributes                                         */
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
-    UniversalAsyncGrid<ClientProjectDetail> demandGrid;
+    UniversalAsyncGrid<ClientDemandDetail> demandGrid;
     //table column width constatnts
     private static final int TITLE_COL_WIDTH = 50;
     private static final int PRICE_COL_WIDTH = 30;
@@ -49,7 +49,7 @@ public class ClientOffersView extends Composite
     @UiField(provided = true)
     ListBox demandPageSize;
     /**************************************************************************/
-    /* DemandContestTable Attrinbutes                                         */
+    /* DemandOfferTable Attrinbutes                                         */
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
@@ -97,10 +97,10 @@ public class ClientOffersView extends Composite
         actions.setSelectedIndex(0);
 
         initDemandTable();
-        initContestTable();
+        initOfferTable();
 
         initWidget(uiBinder.createAndBindUi(this));
-        setContestTableVisible(false);
+        setOfferTableVisible(false);
     }
 
     /**
@@ -112,7 +112,7 @@ public class ClientOffersView extends Composite
                     "title", "price", "finnishDate", "validTo"
                 });
         // Create a CellTable.
-        demandGrid = new UniversalAsyncGrid<ClientProjectDetail>(gridColumns);
+        demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(gridColumns);
         demandGrid.setWidth("800px");
         demandGrid.setHeight("500px");
 //        demandGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
@@ -120,8 +120,8 @@ public class ClientOffersView extends Composite
         demandGrid.setPageSize(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())));
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        final SelectionModel<ClientProjectDetail> selectionModel =
-                new SingleSelectionModel<ClientProjectDetail>(ClientProjectDetail.KEY_PROVIDER);
+        final SelectionModel<ClientDemandDetail> selectionModel =
+                new SingleSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
         demandGrid.setSelectionModel(selectionModel);
 
         // Create a Pager to control the table.
@@ -135,9 +135,9 @@ public class ClientOffersView extends Composite
     /**
      * Initialize this example.
      */
-    private void initContestTable() {
+    private void initOfferTable() {
         // Create a CellTable.
-        contestGrid = new UniversalTableWidget(Constants.CLIENT_OFFERED_PROJECTS);
+        contestGrid = new UniversalTableWidget(Constants.CLIENT_OFFERED_DEMANDS);
     }
 
     /**
@@ -151,8 +151,8 @@ public class ClientOffersView extends Composite
 
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(clientDetail.getTitle(), clientDetail.isRead());
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(clientDetail.getTitle(), clientDetail.isRead());
                     }
                 });
 
@@ -163,8 +163,8 @@ public class ClientOffersView extends Composite
 
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(clientDetail.getPrice(), clientDetail.isRead());
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(clientDetail.getPrice(), clientDetail.isRead());
                     }
                 });
 
@@ -175,8 +175,8 @@ public class ClientOffersView extends Composite
 
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getEndDate()),
                                 clientDetail.isRead());
                     }
@@ -189,8 +189,8 @@ public class ClientOffersView extends Composite
 
                     @Override
                     public String getValue(Object object) {
-                        ClientProjectDetail clientDetail = (ClientProjectDetail) object;
-                        return ClientProjectDetail.displayHtml(
+                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
+                        return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getValidToDate()),
                                 clientDetail.isRead());
                     }
@@ -205,12 +205,12 @@ public class ClientOffersView extends Composite
     /**************************************************************************/
     //Table
     @Override
-    public UniversalTableWidget getContestGrid() {
+    public UniversalTableWidget getOfferGrid() {
         return contestGrid;
     }
 
     @Override
-    public UniversalAsyncGrid<ClientProjectDetail> getDemandGrid() {
+    public UniversalAsyncGrid<ClientDemandDetail> getDemandGrid() {
         return demandGrid;
     }
 
@@ -240,7 +240,7 @@ public class ClientOffersView extends Composite
     /* Setters                                                                */
     /**************************************************************************/
     @Override
-    public void setContestTableVisible(boolean visible) {
+    public void setOfferTableVisible(boolean visible) {
         demandGrid.setVisible(!visible);
         demandPager.setVisible(!visible);
         demandPageSize.setVisible(!visible);

@@ -23,14 +23,14 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     //*************************************************************************/
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.SUPPLIER_POTENTIAL_PROJECTS:
-                getSupplierPotentialProjectsCount(grid, searchDefinition);
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                getSupplierPotentialDemandsCount(grid, searchDefinition);
                 break;
-            case Constants.SUPPLIER_CONTESTS:
-                getSupplierContestsCount(grid, searchDefinition);
+            case Constants.SUPPLIER_OFFERS:
+                getSupplierOffersCount(grid, searchDefinition);
                 break;
-            case Constants.SUPPLIER_ASSIGNED_PROJECTS:
-                getSupplierAssignedProjectsCount(grid, searchDefinition);
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                getSupplierAssignedDemandsCount(grid, searchDefinition);
                 break;
             default:
                 break;
@@ -39,14 +39,14 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.SUPPLIER_POTENTIAL_PROJECTS:
-                getSupplierPotentialProjects(searchDefinition);
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                getSupplierPotentialDemands(searchDefinition);
                 break;
-            case Constants.SUPPLIER_CONTESTS:
-                getSupplierContests(searchDefinition);
+            case Constants.SUPPLIER_OFFERS:
+                getSupplierOffers(searchDefinition);
                 break;
-            case Constants.SUPPLIER_ASSIGNED_PROJECTS:
-                getSupplierAssignedProjects(searchDefinition);
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                getSupplierAssignedDemands(searchDefinition);
                 break;
             default:
                 break;
@@ -56,8 +56,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     // Retrieving methods                                                     */
     //*************************************************************************/
 
-    private void getSupplierPotentialProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierPotentialProjectsCount(Storage.getUser().getUserId(), searchDefinition,
+    private void getSupplierPotentialDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierPotentialDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -65,21 +65,21 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    private void getSupplierPotentialProjects(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierPotentialProjects(
+    private void getSupplierPotentialDemands(SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierPotentialDemands(
                 Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-//                        eventBus.displaySupplierPotentialProjects(result);
+//                        eventBus.displaySupplierPotentialDemands(result);
                         eventBus.displaySupplierDemandsData(result);
                     }
                 });
     }
     //
 
-    private void getSupplierContestsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierContestsCount(
+    private void getSupplierOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierOffersCount(
                 Storage.getUser().getUserId(), searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
@@ -88,8 +88,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    private void getSupplierContests(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierContests(
+    private void getSupplierOffers(SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierOffers(
                 Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
@@ -100,8 +100,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     }
     //
 
-    private void getSupplierAssignedProjectsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierAssignedProjectsCount(
+    private void getSupplierAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierAssignedDemandsCount(
                 Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
@@ -111,8 +111,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    private void getSupplierAssignedProjects(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierAssignedProjects(
+    private void getSupplierAssignedDemands(SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierAssignedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override

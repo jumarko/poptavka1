@@ -33,7 +33,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierPotentialProjectsCount(long supplierID,
+    long getSupplierPotentialDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -47,7 +47,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierPotentialProjects(long supplierID,
+    List<FullOfferDetail> getSupplierPotentialDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     //************************ SUPPLIER - My Offers ***************************/
@@ -60,7 +60,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierContestsCount(long supplierID,
+    long getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -73,7 +73,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @return
      */
     //TODO Martin premenovat FullOfferDetail na ContestDetail alebo nieco podobne
-    List<FullOfferDetail> getSupplierContests(long supplierID,
+    List<FullOfferDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     //******************* SUPPLIER - My Assigned Demands **********************/
@@ -86,7 +86,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierAssignedProjectsCount(long supplierID,
+    long getSupplierAssignedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -98,7 +98,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierAssignedProjects(long supplierID,
+    List<FullOfferDetail> getSupplierAssignedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/

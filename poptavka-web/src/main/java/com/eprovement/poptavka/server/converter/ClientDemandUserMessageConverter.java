@@ -4,17 +4,17 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 
-public final class ClientDemandUserMessageConverter extends AbstractConverter<UserMessage, ClientProjectDetail> {
+public final class ClientDemandUserMessageConverter extends AbstractConverter<UserMessage, ClientDemandDetail> {
 
     private ClientDemandUserMessageConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
     @Override
-    public ClientProjectDetail convertToTarget(UserMessage userMessage) {
-        final ClientProjectDetail detail = new ClientProjectDetail();
+    public ClientDemandDetail convertToTarget(UserMessage userMessage) {
+        final ClientDemandDetail detail = new ClientDemandDetail();
         detail.setUserMessageId(userMessage.getId());
         if (userMessage.getMessage() != null && userMessage.getMessage().getDemand() != null) {
             detail.setDemandId(userMessage.getMessage().getDemand().getId());
@@ -31,7 +31,7 @@ public final class ClientDemandUserMessageConverter extends AbstractConverter<Us
     }
 
     @Override
-    public UserMessage convertToSource(ClientProjectDetail clientDemandDetail) {
+    public UserMessage convertToSource(ClientDemandDetail clientDemandDetail) {
         throw new UnsupportedOperationException("Conversion from ClientDemandDetail to domain object UserMessage "
                 + "is not implemented yet!");
     }
