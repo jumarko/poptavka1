@@ -5,9 +5,9 @@
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedProjectsPresenter;
-import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierContestsPresenter;
-import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierProjectsPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedDemandsPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffersPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -49,8 +49,8 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void requestDetailWrapperPresenter();
 
     //Pozor, staci prezenter zavolat raz a uz je aktivny
-    @Event(handlers = {SupplierProjectsPresenter.class, SupplierContestsPresenter.class,
-            SupplierAssignedProjectsPresenter.class }, passive = true)
+    @Event(handlers = {SupplierDemandsPresenter.class, SupplierOffersPresenter.class,
+            SupplierAssignedDemandsPresenter.class }, passive = true)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     /**************************************************************************/
@@ -65,13 +65,13 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
             historyConverter = SupplierDemandsModuleHistoryConverter.class)
     String goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
-    @Event(handlers = SupplierProjectsPresenter.class)
+    @Event(handlers = SupplierDemandsPresenter.class)
     void initSupplierProjects(SearchModuleDataHolder filter);
 
-    @Event(handlers = SupplierContestsPresenter.class)
+    @Event(handlers = SupplierOffersPresenter.class)
     void initSupplierContests(SearchModuleDataHolder filter);
 
-    @Event(handlers = SupplierAssignedProjectsPresenter.class)
+    @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void initSupplierAssignedProjects(SearchModuleDataHolder filter);
 
     /**************************************************************************/
@@ -97,8 +97,8 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierDemandsModulePresenter.class)
     void displayView(IsWidget content);
 
-    @Event(handlers = {SupplierProjectsPresenter.class, SupplierContestsPresenter.class,
-            SupplierAssignedProjectsPresenter.class }, passive = true)
+    @Event(handlers = {SupplierDemandsPresenter.class, SupplierOffersPresenter.class,
+            SupplierAssignedDemandsPresenter.class }, passive = true)
     void displaySupplierDemandsData(List<FullOfferDetail> result);
 
 //    @Event(handlers = SupplierProjectsPresenter.class)

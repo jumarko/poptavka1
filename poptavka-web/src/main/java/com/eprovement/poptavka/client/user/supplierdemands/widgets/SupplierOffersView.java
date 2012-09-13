@@ -12,13 +12,13 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SupplierAssignedProjectsView extends Composite
-        implements SupplierAssignedProjectsPresenter.SupplierAssignedProjectsLayoutInterface {
+public class SupplierOffersView extends Composite
+        implements SupplierOffersPresenter.SupplierContestsLayoutInterface {
 
-    private static SupplierAssignedProjectsLayoutViewUiBinder uiBinder =
-            GWT.create(SupplierAssignedProjectsLayoutViewUiBinder.class);
+    private static SupplierContestsLayoutViewUiBinder uiBinder =
+            GWT.create(SupplierContestsLayoutViewUiBinder.class);
 
-    interface SupplierAssignedProjectsLayoutViewUiBinder extends UiBinder<Widget, SupplierAssignedProjectsView> {
+    interface SupplierContestsLayoutViewUiBinder extends UiBinder<Widget, SupplierOffersView> {
     }
     /**************************************************************************/
     /* DemandContestTable Attrinbutes                                         */
@@ -43,7 +43,7 @@ public class SupplierAssignedProjectsView extends Composite
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
 
-        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_ASSIGNED_PROJECTS);
+        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_CONTESTS);
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());

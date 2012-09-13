@@ -31,11 +31,11 @@ import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
 
-@Presenter(view = SupplierContestsView.class)
-public class SupplierContestsPresenter extends LazyPresenter<
-        SupplierContestsPresenter.SupplierContestsLayoutInterface, SupplierDemandsModuleEventBus> {
+@Presenter(view = SupplierAssignedDemandsView.class)
+public class SupplierAssignedDemandsPresenter extends LazyPresenter<
+        SupplierAssignedDemandsPresenter.SupplierAssignedProjectsLayoutInterface, SupplierDemandsModuleEventBus> {
 
-    public interface SupplierContestsLayoutInterface extends LazyView, IsWidget {
+    public interface SupplierAssignedProjectsLayoutInterface extends LazyView, IsWidget {
 
         //Table
         UniversalTableWidget getTableWidget();
@@ -68,8 +68,7 @@ public class SupplierContestsPresenter extends LazyPresenter<
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addReplyColumnFieldUpdater();
-        addEditOfferColumnFieldUpdater();
-        addDownloadOfferColumnFieldUpdater();
+        addFinnishedOfferColumnFieldUpdater();
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
@@ -78,9 +77,9 @@ public class SupplierContestsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
-    public void onInitSupplierContests(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_CONTESTS);
-        eventBus.setUpSearchBar(new Label("Supplier's contests attibure's selector will be here."));
+    public void onInitSupplierAssignedProjects(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_ASSIGNED_PROJECTS);
+        eventBus.setUpSearchBar(new Label("Supplier's assigned projects attibure's selector will be here."));
         searchDataHolder = filter;
         view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
@@ -106,7 +105,7 @@ public class SupplierContestsPresenter extends LazyPresenter<
      * @param data
      */
     public void onDisplaySupplierDemandsData(List<FullOfferDetail> data) {
-        GWT.log("++ onResponseSupplierContests");
+        GWT.log("++ onResponseClientsOfferedProjects");
 
         view.getTableWidget().getGrid().updateRowData(data);
     }
@@ -179,22 +178,12 @@ public class SupplierContestsPresenter extends LazyPresenter<
                 });
     }
 
-    public void addEditOfferColumnFieldUpdater() {
-        view.getTableWidget().getEditOfferImageColumn().setFieldUpdater(
+    public void addFinnishedOfferColumnFieldUpdater() {
+        view.getTableWidget().getFinnishedImageColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, ImageResource>() {
                     @Override
                     public void update(int index, FullOfferDetail object, ImageResource value) {
-                        //TODO how to edit offer
-                    }
-                });
-    }
-
-    public void addDownloadOfferColumnFieldUpdater() {
-        view.getTableWidget().getDownloadOfferImageColumns().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
-                        //TODO how to download offer
+                        eventBus.requestFinishOffer(object);
                     }
                 });
     }

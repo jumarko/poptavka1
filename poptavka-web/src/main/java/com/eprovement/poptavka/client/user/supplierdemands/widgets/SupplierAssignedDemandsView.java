@@ -12,13 +12,13 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SupplierProjectsView extends Composite
-        implements SupplierProjectsPresenter.SupplierProjectsLayoutInterface {
+public class SupplierAssignedDemandsView extends Composite
+        implements SupplierAssignedDemandsPresenter.SupplierAssignedProjectsLayoutInterface {
 
-    private static SupplierProjectsLayoutViewUiBinder uiBinder =
-            GWT.create(SupplierProjectsLayoutViewUiBinder.class);
+    private static SupplierAssignedProjectsLayoutViewUiBinder uiBinder =
+            GWT.create(SupplierAssignedProjectsLayoutViewUiBinder.class);
 
-    interface SupplierProjectsLayoutViewUiBinder extends UiBinder<Widget, SupplierProjectsView> {
+    interface SupplierAssignedProjectsLayoutViewUiBinder extends UiBinder<Widget, SupplierAssignedDemandsView> {
     }
     /**************************************************************************/
     /* DemandContestTable Attrinbutes                                         */
@@ -36,14 +36,14 @@ public class SupplierProjectsView extends Composite
     SimplePanel detailPanel;
 
     /**************************************************************************/
-    /* Initialization                                                         */
+    /* Initialization                                                            */
     /**************************************************************************/
     @Override
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
 
-        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_POTENTIAL_PROJECTS);
+        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_ASSIGNED_PROJECTS);
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());

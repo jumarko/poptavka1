@@ -31,11 +31,11 @@ import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
 
-@Presenter(view = SupplierAssignedProjectsView.class)
-public class SupplierAssignedProjectsPresenter extends LazyPresenter<
-        SupplierAssignedProjectsPresenter.SupplierAssignedProjectsLayoutInterface, SupplierDemandsModuleEventBus> {
+@Presenter(view = SupplierDemandsView.class)
+public class SupplierDemandsPresenter extends LazyPresenter<
+        SupplierDemandsPresenter.SupplierProjectsLayoutInterface, SupplierDemandsModuleEventBus> {
 
-    public interface SupplierAssignedProjectsLayoutInterface extends LazyView, IsWidget {
+    public interface SupplierProjectsLayoutInterface extends LazyView, IsWidget {
 
         //Table
         UniversalTableWidget getTableWidget();
@@ -43,7 +43,6 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
         //ListBox
         ListBox getActions();
 
-        //Other
         SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
@@ -68,7 +67,7 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addReplyColumnFieldUpdater();
-        addFinnishedOfferColumnFieldUpdater();
+        addSendOfferColumnFieldUpdater();
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
@@ -77,9 +76,9 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
-    public void onInitSupplierAssignedProjects(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_ASSIGNED_PROJECTS);
-        eventBus.setUpSearchBar(new Label("Supplier's assigned projects attibure's selector will be here."));
+    public void onInitSupplierProjects(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_PROJECTS);
+        eventBus.setUpSearchBar(new Label("Supplier's projects attibure's selector will be here."));
         searchDataHolder = filter;
         view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
@@ -91,12 +90,13 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
     }
 
     /**************************************************************************/
-    /* Business events handled by presenter */
+    /* Business events handled by presenter                                   */
     /**************************************************************************/
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
+            this.detailSection.getView().getReplyHolder().getOfferReplyBtn().setVisible(true);
         }
     }
 
@@ -105,7 +105,7 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
      * @param data
      */
     public void onDisplaySupplierDemandsData(List<FullOfferDetail> data) {
-        GWT.log("++ onResponseClientsOfferedProjects");
+        GWT.log("++ onResponseSupplierAssignedProjects");
 
         view.getTableWidget().getGrid().updateRowData(data);
     }
@@ -142,7 +142,7 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
-    // Field Updaters
+    // TableWidget handlers
     public void addCheckHeaderUpdater() {
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
@@ -178,20 +178,20 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
                 });
     }
 
-    public void addFinnishedOfferColumnFieldUpdater() {
-        view.getTableWidget().getFinnishedImageColumn().setFieldUpdater(
+    public void addSendOfferColumnFieldUpdater() {
+        view.getTableWidget().getSendOfferImageColumn().setFieldUpdater(
                 new FieldUpdater<FullOfferDetail, ImageResource>() {
                     @Override
                     public void update(int index, FullOfferDetail object, ImageResource value) {
-                        eventBus.requestFinishOffer(object);
+                        detailSection.getView().getReplyHolder().addOfferReply();
                     }
                 });
     }
 
     public void addColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
+        FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, Object>() {
             @Override
-            public void update(int index, FullOfferDetail object, String value) {
+            public void update(int index, FullOfferDetail object, Object value) {
                 if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
                     lastOpenedProjectContest = object.getMessageDetail().getUserMessageId();
                     object.getMessageDetail().setRead(true);
@@ -201,12 +201,15 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
             }
         };
         view.getTableWidget().getClientNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getUrgencyColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
     }
 
+    // Widget action handlers
     private void addActionChangeHandler() {
         view.getActions().addChangeHandler(new ChangeHandler() {
             @Override
