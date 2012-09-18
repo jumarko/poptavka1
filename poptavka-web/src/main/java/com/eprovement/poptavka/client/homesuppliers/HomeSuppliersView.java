@@ -15,6 +15,7 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
@@ -121,6 +122,9 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     public void initCellTree() {
+        //Workaround for issue: CellTree disappeared when clicking but outside tree nodes
+        CellTree.Resources resource = GWT.create(CellTree.Resources.class);
+        StyleInjector.injectAtEnd("." + resource.cellTreeStyle().cellTreeTopItem() + " {margin-top: 0px;}");
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,
                 homeSuppliersPresenter.getCategoryService(),
