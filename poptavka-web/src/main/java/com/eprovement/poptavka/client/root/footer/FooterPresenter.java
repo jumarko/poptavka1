@@ -23,7 +23,6 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
         eventBus.setFooter(view);
     }
 
-//    Button getContactUs()
     @Override
     public void bind() {
         view.getContactUs().addClickHandler(new ClickHandler() {
@@ -33,5 +32,13 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
                 eventBus.addHandler(EmailDialogPopupPresenter.class);
             }
         });
+    }
+
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
+    public void onSendUsEmail(int subjectId, long errorId) {
+        eventBus.addHandler(EmailDialogPopupPresenter.class);
+        eventBus.fillContactUsValues(subjectId, errorId);
     }
 }

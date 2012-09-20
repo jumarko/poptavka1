@@ -67,7 +67,7 @@ public class EmailDialogPopupPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-
+                // TODO Martin - add validation for all fields in Contact Us form.
                 String recipient = "pras3xer@gmail.com";
                 String subject = view.getSubjectListBox().getValue(view.getSubjectListBox().getSelectedIndex());
                 String message = extendMessageBody() + view.getTextArea().getText();
@@ -97,7 +97,7 @@ public class EmailDialogPopupPresenter
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onSendUsEmail(int subjectId, long errorId) {
+    public void onFillContactUsValues(int subjectId, long errorId) {
         this.errorId = errorId;
         this.subjectId = subjectId;
         view.getSubjectListBox().setSelectedIndex(subjectId);

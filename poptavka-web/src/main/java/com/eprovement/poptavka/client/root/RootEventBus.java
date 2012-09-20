@@ -185,8 +185,23 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = SearchModule.class)
     void clearSearchContent();
 
-    @Event(handlers = EmailDialogPopupPresenter.class)
+    /**
+     * Contact us popup will appear. Parameters will be forwared to method fillContactUsValues().
+     *
+     * @param subject - predefined subject i.e. report issue that was invoked by user from Error Module
+     * @param errorId - the error ID what was genereated for reported issue
+     */
+    @Event(handlers = FooterPresenter.class)
     void sendUsEmail(int subject, long errorId);
+
+    /**
+     * Contact us popup will will be prefilled with values as subject and errorId.
+     *
+     * @param subject - predefined subject i.e. report issue that was invoked by user from Error Module
+     * @param errorId - the error ID what was genereated for reported issue
+     */
+    @Event(handlers = EmailDialogPopupPresenter.class)
+    void fillContactUsValues(int subject, long errorId);
 
     /**************************************************************************/
     /* Navigation events - Other control sections                             */
