@@ -78,6 +78,9 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         if (attributeSearchViewWidget == null) {
             addCustomItemToSearchWhatBox(false);
         } else {
+            if (searchWhat.getItemCount() == 3) {
+                addCustomItemToSearchWhatBox(false);
+            }
             addCustomItemToSearchWhatBox(true);
         }
     }

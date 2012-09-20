@@ -18,7 +18,7 @@
                     <g:TextBox ui:field="searchContent">
                         <ui:msg key="searchContent">Search...</ui:msg>
                     </g:TextBox>
-                    <g:ListBox ui:field="searchWhat"/>
+                    <g:ListBox ui:field="searchWhat" width="190px"/>
                     <g:Button ui:field="searchBtn">
                         <ui:msg key="search">Search</ui:msg>
                     </g:Button>
