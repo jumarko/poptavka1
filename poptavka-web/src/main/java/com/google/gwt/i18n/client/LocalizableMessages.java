@@ -18,9 +18,6 @@ public interface LocalizableMessages extends Messages {
     String search();
     String advancedSearch();
     String searchContent();
-    String searchInDemands();
-    String searchInSuppliers();
-    String searchInCurrentView();
     String noSearchingCriteria();
     String today();
     String yesterday();
@@ -40,6 +37,32 @@ public interface LocalizableMessages extends Messages {
     String demandText();
     String supplierName();
     String select();
+    //home - searchPanel - search what
+    String searchInDemands();
+    String searchInSuppliers();
+    String searchInCurrentView();
+    String searchInClientDemands();
+    String searchInClientDemandsDiscussions();
+    String searchInClientOfferedDemands();
+    String searchInClientOfferedDemandOffers();
+    String searchInClientAssignedDemands();
+    String searchInSuppliersPotentialDemands();
+    String searchInSuppliersPotentialDemandDiscussions();
+    String searchInSuppliersOffers();
+    String searchInSuppliersAssignedDemands();
+    //home - searchPanel - popup current view tab name
+    String demandsTabName();
+    String suppliersTabName();
+    String currentViewTabName();
+    String clientDemandsTabName();
+    String clientDemandsDiscussionsTabName();
+    String clientOfferedDemandsTabName();
+    String clientOfferedDemandOffersTabName();
+    String clientAssignedDemandsTabName();
+    String suppliersPotentialDemandsTabName();
+    String suppliersPotentialDemandDiscussionsTabName();
+    String suppliersOffersTabName();
+    String suppliersAssignedDemandsTabName();
 
     //offers view - buttons
     String answer();

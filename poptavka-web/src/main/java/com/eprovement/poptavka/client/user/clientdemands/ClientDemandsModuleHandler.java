@@ -34,7 +34,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             case Constants.CLIENT_DEMANDS:
                 getClientDemandsCount(grid, searchDefinition);
                 break;
-            case Constants.CLIENT_DEMANDS_DISCUSSIONS:
+            case Constants.CLIENT_DEMAND_DISCUSSIONS:
                 getClientDemandConversationsCount(grid, searchDefinition);
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:
@@ -56,7 +56,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             case Constants.CLIENT_DEMANDS:
                 getClientDemands(searchDefinition);
                 break;
-            case Constants.CLIENT_DEMANDS_DISCUSSIONS:
+            case Constants.CLIENT_DEMAND_DISCUSSIONS:
                 getClientDemandConversations(searchDefinition);
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:

@@ -15,17 +15,17 @@
                     <ul class='{res.layout.submenuList}'>
                         <li>
                             <g:Button ui:field="clientNewDemands">
-                                <ui:msg key="myDemands">New Projects</ui:msg>
+                                <ui:msg key="myDemands">My demands</ui:msg>
                             </g:Button>
                         </li>
                         <li>
                             <g:Button ui:field="clientOffers">
-                                <ui:msg key="offers">Bidders</ui:msg>
+                                <ui:msg key="offers">Offered demands</ui:msg>
                             </g:Button>
                         </li>
                         <li>
                             <g:Button ui:field="clientAssignedDemands">
-                                <ui:msg key="assignedDemands">Projects in progress</ui:msg>
+                                <ui:msg key="assignedDemands">Assigned demands</ui:msg>
                             </g:Button>
                         </li>
                         <li>

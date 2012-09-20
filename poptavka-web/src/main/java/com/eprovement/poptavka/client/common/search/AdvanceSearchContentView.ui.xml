@@ -11,20 +11,20 @@
         <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='25' animationDuration="1000">
             <g:tab>
                 <g:header>
-                    <ui:msg key="demandAttributes">Demand Attributes</ui:msg>
+                    <ui:msg key="demandsTabName">Demand's table attributes</ui:msg>
                 </g:header>
                 <homeDemands:HomeDemandsSearchView ui:field="demandsAttributeSelectorWidget" />
             </g:tab>
             <g:tab>
                 <g:header>
-                    <ui:msg key="supplierAttributes">Supplier Attributes</ui:msg>
+                    <ui:msg key="suppliersTabName">Supplier's table attributes</ui:msg>
                 </g:header>
                 <homeSuppliers:HomeSuppliersSearchView ui:field="suppliersAttributeSelectorWidget" />
             </g:tab>
             <g:tab>
-                <g:header>
-                    <ui:msg key="currentViewAttributes">Current View Attributes</ui:msg>
-                </g:header>
+                <g:customHeader size="10">
+                    <g:Label ui:field="currentViewAttributesLabel">Current's table attributes</g:Label>
+                </g:customHeader>
                 <g:SimplePanel ui:field="attributeSelectorWidgetPanel" />
             </g:tab>
             <g:tab>

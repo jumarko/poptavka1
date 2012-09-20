@@ -64,6 +64,9 @@ public class SearchModulePresenter
 
     public interface AdvanceSearchContentInterface {
 
+        //Setters
+        void setCurrentViewTabName();
+
         //Getters
         TabLayoutPanel getTabLayoutPanel();
 

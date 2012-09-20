@@ -260,7 +260,7 @@ public class ClientDemandsPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS_DISCUSSIONS);
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
                 ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel)
                         view.getDemandGrid().getSelectionModel()).getSelectedObject();
                 if (selected != null) {

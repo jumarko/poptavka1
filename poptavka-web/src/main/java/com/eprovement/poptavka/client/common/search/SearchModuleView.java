@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.search;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
@@ -195,8 +196,11 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /**************************************************************************/
     private void addCustomItemToSearchWhatBox(boolean addOrRemove) {
         if (addOrRemove) {
-            searchWhat.addItem(Storage.MSGS.searchInCurrentView());
+            searchWhat.addItem(getCurrentViewNameString());
             searchWhat.setSelectedIndex(2);
+            //Nechat to tu, alebo to dat do onForward v prezenteri?
+            //Ja myslim, ze moze ostat tu
+            advanceSearchContentView.setCurrentViewTabName();
         } else {
             if (searchWhat.getItemCount() == 3) {
                 searchWhat.removeItem(2);
@@ -204,6 +208,36 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
             searchWhat.setSelectedIndex(0);
         }
         DomEvent.fireNativeEvent(Document.get().createChangeEvent(), searchWhat);
+    }
+
+    /**
+     * Return i18n item name according to currently loaded view. The string is used
+     * in searchWhat list box in search bar.
+     * @return i18n item name
+     */
+    private String getCurrentViewNameString() {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.CLIENT_DEMANDS:
+                return Storage.MSGS.searchInClientDemands();
+            case Constants.CLIENT_DEMAND_DISCUSSIONS:
+                return Storage.MSGS.searchInClientDemandsDiscussions();
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                return Storage.MSGS.searchInClientOfferedDemands();
+            case Constants.CLIENT_OFFERED_DEMAND_OFFERS:
+                return Storage.MSGS.searchInClientOfferedDemandOffers();
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                return Storage.MSGS.searchInClientAssignedDemands();
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                return Storage.MSGS.searchInSuppliersPotentialDemands();
+            case Constants.SUPPLIER_POTENTIAL_DEMAND_DISCUSSIONS:
+                return Storage.MSGS.searchInSuppliersPotentialDemandDiscussions();
+            case Constants.SUPPLIER_OFFERS:
+                return Storage.MSGS.searchInSuppliersOffers();
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                return Storage.MSGS.searchInSuppliersAssignedDemands();
+            default:
+                return Storage.MSGS.searchInCurrentView();
+        }
     }
 
     private void setAdvanceContentTabsVisibility(

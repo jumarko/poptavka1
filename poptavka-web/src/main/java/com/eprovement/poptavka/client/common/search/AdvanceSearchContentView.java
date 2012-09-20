@@ -1,18 +1,21 @@
 package com.eprovement.poptavka.client.common.search;
 
+import com.eprovement.poptavka.client.common.category.CategorySelectorView;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
+import com.eprovement.poptavka.client.common.search.SearchModulePresenter.SearchModulesViewInterface;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
+import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersSearchView;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
-import com.eprovement.poptavka.client.common.category.CategorySelectorView;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
-import com.eprovement.poptavka.client.common.search.SearchModulePresenter.SearchModulesViewInterface;
-import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
-import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersSearchView;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class AdvanceSearchContentView extends Composite
         implements SearchModulePresenter.AdvanceSearchContentInterface {
@@ -27,6 +30,8 @@ public class AdvanceSearchContentView extends Composite
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    @UiField
+    Label currentViewAttributesLabel;
     @UiField
     TabLayoutPanel mainPanel;
     @UiField
@@ -58,6 +63,42 @@ public class AdvanceSearchContentView extends Composite
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    @Override
+    public void setCurrentViewTabName() {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.CLIENT_DEMANDS:
+                currentViewAttributesLabel.setText(Storage.MSGS.clientDemandsTabName());
+                break;
+            case Constants.CLIENT_DEMAND_DISCUSSIONS:
+                currentViewAttributesLabel.setText(Storage.MSGS.clientDemandsDiscussionsTabName());
+                break;
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                currentViewAttributesLabel.setText(Storage.MSGS.clientOfferedDemandsTabName());
+                break;
+            case Constants.CLIENT_OFFERED_DEMAND_OFFERS:
+                currentViewAttributesLabel.setText(Storage.MSGS.clientOfferedDemandOffersTabName());
+                break;
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                currentViewAttributesLabel.setText(Storage.MSGS.clientAssignedDemandsTabName());
+                break;
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                currentViewAttributesLabel.setText(Storage.MSGS.suppliersPotentialDemandsTabName());
+                break;
+            case Constants.SUPPLIER_POTENTIAL_DEMAND_DISCUSSIONS:
+                currentViewAttributesLabel.setText(Storage.MSGS.suppliersPotentialDemandDiscussionsTabName());
+                break;
+            case Constants.SUPPLIER_OFFERS:
+                currentViewAttributesLabel.setText(Storage.MSGS.suppliersOffersTabName());
+                break;
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                currentViewAttributesLabel.setText(Storage.MSGS.suppliersAssignedDemandsTabName());
+                break;
+            default:
+                currentViewAttributesLabel.setText(Storage.MSGS.currentViewTabName());
+                break;
+        }
+    }
+
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
