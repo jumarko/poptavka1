@@ -7,30 +7,43 @@ package com.eprovement.poptavka.client.root.email;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
-import com.eprovement.poptavka.client.root.interfaces.IEmailDialogPopupView;
-import com.eprovement.poptavka.client.root.interfaces.IEmailDialogPopupView.IEmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
 
 /**
  *
  * @author ivlcek
  */
-@Presenter(view = EmailDialogPopupView.class)
+@Presenter(view = EmailDialogPopupView.class, multiple = true)
 public class EmailDialogPopupPresenter
-        extends LazyPresenter<IEmailDialogPopupView, RootEventBus> implements IEmailDialogPopupPresenter {
+        extends LazyPresenter<EmailDialogPopupPresenter.IEmailDialogPopupView, RootEventBus> {
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private MailRPCServiceAsync mailService;
     private long errorId;
     private int subjectId;
+
+    public interface IEmailDialogPopupView extends LazyView {
+        HasClickHandlers getSendButton();
+        HasClickHandlers getCloseButton();
+        TextArea getTextArea();
+        ListBox getSubjectListBox();
+        TextBox getReEmailTextBox();
+        TextBox getEmailTextBox();
+        EmailDialogPopupPresenter getPresenter();
+        void hidePopup();
+    }
 
     @Inject
     void setMailService(MailRPCServiceAsync service) {
@@ -63,15 +76,19 @@ public class EmailDialogPopupPresenter
 
                     @Override
                     public void onSuccess(Boolean result) {
-                        // TODO ivlcek - forward user to homeModule or Supplier/Client module if loggedIn
-                        if (Storage.getUser() != null) {
-                            // TODO ivlcek - display success message about sending
-                            eventBus.goToClientDemandsModule(null, 0);
-                        } else {
-                            eventBus.goToHomeWelcomeModule(null);
-                        }
+                        // TODO ivlcek - display success message about sending
+                        GWT.log("Message has been sent to customer support");
+                        hideView();
                     }
                 });
+            }
+        });
+
+        view.getCloseButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                hideView();
             }
         });
     }
@@ -84,13 +101,19 @@ public class EmailDialogPopupPresenter
         this.errorId = errorId;
         this.subjectId = subjectId;
         view.getSubjectListBox().setSelectedIndex(subjectId);
-        eventBus.setBody((IsWidget) view);
     }
 
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
 
+    /**
+     * Hides the EmailDialogPopupView.
+     */
+    public void hideView() {
+        eventBus.removeHandler(view.getPresenter());
+        view.hidePopup();
+    }
 
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */

@@ -5,8 +5,11 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IFooterView;
 import com.eprovement.poptavka.client.root.interfaces.IFooterView.IFooterPresenter;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 @Presenter(view = FooterView.class)
 public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
@@ -18,5 +21,17 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
         // part 2
         GWT.log("Footer presenter loaded");
         eventBus.setFooter(view);
+    }
+
+//    Button getContactUs()
+    @Override
+    public void bind() {
+        view.getContactUs().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.addHandler(EmailDialogPopupPresenter.class);
+            }
+        });
     }
 }

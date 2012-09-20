@@ -8,21 +8,21 @@
 		.important {
 			font-weight: bold;
 		}
-		
+
 		.footer-block {
 			display: block;
 			padding: 10px;
 			color: #ffffff;
 		}
-		
+
 		.footer-block a {
 			color: #ffffff;
 		}
-		
+
 		.fl {
 			float: left;
 		}
-		
+
 		.fr {
 			float: right;
 		}
@@ -34,6 +34,7 @@
 			<div style="float: right; color: #ffffff; padding: 10px;">
 				Terms &amp; Conditions | Contact us | About us
 			</div>
+                        <g:Button ui:field="contactUs">Contact</g:Button>
 		</div>
 	</g:HTMLPanel>
 

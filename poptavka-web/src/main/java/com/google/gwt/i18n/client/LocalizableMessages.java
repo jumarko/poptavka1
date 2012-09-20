@@ -318,4 +318,8 @@ public interface LocalizableMessages extends Messages {
     String subjectReportIssue();
     String subjectReportUser();
     String thanksForMessage();
+    String questionOrConcern();
+    String reEnterYourEmail();
+    String maximumChars();
+    String sendButton();
 }
