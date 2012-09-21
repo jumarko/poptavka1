@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
-import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -239,7 +238,6 @@ public class SupplierCreationPresenter
     // MVP model. Rozhranim ma byt predsa eventbus. OPRAVIT !!! a nerobit taketo chyby !!!
     @Inject
     private SupplierCreationRPCServiceAsync supplierCreationRpcService = null;
-    protected EmailDialogPopupView errorDialog;
 
     public void setService(SupplierCreationRPCServiceAsync service) {
         this.supplierCreationRpcService = service;

@@ -8,7 +8,6 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 //import com.eprovement.poptavka.client.service.demand.GeneralRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.MessagesRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
@@ -30,7 +29,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 //    private GeneralRPCServiceAsync generalService;
     @Inject
     private UserRPCServiceAsync userService;
-    private EmailDialogPopupView errorDialog;
 
     /**
      * Send message.

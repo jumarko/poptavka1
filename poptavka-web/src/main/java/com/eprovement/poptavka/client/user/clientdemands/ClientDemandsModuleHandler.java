@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
-import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -24,7 +23,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     @Inject
     private ClientDemandsModuleRPCServiceAsync clientDemandsService;
-    private EmailDialogPopupView errorDialog;
 
     //*************************************************************************/
     // Overriden methods of IEventBusData interface.                          */

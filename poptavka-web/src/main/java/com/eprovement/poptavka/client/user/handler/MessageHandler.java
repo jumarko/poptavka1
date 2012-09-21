@@ -9,7 +9,6 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.MessageRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.OfferRPCServiceAsync;
 import com.eprovement.poptavka.client.user.UserEventBus;
@@ -25,7 +24,6 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     private MessageRPCServiceAsync messageService;
     @Inject
     private OfferRPCServiceAsync offerService;
-    private EmailDialogPopupView errorDialog;
 
     // Beho: ??? needed ???
     public void onGetClientDemands(Long userId, int fakeParameter) {

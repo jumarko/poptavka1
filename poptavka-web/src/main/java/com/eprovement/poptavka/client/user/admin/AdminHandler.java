@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.admin;
 
-import com.eprovement.poptavka.client.root.email.EmailDialogPopupView;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -39,7 +38,6 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     private LocalityRPCServiceAsync localityService = null;
     @Inject
     private AdminRPCServiceAsync generalService = null;
-    private EmailDialogPopupView errorDialog;
 
     //*************************************************************************/
     // Overriden methods of IEventBusData interface.                          */
