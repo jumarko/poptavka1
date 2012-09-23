@@ -1,0 +1,8 @@
+<!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
+
+<dataset>
+    <!--########################################## offers ###########################################-->
+    <OFFER ID="11" DEMAND_ID="2" SUPPLIER_ID="1111111111" PRICE="256" STATE="PENDING" />
+    <OFFER ID="12" DEMAND_ID="2" SUPPLIER_ID="1111111114" PRICE="512" STATE="PENDING" />
+
+</dataset>

@@ -21,7 +21,19 @@
              SENDER_ID="111111111"
              FIRSTBORN_ID="2"
              THREADROOT_ID="1"
-             DEMAND_ID="2" />
+             DEMAND_ID="2"
+             OFFER_ID="11" />
+             
+    <MESSAGE ID="8" BODY="Levna slivovice domaci, 6l barel, vznikajici kvalita!"
+             CREATED="2011-05-11"
+             PARENT_ID="1"
+             SUBJECT="Re: Dnes nepridem - zajtra "
+             SENDER_ID="111111114"
+             FIRSTBORN_ID="2"
+             THREADROOT_ID="1"
+             DEMAND_ID="2"
+             OFFER_ID="12" />
+             
 
     <!-- Reply to the reply of original (thread root) message -->
     <MESSAGE ID="2"
@@ -46,6 +58,7 @@
 
     <MESSAGEUSERROLE ID="2" MESSAGE_ID="1" USER_ID="111111111" TYPE="TO"/>
     <MESSAGEUSERROLE ID="4" MESSAGE_ID="2" USER_ID="111111111" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="5" MESSAGE_ID="8" USER_ID="111111112" TYPE="TO"/>
     <MESSAGEUSERROLE ID="6" MESSAGE_ID="3" USER_ID="111111112" TYPE="TO"/>
     <MESSAGEUSERROLE ID="8" MESSAGE_ID="4" USER_ID="111111111" TYPE="TO"/>
 
@@ -57,6 +70,9 @@
     <USERMESSAGE ID="6" MESSAGE_ID="3" USER_ID="111111111" ISREAD="1" STARRED="0"/>
     <USERMESSAGE ID="7" MESSAGE_ID="4" USER_ID="111111112" ISREAD="1" STARRED="0"/>
     <USERMESSAGE ID="8" MESSAGE_ID="4" USER_ID="111111111" ISREAD="0" STARRED="0"/>
+    <USERMESSAGE ID="9" MESSAGE_ID="8" USER_ID="111111112" ISREAD="1" STARRED="0"/>
+    <USERMESSAGE ID="10" MESSAGE_ID="8" USER_ID="111111111" ISREAD="0" STARRED="0"/>
+    <USERMESSAGE ID="11" MESSAGE_ID="8" USER_ID="111111114" ISREAD="1" STARRED="0"/>
 
 
 
@@ -110,97 +126,5 @@
 
     <USERMESSAGE ID="201" MESSAGE_ID="200" USER_ID="111111112" ISREAD="0" STARRED="0"/>
     <USERMESSAGE ID="202" MESSAGE_ID="200" USER_ID="111111111" ISREAD="0" STARRED="0"/>
-
-    <!-- Thread root -->
-    <MESSAGE ID="300"
-             CREATED="2011-05-11"
-             BODY="Ahoj, teta, dnes mam vela prace, budem spat u kamaratky.\nZajtra sa zastavim pre tu slivovicu."
-             PARENT_ID="[NULL]"
-             SENDER_ID="111111112"
-             FIRSTBORN_ID="301"
-             THREADROOT_ID="300"
-             SUBJECT="Dnes nepridem - zajtra"
-             DEMAND_ID="2" />
-
-    <!-- Reply to the original (thread root) message -->
-    <MESSAGE ID="301" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
-             CREATED="2011-05-11"
-             PARENT_ID="300"
-             SUBJECT="Re: Dnes nepridem - zajtra "
-             SENDER_ID="111111111"
-             FIRSTBORN_ID="[NULL]"
-             THREADROOT_ID="300"
-             DEMAND_ID="2"
-             OFFER_ID="11" />
-
-    <MESSAGEUSERROLE ID="302" MESSAGE_ID="300" USER_ID="111111111" TYPE="TO"/>
-    <MESSAGEUSERROLE ID="304" MESSAGE_ID="301" USER_ID="111111112" TYPE="TO"/>
-
-    <USERMESSAGE ID="301" MESSAGE_ID="300" USER_ID="111111112" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="302" MESSAGE_ID="300" USER_ID="111111111" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="303" MESSAGE_ID="301" USER_ID="111111112" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="304" MESSAGE_ID="301" USER_ID="111111111" ISREAD="1" STARRED="0"/>
-
-    <!-- Thread root -->
-    <MESSAGE ID="400"
-             CREATED="2011-05-11"
-             BODY="Ahoj, teta, dnes mam vela prace, budem spat u kamaratky.\nZajtra sa zastavim pre tu slivovicu."
-             PARENT_ID="[NULL]"
-             SENDER_ID="111111112"
-             FIRSTBORN_ID="401"
-             THREADROOT_ID="400"
-             SUBJECT="Dnes nepridem - zajtra"
-             DEMAND_ID="[NULL]" />
-
-    <!-- Reply to the original (thread root) message -->
-    <MESSAGE ID="401" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
-             CREATED="2011-05-11"
-             PARENT_ID="400"
-             SUBJECT="Re: Dnes nepridem - zajtra "
-             SENDER_ID="111111111"
-             FIRSTBORN_ID="402"
-             THREADROOT_ID="400"
-             DEMAND_ID="[NULL]" />
-
-    <!-- Reply to the original (thread root) message -->
-    <MESSAGE ID="402"
-             CREATED="2011-05-11"
-             BODY="Ahoj teto, tak já se pro tu slivovičku zastavím, bude se u té kamarádky hodit."
-             PARENT_ID="401"
-             SENDER_ID="111111112"
-             FIRSTBORN_ID="[NULL]"
-             THREADROOT_ID="400"
-             SUBJECT="Zastavím se"
-             DEMAND_ID="[NULL]" />
-
-    <MESSAGEUSERROLE ID="400" MESSAGE_ID="400" USER_ID="111111111" TYPE="TO"/>
-    <MESSAGEUSERROLE ID="401" MESSAGE_ID="401" USER_ID="111111112" TYPE="TO"/>
-    <MESSAGEUSERROLE ID="402" MESSAGE_ID="402" USER_ID="111111111" TYPE="TO"/>
-
-    <USERMESSAGE ID="401" MESSAGE_ID="400" USER_ID="111111112" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="403" MESSAGE_ID="400" USER_ID="111111113" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="402" MESSAGE_ID="400" USER_ID="111111111" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="404" MESSAGE_ID="401" USER_ID="111111111" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="405" MESSAGE_ID="401" USER_ID="111111112" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="406" MESSAGE_ID="401" USER_ID="111111113" ISREAD="0" STARRED="0"/>
-    <USERMESSAGE ID="407" MESSAGE_ID="402" USER_ID="111111111" ISREAD="1" STARRED="0"/>
-    <USERMESSAGE ID="408" MESSAGE_ID="402" USER_ID="111111112" ISREAD="1" STARRED="0"/>
-
-
-    <!--Potential demands sent to the suppliers-->
-    <MESSAGE ID="501"
-             CREATED="2012-07-01"
-             BODY="Klient Jožko Hrubý má záujem o super Java aplikáciu. Táto poptávka je atraktívna!."
-             SUBJECT="Potential demand for Java application"
-             DEMAND_ID="10" />
-    <MESSAGE ID="502"
-             CREATED="2012-07-01"
-             BODY="Other client is interested in useful web application!."
-             SUBJECT="Potential demand for useful web app."
-             DEMAND_ID="9" />
-    <USERMESSAGE ID="501" ISREAD="1" STARRED="0" MESSAGE_ID="501" USER_ID="111111114" ROLETYPE="TO" MESSAGECONTEXT="0" />
-    <USERMESSAGE ID="502" ISREAD="0" STARRED="0" MESSAGE_ID="502" USER_ID="111111114" ROLETYPE="TO" MESSAGECONTEXT="0" />
-    <!--other supplier-->
-    <USERMESSAGE ID="503" ISREAD="0" STARRED="0" MESSAGE_ID="501" USER_ID="111111111" ROLETYPE="TO" MESSAGECONTEXT="0" />
 
 </dataset>
