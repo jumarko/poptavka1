@@ -119,7 +119,7 @@ public class Demand extends DomainObject {
     @Future
     private Date validTo;
 
-    /** Path in the sotrage file system where all attachments are saved. */
+    /** Path in the storage file system where all attachments are saved. */
     private String attachmentPath;
 
     @Enumerated(value = EnumType.STRING)

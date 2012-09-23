@@ -23,7 +23,7 @@ import java.util.Date;
  * @author Vojtech Hubr
  *         Date 12.4.11
  *
- * Reponse to a demand by a supplier
+ * Response to a demand by a supplier
  */
 @Entity
 public class Offer extends DomainObject {

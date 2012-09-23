@@ -32,7 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml" },
+        "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/offer/OfferDataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
 public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {

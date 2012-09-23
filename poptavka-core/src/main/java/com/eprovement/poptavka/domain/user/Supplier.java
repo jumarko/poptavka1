@@ -68,7 +68,7 @@ public class Supplier extends BusinessUserRole {
     @NotEmpty
     private List<Category> categories;
 
-    /** Flag indicates wheter supplier is certified or not. TODO: the type of ceritification should be available!*/
+    /** Flag indicates whether supplier is certified or not. TODO: the type of ceritification should be available!*/
     // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
     @Column(columnDefinition = "BIT")
     private Boolean certified;

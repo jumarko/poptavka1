@@ -23,7 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml" },
+        "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/offer/OfferDataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
 public class SearcherTest extends DBUnitIntegrationTest {
