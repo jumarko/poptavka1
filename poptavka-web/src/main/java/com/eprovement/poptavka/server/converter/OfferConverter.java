@@ -18,7 +18,7 @@ public final class OfferConverter extends AbstractConverter<Offer, OfferDetail> 
         //offer info
         detail.setId(source.getId());
         detail.setPrice(source.getPrice());
-        detail.setState(source.getState().getType());
+        //detail.setState(source.getState().getType());
         detail.setCreatedDate(convertDate(source.getCreated()));
         detail.setFinishDate(convertDate(source.getFinishDate()));
         //demand info

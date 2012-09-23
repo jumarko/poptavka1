@@ -19,6 +19,7 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
+import com.eprovement.poptavka.server.util.SearchUtils;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
@@ -36,6 +37,7 @@ import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.util.search.Searcher;
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  *
@@ -74,6 +77,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<Search, SearchDefinition> searchConverter;
     private Converter<Demand, ClientDemandDetail> clientDemandConverter;
+    private Converter<Message, FullOfferDetail> fullOfferConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -133,6 +137,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public void setClientDemandConverter(
             @Qualifier("clientDemandConverter") Converter<Demand, ClientDemandDetail> clientDemandConverter) {
         this.clientDemandConverter = clientDemandConverter;
+    }
+
+    @Autowired
+    public void setFullOfferConverter(
+            @Qualifier("fullOfferConverter") Converter<Message, FullOfferDetail> fullOfferConverter) {
+        this.fullOfferConverter = fullOfferConverter;
     }
 
     /**************************************************************************/
@@ -298,8 +308,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        return 1L;
+        Search backendSearch = getSearchForgetClientOfferedDemandOffers(searchDefinition, userId, demandID);
+
+        return generalService.count(backendSearch);
     }
 
     /**
@@ -317,20 +328,31 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<FullOfferDetail> getClientOfferedDemandOffers(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        FullOfferDetail detail = new FullOfferDetail();
-        detail.getOfferDetail().setDemandId(1L);
-        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
-        detail.getOfferDetail().setClientName("Martin Slavkovsky");
-        detail.getOfferDetail().setSupplierName("Good Data");
-        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
-        detail.getOfferDetail().setRating(90);
-        detail.getOfferDetail().setPrice(10000);
-        detail.getOfferDetail().setFinishDate(new Date());
-        detail.getOfferDetail().setCreatedDate(new Date());
-        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
-        list.add(detail);
-        return list;
+        Search backendSearch = getSearchForgetClientOfferedDemandOffers(searchDefinition, userId, demandID);
+        List<Message> messages = generalService.search(backendSearch);
+        System.out.println(messages);
+        return fullOfferConverter.convertToTargetList(messages);
+    }
+
+    private Search getSearchForgetClientOfferedDemandOffers(SearchDefinition searchDefinition,
+            long userId, long demandId) {
+        List<String> searchAttributes = new ArrayList<String>();
+        searchAttributes.add("message.demand.title");
+        searchAttributes.add("message.offer.supplier.businessUser.businessUserData.companyName");
+        searchAttributes.add("message.offer.supplier.businessUser.businessUserData.personFirstName");
+        searchAttributes.add("message.offer.supplier.businessUser.businessUserData.personLastName");
+        Search backendSearch = SearchUtils.toBackendSearch(UserMessage.class,
+                searchDefinition, searchAttributes, "message.offer.suppplier.");
+        backendSearch.addFilter(new Filter("user.id",
+                userId));
+        backendSearch.addFilter(new Filter("message.threadRoot.sender.id",
+                userId));
+        backendSearch.addFilter(new Filter("message.parent.parent", null, Filter.OP_NULL));
+        backendSearch.addFilter(new Filter("message.parent", null, Filter.OP_NOT_NULL));
+        backendSearch.addFilter(new Filter("message.offer", null, Filter.OP_NOT_NULL));
+
+        backendSearch.addFilter(new Filter("message.demand.id", demandId));
+        return backendSearch;
     }
 
     //******************** CLIENT - My Assigned Demands ***********************/

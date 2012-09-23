@@ -548,7 +548,7 @@ public class UniversalTableWidget extends Composite {
         Set<FullOfferDetail> set = getSelectedMessageList();
         Iterator<FullOfferDetail> it = set.iterator();
         while (it.hasNext()) {
-            idList.add(it.next().getMessageDetail().getUserMessageId());
+            idList.add(it.next().getUserMessageDetail().getId());
         }
         return idList;
     }

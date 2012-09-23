@@ -17,11 +17,16 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.googlecode.genericdao.search.Search;
 import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import static org.hamcrest.core.Is.is;
+import org.junit.Assert;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
@@ -38,13 +43,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *         Date: 20.12.10
  */
 @DataSet(path = {
-        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
-         dtd = "classpath:test.dtd")
+        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/message/OfferMessageDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/offer/OfferDataSet.xml" },
+        dtd = "classpath:test.dtd",
+        disableForeignKeyChecks = true)
 public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
@@ -108,6 +113,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         clientDemandsRPCService.setMessageService(messageService);
         clientDemandsRPCService.setUserMessageService(userMessageService);
         clientDemandsRPCService.setOfferService(offerService);
+
     }
 
     private void authenticateClient() {
@@ -126,6 +132,39 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         assertNotNull(allClientDemands);
         // check that there is only one new demand - see DemandsDataSet.xml
         assertThat(allClientDemands.size(), is(1));
+    }
+
+    @Test
+    public void testGetClientOfferedDemandOffers() {
+        // final List<FullOfferDetail> allClientProjects = clientDemandsRPCService.getClientProjects(111111111L, null);
+        SearchDefinition searchDefinition = new SearchDefinition();
+        long count = clientDemandsRPCService.getClientOfferedDemandOffersCount(111111112L, 2L, searchDefinition);
+        assertThat(count, is(2L));
+        List<FullOfferDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
+                111111112L, 2L, searchDefinition);
+        assertThat(offers.size(), is(2));
+        checkFullOfferDetailExists(offers, 11, 5);
+        checkFullOfferDetailExists(offers, 12, 9);
+        searchDefinition.setFilter(new SearchModuleDataHolder());
+        searchDefinition.getFilter().setSearchText("Fourth");
+        offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, searchDefinition);
+        assertThat(offers.size(), is(1));
+        checkFullOfferDetailExists(offers, 12, 9);
+    }
+
+    private void checkFullOfferDetailExists(List<FullOfferDetail> offers,
+            final long offerId, final long userMessageId) {
+        Assert.assertTrue(
+                "FullOfferDetail [offerId=" + offerId + ", userMessageId ="
+                        + userMessageId + "] expected to be in collection ["
+                + offers + "] is not there.",
+                CollectionUtils.exists(offers, new Predicate() {
+                    @Override
+                    public boolean evaluate(Object object) {
+                        return offerId == ((FullOfferDetail) object).getOfferDetail().getId()
+                                && userMessageId == ((FullOfferDetail) object).getUserMessageDetail().getId();
+                    }
+                }));
     }
 
 }

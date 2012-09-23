@@ -4,19 +4,19 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public final class FullOfferConverter extends AbstractConverter<Message, FullOfferDetail> {
+public final class FullOfferConverter extends AbstractConverter<UserMessage, FullOfferDetail> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FullOfferConverter.class);
     /**************************************************************************/
@@ -32,39 +32,39 @@ public final class FullOfferConverter extends AbstractConverter<Message, FullOff
     /* Other converters                                                       */
     /**************************************************************************/
     private final Converter<Offer, OfferDetail> offerConverter;
-    private final Converter<Message, MessageDetail> messageConverter;
+    private final Converter<UserMessage, UserMessageDetail> userMessageConverter;
     private final Converter<Demand, FullDemandDetail> demandConverter;
 
     private FullOfferConverter(Converter<Offer, OfferDetail> offerConverter,
-            Converter<Message, MessageDetail> messageConverter,
+            Converter<UserMessage, UserMessageDetail> userMessageConverter,
             Converter<Demand, FullDemandDetail> demandConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(offerConverter);
-        Validate.notNull(messageConverter);
+        Validate.notNull(userMessageConverter);
         this.offerConverter = offerConverter;
-        this.messageConverter = messageConverter;
+        this.userMessageConverter = userMessageConverter;
         this.demandConverter = demandConverter;
     }
 
     @Override
-    public FullOfferDetail convertToTarget(Message message) {
+    public FullOfferDetail convertToTarget(UserMessage userMessage) {
         final FullOfferDetail detail = new FullOfferDetail();
-        if (message == null) {
+        if (userMessage.getMessage() == null) {
             return detail;
         }
-        detail.setMessageDetail(messageConverter.convertToTarget(message));
-        detail.setOfferDetail(offerConverter.convertToTarget(message.getOffer()));
-        detail.setDemandDetail(demandConverter.convertToTarget(message.getDemand()));
+        detail.setUserMessageDetail(userMessageConverter.convertToTarget(userMessage));
+        detail.setOfferDetail(offerConverter.convertToTarget(userMessage.getMessage().getOffer()));
+        detail.setDemandDetail(demandConverter.convertToTarget(userMessage.getMessage().getDemand()));
 
         detail.setRead(true);
 
-        LOGGER.info("OFFER ID: " + message.getId() + ", OFFER DETAIL ID: " + message.getOffer().getId());
+        LOGGER.info("OFFER ID: " + userMessage.getMessage().getId() + ", OFFER DETAIL ID: "
+                + userMessage.getMessage().getOffer().getId());
         return detail;
-
     }
 
     @Override
-    public Message convertToSource(FullOfferDetail fullOfferDetail) {
+    public UserMessage convertToSource(FullOfferDetail fullOfferDetail) {
         //TODO Juraj - ako to implementovat?
 //        offerService.getById(fullOfferDetail.getOfferDetail().getId());
         throw new UnsupportedOperationException("Conversion from FullOfferDetail to domain object Message "

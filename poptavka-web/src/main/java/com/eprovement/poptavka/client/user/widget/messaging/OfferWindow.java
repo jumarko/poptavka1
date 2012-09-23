@@ -122,7 +122,7 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
 
     public void setFullOfferDetail(FullOfferDetail fullOfferDetail) {
         this.offerDetail = offerDetail;
-        setMessage(offerDetail.getMessageDetail());
+        setMessage(offerDetail.getUserMessageDetail().getMessageDetail());
         setMessageStyle(MessageDisplayType.BOTH);
     }
 

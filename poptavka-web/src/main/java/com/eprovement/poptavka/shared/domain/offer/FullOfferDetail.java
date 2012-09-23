@@ -7,7 +7,7 @@ import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import java.io.Serializable;
 
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import java.util.Date;
 
 public class FullOfferDetail implements Serializable, TableDisplay {
@@ -18,7 +18,7 @@ public class FullOfferDetail implements Serializable, TableDisplay {
     private static final long serialVersionUID = -563380651738612866L;
     // TODO remove dipsplayed
     private boolean isRead;
-    private MessageDetail messageDetail = new MessageDetail();
+    private UserMessageDetail userMessageDetail = new UserMessageDetail();
     private OfferDetail offerDetail = new OfferDetail();
     private FullDemandDetail demandDetail = new FullDemandDetail();
 
@@ -34,16 +34,16 @@ public class FullOfferDetail implements Serializable, TableDisplay {
             return;
         }
         offerDetail.updateWholeOfferDetail(detail.offerDetail);
-        messageDetail.updateWholeMessage(detail.getMessageDetail());
+        userMessageDetail.updateWholeUserMessage(detail.getUserMessageDetail());
         isRead = detail.isRead();
     }
 
-    public MessageDetail getMessageDetail() {
-        return messageDetail;
+    public UserMessageDetail getUserMessageDetail() {
+        return userMessageDetail;
     }
 
-    public void setMessageDetail(MessageDetail messageDetail) {
-        this.messageDetail = messageDetail;
+    public void setUserMessageDetail(UserMessageDetail userMessageDetail) {
+        this.userMessageDetail = userMessageDetail;
     }
 
     public OfferDetail getOfferDetail() {
@@ -78,22 +78,22 @@ public class FullOfferDetail implements Serializable, TableDisplay {
 
     @Override
     public boolean isRead() {
-        return this.messageDetail.isRead();
+        return this.userMessageDetail.isRead();
     }
 
     @Override
     public void setRead(boolean value) {
-        this.messageDetail.setRead(value);
+        this.userMessageDetail.setRead(value);
     }
 
     @Override
     public boolean isStarred() {
-        return this.messageDetail.isStarred();
+        return this.userMessageDetail.isStarred();
     }
 
     @Override
     public void setStarred(boolean value) {
-        this.messageDetail.setStarred(value);
+        this.userMessageDetail.setStarred(value);
     }
 
     @Override

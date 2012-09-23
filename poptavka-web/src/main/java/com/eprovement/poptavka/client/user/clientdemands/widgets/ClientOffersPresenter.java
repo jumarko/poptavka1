@@ -182,7 +182,7 @@ public class ClientOffersPresenter
                         TableDisplay obj = (TableDisplay) object;
                         object.setStarred(!value);
                         view.getOfferGrid().getGrid().redraw();
-                        Long[] item = new Long[]{object.getMessageDetail().getUserMessageId()};
+                        Long[] item = new Long[]{object.getUserMessageDetail().getId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
                 });
@@ -222,8 +222,8 @@ public class ClientOffersPresenter
         FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {
-                if (lastOpenedDemandOffer != object.getMessageDetail().getUserMessageId()) {
-                    lastOpenedDemandOffer = object.getMessageDetail().getUserMessageId();
+                if (lastOpenedDemandOffer != object.getUserMessageDetail().getId()) {
+                    lastOpenedDemandOffer = object.getUserMessageDetail().getId();
                     object.setRead(true);
                     view.getOfferGrid().getGrid().redraw();
                     displayDetailContent(object);

@@ -160,9 +160,9 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                 new FieldUpdater<FullOfferDetail, Boolean>() {
                     @Override
                     public void update(int index, FullOfferDetail object, Boolean value) {
-                        object.getMessageDetail().setStarred(!value);
+                        object.getUserMessageDetail().setStarred(!value);
                         view.getTableWidget().getGrid().redraw();
-                        Long[] item = new Long[]{object.getMessageDetail().getUserMessageId()};
+                        Long[] item = new Long[]{object.getUserMessageDetail().getId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
                 });
@@ -192,9 +192,9 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, Object>() {
             @Override
             public void update(int index, FullOfferDetail object, Object value) {
-                if (lastOpenedDemandContest != object.getMessageDetail().getUserMessageId()) {
-                    lastOpenedDemandContest = object.getMessageDetail().getUserMessageId();
-                    object.getMessageDetail().setRead(true);
+                if (lastOpenedDemandContest != object.getUserMessageDetail().getId()) {
+                    lastOpenedDemandContest = object.getUserMessageDetail().getId();
+                    object.getUserMessageDetail().setRead(true);
                     view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
                 }
