@@ -54,6 +54,8 @@ import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
+import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
+import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
@@ -249,18 +251,18 @@ public interface RootEventBus extends EventBusWithLookup {
      *
      * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
      */
-//    @BeforeLoadChildModule
-//    @Event(handlers = RootPresenter.class)
-//    void beforeLoad();
+    @BeforeLoadChildModule
+    @Event(handlers = RootPresenter.class)
+    void beforeLoad();
     /**
      * This event will be called after the code is done loading.
      * You can for example decide to hide a wait popup.
      *
      * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
      */
-//    @AfterLoadChildModule
-//    @Event(handlers = RootPresenter.class)
-//    void afterLoad();
+    @AfterLoadChildModule
+    @Event(handlers = RootPresenter.class)
+    void afterLoad();
     /**************************************************************************/
     /* Parent events - no events for RootModule                               */
     /**************************************************************************/

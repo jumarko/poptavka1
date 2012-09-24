@@ -1,10 +1,10 @@
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -13,28 +13,38 @@ import com.eprovement.poptavka.client.common.search.SearchModuleView;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
+import com.google.gwt.i18n.client.LocalizableMessages;
 
 public class RootView extends ReverseCompositeView<IRootPresenter> implements
         IRootView {
 
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
     @UiField
     SimplePanel header, body, menu, searchBar, footer;
-    private PopupPanel wait = new PopupPanel();
+    @UiField
+    PopupPanel wait;
 
     interface RootViewUiBinder extends UiBinder<Widget, RootView> {
     }
 
     public RootView() {
 
-        // TODO praso - otestovat na online poptavke ci sa zobrazuje tato loading show/hide hlaska
-        wait.add(new Label("Wait until requested module code is downloaded from server."));
         initWidget(uiBinder.createAndBindUi(this));
         /* Tato metoda, zaisti, ze sa nacíta CSS styl. Bez nej by sa styl nahral az pri prepnuti do
          * dalsieho modulu.
          */
         StyleResource.INSTANCE.layout().ensureInjected();
 
+        // initialize wait PopupPanel
+        wait.setModal(true);
+        wait.setGlassEnabled(false);
+        wait.center();
+        wait.hide();
+        wait.setAutoHideEnabled(true);
+        wait.setAnimationEnabled(false);
+        wait.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
+        wait.setWidget(new LoadingPopup(MSGS.loading()));
     }
 
     @Override

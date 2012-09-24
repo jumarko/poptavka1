@@ -26,7 +26,9 @@
             <g:SimplePanel ui:field="footer"/>
         </g:south>
         <g:center>
-            <g:SimplePanel ui:field='body' />
+            <g:SimplePanel ui:field='body'>
+                <g:PopupPanel ui:field="wait"></g:PopupPanel>
+            </g:SimplePanel>
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>
