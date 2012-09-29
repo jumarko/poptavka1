@@ -12,7 +12,6 @@
     <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
         <g:HorizontalPanel ui:field="categorySection" />
         <h1>secured button calling secured RPC</h1>
-        <custom:LogoutButton ui:field="logoutButton"></custom:LogoutButton>
         <g:Button ui:field="demandCreateBtn">Call Simple Service with Default LoginPopupPresenter</g:Button>
         <g:Button ui:field="securedButton">securedButton to invoke Acccess Denied 403 error</g:Button>
         <g:Button ui:field="sendUsEmailButton">Send us an email</g:Button>

@@ -36,7 +36,6 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     public final void onFailure(final Throwable caught) {
         // TODO ivlcek - random generator of error Id should be moved to RpcExceptionAspect.java
         String errorId = Long.toString(new Date().getTime());
-        // TODO ivlcek - all errors should be sent by email to support team. Add this method to every alertBox
         if (caught == null) {
             ASYNC_CALLBACK_LOGGER.log(Level.SEVERE, "ErrorID=" + errorId + ", Received parameter 'caught' is null ?!!");
             return;

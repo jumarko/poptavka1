@@ -14,7 +14,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView.IHeaderPresenter;
-import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -104,8 +103,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 } else {
                     LOGGER.severe("Unexptected response status code while logging out, code="
                             + response.getStatusCode());
-                    new SecurityDialogBoxes.AlertBox(MSGS.loginUnknownError()).show();
-                    // TODO jumarko - Shall we send email notifications when this happens?
+                    eventBus.displayError(response.getStatusCode(), null);
                 }
             }
 
@@ -114,16 +112,14 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 // Couldn't connect to server (could be timeout, SOP violation, etc.)
                 LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging out, exception="
                         + exception.getMessage());
-                new SecurityDialogBoxes.AlertBox(MSGS.loginUnknownError()).show();
-                // TODO jumarko - Shall we send email notifications when this happens?
+                eventBus.displayError(0, null);
             }
         });
         try {
             rb.send();
         } catch (RequestException exception) {
             LOGGER.severe("RequestException thrown during user logging out, exception=" + exception.getMessage());
-            new SecurityDialogBoxes.AlertBox(MSGS.loginUnknownError()).show();
-            // TODO jumarko - Shall we send email notifications when this happens?
+            eventBus.displayError(0, null);
         }
     }
 
