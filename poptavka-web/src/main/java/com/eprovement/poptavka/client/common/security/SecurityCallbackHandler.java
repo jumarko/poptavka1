@@ -4,5 +4,5 @@ public interface SecurityCallbackHandler {
 
     void onAuthorizationExpected(String messageForUser);
 
-    void onAccessDenied();
+    void onAccessDenied(String errorId);
 }

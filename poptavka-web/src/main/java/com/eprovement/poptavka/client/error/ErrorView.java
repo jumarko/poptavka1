@@ -46,7 +46,7 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
     @UiField(provided = false)
     Button reportButton;
     private int errorResponseCode;
-    private long errorId;
+    private String errorId;
 
 
     /**************************************************************************/
@@ -87,7 +87,7 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
         }
     }
 
-    public void setErrorId(long errorId) {
+    public void setErrorId(String errorId) {
         this.errorId = errorId;
     }
 

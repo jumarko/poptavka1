@@ -18,7 +18,7 @@ public interface IErrorView extends IsWidget {
 
     void setErrorResponseCode(int errorResponseCode);
 
-    void setErrorId(long errorId);
+    void setErrorId(String errorId);
 
     HasClickHandlers getReportinButton();
 }

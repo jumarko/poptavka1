@@ -11,8 +11,8 @@ public interface BaseChildEventBus {
     void login();
 
     @Event(forwardToParent = true)
-    void displayError(int errorResponseCode, long errorId);
+    void displayError(int errorResponseCode, String errorId);
 
     @Event(forwardToParent = true)
-    void sendUsEmail(int subject, long errorId);
+    void sendUsEmail(int subject, String errorId);
 }

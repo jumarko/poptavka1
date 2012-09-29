@@ -4,7 +4,7 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
-import com.eprovement.poptavka.client.service.demand.SimpleServiceAsync;
+import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,11 +22,11 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
-    private SimpleServiceAsync simpleService;
+    private SimpleRPCServiceAsync simpleService;
 
 
     @Inject
-    void setSimpleService(SimpleServiceAsync service) {
+    void setSimpleService(SimpleRPCServiceAsync service) {
         simpleService = service;
     }
 
@@ -132,7 +132,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, 0L);
+                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, "");
 
             }
         });

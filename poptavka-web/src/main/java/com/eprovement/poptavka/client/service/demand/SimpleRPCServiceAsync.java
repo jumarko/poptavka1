@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface SimpleServiceAsync {
+public interface SimpleRPCServiceAsync {
 
     /**
      * GWT-RPC service  asynchronous (client-side) interface.

@@ -155,7 +155,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void goToCreateDemandModule();
 
     @Event(forwardToModules = ErrorModule.class)
-    void displayError(int errorResponseCode, long errorId);
+    void displayError(int errorResponseCode, String errorId);
 
     /**************************************************************************/
     /* Navigation events - User menu control section                          */
@@ -194,7 +194,7 @@ public interface RootEventBus extends EventBusWithLookup {
      * @param errorId - the error ID what was genereated for reported issue
      */
     @Event(handlers = FooterPresenter.class)
-    void sendUsEmail(int subject, long errorId);
+    void sendUsEmail(int subject, String errorId);
 
     /**
      * Contact us popup will will be prefilled with values as subject and errorId.
@@ -203,7 +203,7 @@ public interface RootEventBus extends EventBusWithLookup {
      * @param errorId - the error ID what was genereated for reported issue
      */
     @Event(handlers = EmailDialogPopupPresenter.class)
-    void fillContactUsValues(int subject, long errorId);
+    void fillContactUsValues(int subject, String errorId);
 
     /**************************************************************************/
     /* Navigation events - Other control sections                             */

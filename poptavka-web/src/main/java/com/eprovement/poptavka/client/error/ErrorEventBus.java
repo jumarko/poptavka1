@@ -40,8 +40,8 @@ public interface ErrorEventBus extends EventBusWithLookup {
      * The only entry point to this module due to code-spliting feature.
      */
     @Event(handlers = ErrorPresenter.class)
-    void displayError(int errorResponseCode, long errorId);
+    void displayError(int errorResponseCode, String errorId);
 
     @Event(forwardToParent = true)
-    void sendUsEmail(int subject, long errorId);
+    void sendUsEmail(int subject, String errorId);
 }

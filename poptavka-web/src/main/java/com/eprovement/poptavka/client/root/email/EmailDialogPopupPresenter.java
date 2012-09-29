@@ -31,7 +31,7 @@ public class EmailDialogPopupPresenter
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private MailRPCServiceAsync mailService;
-    private long errorId;
+    private String errorId;
     private int subjectId;
 
     public interface IEmailDialogPopupView extends LazyView {
@@ -97,7 +97,7 @@ public class EmailDialogPopupPresenter
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onFillContactUsValues(int subjectId, long errorId) {
+    public void onFillContactUsValues(int subjectId, String errorId) {
         this.errorId = errorId;
         this.subjectId = subjectId;
         view.getSubjectListBox().setSelectedIndex(subjectId);

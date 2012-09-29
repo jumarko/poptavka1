@@ -13,7 +13,8 @@
 	-->
     <security:http auto-config="true" entry-point-ref="customAuthenticationEntryPoint" create-session="always">
         <!-- URL patterns that require Authentication by particular roles -->
-        <security:intercept-url pattern="/poptavka/rpc" access="IS_AUTHENTICATED_FULLY" />
+        <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_FULLY" />
+        <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <!--

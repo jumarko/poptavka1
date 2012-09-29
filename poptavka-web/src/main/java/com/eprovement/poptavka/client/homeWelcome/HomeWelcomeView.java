@@ -4,7 +4,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
-import com.eprovement.poptavka.client.service.demand.SimpleServiceAsync;
+import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter> implements IHomeWelcomeView {
 
     private static HomeWelcomeViewUiBinder uiBinder = GWT.create(HomeWelcomeViewUiBinder.class);
-    private SimpleServiceAsync simpleService;
+    private SimpleRPCServiceAsync simpleService;
 
     interface HomeWelcomeViewUiBinder extends UiBinder<Widget, HomeWelcomeView> {
     }
@@ -132,7 +132,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     }
 
     @Inject
-    void setSimpleService(SimpleServiceAsync service) {
+    void setSimpleService(SimpleRPCServiceAsync service) {
         simpleService = service;
     }
 

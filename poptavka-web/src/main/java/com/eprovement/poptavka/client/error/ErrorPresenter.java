@@ -20,7 +20,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 public class ErrorPresenter extends BasePresenter<IErrorView, ErrorEventBus> implements
         IErrorPresenter {
 
-    private long errorId = 0L;
+    private String errorId;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -53,7 +53,7 @@ public class ErrorPresenter extends BasePresenter<IErrorView, ErrorEventBus> imp
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onDisplayError(int errorResponseCode, long errorId) {
+    public void onDisplayError(int errorResponseCode, String errorId) {
         this.errorId = errorId;
         view.setErrorResponseCode(errorResponseCode);
         view.setErrorId(errorId);

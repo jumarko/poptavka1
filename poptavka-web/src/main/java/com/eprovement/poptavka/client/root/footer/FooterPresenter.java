@@ -37,7 +37,7 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onSendUsEmail(int subjectId, long errorId) {
+    public void onSendUsEmail(int subjectId, String errorId) {
         eventBus.addHandler(EmailDialogPopupPresenter.class);
         eventBus.fillContactUsValues(subjectId, errorId);
     }

@@ -4,21 +4,23 @@
  */
 package com.eprovement.poptavka.server.service.simpleservice;
 
-import com.eprovement.poptavka.client.service.demand.SimpleService;
+import com.eprovement.poptavka.client.service.demand.SimpleRPCService;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.access.annotation.Secured;
 
 /**
  * The server side implementation of the simple RPC service.
  */
-@SuppressWarnings("serial")
-public class SimpleServiceImpl extends RemoteServiceServlet implements SimpleService {
+@Configurable
+public class SimpleRPCServiceImpl extends AutoinjectingRemoteService implements SimpleRPCService {
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public String getData() throws RPCException {
+    public String getData() throws RPCException, ApplicationSecurityException {
 
         final String serverInfo = getServletContext().getServerInfo();
         final String userAgent = getThreadLocalRequest().getHeader("User-Agent");
@@ -44,7 +46,7 @@ public class SimpleServiceImpl extends RemoteServiceServlet implements SimpleSer
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public String getSecuredData() throws RPCException {
+    public String getSecuredData() throws RPCException, ApplicationSecurityException {
         return "Secured Data for Supplier role only";
     }
 }
