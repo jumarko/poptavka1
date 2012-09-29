@@ -34,6 +34,8 @@ public interface LayoutResource extends CssResource {
     String footerToggle();
     @ClassName("home-menu")
     String homeMenu();
+    @ClassName("search-bar")
+    String searchBar();
     @ClassName("search-view")
     String searchView();
     @ClassName("selected")

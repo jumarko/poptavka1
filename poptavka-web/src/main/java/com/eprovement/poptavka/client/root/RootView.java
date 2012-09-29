@@ -34,6 +34,7 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         /* Tato metoda, zaisti, ze sa nacíta CSS styl. Bez nej by sa styl nahral az pri prepnuti do
          * dalsieho modulu.
          */
+        StyleResource.INSTANCE.standartStyles().ensureInjected();
         StyleResource.INSTANCE.layout().ensureInjected();
 
         // initialize wait PopupPanel

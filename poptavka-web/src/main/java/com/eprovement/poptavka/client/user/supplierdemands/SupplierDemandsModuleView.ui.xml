@@ -4,8 +4,8 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-    <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
-        <g:west size="12">
+    <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer}'>
+        <g:west size="180">
             <g:HTMLPanel>
                 <!-- Supplier submenu -->
                 <div ui:field="supplierMenu" style="display: block;">
