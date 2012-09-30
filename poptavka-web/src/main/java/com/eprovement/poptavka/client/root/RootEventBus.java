@@ -154,6 +154,12 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = DemandCreationModule.class)
     void goToCreateDemandModule();
 
+    /**
+     * Forward error handling to Error Module that will display proper messages to user.
+     *
+     * @param errorResponseCode - HTTP error response code if available, otherwise use value 0
+     * @param errorId - errorId if available, otherwise use null
+     */
     @Event(forwardToModules = ErrorModule.class)
     void displayError(int errorResponseCode, String errorId);
 

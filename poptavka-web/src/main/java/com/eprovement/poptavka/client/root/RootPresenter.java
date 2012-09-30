@@ -95,7 +95,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      * RunAsync object is passed to the event.
      */
     public void onErrorOnLoad(Throwable reason) {
-        // TODO praso doplnit. Napriklad poslat email s notifikaciou o chybe
+        eventBus.displayError(500, null); // HTTP 500 - internal server error.
     }
 
     /**
@@ -103,7 +103,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      * You can for example decide to display a wait popup.
      */
     public void onBeforeLoad() {
-//        view.setWaitVisible(true);
+        view.setWaitVisible(true);
     }
 
     /**
@@ -111,7 +111,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      * You can for example decide to hide a wait popup.
      */
     public void onAfterLoad() {
-//        view.setWaitVisible(false);
+        view.setWaitVisible(false);
     }
 
     /**************************************************************************/

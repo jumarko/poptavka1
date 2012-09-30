@@ -89,6 +89,8 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
             GWT.log("Show loading popup");
             wait.setPopupPosition(body.getAbsoluteLeft(), body.getAbsoluteTop());
             wait.setPixelSize(body.getOffsetWidth(), body.getOffsetHeight());
+            // TODO Jaro - waiting icon must be centered. Now it is centered only in SupplierCreation, DemandCreation
+            // TODO Jaro - waiting popup shouldn't cover Footer as it does now. Ask Ivan for more details.
             wait.show();
         } else {
             GWT.log("Hide loading popup");
