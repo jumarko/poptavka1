@@ -2,14 +2,19 @@ package com.eprovement.poptavka.client.common.category;
 
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
+import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
 
+    private static final Logger LOGGER = Logger.getLogger(CategoryDataProvider.class.getName());
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private CategoryRPCServiceAsync categoryService;
     private CategoryDetail categoryDetail;
 
@@ -30,9 +35,8 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    // TODO ivlcek - change the alert message to user
-                    new com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes.AlertBox(
-                        ExceptionUtils.getFullErrorMessage(caught)).show();
+                    LOGGER.severe("CategoryDataProvider not working, caught=" + caught.getMessage());
+                    new SecurityDialogBoxes.AlertBox(MSGS.tryWaiting()).show();
                 }
             });
         } else {
@@ -46,9 +50,8 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
 
                         @Override
                         public void onFailure(Throwable caught) {
-                            // TODO ivlcek - change the alert message to user
-                            new com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes.AlertBox(
-                                ExceptionUtils.getFullErrorMessage(caught)).show();
+                            LOGGER.severe("CategoryDataProvider not working, caught=" + caught.getMessage());
+                            new SecurityDialogBoxes.AlertBox(MSGS.tryWaiting()).show();
                         }
                     });
         }
