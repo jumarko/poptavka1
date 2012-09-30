@@ -43,6 +43,10 @@ public class LoginPopupView extends PopupPanel
                 name = "moj@supplier.cz";
                 pass = "kreslo";
             }
+            if (role == BusinessRole.ADMIN) {
+                name = "admin@admin.cz";
+                pass = "svnsvn";
+            }
         }
 
         public String getName() {
@@ -57,6 +61,7 @@ public class LoginPopupView extends PopupPanel
     {
         privateUsers.put(BusinessRole.CLIENT, new PrivateUser(BusinessRole.CLIENT));
         privateUsers.put(BusinessRole.SUPPLIER, new PrivateUser(BusinessRole.SUPPLIER));
+        privateUsers.put(BusinessRole.ADMIN, new PrivateUser(BusinessRole.ADMIN));
     }
     /************** DEVEL ONLY *********/
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -90,6 +95,7 @@ public class LoginPopupView extends PopupPanel
         list.setVisibleItemCount(privateUsers.size());
         list.insertItem("CLIENT", "CLIENT", 0);
         list.insertItem("SUPPLIER", "SUPPLIER", 1);
+        list.insertItem("ADMIN", "ADMIN", 2);
         list.addClickHandler(new ClickHandler() {
 
             @Override

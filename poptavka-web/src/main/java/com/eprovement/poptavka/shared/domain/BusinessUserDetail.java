@@ -15,7 +15,7 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
 
     public enum BusinessRole {
 
-        CLIENT, SUPPLIER, PARTNER//, OPERATOR, ADMIN
+        CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIN
     }
     /** Instances of roles. **/
     private FullSupplierDetail supplier = null;
