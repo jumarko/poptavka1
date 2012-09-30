@@ -32,17 +32,17 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
             view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, true);
         } else {
             view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
-        }
-        /* SUPPLIER TAB */
-        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.SUPPLIER)) {
-            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
-            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, true);
+            /* SUPPLIER TAB */
+            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
+                view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, true);
             /* CLIENT TAB */
-        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.CLIENT)) {
-            view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
-            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, false);
+            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.CLIENT)) {
+                view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
+                view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, false);
+            }
         }
         eventBus.setMenu(view);
     }
