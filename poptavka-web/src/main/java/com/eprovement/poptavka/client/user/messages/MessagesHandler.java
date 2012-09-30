@@ -137,7 +137,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     }
 
     public void onRequestUserInfo(Long recipientId) {
-        userService.getUserById(recipientId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+        userService.getBusinessUserById(recipientId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(BusinessUserDetail result) {
                 eventBus.responseUserInfo(result);

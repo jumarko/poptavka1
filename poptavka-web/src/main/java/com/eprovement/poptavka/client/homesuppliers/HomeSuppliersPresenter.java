@@ -87,7 +87,9 @@ public class HomeSuppliersPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        if (Storage.isRootStartMethodCalledFirst() == null) {
+            Storage.setRootStartMethodCalledFirst(false);
+        }
     }
 
     public void onForward() {
@@ -112,6 +114,9 @@ public class HomeSuppliersPresenter
             case Constants.HOME_SUPPLIERS_BY_SEARCH:
                 goToHomeSuppliers(searchModuleDataHolder);
                 break;
+//            case Constants.HOME_SUPPLIERS_BY_HISTORY:
+//                goToHomeSuppliersByHistory(searchModuleDataHolder);
+//                break;
             default:
                 break;
         }
@@ -148,6 +153,31 @@ public class HomeSuppliersPresenter
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
+    /**
+     * Forwarded from history.
+     *
+     * @param searchDataHolder
+     */
+//    public void goToHomeSuppliersByHistory(SearchModuleDataHolder searchDataHolder) {
+//        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_HISTORY);
+//        //Set visibility
+//        view.getFilterLabel().setVisible(false);
+//        view.getCellTree().setVisible(true);
+//        manageOpenedHierarchy(searchDataHolder.getCategories().get(0), view.getCellTree().getRootTreeNode());
+//        view.getSelectionCategoryModel().setSelected(searchDataHolder.getCategories().get(0), true);
+//        if (!searchDataHolder.getAttributes().isEmpty()) {
+//            FullSupplierDetail supplierDetail = new FullSupplierDetail();
+//            supplierDetail.setSupplierId(Long.valueOf((String) searchDataHolder.getAttributes().get(0).getValue()));
+//            //getData
+//            searchDataHolder.getAttributes().clear();
+//            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+//            view.getDataGrid().getSelectionModel().setSelected(supplierDetail, true);
+//        }
+
+        //getData
+//        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+//    }
+
     /**************************************************************************/
     /* Bind events                                                            */
     /**************************************************************************/
@@ -181,6 +211,8 @@ public class HomeSuppliersPresenter
                             ((SingleSelectionModel) view.getDataGrid().getSelectionModel()).getSelectedObject(), false);
 
                     view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+
+                    createTokenForHistory();
                 }
             }
         });
@@ -193,6 +225,7 @@ public class HomeSuppliersPresenter
 
                 if (selected != null) {
                     view.displaySuppliersDetail(selected);
+                    createTokenForHistory();
                 }
             }
         });
@@ -273,5 +306,23 @@ public class HomeSuppliersPresenter
                 root = root.setChildOpen(openedHierarchy.get(i), true);
             }
         }
+    }
+
+    private void createTokenForHistory() {
+        StringBuilder token = new StringBuilder();
+        CategoryDetail selectedCategory = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
+        if (selectedCategory != null) {
+            token.append("catId=");
+            token.append(selectedCategory.getId());
+        }
+        FullSupplierDetail selectedSupplier =
+                        (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                        .getSelectedObject();
+        if (selectedSupplier != null) {
+            token.append(";");
+            token.append("supId=");
+            token.append(selectedSupplier.getSupplierId());
+        }
+        eventBus.createTokenForHistory(token.toString());
     }
 }

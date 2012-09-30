@@ -50,16 +50,16 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
+import com.mvp4g.client.annotation.module.AfterLoadChildModule;
+import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
-import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
-import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
-@Events(startPresenter = RootPresenter.class)
+@Events(startPresenter = RootPresenter.class, historyOnStart = true)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
     @ChildModule(moduleClass = HomeWelcomeModule.class, async = false, autoDisplay = true),

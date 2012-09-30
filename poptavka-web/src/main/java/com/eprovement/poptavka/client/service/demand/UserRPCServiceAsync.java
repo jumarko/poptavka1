@@ -9,7 +9,9 @@ public interface UserRPCServiceAsync {
 
     void loginUser(String email, String password, AsyncCallback<UserDetail> callback);
 
-    void getUserById(Long userId, AsyncCallback<BusinessUserDetail> callback);
+    void getBusinessUserById(Long userId, AsyncCallback<BusinessUserDetail> callback);
+
+    void getUserById(Long userId, AsyncCallback<UserDetail> callback);
 
     /** @see UserRPCService#checkFreeEmail(String) */
     void checkFreeEmail(String email, AsyncCallback<Boolean> callback);

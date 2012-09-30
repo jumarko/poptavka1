@@ -4,6 +4,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**
@@ -36,6 +37,9 @@ public class HomeWelcomeHistoryConverter implements HistoryConverter<HomeWelcome
     @Override
     public void convertFromToken(String methodName, String param, HomeWelcomeEventBus eventBus) {
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
+        if (Storage.isRootStartMethodCalledFirst()) {
+            eventBus.goToHomeWelcomeModule(null);
+        }
     }
 
     @Override

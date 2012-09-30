@@ -44,7 +44,9 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /* General Module events */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        if (Storage.isRootStartMethodCalledFirst() == null) {
+            Storage.setRootStartMethodCalledFirst(false);
+        }
     }
 
     public void onForward() {

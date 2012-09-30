@@ -104,7 +104,9 @@ public class HomeDemandsPresenter extends LazyPresenter<
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // TODO praso - probably history initialization will be here
+        if (Storage.isRootStartMethodCalledFirst() == null) {
+            Storage.setRootStartMethodCalledFirst(false);
+        }
     }
 
     public void onForward() {

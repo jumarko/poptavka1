@@ -26,7 +26,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
      * Get User according to stored sessionID from DB after login.
      */
     public void onGetUser(long userId) {
-        userService.getUserById(userId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+        userService.getBusinessUserById(userId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(BusinessUserDetail result) {
                 eventBus.loadingShow(MSGS.progressCreatingUserInterface());

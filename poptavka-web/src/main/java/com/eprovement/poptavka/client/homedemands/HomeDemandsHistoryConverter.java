@@ -30,6 +30,9 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
         } else {
             eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
+        if (Storage.isRootStartMethodCalledFirst()) {
+            eventBus.goToHomeDemandsModule(null, Constants.HOME_DEMANDS_BY_DEFAULT);
+        }
     }
 
     @Override

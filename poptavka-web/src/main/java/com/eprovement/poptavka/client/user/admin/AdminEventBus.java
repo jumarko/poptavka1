@@ -46,7 +46,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
+@Events(startPresenter = AdminPresenter.class, module = AdminModule.class, historyOnStart = true)
 public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
@@ -84,6 +84,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     /* Admin module forward section - comunication with parent widget*/
     @Event(forwardToParent = true)
     void clearSearchContent();
+
+    @Event(forwardToParent = true)
+    void atAccount();
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);

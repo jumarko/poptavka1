@@ -45,6 +45,13 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
         } else {
             eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
+        //if true => URL invocation, because
+        //if app is running and module is called, that's module start method is called first
+        //and then start method of root module is called.
+        //If hisotryOnStart is called, it is the opposite.
+        if (Storage.isRootStartMethodCalledFirst()) {
+            eventBus.goToCreateSupplierModule();
+        }
     }
 
     @Override

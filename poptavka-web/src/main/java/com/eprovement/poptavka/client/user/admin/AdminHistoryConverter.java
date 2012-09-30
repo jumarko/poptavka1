@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.admin;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -37,34 +38,35 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
      */
     public String onGoToAdminModule(SearchModuleDataHolder searchDataHolder, int loadWidget) {
         //Nemusi byt, ale lepsie to vyzera ako ked tam mam dat do url len hodnotu ciselnej konstanty
-        switch (loadWidget) {
-            case Constants.ADMIN_ACCESS_ROLE:
-                return ADMIN_ACCESS_ROLE_TEXT;
-            case Constants.ADMIN_CLIENTS:
-                return ADMIN_CLIENTS_TEXT;
-            case Constants.ADMIN_DEMANDS:
-                return ADMIN_DEMANDS_TEXT;
-            case Constants.ADMIN_EMAILS_ACTIVATION:
-                return ADMIN_EMAILS_ACTIVATION_TEXT;
-            case Constants.ADMIN_INVOICES:
-                return ADMIN_INVOICES_TEXT;
-            case Constants.ADMIN_MESSAGES:
-                return ADMIN_MESSAGES_TEXT;
-            case Constants.ADMIN_OFFERS:
-                return ADMIN_OFFERS_TEXT;
-            case Constants.ADMIN_PAYMENT_METHODS:
-                return ADMIN_PAYMENT_METHODS_TEXT;
-            case Constants.ADMIN_PERMISSIONS:
-                return ADMIN_PERMISSIONS_TEXT;
-            case Constants.ADMIN_PREFERENCES:
-                return ADMIN_PREFERENCES_TEXT;
-            case Constants.ADMIN_PROBLEMS:
-                return ADMIN_PROBLEMS_TEXT;
-            case Constants.ADMIN_SUPPLIERS:
-                return ADMIN_SUPPLIERS_TEXT;
-            default:
-                return ADMIN_NONE_TEXT;
-        }
+//        switch (loadWidget) {
+//            case Constants.ADMIN_ACCESS_ROLE:
+//                return ADMIN_ACCESS_ROLE_TEXT;
+//            case Constants.ADMIN_CLIENTS:
+//                return ADMIN_CLIENTS_TEXT;
+//            case Constants.ADMIN_DEMANDS:
+//                return ADMIN_DEMANDS_TEXT;
+//            case Constants.ADMIN_EMAILS_ACTIVATION:
+//                return ADMIN_EMAILS_ACTIVATION_TEXT;
+//            case Constants.ADMIN_INVOICES:
+//                return ADMIN_INVOICES_TEXT;
+//            case Constants.ADMIN_MESSAGES:
+//                return ADMIN_MESSAGES_TEXT;
+//            case Constants.ADMIN_OFFERS:
+//                return ADMIN_OFFERS_TEXT;
+//            case Constants.ADMIN_PAYMENT_METHODS:
+//                return ADMIN_PAYMENT_METHODS_TEXT;
+//            case Constants.ADMIN_PERMISSIONS:
+//                return ADMIN_PERMISSIONS_TEXT;
+//            case Constants.ADMIN_PREFERENCES:
+//                return ADMIN_PREFERENCES_TEXT;
+//            case Constants.ADMIN_PROBLEMS:
+//                return ADMIN_PROBLEMS_TEXT;
+//            case Constants.ADMIN_SUPPLIERS:
+//                return ADMIN_SUPPLIERS_TEXT;
+//            default:
+//                return ADMIN_NONE_TEXT;
+//        }
+        return "widget=" + loadWidget;
     }
 
     /**
@@ -78,7 +80,12 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
-        eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
+        if (Storage.isRootStartMethodCalledFirst()) {
+            eventBus.atAccount();
+            eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
+            eventBus.goToAdminModule(null, Integer.valueOf(param.split("=")[1]));
+        }
+
     }
 
     @Override

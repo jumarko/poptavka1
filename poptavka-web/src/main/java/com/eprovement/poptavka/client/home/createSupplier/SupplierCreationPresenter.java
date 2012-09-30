@@ -150,22 +150,28 @@ public class SupplierCreationPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        if (Storage.isRootStartMethodCalledFirst() == null) {
+            Storage.setRootStartMethodCalledFirst(false);
+        }
+        eventBus.initSupplierForm(view.getSupplierInfoHolder());
+
     }
 
     public void onForward() {
+        LOGGER.info("SupplierCreationPresenter loaded");
+        Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_SUPPLIERS);
+        maxSelectedTab = -1;
         eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
+    /**
+     * Used to navigate/invoke supplier creation module.
+     */
     public void onGoToCreateSupplierModule() {
-        Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_SUPPLIERS);
-        LOGGER.info("SupplierCreationPresenter loaded");
-        LOGGER.info(" -> Supplier Info Form");
-        eventBus.initSupplierForm(view.getSupplierInfoHolder());
-        maxSelectedTab = -1;
+        //nothing
     }
     /**************************************************************************/
     /* Business events handled by presenter                                   */
@@ -245,7 +251,6 @@ public class SupplierCreationPresenter
 
     private void initServices() {
         supplierCreationRpcService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>(eventBus) {
-
             @Override
             public void onSuccess(ArrayList<ServiceDetail> data) {
                 LOGGER.info(" -> Service Form init & fill data");

@@ -28,7 +28,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class)
+@Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class, historyOnStart = true)
 public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
@@ -56,6 +56,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = {ClientDemandsPresenter.class, ClientOffersPresenter.class,
             ClientAssignedDemandsPresenter.class }, passive = true)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
+
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -90,6 +91,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(forwardToParent = true)
     void goToCreateSupplierModule();
+
+    @Event(forwardToParent = true)
+    void atAccount();
+
+    @Event(forwardToParent = true)
+    void userMenuStyleChange(int loadedModule);
 
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);

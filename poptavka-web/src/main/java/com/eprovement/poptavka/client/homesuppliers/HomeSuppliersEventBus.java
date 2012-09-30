@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author martin.slavkovsky
  */
-@Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class)
+@Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class, historyOnStart = true)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
@@ -55,6 +55,12 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
      */
     @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
     String goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, int homeSuppliersViewType);
+
+    /**************************************************************************/
+    /* History events                                                          */
+    /**************************************************************************/
+    @Event(historyConverter = HomeSuppliersHistoryConverter.class)
+    void createTokenForHistory(String token);
 
     /**************************************************************************/
     /* Parent events                                                          */

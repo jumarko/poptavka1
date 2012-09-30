@@ -28,6 +28,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private ClientService clientService;
     private Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
+    private Converter<User, UserDetail> userConverter;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -56,6 +57,12 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         this.businessUserConverter = businessUserConverter;
     }
 
+    @Autowired
+    public void setUserConverter(
+            @Qualifier("userConverter") Converter<User, UserDetail> userConverter) {
+        this.userConverter = userConverter;
+    }
+
     @Override
     public UserDetail loginUser(String email, String password) throws RPCException {
         final User user = this.loginService.loginUser(email, password);
@@ -64,9 +71,13 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     }
 
     @Override
-    public BusinessUserDetail getUserById(Long userId) throws RPCException {
-        //Find vs. SearchUnique ??
+    public BusinessUserDetail getBusinessUserById(Long userId) throws RPCException {
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, userId));
+    }
+
+    @Override
+    public UserDetail getUserById(Long userId) throws RPCException {
+        return userConverter.convertToTarget(generalService.find(User.class, userId));
     }
 
     @Override
@@ -76,7 +87,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
 
     @Override
     public BusinessUserDetail getLoggedBusinessUser() throws RPCException {
-        return getUserById(
+        return getBusinessUserById(
                 ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId());
     }
 

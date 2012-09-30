@@ -45,6 +45,9 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
         } else {
             eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
+        if (Storage.isRootStartMethodCalledFirst()) {
+            eventBus.goToCreateDemandModule();
+        }
     }
 
     @Override

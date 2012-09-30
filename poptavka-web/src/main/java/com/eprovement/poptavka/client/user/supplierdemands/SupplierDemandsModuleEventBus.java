@@ -24,7 +24,8 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@Events(startPresenter = SupplierDemandsModulePresenter.class, module = SupplierDemandsModule.class)
+@Events(startPresenter = SupplierDemandsModulePresenter.class, module = SupplierDemandsModule.class,
+        historyOnStart = true)
 public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
@@ -62,7 +63,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
      * @param filter - defines data holder to be displayed in advanced search bar
      */
     @Event(handlers = SupplierDemandsModulePresenter.class,
-            historyConverter = SupplierDemandsModuleHistoryConverter.class)
+    historyConverter = SupplierDemandsModuleHistoryConverter.class)
     String goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(handlers = SupplierDemandsPresenter.class)
@@ -90,7 +91,14 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void goToCreateSupplierModule();
 
     @Event(forwardToParent = true)
+    void atAccount();
+
+    @Event(forwardToParent = true)
+    void userMenuStyleChange(int loadedModule);
+
+    @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
+
     /**************************************************************************/
     /* Business events handled by Presenters. */
     /**************************************************************************/

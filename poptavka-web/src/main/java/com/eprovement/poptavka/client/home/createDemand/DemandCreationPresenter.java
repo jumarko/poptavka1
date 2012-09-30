@@ -138,22 +138,27 @@ public class DemandCreationPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        if (Storage.isRootStartMethodCalledFirst() == null) {
+            Storage.setRootStartMethodCalledFirst(false);
+        }
+        eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
     }
 
     public void onForward() {
+        LOGGER.info("DemandCreationPresenter loaded");
+        Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_DEMAND);
+        maxSelectedTab = -1;
         eventBus.setUpSearchBar(null);
     }
 
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
+    /**
+     * Used to navigate/invoke demand creation module.
+     */
     public void onGoToCreateDemandModule() {
-        Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_DEMAND);
-        LOGGER.info("  INIT DemandCreation Widget");
-        LOGGER.info(" -> Supplier Info Form");
-        eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
-        maxSelectedTab = -1;
+        //nothing
     }
 
     /**************************************************************************/

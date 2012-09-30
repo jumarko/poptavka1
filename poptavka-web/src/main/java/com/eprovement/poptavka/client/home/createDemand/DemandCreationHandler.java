@@ -49,7 +49,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 
             @Override
             public void onSuccess(final UserDetail loggedUser) {
-                userRpcService.getUserById(loggedUser.getUserId(),
+                userRpcService.getBusinessUserById(loggedUser.getUserId(),
                         new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
                         @Override

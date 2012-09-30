@@ -14,7 +14,9 @@ public interface UserRPCService extends RemoteService {
 
     UserDetail loginUser(String email, String password) throws RPCException;
 
-    BusinessUserDetail getUserById(Long userId) throws RPCException;
+    BusinessUserDetail getBusinessUserById(Long userId) throws RPCException;
+
+    UserDetail getUserById(Long userId) throws RPCException;
 
     /**
      * Checks wheter given {@code email} is available.

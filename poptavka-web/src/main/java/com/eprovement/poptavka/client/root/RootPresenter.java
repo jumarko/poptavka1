@@ -82,7 +82,11 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         GWT.log("Root presenter loaded");
         eventBus.atHome();
         eventBus.goToSearchModule();
-        eventBus.goToHomeWelcomeModule(null);
+        if (Storage.isRootStartMethodCalledFirst() == null) {
+            Storage.setRootStartMethodCalledFirst(true);
+        } else {
+            eventBus.goToHomeWelcomeModule(null);
+        }
     }
 
     /**

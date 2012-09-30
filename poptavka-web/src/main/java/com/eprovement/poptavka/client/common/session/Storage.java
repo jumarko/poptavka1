@@ -35,6 +35,7 @@ public final class Storage {
     private static boolean loginDueToHistory = false;
     private static boolean logoutDueToHistory = false;
     private static String forwardHistory = "";
+    private static Boolean rootStartMethodCalledFirst = null;
     //
     public static final String BACK = "back";
     public static final String FORWARD = "forward";
@@ -170,12 +171,21 @@ public final class Storage {
         Storage.demandId = demandId;
     }
 
+    public static Boolean isRootStartMethodCalledFirst() {
+        return rootStartMethodCalledFirst;
+    }
+
+    public static void setRootStartMethodCalledFirst(Boolean rootStartMethodCalledFirst) {
+        Storage.rootStartMethodCalledFirst = rootStartMethodCalledFirst;
+    }
+
     /**
      * Method clears all data of this Storage session object.
      */
     public static void invalidateStorage() {
         setUserDetail(null);
         setBusinessUserDetail(null);
+        setRootStartMethodCalledFirst(null);
         // TODO martin - shall we clear following values when invalidating Storage? i.e. during logout
         // Will History be working correctly if we clear these values?
         // Martin will try to make new solution for history between login/logout
