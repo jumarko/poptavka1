@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.CommonAccessRoles;
 import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -27,7 +28,7 @@ import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
-import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
+import com.eprovement.poptavka.shared.domain.UserDetail;
 
 @Presenter(view = RootView.class)
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
@@ -123,6 +124,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
+        showDevelUserInfoPopupThatShouldBedeletedAfter();
         // notify all components that user has logged in
     }
 
@@ -231,10 +233,11 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.setWidth("200px");
         String br = "<br />";
         StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
-        BusinessUserDetail user = (BusinessUserDetail) Storage.getUser();
+        UserDetail userDetail = Storage.getUser();
+        BusinessUserDetail user = Storage.getBusinessUserDetail();
         sb.append("ID: " + user.getUserId() + br);
 
-        sb.append("<i>-- user roles --</i>" + br);
+        sb.append("<i>-- Business user roles --</i>" + br);
         if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
             sb.append("<b><i>BusinessRole: CLIENT</i></b>" + br);
             sb.append("ClientID: " + user.getClientId() + br);
@@ -252,14 +255,21 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             sb.append("<b><i>BusinessRole: PARTNER</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getAccessRoles().contains(new AccessRoleDetail("user"))) {
-            sb.append("<b><i>AccessRole: USER</i></b>" + br);
-            sb.append("<i>-- -- -- --</i>" + br);
+//        if (user.getBusinessRoles().contains(BusinessRole.OPERATOR)) {
+//            sb.append("<b><i>OPERATOR</i></b>" + br);
+//            sb.append("<i>-- -- -- --</i>" + br);
+//        }
+        sb.append("<i>-- User access roles --</i>" + br);
+        if (userDetail.getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
+            sb.append("<b><i>ADMIN</i></b>" + br);
         }
-        if (user.getAccessRoles().contains(new AccessRoleDetail("admin"))) {
-            sb.append("<b><i>AccessRole: ADMIN</i></b>" + br);
-            sb.append("<i>-- -- -- --</i>" + br);
+        if (userDetail.getAccessRoles().contains(CommonAccessRoles.CLIENT)) {
+            sb.append("<b><i>CLIENT</i></b>" + br);
         }
+        if (userDetail.getAccessRoles().contains(CommonAccessRoles.SUPPLIER)) {
+            sb.append("<b><i>SUPPLIER</i></b>" + br);
+        }
+        sb.append("<i>-- -- -- --</i>" + br);
         sb.append("Messages: " + "n/a" + " / " + "n/a" + br);
 
         HTML content = new HTML(sb.toString());
