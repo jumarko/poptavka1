@@ -52,8 +52,7 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
                 //Set pointer to true to detect that login process is going to be invoked by history
                 Storage.setLoginDueToHistory(true);
                 //Login user and sets account layout
-                //Martin - temporary disabled
-                //eventBus.login();
+                eventBus.login();
                 //LOGOUT
             } else {
                 if (param.equals(LOGIN)) {

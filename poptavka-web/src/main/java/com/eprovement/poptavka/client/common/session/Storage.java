@@ -35,7 +35,7 @@ public final class Storage {
     private static boolean loginDueToHistory = false;
     private static boolean logoutDueToHistory = false;
     private static String forwardHistory = "";
-    private static Boolean rootStartMethodCalledFirst = null;
+    private static Boolean appCalledByURL = null;
     //
     public static final String BACK = "back";
     public static final String FORWARD = "forward";
@@ -171,12 +171,12 @@ public final class Storage {
         Storage.demandId = demandId;
     }
 
-    public static Boolean isRootStartMethodCalledFirst() {
-        return rootStartMethodCalledFirst;
+    public static Boolean isAppCalledByURL() {
+        return appCalledByURL;
     }
 
-    public static void setRootStartMethodCalledFirst(Boolean rootStartMethodCalledFirst) {
-        Storage.rootStartMethodCalledFirst = rootStartMethodCalledFirst;
+    public static void setAppCalledByURL(Boolean appCalledByURL) {
+        Storage.appCalledByURL = appCalledByURL;
     }
 
     /**
@@ -185,7 +185,7 @@ public final class Storage {
     public static void invalidateStorage() {
         setUserDetail(null);
         setBusinessUserDetail(null);
-        setRootStartMethodCalledFirst(null);
+        setAppCalledByURL(null);
         // TODO martin - shall we clear following values when invalidating Storage? i.e. during logout
         // Will History be working correctly if we clear these values?
         // Martin will try to make new solution for history between login/logout

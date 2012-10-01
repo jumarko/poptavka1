@@ -80,7 +80,7 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
-        if (Storage.isRootStartMethodCalledFirst()) {
+        if (Storage.isAppCalledByURL()) {
             eventBus.atAccount();
             eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
             eventBus.goToAdminModule(null, Integer.valueOf(param.split("=")[1]));

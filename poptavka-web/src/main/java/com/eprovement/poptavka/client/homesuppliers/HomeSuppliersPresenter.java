@@ -87,9 +87,7 @@ public class HomeSuppliersPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        if (Storage.isRootStartMethodCalledFirst() == null) {
-            Storage.setRootStartMethodCalledFirst(false);
-        }
+        //nothing
     }
 
     public void onForward() {

@@ -46,7 +46,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         } else {
             eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
         }
-        if (Storage.isRootStartMethodCalledFirst()) {
+        if (Storage.isAppCalledByURL()) {
             eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
         }
 //        if (param != null) {

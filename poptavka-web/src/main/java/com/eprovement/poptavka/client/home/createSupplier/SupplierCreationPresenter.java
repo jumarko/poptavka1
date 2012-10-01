@@ -150,9 +150,6 @@ public class SupplierCreationPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        if (Storage.isRootStartMethodCalledFirst() == null) {
-            Storage.setRootStartMethodCalledFirst(false);
-        }
         eventBus.initSupplierForm(view.getSupplierInfoHolder());
 
     }

@@ -2,7 +2,6 @@ package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
@@ -35,9 +34,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        if (Storage.isRootStartMethodCalledFirst() == null) {
-            Storage.setRootStartMethodCalledFirst(false);
-        }
+        //nothing
     }
 
     public void onForward() {

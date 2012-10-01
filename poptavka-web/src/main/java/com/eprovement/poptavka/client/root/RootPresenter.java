@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -83,10 +84,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         GWT.log("Root presenter loaded");
         eventBus.atHome();
         eventBus.goToSearchModule();
-        if (Storage.isRootStartMethodCalledFirst() == null) {
-            Storage.setRootStartMethodCalledFirst(true);
-        } else {
+        //If application is started because of URL, it is there when starting
+        if (History.getToken().isEmpty()) {
+            Storage.setAppCalledByURL(false);
             eventBus.goToHomeWelcomeModule(null);
+        } else {
+            Storage.setAppCalledByURL(true);
+            //Storage.populate();
         }
     }
 

@@ -138,9 +138,6 @@ public class DemandCreationPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        if (Storage.isRootStartMethodCalledFirst() == null) {
-            Storage.setRootStartMethodCalledFirst(false);
-        }
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
     }
 

@@ -37,7 +37,7 @@ public class HomeWelcomeHistoryConverter implements HistoryConverter<HomeWelcome
     @Override
     public void convertFromToken(String methodName, String param, HomeWelcomeEventBus eventBus) {
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
-        if (Storage.isRootStartMethodCalledFirst()) {
+        if (Storage.isAppCalledByURL()) {
             eventBus.goToHomeWelcomeModule(null);
         }
     }
