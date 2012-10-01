@@ -46,7 +46,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startPresenter = AdminPresenter.class, module = AdminModule.class, historyOnStart = true)
+@Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
 public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**

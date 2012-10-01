@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -120,4 +121,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException, ApplicationSecurityException;
 
     void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException;
+
+    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
 }

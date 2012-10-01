@@ -44,12 +44,16 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /* General Module events */
     /**************************************************************************/
     public void onStart() {
+
         if (Storage.isRootStartMethodCalledFirst() == null) {
             Storage.setRootStartMethodCalledFirst(false);
         }
     }
 
     public void onForward() {
+        // TODO ivlcek - tato metoda by mohla napr zistit pocet aktualnych novych sprav ktore ma uzivatel
+        // takze by nevadilo, ze by sa tato servisa volala pri kazdom volanie v metode onForward() pre kazdy modul
+        eventBus.updateUnreadMessagesCount();
         eventBus.setUpSearchBar(null);
     }
 

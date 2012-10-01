@@ -13,12 +13,14 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -32,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -293,5 +296,26 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
         list.add(detail);
         return list;
+    }
+
+    /**
+     * This method will update number of unread messages of logged user.
+     * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
+     * only when PoptavkaUserAuthentication object exist in SecurityContextHolder and we can retrieve userId.
+     *
+     * TODO Vojto - call DB servise to retrieve the number of unread messages for given userId
+     *
+     * @return UnreadMessagesDetail with number of unread messages and other info to be displayed after users logs in
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
+        Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
+        // TODO Vojto - get number of unread messages. UserId is provided from Authentication obejct see above
+
+        UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
+        unreadMessagesDetail.setUnreadMessagesCount(21);
+        return unreadMessagesDetail;
     }
 }

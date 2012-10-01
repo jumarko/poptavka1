@@ -24,8 +24,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@Events(startPresenter = SupplierDemandsModulePresenter.class, module = SupplierDemandsModule.class,
-        historyOnStart = true)
+@Events(startPresenter = SupplierDemandsModulePresenter.class, module = SupplierDemandsModule.class)
 public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
@@ -161,6 +160,15 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
     void requestFinishOffer(FullOfferDetail fullOfferDetail);
+
+    /**
+     * Method will get logged user from Spring Authentication object if any and retrieves the number of unread messages
+     * for logged user. If no user is logged in the Spring Security configuration will require authentication via
+     * loginPopupPresenter in order to carry out RPC service that is intended for authenticated users
+     * only.
+     */
+    @Event(handlers = SupplierDemandsModuleHandler.class)
+    void updateUnreadMessagesCount();
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */

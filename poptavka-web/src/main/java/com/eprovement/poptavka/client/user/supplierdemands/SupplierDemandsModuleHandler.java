@@ -5,8 +5,10 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -163,6 +165,17 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
+            }
+        });
+    }
+
+    public void onUpdateUnreadMessagesCount() {
+        supplierDemandsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
+
+            @Override
+            public void onSuccess(UnreadMessagesDetail result) {
+                // empty i.e number of new messages could be retrieved
+                GWT.log("UpdateUnreadMessagesCount retrieved, number=" + result.getUnreadMessagesCount());
             }
         });
     }

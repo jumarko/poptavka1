@@ -22,7 +22,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
  *
  * @author ivan.vlcek
  */
-@Events(startPresenter = DemandCreationPresenter.class, module = DemandCreationModule.class, historyOnStart = true)
+@Events(startPresenter = DemandCreationPresenter.class, module = DemandCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEventBus {
 

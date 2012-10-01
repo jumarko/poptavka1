@@ -18,7 +18,7 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.ArrayList;
 
-@Events(startPresenter = HomeWelcomePresenter.class, module = HomeWelcomeModule.class, historyOnStart = true)
+@Events(startPresenter = HomeWelcomePresenter.class, module = HomeWelcomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventBus {
 

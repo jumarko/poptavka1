@@ -15,9 +15,10 @@
         <!-- URL patterns that require Authentication by particular roles -->
         <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_FULLY" />
         <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />
+        <security:intercept-url pattern="/poptavka/service/supplierdemandsmodule" access="ROLE_SUPPLIER" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <!--
+        <!--    
             If the user is authorized, he will be redirected to the success-handler.
             The sucess-handler is responsible of interpreting what to do next.
             Same principle with the failure-handler

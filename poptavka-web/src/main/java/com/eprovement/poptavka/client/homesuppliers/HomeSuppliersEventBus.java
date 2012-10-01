@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author martin.slavkovsky
  */
-@Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class, historyOnStart = true)
+@Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 

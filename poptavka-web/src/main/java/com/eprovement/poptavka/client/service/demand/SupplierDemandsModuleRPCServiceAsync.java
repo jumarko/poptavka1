@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -54,4 +55,6 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
 
     void finishOffer(FullOfferDetail fullOfferDetail, AsyncCallback<Void> callback);
+
+    void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 }
