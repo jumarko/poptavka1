@@ -98,6 +98,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
 
+    @Event(forwardToParent = true)
+    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+
     /**************************************************************************/
     /* Business events handled by Presenters. */
     /**************************************************************************/

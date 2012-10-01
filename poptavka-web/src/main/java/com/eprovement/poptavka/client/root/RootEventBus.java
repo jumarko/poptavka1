@@ -228,6 +228,9 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = {UserHeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
     void atAccount();
 
+    @Event(handlers = UserHeaderPresenter.class)
+    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+
     /**************************************************************************/
     /* History events                                                         */
     /**************************************************************************/

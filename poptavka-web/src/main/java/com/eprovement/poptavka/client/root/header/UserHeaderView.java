@@ -10,6 +10,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView.IUserHeaderPresenter;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 
 public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
         implements IUserHeaderView {
@@ -28,6 +33,12 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     Anchor logoutButton;
     @UiField
     HTMLPanel headerHolder;
+    @UiField
+    Label username;
+    @UiField
+    PushButton pushButton;
+    @UiField
+    Label newMessagesCount;
 
     public UserHeaderView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -37,5 +48,23 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     public Anchor getLogoutLink() {
         return logoutButton;
     }
+
+    @Override
+    public Label getUsername() {
+        return username;
+    }
+
+    /**
+     * @return the newMessagesCount
+     */
+    public Label getNewMessagesCount() {
+        return newMessagesCount;
+    }
+
+    @UiHandler("pushButton")
+    void handleClick(ClickEvent e) {
+        Window.alert("Uzivatel bude presmerovany na modul Messages, kde uvidi neprecitane spravy");
+    }
+
 
 }

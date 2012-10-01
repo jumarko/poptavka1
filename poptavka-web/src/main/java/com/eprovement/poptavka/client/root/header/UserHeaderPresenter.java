@@ -53,6 +53,12 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
     public void onAtAccount() {
         GWT.log("UserHeader presenter loaded");
         eventBus.setHeader(view);
+        view.getUsername().setText(Storage.getUser().getEmail());
+
+    }
+
+    public void onSetUpdatedUnreadMessagesCount(int numberOfMessages) {
+        view.getNewMessagesCount().setText(String.valueOf(numberOfMessages));
     }
 
     /**

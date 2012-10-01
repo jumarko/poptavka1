@@ -36,9 +36,19 @@
 				</div>
 			</div>
 
-			<div style="position: absolute; top: 10px; right: 176px; color: #ffffff;">Help</div>
-			<div style="position: absolute; top: 10px; right: 176px; color: #ffffff;">New Messages: TODO</div>
-			<div style="position: absolute; top: 10px; right: 176px; color: #ffffff;">user name </div>
+                        <div style="position: absolute; top: 10px; right: 300px; color: #ffffff;">
+                        <g:Button ui:field="help"><ui:msg key="subjectHelp">Help</ui:msg></g:Button>
+                        <g:Label ui:field="username"></g:Label>
+                        <g:Label ui:field="newMessagesCount"></g:Label>
+
+ <g:PushButton ui:field='pushButton' enabled='true'>
+   <g:upFace image='{res.images.envelopeImage}'/>
+   <g:upHoveringFace image='{res.images.envelopeHoverImage}'/>
+   <g:downFace image='{res.images.envelopeImage}'/>
+   <g:downHoveringFace image='{res.images.envelopeImage}'/>
+ </g:PushButton>
+
+                        </div>
 
 		</div>
 	</g:HTMLPanel>
