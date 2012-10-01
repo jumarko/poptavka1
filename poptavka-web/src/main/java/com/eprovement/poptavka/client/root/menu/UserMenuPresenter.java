@@ -16,9 +16,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus>
         implements IUserMenuPresenter {
 
-    public void onStart() {
-    }
-
     /**
      * Jedina matoda, ktora nahra UserMenu pohlad do Root menu layoutu. Ak je prave
      * prihlaseny uzivatel administrator, zobrazi administatorsky tab.

@@ -129,7 +129,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onAtHome() {
-        GWT.log("User has logged out and his user session is invalidated");
         // notify all components that user has logged out
     }
 

@@ -23,6 +23,7 @@ import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
+import com.eprovement.poptavka.client.root.header.UserHeaderPresenter;
 import com.eprovement.poptavka.client.root.menu.MenuPresenter;
 import com.eprovement.poptavka.client.root.menu.UserMenuPresenter;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
@@ -82,8 +83,7 @@ public interface RootEventBus extends EventBusWithLookup {
      */
     @Start
     @InitHistory
-    @Event(handlers = {HeaderPresenter.class, MenuPresenter.class,
-            RootPresenter.class, FooterPresenter.class })
+    @Event(handlers = {RootPresenter.class, FooterPresenter.class })
     void start();
 
     /**************************************************************************/
@@ -225,7 +225,7 @@ public interface RootEventBus extends EventBusWithLookup {
      * Login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka,
      * cookies a defaultny modul po odhlaseni
      */
-    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
+    @Event(handlers = {UserHeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
     void atAccount();
 
     /**************************************************************************/
@@ -289,7 +289,7 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = HeaderPresenter.class)
     void login();
 
-    @Event(handlers = HeaderPresenter.class)
+    @Event(handlers = UserHeaderPresenter.class)
     void logout();
 
     /**************************************************************************/
