@@ -24,13 +24,13 @@
         <g:center>
             <g:DockLayoutPanel unit="PX">
                 <g:north size="45">
-                    <g:HorizontalPanel>
-                        <g:HorizontalPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>
+                    <g:HorizontalPanel styleName='{res.layout.demandTabContentHeader}'>
+                        <g:HorizontalPanel ui:field="demandHeader">
                             <g:Label>
                                 <ui:msg key="clientProjectsTitle">Vypis klientovych poptaviek</ui:msg>
                             </g:Label>
                         </g:HorizontalPanel>
-                        <g:HorizontalPanel ui:field="conversationHeader" styleName='{res.layout.demandTabContentHeader}'>
+                        <g:HorizontalPanel ui:field="conversationHeader">
                             <g:Button ui:field="backBtn">
                                 <ui:msg key="backToClientProjects">Spat na vsetky nove poptavky</ui:msg>
                             </g:Button>

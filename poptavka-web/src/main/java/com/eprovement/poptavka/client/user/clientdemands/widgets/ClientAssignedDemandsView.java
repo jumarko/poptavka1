@@ -7,10 +7,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ClientAssignedDemandsView extends Composite
@@ -36,7 +36,7 @@ public class ClientAssignedDemandsView extends Composite
     @UiField
     SimplePanel wrapperPanel;
     @UiField
-    VerticalPanel contestantsHeader;
+    HTMLPanel contestantsHeader;
 
     /**************************************************************************/
     /* Initialization                                                            */

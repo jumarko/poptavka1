@@ -165,6 +165,13 @@ input,textarea,select {
 .demand-tab-content-header {
 	background: url(images/tab_header.gif) repeat-x;
 	padding: 9px;
+	width: 100%;
+}
+
+.demand-tab-content-header div {
+	color: #ffffff;
+	padding: 2px 10px;
+	float: left;
 }
 
 .demand-tab-content-header button {
@@ -223,8 +230,9 @@ input,textarea,select {
 	position: absolute;
 	right: 16px;
 	top: 106px;
-	background: url(images/search-bar.png) no-repeat;	
+	background: url(images/search-bar.png) no-repeat;
 	padding: 9px 12px 7px;
+	width: 479px;
 }
 
 .search-view {
@@ -296,8 +304,8 @@ input,textarea,select {
 	padding: 0 35px 0 50px;
 	border-left: 1px solid #bda45d;
 }
-.create-tab-layout-selected,
-.create-tab-layout-header:hover {
+
+.create-tab-layout-selected,.create-tab-layout-header:hover {
 	background: url(images/create-tab-hover.png) no-repeat top right;
 	cursor: pointer;
 }

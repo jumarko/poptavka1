@@ -24,13 +24,13 @@
         <g:center>
             <g:DockLayoutPanel unit="PX">
                 <g:north size="45">
-                    <g:HorizontalPanel>
-                        <g:HorizontalPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>
+                    <g:HorizontalPanel styleName='{res.layout.demandTabContentHeader}'>
+                        <g:HorizontalPanel ui:field="demandHeader">
                             <g:Label>
                                 <ui:msg key="clientContestsTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
                             </g:Label>
                         </g:HorizontalPanel>
-                        <g:VerticalPanel ui:field="contestHeader" styleName='{res.layout.demandTabContentHeader}'>
+                        <g:VerticalPanel ui:field="contestHeader">
                             <g:Button ui:field="backBtn">
                                 <ui:msg key="backToClientContests">Spat na vsetky poptavky s ponukami</ui:msg>
                             </g:Button>
