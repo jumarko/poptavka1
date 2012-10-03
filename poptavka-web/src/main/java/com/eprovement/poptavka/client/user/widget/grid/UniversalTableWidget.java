@@ -170,7 +170,6 @@ public class UniversalTableWidget extends Composite {
     private void initTable() {
         // Create a CellTable.
         grid = new UniversalAsyncGrid<FullOfferDetail>(gridColumns);
-        grid.setWidth("800px");
         grid.setHeight("500px");
 
 

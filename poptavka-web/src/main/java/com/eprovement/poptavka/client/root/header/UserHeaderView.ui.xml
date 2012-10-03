@@ -10,6 +10,34 @@
 		.important {
 			font-weight: bold;
 		}
+		
+		.helpButton {
+			float: right;
+			margin: 0 10px;
+		}
+		
+		.helpButton {
+			cursor: pointer;
+		}
+		
+		.username {
+			float: right;
+			margin: 0 10px;
+		}
+		
+		.newMessageCount {
+			float: right;
+			margin: 0;
+		}
+		
+		.pushButton {
+			float: right;
+			margin: 0 5px 0 10px;
+		}
+		
+		.pushButton:hover {
+			cursor: pointer;
+		}
 	</ui:style>
 
 	<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContent}'>
@@ -36,21 +64,20 @@
 				</div>
 			</div>
 
-                        <div style="position: absolute; top: 10px; right: 300px; color: #ffffff;">
-                        <g:Button ui:field="help"><ui:msg key="subjectHelp">Help</ui:msg></g:Button>
-                        <g:Label ui:field="username"></g:Label>
-                        <g:Label ui:field="newMessagesCount"></g:Label>
-
- <g:PushButton ui:field='pushButton' enabled='true'>
-   <g:upFace image='{res.images.envelopeImage}'/>
-   <g:upHoveringFace image='{res.images.envelopeHoverImage}'/>
-   <g:downFace image='{res.images.envelopeImage}'/>
-   <g:downHoveringFace image='{res.images.envelopeImage}'/>
- </g:PushButton>
-
-                        </div>
-
+			<div style="position: absolute; top: 7px; right: 164px; color: #ffffff; width: 356px;">
+				<g:Button ui:field="help" styleName='{style.helpButton}'>
+					<ui:msg key="subjectHelp">Help</ui:msg>
+				</g:Button>
+				<g:Label ui:field="username" styleName='{style.username}'></g:Label>
+				<g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
+				<g:PushButton ui:field='pushButton' enabled='true'
+					styleName='{style.pushButton}'>
+					<g:upFace image='{res.images.envelopeImage}' />
+					<g:upHoveringFace image='{res.images.envelopeHoverImage}' />
+					<g:downFace image='{res.images.envelopeImage}' />
+					<g:downHoveringFace image='{res.images.envelopeImage}' />
+				</g:PushButton>
+			</div>
 		</div>
 	</g:HTMLPanel>
-
 </ui:UiBinder>
