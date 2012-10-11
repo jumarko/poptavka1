@@ -27,7 +27,8 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
     @Override
     public void convertFromToken(String historyName, String param, final ClientDemandsModuleEventBus eventBus) {
         if (Storage.isAppCalledByURL()) {
-            eventBus.atAccount();
+            //nemusim nie, ved ak bude prihlasenie tak tam v forwardUser metode sa vola atAccount
+//            eventBus.atAccount();
             eventBus.userMenuStyleChange(Constants.USER_CLIENT_MODULE);
             eventBus.goToClientDemandsModule(null, Integer.valueOf(param.split("=")[1]));
         }

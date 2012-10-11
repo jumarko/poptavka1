@@ -130,6 +130,7 @@ public class HomeSuppliersView extends OverflowComposite
                 homeSuppliersPresenter.getCategoryService(),
                 Constants.WITHOUT_CHECK_BOXES,
                 CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS), null);
+        Storage.setTree(cellTree);
         // cellTree.setSize("300px", "100px");
         cellTree.setAnimationEnabled(true);
     }

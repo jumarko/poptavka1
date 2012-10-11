@@ -14,6 +14,7 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.Button;
@@ -28,10 +29,8 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 @Presenter(view = HomeSuppliersView.class)
 public class HomeSuppliersPresenter
@@ -71,8 +70,15 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    //<level, index>
-    private Map<Integer, Integer> openedHierarchy = new TreeMap<Integer, Integer>();
+    //<cat, index>
+    private LinkedList<TreeItem> openedHierarchy = new LinkedList<TreeItem>();
+    private TreeNode openedNode = null;
+    private TreeNode lastNode = null;
+    private long selectedSupplier = -1;
+    //pointers
+    boolean selectedFromNode = false;
+    boolean cancelOpenEvent = false;
+    boolean cancelSelectionEvent = false;
     /**************************************************************************/
     /* RPC Service*/
     /**************************************************************************/
@@ -112,12 +118,35 @@ public class HomeSuppliersPresenter
             case Constants.HOME_SUPPLIERS_BY_SEARCH:
                 goToHomeSuppliers(searchModuleDataHolder);
                 break;
-//            case Constants.HOME_SUPPLIERS_BY_HISTORY:
-//                goToHomeSuppliersByHistory(searchModuleDataHolder);
-//                break;
             default:
                 break;
         }
+    }
+
+    public void onSetModuleByHistory(
+            LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID) {
+        //1 - Tree
+        //open nodes accorting to history records
+//        if (openedHierarchy.size() > tree.size()) {
+//            onOpenNodesAccoirdingToHistory(tree);
+//        }
+        openedHierarchy = tree;
+        openedNode = view.getCellTree().getRootTreeNode();
+        //select category last category
+        cancelSelectionEvent = true;
+        view.getSelectionCategoryModel().setSelected(categoryDetail, true);
+        //2 - Table
+        //retrieve data with new filter and particular page
+        view.getPager().setPage(page);
+        view.hideSuppliersDetail();
+        SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
+        searchDataHolder.getCategories().add(categoryDetail);
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        //3 - Supplier Detail
+        //select supplier when requested from history - if supplierID != -1 its fires event
+        //to retrieve supplier's detail and select it in table selection model, which
+        //forces loading detail to detail window
+        selectedSupplier = supplierID;
     }
 
     /**
@@ -128,6 +157,7 @@ public class HomeSuppliersPresenter
         //Set visibility
         view.getFilterLabel().setVisible(false);
         view.getCellTree().setVisible(true);
+        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
 
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
     }
@@ -137,7 +167,7 @@ public class HomeSuppliersPresenter
      *
      * @param searchDataHolder
      */
-    public void goToHomeSuppliers(SearchModuleDataHolder searchDataHolder) {
+    private void goToHomeSuppliers(SearchModuleDataHolder searchDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
         //Set visibility
         //display message that search was performed
@@ -146,55 +176,58 @@ public class HomeSuppliersPresenter
         view.getFilterLabel().setText("Results satisfying searching criteria:");
         view.getFilterLabel().setVisible(true);
         view.getCellTree().setVisible(false);
+        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
 
         //getData
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
-
-    /**
-     * Forwarded from history.
-     *
-     * @param searchDataHolder
-     */
-//    public void goToHomeSuppliersByHistory(SearchModuleDataHolder searchDataHolder) {
-//        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_HISTORY);
-//        //Set visibility
-//        view.getFilterLabel().setVisible(false);
-//        view.getCellTree().setVisible(true);
-//        manageOpenedHierarchy(searchDataHolder.getCategories().get(0), view.getCellTree().getRootTreeNode());
-//        view.getSelectionCategoryModel().setSelected(searchDataHolder.getCategories().get(0), true);
-//        if (!searchDataHolder.getAttributes().isEmpty()) {
-//            FullSupplierDetail supplierDetail = new FullSupplierDetail();
-//            supplierDetail.setSupplierId(Long.valueOf((String) searchDataHolder.getAttributes().get(0).getValue()));
-//            //getData
-//            searchDataHolder.getAttributes().clear();
-//            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-//            view.getDataGrid().getSelectionModel().setSelected(supplierDetail, true);
-//        }
-
-        //getData
-//        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-//    }
 
     /**************************************************************************/
     /* Bind events                                                            */
     /**************************************************************************/
     @Override
     public void bindView() {
+        view.getCellTree().addHandler(new LoadingStateChangeEvent.Handler() {
+            @Override
+            public void onLoadingStateChanged(LoadingStateChangeEvent event) {
+                if (openedNode != null && !openedHierarchy.isEmpty()) {
+                    if (openedHierarchy.size() > 1) {
+                        cancelOpenEvent = true;
+                    }
+                    if (openedHierarchy.getFirst().getIndex() != -1) {
+                        openedNode = openedNode.setChildOpen(openedHierarchy.removeFirst().getIndex(), true);
+                    }
+                }
+            }
+        }, LoadingStateChangeEvent.TYPE);
         view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
             @Override
             public void onOpen(OpenEvent<TreeNode> event) {
+                //cancel event if needed
+                if (cancelOpenEvent) {
+                    cancelOpenEvent = false;
+                    return;
+                }
                 TreeNode openedNode = event.getTarget();
+//                lastNode = openedNode;
                 CategoryDetail selectedCategory = (CategoryDetail) openedNode.getValue();
-                //If node is requested to be opened, select also node object - it fires selected event
-                view.getSelectionCategoryModel().setSelected(selectedCategory, true);
 
-                manageOpenedHierarchy(selectedCategory, openedNode);
+                if (manageOpenedHierarchy(selectedCategory, openedNode)) {
+                    onOpenNodesAccoirdingToHistory(openedHierarchy);
+                }
+
+                selectedFromNode = true;
+                view.getSelectionCategoryModel().setSelected(selectedCategory, true);
             }
         });
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                //cancel event if needed
+                if (cancelSelectionEvent) {
+                    cancelSelectionEvent = false;
+                    return;
+                }
                 view.getDataGrid().clearData();
 
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
@@ -205,12 +238,22 @@ public class HomeSuppliersPresenter
                     searchDataHolder.getCategories().add(selected);
 
                     view.hideSuppliersDetail();
-                    view.getDataGrid().getSelectionModel().setSelected(
-                            ((SingleSelectionModel) view.getDataGrid().getSelectionModel()).getSelectedObject(), false);
 
                     view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
-                    createTokenForHistory();
+                    if (!selectedFromNode) {
+                        if (manageOpenedHierarchy(selected, null)) {
+                            onOpenNodesAccoirdingToHistory(openedHierarchy);
+                        }
+                    }
+
+                    if (!Storage.isCalledDueToHistory()) {
+                        createTokenForHistory();
+                    }
+
+                    //reset pointers
+                    selectedFromNode = false;
+                    Storage.setCalledDueToHistory(false);
                 }
             }
         });
@@ -247,8 +290,11 @@ public class HomeSuppliersPresenter
     }
 
     /**************************************************************************/
-    /* Additional events used to display data                                 */
+    /* Additional methods                                                     */
     /**************************************************************************/
+    public void onSelectSupplier(FullSupplierDetail supplierDetail) {
+        view.getDataGrid().getSelectionModel().setSelected(supplierDetail, true);
+    }
     /**
      * Display suppliers of selected category.
      * @param list
@@ -256,7 +302,29 @@ public class HomeSuppliersPresenter
     /* SUPPLIERS */
     public void onDisplaySuppliers(List<FullSupplierDetail> list) {
         view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
+        //If supplier must be selected, get its detail and select in selectionModel
+        if (selectedSupplier != -1) {
+            eventBus.getSupplier(selectedSupplier);
+        }
         view.getDataGrid().redraw();
+    }
+
+    /**
+     * According to <b>openedHierarchy</b> attribute opens nodes except the last one from .
+     */
+    public void onOpenNodesAccoirdingToHistory(LinkedList<TreeItem> categoryHierarchy) {
+        openedHierarchy = categoryHierarchy;
+        TreeNode root = view.getCellTree().getRootTreeNode();
+        for (int i = 0; i < root.getChildCount(); i++) {
+            root.setChildOpen(i, false);
+        }
+        root = view.getCellTree().getRootTreeNode();
+
+//        boolean fireEvent = false;
+        for (TreeItem item : categoryHierarchy) {
+            cancelOpenEvent = true;
+            root = root.setChildOpen(item.getIndex(), true);
+        }
     }
 
     /**************************************************************************/
@@ -265,62 +333,54 @@ public class HomeSuppliersPresenter
     /**
      * Manages openedHierarchy attributes due to new user selection.
      */
-    private void manageOpenedHierarchy(CategoryDetail selectedCategory, TreeNode openedNode) {
-        List<Integer> levelsToRemove = new ArrayList<Integer>();
-        boolean was = false;
+    /**
+     *
+     * @param selectedCategory
+     * @param openedNode
+     * @return define of recreating open nodes is needed
+     */
+    private boolean manageOpenedHierarchy(CategoryDetail selectedCategory, TreeNode openedNode) {
         //remove all levels which are childrens of level that was selected by user.
-        for (Integer level : openedHierarchy.keySet()) {
-            if (selectedCategory.getLevel() < level) {
-                //define whitch items(levels) remove
-                levelsToRemove.add(level);
-            } else if (selectedCategory.getLevel() == level) {
-                was = true;
+        int removeCount = 0;
+        for (TreeItem item : openedHierarchy) {
+            if (selectedCategory.getLevel() <= item.getLevel()) {
+                removeCount++;
             }
         }
         //Remove selected levels
-        if (!levelsToRemove.isEmpty()) {
-            for (Integer levelToRemove : levelsToRemove) {
-                openedHierarchy.remove(levelToRemove);
-            }
-        }
-        if (was) {
-            openNodesAccoirdingToHistory();
+        for (int i = 0; i < removeCount; i++) {
+            openedHierarchy.removeLast();
         }
         //replace last level index with actual one - selected by user
-        openedHierarchy.put(selectedCategory.getLevel(), openedNode.getIndex());
+        openedHierarchy.add(new TreeItem(
+                selectedCategory.getId(),
+                selectedCategory.getLevel(),
+                openedNode == null ? -1 : openedNode.getIndex()));
+
+        return removeCount == 0 ? false : true;
     }
 
-    /**
-     * According to <b>openedHierarchy</b> attribute opens nodes except the last one from .
-     */
-    private void openNodesAccoirdingToHistory() {
-        TreeNode root = view.getCellTree().getRootTreeNode();
-        int depth = openedHierarchy.size();
-        for (int i : openedHierarchy.keySet()) {
-            //close only the last
-            if (i == depth) {
-                root = root.setChildOpen(openedHierarchy.get(i), false, false);
-            } else {
-                root = root.setChildOpen(openedHierarchy.get(i), true);
-            }
-        }
-    }
-
+//    private void openNodesAccoirdingToHistory() {
+//        TreeNode root = view.getCellTree().getRootTreeNode();
+//        int depth = openedHierarchy.size();
+//        for (TreeItem item : openedHierarchy) {
+//            //close only the last
+//            if (item.getLevel() == depth) {
+//                root = root.setChildOpen(item.getIndex(), false, false);
+//            } else {
+//                root = root.setChildOpen(item.getIndex(), true);
+//            }
+//        }
+//    }
     private void createTokenForHistory() {
-        StringBuilder token = new StringBuilder();
-        CategoryDetail selectedCategory = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
-        if (selectedCategory != null) {
-            token.append("catId=");
-            token.append(selectedCategory.getId());
-        }
+        //Category
+//        CategoryDetail selectedCategory = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
+
+        //Supplier
         FullSupplierDetail selectedSupplier =
-                        (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                        .getSelectedObject();
-        if (selectedSupplier != null) {
-            token.append(";");
-            token.append("supId=");
-            token.append(selectedSupplier.getSupplierId());
-        }
-        eventBus.createTokenForHistory(token.toString());
+                (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                .getSelectedObject();
+
+        eventBus.createTokenForHistory(openedHierarchy, view.getPager().getPage(), selectedSupplier);
     }
 }

@@ -1,10 +1,13 @@
 package com.eprovement.poptavka.client.common.category;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
+import com.google.gwt.user.cellview.client.LoadingStateChangeEvent.LoadingState;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -31,6 +34,9 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                 public void onSuccess(List<CategoryDetail> result) {
                     updateRowCount(result.size(), true);
                     updateRowData(0, result);
+                    if (Storage.getTree() != null) {
+                        Storage.getTree().fireEvent(new LoadingStateChangeEvent(LoadingState.LOADED));
+                    }
                 }
 
                 @Override
@@ -46,6 +52,9 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                         public void onSuccess(List<CategoryDetail> result) {
                             updateRowCount(result.size(), true);
                             updateRowData(0, result);
+                            if (Storage.getTree() != null) {
+                                Storage.getTree().fireEvent(new LoadingStateChangeEvent(LoadingState.LOADED));
+                            }
                         }
 
                         @Override

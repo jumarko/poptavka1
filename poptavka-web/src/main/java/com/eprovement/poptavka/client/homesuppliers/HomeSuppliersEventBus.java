@@ -9,6 +9,7 @@ package com.eprovement.poptavka.client.homesuppliers;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -20,6 +21,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  *
@@ -60,7 +62,7 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     /* History events                                                          */
     /**************************************************************************/
     @Event(historyConverter = HomeSuppliersHistoryConverter.class)
-    void createTokenForHistory(String token);
+    String createTokenForHistory(LinkedList<TreeItem> categoryDetail, int page, FullSupplierDetail supplierDetail);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -84,17 +86,24 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void openNodesAccoirdingToHistory(LinkedList<TreeItem> tree);
+
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void setModuleByHistory(LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID);
+
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void selectSupplier(FullSupplierDetail supplierDetail);
+
     /**************************************************************************/
     /* Business events handled by Presenters - Display events                 */
     /**************************************************************************/
-    // SUPPLIERS
     @Event(handlers = HomeSuppliersPresenter.class)
     void displaySuppliers(List<FullSupplierDetail> list);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-    // SUPPLIERS
     @Override
     @Event(handlers = HomeSuppliersHandler.class)
     void getDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition);
@@ -102,4 +111,13 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     @Override
     @Event(handlers = HomeSuppliersHandler.class)
     void getData(SearchDefinition searchDefinition);
+
+//    @Event(handlers = HomeSuppliersHandler.class)
+//    void getParentsWithIndexes(long categoryId);
+
+    @Event(handlers = HomeSuppliersHandler.class)
+    void getCategoryAndSetModuleByHistory(LinkedList<TreeItem> tree, long categoryID, int page, long supplierID);
+
+    @Event(handlers = HomeSuppliersHandler.class)
+    void getSupplier(long supplierID);
 }

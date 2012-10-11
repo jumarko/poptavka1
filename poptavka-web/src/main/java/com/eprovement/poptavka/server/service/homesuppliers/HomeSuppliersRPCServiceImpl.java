@@ -53,6 +53,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private CategoryService categoryService;
     private SupplierService supplierService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<ResultCriteria, SearchDefinition> criteriaConverter;
 
     @Autowired
@@ -87,60 +88,49 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
+    }
+
+    @Autowired
     public void setCriteriaConverter(
             @Qualifier("criteriaConverter") Converter<ResultCriteria, SearchDefinition> criteriaConverter) {
         this.criteriaConverter = criteriaConverter;
     }
 
-    // ***********************************************************************
-    // Categories getter methods
-    // ***********************************************************************
+    /**************************************************************************/
+    /*  Categories                                                            */
+    /**************************************************************************/
     @Override
-    public ArrayList<CategoryDetail> getCategories() throws RPCException {
-        final List<Category> categories = categoryService.getRootCategories();
-        return createCategoryDetailList(categories);
+    public CategoryDetail getCategory(long categoryID) {
+        return categoryConverter.convertToTarget(categoryService.getById(categoryID));
     }
 
-    /**
-     * Return all parents of given category within given category.
-     *
-     * @param category - given category id
-     * @return list of parents and given category
-     */
-    @Override
-    public ArrayList<CategoryDetail> getCategoryParents(Long category) throws RPCException {
-        System.out.println("Getting parent categories");
-        Category cat = categoryService.getById(category);
-        List<Category> parents = new ArrayList<Category>();
-        //add cat itself
-        parents.add(cat);
-        while (cat.getParent() != null) {
-            parents.add(cat.getParent());
-            cat = cat.getParent();
-        }
+//    @Override
+//    public List<Integer> getCategoryParentsWithIndexes(Long category) throws RPCException {
+//        System.out.println("Getting parent categories");
+//        Category cat = categoryService.getById(category);
+//        List<Integer> parentsWithIdxs = new ArrayList<Integer>();
+//        while (cat != null) {
+//            parentsWithIdxs.add(getCategoriesByItsLevel(cat.getLevel(), cat.getParent()).indexOf(cat));
+//            cat = cat.getParent();
+//        }
+//        Collections.reverse(parentsWithIdxs);
+//        return parentsWithIdxs;
+//    }
 
-        return createCategoryDetailList(parents);
+    /**************************************************************************/
+    /*  Suppliers                                                             */
+    /**************************************************************************/
+    @Override
+    public FullSupplierDetail getSupplier(long supplierID) {
+        return supplierConverter.convertToTarget(supplierService.getById(supplierID));
     }
 
-    @Override
-    public ArrayList<CategoryDetail> getCategoryChildren(Long category) throws RPCException {
-        System.out.println("Getting children categories");
-        try {
-            if (category != null) {
-                final Category cat = categoryService.getById(category);
-                if (cat != null) {
-                    return createCategoryDetailList(cat.getChildren());
-                }
-            }
-        } catch (NullPointerException ex) {
-            LOGGER.info("NullPointerException while executing getCategoryChildren");
-        }
-        return new ArrayList<CategoryDetail>();
-    }
-
-    // ***********************************************************************
-    // Get filtered demands
-    // ***********************************************************************
+    /**************************************************************************/
+    /*  Get filtered demands                                                  */
+    /**************************************************************************/
     /**
      * Method in general gets Suppliers count according to given filter criteria
      * represented by SearchModuleDataHolder. If user don't specify attribute to
@@ -204,9 +194,9 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         }
     }
 
-    // ***********************************************************************
-    // Get category suppliers
-    // ***********************************************************************
+    /**************************************************************************/
+    /*  Get category suppliers                                                */
+    /**************************************************************************/
     /**
      * This mehtod is used when <b>category filtering</b> is required. Get
      * suppliers count of given categories.
@@ -240,9 +230,9 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
                 criteriaConverter.convertToSource(searchDefinition), cats.toArray(new Category[cats.size()])));
     }
 
-    // ***********************************************************************
-    // Get category locality suppliers
-    // ***********************************************************************
+    /**************************************************************************/
+    /*  Get category locality suppliers                                       */
+    /**************************************************************************/
     /**
      * This mehtod is used when both <b>category & locality filtering</b> is
      * required. Get suppliers count of given categories & localities.
@@ -290,9 +280,9 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
                 locs.toArray(new Locality[locs.size()])));
     }
 
-    // ***********************************************************************
-    // Fileter methods
-    // ***********************************************************************
+    /**************************************************************************/
+    /*  Fileter methods                                                       */
+    /**************************************************************************/
     /**
      * This method decide which backend method used to retrieve data. Method is
      * used when <b>no additional attributes filtering</b> is required,
@@ -547,28 +537,20 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     /**
-     * Inner method for transforming domain Entity to front-end representation.
-     * *
+     * Gets categories of given level and given parent.
+     * @param level
+     * @param parent
+     * @return
+     *
      */
-    private ArrayList<CategoryDetail> createCategoryDetailList(List<Category> categories) {
-        final ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
-
-        for (Category cat : categories) {
-            categoryDetails.add(createCategoryDetail(cat));
-        }
-
-        return categoryDetails;
-    }
-
-    private CategoryDetail createCategoryDetail(Category category) {
-        long suppliersCount = supplierService.getSuppliersCountQuick(category);
-        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, suppliersCount);
-
-        if (category.getChildren().isEmpty()) {
-            detail.setLeaf(false);
+    private List<Category> getCategoriesByItsLevel(int level, Category parent) {
+        if (level == 1) {
+            return categoryService.getRootCategories();
         } else {
-            detail.setLeaf(true);
+            Search search = new Search(Category.class);
+            search.addFilterEqual("level", level);
+            search.addFilterEqual("parent", parent);
+            return generalService.search(search);
         }
-        return detail;
     }
 }

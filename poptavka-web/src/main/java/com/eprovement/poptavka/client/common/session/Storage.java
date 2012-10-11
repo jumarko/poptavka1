@@ -7,6 +7,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,6 +35,7 @@ public final class Storage {
     /**************************************************************************/
     private static boolean loginDueToHistory = false;
     private static boolean logoutDueToHistory = false;
+    private static boolean calledDueToHistory = false;
     private static String forwardHistory = "";
     private static Boolean appCalledByURL = null;
     //
@@ -72,6 +74,14 @@ public final class Storage {
 
     public static void setLoginDueToHistory(boolean loginDueToHistory) {
         Storage.loginDueToHistory = loginDueToHistory;
+    }
+
+    public static boolean isCalledDueToHistory() {
+        return calledDueToHistory;
+    }
+
+    public static void setCalledDueToHistory(boolean calledDueToHistory) {
+        Storage.calledDueToHistory = calledDueToHistory;
     }
 
     public static String getForwardHistory() {
@@ -192,4 +202,19 @@ public final class Storage {
 //        setDemandId(-1L);
 //        setCurrentlyLoadedView(-1);
     }
+
+    /**************************************************************************/
+    /* Workarount to access tree from its data provider.                      */
+    /* Need to fire event when data have been loaded.                         */
+    /**************************************************************************/
+    private static CellTree tree = null;
+
+    public static CellTree getTree() {
+        return tree;
+    }
+
+    public static void setTree(CellTree tree) {
+        Storage.tree = tree;
+    }
+
 }

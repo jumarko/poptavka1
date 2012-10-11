@@ -2,10 +2,13 @@ package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import java.util.LinkedList;
 
 /**
  * History converter class. Handles history for HomeSuppliersModule.
@@ -26,8 +29,19 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
 //        }
     }
 
-    public String onCreateTokenForHistory(String token) {
-        return token;
+    public String onCreateTokenForHistory(
+            LinkedList<TreeItem> openedHierarchy, int page, FullSupplierDetail supplierDetail) {
+        StringBuilder token = new StringBuilder();
+        //Category
+        token.append("catId=");
+        token.append(convertCateoryMapToToken(openedHierarchy));
+        //Page
+        token.append(";page=");
+        token.append(page);
+        //Supplier
+        token.append(";supId=");
+        token.append(supplierDetail == null ? "-1" : supplierDetail.getSupplierId());
+        return token.toString();
     }
 
     /**
@@ -46,25 +60,56 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         } else {
             eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
         }
-        if (Storage.isAppCalledByURL()) {
+        if (param == null) {
+            //aj tak tu nemam categoryDetail ale iba ID
             eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
+        } else {
+            Storage.setCalledDueToHistory(true);
+            //When back & forward events -> don't need to call goToHomeSupplierModule
+            // - it would create new universalAsyncTable, ...
+            // - just use what is already created - events will fire appropiate actions
+            //parse param
+            String[] params = param.split(";");
+            LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split("=")[1]);
+            if (!tree.isEmpty()) {
+                eventBus.getCategoryAndSetModuleByHistory(
+                        tree,
+                        tree.getLast().getCategoryId(),
+                        Integer.valueOf(params[1].split("=")[1]),
+                        Long.valueOf(params[2].split("=")[1]));
+            }
         }
-//        if (param != null) {
-//            SearchModuleDataHolder filter = new SearchModuleDataHolder();
-//            String[] idTab = param.split(";");
-//            filter.getCategories().add(new CategoryDetail(Long.valueOf(idTab[0].split("=")[1]), ""));
-//            if (idTab.length == 2) {
-//                filter.getAttributes().add(new FilterItem(
-//                        "id", FilterItem.OPERATION_EQUALS, idTab[1].split("=")[1]));
-//            }
-////            if (com.google.gwt.user.client.History.getToken().isEmpty()) {
-//                eventBus.goToHomeSuppliersModule(filter, Constants.HOME_SUPPLIERS_BY_HISTORY);
-////            }
-//        } else {
-//            if (com.google.gwt.user.client.History.getToken().isEmpty()) {
-//                eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
-//            }
-//        }
+    }
+
+    private LinkedList<TreeItem> convertCategoryTokenToMap(String token) {
+        LinkedList<TreeItem> tree = new LinkedList<TreeItem>();
+        StringBuilder str = new StringBuilder(token);
+        str.deleteCharAt(0);
+        str.deleteCharAt(str.length() - 1);
+        String[] items = str.toString().split(",");
+        CategoryDetail cat = null;
+        int level = 1;
+        for (String item : items) {
+            tree.add(new TreeItem(Long.valueOf(item.split(":")[0]), level, Integer.valueOf(item.split(":")[1])));
+            level++;
+        }
+        return tree;
+    }
+
+    private String convertCateoryMapToToken(LinkedList<TreeItem> openedHierarcy) {
+        StringBuilder str = new StringBuilder();
+        str.append("(");
+        if (openedHierarcy != null) {
+            for (TreeItem item : openedHierarcy) {
+                str.append(item.getCategoryId());
+                str.append(":");
+                str.append(item.getIndex());
+                str.append(",");
+            }
+            str.deleteCharAt(str.length() - 1);
+        }
+        str.append(")");
+        return str.toString();
     }
 
     @Override

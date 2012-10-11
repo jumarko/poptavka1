@@ -128,7 +128,10 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
 
     @Test
     public void testGetAllClientDemands() {
-        final List<ClientDemandDetail> allClientDemands = clientDemandsRPCService.getClientDemands(111111111L, null);
+        //Martin:
+        //usedId is retrieved from SpringSecurityHolder in RPC - how to modify this test?
+        //final List<ClientDemandDetail> allClientDemands = clientDemandsRPCService.getClientDemands(111111111L, null);
+        final List<ClientDemandDetail> allClientDemands = clientDemandsRPCService.getClientDemands(null);
         assertNotNull(allClientDemands);
         // check that there is only one new demand - see DemandsDataSet.xml
         assertThat(allClientDemands.size(), is(1));

@@ -25,7 +25,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void getClientDemandsCount(long clientID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientDemands(long clientID, SearchDefinition searchDefinition,
+    void getClientDemands(SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandDetail>> callback);
 
     void getClientDemandConversationsCount(long clientID, long demandID, SearchDefinition searchDefinition,

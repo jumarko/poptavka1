@@ -75,7 +75,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     // Retrieving methods - CLIENT PROJECTS                                   */
     //*************************************************************************/
     private void getClientDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        clientDemandsService.getClientDemandsCount(Storage.getUser().getUserId(), searchDefinition,
+        clientDemandsService.getClientDemandsCount(1L, searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
@@ -86,7 +86,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     private void getClientDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemands(
-                Storage.getUser().getUserId(), searchDefinition,
+                searchDefinition,
                 new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ClientDemandDetail> result) {
