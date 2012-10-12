@@ -87,9 +87,6 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Event(handlers = HomeSuppliersPresenter.class)
-    void openNodesAccoirdingToHistory(LinkedList<TreeItem> tree);
-
-    @Event(handlers = HomeSuppliersPresenter.class)
     void setModuleByHistory(LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID);
 
     @Event(handlers = HomeSuppliersPresenter.class)

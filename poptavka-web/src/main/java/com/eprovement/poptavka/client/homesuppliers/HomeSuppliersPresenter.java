@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
@@ -71,10 +72,12 @@ public class HomeSuppliersPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     //<cat, index>
-    private LinkedList<TreeItem> openedHierarchy = new LinkedList<TreeItem>();
+    private LinkedList<TreeItem> actualOpenedHierarchy = new LinkedList<TreeItem>();
+    private LinkedList<TreeItem> temporaryOpenedHierarchy = new LinkedList<TreeItem>();
+    private int page = -1;
+    private long selectedSupplier = -1;
     private TreeNode openedNode = null;
     private TreeNode lastNode = null;
-    private long selectedSupplier = -1;
     //pointers
     boolean selectedFromNode = false;
     boolean cancelOpenEvent = false;
@@ -126,27 +129,26 @@ public class HomeSuppliersPresenter
     public void onSetModuleByHistory(
             LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID) {
         //1 - Tree
-        //open nodes accorting to history records
-//        if (openedHierarchy.size() > tree.size()) {
-//            onOpenNodesAccoirdingToHistory(tree);
-//        }
-        openedHierarchy = tree;
-        openedNode = view.getCellTree().getRootTreeNode();
-        //select category last category
-        cancelSelectionEvent = true;
-        view.getSelectionCategoryModel().setSelected(categoryDetail, true);
+        //Martin - toto moze zbytocne spomalit - docane kym nenajdem lepsie riesenie ako zatvarat uzly od konca
+        if (actualOpenedHierarchy.size() > tree.size()) {
+            openNodesAccoirdingToOpenedHierarchy();
+        }
+
+        this.actualOpenedHierarchy = tree;
+        this.temporaryOpenedHierarchy = tree;
+        this.openedNode = view.getCellTree().getRootTreeNode();
+
         //2 - Table
-        //retrieve data with new filter and particular page
-        view.getPager().setPage(page);
-        view.hideSuppliersDetail();
-        SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
-        searchDataHolder.getCategories().add(categoryDetail);
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        //retrieve data with new filter at particular page
+        this.page = page;
+        //select category
+        view.getSelectionCategoryModel().setSelected(categoryDetail, true);
+
         //3 - Supplier Detail
         //select supplier when requested from history - if supplierID != -1 its fires event
         //to retrieve supplier's detail and select it in table selection model, which
         //forces loading detail to detail window
-        selectedSupplier = supplierID;
+        this.selectedSupplier = supplierID;
     }
 
     /**
@@ -185,17 +187,36 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     /* Bind events                                                            */
     /**************************************************************************/
+    /**
+     * Eventy:
+     * - LoadingState - nema mat nic so ziskavanim dat
+     *                - len kvoli tomu, ze categorie su do stromu dotahovane asynchronne
+     *                  a pri otvarani uzlov vznika indexOutOfBound pretoze chcem otvorit
+     *                  nieco co tam este nie je
+     *                - mal by starat o programove otvaranie uzlov
+     * - Open - nema mat nic so ziskavanim dat
+     *        - len kvoli tomu, ze ak uzivatel zvoli otvorenie uzlu, aby sa hned aj vyvolal
+     *          selection event na category selection modeli pre ziskanie dat pre dany uzol
+     * - Selection - nema mat nic s otvaranim uzlov (i ked pri zvoleni categorie,
+     *               by sa mohol otvorit dany uzol - na zvazenie, takze zrobit)
+     *             - mal by postarat o zavolanie metody getDataCount pre ziskanie dat pre dany categoriu
+
+     */
     @Override
     public void bindView() {
+        view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+            @Override
+            public void onRangeChange(RangeChangeEvent event) {
+                createTokenForHistory(selectedSupplier == -1 ? false : true);
+            }
+        });
         view.getCellTree().addHandler(new LoadingStateChangeEvent.Handler() {
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
-                if (openedNode != null && !openedHierarchy.isEmpty()) {
-                    if (openedHierarchy.size() > 1) {
+                if (!temporaryOpenedHierarchy.isEmpty()) {
+                    if (temporaryOpenedHierarchy.getFirst().getIndex() != -1) {
                         cancelOpenEvent = true;
-                    }
-                    if (openedHierarchy.getFirst().getIndex() != -1) {
-                        openedNode = openedNode.setChildOpen(openedHierarchy.removeFirst().getIndex(), true);
+                        openedNode = openedNode.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
                     }
                 }
             }
@@ -208,52 +229,36 @@ public class HomeSuppliersPresenter
                     cancelOpenEvent = false;
                     return;
                 }
-                TreeNode openedNode = event.getTarget();
-//                lastNode = openedNode;
-                CategoryDetail selectedCategory = (CategoryDetail) openedNode.getValue();
+                CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
 
-                if (manageOpenedHierarchy(selectedCategory, openedNode)) {
-                    onOpenNodesAccoirdingToHistory(openedHierarchy);
+                //len ak by uzivatel zvolil uplne inu vetvu - zavri vsetky a otvor len novo zvolenu
+                if (manageOpenedHierarchy(selectedCategory, event.getTarget())) {
+                    openNodesAccoirdingToOpenedHierarchy();
                 }
 
-                selectedFromNode = true;
                 view.getSelectionCategoryModel().setSelected(selectedCategory, true);
             }
         });
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                //cancel event if needed
-                if (cancelSelectionEvent) {
-                    cancelSelectionEvent = false;
-                    return;
-                }
-                view.getDataGrid().clearData();
-
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
-
+                    //Initialization
+                    view.getDataGrid().clearData();
+                    //if page and pager.page is equal, setting page won't fire rangeChange event -> manual
+                    if (page == -1 || page == view.getPager().getPage()) {
+                        createTokenForHistory(selectedSupplier == -1 ? false : true);
+                    } else {
+                        view.getPager().setPage(page);
+                    }
                     SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
                     searchDataHolder.getCategories().add(selected);
-
                     view.hideSuppliersDetail();
 
+                    //Retrieve data
                     view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-
-                    if (!selectedFromNode) {
-                        if (manageOpenedHierarchy(selected, null)) {
-                            onOpenNodesAccoirdingToHistory(openedHierarchy);
-                        }
-                    }
-
-                    if (!Storage.isCalledDueToHistory()) {
-                        createTokenForHistory();
-                    }
-
-                    //reset pointers
-                    selectedFromNode = false;
-                    Storage.setCalledDueToHistory(false);
                 }
             }
         });
@@ -266,7 +271,7 @@ public class HomeSuppliersPresenter
 
                 if (selected != null) {
                     view.displaySuppliersDetail(selected);
-                    createTokenForHistory();
+                    createTokenForHistory(false);
                 }
             }
         });
@@ -295,6 +300,7 @@ public class HomeSuppliersPresenter
     public void onSelectSupplier(FullSupplierDetail supplierDetail) {
         view.getDataGrid().getSelectionModel().setSelected(supplierDetail, true);
     }
+
     /**
      * Display suppliers of selected category.
      * @param list
@@ -312,24 +318,28 @@ public class HomeSuppliersPresenter
     /**
      * According to <b>openedHierarchy</b> attribute opens nodes except the last one from .
      */
-    public void onOpenNodesAccoirdingToHistory(LinkedList<TreeItem> categoryHierarchy) {
-        openedHierarchy = categoryHierarchy;
-        TreeNode root = view.getCellTree().getRootTreeNode();
-        for (int i = 0; i < root.getChildCount(); i++) {
-            root.setChildOpen(i, false);
-        }
-        root = view.getCellTree().getRootTreeNode();
+    /**
+     * temporaryOpenedHierarchy - needs for asynchronous opening of nodes
+     * actualOpenedHierarchy - needs for archiving actual state of opened nodes
+     */
+    public void openNodesAccoirdingToOpenedHierarchy() {
+        closeAllNodes(view.getCellTree().getRootTreeNode());
+        cancelOpenEvent = true;
+        temporaryOpenedHierarchy = actualOpenedHierarchy;
 
-//        boolean fireEvent = false;
-        for (TreeItem item : categoryHierarchy) {
-            cancelOpenEvent = true;
-            root = root.setChildOpen(item.getIndex(), true);
-        }
+        openedNode = view.getCellTree().getRootTreeNode();
+        openedNode = openedNode.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
     }
 
     /**************************************************************************/
     /* Private methods                                                        */
     /**************************************************************************/
+    private void closeAllNodes(TreeNode node) {
+        for (int i = 0; i < node.getChildCount(); i++) {
+            node.setChildOpen(i, false);
+        }
+    }
+
     /**
      * Manages openedHierarchy attributes due to new user selection.
      */
@@ -342,17 +352,17 @@ public class HomeSuppliersPresenter
     private boolean manageOpenedHierarchy(CategoryDetail selectedCategory, TreeNode openedNode) {
         //remove all levels which are childrens of level that was selected by user.
         int removeCount = 0;
-        for (TreeItem item : openedHierarchy) {
+        for (TreeItem item : actualOpenedHierarchy) {
             if (selectedCategory.getLevel() <= item.getLevel()) {
                 removeCount++;
             }
         }
         //Remove selected levels
         for (int i = 0; i < removeCount; i++) {
-            openedHierarchy.removeLast();
+            actualOpenedHierarchy.removeLast();
         }
         //replace last level index with actual one - selected by user
-        openedHierarchy.add(new TreeItem(
+        actualOpenedHierarchy.add(new TreeItem(
                 selectedCategory.getId(),
                 selectedCategory.getLevel(),
                 openedNode == null ? -1 : openedNode.getIndex()));
@@ -360,27 +370,19 @@ public class HomeSuppliersPresenter
         return removeCount == 0 ? false : true;
     }
 
-//    private void openNodesAccoirdingToHistory() {
-//        TreeNode root = view.getCellTree().getRootTreeNode();
-//        int depth = openedHierarchy.size();
-//        for (TreeItem item : openedHierarchy) {
-//            //close only the last
-//            if (item.getLevel() == depth) {
-//                root = root.setChildOpen(item.getIndex(), false, false);
-//            } else {
-//                root = root.setChildOpen(item.getIndex(), true);
-//            }
-//        }
-//    }
-    private void createTokenForHistory() {
-        //Category
-//        CategoryDetail selectedCategory = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
+    private void createTokenForHistory(boolean setStorageHistoryPointerValue) {
+        //Create token only if new input from user was made and new token must be created
+        if (!Storage.isCalledDueToHistory()) {
+            //Supplier
+            FullSupplierDetail supplier =
+                    (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                    .getSelectedObject();
 
-        //Supplier
-        FullSupplierDetail selectedSupplier =
-                (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                .getSelectedObject();
-
-        eventBus.createTokenForHistory(openedHierarchy, view.getPager().getPage(), selectedSupplier);
+            eventBus.createTokenForHistory(actualOpenedHierarchy, view.getPager().getPage(), supplier);
+        }
+        //reset poitner - only if it is to no use anymore ->
+        //if selected supplier's id was present in URL, pointer will be used to decide
+        //whether to select supplier, or not, after loading data to table.
+        Storage.setCalledDueToHistory(setStorageHistoryPointerValue);
     }
 }

@@ -33,7 +33,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
             LinkedList<TreeItem> openedHierarchy, int page, FullSupplierDetail supplierDetail) {
         StringBuilder token = new StringBuilder();
         //Category
-        token.append("catId=");
+        token.append("tree=");
         token.append(convertCateoryMapToToken(openedHierarchy));
         //Page
         token.append(";page=");
@@ -99,7 +99,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     private String convertCateoryMapToToken(LinkedList<TreeItem> openedHierarcy) {
         StringBuilder str = new StringBuilder();
         str.append("(");
-        if (openedHierarcy != null) {
+        if (openedHierarcy != null && !openedHierarcy.isEmpty()) {
             for (TreeItem item : openedHierarcy) {
                 str.append(item.getCategoryId());
                 str.append(":");
