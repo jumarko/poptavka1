@@ -103,7 +103,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     /*  Categories                                                            */
     /**************************************************************************/
     @Override
-    public CategoryDetail getCategory(long categoryID) {
+    public CategoryDetail getCategory(long categoryID) throws RPCException {
         return categoryConverter.convertToTarget(categoryService.getById(categoryID));
     }
 
@@ -124,7 +124,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     /*  Suppliers                                                             */
     /**************************************************************************/
     @Override
-    public FullSupplierDetail getSupplier(long supplierID) {
+    public FullSupplierDetail getSupplier(long supplierID) throws RPCException {
         return supplierConverter.convertToTarget(supplierService.getById(supplierID));
     }
 
