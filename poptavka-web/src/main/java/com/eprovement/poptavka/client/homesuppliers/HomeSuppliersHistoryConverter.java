@@ -2,7 +2,6 @@ package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.annotation.History;
@@ -86,12 +85,13 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         StringBuilder str = new StringBuilder(token);
         str.deleteCharAt(0);
         str.deleteCharAt(str.length() - 1);
-        String[] items = str.toString().split(",");
-        CategoryDetail cat = null;
-        int level = 1;
-        for (String item : items) {
-            tree.add(new TreeItem(Long.valueOf(item.split(":")[0]), level, Integer.valueOf(item.split(":")[1])));
-            level++;
+        if (!str.toString().isEmpty()) {
+            String[] items = str.toString().split(",");
+            int level = 1;
+            for (String item : items) {
+                tree.add(new TreeItem(Long.valueOf(item.split(":")[0]), level, Integer.valueOf(item.split(":")[1])));
+                level++;
+            }
         }
         return tree;
     }

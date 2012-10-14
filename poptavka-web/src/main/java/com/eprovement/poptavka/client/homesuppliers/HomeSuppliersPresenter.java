@@ -77,13 +77,12 @@ public class HomeSuppliersPresenter
     private int page = -1;
     private long selectedSupplier = -1;
     private TreeNode openedNode = null;
-    private TreeNode lastNode = null;
     //pointers
     boolean selectedFromNode = false;
     boolean cancelOpenEvent = false;
     boolean cancelSelectionEvent = false;
     /**************************************************************************/
-    /* RPC Service*/
+    /* RPC Service                                                            */
     /**************************************************************************/
     @Inject
     private CategoryRPCServiceAsync categoryService;
@@ -259,6 +258,8 @@ public class HomeSuppliersPresenter
 
                     //Retrieve data
                     view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+                } else {
+                    closeAllNodes(view.getCellTree().getRootTreeNode());
                 }
             }
         });
