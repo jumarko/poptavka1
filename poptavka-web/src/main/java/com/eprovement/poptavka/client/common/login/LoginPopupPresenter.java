@@ -169,6 +169,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     public void onSuccess(BusinessUserDetail loggedUser) {
                         GWT.log("user id " + loggedUser.getUserId());
                         Storage.setBusinessUserDetail(loggedUser);
+                        // TODO ivlcek - fix the session model on the base of SpringSecurity rememberMe
                         final String sessionId = "id=" + loggedUser.getUserId();
                         forwardUser();
                         hideView();
@@ -195,14 +196,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         } else {
             //if login was not invoked because of history, but user did so,
             //forward user to appropriate module according to his roles
-            if (!Storage.isAppCalledByURL()) {
-                if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                        BusinessUserDetail.BusinessRole.SUPPLIER)) {
-                    eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                        BusinessUserDetail.BusinessRole.CLIENT)) {
-                    eventBus.goToClientDemandsModule(null, Constants.NONE);
-                }
+            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.CLIENT)) {
+                eventBus.goToClientDemandsModule(null, Constants.NONE);
             }
         }
     }

@@ -231,6 +231,15 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = UserHeaderPresenter.class)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 
+    /**
+     * This method populates Storage i.e. our custom GWT session object with UserDetail.
+     * A secured RPC service is invoked so this method can be called only if user is logged in and he opened our
+     * website in new browser tab, which obviously starts the whole app from the begining. If user is not logged in
+     * the RPC service will cause the initiation of loginPopupView via SecuredAsyncCallback.
+     */
+    @Event(handlers = RootHandler.class)
+    void populateStorageByUserDetail();
+
     /**************************************************************************/
     /* History events                                                         */
     /**************************************************************************/

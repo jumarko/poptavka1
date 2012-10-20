@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -26,11 +25,9 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
 
     @Override
     public void convertFromToken(String historyName, String param, final ClientDemandsModuleEventBus eventBus) {
-        if (Storage.isAppCalledByURL()) {
-            //nemusim nie, ved ak bude prihlasenie tak tam v forwardUser metode sa vola atAccount
-//            eventBus.atAccount();
-            eventBus.userMenuStyleChange(Constants.USER_CLIENT_MODULE);
-            eventBus.goToClientDemandsModule(null, Integer.valueOf(param.split("=")[1]));
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+            // login from session method
+            eventBus.populateStorageByUserDetail();
         }
     }
 

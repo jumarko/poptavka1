@@ -101,6 +101,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
 
+    @Event(forwardToParent = true)
+    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+
+    @Event(forwardToParent = true)
+    void populateStorageByUserDetail();
+
     /**************************************************************************/
     /* Business events handled by DemandModulePresenter.                      */
     /**************************************************************************/
@@ -143,6 +149,9 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestDeclineOffer(OfferDetail offerDetail);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void updateUnreadMessagesCount();
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */

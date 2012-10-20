@@ -5,6 +5,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversat
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -83,4 +84,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
     void changeOfferState(OfferDetail offerDetail, AsyncCallback<OfferDetail> callback);
+
+    void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 }

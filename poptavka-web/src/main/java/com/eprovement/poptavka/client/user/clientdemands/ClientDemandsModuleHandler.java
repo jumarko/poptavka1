@@ -9,6 +9,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.core.client.GWT;
@@ -266,6 +267,18 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 //TODO zistit ci bude treba nejaky refresh aj ked mame asyynchDataProvider, asi hej
                 //skusit najpr redreaw na gride
 //                eventBus.setOfferDetailChange(result);
+            }
+        });
+    }
+
+    public void onUpdateUnreadMessagesCount() {
+        clientDemandsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
+
+            @Override
+            public void onSuccess(UnreadMessagesDetail result) {
+                // empty i.e number of new messages could be retrieved
+                GWT.log("UpdateUnreadMessagesCount retrieved, number=" + result.getUnreadMessagesCount());
+                eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
             }
         });
     }

@@ -84,13 +84,18 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         GWT.log("Root presenter loaded");
         eventBus.atHome();
         eventBus.goToSearchModule();
-        //If application is started because of URL, it is there when starting
+        //If application is started because of URL, the token is full when starting
         if (History.getToken().isEmpty()) {
+            GWT.log("++++++++++++++++++++++++++++NORMAL START OF APP");
+            // normal start of app
             Storage.setAppCalledByURL(false);
             eventBus.goToHomeWelcomeModule(null);
         } else {
+            // start of app by entering URL token
+            GWT.log("++++++++++++++++++++++++++++START BY URL OF APP");
             Storage.setAppCalledByURL(true);
-            //Storage.populate();
+            // populate Storage by UserDetail and BusinessUserDetail
+
         }
     }
 
@@ -128,7 +133,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
-        showDevelUserInfoPopupThatShouldBedeletedAfter();
+//        showDevelUserInfoPopupThatShouldBedeletedAfter();
         // notify all components that user has logged in
     }
 
