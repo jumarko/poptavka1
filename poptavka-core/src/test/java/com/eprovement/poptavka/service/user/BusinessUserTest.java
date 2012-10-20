@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Juraj Martinka
  *         Date: 9.5.11
  */
-@DataSet(path = "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml", dtd = "classpath:test.dtd")
+@DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
+        dtd = "classpath:test.dtd")
 public class BusinessUserTest extends DBUnitIntegrationTest {
 
     @Autowired
@@ -46,8 +49,10 @@ public class BusinessUserTest extends DBUnitIntegrationTest {
 
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
+
     /**
      * Checks if given user <code>businessUser</code> has role specified by
+     *
      * @param businessRoleClass class
      * @param businessUser
      */

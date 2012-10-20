@@ -19,10 +19,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-@DataSet(path = { "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
+@DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class LoginServiceIntegrationTest extends DBUnitIntegrationTest {
 
+    private static final String TEST_USER_EMAIL = "elvira@email.com";
+    private static final String TEST_USER_PASSWORD = "ahoj1";
     @Autowired
     private LoginService loginService;
     @Autowired
@@ -43,13 +47,11 @@ public class LoginServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void loginUser() {
-        final String testUserMail = "elvira@email.com";
-        final String testUserPassword = "ahoj1";
-        final User user = loginService.loginUser(testUserMail, testUserPassword);
+        final User user = loginService.loginUser(TEST_USER_EMAIL, TEST_USER_PASSWORD);
         assertNotNull(user);
-        assertThat(user.getEmail(), is(testUserMail));
+        assertThat(user.getEmail(), is(TEST_USER_EMAIL));
         // since password should be hashed, we cannot get its plaintext form from User object
-        assertFalse(user.getPassword().equals(testUserPassword));
+        assertFalse(user.getPassword().equals(TEST_USER_PASSWORD));
     }
 
     @Test(expected = LoginUserNotExistException.class)

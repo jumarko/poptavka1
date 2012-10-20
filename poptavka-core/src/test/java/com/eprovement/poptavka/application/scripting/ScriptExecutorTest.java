@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
  */
 // Does not work correctly with JAVA 7 - maybe ScriptExecutor should be completely removed!
 @Ignore
-@DataSet(path = "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
+@DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class ScriptExecutorTest extends DBUnitIntegrationTest {
 

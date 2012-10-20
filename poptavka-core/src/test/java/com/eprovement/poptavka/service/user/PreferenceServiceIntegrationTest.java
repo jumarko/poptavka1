@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *         Date: 2.5.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/PreferencesDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
