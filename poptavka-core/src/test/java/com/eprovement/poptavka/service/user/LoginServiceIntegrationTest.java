@@ -11,6 +11,8 @@ import com.eprovement.poptavka.exception.IncorrectPasswordException;
 import com.eprovement.poptavka.exception.LoginUserNotExistException;
 import com.eprovement.poptavka.service.GeneralService;
 import static org.hamcrest.core.Is.is;
+import org.junit.After;
+import org.junit.Assert;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -18,6 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
@@ -68,4 +72,32 @@ public class LoginServiceIntegrationTest extends DBUnitIntegrationTest {
     public void loginUserForIncorrectPasswordLength() {
         loginService.loginUser("elvira.plaintext.password@email.com", "ahoj1");
     }
+
+
+    @Test
+    public void getLoggedUser() {
+        authenticateTestUser();
+
+        final User loggedUser = loginService.getLoggedUser();
+        Assert.assertNotNull("loggedUser cannot be null", loggedUser);
+        Assert.assertThat("Incorrect loggedUser", loggedUser.getEmail(), is(TEST_USER_EMAIL));
+    }
+
+    @Test
+    public void getLoggedUserShouldReturnNullIfNoUserIsLoggedIn() {
+        final User loggedUser = loginService.getLoggedUser();
+        Assert.assertNull("loggedUser should be null since no user has  been authenticated!", loggedUser);
+    }
+
+    private void authenticateTestUser() {
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                TEST_USER_EMAIL, TEST_USER_PASSWORD));
+    }
+
+
+    @After
+    public void logoutUser() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+    }
+
 }

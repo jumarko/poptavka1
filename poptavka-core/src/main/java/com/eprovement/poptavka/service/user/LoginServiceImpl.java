@@ -46,7 +46,8 @@ public class LoginServiceImpl implements LoginService {
      *
      * TODO: implement test.
      *
-     * @return user - user retrieved from Spring Security Authentication object
+     * @return user - user retrieved from Spring Security Authentication object or null
+     *                  if no authentication object is set
      */
     @Override
     @Transactional(readOnly = true)
