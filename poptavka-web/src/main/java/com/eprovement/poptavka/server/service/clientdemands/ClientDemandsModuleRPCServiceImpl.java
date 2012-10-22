@@ -187,9 +187,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientDemandDetail> getClientDemands(SearchDefinition searchDefinition) throws RPCException,
-            ApplicationSecurityException, IllegalArgumentException {
-        long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
+    public List<ClientDemandDetail> getClientDemands(long userId, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException, IllegalArgumentException {
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);

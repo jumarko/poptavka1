@@ -7,10 +7,7 @@
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
 	<g:DockLayoutPanel unit="PX">
-		<g:center>
-			<s:UniversalAsyncGrid ui:field="grid" />
-		</g:center>
-		<g:south size="45">
+                <g:north size="45">
 			<g:HTMLPanel styleName='{res.layout.pager}'>
 				<table style="width:100%">
 					<tr>
@@ -21,6 +18,9 @@
 					</tr>
 				</table>
 			</g:HTMLPanel>
-		</g:south>
+		</g:north>
+		<g:center>
+			<s:UniversalAsyncGrid ui:field="grid" />
+		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

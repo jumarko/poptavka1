@@ -76,11 +76,15 @@ public class HomeSuppliersPresenter
     private LinkedList<TreeItem> temporaryOpenedHierarchy = new LinkedList<TreeItem>();
     private int page = -1;
     private long selectedSupplier = -1;
-    private TreeNode openedNode = null;
+//    private TreeNode openedNode = null;
+    private TreeNode lastOpened = null;
     //pointers
-    boolean selectedFromNode = false;
+//    boolean selectedFromNode = false;
     boolean cancelOpenEvent = false;
-    boolean cancelSelectionEvent = false;
+//    boolean cancelSelectionEvent = false;
+//    boolean openNodeEventFired = false;
+    boolean selectedEvent = false;
+    boolean openedEvent = false;
     /**************************************************************************/
     /* RPC Service                                                            */
     /**************************************************************************/
@@ -113,6 +117,12 @@ public class HomeSuppliersPresenter
      *                               - it's also used as pointer to differ root and child sections
      */
     public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder, int homeSuppliersViewType) {
+        actualOpenedHierarchy.clear();
+        lastOpened = view.getCellTree().getRootTreeNode();
+        page = view.getPager().getPage();
+        openedEvent = false;
+        selectedEvent = false;
+
         switch (homeSuppliersViewType) {
             case Constants.HOME_SUPPLIERS_BY_DEFAULT:
                 goToHomeSuppliers();
@@ -128,20 +138,36 @@ public class HomeSuppliersPresenter
     public void onSetModuleByHistory(
             LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID) {
         //1 - Tree
-        //Martin - toto moze zbytocne spomalit - docane kym nenajdem lepsie riesenie ako zatvarat uzly od konca
-        if (actualOpenedHierarchy.size() > tree.size()) {
-            openNodesAccoirdingToOpenedHierarchy();
+        //invoked by URL
+        if (actualOpenedHierarchy.isEmpty()) {
+            openNodesHierarchy(tree);
+        } else {
+            if (actualOpenedHierarchy.size() > tree.size()) {
+                //back
+                //if list is going to be closed - deny
+                if (!lastOpened.isChildLeaf(actualOpenedHierarchy.getLast().getIndex())) {
+                    lastOpened = lastOpened.getParent();
+                    lastOpened.setChildOpen(actualOpenedHierarchy.getLast().getIndex(), false);
+                }
+            } else if (actualOpenedHierarchy.size() < tree.size()) {
+                //forward
+                cancelOpenEvent = true;
+                //if list is going to be opened - deny
+                if (!lastOpened.isChildLeaf(tree.getLast().getIndex())) {
+                    lastOpened = lastOpened.setChildOpen(tree.getLast().getIndex(), true);
+                }
+            }
         }
-
         this.actualOpenedHierarchy = tree;
-        this.temporaryOpenedHierarchy = tree;
-        this.openedNode = view.getCellTree().getRootTreeNode();
 
         //2 - Table
         //retrieve data with new filter at particular page
         this.page = page;
         //select category
+//        if (!categoryDetail.equals(view.getSelectionCategoryModel().getSelectedObject())) {
+        openedEvent = true; //node events have already been handled - in 1 - Tree part
         view.getSelectionCategoryModel().setSelected(categoryDetail, true);
+//        }
 
         //3 - Supplier Detail
         //select supplier when requested from history - if supplierID != -1 its fires event
@@ -213,41 +239,74 @@ public class HomeSuppliersPresenter
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
                 if (!temporaryOpenedHierarchy.isEmpty()) {
-                    if (temporaryOpenedHierarchy.getFirst().getIndex() != -1) {
-                        cancelOpenEvent = true;
-                        openedNode = openedNode.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
-                    }
+                    cancelOpenEvent = true;
+                    lastOpened = lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
                 }
             }
         }, LoadingStateChangeEvent.TYPE);
         view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
             @Override
             public void onOpen(OpenEvent<TreeNode> event) {
-                //cancel event if needed
+                /**************************************************************/
+                //cancel event if needed - when opening nodes programically
                 if (cancelOpenEvent) {
                     cancelOpenEvent = false;
                     return;
                 }
+                /**************************************************************/
+                //get selected item
                 CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
-
+                lastOpened = event.getTarget();
+                /**************************************************************/
+                openedEvent = true; //OPEN NODE event's semafor BEGIN
+                //select opened item's selection model
+                if (!selectedEvent) {
+                    view.getSelectionCategoryModel().setSelected(selectedCategory, true);
+                } else {
+                    openedEvent = false;
+                }
+                selectedEvent = false; //SELECT CATEGORY event's semafor END
+                /**************************************************************/
                 //len ak by uzivatel zvolil uplne inu vetvu - zavri vsetky a otvor len novo zvolenu
                 if (manageOpenedHierarchy(selectedCategory, event.getTarget())) {
-                    openNodesAccoirdingToOpenedHierarchy();
+                    openNodesHierarchy(actualOpenedHierarchy);
                 }
-
-                view.getSelectionCategoryModel().setSelected(selectedCategory, true);
             }
         });
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                //get selected item
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
+
+                    /**************************************************************/
+                    selectedEvent = true; //SELECT CATEGORY event's semafor BEGIN
+                    //open selected item's node
+                    if (!openedEvent) {
+                        int idx = getIndex(lastOpened, selected);
+//                        if (lastOpened.isChildLeaf(idx)) {
+                        TreeNode tmpNode = lastOpened.setChildOpen(idx, true);
+                        if (tmpNode == null) {
+                            //leaf could not be open -> null is returned
+                            //if selected category is leaf, open event won't be fired to handle openedHierarchy
+                            //--> add it to hierarchy here
+                            actualOpenedHierarchy.add(new TreeItem(selected.getId(), selected.getLevel(), idx));
+                        } else {
+                            lastOpened = tmpNode;
+                        }
+                    } else {
+                        selectedEvent = false;
+                    }
+                    openedEvent = false; //OPEN NODE event's semafor END
+                    /**************************************************************/
                     //Initialization
                     view.getDataGrid().clearData();
                     //if page and pager.page is equal, setting page won't fire rangeChange event -> manual
-                    if (page == -1 || page == view.getPager().getPage()) {
+                    //v podstate to bude volane takto vzdy (==ak nenastala ziadna zmena),
+                    //ak ale nastane zmena stranky tabulky, vtedy token vytvory iny hadler - rangeChanged na dataGride
+                    if (page == view.getPager().getPage()) {
                         createTokenForHistory(selectedSupplier == -1 ? false : true);
                     } else {
                         view.getPager().setPage(page);
@@ -323,18 +382,28 @@ public class HomeSuppliersPresenter
      * temporaryOpenedHierarchy - needs for asynchronous opening of nodes
      * actualOpenedHierarchy - needs for archiving actual state of opened nodes
      */
-    public void openNodesAccoirdingToOpenedHierarchy() {
+    public void openNodesHierarchy(LinkedList<TreeItem> hierarchy) {
         closeAllNodes(view.getCellTree().getRootTreeNode());
         cancelOpenEvent = true;
-        temporaryOpenedHierarchy = actualOpenedHierarchy;
+        openedEvent = true;
+        temporaryOpenedHierarchy = new LinkedList<TreeItem>(hierarchy);
 
-        openedNode = view.getCellTree().getRootTreeNode();
-        openedNode = openedNode.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+        lastOpened = view.getCellTree().getRootTreeNode();
+        lastOpened = lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
     }
 
     /**************************************************************************/
     /* Private methods                                                        */
     /**************************************************************************/
+    private int getIndex(TreeNode node, CategoryDetail categoryDetail) {
+        for (int idx = 0; idx < node.getChildCount(); idx++) {
+            if (categoryDetail.equals((CategoryDetail) node.getChildValue(idx))) {
+                return idx;
+            }
+        }
+        return -1;
+    }
+
     private void closeAllNodes(TreeNode node) {
         for (int i = 0; i < node.getChildCount(); i++) {
             node.setChildOpen(i, false);
@@ -348,7 +417,7 @@ public class HomeSuppliersPresenter
      *
      * @param selectedCategory
      * @param openedNode
-     * @return define of recreating open nodes is needed
+     * @return define of recreating open nodes is needed5
      */
     private boolean manageOpenedHierarchy(CategoryDetail selectedCategory, TreeNode openedNode) {
         //remove all levels which are childrens of level that was selected by user.

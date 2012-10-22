@@ -23,67 +23,76 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /* Table getter methods                                                   */
     /**************************************************************************/
     //ClientDemands widget
-    void getClientDemandsCount(long clientID, SearchDefinition searchDefinition,
+    void getClientDemandsCount(long userID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientDemands(SearchDefinition searchDefinition,
+    void getClientDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandDetail>> callback);
 
-    void getClientDemandConversationsCount(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientDemandConversationsCount(long userID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientDemandConversations(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientDemandConversations(long userID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandConversationDetail>> callback);
 
     //ClientOffers widget
-    void getClientOfferedDemandsCount(long clientID, SearchDefinition searchDefinition,
+    void getClientOfferedDemandsCount(long userID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientOfferedDemands(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientOfferedDemands(long userID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandDetail>> callback);
 
-    void getClientOfferedDemandOffersCount(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientOfferedDemandOffersCount(long userID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientOfferedDemandOffers(long clientID, long demandID, SearchDefinition searchDefinition,
+    void getClientOfferedDemandOffers(long userID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
     //ClientAssignedDemands widget
-    void getClientAssignedDemandsCount(long clientID, SearchDefinition searchDefinition,
+    void getClientAssignedDemandsCount(long userID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientAssignedDemands(long clientID, SearchDefinition searchDefinition,
+    void getClientAssignedDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<FullOfferDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/
-    void getFullDemandDetail(long demandId, AsyncCallback<FullDemandDetail> callback);
+    void getFullDemandDetail(long demandId,
+            AsyncCallback<FullDemandDetail> callback);
 
-    void getFullSupplierDetail(long supplierId, AsyncCallback<FullSupplierDetail> callback);
+    void getFullSupplierDetail(long supplierId,
+            AsyncCallback<FullSupplierDetail> callback);
 
-    void getSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId, AsyncCallback<ArrayList<MessageDetail>> callback);
+    void getSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId,
+            AsyncCallback<ArrayList<MessageDetail>> callback);
 
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead,
+            AsyncCallback<Void> callback);
 
-    void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
+    void setMessageStarStatus(List<Long> list, boolean newStatus,
+            AsyncCallback<Void> callback);
 
-    void closeDemand(FullDemandDetail demandDetail, AsyncCallback<ArrayList<Void>> callback);
+    void closeDemand(FullDemandDetail demandDetail,
+            AsyncCallback<ArrayList<Void>> callback);
 
-    void acceptOffer(FullOfferDetail fullOfferDetail, AsyncCallback<ArrayList<Void>> callback);
+    void acceptOffer(FullOfferDetail fullOfferDetail,
+            AsyncCallback<ArrayList<Void>> callback);
 
-    void declineOffer(OfferDetail offerDetail, AsyncCallback<ArrayList<Void>> callback);
+    void declineOffer(OfferDetail offerDetail,
+            AsyncCallback<ArrayList<Void>> callback);
 
     /**************************************************************************/
     /* Messages methods                                                       */
     /**************************************************************************/
-    void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
+    void sendQueryToPotentialDemand(MessageDetail messageToSend,
+            AsyncCallback<MessageDetail> callback);
 
-    void changeOfferState(OfferDetail offerDetail, AsyncCallback<OfferDetail> callback);
+    void changeOfferState(OfferDetail offerDetail,
+            AsyncCallback<OfferDetail> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 }
