@@ -8,18 +8,23 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
+import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.google.gwt.cell.client.ImageResourceCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.StyleInjector;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
@@ -62,10 +67,11 @@ public class HomeSuppliersView extends OverflowComposite
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     //Table constants
-    private static final int SUPPLIER_NAME_COL_WIDTH = 100;
-    private static final int RATING_COL_WIDTH = 30;
+    private static final int SUPPLIER_NAME_COL_WIDTH = 120;
+    private static final int RATING_COL_WIDTH = 50;
     private static final int ADDRESS_COL_WIDTH = 60;
     private static final int LOCALITY_COL_WIDTH = 50;
+    private static final int LOGO_COL_WIDTH = 25;
     //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     CellList categoriesList;
@@ -89,7 +95,7 @@ public class HomeSuppliersView extends OverflowComposite
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     private List<String> gridColumns = Arrays.asList(
             new String[]{
-                "businessUser.businessUserData.companyName", "overalRating", "", ""
+                "", "businessUser.businessUserData.companyName", "overalRating", "businessUser.address.city"
             });
     /**
      * The key provider that provides the unique ID of a FullSupplierDetail.
@@ -165,29 +171,41 @@ public class HomeSuppliersView extends OverflowComposite
      */
     private void initTableColumns() {
 
-        // Company name.
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue<String>() {
+        // Company logo
+        /**************************************************************************/
+        Column<FullSupplierDetail, ImageResource> logoCol =
+                new Column<FullSupplierDetail, ImageResource>(new ImageResourceCell()) {
                     @Override
-                    public String getValue(Object object) {
-                        return ((FullSupplierDetail) object).getCompanyName();
+                    public ImageResource getValue(FullSupplierDetail object) {
+                        //return eventBus.getSupplerLogo(object.getLogoId()); -- returns ImageResource
+                        return Storage.RSCS.images().contactImage();
                     }
-                });
+                };
+        //set column style
+        logoCol.setSortable(true);
+        logoCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
+        dataGrid.addColumn(logoCol, Storage.MSGS.logo());
+        dataGrid.setColumnWidth(logoCol, LOGO_COL_WIDTH, Unit.PX);
+
+        // Company name.
+        /**************************************************************************/
+        //IdentityColumn - A passthrough column, useful for giving cells access to the entire row object.
+        Column<FullSupplierDetail, SupplierCell> companyNameCol = new IdentityColumn(new SupplierCell());
+        companyNameCol.setSortable(true);
+        dataGrid.addColumn(companyNameCol, Storage.MSGS.supplierName());
+        dataGrid.setColumnWidth(companyNameCol, SUPPLIER_NAME_COL_WIDTH, Unit.PX);
 
         // SupplierRating.
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.rating(), true, RATING_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue() {
-                    @Override
-                    public String getValue(Object object) {
-                        if (((FullSupplierDetail) object).getOverallRating() == -1) {
-                            return "";
-                        } else {
-                            return Integer.toString(((FullSupplierDetail) object).getOverallRating());
-                        }
-                    }
-                });
+        /**************************************************************************/
+        Column<FullSupplierDetail, RatingCell> ratingCol = new IdentityColumn(new RatingCell());
+        //set column style
+        ratingCol.setSortable(true);
+        ratingCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
+        dataGrid.addColumn(ratingCol, Storage.MSGS.rating());
+        dataGrid.setColumnWidth(ratingCol, RATING_COL_WIDTH, Unit.PX);
 
         // Address.
+        /**************************************************************************/
         dataGrid.addColumn(new TextCell(), Storage.MSGS.address(), false, ADDRESS_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue() {
                     @Override
@@ -205,23 +223,24 @@ public class HomeSuppliersView extends OverflowComposite
                 });
 
         // Locality.
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.locality(), false, LOCALITY_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue() {
-                    @Override
-                    public String getValue(Object object) {
-                        StringBuilder str = new StringBuilder();
-                        if (((FullSupplierDetail) object).getLocalities() != null) {
-                            for (LocalityDetail loc : ((FullSupplierDetail) object).getLocalities()) {
-                                str.append(loc.getName());
-                                str.append(", ");
-                            }
-                            if (str.length() > 2) {
-                                str.delete(str.length() - 2, str.length());
-                            }
-                        }
-                        return str.toString();
-                    }
-                });
+        /**************************************************************************/
+//        dataGrid.addColumn(new TextCell(), Storage.MSGS.locality(), false, LOCALITY_COL_WIDTH,
+//                new UniversalAsyncGrid.GetValue() {
+//                    @Override
+//                    public String getValue(Object object) {
+//                        StringBuilder str = new StringBuilder();
+//                        if (((FullSupplierDetail) object).getLocalities() != null) {
+//                            for (LocalityDetail loc : ((FullSupplierDetail) object).getLocalities()) {
+//                                str.append(loc.getName());
+//                                str.append(", ");
+//                            }
+//                            if (str.length() > 2) {
+//                                str.delete(str.length() - 2, str.length());
+//                            }
+//                        }
+//                        return str.toString();
+//                    }
+//                });
     }
 
     /**************************************************************************/

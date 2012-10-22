@@ -144,4 +144,10 @@ public interface Images extends ClientBundle {
 
     @Source("envelope-hover.png")
     ImageResource envelopeHoverImage();
+
+    @Source("contact.jpg")
+    ImageResource contactImage();
+
+    @Source("rate_6.png")
+    ImageResource rate6();
 }

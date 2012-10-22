@@ -9,6 +9,9 @@ import com.google.gwt.resources.client.CssResource;
  */
 public interface GridResources extends CssResource {
 
+    @ClassName("cell-table-logo-column")
+    String cellTableLogoColumn();
+
     @ClassName("cell-table-icon-column")
     String cellTableIconColumn();
 

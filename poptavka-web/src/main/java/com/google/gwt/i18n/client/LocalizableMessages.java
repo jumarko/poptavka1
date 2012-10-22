@@ -115,6 +115,7 @@ public interface LocalizableMessages extends Messages {
     String close();
 
     //common
+    String logo();
     String categories();
     String localities();
     String demands();

@@ -292,42 +292,42 @@ public class UniversalTableWidget extends Composite {
 
     private void addImageColumns() {
         if (gridColumns.contains(REPLY_IMAGE_COLUMN)) {
-            replyImageColumn = grid.addImageColumn(
+            replyImageColumn = grid.addIconColumn(
                     Storage.RSCS.images().replyImage(),
                     Storage.MSGS.replyExplanationText());
         }
         if (gridColumns.contains(ACCEPT_OFFER_IMAGE_COLUMN)) {
-            acceptOfferImageColumn = grid.addImageColumn(
+            acceptOfferImageColumn = grid.addIconColumn(
                     Storage.RSCS.images().acceptOfferImage(),
                     Storage.MSGS.acceptOfferExplanationText());
         }
         if (gridColumns.contains(DECLINE_OFFER_IMAGE_COLUMN)) {
-            declineOfferImageColumn = grid.addImageColumn(
+            declineOfferImageColumn = grid.addIconColumn(
                     Storage.RSCS.images().declineOfferImage(),
                     Storage.MSGS.declineOfferExplanationText());
         }
         if (gridColumns.contains(CLOSE_DEMAND_IMAGE_COLUMN)) {
-            closeDemandImageColumn = grid.addImageColumn(
+            closeDemandImageColumn = grid.addIconColumn(
                     Storage.RSCS.images().closeDemandImage(),
                     Storage.MSGS.closeDemandExplanationText());
         }
         if (gridColumns.contains(SEND_OFFER_IMAGE_COLUMN)) {
-            sendOfferImageColumn = grid.addImageColumn(
+            sendOfferImageColumn = grid.addIconColumn(
                     Storage.RSCS.images().sendOfferImage(),
                     Storage.MSGS.sendOfferExplanationText());
         }
         if (gridColumns.contains(EDIT_OFFER_IMAGE_COLUMN)) {
-            editOfferImageColumn = grid.addImageColumn(
+            editOfferImageColumn = grid.addIconColumn(
                     Storage.RSCS.images().editOfferImage(),
                     Storage.MSGS.editOfferExplanationText());
         }
         if (gridColumns.contains(DOWNLOAD_OFFER_IMAGE_COLUMN)) {
-            downloadOfferImageColumns = grid.addImageColumn(
+            downloadOfferImageColumns = grid.addIconColumn(
                     Storage.RSCS.images().downloadOfferImage(),
                     Storage.MSGS.downloadOfferExplanationText());
         }
         if (gridColumns.contains(FINNISHED_IMAGE_COLUMN)) {
-            finnishedImageColumn = grid.addImageColumn(
+            finnishedImageColumn = grid.addIconColumn(
                     Storage.RSCS.images().finnishedImage(),
                     Storage.MSGS.finnishedExplanationText());
         }

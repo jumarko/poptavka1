@@ -309,7 +309,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         return col;
     }
 
-    public Column<T, ImageResource> addImageColumn(final ImageResource imageResource, String explanationText) {
+    public Column<T, ImageResource> addIconColumn(final ImageResource imageResource, String explanationText) {
         Column<T, ImageResource> col = new Column<T, ImageResource>(new CustomImageCell(explanationText)) {
             @Override
             public ImageResource getValue(T object) {

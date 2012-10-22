@@ -255,7 +255,7 @@ public class ClientDemandsView extends Composite
         // Star Column
         starColumn = conversationGrid.addStarColumn();
         // Reply Column
-        replyColumn = conversationGrid.addImageColumn(
+        replyColumn = conversationGrid.addIconColumn(
                 Storage.RSCS.images().replyImage(),
                 Storage.MSGS.replyExplanationText());
         // Demand title column

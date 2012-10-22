@@ -151,7 +151,7 @@ public class HomeSuppliersPresenter
                 }
             } else if (actualOpenedHierarchy.size() < tree.size()) {
                 //forward
-                cancelOpenEvent = true;
+                cancelOpenEvent = true; //stop processing event right after node is opened
                 //if list is going to be opened - deny
                 if (!lastOpened.isChildLeaf(tree.getLast().getIndex())) {
                     lastOpened = lastOpened.setChildOpen(tree.getLast().getIndex(), true);
@@ -239,8 +239,8 @@ public class HomeSuppliersPresenter
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
                 if (!temporaryOpenedHierarchy.isEmpty()) {
-                    cancelOpenEvent = true;
-                    lastOpened = lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+                    cancelOpenEvent = true; //stop processing event right after node is opened
+                    lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
                 }
             }
         }, LoadingStateChangeEvent.TYPE);
@@ -248,15 +248,15 @@ public class HomeSuppliersPresenter
             @Override
             public void onOpen(OpenEvent<TreeNode> event) {
                 /**************************************************************/
+                //get selected item
+                CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
+                lastOpened = event.getTarget();
+                /**************************************************************/
                 //cancel event if needed - when opening nodes programically
                 if (cancelOpenEvent) {
                     cancelOpenEvent = false;
                     return;
                 }
-                /**************************************************************/
-                //get selected item
-                CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
-                lastOpened = event.getTarget();
                 /**************************************************************/
                 openedEvent = true; //OPEN NODE event's semafor BEGIN
                 //select opened item's selection model
@@ -384,12 +384,12 @@ public class HomeSuppliersPresenter
      */
     public void openNodesHierarchy(LinkedList<TreeItem> hierarchy) {
         closeAllNodes(view.getCellTree().getRootTreeNode());
-        cancelOpenEvent = true;
+        cancelOpenEvent = true; //stop processing event right after node is opened
         openedEvent = true;
-        temporaryOpenedHierarchy = new LinkedList<TreeItem>(hierarchy);
+        temporaryOpenedHierarchy = new LinkedList<TreeItem>(hierarchy); //make a copy
 
         lastOpened = view.getCellTree().getRootTreeNode();
-        lastOpened = lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+        lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
     }
 
     /**************************************************************************/
