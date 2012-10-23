@@ -88,7 +88,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField
     HTMLPanel detail;
     @UiField
-    SupplierDetailView supplierDetail;
+    SupplierDetailView supplierDetailView;
     @UiField
     Button contactBtn;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
@@ -306,7 +306,7 @@ public class HomeSuppliersView extends OverflowComposite
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        supplierDetail.setSupplierDetail(fullSupplierDetail);
+        supplierDetailView.setSupplierDetail(fullSupplierDetail);
     }
 
     @Override

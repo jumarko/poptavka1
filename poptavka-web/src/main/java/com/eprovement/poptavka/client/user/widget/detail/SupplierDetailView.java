@@ -27,6 +27,8 @@ public class SupplierDetailView extends Composite {
     city, zipCode, websiteContactPerson, certified;
     @UiField
     HTMLPanel detail;
+    //Remember state
+    private BusinessUserDetail userDetail = null;
 
     public SupplierDetailView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -109,6 +111,7 @@ public class SupplierDetailView extends Composite {
     }
 
     public void setSupplierDetail(BusinessUserDetail userDetail) {
+        this.userDetail = userDetail;
         detail.setVisible(true);
 
         description.setText(userDetail.getSupplier().getDescription());
@@ -184,6 +187,10 @@ public class SupplierDetailView extends Composite {
 //        websiteContactPerson.setText(detail.getWebsite());
         taxId.setText(detail.getTaxId());
 
+    }
+
+    public BusinessUserDetail getSupplierDetail() {
+        return userDetail;
     }
 
     public void toggleVisible() {

@@ -36,7 +36,7 @@
 			<g:ScrollPanel>
 				<g:HTMLPanel ui:field="detail">
 					<g:Label ui:field="reklama">Reklama</g:Label>
-					<d:SupplierDetailView ui:field="supplierDetail" />
+					<d:SupplierDetailView ui:field="supplierDetailView" />
 					<g:Button ui:field="contactBtn">Contact</g:Button>
 				</g:HTMLPanel>
 			</g:ScrollPanel>

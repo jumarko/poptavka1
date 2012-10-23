@@ -203,7 +203,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 int length = display.getVisibleRange().getLength();
 
                 orderColumns.clear();
-                orderColumns.put(gridColumns.get(0), OrderType.DESC);
+                orderColumns.put(gridColumns.get(1), OrderType.ASC);
                 //Aks for new data
                 eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
             }
