@@ -191,9 +191,9 @@ public class SearchModulePresenter
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                int left = view.getSearchContent().getElement().getAbsoluteLeft() - 233;
+                int left = view.getSearchContent().getElement().getAbsoluteLeft() - 553;
                 int top = view.getSearchContent().getElement().getAbsoluteTop() + 33;
-                view.getPopupPanel().setSize("700px", "500px");
+                view.getPopupPanel().setSize("1020px", "500px");
                 view.getPopupPanel().setPopupPosition(left, top);
                 view.getPopupPanel().show();
             }
