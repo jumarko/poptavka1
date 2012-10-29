@@ -225,26 +225,53 @@ public class HomeSuppliersPresenter
             //Therefore, if this method was called and actualOpenedHierarchy is empty,
             //app was invoked from URL, no by back & forward events (actualOpenedHierarchy wouldn't be empty)
             //Open CellTree's nodes accorting to hierarchy stored in URL
-            openNodesHierarchy(historyTree);
+//            forwardToDifferentSubTree(historyTree, categoryDetail);
+            selectedEvent = true;
+//            CategoryDetail detail = (CategoryDetail) lastOpened.getValue();
+//            int level = 1;
+//            modifyLastOpened(level);
+            lastOpened = view.getCellTree().getRootTreeNode();
+//            modifyTemporaryHierarchy(historyTree, level + 1);
+            temporaryOpenedHierarchy = new LinkedList<TreeItem>(historyTree); //make a copy
+            openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
         } else {
             //So, if this method was called and actualOpenedHierarchy is NOT empty,
             //back & forward events were performed
             //And if actual open nodes state differs to the one in URL, we can define
             //according to the length of those lists, what kind of action was performed - back or forward
             if (actualOpenedHierarchy.size() > historyTree.size()) {
-                /** BACK action was performed. */
-                //if leaf is going to be closed - deny
-                if (!lastOpened.isChildLeaf(actualOpenedHierarchy.getLast().getIndex())) {
-                    lastOpened = lastOpened.getParent();
-                    lastOpened.setChildOpen(actualOpenedHierarchy.getLast().getIndex(), false);
+                /** BACKWARDS opening must be performed.
+                 * - open node to the left from actual node **/
+                selectedEvent = true;
+//                CategoryDetail detail = (CategoryDetail) lastOpened.getValue();
+                modifyLastOpened(categoryDetail.getLevel());
+                modifyTemporaryHierarchy(historyTree, categoryDetail.getLevel());
+                if (!temporaryOpenedHierarchy.isEmpty()) {
+                    openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
                 }
-            } else if (actualOpenedHierarchy.size() < historyTree.size()) {
-                /** FORWARD action was performed. */
-                cancelOpenEvent = true; //stop processing event right after node is opened
-                //if leaf is going to be opened - deny
-                if (!lastOpened.isChildLeaf(historyTree.getLast().getIndex())) {
-                    lastOpened = lastOpened.setChildOpen(historyTree.getLast().getIndex(), true);
+//                lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+//                if (actualOpenedHierarchy.getFirst().getCategoryId() == historyTree.getFirst().getCategoryId()) {
+////                    backInSameSubTree();
+//                    backToDifferentSubTree(historyTree, categoryDetail);
+//                } else {
+//                    backToDifferentSubTree(historyTree, categoryDetail);
+//                }
+            } else if (actualOpenedHierarchy.size() <= historyTree.size()) {
+                /** FORWARD opening must be performed.
+                 * - open node to the right from actual node **/
+                selectedEvent = true;
+                int level = getLevel();
+                modifyLastOpened(level);
+                modifyTemporaryHierarchy(historyTree, level);
+                if (!temporaryOpenedHierarchy.isEmpty()) {
+                    openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
                 }
+//                lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+//                if (actualOpenedHierarchy.getFirst().getCategoryId() == historyTree.getFirst().getCategoryId()) {
+//                    forwardInSameSubTree(historyTree, categoryDetail);
+//                } else {
+//                    forwardToDifferentSubTree(historyTree, categoryDetail);
+//                }
             }
         }
         //Set actual state of CellTree's open nodes hierarchy according to history one.
@@ -347,8 +374,11 @@ public class HomeSuppliersPresenter
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
                 if (!temporaryOpenedHierarchy.isEmpty()) {
-                    cancelOpenEvent = true; //stop processing event right after node is opened
+//                    cancelOpenEvent = true; //stop processing event right after node is opened
+                    selectedEvent = true;
+//                    if (!lastOpened.getParent().isChildLeaf(temporaryOpenedHierarchy.getFirst().getIndex())) {
                     lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+//                    }
                 }
             }
         }, LoadingStateChangeEvent.TYPE);
@@ -361,35 +391,37 @@ public class HomeSuppliersPresenter
                 /**************************************************************/
                 //get selected node object
                 CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
-                //update last open node state
-                lastOpened = event.getTarget();
-                /**************************************************************/
-                //cancel event if needed - when opening nodes by application
-                if (cancelOpenEvent) {
-                    cancelOpenEvent = false;
-                    selectedEvent = false;
-                    return;
-                }
+
+//                if (cancelOpenEvent) {
+//                    cancelOpenEvent = false;
+//                    selectedEvent = false;
+//                } else {
                 /**************************************************************/
                 openedEvent = true; //OPEN NODE event's semafor BEGIN >>>>>>>
                 //If opening node was done first, select opened node's object in selection model
                 if (!selectedEvent) {
                     view.getSelectionCategoryModel().setSelected(selectedCategory, true);
+                    /**************************************************************/
+                    //User could select entirely different category - from different level and index
+                    //Therefore define this cases and update opened hierarchy
+                    if (manageOpenedHierarchy(selectedCategory, event.getTarget().getIndex())) {
+                        //If this is such case, update also last opened node
+                        modifyLastOpened(selectedCategory.getLevel()); // - predsa mam lastOpened = event.getTarget()
+                        //musi byt -1 pretoze musim rozlisit user input a program input
+                        //ak oznaci uzivatel uzol, vyvola sa automaticky open event,
+                        //preto netreba programovo otvarat dany uzol
+                        //teda zniz level, po ktory sa maju odmazat prve/uz otvorene uzly
+                        modifyTemporaryHierarchy(actualOpenedHierarchy, selectedCategory.getLevel() + 1);
+                        closeAllNodesExcept(lastOpened, actualOpenedHierarchy.getLast().getIndex());
+                    }
                 } else {
                     openedEvent = false; //OPEN NODE event's semafor END <<<<<<<
                 }
                 selectedEvent = false; //SELECT CATEGORY event's semafor END <<<<<<<
-                /**************************************************************/
-                //len ak by uzivatel zvolil uplne inu vetvu - zavri vsetky a otvor len novo zvolenu
-                //User could select entirely different category - from different level and index
-                //Therefore define this cases and update opened hierarchy
-                if (manageOpenedHierarchy(selectedCategory, event.getTarget())) {
-                    //If this is such case, update also last opened node
-                    modifyLastOpenedIfNeeded(selectedCategory);
-                    cancelOpenEvent = true;
-                    //And finally open that node
-                    openNode(selectedCategory);
-                }
+
+//                }
+                //update last open node state
+                lastOpened = event.getTarget();
             }
         });
     }
@@ -415,12 +447,13 @@ public class HomeSuppliersPresenter
             if (!openedEvent) {
                 //User could select totaly different node - different level, index
                 //Therefore define such case and update last opened node
-                modifyLastOpenedIfNeeded(selected);
-                cancelOpenEvent = true;
-                //Open node refering to selected object
-                openNode(selected);
-                //update CellTree's open nodes hierarchy actual state
-                manageOpenedHierarchy(selected, lastOpened);
+//                cancelOpenEvent = true;
+                modifyLastOpened(selected.getLevel());
+                manageOpenedHierarchy(selected, getIndex(lastOpened, selected));
+                modifyTemporaryHierarchy(actualOpenedHierarchy, selected.getLevel() + 1);
+//                modifyTemporaryHierarchy(actualOpenedHierarchy, selected);
+                openNode(getIndex(lastOpened, selected));
+
             } else {
                 selectedEvent = false; //SELECT CATEGORY event's semafor END <<<<<<<
             }
@@ -525,6 +558,8 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     /* Private methods                                                        */
     /**************************************************************************/
+    /** FLAG/POINTER MODIFICATION methods. **/
+    /**************************************************************************/
     /**
      * Manages openedHierarchy attributes due to new user selection.
      * If user selected category of different or same level, update CellTree's open nodes hierarchy
@@ -534,7 +569,7 @@ public class HomeSuppliersPresenter
      * @param openedNode
      * @return define if update/correction was made
      */
-    private boolean manageOpenedHierarchy(CategoryDetail selectedCategory, TreeNode openedNode) {
+    private boolean manageOpenedHierarchy(CategoryDetail selectedCategory, int index) {
         //remove all levels which levels are more or even to selected category
         int removeCount = 0;
         for (TreeItem item : actualOpenedHierarchy) {
@@ -550,9 +585,22 @@ public class HomeSuppliersPresenter
         actualOpenedHierarchy.add(new TreeItem(
                 selectedCategory.getId(),
                 selectedCategory.getLevel(),
-                openedNode == null ? getIndex(openedNode, selectedCategory) : openedNode.getIndex()));
+                index));
+//                openedNode == null ? getIndex(openedNode, selectedCategory) : openedNode.getIndex()));
 
         return removeCount == 0 ? false : true;
+    }
+
+    private int getLevel() {
+        CategoryDetail lastDetail = (CategoryDetail) lastOpened.getValue();
+        int level = 1;
+        for (TreeItem item : actualOpenedHierarchy) {
+            if (item.getCategoryId() == lastDetail.getId()) {
+                return level;
+            }
+            level++;
+        }
+        return -1;
     }
 
     /**
@@ -563,58 +611,49 @@ public class HomeSuppliersPresenter
      * @param selectedCategory
      * @return true if last opened node was update, false otherwise
      */
-    private boolean modifyLastOpenedIfNeeded(CategoryDetail selectedCategory) {
-        boolean was = false;
-        //nemusi byt - len kvoli rychlosti, ale to asi nebude postrehnutelne
-        if (selectedCategory.getLevel() == 1) {
+    private void modifyLastOpened(int toLevel) {
+        if (toLevel == 1) {
             lastOpened = view.getCellTree().getRootTreeNode();
         } else {
             int lastOpenedLevel = ((CategoryDetail) lastOpened.getValue()).getLevel();
             for (int i = lastOpenedLevel; i >= 1; i--) {
-                if (selectedCategory.getLevel() < i) {
+                if (toLevel <= i) {
                     lastOpened = lastOpened.getParent();
-                    was = true;
                 }
             }
         }
-        return was;
     }
 
-    /**
-     * Open nodes according to <b>CellTree's open nodes Hierarchy</b> attribute.
-     * It opens first item from list and the others are opened when child nodes of opened
-     * node are retrieved. Otherwise we cannot open something that doesn't exist wile opening process.
-     * The rest of openings is made in CellTree.LoadingStateChange event handler.
-     * Opening process is done according to <b>temporaryOpenedHierarchy</b> attribute
-     *          - needs for asynchronous opening of nodes
-     *          - after each time data are retrieved, fist item is pulled and opened
-     *            until list is empty.
-     *
-     * @param hierarchy - CellTree's open nodes hierarchy parsed from URL
-     */
-    private void openNodesHierarchy(LinkedList<TreeItem> hierarchy) {
-        //First close all nodes
-        closeAllNodes(view.getCellTree().getRootTreeNode());
-        cancelOpenEvent = true; //stop processing event right after node is opened
-        openedEvent = true;
-        temporaryOpenedHierarchy = new LinkedList<TreeItem>(hierarchy); //make a copy
-
-        lastOpened = view.getCellTree().getRootTreeNode();
-        //Open first node, others in CellTree.LoadingStateChange event handler after child nodes are retieved.
-        lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+    private void modifyTemporaryHierarchy(LinkedList<TreeItem> hierarchy, int toLevel) {
+        if (!hierarchy.isEmpty()) {
+            temporaryOpenedHierarchy = new LinkedList<TreeItem>(hierarchy); //make a copy
+            for (int i = 0; i < hierarchy.size(); i++) {
+                if (hierarchy.get(i).getLevel() < toLevel) {
+                    temporaryOpenedHierarchy.removeFirst();
+                }
+            }
+        }
     }
 
+    /** OPEN methods. **/
+    /**************************************************************************/
     /**
      * Opens child node of last opened node represented by given selected category.
      * @param selected - selected category
      * @return null if opening fails, TreeNode of opened child
      */
-    private TreeNode openNode(CategoryDetail selected) {
-        closeAllNodes(lastOpened);
-        int idx = getIndex(lastOpened, selected);
-        return lastOpened.setChildOpen(idx, true);
+    private TreeNode openNode(int indexToOpen) {
+//        closeAllNodesExcept(lastOpened, indexToOpen); //?????
+        closeAllNodes(lastOpened); //?????
+
+        if (lastOpened != null) {
+            return lastOpened.setChildOpen(indexToOpen, true);
+        }
+        return null;
     }
 
+    /** CLOSE methods. **/
+    /**************************************************************************/
     /**
      * Close all child nodes of given node.
      * @param node
@@ -625,6 +664,16 @@ public class HomeSuppliersPresenter
         }
     }
 
+    private void closeAllNodesExcept(TreeNode node, int exceptIdx) {
+        for (int i = 0; i < node.getChildCount(); i++) {
+            if (i != exceptIdx) {
+                node.setChildOpen(i, false);
+            }
+        }
+    }
+
+    /** OTHER methods. **/
+    /**************************************************************************/
     /**
      * Return index of given selected category that refers to a given node's child.
      * @param node

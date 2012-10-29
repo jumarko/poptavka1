@@ -182,7 +182,7 @@ public class HomeSuppliersView extends OverflowComposite
                     }
                 };
         //set column style
-        logoCol.setSortable(true);
+        logoCol.setSortable(false);
         logoCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
         dataGrid.addColumn(logoCol, Storage.MSGS.logo());
         dataGrid.setColumnWidth(logoCol, LOGO_COL_WIDTH, Unit.PX);
