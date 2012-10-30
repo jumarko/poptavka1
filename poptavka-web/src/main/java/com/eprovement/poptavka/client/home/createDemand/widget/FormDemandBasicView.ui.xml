@@ -77,7 +77,8 @@
                             </td>
                         </tr>
                     </table>
-                    <table>
+                    <!--Temporary disabled-->
+<!--                    <table>
                         <tr>
                             <td>
                                 <ui:msg key="attachment">Attachment</ui:msg>
@@ -86,7 +87,7 @@
                                 <g:FileUpload />
                             </td>
                         </tr>
-                    </table>
+                    </table>-->
                 </td>
                 <td>
                     <table>

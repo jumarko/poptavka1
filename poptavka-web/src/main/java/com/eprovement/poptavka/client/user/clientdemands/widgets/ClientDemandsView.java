@@ -15,6 +15,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -92,6 +93,8 @@ public class ClientDemandsView extends Composite
     ListBox actions;
     @UiField
     HorizontalPanel demandHeader, conversationHeader;
+    @UiField
+    Button backBtn;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -336,6 +339,11 @@ public class ClientDemandsView extends Composite
     }
 
     @Override
+    public Button getBackBtn() {
+        return backBtn;
+    }
+
+    @Override
     public ListBox getActions() {
         return actions;
     }
@@ -392,13 +400,15 @@ public class ClientDemandsView extends Composite
     @Override
     public void setConversationTableVisible(boolean visible) {
         demandGrid.setVisible(!visible);
-        demandPager.setVisible(!visible);
-        demandPageSize.setVisible(!visible);
+        demandGrid.redraw();
+        SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
+        if (selectionModel.getSelectedObject() != null) {
+            selectionModel.setSelected(selectionModel.getSelectedObject(), false);
+        }
         demandHeader.setVisible(!visible);
 
         conversationGrid.setVisible(visible);
-        conversationPager.setVisible(visible);
-        conversationPageSize.setVisible(visible);
+        conversationGrid.redraw();
         conversationHeader.setVisible(visible);
     }
 

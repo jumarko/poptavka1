@@ -8,16 +8,22 @@
 
 	<g:DockLayoutPanel unit="PX">
                 <g:north size="45">
-			<g:HTMLPanel styleName='{res.layout.pager}'>
+                        <g:HorizontalPanel ui:field="demandHeader">
+                                <g:Label ui:field = "tableNameLabel"/>
+                                <g:ListBox ui:field="actionBox" />
+                                <c:SimplePager ui:field='pager' styleName='{res.layout.pager}'/>
+                                <g:ListBox ui:field='pageSize' />
+                        </g:HorizontalPanel>
+<!--			<g:HTMLPanel styleName='{res.layout.pager}'>
 				<table style="width:100%">
 					<tr>
 						<td align='center'>
-							<c:SimplePager ui:field='pager' />
+							<c:SimplePager ui:field='pager' styleName='{res.layout.pager}'/>
 							<g:ListBox ui:field='pageSize' />
 						</td>
 					</tr>
 				</table>
-			</g:HTMLPanel>
+			</g:HTMLPanel>-->
 		</g:north>
 		<g:center>
 			<s:UniversalAsyncGrid ui:field="grid" />

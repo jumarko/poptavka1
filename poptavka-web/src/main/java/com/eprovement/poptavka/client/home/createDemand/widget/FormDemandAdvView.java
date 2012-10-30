@@ -28,9 +28,12 @@ public class FormDemandAdvView extends Composite
     HashMap<DemandField, Object> map = new HashMap<DemandField, Object>();
 
     @UiField IntegerBox maxOffersBox;
-    @UiField IntegerBox minRatingBox;
-    @UiField Button excludeBtn;
-    @UiField ListBox excludedList;
+//    @UiField
+    IntegerBox minRatingBox;
+//    @UiField
+    Button excludeBtn;
+//    @UiField
+    ListBox excludedList;
     @UiField RadioButton classicRadio;
     @UiField RadioButton attractiveRadio;
 
@@ -64,7 +67,9 @@ public class FormDemandAdvView extends Composite
     @Override
     public HashMap<DemandField, Object> getValues() {
         map.put(DemandField.MAX_OFFERS, maxOffersBox.getValue());
-        map.put(DemandField.MIN_RATING, minRatingBox.getValue());
+        map.put(DemandField.MIN_RATING, 0);
+//        Temporary disabled
+//        map.put(DemandField.MIN_RATING, minRatingBox.getValue());
         //demand types
         String resultValue = "";
         if (classicRadio.getValue()) {

@@ -19,9 +19,12 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -58,6 +61,8 @@ public class ClientDemandsPresenter
         Column<ClientDemandConversationDetail, String> getDateColumn();
 
         // Others
+        Button getBackBtn();
+
         UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
 
         UniversalAsyncGrid<ClientDemandConversationDetail> getConversationGrid();
@@ -95,6 +100,7 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
+        addBackBtnClickHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         // Field Updaters
@@ -270,6 +276,16 @@ public class ClientDemandsPresenter
                     view.setConversationTableVisible(true);
                     view.getConversationGrid().getDataCount(eventBus, null);
                 }
+            }
+        });
+    }
+
+    private void addBackBtnClickHandler() {
+        view.getBackBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                view.setConversationTableVisible(false);
             }
         });
     }

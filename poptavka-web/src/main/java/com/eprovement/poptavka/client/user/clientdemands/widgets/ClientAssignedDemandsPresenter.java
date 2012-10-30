@@ -21,7 +21,6 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
@@ -38,9 +37,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
         //Table
         UniversalTableWidget getTableWidget();
-
-        //ListBox
-        ListBox getActions();
 
         //Other
         SimplePanel getWrapperPanel();
@@ -198,10 +194,10 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     private void addActionChangeHandler() {
-        view.getActions().addChangeHandler(new ChangeHandler() {
+        view.getTableWidget().getActionBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                switch (view.getActions().getSelectedIndex()) {
+                switch (view.getTableWidget().getActionBox().getSelectedIndex()) {
                     case 1:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;

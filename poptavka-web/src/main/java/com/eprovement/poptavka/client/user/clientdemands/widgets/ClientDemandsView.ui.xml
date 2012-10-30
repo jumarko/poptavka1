@@ -29,6 +29,8 @@
                             <g:Label>
                                 <ui:msg key="clientProjectsTitle">Vypis klientovych poptaviek</ui:msg>
                             </g:Label>
+                            <c:SimplePager ui:field='demandPager' styleName='{res.layout.pager}'/>
+                            <g:ListBox ui:field='demandPageSize' />
                         </g:HorizontalPanel>
                         <g:HorizontalPanel ui:field="conversationHeader">
                             <g:Button ui:field="backBtn">
@@ -36,6 +38,8 @@
                             </g:Button>
                             <g:Label ui:field="demandTitlelabel"/>
                             <g:ListBox ui:field="actions"/>
+                            <c:SimplePager ui:field='conversationPager' styleName='{res.layout.pager}'/>
+                            <g:ListBox ui:field='conversationPageSize' />
                         </g:HorizontalPanel>
                     </g:HorizontalPanel>
                 </g:north>
@@ -45,20 +49,6 @@
                         <s:UniversalAsyncGrid ui:field="conversationGrid" />
                     </g:VerticalPanel>
                 </g:center>
-                <g:south size="32">
-                    <g:HTMLPanel styleName='{res.layout.pager}'>
-                        <table style="width:100%">
-                            <tr>
-                                <td align='center'>
-                                    <c:SimplePager ui:field='demandPager' />
-                                    <c:SimplePager ui:field='conversationPager' />
-                                    <g:ListBox ui:field='demandPageSize' />
-                                    <g:ListBox ui:field='conversationPageSize' />
-                                </td>
-                            </tr>
-                        </table>
-                    </g:HTMLPanel>
-                </g:south>
             </g:DockLayoutPanel>
         </g:center>
     </g:SplitLayoutPanel>

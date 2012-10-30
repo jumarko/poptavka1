@@ -27,7 +27,6 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -51,9 +50,6 @@ public class ClientOffersPresenter
 
         //Buttons
         Button getBackBtn();
-
-        //ListBox
-        ListBox getActions();
 
         //Other
         SimplePanel getWrapperPanel();
@@ -242,19 +238,16 @@ public class ClientOffersPresenter
         view.getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                view.getDemandGrid().getSelectionModel().setSelected(
-                        (ClientDemandDetail) ((SingleSelectionModel)
-                        view.getDemandGrid().getSelectionModel()).getSelectedObject(), false);
                 view.setOfferTableVisible(false);
             }
         });
     }
 
     private void addActionChangeHandler() {
-        view.getActions().addChangeHandler(new ChangeHandler() {
+        view.getOfferGrid().getActionBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                switch (view.getActions().getSelectedIndex()) {
+                switch (view.getOfferGrid().getActionBox().getSelectedIndex()) {
                     case 1:
                         eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
                         break;

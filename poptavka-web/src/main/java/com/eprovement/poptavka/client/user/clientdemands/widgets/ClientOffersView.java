@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -62,17 +61,13 @@ public class ClientOffersView extends Composite
     //table handling buttons
     @UiField
     Button backBtn;
-    @UiField(provided = true)
-    ListBox actions;
     //detail WrapperPanel
     @UiField
     SimplePanel wrapperPanel;
     @UiField
     Label demandTitlelabel;
     @UiField
-    HorizontalPanel demandHeader;
-    @UiField
-    VerticalPanel contestHeader;
+    HorizontalPanel demandHeader, contestHeader;
 
     /**************************************************************************/
     /* Initialization                                                            */
@@ -87,14 +82,6 @@ public class ClientOffersView extends Composite
         demandPageSize.addItem("20");
         demandPageSize.addItem("30");
         demandPageSize.setSelectedIndex(2);
-
-        actions = new ListBox();
-        actions.addItem(Storage.MSGS.action());
-        actions.addItem(Storage.MSGS.read());
-        actions.addItem(Storage.MSGS.unread());
-        actions.addItem(Storage.MSGS.star());
-        actions.addItem(Storage.MSGS.unstar());
-        actions.setSelectedIndex(0);
 
         initDemandTable();
         initOfferTable();
@@ -148,7 +135,6 @@ public class ClientOffersView extends Composite
         demandGrid.addColumn(
                 demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
@@ -160,7 +146,6 @@ public class ClientOffersView extends Composite
         demandGrid.addColumn(
                 demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), true, PRICE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
@@ -172,7 +157,6 @@ public class ClientOffersView extends Composite
         demandGrid.addColumn(
                 demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.finnishDate(), true, FINNISH_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
@@ -186,7 +170,6 @@ public class ClientOffersView extends Composite
         demandGrid.addColumn(
                 new TextCell(), Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
@@ -220,12 +203,6 @@ public class ClientOffersView extends Composite
         return backBtn;
     }
 
-    //ListBox
-    @Override
-    public ListBox getActions() {
-        return actions;
-    }
-
     @Override
     public SimplePanel getWrapperPanel() {
         return wrapperPanel;
@@ -242,11 +219,15 @@ public class ClientOffersView extends Composite
     @Override
     public void setOfferTableVisible(boolean visible) {
         demandGrid.setVisible(!visible);
-        demandPager.setVisible(!visible);
-        demandPageSize.setVisible(!visible);
+        demandGrid.redraw();
+        SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
+        if (selectionModel.getSelectedObject() != null) {
+            selectionModel.setSelected(selectionModel.getSelectedObject(), false);
+        }
         demandHeader.setVisible(!visible);
 
         contestGrid.setVisible(visible);
+        contestGrid.getGrid().redraw();
         contestHeader.setVisible(visible);
     }
 

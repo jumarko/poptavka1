@@ -16,6 +16,7 @@ import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -103,7 +104,9 @@ public class UniversalTableWidget extends Composite {
     @UiField(provided = true)
     SimplePager pager;
     @UiField(provided = true)
-    ListBox pageSize;
+    ListBox pageSize, actionBox;
+    @UiField
+    Label tableNameLabel;
     //Pager definition
     //How many options in page size combo is generated.
     private static final int PAGE_SIZE_ITEMS_COUNT = 5;
@@ -143,6 +146,7 @@ public class UniversalTableWidget extends Composite {
                 break;
         }
         initTable();
+        initActionBox();
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -182,6 +186,16 @@ public class UniversalTableWidget extends Composite {
 
         initPager();
         initTableColumns();
+    }
+
+    private void initActionBox() {
+        actionBox = new ListBox();
+        actionBox.addItem(Storage.MSGS.action());
+        actionBox.addItem(Storage.MSGS.read());
+        actionBox.addItem(Storage.MSGS.unread());
+        actionBox.addItem(Storage.MSGS.star());
+        actionBox.addItem(Storage.MSGS.unstar());
+        actionBox.setSelectedIndex(0);
     }
 
     /**
@@ -525,6 +539,16 @@ public class UniversalTableWidget extends Composite {
     //Header
     public Header getCheckHeader() {
         return checkHeader;
+    }
+
+    //Label
+    public Label getTableNameLabel() {
+        return tableNameLabel;
+    }
+
+    //ListBox
+    public ListBox getActionBox() {
+        return actionBox;
     }
 
     /**

@@ -7,9 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -30,13 +28,9 @@ public class ClientAssignedDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField(provided = true)
-    ListBox actions;
     //detail WrapperPanel
     @UiField
     SimplePanel wrapperPanel;
-    @UiField
-    HTMLPanel contestantsHeader;
 
     /**************************************************************************/
     /* Initialization                                                            */
@@ -47,14 +41,8 @@ public class ClientAssignedDemandsView extends Composite
         Storage.RSCS.grid().ensureInjected();
 
         tableWidget = new UniversalTableWidget(Constants.CLIENT_ASSIGNED_DEMANDS);
-
-        actions = new ListBox();
-        actions.addItem(Storage.MSGS.action());
-        actions.addItem(Storage.MSGS.read());
-        actions.addItem(Storage.MSGS.unread());
-        actions.addItem(Storage.MSGS.star());
-        actions.addItem(Storage.MSGS.unstar());
-        actions.setSelectedIndex(0);
+        //TODO Martin - premenovat tiez i18n - Project -> Demand
+        tableWidget.getTableNameLabel().setText(Storage.MSGS.clientAssignedProjectsTitle());
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -66,12 +54,6 @@ public class ClientAssignedDemandsView extends Composite
     @Override
     public UniversalTableWidget getTableWidget() {
         return tableWidget;
-    }
-
-    //ListBox
-    @Override
-    public ListBox getActions() {
-        return actions;
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -29,8 +28,6 @@ public class SupplierDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField(provided = true)
-    ListBox actions;
     //detail WrapperPanel
     @UiField
     SimplePanel detailPanel;
@@ -44,14 +41,7 @@ public class SupplierDemandsView extends Composite
         Storage.RSCS.grid().ensureInjected();
 
         tableWidget = new UniversalTableWidget(Constants.SUPPLIER_POTENTIAL_DEMANDS);
-
-        actions = new ListBox();
-        actions.addItem(Storage.MSGS.action());
-        actions.addItem(Storage.MSGS.read());
-        actions.addItem(Storage.MSGS.unread());
-        actions.addItem(Storage.MSGS.star());
-        actions.addItem(Storage.MSGS.unstar());
-        actions.setSelectedIndex(0);
+        tableWidget.getTableNameLabel().setText(Storage.MSGS.supplierPotentialDemandsTableTitle());
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -63,12 +53,6 @@ public class SupplierDemandsView extends Composite
     @Override
     public UniversalTableWidget getTableWidget() {
         return tableWidget;
-    }
-
-    //ListBox
-    @Override
-    public ListBox getActions() {
-        return actions;
     }
 
     @Override
