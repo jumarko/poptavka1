@@ -41,7 +41,8 @@ public class FormDemandAdvView extends Composite
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         widgets.add(maxOffersBox);
-        widgets.add(minRatingBox);
+//        temporary disabled
+//        widgets.add(minRatingBox);
     }
 
     @Override
