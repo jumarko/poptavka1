@@ -14,18 +14,15 @@ import java.util.LinkedList;
  *
  * @author slavkovsky.martin
  */
-@History(type = HistoryConverterType.DEFAULT, name = "homeSuppliers")
+@History(type = HistoryConverterType.DEFAULT, name = "suppliers")
 public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppliersEventBus> {
 
-    public String onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder, int homeSuppliersViewType) {
-//        switch (homeSuppliersViewType) {
-//            case Constants.HOME_SUPPLIERS_BY_DEFAULT:
-        return "";
-//            case Constants.HOME_SUPPLIERS_BY_SEARCH:
-//                return "catId=";
-//            default:
-//                break;
-//        }
+    public String onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
+        if (searchModuleDataHolder == null) {
+            return "";
+        } else {
+            return "filter:" + searchModuleDataHolder.toStringWithIDs();
+        }
     }
 
     public String onCreateTokenForHistory(
@@ -61,21 +58,26 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         }
         if (param == null) {
             //aj tak tu nemam categoryDetail ale iba ID
-            eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
+            eventBus.goToHomeSuppliersModule(null);
         } else {
             Storage.setCalledDueToHistory(true);
-            //When back & forward events -> don't need to call goToHomeSupplierModule
-            // - it would create new universalAsyncTable, ...
-            // - just use what is already created - events will fire appropiate actions
-            //parse param
-            String[] params = param.split(";");
-            LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split("=")[1]);
-            if (!tree.isEmpty()) {
-                eventBus.getCategoryAndSetModuleByHistory(
-                        tree,
-                        tree.getLast().getCategoryId(),
-                        Integer.valueOf(params[1].split("=")[1]),
-                        Long.valueOf(params[2].split("=")[1]));
+            if (param.startsWith("filter:")) {
+                param = param.replace("filter:", "");
+                eventBus.goToHomeSuppliersModule(SearchModuleDataHolder.parseSearchModuleDataHolder(param));
+            } else {
+                //When back & forward events -> don't need to call goToHomeSupplierModule
+                // - it would create new universalAsyncTable, ...
+                // - just use what is already created - events will fire appropiate actions
+                //parse param
+                String[] params = param.split(";");
+                LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split("=")[1]);
+                if (!tree.isEmpty()) {
+                    eventBus.getCategoryAndSetModuleByHistory(
+                            tree,
+                            tree.getLast().getCategoryId(),
+                            Integer.valueOf(params[1].split("=")[1]),
+                            Long.valueOf(params[2].split("=")[1]));
+                }
             }
         }
     }

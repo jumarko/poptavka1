@@ -67,4 +67,115 @@ public class SearchModuleDataHolder implements Serializable {
     public ArrayList<FilterItem> getAttributes() {
         return attributes;
     }
+
+    /**************************************************************************/
+    /* toString & parse                                                       */
+    /**************************************************************************/
+    /**
+     * String format: >> text=;cats=[..,..],locs=[..,..];attrs=[..,..] <<.
+     * @return
+     */
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("text=\"");
+        str.append(searchText);
+        str.append("\"");
+        str.append(";cats=");
+        str.append(categories.toString());
+        str.append(";locs=");
+        str.append(localities.toString());
+        str.append(";attrs=");
+        str.append(attributes.toString());
+        return str.toString();
+    }
+
+    public String toStringWithIDs() {
+        StringBuilder str = new StringBuilder();
+        str.append("text=\"");
+        str.append(searchText);
+        str.append("\"");
+        str.append(";cats=");
+        str.append(categoriesIDsToString());
+        str.append(";locs=");
+        str.append(localitiesIDsToString());
+        str.append(";attrs=");
+        str.append(attributes.toString());
+        return str.toString();
+    }
+
+    /**
+     * Cannot use default toString because it returns category name, but to URL we
+     * need to remember categories id.
+     * @return
+     */
+    public String categoriesIDsToString() {
+        StringBuilder str = new StringBuilder("[");
+        for (CategoryDetail cat : categories) {
+            str.append(cat.getId());
+            str.append(",");
+        }
+        if (str.length() != 0) {
+            str.delete(str.length() - 1, str.length());
+        }
+        str.append("]");
+        return str.toString();
+    }
+
+    /**
+     * Cannot use default toString because it returns locality name, but to URL we
+     * need to remember localities id.
+     * @return
+     */
+    public String localitiesIDsToString() {
+        StringBuilder str = new StringBuilder("[");
+        for (LocalityDetail loc : localities) {
+            str.append(loc.getId());
+            str.append(",");
+        }
+        if (str.length() != 0) {
+            str.delete(str.length() - 1, str.length());
+        }
+        str.append("]");
+        return str.toString();
+    }
+
+    public static SearchModuleDataHolder parseSearchModuleDataHolder(String urlToken) {
+        urlToken = urlToken.replace("[", "");
+        urlToken = urlToken.replace("]", "");
+        String[] items = urlToken.split(";");
+
+        SearchModuleDataHolder searchModuleDataHolder = new SearchModuleDataHolder();
+
+        //text=textString
+        searchModuleDataHolder.setSearchText(items[0].split("=")[1].replaceAll("\"", ""));
+        //cats=[..,..]
+        ArrayList<CategoryDetail> categories = new ArrayList<CategoryDetail>();
+        String[] cats = items[1].split("=");
+        if (cats.length > 1) {
+            for (String catId : cats[1].split(",")) {
+                categories.add(new CategoryDetail(Long.valueOf(catId), ""));
+            }
+        }
+        searchModuleDataHolder.setCategories(categories);
+        //locs=[..,..]
+        ArrayList<LocalityDetail> localities = new ArrayList<LocalityDetail>();
+        String[] locs = items[2].split("=");
+        if (locs.length > 1) {
+            for (String locCode : locs[1].split(",")) {
+                localities.add(new LocalityDetail("", locCode));
+            }
+        }
+        searchModuleDataHolder.setLocalities(localities);
+        //attrs=[..,..]
+        ArrayList<FilterItem> attributes = new ArrayList<FilterItem>();
+        String[] attrs = items[3].split("=");
+        if (attrs.length > 1) {
+            for (String locCode : attrs[1].split(",")) {
+                attributes.add(FilterItem.parseFilterItem(urlToken));
+            }
+        }
+        searchModuleDataHolder.setAttributes(attributes);
+        return searchModuleDataHolder;
+    }
 }

@@ -41,7 +41,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
 
     @Override
     public void goToHomeSuppliers() {
-        eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
+        eventBus.goToHomeSuppliersModule(null);
     }
 
     @Override

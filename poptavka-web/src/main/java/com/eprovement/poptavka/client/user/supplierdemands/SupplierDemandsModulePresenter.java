@@ -107,7 +107,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
+                eventBus.goToHomeSuppliersModule(null);
             }
         });
     }

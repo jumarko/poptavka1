@@ -28,6 +28,7 @@ import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -85,6 +86,8 @@ public class HomeSuppliersView extends OverflowComposite
     ListBox pageSizeCombo;
     @UiField
     Label reklama, filterLabel;
+    @UiField
+    DecoratorPanel filterLabelPanel;
     @UiField
     HTMLPanel detail;
     @UiField
@@ -284,6 +287,11 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public Label getFilterLabel() {
         return filterLabel;
+    }
+
+    @Override
+    public DecoratorPanel getFilterLabelPanel() {
+        return filterLabelPanel;
     }
 
     @Override

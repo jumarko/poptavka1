@@ -4,8 +4,11 @@
  */
 package com.eprovement.poptavka.shared.search;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <B>Item</B> = string representing domain object attribute <B>Operation</B> =
@@ -75,7 +78,7 @@ public class FilterItem implements Serializable {
         } else if (integer != null) {
             return integer;
         } else if (date != null) {
-            return date;
+            return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(date);
         } else if (bool != null) {
             return bool;
         } else {
@@ -83,6 +86,9 @@ public class FilterItem implements Serializable {
         }
     }
 
+    /**************************************************************************/
+    /* toString & parse                                                       */
+    /**************************************************************************/
     @Override
     public String toString() {
         StringBuilder infoStr = new StringBuilder();
@@ -108,5 +114,49 @@ public class FilterItem implements Serializable {
         }
         infoStr.append(getValue().toString());
         return infoStr.toString();
+    }
+
+    public static FilterItem parseFilterItem(String filterItemString) {
+        List<String> operations = Arrays.asList(new String[]{"=", "~", "<", ">", "in"});
+        int idx = -1;
+        for (String operation : operations) {
+            idx = filterItemString.indexOf(operation);
+            return new FilterItem(
+                    filterItemString.substring(0, idx - 1),
+                    parseOperation(filterItemString.substring(idx, idx + 1)),
+                    parseValue(filterItemString.substring(idx + 2, filterItemString.length())));
+
+        }
+        return null;
+    }
+
+    private static int parseOperation(String operationString) {
+        if (operationString.equals("=")) {
+            return OPERATION_EQUALS;
+        } else if (operationString.equals("~")) {
+            return OPERATION_LIKE;
+        } else if (operationString.equals(">")) {
+            return OPERATION_FROM;
+        } else if (operationString.equals("<")) {
+            return OPERATION_TO;
+        } else if (operationString.equals("in")) {
+            return OPERATION_IN;
+        } else {
+            return -1;
+        }
+    }
+
+    private static Object parseValue(String valueString) {
+        if (valueString.matches("[0-9]+")) {
+            return Integer.parseInt(valueString);
+        } else if (valueString.matches("[a-zA-Z]+")) {
+            return valueString;
+        } else if (valueString.equals(Boolean.TRUE.toString())) {
+            return Boolean.TRUE;
+        } else if (valueString.equals(Boolean.FALSE.toString())) {
+            return Boolean.FALSE;
+        } else {
+            return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).parse(valueString);
+        }
     }
 }

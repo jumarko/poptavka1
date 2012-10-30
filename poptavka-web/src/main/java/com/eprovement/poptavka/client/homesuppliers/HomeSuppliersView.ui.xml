@@ -19,13 +19,15 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="40">
-                                        <g:VerticalPanel>
-                                            <g:Label ui:field="filterLabel"/>
-                                            <g:HorizontalPanel>
-                                                    <c:SimplePager ui:field="pager" />
-                                                    <g:ListBox ui:field='pageSizeCombo' />
-                                            </g:HorizontalPanel>
-                                        </g:VerticalPanel>
+                                	<g:VerticalPanel>
+                                        	<g:DecoratorPanel ui:field="filterLabelPanel">
+                                        		<g:Label ui:field="filterLabel"/>
+                                       		</g:DecoratorPanel>
+                                       		<g:HorizontalPanel>
+                                            		<c:SimplePager ui:field="pager" />
+                                            		<g:ListBox ui:field='pageSizeCombo' />
+                                       		</g:HorizontalPanel>
+                                    	</g:VerticalPanel>
 				</g:north>
 				<g:center>
 					<c:DataGrid ui:field="dataGrid" />

@@ -107,7 +107,7 @@ public class ClientDemandsModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliersModule(null, Constants.HOME_SUPPLIERS_BY_DEFAULT);
+                eventBus.goToHomeSuppliersModule(null);
             }
         });
     }

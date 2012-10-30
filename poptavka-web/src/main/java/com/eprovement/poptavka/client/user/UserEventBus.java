@@ -384,7 +384,7 @@ public interface UserEventBus extends EventBusWithLookup, BaseChildEventBus {
     void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
 //    @Event(forwardToParent = true)
 //    void eegoToCreateDemand(String location);

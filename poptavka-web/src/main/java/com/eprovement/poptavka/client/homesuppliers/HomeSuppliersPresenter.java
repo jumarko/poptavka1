@@ -18,6 +18,7 @@ import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -69,6 +70,8 @@ public class HomeSuppliersPresenter
         SplitLayoutPanel getSplitter();
 
         Label getFilterLabel();
+
+        DecoratorPanel getFilterLabelPanel();
 
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
@@ -153,54 +156,51 @@ public class HomeSuppliersPresenter
      * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
      *                               - it's also used as pointer to differ root and child sections
      */
-    public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder, int homeSuppliersViewType) {
+    public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
         //start up initialization
         actualOpenedHierarchy.clear();
         lastOpened = view.getCellTree().getRootTreeNode();
         openedEvent = false;
         selectedEvent = false;
         //differ cases - BY DEFAULT, BY SEARCH
-        switch (homeSuppliersViewType) {
-            case Constants.HOME_SUPPLIERS_BY_DEFAULT:
-                goToHomeSuppliers();
-                break;
-            case Constants.HOME_SUPPLIERS_BY_SEARCH:
-                goToHomeSuppliers(searchModuleDataHolder);
-                break;
-            default:
-                break;
+        if (searchModuleDataHolder == null) {
+            goToHomeSuppliers();
+        } else {
+            goToHomeSuppliers(searchModuleDataHolder);
         }
     }
 
     /**
-     * Forwarded from menu.
+     * Default module initialization. Forwarded from menu.
      */
     private void goToHomeSuppliers() {
         Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
         //Set visibility
-        view.getFilterLabel().setVisible(false);
-        view.getCellTree().setVisible(true);
+        view.getFilterLabel().setText("");
+        view.getFilterLabelPanel().setVisible(false);
         view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
+        closeAllNodes(view.getCellTree().getRootTreeNode());
 
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
     }
 
     /**
-     * Forwarded from search module.
+     * Module initialization when searching is performed. Forwarded from search module.
      *
-     * @param searchDataHolder
+     * @param searchDataHolder - filters containing searching criteria
      */
     private void goToHomeSuppliers(SearchModuleDataHolder searchDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
-        //Set visibility
-        //display message that search was performed
-        //Ak bude text stale rovnaky, nemusi sa setovat tu,
-        //ale ak bude dynamicky (zobrazia searching criteria), tak ano
-        view.getFilterLabel().setText("Results satisfying searching criteria:");
-        view.getFilterLabel().setVisible(true);
-        view.getCellTree().setVisible(false);
+        //unselect categories
         view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
-
+        //close celltree nodes
+        closeAllNodes(view.getCellTree().getRootTreeNode());
+        //display message that search was performed
+        //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
+        //ale ak bude dynamicky (zobrazia searching criteria), tak ano
+        view.getFilterLabel().setText("Results satisfying searching criteria:" + searchDataHolder.toString());
+        //set visibility
+        view.getFilterLabelPanel().setVisible(true);
         //getData
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
@@ -225,15 +225,15 @@ public class HomeSuppliersPresenter
             //Therefore, if this method was called and actualOpenedHierarchy is empty,
             //app was invoked from URL, no by back & forward events (actualOpenedHierarchy wouldn't be empty)
             //Open CellTree's nodes accorting to hierarchy stored in URL
-//            forwardToDifferentSubTree(historyTree, categoryDetail);
+            //Set fag to false - tells app that nodes will be opened programicaly, not by user
             selectedEvent = true;
-//            CategoryDetail detail = (CategoryDetail) lastOpened.getValue();
-//            int level = 1;
-//            modifyLastOpened(level);
+            //Opening will be performed "from scratch" - from CellTree root.
             lastOpened = view.getCellTree().getRootTreeNode();
-//            modifyTemporaryHierarchy(historyTree, level + 1);
+            //"From scratch" - user while stored URL hierarchy
             temporaryOpenedHierarchy = new LinkedList<TreeItem>(historyTree); //make a copy
-            openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+            if (!temporaryOpenedHierarchy.isEmpty()) {
+                openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+            }
         } else {
             //So, if this method was called and actualOpenedHierarchy is NOT empty,
             //back & forward events were performed
@@ -243,19 +243,11 @@ public class HomeSuppliersPresenter
                 /** BACKWARDS opening must be performed.
                  * - open node to the left from actual node **/
                 selectedEvent = true;
-//                CategoryDetail detail = (CategoryDetail) lastOpened.getValue();
                 modifyLastOpened(categoryDetail.getLevel());
                 modifyTemporaryHierarchy(historyTree, categoryDetail.getLevel());
                 if (!temporaryOpenedHierarchy.isEmpty()) {
                     openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
                 }
-//                lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
-//                if (actualOpenedHierarchy.getFirst().getCategoryId() == historyTree.getFirst().getCategoryId()) {
-////                    backInSameSubTree();
-//                    backToDifferentSubTree(historyTree, categoryDetail);
-//                } else {
-//                    backToDifferentSubTree(historyTree, categoryDetail);
-//                }
             } else if (actualOpenedHierarchy.size() <= historyTree.size()) {
                 /** FORWARD opening must be performed.
                  * - open node to the right from actual node **/
@@ -266,12 +258,6 @@ public class HomeSuppliersPresenter
                 if (!temporaryOpenedHierarchy.isEmpty()) {
                     openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
                 }
-//                lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
-//                if (actualOpenedHierarchy.getFirst().getCategoryId() == historyTree.getFirst().getCategoryId()) {
-//                    forwardInSameSubTree(historyTree, categoryDetail);
-//                } else {
-//                    forwardToDifferentSubTree(historyTree, categoryDetail);
-//                }
             }
         }
         //Set actual state of CellTree's open nodes hierarchy according to history one.
@@ -342,18 +328,21 @@ public class HomeSuppliersPresenter
      */
     @Override
     public void bindView() {
-        dataGridRangeChange();
-        cellTreeLoadingStateChange();
+        dataGridRangeChangeHandler();
+        cellTreeLoadingStateChangeHandler();
         cellTreeOpenHandler();
         selectionCategoryChangeHandler();
-        dataGridSelectioModelCgangeHandler();
+        dataGridSelectioModelChangeHandler();
         pageSizeChangeHandler();
     }
 
     /**************************************************************************/
     /* Bind Handlers                                                          */
     /**************************************************************************/
-    private void dataGridRangeChange() {
+    /**
+     * Handle table range change by creating token for new range/page.
+     */
+    private void dataGridRangeChangeHandler() {
         view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
@@ -369,21 +358,28 @@ public class HomeSuppliersPresenter
         });
     }
 
-    private void cellTreeLoadingStateChange() {
+    /**
+     * Open node's child according to temporary opened hierarchy. Must be done this
+     * way, because, cellTree's nodes are retrieved asynchronously, therefore sometimes
+     * we are trying to open something that doesn't have nodes yet, because they are
+     * not retrieved yet. Therefore way, until retrieving process ends and that open wanted node.
+     */
+    private void cellTreeLoadingStateChangeHandler() {
         view.getCellTree().addHandler(new LoadingStateChangeEvent.Handler() {
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
                 if (!temporaryOpenedHierarchy.isEmpty()) {
-//                    cancelOpenEvent = true; //stop processing event right after node is opened
                     selectedEvent = true;
-//                    if (!lastOpened.getParent().isChildLeaf(temporaryOpenedHierarchy.getFirst().getIndex())) {
                     lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
-//                    }
                 }
             }
         }, LoadingStateChangeEvent.TYPE);
     }
 
+    /**
+     * Handle user selection when opening CellTree nodes.
+     * Only one subtree is displayed.
+     */
     private void cellTreeOpenHandler() {
         view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
             @Override
@@ -392,10 +388,6 @@ public class HomeSuppliersPresenter
                 //get selected node object
                 CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
 
-//                if (cancelOpenEvent) {
-//                    cancelOpenEvent = false;
-//                    selectedEvent = false;
-//                } else {
                 /**************************************************************/
                 openedEvent = true; //OPEN NODE event's semafor BEGIN >>>>>>>
                 //If opening node was done first, select opened node's object in selection model
@@ -406,12 +398,10 @@ public class HomeSuppliersPresenter
                     //Therefore define this cases and update opened hierarchy
                     if (manageOpenedHierarchy(selectedCategory, event.getTarget().getIndex())) {
                         //If this is such case, update also last opened node
-                        modifyLastOpened(selectedCategory.getLevel()); // - predsa mam lastOpened = event.getTarget()
-                        //musi byt -1 pretoze musim rozlisit user input a program input
-                        //ak oznaci uzivatel uzol, vyvola sa automaticky open event,
-                        //preto netreba programovo otvarat dany uzol
-                        //teda zniz level, po ktory sa maju odmazat prve/uz otvorene uzly
+                        modifyLastOpened(selectedCategory.getLevel());
+                        //Modify actual opened hierarchy
                         modifyTemporaryHierarchy(actualOpenedHierarchy, selectedCategory.getLevel() + 1);
+                        //And close all nodes except selected one.
                         closeAllNodesExcept(lastOpened, actualOpenedHierarchy.getLast().getIndex());
                     }
                 } else {
@@ -419,13 +409,17 @@ public class HomeSuppliersPresenter
                 }
                 selectedEvent = false; //SELECT CATEGORY event's semafor END <<<<<<<
 
-//                }
                 //update last open node state
                 lastOpened = event.getTarget();
             }
         });
     }
 
+    /**
+     * Handle user selection event on CellTree, when selecting node's object/value.
+     * Retrieve data according to selected category and open & close nodes.
+     * Only one subtree is displayed.
+     */
     private void selectionCategoryChangeHandler() {
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -440,6 +434,8 @@ public class HomeSuppliersPresenter
 
     private void selectCategoryChangeHandlerInner(CategoryDetail selected) {
         if (selected != null) {
+            //User selection was made -> reset filtering
+            view.getFilterLabelPanel().setVisible(false);
             //open NODES if selection made first
             //-----------------------------------------------------------
             selectedEvent = true; //SELECT CATEGORY event's semafor BEGIN >>>>>>>
@@ -447,11 +443,12 @@ public class HomeSuppliersPresenter
             if (!openedEvent) {
                 //User could select totaly different node - different level, index
                 //Therefore define such case and update last opened node
-//                cancelOpenEvent = true;
                 modifyLastOpened(selected.getLevel());
+                //Manage actual opened hierarchy according to user selection
                 manageOpenedHierarchy(selected, getIndex(lastOpened, selected));
+                //According to opened hierarchy, modify temporary
+                //Add +1 to level, because of user selection input
                 modifyTemporaryHierarchy(actualOpenedHierarchy, selected.getLevel() + 1);
-//                modifyTemporaryHierarchy(actualOpenedHierarchy, selected);
                 openNode(getIndex(lastOpened, selected));
 
             } else {
@@ -495,7 +492,10 @@ public class HomeSuppliersPresenter
         }
     }
 
-    private void dataGridSelectioModelCgangeHandler() {
+    /**
+     * Display supplier detail in detail view when selected by user.
+     */
+    private void dataGridSelectioModelChangeHandler() {
         view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
@@ -514,6 +514,9 @@ public class HomeSuppliersPresenter
         });
     }
 
+    /**
+     * Reset pager and table when page size changed.
+     */
     private void pageSizeChangeHandler() {
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
             @Override
@@ -545,7 +548,6 @@ public class HomeSuppliersPresenter
      * Display suppliers of selected category.
      * @param list
      */
-    /* SUPPLIERS */
     public void onDisplaySuppliers(List<FullSupplierDetail> list) {
         view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
         //If supplier must be selected, get its detail and select in selectionModel
@@ -586,11 +588,15 @@ public class HomeSuppliersPresenter
                 selectedCategory.getId(),
                 selectedCategory.getLevel(),
                 index));
-//                openedNode == null ? getIndex(openedNode, selectedCategory) : openedNode.getIndex()));
 
         return removeCount == 0 ? false : true;
     }
 
+    /**
+     * Get last opened node's level.
+     * @return level of lastOpened node or
+     *         -1 if actual opened hierarchy doesn't contain last opened node's value.
+     */
     private int getLevel() {
         CategoryDetail lastDetail = (CategoryDetail) lastOpened.getValue();
         int level = 1;
@@ -604,12 +610,11 @@ public class HomeSuppliersPresenter
     }
 
     /**
-     * Updates last opened node according to given category detail.
-     * If last opened node's level is is not referring to selected category's level,
-     * find parent that refers the same and make it last opened node.
+     * Updates last opened node according to given level.
+     * If last opened node's level is is not referring to given level,
+     * find parent that refers the same level and make it last opened node.
      *
-     * @param selectedCategory
-     * @return true if last opened node was update, false otherwise
+     * @param toLevel - level to which we want to find parent of lastOpened node
      */
     private void modifyLastOpened(int toLevel) {
         if (toLevel == 1) {
@@ -624,6 +629,13 @@ public class HomeSuppliersPresenter
         }
     }
 
+    /**
+     * Update/set temporary opened hierarchy according to given hierarchy and level.
+     * Copy given hierarchy to temporary one and remove as many first items as given level tells.
+     *
+     * @param hierarchy - given hierarchy what will be copied to temporary opened hierarchy
+     * @param toLevel - level to which should be first items removed
+     */
     private void modifyTemporaryHierarchy(LinkedList<TreeItem> hierarchy, int toLevel) {
         if (!hierarchy.isEmpty()) {
             temporaryOpenedHierarchy = new LinkedList<TreeItem>(hierarchy); //make a copy
@@ -638,13 +650,14 @@ public class HomeSuppliersPresenter
     /** OPEN methods. **/
     /**************************************************************************/
     /**
-     * Opens child node of last opened node represented by given selected category.
-     * @param selected - selected category
-     * @return null if opening fails, TreeNode of opened child
+     * Opens last opened child node at given index.
+     * @param indexToOpen - child index
+     * @return <b>null</b> if opening fails or
+     *         <b>TreeNode</b> of opened child
      */
     private TreeNode openNode(int indexToOpen) {
-//        closeAllNodesExcept(lastOpened, indexToOpen); //?????
-        closeAllNodes(lastOpened); //?????
+        //If selecting same level, but different node, close originals
+        closeAllNodes(lastOpened);
 
         if (lastOpened != null) {
             return lastOpened.setChildOpen(indexToOpen, true);
@@ -656,7 +669,7 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     /**
      * Close all child nodes of given node.
-     * @param node
+     * @param node, which children will be closed.
      */
     private void closeAllNodes(TreeNode node) {
         for (int i = 0; i < node.getChildCount(); i++) {
@@ -664,6 +677,11 @@ public class HomeSuppliersPresenter
         }
     }
 
+    /**
+     * Close all child nodes of given node, except given child's index.
+     * @param node, which children will be closed.
+     * @param exceptIdx child's index, which won't be closed.
+     */
     private void closeAllNodesExcept(TreeNode node, int exceptIdx) {
         for (int i = 0; i < node.getChildCount(); i++) {
             if (i != exceptIdx) {
@@ -678,7 +696,7 @@ public class HomeSuppliersPresenter
      * Return index of given selected category that refers to a given node's child.
      * @param node
      * @param categoryDetail
-     * @return
+     * @return index
      */
     private int getIndex(TreeNode node, CategoryDetail categoryDetail) {
         for (int idx = 0; idx < node.getChildCount(); idx++) {

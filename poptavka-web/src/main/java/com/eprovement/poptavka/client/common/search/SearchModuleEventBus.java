@@ -31,7 +31,7 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
     void goToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType);
 
     @Event(forwardToParent = true)
-    void goToHomeSuppliersModule(SearchModuleDataHolder filter, int homeSuppliersViewType);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
     void goToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget);

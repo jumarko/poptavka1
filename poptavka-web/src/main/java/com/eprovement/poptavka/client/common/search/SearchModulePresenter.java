@@ -164,7 +164,7 @@ public class SearchModulePresenter
                         eventBus.goToHomeDemandsModule(filter, Constants.HOME_DEMANDS_BY_SEARCH);
                         break;
                     case 1:
-                        eventBus.goToHomeSuppliersModule(filter, Constants.HOME_SUPPLIERS_BY_SEARCH);
+                        eventBus.goToHomeSuppliersModule(filter);
                         break;
                     default:
                         //if current item is available in searchWhat listbox, folowing code is invoked
