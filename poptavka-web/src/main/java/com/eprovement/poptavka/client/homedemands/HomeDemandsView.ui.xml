@@ -1,7 +1,6 @@
 <!-- Uncomment this for XHTML entities <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent"> -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-        xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
 
 	<ui:with field='res'
@@ -11,56 +10,81 @@
 			font-weight: bold;
 			width: auto;
 		}
-
+		
 		.panel {
 			width: 400px;
 			spacing: 5;
 		}
-
+		
 		.list {
 			width: 100px;
+		}
+		
+		.cell-tree {
+			background: none repeat scroll 0 0 #ffffff;
+			border: 1px solid #C1D2DC;
+			margin: 50px 15px 10px;
+			border-radius: 5px;
+		}
+		
+		.detail-info {
+			background: none repeat scroll 0 0 #ffffff;
+			border: 1px solid #C1D2DC;
+			margin: 50px 15px 10px;
+			border-radius: 5px;
 		}
 	</ui:style>
 
 	<g:DockLayoutPanel unit="PX"
 		styleName='{res.layout.bodyFullContainer}'>
 		<g:west size="320">
-			<g:ScrollPanel>
-				<c:CellTree ui:field="cellTree" />
-			</g:ScrollPanel>
+			<g:DockLayoutPanel unit="PX"
+				styleName='{res.layout.bodyFullContainer}'>
+				<g:north size="50">
+					<g:HTMLPanel></g:HTMLPanel>
+				</g:north>
+				<g:center>
+					<g:ScrollPanel>
+						<c:CellTree ui:field="cellTree" styleName='{style.cell-tree}' />
+					</g:ScrollPanel>
+				</g:center>
+			</g:DockLayoutPanel>
+		</g:west>
+		<g:west size="20">
+			<g:HTMLPanel></g:HTMLPanel>
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="40">
-                                        <g:VerticalPanel>
-                                            <g:DecoratorPanel ui:field="filterLabelPanel">
-                                                <g:Label ui:field="filterLabel"/>
-                                            </g:DecoratorPanel>
-                                            <g:HorizontalPanel>
-                                                    <g:Button ui:field="offerBtn1">Send Offer</g:Button>
-                                                    <c:SimplePager styleName="float:right" ui:field='pager' />
-                                                    <g:ListBox styleName="float:right" ui:field='pageSize' />
-                                            </g:HorizontalPanel>
-                                        </g:VerticalPanel>
+					<g:VerticalPanel>
+						<g:DecoratorPanel ui:field="filterLabelPanel">
+							<g:Label ui:field="filterLabel" />
+						</g:DecoratorPanel>
+						<g:HorizontalPanel>
+							<g:Button ui:field="offerBtn1">Send Offer</g:Button>
+							<c:SimplePager styleName="float:right" ui:field='pager' />
+							<g:ListBox styleName="float:right" ui:field='pageSize' />
+						</g:HorizontalPanel>
+					</g:VerticalPanel>
 				</g:north>
 				<g:center>
-                                        <c:DataGrid ui:field="dataGrid" />
+					<c:DataGrid ui:field="dataGrid" />
 				</g:center>
 			</g:DockLayoutPanel>
 		</g:center>
-		<g:east size="300">
+		<g:east size="350">
 			<g:ScrollPanel>
-				<g:HTMLPanel>
-					<g:VerticalPanel>
-						<g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
-						<g:SimplePanel ui:field="demandDetailPanel">
-							<d:DemandDetailView ui:field="demandDetail" />
-						</g:SimplePanel>
-						<g:Button ui:field="offerBtn2">Send Offer</g:Button>
-					</g:VerticalPanel>
+				<g:HTMLPanel styleName='{style.detail-info}'>
+					<g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
+					<g:SimplePanel ui:field="demandDetailPanel">
+						<d:DemandDetailView ui:field="demandDetail" />
+					</g:SimplePanel>
+					<g:Button ui:field="offerBtn2">Send Offer</g:Button>
 				</g:HTMLPanel>
 			</g:ScrollPanel>
 		</g:east>
+		<g:east size="20">
+			<g:HTMLPanel></g:HTMLPanel>
+		</g:east>
 	</g:DockLayoutPanel>
-
 </ui:UiBinder>
