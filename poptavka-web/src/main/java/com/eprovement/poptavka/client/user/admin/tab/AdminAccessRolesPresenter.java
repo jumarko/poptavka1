@@ -28,7 +28,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,7 +106,8 @@ public class AdminAccessRolesPresenter
      * @param accessRoles -- list to display
      */
     public void onDisplayAdminTabAccessRoles(List<AccessRoleDetail> accessRoles) {
-        view.getDataGrid().updateRowData(accessRoles);
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), accessRoles);
         Storage.hideLoading();
     }
 
@@ -292,7 +292,7 @@ public class AdminAccessRolesPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    view.getDataGrid().updateRowData(new ArrayList<AccessRoleDetail>());
+                    view.getPager().startLoading();
                     view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");

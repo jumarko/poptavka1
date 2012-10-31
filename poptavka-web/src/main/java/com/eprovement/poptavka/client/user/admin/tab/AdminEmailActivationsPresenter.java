@@ -26,7 +26,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,8 +100,9 @@ public class AdminEmailActivationsPresenter
      * Displays retrieved data.
      * @param accessRoles -- list to display
      */
-    public void onDisplayAdminTabEmailsActivation(List<ActivationEmailDetail> demands) {
-        view.getDataGrid().updateRowData(demands);
+    public void onDisplayAdminTabEmailsActivation(List<ActivationEmailDetail> list) {
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), list);
         Storage.hideLoading();
     }
 
@@ -247,7 +247,7 @@ public class AdminEmailActivationsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    view.getDataGrid().updateRowData(new ArrayList<ActivationEmailDetail>());
+                    view.getPager().startLoading();
                     eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");

@@ -62,7 +62,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
         supplierDemandsService.getSupplierPotentialDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     public void onSuccess(Long result) {
-                        grid.createAsyncDataProvider(result.intValue());
+                        grid.getDataProvider().updateRowCount(result.intValue(), true);
                     }
                 });
     }
@@ -85,7 +85,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 Storage.getUser().getUserId(), searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
-                        grid.createAsyncDataProvider(result.intValue());
+                        grid.getDataProvider().updateRowCount(result.intValue(), true);
                     }
                 });
     }
@@ -108,7 +108,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
-                        grid.createAsyncDataProvider(result.intValue());
+                        grid.getDataProvider().updateRowCount(result.intValue(), true);
                     }
                 });
     }

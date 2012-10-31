@@ -68,6 +68,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private AuditService auditService;
     private TreeItemService treeItemService;
     private Converter<Demand, FullDemandDetail> demandConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<ResultCriteria, SearchDefinition> criteriaConverter;
     private FulltextSearchService fulltextSearchService;
 
@@ -116,9 +117,31 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     }
 
     @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
+    }
+
+    @Autowired
     public void setCriteriaConverter(
             @Qualifier("criteriaConverter") Converter<ResultCriteria, SearchDefinition> criteriaConverter) {
         this.criteriaConverter = criteriaConverter;
+    }
+
+    /**************************************************************************/
+    /*  Categories                                                            */
+    /**************************************************************************/
+    @Override
+    public CategoryDetail getCategory(long categoryID) throws RPCException {
+        return categoryConverter.convertToTarget(categoryService.getById(categoryID));
+    }
+
+    /**************************************************************************/
+    /*  Demands                                                               */
+    /**************************************************************************/
+    @Override
+    public FullDemandDetail getDemand(long demandID) throws RPCException {
+        return demandConverter.convertToTarget(demandService.getById(demandID));
     }
 
     // ***********************************************************************

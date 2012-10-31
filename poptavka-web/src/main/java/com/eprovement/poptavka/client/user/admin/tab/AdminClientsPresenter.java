@@ -26,7 +26,6 @@ import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +126,8 @@ public class AdminClientsPresenter
      * @param accessRoles -- list to display
      */
     public void onDisplayAdminTabClients(List<ClientDetail> clients) {
-        view.getDataGrid().updateRowData(clients);
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), clients);
         Storage.hideLoading();
     }
 
@@ -332,7 +332,7 @@ public class AdminClientsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    view.getDataGrid().updateRowData(new ArrayList<ClientDetail>());
+                    view.getPager().startLoading();
                     eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");

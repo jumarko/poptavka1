@@ -81,7 +81,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Navigation Parent events */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);

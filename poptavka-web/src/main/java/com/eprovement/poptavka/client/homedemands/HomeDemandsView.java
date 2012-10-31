@@ -27,6 +27,7 @@ import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -96,6 +97,8 @@ public class HomeDemandsView extends OverflowComposite
     // Others
     @UiField
     Label bannerLabel, filterLabel;
+    @UiField
+    DecoratorPanel filterLabelPanel;
     @UiField
     DemandDetailView demandDetail;
     @UiField
@@ -234,6 +237,7 @@ public class HomeDemandsView extends OverflowComposite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /** CellTree. **/
     @Override
     public CellTree getCellTree() {
         return cellTree;
@@ -244,26 +248,7 @@ public class HomeDemandsView extends OverflowComposite
         return selectionCategoryModel;
     }
 
-    @Override
-    public Button getOfferBtn1() {
-        return offerBtn1;
-    }
-
-    @Override
-    public Button getOfferBtn2() {
-        return offerBtn2;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public int getPageSize() {
-        return Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex()));
-    }
-
+    /** Table. **/
     @Override
     public UniversalAsyncGrid<FullDemandDetail> getDataGrid() {
         return dataGrid;
@@ -280,8 +265,14 @@ public class HomeDemandsView extends OverflowComposite
     }
 
     @Override
-    public Label getBannerLabel() {
-        return bannerLabel;
+    public int getPageSize() {
+        return Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex()));
+    }
+
+    /** Filter. **/
+    @Override
+    public DecoratorPanel getFilterLabelPanel() {
+        return filterLabelPanel;
     }
 
     @Override
@@ -289,14 +280,21 @@ public class HomeDemandsView extends OverflowComposite
         return filterLabel;
     }
 
+    /** Buttons. **/
     @Override
-    public DemandDetailView getDemandDetail() {
-        return demandDetail;
+    public Button getOfferBtn1() {
+        return offerBtn1;
     }
 
     @Override
-    public SimplePanel getDemandDetailPanel() {
-        return demandDetailPanel;
+    public Button getOfferBtn2() {
+        return offerBtn2;
+    }
+
+    /** Other. **/
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 
     /**************************************************************************/

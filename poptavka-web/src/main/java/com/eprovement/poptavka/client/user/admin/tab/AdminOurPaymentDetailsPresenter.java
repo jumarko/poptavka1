@@ -26,7 +26,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +99,8 @@ public class AdminOurPaymentDetailsPresenter
      * @param paymentDetailList -- list to display
      */
     public void onDisplayAdminTabOurPaymentDetails(List<PaymentDetail> paymentDetailList) {
-        view.getDataGrid().updateRowData(paymentDetailList);
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), paymentDetailList);
         Storage.hideLoading();
     }
 
@@ -194,7 +194,7 @@ public class AdminOurPaymentDetailsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    view.getDataGrid().updateRowData(new ArrayList<PaymentDetail>());
+                    view.getPager().startLoading();
                     eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");

@@ -103,7 +103,8 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     public void onDisplaySupplierDemandsData(List<FullOfferDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemands");
 
-        view.getTableWidget().getGrid().updateRowData(data);
+        view.getTableWidget().getGrid().getDataProvider().updateRowData(
+                view.getTableWidget().getGrid().getStart(), data);
     }
 
     /**

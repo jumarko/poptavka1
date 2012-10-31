@@ -78,7 +78,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* Parent events */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);

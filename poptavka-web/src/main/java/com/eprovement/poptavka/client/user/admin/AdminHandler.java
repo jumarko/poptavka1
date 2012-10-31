@@ -141,7 +141,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminDemandsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+//                grid.getDataProvider().updateRowCount(result.intValue(), true);
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -228,7 +229,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminSuppliersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -315,7 +316,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminOffersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -347,7 +348,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminClientsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -379,7 +380,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminAccessRolesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -410,7 +411,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminEmailsActivationCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -441,7 +442,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminInvoicesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -472,7 +473,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminMessagesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -503,7 +504,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminOurPaymentDetailsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -534,7 +535,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminPaymentMethodsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -565,7 +566,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminPermissionsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -596,7 +597,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminPreferencesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }
@@ -627,7 +628,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminProblemsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }

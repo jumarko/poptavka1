@@ -38,7 +38,8 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
         homeSuppliersService.getSuppliersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-                grid.createAsyncDataProvider(result.intValue());
+//                grid.createAsyncDataProvider(result.intValue());
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });
     }

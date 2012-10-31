@@ -161,7 +161,7 @@ public class SearchModulePresenter
                 view.setFilterSearchContent();
                 switch (view.getSearchWhat().getSelectedIndex()) {
                     case 0:
-                        eventBus.goToHomeDemandsModule(filter, Constants.HOME_DEMANDS_BY_SEARCH);
+                        eventBus.goToHomeDemandsModule(filter);
                         break;
                     case 1:
                         eventBus.goToHomeSuppliersModule(filter);

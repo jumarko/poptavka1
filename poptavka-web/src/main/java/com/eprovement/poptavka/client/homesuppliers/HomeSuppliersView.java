@@ -21,7 +21,6 @@ import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.IdentityColumn;
@@ -32,7 +31,6 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -75,7 +73,6 @@ public class HomeSuppliersView extends OverflowComposite
     private static final int LOGO_COL_WIDTH = 25;
     //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
-    CellList categoriesList;
     @UiField(provided = true)
     CellTree cellTree;
     @UiField(provided = true)
@@ -249,9 +246,26 @@ public class HomeSuppliersView extends OverflowComposite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /** CellTree. **/
     @Override
-    public int getPageSize() {
-        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
+    public CellTree getCellTree() {
+        return cellTree;
+    }
+
+    @Override
+    public SingleSelectionModel getSelectionCategoryModel() {
+        return selectionCategoryModel;
+    }
+
+    /** Table. **/
+    @Override
+    public UniversalAsyncGrid getDataGrid() {
+        return dataGrid;
+    }
+
+    @Override
+    public SimplePager getPager() {
+        return pager;
     }
 
     @Override
@@ -260,30 +274,11 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public int getPageSize() {
+        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
 
-    @Override
-    public UniversalAsyncGrid getDataGrid() {
-        return dataGrid;
-    }
-
-    @Override
-    public CellList getCategoriesList() {
-        return categoriesList;
-    }
-
-    @Override
-    public CellTree getCellTree() {
-        return cellTree;
-    }
-
-    @Override
-    public SimplePager getPager() {
-        return pager;
-    }
-
+    /** Filter. **/
     @Override
     public Label getFilterLabel() {
         return filterLabel;
@@ -294,21 +289,7 @@ public class HomeSuppliersView extends OverflowComposite
         return filterLabelPanel;
     }
 
-    @Override
-    public SingleSelectionModel getSelectionCategoryModel() {
-        return selectionCategoryModel;
-    }
-
-    @Override
-    public SplitLayoutPanel getSplitter() {
-        return null; //split;
-    }
-
-    @Override
-    public Button getContactBtn() {
-        return contactBtn;
-    }
-
+    /** Detail. **/
     @Override
     public void displaySuppliersDetail(FullSupplierDetail fullSupplierDetail) {
         reklama.setVisible(false);
@@ -321,5 +302,17 @@ public class HomeSuppliersView extends OverflowComposite
     public void hideSuppliersDetail() {
         reklama.setVisible(true);
         detail.setVisible(false);
+    }
+
+    /** Buttons. **/
+    @Override
+    public Button getContactBtn() {
+        return contactBtn;
+    }
+
+    /** Other. **/
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

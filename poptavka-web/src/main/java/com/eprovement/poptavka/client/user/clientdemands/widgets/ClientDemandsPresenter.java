@@ -145,13 +145,15 @@ public class ClientDemandsPresenter
     public void onDisplayClientDemands(List<ClientDemandDetail> data) {
         GWT.log("++ onResponseClientsDemands");
 
-        view.getDemandGrid().updateRowData(data);
+        view.getDemandGrid().getDataProvider().updateRowData(
+                view.getDemandGrid().getStart(), data);
     }
 
     public void onDisplayClientDemandConversations(List<ClientDemandConversationDetail> data) {
         GWT.log("++ onResponseClientsDemands");
 
-        view.getConversationGrid().updateRowData(data);
+        view.getConversationGrid().getDataProvider().updateRowData(
+                view.getConversationGrid().getStart(), data);
     }
 
     /**

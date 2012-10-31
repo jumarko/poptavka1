@@ -29,7 +29,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +118,8 @@ public class AdminSuppliersPresenter
         if (suppliers == null) {
             GWT.log("suppliers are null");
         }
-        view.getDataGrid().updateRowData(suppliers);
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), suppliers);
         Storage.hideLoading();
     }
 
@@ -329,7 +329,7 @@ public class AdminSuppliersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    view.getDataGrid().updateRowData(new ArrayList<FullSupplierDetail>());
+                    view.getPager().startLoading();
                     eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");

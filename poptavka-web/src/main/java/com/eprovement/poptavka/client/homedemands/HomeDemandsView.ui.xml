@@ -33,7 +33,9 @@
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="40">
                                         <g:VerticalPanel>
-                                            <g:Label ui:field="filterLabel"/>
+                                            <g:DecoratorPanel ui:field="filterLabelPanel">
+                                                <g:Label ui:field="filterLabel"/>
+                                            </g:DecoratorPanel>
                                             <g:HorizontalPanel>
                                                     <g:Button ui:field="offerBtn1">Send Offer</g:Button>
                                                     <c:SimplePager styleName="float:right" ui:field='pager' />

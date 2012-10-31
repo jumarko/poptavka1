@@ -139,7 +139,7 @@ public interface RootEventBus extends EventBusWithLookup {
 //    String goToHomeWelcomeModule(SearchModuleDataHolder filter);
 
     @Event(forwardToModules = HomeDemandsModule.class)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter, int homeDemandsViewType);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToModules = HomeSuppliersModule.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);

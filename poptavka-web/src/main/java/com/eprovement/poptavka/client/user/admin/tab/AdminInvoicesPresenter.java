@@ -30,7 +30,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +134,8 @@ public class AdminInvoicesPresenter
      * @param accessRoles -- list to display
      */
     public void onDisplayAdminTabInvoices(List<InvoiceDetail> invoices) {
-        view.getDataGrid().updateRowData(invoices);
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), invoices);
         Storage.hideLoading();
     }
 
@@ -339,7 +339,7 @@ public class AdminInvoicesPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    view.getDataGrid().updateRowData(new ArrayList<InvoiceDetail>());
+                    view.getPager().startLoading();
                     eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");

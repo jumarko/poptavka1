@@ -59,7 +59,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
                 if (selected != null) {
                     SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
                     searchDataHolder.getCategories().add(selected);
-                    eventBus.goToHomeDemandsModule(searchDataHolder, Constants.HOME_DEMANDS_BY_WELCOME);
+                    eventBus.goToHomeDemandsModule(searchDataHolder);
                 }
             }
         });

@@ -27,7 +27,6 @@ import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -107,8 +106,9 @@ public class AdminOffersPresenter
      *
      * @param accessRoles -- list to display
      */
-    public void onDisplayAdminTabOffers(List<OfferDetail> demands) {
-        view.getDataGrid().updateRowData(demands);
+    public void onDisplayAdminTabOffers(List<OfferDetail> offers) {
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), offers);
         Storage.hideLoading();
     }
 
@@ -277,7 +277,7 @@ public class AdminOffersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    view.getDataGrid().updateRowData(new ArrayList<OfferDetail>());
+                    view.getPager().startLoading();
                     eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");

@@ -100,6 +100,14 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     private AsyncDataProvider<T> dataProvider = null;
     private int start = 0;
+    private int length = 0;
+    /**
+     * If new category is selected, pager.setPage(0) must be called to reset table and pager.
+     * But it fires RangeChangeEvent on dataset we don't event want to have displayed anymore.
+     * Because right after that is called getData on newly selected category to retrieve new dataset.
+     * Therefore in some cases is suitable to cancel rangeChangeEvent to retrieve data.
+     */
+    private boolean cancelRangeChangedEvent = false;
     /**
      * Asynchronous sorting handler. Provides handler for sorting data where
      * asynchronous data provider is used. When asynchronous data provider is
@@ -178,10 +186,13 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public void getDataCount(IEventBusData eventBus, SearchDefinition searchDefinition) {
         this.eventBus = eventBus;
+        //If eventBus is available and dataProvider is not initialized, do it.
+        if (dataProvider == null) {
+            createAsyncDataProvider();
+        }
         if (searchDefinition != null) {
             this.searchDataHolder = searchDefinition.getFilter();
         }
-        clearData();
 
         eventBus.getDataCount(this, searchDefinition);
     }
@@ -193,19 +204,38 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      *
      * @param resultCount - count of all data
      */
-    public void createAsyncDataProvider(final int resultCount) {
+    public void createAsyncDataProvider() {
         this.start = 0;
+        this.length = 0;
+        //if first called, just create dataProvider, but don't call eventBus.getData
+        cancelRangeChangedEvent = true;
         this.dataProvider = new AsyncDataProvider<T>() {
             @Override
             protected void onRangeChanged(HasData<T> display) {
-                display.setRowCount(resultCount);
                 start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
+                length = display.getVisibleRange().getLength();
+                if (!cancelRangeChangedEvent) {
+                    orderColumns.clear();
+                    orderColumns.put(gridColumns.get(1), OrderType.ASC);
+                    //Aks for new data
+                    if (length > 0) {
+                        eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
+                    }
+                }
+                cancelRangeChangedEvent = false;
+            }
 
-                orderColumns.clear();
-                orderColumns.put(gridColumns.get(1), OrderType.ASC);
-                //Aks for new data
-                eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
+            @Override
+            public void updateRowCount(int size, boolean exact) {
+                super.updateRowCount(size, exact);
+                if (size > 0) {
+                    eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
+                }
+            }
+
+            @Override
+            public void updateRowData(int start, List<T> values) {
+                super.updateRowData(start, values);
             }
         };
         this.dataProvider.addDataDisplay(this);
@@ -390,35 +420,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         return col;
     }
 
-    //*************************************************************************/
-    // "OVERRIDE" METHODS
-    //*************************************************************************/
-    /**
-     * Updates data provider content. When new data for are available, call this
-     * method for display it.
-     *
-     * @param list
-     */
-    public void updateRowData(List<T> list) {
-        if (dataProvider != null) {
-            dataProvider.updateRowData(start, list);
-            flush();
-            redraw();
-        }
-    }
-
-    /**
-     * Clear data before displaying new.
-     */
-    public void clearData() {
-        if (dataProvider != null) {
-            //dataProvider.updateRowData(0, new ArrayList<T>());
-            dataProvider.updateRowCount(0, false);
-            flush();
-            redraw();
-        }
-    }
-
     // ***********************************************************************
     // Getter metods
     // ***********************************************************************
@@ -457,5 +458,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public int getStart() {
         return start;
+    }
+
+    public void cancelRangeChangedEvent() {
+        cancelRangeChangedEvent = true;
     }
 }

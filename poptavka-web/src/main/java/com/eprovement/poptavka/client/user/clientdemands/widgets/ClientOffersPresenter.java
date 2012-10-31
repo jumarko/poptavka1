@@ -123,13 +123,15 @@ public class ClientOffersPresenter
     public void onDisplayClientOfferedDemands(List<ClientDemandDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemands");
 
-        view.getDemandGrid().updateRowData(data);
+        view.getDemandGrid().getDataProvider().updateRowData(
+                view.getDemandGrid().getStart(), data);
     }
 
     public void onDisplayClientOfferedDemandOffers(List<FullOfferDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemandOffers");
 
-        view.getOfferGrid().getGrid().updateRowData(data);
+        view.getOfferGrid().getGrid().getDataProvider().updateRowData(
+                view.getOfferGrid().getGrid().getStart(), data);
     }
 
     /**

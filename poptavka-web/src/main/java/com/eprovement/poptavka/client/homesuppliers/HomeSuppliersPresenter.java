@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -22,7 +21,6 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -49,33 +47,35 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     public interface SuppliersViewInterface extends LazyView, IsWidget {
 
+        //CellTree
         CellTree getCellTree();
 
-        CellList getCategoriesList();
+        SingleSelectionModel getSelectionCategoryModel();
 
-        int getPageSize();
-
-        ListBox getPageSizeCombo();
-
-        Button getContactBtn();
-
+        //Table
         UniversalAsyncGrid getDataGrid();
 
         SimplePager getPager();
 
-        Widget getWidgetView();
+        ListBox getPageSizeCombo();
 
-        SingleSelectionModel getSelectionCategoryModel();
+        int getPageSize();
 
-        SplitLayoutPanel getSplitter();
-
-        Label getFilterLabel();
-
-        DecoratorPanel getFilterLabelPanel();
-
+        //Detail
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
         void hideSuppliersDetail();
+
+        //Filter
+        DecoratorPanel getFilterLabelPanel();
+
+        Label getFilterLabel();
+
+        //Buttons
+        Button getContactBtn();
+
+        //Other
+        Widget getWidgetView();
     }
     /**************************************************************************/
     /* Attributes                                                             */
@@ -109,6 +109,7 @@ public class HomeSuppliersPresenter
     /** Stop processing event DataGrid.RangeChangeHandler.
      * When we want to set page size but not fire create token event */
     boolean cancelPagerEvent = false;
+    int pageFromToken = -1;
     /**
      * To control possible dead locks.
      * There are two different events that need to be handled and perform same actions:
@@ -162,7 +163,7 @@ public class HomeSuppliersPresenter
         lastOpened = view.getCellTree().getRootTreeNode();
         openedEvent = false;
         selectedEvent = false;
-        //differ cases - BY DEFAULT, BY SEARCH
+
         if (searchModuleDataHolder == null) {
             goToHomeSuppliers();
         } else {
@@ -216,6 +217,9 @@ public class HomeSuppliersPresenter
      */
     public void onSetModuleByHistory(
             LinkedList<TreeItem> historyTree, CategoryDetail categoryDetail, int page, long supplierID) {
+        //force table to show loading indicator
+        view.getPager().startLoading();
+
         //1 - TREE
         //----------------------------------------------------------------------
         //invoked by URL
@@ -267,23 +271,20 @@ public class HomeSuppliersPresenter
         //----------------------------------------------------------------------
         //select CATEGORY and PAGER
 
-        if (!categoryDetail.equals(view.getSelectionCategoryModel().getSelectedObject())) {
-            openedEvent = true; //node events have already been handled - in 1 - Tree part
-            //Select category
-            //Selection can be handled by part one (see above) by not denying open events.
-            //But when app is invoked from URL, opening nodes can take some presious time, therefore
-            //open nodes and at the same time select category (despite it's not visible yet),
-            //but it fires an event for retrieving data - and that can take also some presious time
-            //-> do it at the same time - there is everything asynchronous anyway
-            view.getSelectionCategoryModel().setSelected(categoryDetail, true);
-        } else {
-            //If Selection is different from actual one -> new category is going to be selected.
-            //Therefore we need to reset pager to 0 page and cancel event whitch creates token (See Bind method).
-            //No new token is wanted, because this all is already called because of history,
-            //therefore there is already token - the one we are resuming/reestablishing now.
-            cancelPagerEvent = true;
-            view.getPager().setPage(page);
-        }
+        //If Selection is different from actual one -> new category is going to be selected.
+        //Therefore we need to reset pager to 0 page and cancel event whitch creates token (See Bind method).
+        //No new token is wanted, because this all is already called because of history,
+        //therefore there is already token - the one we are resuming/reestablishing now.
+        //reset table and pager to particular state, but data retrieving leave to categorySelectionEvent.
+        this.pageFromToken = page;
+        openedEvent = true; //open nodes event have already been handled - in 1 - Tree part
+        //Select category
+        //Selection can be handled by part one (see above) by not denying open events.
+        //But when app is invoked from URL, opening nodes can take some presious time, therefore
+        //open nodes and at the same time select category (despite it's not visible yet),
+        //but it fires an event for retrieving data - and that can take also some presious time
+        //-> do it at the same time - there is everything asynchronous anyway
+        view.getSelectionCategoryModel().setSelected(categoryDetail, true);
 
         //3 - supplier DETAIL
         //----------------------------------------------------------------------
@@ -346,6 +347,7 @@ public class HomeSuppliersPresenter
         view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
+                pageFromToken = -1;
                 //In some cases we need to set pager size to 0, which fires this event
                 //but we don't want to create token, therefore deny fired event if
                 //cancelPagerEvent flag is True.
@@ -462,12 +464,10 @@ public class HomeSuppliersPresenter
             deselectGridSelection();
             //and hide supplier detail widget
             view.hideSuppliersDetail();
-            //Clear data - causes loading indicator to show until new data are retrieved
-            view.getDataGrid().clearData();
             //if page and pager.page is equal, setting page won't fire rangeChange event -> manual
             //v podstate to bude volane takto vzdy (==ak nenastala ziadna zmena),
             //ak ale nastane zmena stranky tabulky, vtedy token vytvory iny hadler - rangeChanged na dataGride
-            if (view.getPager().getPage() == 0) {
+            if (pageFromToken == -1) { //no history
                 //If new category is selected, pager must be set to page 0,
                 //but if page is already 0, range change event won't ne fire,
                 //therefor new token won't be created -> create token here
@@ -475,7 +475,9 @@ public class HomeSuppliersPresenter
             } else {
                 //If new category is selected, pager must be set to page 0
                 //It also fires range change event which creates new token
-                view.getPager().setPage(0);
+                cancelPagerEvent = true;
+                view.getDataGrid().cancelRangeChangedEvent();
+                view.getDataGrid().setPageStart(pageFromToken * view.getDataGrid().getPageSize());
             }
 
             //Retrieve data
@@ -539,7 +541,11 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     /* Additional methods                                                     */
     /**************************************************************************/
-    //TODO unused ???
+    /**
+     * Used to select table item. When supplier id is parsed from token, supplier
+     * object is retrieved and then selected.
+     * @param supplierDetail
+     */
     public void onSelectSupplier(FullSupplierDetail supplierDetail) {
         view.getDataGrid().getSelectionModel().setSelected(supplierDetail, true);
     }
