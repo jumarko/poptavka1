@@ -238,7 +238,7 @@ public interface RootEventBus extends EventBusWithLookup {
      * the RPC service will cause the initiation of loginPopupView via SecuredAsyncCallback.
      */
     @Event(handlers = RootHandler.class)
-    void populateStorageByUserDetail();
+    void loginFromSession();
 
     /**************************************************************************/
     /* History events                                                         */

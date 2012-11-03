@@ -47,6 +47,11 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
 
+    // TODO ivlcek - method loginFromSession() should be available for every module that can be accessed
+    // just by entering URL into browser
+//    @Event(forwardToParent = true)
+//    void loginFromSession();
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

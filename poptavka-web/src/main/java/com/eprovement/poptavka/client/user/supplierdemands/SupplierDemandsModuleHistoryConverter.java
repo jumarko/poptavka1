@@ -28,7 +28,7 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             // The app called by URL thus Storage is going to be populated from Session. If session is empty then
             // initiate login from session object that will load complete user part with required module.
-            eventBus.populateStorageByUserDetail();
+            eventBus.loginFromSession();
         }
     }
 

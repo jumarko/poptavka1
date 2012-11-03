@@ -102,7 +102,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 
     @Event(forwardToParent = true)
-    void populateStorageByUserDetail();
+    void loginFromSession();
 
     /**************************************************************************/
     /* Business events handled by Presenters. */

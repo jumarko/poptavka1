@@ -4,7 +4,7 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.RootRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.SecuredUserRPCServiceAsync;
+import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -31,7 +31,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     @Inject
     private RootRPCServiceAsync rootService;
     @Inject
-    private SecuredUserRPCServiceAsync securedUserService;
+    private UserRPCServiceAsync userService;
     private static final Logger LOGGER = Logger.getLogger("RootHandler");
 
 
@@ -173,13 +173,13 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * website in new browser tab, which obviously starts the whole app from the begining.
      * If user is not logged in the RPC service will cause the initiation of loginPopupView via SecuredAsyncCallback.
      */
-    public void onPopulateStorageByUserDetail() {
-        securedUserService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
+    public void onLoginFromSession() {
+        userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
 
             @Override
             public void onSuccess(UserDetail userDetail) {
                 Storage.setUserDetail(userDetail);
-                securedUserService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+                userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
                     @Override
                     public void onSuccess(BusinessUserDetail businessUserDetail) {

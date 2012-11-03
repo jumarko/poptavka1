@@ -16,6 +16,7 @@
         <!-- TODO ivlcek - all secured RPC should have secured string in their name -->
         <security:intercept-url pattern="/poptavka/service/secured/user" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_FULLY" />
+        <security:intercept-url pattern="/poptavka/service/user" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/supplierdemandsmodule" access="ROLE_SUPPLIER" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />

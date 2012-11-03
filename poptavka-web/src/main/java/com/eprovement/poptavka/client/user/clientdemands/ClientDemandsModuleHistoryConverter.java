@@ -27,7 +27,7 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
     public void convertFromToken(String historyName, String param, final ClientDemandsModuleEventBus eventBus) {
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             // login from session method
-            eventBus.populateStorageByUserDetail();
+            eventBus.loginFromSession();
         }
     }
 
