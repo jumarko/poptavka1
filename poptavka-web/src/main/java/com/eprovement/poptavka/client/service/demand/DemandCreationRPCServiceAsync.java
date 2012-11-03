@@ -19,4 +19,6 @@ public interface DemandCreationRPCServiceAsync {
 
     void createNewClient(BusinessUserDetail clientDetail, AsyncCallback<BusinessUserDetail> callback);
 
+    /** @see UserRPCService#checkFreeEmail(String) */
+    void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
 }

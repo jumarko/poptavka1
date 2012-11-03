@@ -8,7 +8,6 @@ import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -33,7 +32,6 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
     private LoginService loginService;
-    private ClientService clientService;
     private Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<User, UserDetail> userConverter;
@@ -46,11 +44,6 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Autowired
     public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
-    }
-
-    @Autowired
-    public void setClientService(ClientService clientService) {
-        this.clientService = clientService;
     }
 
     @Autowired
@@ -86,11 +79,6 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Override
     public UserDetail getUserById(Long userId) throws RPCException {
         return userConverter.convertToTarget(generalService.find(User.class, userId));
-    }
-
-    @Override
-    public boolean checkFreeEmail(String email) throws RPCException {
-        return clientService.checkFreeEmail(email);
     }
 
     /**

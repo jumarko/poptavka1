@@ -215,4 +215,9 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
         newClient.getBusinessUser().setAddresses(addresses);
     }
+
+    @Override
+    public boolean checkFreeEmail(String email) throws RPCException {
+        return clientService.checkFreeEmail(email);
+    }
 }

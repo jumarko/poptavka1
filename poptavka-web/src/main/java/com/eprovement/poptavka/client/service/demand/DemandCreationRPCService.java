@@ -22,4 +22,10 @@ public interface DemandCreationRPCService extends RemoteService {
     FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId) throws RPCException;
 
     BusinessUserDetail createNewClient(BusinessUserDetail clientDetail) throws RPCException;
+
+    /**
+     * Checks wheter given {@code email} is available.
+     * @param email ęmail address to be checked
+     */
+    boolean checkFreeEmail(String email) throws RPCException;
 }

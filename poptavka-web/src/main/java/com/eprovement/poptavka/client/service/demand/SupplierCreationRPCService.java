@@ -24,4 +24,10 @@ public interface SupplierCreationRPCService extends RemoteService {
     BusinessUserDetail createNewSupplier(BusinessUserDetail supplier) throws RPCException;
 
     ArrayList<ServiceDetail> getSupplierServices() throws RPCException;
+
+    /**
+     * Checks wheter given {@code email} is available.
+     * @param email ęmail address to be checked
+     */
+    boolean checkFreeEmail(String email) throws RPCException;
 }

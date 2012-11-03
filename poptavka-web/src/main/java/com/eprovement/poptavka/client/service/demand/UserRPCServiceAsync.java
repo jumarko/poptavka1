@@ -1,9 +1,8 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
-import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface UserRPCServiceAsync {
 
@@ -12,9 +11,6 @@ public interface UserRPCServiceAsync {
     void getBusinessUserById(Long userId, AsyncCallback<BusinessUserDetail> callback);
 
     void getUserById(Long userId, AsyncCallback<UserDetail> callback);
-
-    /** @see UserRPCService#checkFreeEmail(String) */
-    void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
 
     void getLoggedBusinessUser(AsyncCallback<BusinessUserDetail> callback);
 

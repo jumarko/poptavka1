@@ -8,7 +8,6 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 /**
@@ -21,17 +20,11 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEventBus> {
 
     private SupplierCreationRPCServiceAsync supplierCreationService;
-    private UserRPCServiceAsync userRpcService;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     @Inject
     void setSupplierCreationRPCService(SupplierCreationRPCServiceAsync service) {
         supplierCreationService = service;
-    }
-
-    @Inject
-    void setUserRpcService(UserRPCServiceAsync userRpcService) {
-        this.userRpcService = userRpcService;
     }
 
     public void onRegisterSupplier(BusinessUserDetail newSupplier) {
@@ -46,7 +39,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
     }
 
     public void onCheckFreeEmail(String email) {
-        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
+        supplierCreationService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);

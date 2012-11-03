@@ -45,6 +45,8 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      */
     public void onVerifyExistingClient(String email, String password) {
         LOGGER.fine("verify start");
+        // TODO ivlcek - another login outside of regular loginPopupPresenter and loginFromSession methods. Handle it!
+        // It probably must be in non-secured RPC class
         userRpcService.loginUser(email, password, new SecuredAsyncCallback<UserDetail>(eventBus) {
 
             @Override
@@ -101,7 +103,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     }
 
     public void onCheckFreeEmail(String email) {
-        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
+        demandCreationService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);
