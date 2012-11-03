@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import junit.framework.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.access.annotation.Secured;
 
@@ -37,7 +36,6 @@ public class ApplicationSecurityExceptionTest {
     // TODO: Ivan
     // Unignore following test and check all violations. Many of violated methods should be secured.
     @Test
-    @Ignore
     public void unsecuredRpcMethodShouldNotThrowApplicationSecurityException() {
 
         final MethodRule unsecuredMethodShouldNotThrowApplicationSecurityException = new MethodRule() {

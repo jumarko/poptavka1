@@ -5,7 +5,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 @RemoteServiceRelativePath(UserRPCService.URL)
@@ -19,7 +18,7 @@ public interface UserRPCService extends RemoteService {
 
     UserDetail getUserById(Long userId) throws RPCException;
 
-    BusinessUserDetail getLoggedBusinessUser() throws RPCException, ApplicationSecurityException;
+    BusinessUserDetail getLoggedBusinessUser() throws RPCException;
 
-    UserDetail getLoggedUser() throws RPCException, ApplicationSecurityException;
+    UserDetail getLoggedUser() throws RPCException;
 }

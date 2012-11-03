@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.service.demand.SettingsRPCService;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
@@ -26,8 +27,10 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
 
 @Configurable
 public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
@@ -52,7 +55,8 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
     //TODO Nahradit konverterom???
     @Override
-    public SettingsDetail getUserSettings(long userId) throws RPCException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public SettingsDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException {
         GWT.log("Getting user settings for user:" + userId);
         final BusinessUser user = (BusinessUser) generalService.searchUnique(new Search(User.class).addFilterEqual("id",
                 userId));

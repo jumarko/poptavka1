@@ -5,7 +5,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -35,7 +34,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @return
      */
     long getSupplierPotentialDemandsCount(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+            SearchDefinition searchDefinition) throws RPCException;
 
     /**
      * Get demands of categories that I am interested in.
@@ -49,7 +48,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @return
      */
     List<FullOfferDetail> getSupplierPotentialDemands(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+            SearchDefinition searchDefinition) throws RPCException;
 
     //************************ SUPPLIER - My Offers ***************************/
     /**
@@ -62,7 +61,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @return
      */
     long getSupplierOffersCount(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+            SearchDefinition searchDefinition) throws RPCException;
 
     /**
      * Get offers sent by supplier.
@@ -75,7 +74,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      */
     //TODO Martin premenovat FullOfferDetail na ContestDetail alebo nieco podobne
     List<FullOfferDetail> getSupplierOffers(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+            SearchDefinition searchDefinition) throws RPCException;
 
     //******************* SUPPLIER - My Assigned Demands **********************/
     /**
@@ -88,7 +87,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @return
      */
     long getSupplierAssignedDemandsCount(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+            SearchDefinition searchDefinition) throws RPCException;
 
     /**
      * Get supplier's offers that have been accepted.
@@ -100,27 +99,26 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @return
      */
     List<FullOfferDetail> getSupplierAssignedDemands(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+            SearchDefinition searchDefinition) throws RPCException;
 
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/
-    FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException;
+    FullDemandDetail getFullDemandDetail(long demandId) throws RPCException;
 
-    FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException;
+    FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException;
 
     ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId,
-            long userMessageId) throws RPCException, ApplicationSecurityException;
+            long userMessageId) throws RPCException;
 
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
-            ApplicationSecurityException;
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
 
-    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException, ApplicationSecurityException;
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
 
-    void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException;
+    void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException;
 
-    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
+    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 }

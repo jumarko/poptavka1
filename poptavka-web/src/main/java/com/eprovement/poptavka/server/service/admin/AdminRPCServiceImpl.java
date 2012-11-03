@@ -92,12 +92,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Search, SearchDefinition> searchConverter;
 
     @Autowired
-    public void setGeneralService(GeneralService generalService) throws RPCException {
+    public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
     }
 
     @Autowired
-    public void setDemandService(DemandService demandService) throws RPCException, ApplicationSecurityException {
+    public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
     }
 

@@ -310,6 +310,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      * @throws ApplicationSecurityException
      */
     @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
         Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
         // TODO Vojto - get number of unread messages. UserId is provided from Authentication obejct see above

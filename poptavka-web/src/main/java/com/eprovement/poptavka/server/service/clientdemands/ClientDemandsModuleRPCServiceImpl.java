@@ -410,18 +410,21 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     /* Other getter methods                                                         */
     /**************************************************************************/
     @Override
-    public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException {
         return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
     }
 
     @Override
-    public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException {
         return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
     }
 
     @Override
     // TODO is this RPC service the correct place for this and following methods ?!
     // TODO call setMessageReadStatus in body
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(
             long threadId, long userId, long userMessageId) throws RPCException, ApplicationSecurityException {
         Message threadRoot = messageService.getById(threadId);
@@ -447,6 +450,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
             ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
@@ -461,6 +465,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * Change 'star' status of sent messages to chosen value
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException,
             ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
@@ -479,6 +484,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @throws ApplicationSecurityException W
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void closeDemand(FullDemandDetail demandDetail) throws RPCException, ApplicationSecurityException {
         //TODO Juraj - skontrolovat
         Demand demand = demandConverter.convertToSource(demandDetail);
@@ -495,6 +501,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @throws ApplicationSecurityException
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void acceptOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException {
         //TODO Juraj
         //Accept given offer (offerDetail.getOfferDetail())
@@ -510,6 +517,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @throws ApplicationSecurityException
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void declineOffer(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
         //TODO Juraj
         //Decline given offer
@@ -524,6 +532,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @return message
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws RPCException,
             ApplicationSecurityException {
         try {
@@ -542,6 +551,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
         Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
 
@@ -588,6 +598,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @throws ApplicationSecurityException
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
         Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
         // TODO Vojto - get number of unread messages. UserId is provided from Authentication obejct see above
