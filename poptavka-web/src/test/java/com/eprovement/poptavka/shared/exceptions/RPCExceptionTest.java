@@ -3,24 +3,17 @@
  */
 package com.eprovement.poptavka.shared.exceptions;
 
-import com.eprovement.poptavka.util.reflection.ClassFilter;
-import com.eprovement.poptavka.util.reflection.ReflectionUtils;
-import com.google.gwt.user.client.rpc.RemoteService;
+import com.eprovement.poptavka.RpcUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import static org.junit.Assert.fail;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.ClassMetadata;
 
 /**
  * Test ensures that all RPC services declares "throws RPCException".
@@ -31,47 +24,15 @@ import org.springframework.core.type.ClassMetadata;
  */
 public class RPCExceptionTest {
 
-    private static final String BASE_PACKAGE_NAME = "com.eprovement.poptavka";
-    private static final String CLIENT_SERVICE_PACKAGE_NAME = "com.eprovement.poptavka.client.service";
-    private static final String SERVER_PACKAGE_NAME = "com.eprovement.poptavka.server";
-    private static final Set<Class> RPC_CLASSES = new HashSet<Class>();
-
-    private static final String METHODS_VALIDATIONS_SEPARATOR = ", ";
-
-    /**
-     * Load all RPC classes for testing.
-     */
-    @BeforeClass
-    public static void setUp() throws Exception {
-        final ClassFilter rpcClassFilter = new ClassFilter() {
-            @Override
-            public boolean match(ClassMetadata classMetadata) {
-                return isRpcServiceClass(classMetadata.getClassName());
-            }
-        };
-
-        RPC_CLASSES.addAll(ReflectionUtils.findClasses(SERVER_PACKAGE_NAME, rpcClassFilter));
-        RPC_CLASSES.addAll(ReflectionUtils.findClasses(CLIENT_SERVICE_PACKAGE_NAME, rpcClassFilter));
-    }
-
-    private static Set<? extends BeanDefinition> findClassesInPackage(
-            ClassPathScanningCandidateComponentProvider provider, String basePackageName) {
-        final Set<? extends BeanDefinition> rpcClasses = provider.findCandidateComponents(basePackageName);
-
-        if (rpcClasses.size() == 0) {
-            System.err.println("Unable to find any class in base package=" + basePackageName);
-        }
-        return rpcClasses;
-    }
-
 
     @Test
     public void throwsRpcException() {
+        final Set<Class> rpcClasses = RpcUtils.getRpcClasses();
         System.out.println("========================================================================================");
-        System.out.println("Checking " + RPC_CLASSES.size() + " rpc service classes:\n" + RPC_CLASSES);
+        System.out.println("Checking " + rpcClasses.size() + " rpc service classes:\n" + rpcClasses);
         System.out.println("========================================================================================");
         final Map<Class, List<Method>> violations = new HashMap<Class, List<Method>>();
-        for (Class rpcClass : RPC_CLASSES) {
+        for (Class rpcClass : rpcClasses) {
             final List<Method> violatedMethods = new ArrayList<Method>();
             for (Method rpcMethod : rpcClass.getDeclaredMethods()) {
                 if (isPublicRpcMethod(rpcMethod)) {
@@ -95,7 +56,7 @@ public class RPCExceptionTest {
                     + " GWT client (see SecuredAsyncCallback), Please check method signature and consider"
                     + " adding clause 'throws RPCException'. It is also possible that you forgot to add @Autowired "
                     + " to your Setter method.\n"
-                    + " Please, check following methods!\n" + formatViolationsMessage(violations));
+                    + " Please, check following methods!\n" + RpcUtils.formatViolationsMessage(violations));
         }
     }
 
@@ -119,29 +80,5 @@ public class RPCExceptionTest {
     }
 
 
-    private static boolean isRpcServiceClass(String className) {
-        try {
-            return RemoteService.class.isAssignableFrom(Class.forName(className));
-        } catch (Throwable e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    private static String formatViolationsMessage(Map<Class, List<Method>> violations) {
-        final StringBuilder violationMessage = new StringBuilder();
-        for (Map.Entry<Class, List<Method>> violatedClass : violations.entrySet()) {
-            if (violatedClass.getValue().size() == 0) {
-                continue;
-            }
-            violationMessage.append("\n" + violatedClass.getKey().getName() + "\n");
-            for (Method violatedMethod : violatedClass.getValue()) {
-                violationMessage.append("        " + violatedMethod.getName() + "\n");
-            }
-        }
-
-        return violationMessage.toString();
-    }
 
 }
