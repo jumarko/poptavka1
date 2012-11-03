@@ -33,8 +33,6 @@ public class ApplicationSecurityExceptionTest {
     }
 
 
-    // TODO: Ivan
-    // Unignore following test and check all violations. Many of violated methods should be secured.
     @Test
     public void unsecuredRpcMethodShouldNotThrowApplicationSecurityException() {
 
