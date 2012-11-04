@@ -18,14 +18,7 @@
 		
 		.list {
 			width: 100px;
-		}
-		
-		.cell-tree {
-			background: none repeat scroll 0 0 #ffffff;
-			border: 1px solid #C1D2DC;
-			margin: 50px 15px 10px;
-			border-radius: 5px;
-		}
+		}	
 		
 		.detail-info {
 			background: none repeat scroll 0 0 #ffffff;
@@ -45,7 +38,7 @@
 				</g:north>
 				<g:center>
 					<g:ScrollPanel>
-						<c:CellTree ui:field="cellTree" styleName='{style.cell-tree}' />
+						<c:CellTree ui:field="cellTree" />
 					</g:ScrollPanel>
 				</g:center>
 			</g:DockLayoutPanel>
