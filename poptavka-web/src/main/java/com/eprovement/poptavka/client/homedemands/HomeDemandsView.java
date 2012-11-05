@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.resources.TreeResources;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -136,13 +137,13 @@ public class HomeDemandsView extends OverflowComposite
 
     public void initCellTree() {
         //Workaround for issue: CellTree disappeared when clicking but outside tree nodes
-        CellTree.Resources resource = GWT.create(CellTree.Resources.class);
+        CellTree.Resources resource = GWT.create(TreeResources.class);
         StyleInjector.injectAtEnd("." + resource.cellTreeStyle().cellTreeTopItem() + " {margin-top: 0px;}");
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,
                 homeDemandsPresenter.getCategoryService(),
                 Constants.WITHOUT_CHECK_BOXES,
-                CategoryCell.DISPLAY_COUNT_OF_DEMANDS), null);
+                CategoryCell.DISPLAY_COUNT_OF_DEMANDS), null, resource);
         Storage.setTree(cellTree);
         // cellTree.setSize("300px", "100px");
         cellTree.setAnimationEnabled(true);

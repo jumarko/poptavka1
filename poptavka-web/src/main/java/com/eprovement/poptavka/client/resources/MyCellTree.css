@@ -16,7 +16,7 @@
 .cellTreeWidget {
 	background: #ffffff;
 	border: 1px solid #C1D2DC;
-	margin: 50px 15px 10px;
+	margin: 0 15px 30px;
 	border-radius: 5px;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .cellTreeItemImage {
-	
+	top: 8px;
 }
 
 .cellTreeItemImageValue {
@@ -52,33 +52,40 @@
 }
 
 .cellTreeTopItem {
-	font-weight: bold;
-	color: #4b4a4a;
+	font-weight: normal;
+	color: #003e5f;
 	margin-top: 20px;
 	padding: 3px 13px 3px 10px !important;
 }
 
-.cellTreeTopItemImage {
-	
+.cellTreeTopItemImage {	
+	top: 14px;	
 }
 
-.cellTreeTopItemImageValue {
-	border-bottom: 1px solid #6f7277;
+.cellTreeWidget div div div div:first-child .cellTreeTopItem .cellTreeTopItemImageValue
+	{
+	background: none;
+}
+
+.cellTreeTopItem .cellTreeTopItemImageValue {
+	background: url(images/cellTreeItemBorder.gif) top left no-repeat;
 	padding-bottom: 1px;
+	height: 27px;
+	line-height: 27px;
 }
 
 .cellTreeKeyboardSelectedItem {
-	background-color: #ffc;
+	background-color: #fff;
 	outline: none;
 }
 
-@
-sprite .cellTreeSelectedItem {
-	gwt-image: 'cellTreeSelectedBackground';
-	background-color: #628cd5;
-	color: white;
+/* @sprite */
+.cellTreeSelectedItem { /* gwt-image: 'cellTreeSelectedBackground'; */
+	background-color: #ffffff;
+	color: #f16600;
 	height: auto;
 	overflow: visible;
+	font-weight: bold;
 }
 
 .cellTreeShowMoreButton {
