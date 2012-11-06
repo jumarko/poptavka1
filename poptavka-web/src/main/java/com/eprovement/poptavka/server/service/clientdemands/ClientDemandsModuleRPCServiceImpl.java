@@ -610,29 +610,37 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     /* Get Detail object for selecting in selection models                    */
     /**************************************************************************/
     @Override
-    public ClientDemandDetail getClientDemand(long clientDemandID) {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public ClientDemandDetail getClientDemand(long clientDemandID) throws RPCException, ApplicationSecurityException {
         return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
     }
 
     @Override
-    public ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) throws
+            RPCException, ApplicationSecurityException {
         //Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
         return new ClientDemandConversationDetail();
     }
 
     @Override
-    public ClientDemandDetail getClientOfferedDemand(long clientDemandID) {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public ClientDemandDetail getClientOfferedDemand(long clientDemandID) throws RPCException,
+        ApplicationSecurityException {
         //staci takto? alebo treba nejak rozlisovat demand a offeredDemand
         return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
     }
 
     @Override
-    public FullOfferDetail getClientOfferedDemandOffer(long clientOfferedDemandOfferID) {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public FullOfferDetail getClientOfferedDemandOffer(long clientOfferedDemandOfferID) throws RPCException,
+        ApplicationSecurityException {
         return new FullOfferDetail();
     }
 
     @Override
-    public FullOfferDetail getClientAssignedDemand(long offerID) {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public FullOfferDetail getClientAssignedDemand(long offerID) throws RPCException, ApplicationSecurityException {
         return fullOfferConverter.convertToTarget(generalService.find(Message.class, offerID));
     }
 }
