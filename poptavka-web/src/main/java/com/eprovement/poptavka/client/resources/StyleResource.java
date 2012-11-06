@@ -39,7 +39,7 @@ public interface StyleResource extends ClientBundle {
     TableStyle table();
 
     @Source("GridTable.css")
-    GridResources grid();
+    GridTableResources grid();
 
     @Source("user-message.css")
     UserMessageStyle message();

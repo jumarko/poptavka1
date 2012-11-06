@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.resources.GridResources;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.resources.TreeResources;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
@@ -25,6 +26,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
@@ -154,7 +156,8 @@ public class HomeDemandsView extends OverflowComposite
      */
     private void initCellTable() {
         // Create a CellTable.
-        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns);
+        DataGrid.Resources resource = GWT.create(GridResources.class);
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns, this.getPageSize(), resource);
         dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
         // Selection handler
         dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());

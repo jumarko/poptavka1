@@ -49,9 +49,9 @@ import java.util.Map;
  */
 public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
-    //*************************************************************************
-    //                              INTERFACES                                *
-    //*************************************************************************
+    /**************************************************************************/
+    /*                              INTERFACES                                */
+    /**************************************************************************/
     /**
      * Provides interfaces for methods retrieving count and data. Each eventBus
      * of module using this class must extend this interface.
@@ -88,9 +88,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
         C getValue(Object object);
     }
-    //*************************************************************************/
-    //                          ATTRIBUTES                                    */
-    //*************************************************************************/
+    /**************************************************************************/
+    /*                          ATTRIBUTES                                    */
+    /**************************************************************************/
     private static final int COLUMN_WIDTH_ICON = 7;
     private static final int COLUMN_WIDTH_URGENT = 50;
     /**
@@ -153,29 +153,36 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 }
             });
 
-    /**
-     * Constructor of UniversalAsyncGrid.
-     *
-     * @param gridColumns - define table column names
-     */
+    /**************************************************************************/
+    /* Constructors of UniversalAsyncGrid                                     */
+    /**************************************************************************/
     public UniversalAsyncGrid(List<String> gridColumns) {
         super();
         this.gridColumns = gridColumns;
         this.setCustomEmptyTableNotification();
     }
 
-    /**
-     * Constructor of UniversalAsyncGrid.
-     *
-     * @param keyProvider - define key provider for selection model
-     * @param gridColumns - define table column names
-     */
+    public UniversalAsyncGrid(List<String> gridColumns, int pageSize, Resources resources) {
+        super(pageSize, resources);
+        this.gridColumns = gridColumns;
+        this.setCustomEmptyTableNotification();
+    }
+
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
         this.gridColumns = gridColumns;
         this.setCustomEmptyTableNotification();
     }
 
+    public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns, int pageSize, Resources resources) {
+        super(pageSize, resources, keyProvider);
+        this.gridColumns = gridColumns;
+        this.setCustomEmptyTableNotification();
+    }
+
+    /**************************************************************************/
+    /* Get Data methods                                                       */
+    /**************************************************************************/
     /**
      * Gets data count. Whole retrieving proces starts here, therefore must be
      * called to fire it.
@@ -197,6 +204,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         eventBus.getDataCount(this, searchDefinition);
     }
 
+    /**************************************************************************/
+    /* Create methods                                                         */
+    /**************************************************************************/
     /**
      * Creates asynchronous data provider for a table. Must be called when count
      * of all data is known. Method onRangeChanged it called when user choose
