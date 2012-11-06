@@ -24,12 +24,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
@@ -60,7 +62,12 @@ public class ClientDemandsPresenter
 
         Column<ClientDemandConversationDetail, String> getDateColumn();
 
+        //Pagers
+        SimplePager getDemandPager();
+
+        SimplePager getConversationPager();
         // Others
+
         Button getBackBtn();
 
         UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
@@ -81,6 +88,8 @@ public class ClientDemandsPresenter
         IsWidget getWidgetView();
 
         // Setters
+        void setDemandTableVisible(boolean visible);
+
         void setConversationTableVisible(boolean visible);
 
         void setDemandTitleLabel(String text);
@@ -94,6 +103,15 @@ public class ClientDemandsPresenter
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedDemandConversation = -1;
+//    private boolean cancelPagerEvent = false;
+//    private boolean cancelUpdateFieldEvent = false;
+    private boolean cancelTokenCreation = false;
+    private long selectedClientDemandId = -1;
+    private long selectedClientDemandConversationId = -1;
+    private int demandPageFromToken = -1;
+    private int conversationPageFromToken = -1;
+    //
+    private FieldUpdater textFieldUpdater = null;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -101,6 +119,9 @@ public class ClientDemandsPresenter
     @Override
     public void bindView() {
         addBackBtnClickHandler();
+        // Range Change Handlers
+        demandGridRangeChangeHandler();
+        conversationGridRangeChangeHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         // Field Updaters
@@ -120,11 +141,63 @@ public class ClientDemandsPresenter
         eventBus.setUpSearchBar(new Label("Client's projects attibure's selector will be here."));
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.createTokenForHistory1(0);
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (this.detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
+        }
+    }
+
+    public void onInitClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+        //Select Menu - my demands - selected
+        eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
+        //
+        cancelTokenCreation = true; //cancel creating token if page has changed
+        view.getDemandGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
+        view.getDemandGrid().setPageStart(parentTablePage * view.getDemandGrid().getPageSize());
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
+                parentTablePage * view.getDemandGrid().getPageSize(),
+                view.getDemandGrid().getPageSize(),
+                filterHolder,
+                null));
+        view.setConversationTableVisible(false);
+        view.setDemandTableVisible(true);
+
+        this.selectedClientDemandId = -1;
+
+        if (Storage.isAppCalledByURL()) {
+            eventBus.displayView(view.getWidgetView());
+        }
+    }
+
+    public void onInitClientDemandConversationByHistory(ClientDemandDetail clientDemandDetail,
+            int childTablePage, long childId, SearchModuleDataHolder filterHolder) {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
+        //Select Menu - my demands - selected
+        eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
+        //
+        clientDemandDetail.setRead(true);
+        Storage.setDemandId(clientDemandDetail.getDemandId());
+        view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
+        view.setDemandTableVisible(false);
+        view.setConversationTableVisible(true);
+        //
+        cancelTokenCreation = true;
+        view.getConversationGrid().cancelRangeChangedEvent();
+        view.getConversationGrid().setPageStart(childTablePage * view.getConversationGrid().getPageSize());
+        view.getConversationGrid().getDataCount(eventBus, new SearchDefinition(
+                childTablePage * view.getConversationGrid().getPageSize(),
+                view.getConversationGrid().getPageSize(),
+                filterHolder,
+                null));
+
+        this.selectedClientDemandConversationId = childId;
+
+        if (Storage.isAppCalledByURL()) {
+            eventBus.displayView(view.getWidgetView());
         }
     }
 
@@ -147,6 +220,10 @@ public class ClientDemandsPresenter
 
         view.getDemandGrid().getDataProvider().updateRowData(
                 view.getDemandGrid().getStart(), data);
+
+        if (selectedClientDemandId != -1) {
+            eventBus.getClientDemand(selectedClientDemandId);
+        }
     }
 
     public void onDisplayClientDemandConversations(List<ClientDemandConversationDetail> data) {
@@ -154,6 +231,21 @@ public class ClientDemandsPresenter
 
         view.getConversationGrid().getDataProvider().updateRowData(
                 view.getConversationGrid().getStart(), data);
+
+        if (selectedClientDemandConversationId != -1) {
+            eventBus.getClientDemandConversation(selectedClientDemandConversationId);
+        }
+    }
+
+    public void onSelectClientDemand(ClientDemandDetail detail) {
+        view.getDemandGrid().getSelectionModel().setSelected(detail, true);
+    }
+
+    public void onSelectClientDemandConversation(ClientDemandConversationDetail detail) {
+        //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
+        //nejak vytvorit event na upadatefieldoch
+        //Dolezite je len detail, ostatne atributy sa nepouzivaju
+        textFieldUpdater.update(-1, detail, null);
     }
 
     /**
@@ -184,7 +276,6 @@ public class ClientDemandsPresenter
     // Field Updaters
     public void addCheckHeaderUpdater() {
         view.getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
-
             @Override
             public void update(Boolean value) {
                 List<ClientDemandConversationDetail> rows = view.getConversationGrid().getVisibleItems();
@@ -196,38 +287,47 @@ public class ClientDemandsPresenter
     }
 
     public void addStarColumnFieldUpdater() {
-        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientDemandConversationDetail, Boolean>() {
-
-            @Override
-            public void update(int index, ClientDemandConversationDetail object, Boolean value) {
-                object.setStarred(!value);
-                view.getConversationGrid().redraw();
-                Long[] item = new Long[]{object.getUserMessageId()};
-                eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
-            }
-        });
+        view.getStarColumn().setFieldUpdater(
+                new FieldUpdater<ClientDemandConversationDetail, Boolean>() {
+                    @Override
+                    public void update(int index, ClientDemandConversationDetail object, Boolean value) {
+                        object.setStarred(!value);
+                        view.getConversationGrid().redraw();
+                        Long[] item = new Long[]{object.getUserMessageId()};
+                        eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
+                    }
+                });
     }
 
     public void addReplyColumnFieldUpdater() {
-        view.getReplyColumn().setFieldUpdater(new FieldUpdater<ClientDemandConversationDetail, ImageResource>() {
-
-            @Override
-            public void update(int index, ClientDemandConversationDetail object, ImageResource value) {
-                detailSection.getView().getReplyHolder().addQuestionReply();
-            }
-        });
+        view.getReplyColumn().setFieldUpdater(
+                new FieldUpdater<ClientDemandConversationDetail, ImageResource>() {
+                    @Override
+                    public void update(int index, ClientDemandConversationDetail object, ImageResource value) {
+                        detailSection.getView().getReplyHolder().addQuestionReply();
+                    }
+                });
     }
 
     public void addTextColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
-
+        textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
             @Override
             public void update(int index, ClientDemandConversationDetail object, String value) {
                 if (lastOpenedDemandConversation != object.getUserMessageId()) {
                     lastOpenedDemandConversation = object.getUserMessageId();
                     object.setRead(true);
                     view.getConversationGrid().redraw();
+                    view.setDemandTableVisible(false);
+                    view.setConversationTableVisible(true);
                     displayDetailContent(object);
+//                    if (cancelUpdateFieldEvent) {
+//                        cancelUpdateFieldEvent = false;
+                    if (cancelTokenCreation) {
+                        cancelTokenCreation = false;
+                    } else {
+                        eventBus.createTokenForHistory2(Storage.getDemandId(),
+                                view.getConversationPager().getPage(), object.getSupplierId());
+                    }
                 }
             }
         };
@@ -239,7 +339,6 @@ public class ClientDemandsPresenter
     // Widget action handlers
     private void addActionChangeHandler() {
         view.getActions().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getActions().getSelectedIndex()) {
@@ -265,29 +364,82 @@ public class ClientDemandsPresenter
     //SelectionHandlers
     private void addDemandTableSelectionHandler() {
         view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
-                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel)
-                        view.getDemandGrid().getSelectionModel()).getSelectedObject();
+                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
+                        .getSelectionModel()).getSelectedObject();
                 if (selected != null) {
                     selected.setRead(true);
                     Storage.setDemandId(selected.getDemandId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
+                    view.setDemandTableVisible(false);
                     view.setConversationTableVisible(true);
                     view.getConversationGrid().getDataCount(eventBus, null);
+                    eventBus.createTokenForHistory2(selected.getDemandId(), view.getConversationPager().getPage(), -1);
                 }
             }
         });
     }
 
+    //Button handlers
     private void addBackBtnClickHandler() {
         view.getBackBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 view.setConversationTableVisible(false);
+                view.setDemandTableVisible(true);
+                //ziskaj nanovo data?
+                if (view.getDemandGrid().getDataProvider() == null) {
+                    view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
+                            view.getDemandGrid().getStart(),
+                            view.getDemandGrid().getPageSize(),
+                            searchDataHolder,
+                            null));
+                }
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /**
+     * Handle table range change by creating token for new range/page.
+     */
+    private void demandGridRangeChangeHandler() {
+        view.getDemandGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+            @Override
+            public void onRangeChange(RangeChangeEvent event) {
+                demandPageFromToken = -1;
+                //In some cases we need to set pager size to 0, which fires this event
+                //but we don't want to create token, therefore deny fired event if
+                //cancelPagerEvent flag is True.
+//                if (cancelPagerEvent) {
+//                    cancelPagerEvent = false;
+                if (cancelTokenCreation) {
+                    cancelTokenCreation = false;
+                } else {
+                    eventBus.createTokenForHistory1(view.getDemandPager().getPage());
+                }
+            }
+        });
+    }
+
+    private void conversationGridRangeChangeHandler() {
+        view.getConversationGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+            @Override
+            public void onRangeChange(RangeChangeEvent event) {
+                conversationPageFromToken = -1;
+                //In some cases we need to set pager size to 0, which fires this event
+                //but we don't want to create token, therefore deny fired event if
+                //cancelPagerEvent flag is True.
+//                if (cancelPagerEvent) {
+//                    cancelPagerEvent = false;
+                if (cancelTokenCreation) {
+                    cancelTokenCreation = false;
+                } else {
+                    eventBus.createTokenForHistory2(
+                            Storage.getDemandId(), view.getConversationPager().getPage(), -1);
+                }
             }
         });
     }

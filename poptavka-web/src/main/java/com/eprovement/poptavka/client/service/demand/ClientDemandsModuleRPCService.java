@@ -195,4 +195,17 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
+
+    /**************************************************************************/
+    /* Get Detail object for selecting in selection models                    */
+    /**************************************************************************/
+    ClientDemandDetail getClientDemand(long clientDemandID) throws RPCException;
+
+    ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) throws RPCException;
+
+    ClientDemandDetail getClientOfferedDemand(long clientDemandID) throws RPCException;
+
+    FullOfferDetail getClientOfferedDemandOffer(long clientDemandOfferID) throws RPCException;
+
+    FullOfferDetail getClientAssignedDemand(long offerID) throws RPCException;
 }

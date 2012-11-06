@@ -188,13 +188,24 @@ public class ClientOffersView extends Composite
     /**************************************************************************/
     //Table
     @Override
+    public UniversalAsyncGrid<ClientDemandDetail> getDemandGrid() {
+        return demandGrid;
+    }
+
+    @Override
     public UniversalTableWidget getOfferGrid() {
         return contestGrid;
     }
 
+    //Pager
     @Override
-    public UniversalAsyncGrid<ClientDemandDetail> getDemandGrid() {
-        return demandGrid;
+    public SimplePager getDemandPager() {
+        return demandPager;
+    }
+
+    @Override
+    public SimplePager getOfferPager() {
+        return contestGrid.getPager();
     }
 
     //Buttons
@@ -217,17 +228,22 @@ public class ClientOffersView extends Composite
     /* Setters                                                                */
     /**************************************************************************/
     @Override
-    public void setOfferTableVisible(boolean visible) {
-        demandGrid.setVisible(!visible);
-        demandGrid.redraw();
-        SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
-        if (selectionModel.getSelectedObject() != null) {
-            selectionModel.setSelected(selectionModel.getSelectedObject(), false);
+    public void setDemandTableVisible(boolean visible) {
+        demandGrid.setVisible(visible);
+//        demandGrid.redraw();
+        if (!visible) {
+            SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
+            if (selectionModel.getSelectedObject() != null) {
+                selectionModel.setSelected(selectionModel.getSelectedObject(), false);
+            }
         }
-        demandHeader.setVisible(!visible);
+        demandHeader.setVisible(visible);
+    }
 
+    @Override
+    public void setOfferTableVisible(boolean visible) {
         contestGrid.setVisible(visible);
-        contestGrid.getGrid().redraw();
+//        contestGrid.getGrid().redraw();
         contestHeader.setVisible(visible);
     }
 

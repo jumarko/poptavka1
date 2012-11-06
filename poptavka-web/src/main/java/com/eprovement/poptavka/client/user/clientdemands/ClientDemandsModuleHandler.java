@@ -12,6 +12,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
@@ -222,11 +223,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
         clientDemandsService.setMessageStarStatus(userMessageIdList, newStatus,
                 new SecuredAsyncCallback<Void>(eventBus) {
-                @Override
-                public void onSuccess(Void result) {
-                    //Empty by default
-                }
-            });
+                    @Override
+                    public void onSuccess(Void result) {
+                        //Empty by default
+                    }
+                });
     }
 
     public void onRequestCloseDemand(FullDemandDetail demandDetail) {
@@ -273,7 +274,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     public void onUpdateUnreadMessagesCount() {
         clientDemandsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
-
             @Override
             public void onSuccess(UnreadMessagesDetail result) {
                 // empty i.e number of new messages could be retrieved
@@ -281,5 +281,80 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
             }
         });
+    }
+
+    /**************************************************************************/
+    /* Get Detail object for selecting in selection models                    */
+    /**************************************************************************/
+    public void onGetClientDemand(long clientDemandID) {
+        clientDemandsService.getClientDemand(clientDemandID, new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
+            @Override
+            public void onSuccess(ClientDemandDetail result) {
+                eventBus.selectClientDemand(result);
+            }
+        });
+    }
+
+    public void onGetClientDemandConversation(long clientDemandConversationID) {
+        clientDemandsService.getClientDemandConversation(clientDemandConversationID,
+                new SecuredAsyncCallback<ClientDemandConversationDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(ClientDemandConversationDetail result) {
+                        eventBus.selectClientDemandConversation(result);
+                    }
+                });
+    }
+
+    public void onGetClientOfferedDemand(long clientDemandID) {
+        clientDemandsService.getClientOfferedDemand(clientDemandID,
+                new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(ClientDemandDetail result) {
+                        eventBus.selectClientOfferedDemand(result);
+                    }
+                });
+    }
+
+    public void onGetClientOfferedDemandOffer(long clientOfferedDemandOfferID) {
+        clientDemandsService.getClientOfferedDemandOffer(clientOfferedDemandOfferID,
+                new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(FullOfferDetail result) {
+                        eventBus.selectClientOfferedDemandOffer(result);
+                    }
+                });
+    }
+
+    public void onGetClientAssignedDemand(long offerID) {
+        clientDemandsService.getClientAssignedDemand(offerID, new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+            @Override
+            public void onSuccess(FullOfferDetail result) {
+                eventBus.selectClientAssignedDemand(result);
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /* Get Detail object for restoring history state                          */
+    /**************************************************************************/
+    public void onGetClientDemandAndInitClientDemandConversationByHistory(
+            long parentId, final int childTablePage, final long childId, final SearchModuleDataHolder filterHolder) {
+        clientDemandsService.getClientDemand(parentId, new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
+            @Override
+            public void onSuccess(ClientDemandDetail result) {
+                eventBus.initClientDemandConversationByHistory(result, childTablePage, childId, filterHolder);
+            }
+        });
+    }
+
+    public void onGetClientOfferedDemandAndInitClientOfferedDemandOffersByHistory(
+            long parentId, final int childTablePage, final long childId, final SearchModuleDataHolder filterHolder) {
+        clientDemandsService.getClientOfferedDemand(parentId,
+                new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(ClientDemandDetail result) {
+                        eventBus.initClientOfferedDemandOffersByHistory(result, childTablePage, childId, filterHolder);
+                    }
+                });
     }
 }

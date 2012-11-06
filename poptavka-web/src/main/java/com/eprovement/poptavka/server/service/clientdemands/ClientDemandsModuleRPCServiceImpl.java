@@ -58,7 +58,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  *
  * @author Martin Slavkovsky
@@ -605,5 +604,35 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
         unreadMessagesDetail.setUnreadMessagesCount(99);
         return unreadMessagesDetail;
+    }
+
+    /**************************************************************************/
+    /* Get Detail object for selecting in selection models                    */
+    /**************************************************************************/
+    @Override
+    public ClientDemandDetail getClientDemand(long clientDemandID) {
+        return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
+    }
+
+    @Override
+    public ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) {
+        //Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
+        return new ClientDemandConversationDetail();
+    }
+
+    @Override
+    public ClientDemandDetail getClientOfferedDemand(long clientDemandID) {
+        //staci takto? alebo treba nejak rozlisovat demand a offeredDemand
+        return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
+    }
+
+    @Override
+    public FullOfferDetail getClientOfferedDemandOffer(long clientOfferedDemandOfferID) {
+        return new FullOfferDetail();
+    }
+
+    @Override
+    public FullOfferDetail getClientAssignedDemand(long offerID) {
+        return fullOfferConverter.convertToTarget(generalService.find(Message.class, offerID));
     }
 }

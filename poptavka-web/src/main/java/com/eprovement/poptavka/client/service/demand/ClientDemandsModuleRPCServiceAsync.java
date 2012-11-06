@@ -95,4 +95,17 @@ public interface ClientDemandsModuleRPCServiceAsync {
             AsyncCallback<OfferDetail> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
+
+    /**************************************************************************/
+    /* Get Detail object for selecting in selection models                    */
+    /**************************************************************************/
+    void getClientDemand(long id, AsyncCallback<ClientDemandDetail> calback);
+
+    void getClientDemandConversation(long id, AsyncCallback<ClientDemandConversationDetail> calback);
+
+    void getClientOfferedDemand(long id, AsyncCallback<ClientDemandDetail> calback);
+
+    void getClientOfferedDemandOffer(long id, AsyncCallback<FullOfferDetail> calback);
+
+    void getClientAssignedDemand(long id, AsyncCallback<FullOfferDetail> calback);
 }

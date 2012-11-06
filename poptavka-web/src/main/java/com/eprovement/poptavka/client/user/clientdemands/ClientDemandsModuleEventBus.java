@@ -58,6 +58,18 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     /**************************************************************************/
+    /* History events                                                          */
+    /**************************************************************************/
+    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class)
+    String createTokenForHistory1(int parentTablePage);
+
+    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class)
+    String createTokenForHistory2(long parentId, int childTablePage, long childId);
+
+    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class)
+    String createTokenForHistory3(int parentTablePage, long parentId);
+
+    /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
     /**
@@ -76,6 +88,24 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void initClientAssignedDemands(SearchModuleDataHolder filter);
+
+    /** HISTORY. **/
+    @Event(handlers = ClientDemandsPresenter.class)
+    void initClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder);
+
+    @Event(handlers = ClientDemandsPresenter.class)
+    void initClientDemandConversationByHistory(
+            ClientDemandDetail result, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
+
+    @Event(handlers = ClientOffersPresenter.class)
+    void initClientOfferedDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder);
+
+    @Event(handlers = ClientOffersPresenter.class)
+    void initClientOfferedDemandOffersByHistory(
+            ClientDemandDetail result, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
+
+    @Event(handlers = ClientAssignedDemandsPresenter.class)
+    void initClientAssignedDemandsByHistory(int parentTablePage, long parentId, SearchModuleDataHolder filterHolder);
 
     /**************************************************************************/
     /* Navigation Parent events */
@@ -115,7 +145,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void displayView(IsWidget content);
 
     /**************************************************************************/
-    /* Business events handled by ListPresenters.                             */
+    /* Business events handled by ClientDemandsPresenter.                     */
     /**************************************************************************/
     @Event(handlers = ClientDemandsPresenter.class)
     void displayClientDemands(List<ClientDemandDetail> result);
@@ -123,14 +153,35 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsPresenter.class)
     void displayClientDemandConversations(List<ClientDemandConversationDetail> result);
 
+    @Event(handlers = ClientDemandsPresenter.class)
+    void selectClientDemand(ClientDemandDetail detail);
+
+    @Event(handlers = ClientDemandsPresenter.class)
+    void selectClientDemandConversation(ClientDemandConversationDetail detail);
+
+    /**************************************************************************/
+    /* Business events handled by ClientOffersPresenter.                      */
+    /**************************************************************************/
     @Event(handlers = ClientOffersPresenter.class)
     void displayClientOfferedDemands(List<ClientDemandDetail> result);
 
     @Event(handlers = ClientOffersPresenter.class)
     void displayClientOfferedDemandOffers(List<FullOfferDetail> result);
 
+    @Event(handlers = ClientOffersPresenter.class)
+    void selectClientOfferedDemand(ClientDemandDetail detail);
+
+    @Event(handlers = ClientOffersPresenter.class)
+    void selectClientOfferedDemandOffer(FullOfferDetail detail);
+
+    /**************************************************************************/
+    /* Business events handled by ClientAssignedDemandsPresenter.             */
+    /**************************************************************************/
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void displayClientAssignedDemands(List<FullOfferDetail> result);
+
+    @Event(handlers = ClientAssignedDemandsPresenter.class)
+    void selectClientAssignedDemand(FullOfferDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -153,6 +204,32 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModuleHandler.class)
     void updateUnreadMessagesCount();
 
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getOfferStatusChange(OfferDetail offerDetail);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientDemand(long clientDemandID);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientDemandConversation(long clientDemandConversationID);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientOfferedDemand(long clientDemandID);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientOfferedDemandOffer(long clientOfferedDemandOfferID);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientAssignedDemand(long offerID);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientDemandAndInitClientDemandConversationByHistory(
+            long parentId, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientOfferedDemandAndInitClientOfferedDemandOffersByHistory(
+            long parentId, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
+
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */
     /* Should be called only from UniversalAsyncGrid. */
@@ -168,6 +245,9 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /**************************************************************************/
     /* Button actions - messaging.                                            */
     /**************************************************************************/
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getOfferStatusChange(OfferDetail offerDetail);
+    /**************************************************************************/
+    /* Client Demands MENU                                                    */
+    /**************************************************************************/
+    @Event(handlers = ClientDemandsModulePresenter.class)
+    void selectClientDemandsMenu(int loadedWidget);
 }

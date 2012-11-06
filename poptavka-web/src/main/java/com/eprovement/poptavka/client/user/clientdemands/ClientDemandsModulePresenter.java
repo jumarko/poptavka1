@@ -62,49 +62,42 @@ public class ClientDemandsModulePresenter
     @Override
     public void bindView() {
         view.getClientNewDemandsButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
             }
         });
         view.getClientOffersButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_OFFERED_DEMANDS);
             }
         });
         view.getClientAssignedDemandsButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
             }
         });
         view.getClientCreateDemand().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateDemandModule();
             }
         });
         view.getClientCreateSupplier().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateSupplierModule();
             }
         });
         view.getAllDemands().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeDemandsModule(null);
             }
         });
         view.getAllSuppliers().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeSuppliersModule(null);
@@ -132,13 +125,46 @@ public class ClientDemandsModulePresenter
                 break;
         }
     }
+
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
     public void onDisplayView(IsWidget content) {
         view.setContent(content);
     }
+
     /**************************************************************************/
     /* Business events handled by eventbus or RPC */
     /**************************************************************************/
+    /**************************************************************************/
+    /* Client Demands MENU                                                    */
+    /**************************************************************************/
+    public void onSelectClientDemandsMenu(int loadedWidget) {
+        //TODO Martin null replace with CSS style - e.g. Storage.RSCS.clientDemandsButtonSelected()
+        switch (loadedWidget) {
+            case Constants.CLIENT_DEMANDS:
+                view.getClientCreateDemand().setStyleName("");
+                break;
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                view.getClientOffersButton().setStyleName("");
+                break;
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                view.getClientAssignedDemandsButton().setStyleName("");
+                break;
+            case Constants.HOME_CREATE_DEMAND:
+                view.getClientCreateDemand().setStyleName("");
+                break;
+            case Constants.HOME_CREATE_SUPPLIERS:
+                view.getClientCreateSupplier().setStyleName("");
+                break;
+            case Constants.HOME_DEMANDS_MODULE:
+                view.getAllDemands().setStyleName("");
+                break;
+            case Constants.HOME_SUPPLIERS_MODULE:
+                view.getAllSuppliers().setStyleName("");
+                break;
+            default:
+                break;
+        }
+    }
 }

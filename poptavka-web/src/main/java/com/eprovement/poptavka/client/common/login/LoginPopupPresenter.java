@@ -194,14 +194,16 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 History.forward();
             }
         } else {
-            //if login was not invoked because of history, but user did so,
-            //forward user to appropriate module according to his roles
-            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
-                eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                    BusinessUserDetail.BusinessRole.CLIENT)) {
-                eventBus.goToClientDemandsModule(null, Constants.NONE);
+            if (Storage.isAppCalledByURL() == null || !Storage.isAppCalledByURL()) {
+                //if login was not invoked because of history, but user did so,
+                //forward user to appropriate module according to his roles
+                if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                    eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.CLIENT)) {
+                    eventBus.goToClientDemandsModule(null, Constants.NONE);
+                }
             }
         }
     }

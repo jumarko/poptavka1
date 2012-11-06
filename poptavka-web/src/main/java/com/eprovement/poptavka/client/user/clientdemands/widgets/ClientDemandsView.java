@@ -348,6 +348,17 @@ public class ClientDemandsView extends Composite
         return actions;
     }
 
+    //Pagers
+    @Override
+    public SimplePager getDemandPager() {
+        return demandPager;
+    }
+
+    @Override
+    public SimplePager getConversationPager() {
+        return conversationPager;
+    }
+
     // Others
     @Override
     public UniversalAsyncGrid<ClientDemandDetail> getDemandGrid() {
@@ -397,18 +408,25 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    //netreba lebo vonversationTableVisible setuje viditelnost oboch tabuliek
+    @Override
+    public void setDemandTableVisible(boolean visible) {
+        demandGrid.setVisible(visible);
+//        demandGrid.redraw();
+        //Potrebne??? - ano - ak dam spat, musim deselectovat
+        if (!visible) {
+            SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
+            if (selectionModel.getSelectedObject() != null) {
+                selectionModel.setSelected(selectionModel.getSelectedObject(), false);
+            }
+        }
+        demandHeader.setVisible(visible);
+    }
+
     @Override
     public void setConversationTableVisible(boolean visible) {
-        demandGrid.setVisible(!visible);
-        demandGrid.redraw();
-        SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
-        if (selectionModel.getSelectedObject() != null) {
-            selectionModel.setSelected(selectionModel.getSelectedObject(), false);
-        }
-        demandHeader.setVisible(!visible);
-
         conversationGrid.setVisible(visible);
-        conversationGrid.redraw();
+//        conversationGrid.redraw();
         conversationHeader.setVisible(visible);
     }
 

@@ -32,7 +32,7 @@ import java.util.Set;
  * This widget was created mainly for ClientAssignedProjects, SupplierPotentialProjects,
  * SupplierContests, SupplierAssignedProjects widgets. Those listed widgets use similar
  * tables, therefore this widget was design to cover all common functionality as:
- * UniversalAsyncGrid - see UniversalAsyncGrid class
+ Page * UniversalAsyncGrid - see UniversalAsyncGrid class
  * MultiSelectionModel
  * SimplePager
  * PageSize list box selection for selecting different number of visible items.
@@ -461,6 +461,11 @@ public class UniversalTableWidget extends Composite {
     //Table
     public UniversalAsyncGrid<FullOfferDetail> getGrid() {
         return grid;
+    }
+
+    //Pager
+    public SimplePager getPager() {
+        return pager;
     }
 
     //Columns

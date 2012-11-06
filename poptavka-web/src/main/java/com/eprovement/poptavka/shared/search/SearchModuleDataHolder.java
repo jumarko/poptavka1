@@ -141,6 +141,9 @@ public class SearchModuleDataHolder implements Serializable {
     }
 
     public static SearchModuleDataHolder parseSearchModuleDataHolder(String urlToken) {
+        if (urlToken == null) {
+            return null;
+        }
         urlToken = urlToken.replace("[", "");
         urlToken = urlToken.replace("]", "");
         String[] items = urlToken.split(";");

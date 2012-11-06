@@ -52,6 +52,8 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedDemandContest = -1;
+    private boolean cancelPagerEvent = false;
+    private long selectedClientAssignedDemandId = -1;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -76,11 +78,34 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         eventBus.setUpSearchBar(new Label("Client's assigned projects attibure's selector will be here."));
         searchDataHolder = filter;
         view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.createTokenForHistory3(0, -1);
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (this.detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
+        }
+    }
+
+    public void onInitClientAssignedDemandsByHistory(
+            int parentTablePage, long parentId, SearchModuleDataHolder filterHolder) {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
+        //Select Menu - my demands - selected
+        eventBus.selectClientDemandsMenu(Constants.CLIENT_ASSIGNED_DEMANDS);
+        //
+        cancelPagerEvent = true;
+        view.getTableWidget().getGrid().cancelRangeChangedEvent();
+        view.getTableWidget().getGrid().setPageStart(parentTablePage * view.getTableWidget().getGrid().getPageSize());
+        view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(
+                parentTablePage * view.getTableWidget().getGrid().getPageSize(),
+                view.getTableWidget().getGrid().getPageSize(),
+                filterHolder,
+                null));
+
+        this.selectedClientAssignedDemandId = parentId;
+
+        if (Storage.isAppCalledByURL()) {
+            eventBus.displayView(view.getWidgetView());
         }
     }
 
@@ -103,6 +128,14 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
         view.getTableWidget().getGrid().getDataProvider().updateRowData(
                 view.getTableWidget().getGrid().getStart(), data);
+
+        if (selectedClientAssignedDemandId != -1) {
+            eventBus.getClientAssignedDemand(selectedClientAssignedDemandId);
+        }
+    }
+
+    public void onSelectClientAssignedDemand(FullOfferDetail detail) {
+        view.getTableWidget().getGrid().getSelectionModel().setSelected(detail, true);
     }
 
     /**
@@ -184,6 +217,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                     object.setRead(true);
                     view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
+                    eventBus.createTokenForHistory3(
+                            view.getTableWidget().getPager().getPage(),
+                            object.getDemandDetail().getDemandId());
                 }
             }
         };

@@ -24,11 +24,13 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
@@ -48,6 +50,11 @@ public class ClientOffersPresenter
 
         UniversalTableWidget getOfferGrid();
 
+        //Pager
+        SimplePager getDemandPager();
+
+        SimplePager getOfferPager();
+
         //Buttons
         Button getBackBtn();
 
@@ -57,6 +64,8 @@ public class ClientOffersPresenter
         IsWidget getWidgetView();
 
         //Setter
+        void setDemandTableVisible(boolean visible);
+
         void setOfferTableVisible(boolean visible);
 
         void setDemandTitleLabel(String text);
@@ -70,12 +79,21 @@ public class ClientOffersPresenter
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedDemandOffer = -1;
+    private boolean cancelTokenCreation = false;
+    private long selectedClientOfferedDemandId = -1;
+    private long selectedClientOfferedDemandOfferId = -1;
+    private int demandPageFromToken = -1;
+    private int offerPageFromToken = -1;
+    private FieldUpdater textFieldUpdater = null;
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override
     public void bindView() {
+        // Range Change Handlers
+        demandGridRangeChangeHandler();
+        offerGridRangeChangeHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         // Field Updaters
@@ -98,11 +116,63 @@ public class ClientOffersPresenter
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.createTokenForHistory1(0);
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (this.detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
+        }
+    }
+
+    public void onInitClientOfferedDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
+        //Select Menu - my demands - selected
+        eventBus.selectClientDemandsMenu(Constants.CLIENT_OFFERED_DEMANDS);
+        //
+        cancelTokenCreation = true;
+        view.getDemandGrid().cancelRangeChangedEvent();
+        view.getDemandGrid().setPageStart(parentTablePage * view.getDemandGrid().getPageSize());
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
+                parentTablePage * view.getDemandGrid().getPageSize(),
+                view.getDemandGrid().getPageSize(),
+                filterHolder,
+                null));
+        view.setOfferTableVisible(false);
+        view.setDemandTableVisible(true);
+
+        this.selectedClientOfferedDemandId = -1;
+
+        if (Storage.isAppCalledByURL()) {
+            eventBus.displayView(view.getWidgetView());
+        }
+    }
+
+    public void onInitClientOfferedDemandOffersByHistory(ClientDemandDetail clientDemandDetail,
+            int childTablePage, long childId, SearchModuleDataHolder filterHolder) {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
+        //Select Menu - my demands - selected
+        eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
+        //
+        clientDemandDetail.setRead(true);
+        Storage.setDemandId(clientDemandDetail.getDemandId());
+        view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
+        view.setDemandTableVisible(false);
+        view.setOfferTableVisible(true);
+        //
+        cancelTokenCreation = true;
+        view.getOfferGrid().getGrid().cancelRangeChangedEvent();
+        view.getOfferGrid().getGrid().setPageStart(childTablePage * view.getOfferGrid().getGrid().getPageSize());
+        view.getOfferGrid().getGrid().getDataCount(eventBus, new SearchDefinition(
+                childTablePage * view.getOfferGrid().getGrid().getPageSize(),
+                view.getOfferGrid().getGrid().getPageSize(),
+                filterHolder,
+                null));
+
+        this.selectedClientOfferedDemandOfferId = childId;
+
+        if (Storage.isAppCalledByURL()) {
+            eventBus.displayView(view.getWidgetView());
         }
     }
 
@@ -125,6 +195,10 @@ public class ClientOffersPresenter
 
         view.getDemandGrid().getDataProvider().updateRowData(
                 view.getDemandGrid().getStart(), data);
+
+        if (selectedClientOfferedDemandId != -1) {
+            eventBus.getClientOfferedDemand(selectedClientOfferedDemandId);
+        }
     }
 
     public void onDisplayClientOfferedDemandOffers(List<FullOfferDetail> data) {
@@ -132,6 +206,21 @@ public class ClientOffersPresenter
 
         view.getOfferGrid().getGrid().getDataProvider().updateRowData(
                 view.getOfferGrid().getGrid().getStart(), data);
+
+        if (selectedClientOfferedDemandOfferId != -1) {
+            eventBus.getClientOfferedDemand(selectedClientOfferedDemandOfferId);
+        }
+    }
+
+    public void onSelectClientOfferedDemand(ClientDemandDetail detail) {
+        view.getDemandGrid().getSelectionModel().setSelected(detail, true);
+    }
+
+    public void onSelectClientOfferedDemandOffer(FullOfferDetail detail) {
+        //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
+        //nejak vytvorit event na upadatefieldoch
+        //Dolezite je len detail, ostatne atributy sa nepouzivaju
+        textFieldUpdater.update(-1, detail, null);
     }
 
     /**
@@ -217,7 +306,7 @@ public class ClientOffersPresenter
     }
 
     public void addTextColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
+        textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {
                 if (lastOpenedDemandOffer != object.getUserMessageDetail().getId()) {
@@ -225,6 +314,12 @@ public class ClientOffersPresenter
                     object.setRead(true);
                     view.getOfferGrid().getGrid().redraw();
                     displayDetailContent(object);
+                    if (cancelTokenCreation) {
+                        cancelTokenCreation = false;
+                    } else {
+                        eventBus.createTokenForHistory2(Storage.getDemandId(),
+                                view.getOfferPager().getPage(), object.getOfferDetail().getId());
+                    }
                 }
             }
         };
@@ -275,14 +370,54 @@ public class ClientOffersPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
-                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel)
-                        view.getDemandGrid().getSelectionModel()).getSelectedObject();
+                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
+                        .getSelectionModel()).getSelectedObject();
                 if (selected != null) {
                     selected.setRead(true);
                     Storage.setDemandId(selected.getDemandId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.setOfferTableVisible(true);
                     view.getOfferGrid().getGrid().getDataCount(eventBus, null);
+                    eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
+                }
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /**
+     * Handle table range change by creating token for new range/page.
+     */
+    private void demandGridRangeChangeHandler() {
+        view.getDemandGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+            @Override
+            public void onRangeChange(RangeChangeEvent event) {
+                demandPageFromToken = -1;
+                //In some cases we need to set pager size to 0, which fires this event
+                //but we don't want to create token, therefore deny fired event if
+                //cancelPagerEvent flag is True.
+                if (cancelTokenCreation) {
+                    cancelTokenCreation = false;
+                } else {
+                    eventBus.createTokenForHistory1(view.getDemandPager().getPage());
+                }
+            }
+        });
+    }
+
+    private void offerGridRangeChangeHandler() {
+        view.getOfferGrid().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+            @Override
+            public void onRangeChange(RangeChangeEvent event) {
+                offerPageFromToken = -1;
+                //In some cases we need to set pager size to 0, which fires this event
+                //but we don't want to create token, therefore deny fired event if
+                //cancelPagerEvent flag is True.
+                if (cancelTokenCreation) {
+                    cancelTokenCreation = false;
+                } else {
+                    eventBus.createTokenForHistory2(
+                            Storage.getDemandId(), view.getOfferPager().getPage(), -1);
                 }
             }
         });

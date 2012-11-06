@@ -40,7 +40,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      */
     public void onGetLocalities(final LocalityType localityType, final AsyncDataProvider dataProvider) {
         rootService.getLocalities(localityType, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-
             @Override
             public void onSuccess(List<LocalityDetail> list) {
                 if (dataProvider != null) {
@@ -54,7 +53,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     public void onGetChildLocalities(final LocalityType localityType, String locCode,
             final ListDataProvider dataProvider) {
         rootService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-
             @Override
             public void onSuccess(List<LocalityDetail> list) {
                 if (dataProvider != null) {
@@ -70,7 +68,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      */
     public void onGetRootCategories(final AsyncDataProvider dataProvider) {
         rootService.getCategories(new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-
             @Override
             public void onSuccess(List<CategoryDetail> list) {
                 if (dataProvider != null) {
@@ -83,7 +80,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
     public void onGetChildCategories(long categoryId, final ListDataProvider dataProvider) {
         rootService.getCategoryChildren(categoryId, new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-
             @Override
             public void onSuccess(List<CategoryDetail> list) {
                 if (dataProvider != null) {
@@ -99,7 +95,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      */
     public void onRequestDemandDetail(Long demandId, final ViewType type) {
         rootService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
-
             @Override
             public void onSuccess(FullDemandDetail result) {
                 eventBus.responseDemandDetail(result, type);
@@ -109,7 +104,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
     public void onRequestSupplierDetail(Long supplierId, final ViewType type) {
         rootService.getFullSupplierDetail(supplierId, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
-
             @Override
             public void onSuccess(FullSupplierDetail result) {
                 eventBus.responseSupplierDetail(result, type);
@@ -127,7 +121,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     public void onRequestConversation(long messageId, Long userMessageId, Long userId) {
         rootService.getConversation(messageId, userId, userMessageId,
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
-
                     @Override
                     public void onSuccess(List<MessageDetail> result) {
                         eventBus.responseConversation(result, ViewType.POTENTIAL);
@@ -147,7 +140,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      */
     public void onSendQuestionMessage(MessageDetail messageToSend, final ViewType type) {
         rootService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
-
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.addConversationMessage(sentMessage, type);
@@ -157,7 +149,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
     public void onSendOfferMessage(OfferMessageDetail offerMessageToSend, final ViewType type) {
         rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<OfferMessageDetail>(eventBus) {
-
             @Override
             public void onSuccess(OfferMessageDetail sentMessage) {
                 //Zobrazit offer spravu tiez v konverzacii, alebo ta sa zobrazli
@@ -175,17 +166,17 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      */
     public void onLoginFromSession() {
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
-
             @Override
             public void onSuccess(UserDetail userDetail) {
                 Storage.setUserDetail(userDetail);
                 userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-
                     @Override
                     public void onSuccess(BusinessUserDetail businessUserDetail) {
                         Storage.setBusinessUserDetail(businessUserDetail);
                         GWT.log("login from session,  user id " + businessUserDetail.getUserId());
-                        forwardUser();
+                        //Preco bolo???? vid coment v metode, ivan to len skopyroval, takze to tu naozaj nemusi byt
+                        //TODO zistit
+//                        forwardUser();
                     }
                 });
 
@@ -213,12 +204,14 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         } else {
             //if login was not invoked because of history, but user did so,
             //forward user to appropriate module according to his roles
-            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
-                eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                    BusinessUserDetail.BusinessRole.CLIENT)) {
-                eventBus.goToClientDemandsModule(null, Constants.NONE);
+            if (!Storage.isAppCalledByURL()) {
+                if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                    eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.CLIENT)) {
+                    eventBus.goToClientDemandsModule(null, Constants.NONE);
+                }
             }
         }
     }
