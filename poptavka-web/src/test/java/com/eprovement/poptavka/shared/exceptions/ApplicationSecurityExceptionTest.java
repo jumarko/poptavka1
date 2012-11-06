@@ -66,6 +66,13 @@ public class ApplicationSecurityExceptionTest {
         final Set<Class> rpcClasses = RpcUtils.getRpcClasses();
         final Map<Class, List<Method>> violations = new HashMap<Class, List<Method>>();
         for (Class rpcClass : rpcClasses) {
+            if (rpcClass.isInterface()) {
+                // do not check interfaces, since we do not want to duplicate @Secured in interface
+                // maybe we should review this approach one day:
+                // http://stackoverflow.com/questions/8441472/
+                // spring-transactional-v-spring-security-secured-inconsistent-behaviour
+                continue;
+            }
             // initial violations are empty for each class
             violations.put(rpcClass, new ArrayList<Method>());
 
