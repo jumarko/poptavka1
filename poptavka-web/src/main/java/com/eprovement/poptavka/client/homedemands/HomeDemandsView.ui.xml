@@ -22,6 +22,7 @@
 		
 		.detail-info {
 			background: none repeat scroll 0 0 #ffffff;
+			opacity: 0.8;
 			border: 1px solid #C1D2DC;
 			margin: 50px 15px 10px;
 			border-radius: 5px;
@@ -48,7 +49,7 @@
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="40">
+				<g:north size="50">
 					<g:VerticalPanel>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
@@ -63,6 +64,9 @@
 				<g:center>
 					<c:DataGrid ui:field="dataGrid" />
 				</g:center>
+				<g:south size="30">
+					<g:HTMLPanel></g:HTMLPanel>
+				</g:south>
 			</g:DockLayoutPanel>
 		</g:center>
 		<g:east size="350">

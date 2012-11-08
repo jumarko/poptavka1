@@ -5,15 +5,6 @@
 
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
-	<ui:style>
-		.grid {
-			background: #ff0000;
-		}
-		
-		.grid table th {
-			background: #aa0000;
-		}
-	</ui:style>
 
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -28,7 +19,7 @@
 				<g:ListBox ui:field='pageSize' /> </td> </tr> </table> </g:HTMLPanel> -->
 		</g:north>
 		<g:center>
-			<s:UniversalAsyncGrid ui:field="grid" styleName='{style.grid}' />
+			<s:UniversalAsyncGrid ui:field="grid"/>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

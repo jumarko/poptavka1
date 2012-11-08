@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.resources.GridResources;
+import com.eprovement.poptavka.client.resources.AsyncDataGrid;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.resources.TreeResources;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
@@ -156,7 +156,7 @@ public class HomeDemandsView extends OverflowComposite
      */
     private void initCellTable() {
         // Create a CellTable.
-        DataGrid.Resources resource = GWT.create(GridResources.class);
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns, this.getPageSize(), resource);
         dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
         // Selection handler

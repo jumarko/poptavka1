@@ -15,6 +15,7 @@
  */
 .cellTreeWidget {
 	background: #ffffff;
+	opacity: 0.8;
 	border: 1px solid #C1D2DC;
 	margin: 0 15px 30px;
 	border-radius: 5px;
