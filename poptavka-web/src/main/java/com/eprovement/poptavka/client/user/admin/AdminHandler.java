@@ -22,8 +22,10 @@ import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -648,6 +650,17 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             @Override
             public void onSuccess(ProblemDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
+            }
+        });
+    }
+
+    public void onUpdateUnreadMessagesCount() {
+        generalService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
+            @Override
+            public void onSuccess(UnreadMessagesDetail result) {
+                // empty i.e number of new messages could be retrieved
+                GWT.log("UpdateUnreadMessagesCount retrieved, number=" + result.getUnreadMessagesCount());
+                eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
             }
         });
     }

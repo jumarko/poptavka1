@@ -4,7 +4,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**
@@ -80,10 +79,9 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
-        if (Storage.isAppCalledByURL()) {
-            eventBus.atAccount();
-            eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
-            eventBus.goToAdminModule(null, Integer.valueOf(param.split("=")[1]));
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+            // login from session method
+            eventBus.loginFromSession();
         }
 
     }

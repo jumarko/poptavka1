@@ -12,6 +12,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -152,4 +153,6 @@ public interface AdminRPCService extends RemoteService {
     List<ProblemDetail> getAdminProblems(SearchDefinition searchDefinition) throws RPCException;
 
     void updateProblem(ProblemDetail detailObject) throws RPCException;
+
+    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 }

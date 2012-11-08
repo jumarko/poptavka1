@@ -12,6 +12,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -42,4 +43,6 @@ public interface MessagesRPCService extends RemoteService {
         throws RPCException;
 
     void deleteMessages(List<Long> messagesIds) throws RPCException;
+
+    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 }

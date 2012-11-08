@@ -7,6 +7,7 @@ import com.eprovement.poptavka.server.converter.UserMessageConverter;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.MessagesRPCService;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
@@ -15,13 +16,16 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.MessageConverter;
+import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -432,5 +438,26 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
                 break;
         }
         return search;
+    }
+
+    /**
+     * This method will update number of unread messages of logged user.
+     * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
+     * only when PoptavkaUserAuthentication object exist in SecurityContextHolder and we can retrieve userId.
+     *
+     * TODO Vojto - call DB servise to retrieve the number of unread messages for given userId
+     *
+     * @return UnreadMessagesDetail with number of unread messages and other info to be displayed after users logs in
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
+        Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
+        // TODO Vojto - get number of unread messages. UserId is provided from Authentication obejct see above
+        UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
+        unreadMessagesDetail.setUnreadMessagesCount(99);
+        return unreadMessagesDetail;
     }
 }

@@ -5,6 +5,7 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**
@@ -60,7 +61,10 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
      */
     @Override
     public void convertFromToken(String historyName, String param, MessagesEventBus eventBus) {
-        eventBus.userMenuStyleChange(Constants.USER_MESSAGES_MODULE);
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+            // login from session method
+            eventBus.loginFromSession();
+        }
     }
 
     @Override

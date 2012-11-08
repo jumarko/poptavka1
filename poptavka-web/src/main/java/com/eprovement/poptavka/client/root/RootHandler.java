@@ -174,9 +174,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                     public void onSuccess(BusinessUserDetail businessUserDetail) {
                         Storage.setBusinessUserDetail(businessUserDetail);
                         GWT.log("login from session,  user id " + businessUserDetail.getUserId());
-                        //Preco bolo???? vid coment v metode, ivan to len skopyroval, takze to tu naozaj nemusi byt
-                        //TODO zistit
-//                        forwardUser();
+                        forwardUser();
                     }
                 });
 

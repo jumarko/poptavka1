@@ -66,6 +66,12 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
 //    @Event(forwardToParent = true)
 //    void loginFromSession();
 
+    @Event(forwardToParent = true)
+    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+
+    @Event(forwardToParent = true)
+    void loginFromSession();
+
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/
@@ -167,4 +173,7 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
 //    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
     @Event(handlers = MessagesHandler.class)
     void requestConversation(Long threadRootId, Long subRootId);
+
+    @Event(handlers = MessagesHandler.class)
+    void updateUnreadMessagesCount();
 }

@@ -132,6 +132,8 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
             // login from session method
             eventBus.loginFromSession();
         }
+        // TODO martin - nizsie mas dve volania eventBus.goToHomeSuppliersModule co je zrejme nespravne. Mal by si volat
+        // asi goToClientDemandsModule a nie home suppliers
         if (param == null) { //nikdy nebude null, predsa aspon widget=10 bude nie? --->>> upravit podmienky
             eventBus.goToHomeSuppliersModule(null);
         } else {

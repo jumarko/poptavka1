@@ -52,6 +52,12 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
 //    @Event(forwardToParent = true)
 //    void loginFromSession();
 
+    @Event(forwardToParent = true)
+    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+
+    @Event(forwardToParent = true)
+    void loginFromSession();
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
@@ -63,4 +69,7 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /**************************************************************************/
     @Event(handlers = SettingsHandler.class)
     void getLoggedUser(long userId);
+
+    @Event(handlers = SettingsHandler.class)
+    void updateUnreadMessagesCount();
 }

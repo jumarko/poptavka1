@@ -86,8 +86,12 @@ public class SettingsPresenter
         // nothing
     }
 
+    /**
+     * Every call of onForward method invokes updateUnreadMessagesCount event that is secured thus user without
+     * particular access role can't access it and loginPopupView will be displayed.
+     */
     public void onForward() {
-        // noting
+        eventBus.updateUnreadMessagesCount();
     }
 
     /**************************************************************************/

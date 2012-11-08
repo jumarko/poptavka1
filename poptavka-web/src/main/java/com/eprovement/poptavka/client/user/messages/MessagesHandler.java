@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.service.demand.MessagesRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
@@ -141,6 +142,17 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
             @Override
             public void onSuccess(BusinessUserDetail result) {
                 eventBus.responseUserInfo(result);
+            }
+        });
+    }
+
+    public void onUpdateUnreadMessagesCount() {
+        messagesService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
+            @Override
+            public void onSuccess(UnreadMessagesDetail result) {
+                // empty i.e number of new messages could be retrieved
+                GWT.log("UpdateUnreadMessagesCount retrieved, number=" + result.getUnreadMessagesCount());
+                eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
             }
         });
     }

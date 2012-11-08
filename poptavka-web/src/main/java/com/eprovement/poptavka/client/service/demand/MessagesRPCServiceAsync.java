@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.service.demand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import java.util.ArrayList;
@@ -37,4 +38,6 @@ public interface MessagesRPCServiceAsync {
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
 
     void deleteMessages(List<Long> messagesIds, AsyncCallback<List<UserMessageDetail>> callback);
+
+    void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 }

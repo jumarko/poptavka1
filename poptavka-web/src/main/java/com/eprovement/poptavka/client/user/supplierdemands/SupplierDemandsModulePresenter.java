@@ -48,11 +48,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     }
 
     public void onForward() {
-        // TODO ivlcek - tato metoda by mohla napr zistit pocet aktualnych novych sprav ktore ma uzivatel
-        // takze by nevadilo, ze by sa tato servisa volala pri kazdom volanie v metode onForward() pre kazdy modul
-        if (Storage.isAppCalledByURL() == null || !(Storage.isAppCalledByURL())) {
-            eventBus.updateUnreadMessagesCount();
-        }
+        eventBus.updateUnreadMessagesCount();
         eventBus.setUpSearchBar(null);
     }
 

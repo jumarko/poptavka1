@@ -12,6 +12,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -113,4 +114,6 @@ public interface AdminRPCServiceAsync {
     void getAdminProblems(SearchDefinition searchDefinition, AsyncCallback<List<ProblemDetail>> callback);
 
     void updateProblem(ProblemDetail detailObject, AsyncCallback<ProblemDetail> callback);
+
+    void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 }

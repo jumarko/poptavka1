@@ -90,6 +90,12 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
+
+    @Event(forwardToParent = true)
+    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+
+    @Event(forwardToParent = true)
+    void loginFromSession();
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/
@@ -353,4 +359,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Override
     @Event(handlers = AdminHandler.class)
     void getData(SearchDefinition searchDefinition);
+
+    @Event(handlers = AdminHandler.class)
+    void updateUnreadMessagesCount();
 }

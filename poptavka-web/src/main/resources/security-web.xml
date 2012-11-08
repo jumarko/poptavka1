@@ -17,7 +17,10 @@
         <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/poptavka/service/user" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />
+        <security:intercept-url pattern="/poptavka/service/settings" access="ROLE_CLIENT" />
+        <security:intercept-url pattern="/poptavka/service/messagesmodule" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/supplierdemandsmodule" access="ROLE_SUPPLIER" />
+        <security:intercept-url pattern="/poptavka/service/admin" access="ROLE_ADMIN" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <!--

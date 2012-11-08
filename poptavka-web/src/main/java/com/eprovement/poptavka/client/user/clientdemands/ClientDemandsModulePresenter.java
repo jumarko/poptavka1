@@ -48,11 +48,7 @@ public class ClientDemandsModulePresenter
     }
 
     public void onForward() {
-        //No current view searching available here
-        // TODO ivlcek - finish updating unread messages count
-        if (Storage.isAppCalledByURL() == null || !(Storage.isAppCalledByURL())) {
-            eventBus.updateUnreadMessagesCount();
-        }
+        eventBus.updateUnreadMessagesCount();
         eventBus.setUpSearchBar(null);
     }
 

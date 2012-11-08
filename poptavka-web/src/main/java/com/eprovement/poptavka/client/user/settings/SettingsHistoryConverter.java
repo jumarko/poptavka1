@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.user.settings;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 
 /**
@@ -37,9 +36,9 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
      */
     @Override
     public void convertFromToken(String methodName, String param, SettingsEventBus eventBus) {
-        eventBus.userMenuStyleChange(Constants.USER_SETTINGS_MODULE);
-        if (Storage.isAppCalledByURL()) {
-            eventBus.goToSettingsModule();
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+            // login from session method
+            eventBus.loginFromSession();
         }
     }
 
