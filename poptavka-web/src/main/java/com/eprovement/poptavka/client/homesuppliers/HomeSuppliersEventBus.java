@@ -55,13 +55,14 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
      * The only entry point to this module due to code-splitting and exclusive
      * fragment.
      */
-    @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
-    String goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
+    //TODO Martin - history when filtering
+    @Event(handlers = HomeSuppliersPresenter.class) //, historyConverter = HomeSuppliersHistoryConverter.class)
+    void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/
     /* History events                                                          */
     /**************************************************************************/
-    @Event(historyConverter = HomeSuppliersHistoryConverter.class)
+    @Event(historyConverter = HomeSuppliersHistoryConverter.class, name = "token")
     String createTokenForHistory(LinkedList<TreeItem> categoryDetail, int page, FullSupplierDetail supplierDetail);
 
     /**************************************************************************/
@@ -108,9 +109,6 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     @Override
     @Event(handlers = HomeSuppliersHandler.class)
     void getData(SearchDefinition searchDefinition);
-
-//    @Event(handlers = HomeSuppliersHandler.class)
-//    void getParentsWithIndexes(long categoryId);
 
     @Event(handlers = HomeSuppliersHandler.class)
     void getCategoryAndSetModuleByHistory(LinkedList<TreeItem> tree, long categoryID, int page, long supplierID);

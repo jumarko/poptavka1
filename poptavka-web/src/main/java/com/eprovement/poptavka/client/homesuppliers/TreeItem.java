@@ -43,4 +43,34 @@ public class TreeItem {
     public void setIndex(int index) {
         this.index = index;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + (int) (this.categoryId ^ (this.categoryId >>> 32));
+        hash = 83 * hash + this.level;
+        hash = 83 * hash + this.index;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TreeItem other = (TreeItem) obj;
+        if (this.categoryId != other.categoryId) {
+            return false;
+        }
+        if (this.level != other.level) {
+            return false;
+        }
+        if (this.index != other.index) {
+            return false;
+        }
+        return true;
+    }
 }

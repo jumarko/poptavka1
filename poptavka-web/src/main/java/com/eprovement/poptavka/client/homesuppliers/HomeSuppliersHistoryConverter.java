@@ -17,14 +17,14 @@ import java.util.LinkedList;
 @History(type = HistoryConverterType.DEFAULT, name = "suppliers")
 public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppliersEventBus> {
 
-    public String onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
-        if (searchModuleDataHolder == null) {
-            return "";
-        } else {
-            return "filter:" + searchModuleDataHolder.toStringWithIDs();
-        }
-    }
-
+//    TODO Martin - history when filtering
+//    public String onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
+//        if (searchModuleDataHolder == null) {
+//            return onCreateTokenForHistory(new LinkedList<TreeItem>(), 0, null);
+//        } else {
+//            return "filter:" + searchModuleDataHolder.toStringWithIDs();
+//        }
+//    }
     public String onCreateTokenForHistory(
             LinkedList<TreeItem> openedHierarchy, int page, FullSupplierDetail supplierDetail) {
         StringBuilder token = new StringBuilder();
@@ -71,7 +71,11 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
                 //parse param
                 String[] params = param.split(";");
                 LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split("=")[1]);
-                if (!tree.isEmpty()) {
+                if (tree.isEmpty()) {
+                    eventBus.setModuleByHistory(tree, null,
+                            Integer.valueOf(params[1].split("=")[1]),
+                            Long.valueOf(params[2].split("=")[1]));
+                } else {
                     eventBus.getCategoryAndSetModuleByHistory(
                             tree,
                             tree.getLast().getCategoryId(),

@@ -100,16 +100,10 @@ public class HomeSuppliersPresenter
     //FLAGS
     //--------------------------------------------------------------------------
     private long selectedSupplier = -1;
-    /**
-     * Sometimes we only need to perform half of actions.
-     */
-    /** Stop processing event CellTree.OpenHandler right after node is opened.
-     * When using setChildOpen to open node but not fire open event */
-    boolean cancelOpenEvent = false;
-    /** Stop processing event DataGrid.RangeChangeHandler.
-     * When we want to set page size but not fire create token event */
-    boolean cancelPagerEvent = false;
-    int pageFromToken = -1;
+    boolean calledFromHistory = false;
+    boolean sameCategorySelection = false;
+    boolean categoryOrPageHasChanged = false;
+    int pageFromToken = 0;
     /**
      * To control possible dead locks.
      * There are two different events that need to be handled and perform same actions:
@@ -182,6 +176,7 @@ public class HomeSuppliersPresenter
         view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
         closeAllNodes(view.getCellTree().getRootTreeNode());
 
+        view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
     }
 
@@ -203,6 +198,7 @@ public class HomeSuppliersPresenter
         //set visibility
         view.getFilterLabelPanel().setVisible(true);
         //getData
+        view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
@@ -217,88 +213,128 @@ public class HomeSuppliersPresenter
      */
     public void onSetModuleByHistory(
             LinkedList<TreeItem> historyTree, CategoryDetail categoryDetail, int page, long supplierID) {
-        //force table to show loading indicator
-        view.getPager().startLoading();
-
         //1 - TREE
         //----------------------------------------------------------------------
         //invoked by URL
-        //When app started from scrach, actualOpenedHierarchy is empty, because it only stores
-        //CellTree's open nodes hierarchy of actual app state.
-        if (actualOpenedHierarchy.isEmpty()) {
-            //Therefore, if this method was called and actualOpenedHierarchy is empty,
-            //app was invoked from URL, no by back & forward events (actualOpenedHierarchy wouldn't be empty)
-            //Open CellTree's nodes accorting to hierarchy stored in URL
-            //Set fag to false - tells app that nodes will be opened programicaly, not by user
-            selectedEvent = true;
-            //Opening will be performed "from scratch" - from CellTree root.
-            lastOpened = view.getCellTree().getRootTreeNode();
-            //"From scratch" - user while stored URL hierarchy
-            temporaryOpenedHierarchy = new LinkedList<TreeItem>(historyTree); //make a copy
-            if (!temporaryOpenedHierarchy.isEmpty()) {
-                openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
-            }
+        //Ak som prisiel tu a toto sa nezmenilo, tak som prisiel cez back&forward a zmena je
+        //len v page alebo selectedId
+        if (historyTree.isEmpty()) {
+            closeAllNodes(view.getCellTree().getRootTreeNode());
         } else {
-            //So, if this method was called and actualOpenedHierarchy is NOT empty,
-            //back & forward events were performed
-            //And if actual open nodes state differs to the one in URL, we can define
-            //according to the length of those lists, what kind of action was performed - back or forward
-            if (actualOpenedHierarchy.size() > historyTree.size()) {
-                /** BACKWARDS opening must be performed.
-                 * - open node to the left from actual node **/
-                selectedEvent = true;
-                modifyLastOpened(categoryDetail.getLevel());
-                modifyTemporaryHierarchy(historyTree, categoryDetail.getLevel());
-                if (!temporaryOpenedHierarchy.isEmpty()) {
-                    openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+            if (!actualOpenedHierarchy.equals(historyTree)) {
+
+                //When app started from scrach, actualOpenedHierarchy is empty, because it only stores
+                //CellTree's open nodes hierarchy of actual app state.
+                if (actualOpenedHierarchy.isEmpty()) {
+                    //Therefore, if this method was called and actualOpenedHierarchy is empty,
+                    //app was invoked from URL, no by back & forward events (actualOpenedHierarchy wouldn't be empty)
+                    //Open CellTree's nodes accorting to hierarchy stored in URL
+                    //Set fag to false - tells app that nodes will be opened programicaly, not by user
+                    selectedEvent = true;
+                    //Opening will be performed "from scratch" - from CellTree root.
+                    lastOpened = view.getCellTree().getRootTreeNode();
+                    //"From scratch" - user while stored URL hierarchy
+                    temporaryOpenedHierarchy = new LinkedList<TreeItem>(historyTree); //make a copy
+                    if (!temporaryOpenedHierarchy.isEmpty()) {
+                        openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+                    }
+                } else {
+                    //So, if this method was called and actualOpenedHierarchy is NOT empty,
+                    //back & forward events were performed
+                    //And if actual open nodes state differs to the one in URL, we can define
+                    //according to the length of those lists, what kind of action was performed - back or forward
+                    if (actualOpenedHierarchy.size() > historyTree.size()) {
+                        /** BACKWARDS opening must be performed.
+                         * - open node to the left from actual node **/
+                        selectedEvent = true;
+                        modifyLastOpened(categoryDetail.getLevel());
+                        modifyTemporaryHierarchy(historyTree, categoryDetail.getLevel());
+                        if (!temporaryOpenedHierarchy.isEmpty()) {
+                            openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+                        }
+                    } else if (actualOpenedHierarchy.size() <= historyTree.size()) {
+                        /** FORWARD opening must be performed.
+                         * - open node to the right from actual node **/
+                        selectedEvent = true;
+                        int level = getLevel();
+                        modifyLastOpened(level);
+                        modifyTemporaryHierarchy(historyTree, level);
+                        if (!temporaryOpenedHierarchy.isEmpty()) {
+                            openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+                        }
+                    }
                 }
-            } else if (actualOpenedHierarchy.size() <= historyTree.size()) {
-                /** FORWARD opening must be performed.
-                 * - open node to the right from actual node **/
-                selectedEvent = true;
-                int level = getLevel();
-                modifyLastOpened(level);
-                modifyTemporaryHierarchy(historyTree, level);
-                if (!temporaryOpenedHierarchy.isEmpty()) {
-                    openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
-                }
+                //Set actual state of CellTree's open nodes hierarchy according to history one.
+                this.actualOpenedHierarchy = historyTree;
             }
         }
-        //Set actual state of CellTree's open nodes hierarchy according to history one.
-        this.actualOpenedHierarchy = historyTree;
 
-        //2 - TABLE
+        //2 - TABLE - PAGER
         //----------------------------------------------------------------------
-        //select CATEGORY and PAGER
-
         //If Selection is different from actual one -> new category is going to be selected.
         //Therefore we need to reset pager to 0 page and cancel event whitch creates token (See Bind method).
         //No new token is wanted, because this all is already called because of history,
         //therefore there is already token - the one we are resuming/reestablishing now.
-        //reset table and pager to particular state, but data retrieving leave to categorySelectionEvent.
-        this.pageFromToken = page;
-        openedEvent = true; //open nodes event have already been handled - in 1 - Tree part
+
         //Select category
         //Selection can be handled by part one (see above) by not denying open events.
         //But when app is invoked from URL, opening nodes can take some presious time, therefore
         //open nodes and at the same time select category (despite it's not visible yet),
         //but it fires an event for retrieving data - and that can take also some presious time
         //-> do it at the same time - there is everything asynchronous anyway
-        view.getSelectionCategoryModel().setSelected(categoryDetail, true);
+
+        //Set flags
+        this.pageFromToken = page;
+        openedEvent = true; //open nodes event have already been handled - in 1 - Tree part
+        calledFromHistory = true; //setting pager will be due to history
+
+        //If no category is selected - Table holds all suppliers data & cellTree is closed
+        if (categoryDetail == null) {
+            //If no category is selected -> perform only pager.setPage to fire event getData on DataProvider
+            //if categoryDetail == null -> no category selection must be made -> deselect if any
+            if (view.getSelectionCategoryModel().getSelectedObject() != null) {
+                view.getSelectionCategoryModel().setSelected(
+                        view.getSelectionCategoryModel().getSelectedObject(), false);
+                //TODO Martin provide searchModuleDataHolder from token
+                view.getPager().startLoading();
+                //if deselecting category made, retrieve all data available or filtered if needed
+                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
+            } else {
+                sameCategorySelection = true;
+                selectCategoryChangeHandlerInner(null);
+            }
+        } else {
+            //But if category is selected, differ two cases
+            //If same category is selected -> setPage must fire getData on dataProvider
+            //If other category is selected -> setPage must not fire getData on dataProvider,
+            //because new data will be retrieved therefore there is no point to do that
+            sameCategorySelection = view.getSelectionCategoryModel().getSelectedObject().equals(categoryDetail);
+            if (sameCategorySelection) {
+                selectCategoryChangeHandlerInner(categoryDetail);
+            } else {
+                categoryOrPageHasChanged = true;
+                view.getSelectionCategoryModel().setSelected(categoryDetail, true);
+            }
+        }
 
         //3 - supplier DETAIL
         //----------------------------------------------------------------------
-        FullSupplierDetail supplierDetail = (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid()
-                .getSelectionModel()).getSelectedObject();
-        //If there is already selected some supplier detail and we are resuming history state
-        //where there is no selection, deselect table selection and hide detail widget.
-        if (supplierID == -1 && supplierDetail != null) {
-            view.hideSuppliersDetail();
-            ((SingleSelectionModel) view.getDataGrid().getSelectionModel()).setSelected(supplierDetail, false);
+        //There is always no selection - because deselectDataGrid is called in SelectionCategoryHandler
+
+        //If there is supplierId stored in token
+        if (supplierID != -1) {
+            //and if category or page has changed (new data are going to be retireved)
+            if (categoryOrPageHasChanged) {
+                //therefore set token's supplierID to selectedSupplier attribute for later usage
+                //(when new data are displayed) to get and select supplier object detail
+                this.selectedSupplier = supplierID;
+            } else {
+                //and if category or page has not changed (no changes to data are going to be made,
+                //just change table selection), no display methods will be called, therefore,
+                //getSupplier method won't be fired -> do it manualy
+                eventBus.getSupplier(supplierID);
+            }
         }
-        //But if there should be selected some supplier detail object, remember its ID and when
-        //data are retrieved, select it (See displaySuppliers method).
-        this.selectedSupplier = supplierID;
     }
 
     /**************************************************************************/
@@ -347,15 +383,7 @@ public class HomeSuppliersPresenter
         view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                pageFromToken = -1;
-                //In some cases we need to set pager size to 0, which fires this event
-                //but we don't want to create token, therefore deny fired event if
-                //cancelPagerEvent flag is True.
-                if (cancelPagerEvent) {
-                    cancelPagerEvent = false;
-                } else {
-                    createTokenForHistory(selectedSupplier == -1 ? false : true);
-                }
+                createTokenForHistory(selectedSupplier == -1 ? false : true);
             }
         });
     }
@@ -386,11 +414,12 @@ public class HomeSuppliersPresenter
         view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
             @Override
             public void onOpen(OpenEvent<TreeNode> event) {
-                /**************************************************************/
-                //get selected node object
+                //Get selected node object
+                //--------------------------------------------------------------
                 CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
 
-                /**************************************************************/
+                //Select category of needed
+                //--------------------------------------------------------------
                 openedEvent = true; //OPEN NODE event's semafor BEGIN >>>>>>>
                 //If opening node was done first, select opened node's object in selection model
                 if (!selectedEvent) {
@@ -411,8 +440,9 @@ public class HomeSuppliersPresenter
                 }
                 selectedEvent = false; //SELECT CATEGORY event's semafor END <<<<<<<
 
-                //update last open node state
-                lastOpened = event.getTarget();
+                //update flags
+                //----------------------------------------------------------------------
+                lastOpened = event.getTarget(); //update last open node state
             }
         });
     }
@@ -434,7 +464,22 @@ public class HomeSuppliersPresenter
         });
     }
 
+    /**
+     * Handle main functionality as opening nodes, setting pager and retrieving data.
+     * Is called either from by selecting SelectionCategoryModel or when reestablishing history.
+     *
+     * @param selected
+     */
     private void selectCategoryChangeHandlerInner(CategoryDetail selected) {
+        //Table selection
+        //----------------------------------------------------------------------
+        //If new category is selected, already selected supplier won't match -> deselect
+        //Deselecting table object is needed desptite table data provider has changed,
+        //because selection model holds its selected object independent to data provider.
+        deselectGridSelection();
+
+        //Open cellTree nodes if needed
+        //----------------------------------------------------------------------
         if (selected != null) {
             //User selection was made -> reset filtering
             view.getFilterLabelPanel().setVisible(false);
@@ -456,42 +501,62 @@ public class HomeSuppliersPresenter
             } else {
                 selectedEvent = false; //SELECT CATEGORY event's semafor END <<<<<<<
             }
-            openedEvent = false; //OPEN NODE event's semafor END <<<<<<<
+        }
+        openedEvent = false; //OPEN NODE event's semafor END <<<<<<<
 
-            //Initialization - table, pager ... create token if need
-            //----------------------------------------------------------
-            //If new category selected, selected supplier won't match -> deselect
-            deselectGridSelection();
-            //and hide supplier detail widget
-            view.hideSuppliersDetail();
-            //if page and pager.page is equal, setting page won't fire rangeChange event -> manual
-            //v podstate to bude volane takto vzdy (==ak nenastala ziadna zmena),
-            //ak ale nastane zmena stranky tabulky, vtedy token vytvory iny hadler - rangeChanged na dataGride
-            if (pageFromToken == -1) { //no history
-                //If new category is selected, pager must be set to page 0,
-                //but if page is already 0, range change event won't ne fire,
-                //therefor new token won't be created -> create token here
-                createTokenForHistory(false);
-            } else {
-                //If new category is selected, pager must be set to page 0
-                //It also fires range change event which creates new token
-                cancelPagerEvent = true;
-                view.getDataGrid().cancelRangeChangedEvent();
-                view.getDataGrid().setPageStart(pageFromToken * view.getDataGrid().getPageSize());
+        //Set pager
+        //----------------------------------------------------------------------
+        //If any changed has been made, pager must be set to right page. Setting different
+        //page that is already selected fires dataGrid.RangeChangeEvent that handles creating token.
+        //In some scenarious we don't want to create another token, therefore differ two cases:
+        //1) If setting page is called from history, cancel any attemts to create new token
+        if (calledFromHistory) {
+            //if actual page differs to history page, pager.setPage fires dataGrid.RangeChangeEvent
+            //that handles creating token -> cancel creating new token in this scenario
+            if (view.getPager().getPage() != pageFromToken) {
+                eventBus.setHistoryStoredForNextOne(false);
             }
 
-            //Retrieve data
-            //----------------------------------------------------------
+            //If same category is selected -> setPage must fire getData on dataProvider
+            //If other category is selected -> setPage need not fire getData on dataProvider,
+            //because new data will be retrieved therefore there is no point to do that
+            //(we don't need to get data on page 0 on actual data because new
+            //data will be retrieved)
+            if (!sameCategorySelection) {
+                view.getDataGrid().cancelRangeChangedEvent();
+            }
+            calledFromHistory = false;
+            view.getPager().setPage(pageFromToken);
+            //2) If setting page is called by user, make sure to create new token
+        } else {
+            //If user selected new category, pager must be reset to 0 and again:
+            //If same page is set -> setPage won't fire getData on dataProvider
+            //If different page is set -> setPage to 0 will fire getData on dataProvider,
+            //therefore cancel rangeChangeEvent because new data will be retrieved
+            //(we don't need to get data on page 0 on actual data because new
+            //data will be retrieved)
+            if (view.getPager().getPage() != 0) {
+                view.getDataGrid().cancelRangeChangedEvent();
+            }
+            view.getPager().setPage(0);
+            createTokenForHistory(false);
+        }
+
+        //Retireve data if needed
+        //----------------------------------------------------------------------
+        if (selected != null && !sameCategorySelection) {
             //Set selected category as filter and pass it to filter through that category
             SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
             searchDataHolder.getCategories().add(selected);
 
             //Retrieve data
+            view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
             view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        } else {
-            //If no category is selected, close all nodes
-            closeAllNodes(view.getCellTree().getRootTreeNode());
         }
+
+        //Reset flags
+        //----------------------------------------------------------------------
+        sameCategorySelection = false;
     }
 
     /**
@@ -510,7 +575,7 @@ public class HomeSuppliersPresenter
                     //retrieve supplier detail info and display it
                     view.displaySuppliersDetail(selected);
                     //create token for this selection
-                    createTokenForHistory(false);
+                    createTokenForHistory(selectedSupplier == -1 ? false : true);
                 }
             }
         });
@@ -560,7 +625,6 @@ public class HomeSuppliersPresenter
         if (selectedSupplier != -1) {
             eventBus.getSupplier(selectedSupplier);
         }
-        view.getDataGrid().redraw();
     }
 
     /**************************************************************************/
@@ -720,6 +784,7 @@ public class HomeSuppliersPresenter
         SingleSelectionModel selectionModel = (SingleSelectionModel) view.getDataGrid().getSelectionModel();
         FullSupplierDetail supplier = (FullSupplierDetail) (selectionModel).getSelectedObject();
         selectionModel.setSelected(supplier, false);
+        view.hideSuppliersDetail();
     }
 
     /**
