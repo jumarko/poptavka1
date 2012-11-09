@@ -55,15 +55,15 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
      * The only entry point to this module due to code-splitting and exclusive
      * fragment.
      */
-    //TODO Martin - history when filtering
-    @Event(handlers = HomeSuppliersPresenter.class) //, historyConverter = HomeSuppliersHistoryConverter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/
     /* History events                                                          */
     /**************************************************************************/
     @Event(historyConverter = HomeSuppliersHistoryConverter.class, name = "token")
-    String createTokenForHistory(LinkedList<TreeItem> categoryDetail, int page, FullSupplierDetail supplierDetail);
+    String createTokenForHistory(SearchModuleDataHolder searchDataHolder,
+            LinkedList<TreeItem> categoryDetail, int page, FullSupplierDetail supplierDetail);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -88,7 +88,8 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Event(handlers = HomeSuppliersPresenter.class)
-    void setModuleByHistory(LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID);
+    void setModuleByHistory(SearchModuleDataHolder searchDataHolder,
+            LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID);
 
     @Event(handlers = HomeSuppliersPresenter.class)
     void selectSupplier(FullSupplierDetail supplierDetail);
@@ -111,7 +112,8 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     void getData(SearchDefinition searchDefinition);
 
     @Event(handlers = HomeSuppliersHandler.class)
-    void getCategoryAndSetModuleByHistory(LinkedList<TreeItem> tree, long categoryID, int page, long supplierID);
+    void getCategoryAndSetModuleByHistory(SearchModuleDataHolder searchDataHolder,
+            LinkedList<TreeItem> tree, long categoryID, int page, long supplierID);
 
     @Event(handlers = HomeSuppliersHandler.class)
     void getSupplier(long supplierID);

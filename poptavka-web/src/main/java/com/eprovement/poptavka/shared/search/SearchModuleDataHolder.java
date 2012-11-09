@@ -71,6 +71,11 @@ public class SearchModuleDataHolder implements Serializable {
     /**************************************************************************/
     /* toString & parse                                                       */
     /**************************************************************************/
+    public static final String VALUE_SEPARATOR = "=";
+    public static final String ITEM_SEPARATOR = ";";
+    public static final String LIST_BRACKET_LEFT = "[";
+    public static final String LIST_BRACKET_RIGHT = "]";
+    public static final String LIST_ITEM_SEPARATOR = ",";
     /**
      * String format: >> text=;cats=[..,..],locs=[..,..];attrs=[..,..] <<.
      * @return
@@ -78,28 +83,44 @@ public class SearchModuleDataHolder implements Serializable {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("text=\"");
+        str.append("text");
+        str.append(VALUE_SEPARATOR);
+        str.append("\"");
         str.append(searchText);
         str.append("\"");
-        str.append(";cats=");
+        str.append(ITEM_SEPARATOR);
+        str.append("cats");
+        str.append(VALUE_SEPARATOR);
         str.append(categories.toString());
-        str.append(";locs=");
+        str.append(ITEM_SEPARATOR);
+        str.append("locs");
+        str.append(VALUE_SEPARATOR);
         str.append(localities.toString());
-        str.append(";attrs=");
+        str.append(ITEM_SEPARATOR);
+        str.append("attrs");
+        str.append(VALUE_SEPARATOR);
         str.append(attributes.toString());
         return str.toString();
     }
 
     public String toStringWithIDs() {
         StringBuilder str = new StringBuilder();
-        str.append("text=\"");
+        str.append("text");
+        str.append(VALUE_SEPARATOR);
+        str.append("\"");
         str.append(searchText);
         str.append("\"");
-        str.append(";cats=");
+        str.append(ITEM_SEPARATOR);
+        str.append("cats");
+        str.append(VALUE_SEPARATOR);
         str.append(categoriesIDsToString());
-        str.append(";locs=");
+        str.append(ITEM_SEPARATOR);
+        str.append("locs");
+        str.append(VALUE_SEPARATOR);
         str.append(localitiesIDsToString());
-        str.append(";attrs=");
+        str.append(ITEM_SEPARATOR);
+        str.append("attrs");
+        str.append(VALUE_SEPARATOR);
         str.append(attributes.toString());
         return str.toString();
     }
@@ -110,15 +131,15 @@ public class SearchModuleDataHolder implements Serializable {
      * @return
      */
     public String categoriesIDsToString() {
-        StringBuilder str = new StringBuilder("[");
+        StringBuilder str = new StringBuilder(LIST_BRACKET_LEFT);
         for (CategoryDetail cat : categories) {
             str.append(cat.getId());
-            str.append(",");
+            str.append(LIST_ITEM_SEPARATOR);
         }
-        if (str.length() != 0) {
+        if (!categories.isEmpty()) {
             str.delete(str.length() - 1, str.length());
         }
-        str.append("]");
+        str.append(LIST_BRACKET_RIGHT);
         return str.toString();
     }
 
@@ -128,15 +149,15 @@ public class SearchModuleDataHolder implements Serializable {
      * @return
      */
     public String localitiesIDsToString() {
-        StringBuilder str = new StringBuilder("[");
+        StringBuilder str = new StringBuilder(LIST_BRACKET_LEFT);
         for (LocalityDetail loc : localities) {
             str.append(loc.getId());
-            str.append(",");
+            str.append(LIST_ITEM_SEPARATOR);
         }
-        if (str.length() != 0) {
+        if (!localities.isEmpty()) {
             str.delete(str.length() - 1, str.length());
         }
-        str.append("]");
+        str.append(LIST_BRACKET_RIGHT);
         return str.toString();
     }
 
@@ -144,38 +165,38 @@ public class SearchModuleDataHolder implements Serializable {
         if (urlToken == null) {
             return null;
         }
-        urlToken = urlToken.replace("[", "");
-        urlToken = urlToken.replace("]", "");
-        String[] items = urlToken.split(";");
+        urlToken = urlToken.replace(LIST_BRACKET_LEFT, "");
+        urlToken = urlToken.replace(LIST_BRACKET_RIGHT, "");
+        String[] items = urlToken.split(ITEM_SEPARATOR);
 
         SearchModuleDataHolder searchModuleDataHolder = new SearchModuleDataHolder();
 
         //text=textString
-        searchModuleDataHolder.setSearchText(items[0].split("=")[1].replaceAll("\"", ""));
+        searchModuleDataHolder.setSearchText(items[0].split(VALUE_SEPARATOR)[1].replaceAll("\"", ""));
         //cats=[..,..]
         ArrayList<CategoryDetail> categories = new ArrayList<CategoryDetail>();
-        String[] cats = items[1].split("=");
+        String[] cats = items[1].split(VALUE_SEPARATOR);
         if (cats.length > 1) {
-            for (String catId : cats[1].split(",")) {
+            for (String catId : cats[1].split(LIST_ITEM_SEPARATOR)) {
                 categories.add(new CategoryDetail(Long.valueOf(catId), ""));
             }
         }
         searchModuleDataHolder.setCategories(categories);
         //locs=[..,..]
         ArrayList<LocalityDetail> localities = new ArrayList<LocalityDetail>();
-        String[] locs = items[2].split("=");
+        String[] locs = items[2].split(VALUE_SEPARATOR);
         if (locs.length > 1) {
-            for (String locCode : locs[1].split(",")) {
+            for (String locCode : locs[1].split(LIST_ITEM_SEPARATOR)) {
                 localities.add(new LocalityDetail("", locCode));
             }
         }
         searchModuleDataHolder.setLocalities(localities);
         //attrs=[..,..]
         ArrayList<FilterItem> attributes = new ArrayList<FilterItem>();
-        String[] attrs = items[3].split("=");
+        String[] attrs = items[3].split(VALUE_SEPARATOR);
         if (attrs.length > 1) {
-            for (String locCode : attrs[1].split(",")) {
-                attributes.add(FilterItem.parseFilterItem(urlToken));
+            for (String attr : attrs[1].split(LIST_ITEM_SEPARATOR)) {
+                attributes.add(FilterItem.parseFilterItem(attr));
             }
         }
         searchModuleDataHolder.setAttributes(attributes);

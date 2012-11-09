@@ -18,7 +18,7 @@
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="40">
+				<g:north size="50">
                                 	<g:VerticalPanel>
                                         	<g:DecoratorPanel ui:field="filterLabelPanel">
                                         		<g:Label ui:field="filterLabel"/>

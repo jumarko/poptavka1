@@ -33,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Module description:.
+ * Data retrieving handle categorySelectionHandler.
  * TODO add description of this module.
  * All changes to CellTree, Table range (Pager), Table Selection is stored to history.
  *
@@ -80,6 +82,7 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    private SearchModuleDataHolder searchDataHolder;
     /**
      * Represents CellTree's open nodes hierarchy.
      * According this is created URL token.
@@ -100,10 +103,10 @@ public class HomeSuppliersPresenter
     //FLAGS
     //--------------------------------------------------------------------------
     private long selectedSupplier = -1;
-    boolean calledFromHistory = false;
-    boolean sameCategorySelection = false;
-    boolean categoryOrPageHasChanged = false;
-    int pageFromToken = 0;
+    private boolean calledFromHistory = false;
+    private boolean sameCategorySelection = false;
+    private boolean categoryOrPageHasChanged = false;
+    private int pageFromToken = 0;
     /**
      * To control possible dead locks.
      * There are two different events that need to be handled and perform same actions:
@@ -115,8 +118,8 @@ public class HomeSuppliersPresenter
      * 2. When selecting node's OBJECT of CellTree, it fires SelectionChangeHandler event, but doesn't OPEN the node.
      *    Therefore we need to OPEN node manually when handling SELECTION event.
      */
-    boolean selectedEvent = false; //tells APP that selection event was made first
-    boolean openedEvent = false; //tells APP that open event was made first
+    private boolean selectedEvent = false; //tells APP that selection event was made first
+    private boolean openedEvent = false; //tells APP that open event was made first
     /**************************************************************************/
     /* RPC Service                                                            */
     /* Need RPC service defined here because we need to pass it to CellTree   */
@@ -152,54 +155,19 @@ public class HomeSuppliersPresenter
      *                               - it's also used as pointer to differ root and child sections
      */
     public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
-        //start up initialization
+        //flags initialization
+        //----------------------------------------------------------------------
+        calledFromHistory = false;
         actualOpenedHierarchy.clear();
         lastOpened = view.getCellTree().getRootTreeNode();
+        //no selection nor open event was made
         openedEvent = false;
         selectedEvent = false;
 
-        if (searchModuleDataHolder == null) {
-            goToHomeSuppliers();
-        } else {
-            goToHomeSuppliers(searchModuleDataHolder);
-        }
-    }
-
-    /**
-     * Default module initialization. Forwarded from menu.
-     */
-    private void goToHomeSuppliers() {
-        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
-        //Set visibility
-        view.getFilterLabel().setText("");
-        view.getFilterLabelPanel().setVisible(false);
-        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
-        closeAllNodes(view.getCellTree().getRootTreeNode());
-
-        view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
-    }
-
-    /**
-     * Module initialization when searching is performed. Forwarded from search module.
-     *
-     * @param searchDataHolder - filters containing searching criteria
-     */
-    private void goToHomeSuppliers(SearchModuleDataHolder searchDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
-        //unselect categories
-        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
-        //close celltree nodes
-        closeAllNodes(view.getCellTree().getRootTreeNode());
-        //display message that search was performed
-        //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
-        //ale ak bude dynamicky (zobrazia searching criteria), tak ano
-        view.getFilterLabel().setText("Results satisfying searching criteria:" + searchDataHolder.toString());
-        //set visibility
-        view.getFilterLabelPanel().setVisible(true);
-        //getData
-        view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        //widget initialization
+        //----------------------------------------------------------------------
+        restoreFiltering(searchModuleDataHolder);
+        deselectCellTree(); //fire event which retrieve data
     }
 
     /**
@@ -211,21 +179,60 @@ public class HomeSuppliersPresenter
      * @param page - Table's page stored and parsed from URL
      * @param supplierID - Supplier's ID stored and parsed from URL
      */
-    public void onSetModuleByHistory(
+    public void onSetModuleByHistory(SearchModuleDataHolder filterHolder,
             LinkedList<TreeItem> historyTree, CategoryDetail categoryDetail, int page, long supplierID) {
+        calledFromHistory = true;
+        restoreFiltering(filterHolder);
+        restoreCellTreeOpenedNodes(historyTree, categoryDetail);
+        restoreCellTreeSelectionAndTableData(categoryDetail, page);
+        restoreTableSelection(supplierID);
+    }
+
+    /**************************************************************************/
+    /* Restoring methods                                                      */
+    /**************************************************************************/
+    /**
+     * Set currentlyLoadedView, filterLabel, searchDataHolder according to given filter.
+     *
+     * @param filterHolder
+     * - if null - hides filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_DEFAULT
+     * - if not null - display filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_SEARCH
+     */
+    private void restoreFiltering(SearchModuleDataHolder filterHolder) {
+        //FILTER
+        //----------------------------------------------------------------------
+        if (filterHolder == null) {
+            Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
+            view.getFilterLabel().setText("");
+            view.getFilterLabelPanel().setVisible(false);
+        } else {
+            Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
+            //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
+            //ale ak bude dynamicky (zobrazia searching criteria), tak ano
+            view.getFilterLabel().setText("Results satisfying searching criteria:" + filterHolder.toString());
+            view.getFilterLabelPanel().setVisible(true);
+        }
+        searchDataHolder = filterHolder;
+    }
+
+    /**
+     * Open CellTree nodes according to given historyTree.
+     * @param historyTree - opened nodes hierarchy to restore.
+     * @param categoryDetail - selected CellTree's object - category
+     */
+    private void restoreCellTreeOpenedNodes(LinkedList<TreeItem> historyTree, CategoryDetail categoryDetail) {
         //1 - TREE
         //----------------------------------------------------------------------
-        //invoked by URL
-        //Ak som prisiel tu a toto sa nezmenilo, tak som prisiel cez back&forward a zmena je
-        //len v page alebo selectedId
+        //if no opened nodes hierarchy must be restored -> no open nodes required -> close all nodes
         if (historyTree.isEmpty()) {
             closeAllNodes(view.getCellTree().getRootTreeNode());
         } else {
+            //If actual opened nodes hierarchy is the same as the one that shoul be restored, skip
             if (!actualOpenedHierarchy.equals(historyTree)) {
 
                 //When app started from scrach, actualOpenedHierarchy is empty, because it only stores
                 //CellTree's open nodes hierarchy of actual app state.
-                if (actualOpenedHierarchy.isEmpty()) {
+                if (actualOpenedHierarchy.isEmpty()) { //or Storage.isAppCalledByURL()
                     //Therefore, if this method was called and actualOpenedHierarchy is empty,
                     //app was invoked from URL, no by back & forward events (actualOpenedHierarchy wouldn't be empty)
                     //Open CellTree's nodes accorting to hierarchy stored in URL
@@ -268,6 +275,14 @@ public class HomeSuppliersPresenter
                 this.actualOpenedHierarchy = historyTree;
             }
         }
+    }
+
+    /**
+     * Restore CellTree selection which fires events to retrieve table data.
+     * @param categoryDetail - category detail to select
+     * @param page - table page to be displayed
+     */
+    private void restoreCellTreeSelectionAndTableData(CategoryDetail categoryDetail, int page) {
 
         //2 - TABLE - PAGER
         //----------------------------------------------------------------------
@@ -286,29 +301,22 @@ public class HomeSuppliersPresenter
         //Set flags
         this.pageFromToken = page;
         openedEvent = true; //open nodes event have already been handled - in 1 - Tree part
-        calledFromHistory = true; //setting pager will be due to history
 
         //If no category is selected - Table holds all suppliers data & cellTree is closed
-        if (categoryDetail == null) {
-            //If no category is selected -> perform only pager.setPage to fire event getData on DataProvider
-            //if categoryDetail == null -> no category selection must be made -> deselect if any
-            if (view.getSelectionCategoryModel().getSelectedObject() != null) {
-                view.getSelectionCategoryModel().setSelected(
-                        view.getSelectionCategoryModel().getSelectedObject(), false);
-                //TODO Martin provide searchModuleDataHolder from token
-                view.getPager().startLoading();
-                //if deselecting category made, retrieve all data available or filtered if needed
-                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
-            } else {
-                sameCategorySelection = true;
-                selectCategoryChangeHandlerInner(null);
-            }
+        if (categoryDetail == null) { //or historyTree.isEmpty()
+            sameCategorySelection = false;
+            deselectCellTree();
         } else {
             //But if category is selected, differ two cases
             //If same category is selected -> setPage must fire getData on dataProvider
             //If other category is selected -> setPage must not fire getData on dataProvider,
             //because new data will be retrieved therefore there is no point to do that
-            sameCategorySelection = view.getSelectionCategoryModel().getSelectedObject().equals(categoryDetail);
+            if (view.getSelectionCategoryModel().getSelectedObject() == null) {
+                //must call deselect therefore set it to false
+                sameCategorySelection = false;
+            } else {
+                sameCategorySelection = view.getSelectionCategoryModel().getSelectedObject().equals(categoryDetail);
+            }
             if (sameCategorySelection) {
                 selectCategoryChangeHandlerInner(categoryDetail);
             } else {
@@ -316,7 +324,13 @@ public class HomeSuppliersPresenter
                 view.getSelectionCategoryModel().setSelected(categoryDetail, true);
             }
         }
+    }
 
+    /**
+     * Restore table selection according to given supplierId.
+     * @param supplierID to restore. If == -1, no selection will be made.
+     */
+    private void restoreTableSelection(long supplierID) {
         //3 - supplier DETAIL
         //----------------------------------------------------------------------
         //There is always no selection - because deselectDataGrid is called in SelectionCategoryHandler
@@ -383,7 +397,7 @@ public class HomeSuppliersPresenter
         view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                createTokenForHistory(selectedSupplier == -1 ? false : true);
+                createTokenForHistory();
             }
         });
     }
@@ -458,6 +472,11 @@ public class HomeSuppliersPresenter
             public void onSelectionChange(SelectionChangeEvent event) {
                 //get selected item
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
+                //if new selection was made, need to set searchDataHolder = null before creating
+                //token for new selection made in categorySelection.onSelected.
+                if (selected != null) {
+                    searchDataHolder = null;
+                }
 
                 selectCategoryChangeHandlerInner(selected);
             }
@@ -539,19 +558,26 @@ public class HomeSuppliersPresenter
                 view.getDataGrid().cancelRangeChangedEvent();
             }
             view.getPager().setPage(0);
-            createTokenForHistory(false);
+            createTokenForHistory();
         }
 
         //Retireve data if needed
         //----------------------------------------------------------------------
-        if (selected != null && !sameCategorySelection) {
-            //Set selected category as filter and pass it to filter through that category
-            SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
-            searchDataHolder.getCategories().add(selected);
-
-            //Retrieve data
-            view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
-            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        if (!sameCategorySelection) {
+            if (selected == null) {
+                //Retrieve data
+                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
+                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+            } else {
+                //cancel filtering if user selected category from celltree
+                view.getFilterLabelPanel().setVisible(false);
+                //Set selected category as filter and pass it to filter through that category
+                SearchModuleDataHolder filterHolder = new SearchModuleDataHolder();
+                filterHolder.getCategories().add(selected);
+                //Retrieve data
+                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
+                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(filterHolder));
+            }
         }
 
         //Reset flags
@@ -575,7 +601,7 @@ public class HomeSuppliersPresenter
                     //retrieve supplier detail info and display it
                     view.displaySuppliersDetail(selected);
                     //create token for this selection
-                    createTokenForHistory(selectedSupplier == -1 ? false : true);
+                    createTokenForHistory();
                 }
             }
         });
@@ -778,12 +804,24 @@ public class HomeSuppliersPresenter
     }
 
     /**
-     * Cancel table selection.
+     * Cancel cell tree selection and close all its nodes.
+     */
+    private void deselectCellTree() {
+        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
+        //close celltree nodes
+        closeAllNodes(view.getCellTree().getRootTreeNode());
+    }
+
+    /**
+     * Cancel table selection and hide supplier detail.
      */
     private void deselectGridSelection() {
         SingleSelectionModel selectionModel = (SingleSelectionModel) view.getDataGrid().getSelectionModel();
         FullSupplierDetail supplier = (FullSupplierDetail) (selectionModel).getSelectedObject();
-        selectionModel.setSelected(supplier, false);
+        if (supplier != null) {
+            selectionModel.setSelected(supplier, false);
+        }
+        selectedSupplier = -1L;
         view.hideSuppliersDetail();
     }
 
@@ -791,19 +829,11 @@ public class HomeSuppliersPresenter
      * Creates token for history according to CellTree's open nodes hierarchy, table page, table selection.
      * @param setStorageHistoryPointerValue
      */
-    private void createTokenForHistory(boolean setStorageHistoryPointerValue) {
-        //Create token only if new input from user was made and new token must be created
-        if (!Storage.isCalledDueToHistory()) {
-            //Supplier
-            FullSupplierDetail supplier =
-                    (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                    .getSelectedObject();
+    private void createTokenForHistory() {
+        FullSupplierDetail supplier =
+                (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                .getSelectedObject();
 
-            eventBus.createTokenForHistory(actualOpenedHierarchy, view.getPager().getPage(), supplier);
-        }
-        //reset poitner - only if it is to no use anymore ->
-        //if selected supplier's id was present in URL, pointer will be used to decide
-        //whether to select supplier, or not, after loading data to table.
-        Storage.setCalledDueToHistory(setStorageHistoryPointerValue);
+        eventBus.createTokenForHistory(searchDataHolder, actualOpenedHierarchy, view.getPager().getPage(), supplier);
     }
 }
