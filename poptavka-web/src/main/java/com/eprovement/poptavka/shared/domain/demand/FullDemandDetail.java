@@ -17,6 +17,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Represents full detail of domain object <b>FullDemand</b> used in
@@ -54,10 +55,10 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     private boolean starred;
     private Date created;
     //Basic Demand Info
-    @NotNull(message = "{demandNotNullTitle}")
+    @NotBlank(message = "{demandNotBlankTitle}")
     @Size(min = 5, max = 50, message = "{demandSizeTitle}")
     private String title;
-    @NotNull(message = "{demandNotNullPrice}")
+    @NotBlank(message = "{demandNotBlankPrice}")
     @Pattern(regexp = "\\d+(\\.\\d{2})*", message = "{demandPatternPrice}")
     private String priceString;
     private BigDecimal price;
@@ -67,7 +68,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     @NotNull(message = "{demandNotNullValidToDate}")
     @Future(message = "{demandFutureValidToDate}")
     private Date validToDate;
-    @NotNull(message = "{demandNotNullDescription}")
+    @NotBlank(message = "{demandNotBlankDescription}")
     @Size(min = 5, message = "{demandSizeDescription}")
     private String description;
     //

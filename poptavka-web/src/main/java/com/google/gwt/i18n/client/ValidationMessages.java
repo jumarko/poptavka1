@@ -29,15 +29,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
      *
      * @return translated "Name must be at least {min} characters long."
      */
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Create Demand Module - error messages.
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /** Create Demand Module - error messages.                                */
+    /**************************************************************************/
     @Key("address.notBlank.country")
     String addressNotBlankCountry();
 
@@ -62,24 +56,18 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("address.pattern.zipCode")
     String addressPatternZipCode();
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Create Demand Module - error messages.
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /** Create Demand Module - error messages.                                */
+    /**************************************************************************/
     //Preco musi byt ten key?
-    @Key("demand.notNull.title")
-    String demandNotNullTitle();
+    @Key("demand.notBlank.title")
+    String demandNotBlankTitle();
 
     @Key("demand.size.title")
     String demandSizeTitle();
 
-    @Key("demand.notNull.price")
-    String demandNotNullPrice();
+    @Key("demand.notBlank.price")
+    String demandNotBlankPrice();
 
     @Key("demand.pattern.price")
     String demandPatternPrice();
@@ -96,8 +84,8 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("demand.future.validToDate")
     String demandFutureValidToDate();
 
-    @Key("demand.notNull.description")
-    String demandNotNullDescription();
+    @Key("demand.notBlank.description")
+    String demandNotBlankDescription();
 
     @Key("demand.size.description")
     String demandSizeDescription();
@@ -105,15 +93,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("demand.pattern")
     String demandPattern();
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Create Supplier Module - error messages.
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /** Create Supplier Module - error messages.                              */
+    /**************************************************************************/
     @Key("supplier.notBlank.email")
     String supplierNotBlankEmail();
 
@@ -155,4 +137,25 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("supplier.pattern.website")
     String supplierPatternWebsite();
+
+    /**************************************************************************/
+    /** Email Dialog Popup - error messages.                                  */
+    /**************************************************************************/
+    @Key("email.dialog.notBlank.email")
+    String emailDialogNotBlankEmail();
+
+    @Key("email.dialog.email")
+    String emailDialogEmail();
+
+    @Key("reEmail.dialog.notBlank.email")
+    String reRmailDialogNotBlankEmail();
+
+    @Key("reEmail.dialog.email")
+    String reEmailDialogEmail();
+
+    @Key("email.dialog.notNull.message")
+    String emailDialogNotNullMessage();
+
+    @Key("email.dialog.size.message")
+    String emailDialogSizeMessage();
 }

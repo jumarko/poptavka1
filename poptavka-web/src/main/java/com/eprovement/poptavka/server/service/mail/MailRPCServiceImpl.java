@@ -10,6 +10,7 @@ import org.springframework.mail.SimpleMailMessage;
 import com.eprovement.poptavka.client.service.demand.MailRPCService;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.mail.MailService;
+import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 /**
@@ -35,16 +36,15 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
      *
      */
     @Override
-    public Boolean sendMail(String recipient, String body, String subject,
-            String sender) throws RPCException {
-        LOGGER.info("Sending mail message to: " + recipient);
+    public Boolean sendMail(EmailDialogDetail emailDialogDetail) throws RPCException {
+        LOGGER.info("Sending mail message to: " + emailDialogDetail.getRecipient());
 
         final SimpleMailMessage exceptionNotificationMessage = new SimpleMailMessage();
         exceptionNotificationMessage.setFrom(NOTIFICATION_MAIL_FROM);
-        exceptionNotificationMessage.setTo(recipient);
+        exceptionNotificationMessage.setTo(emailDialogDetail.getRecipient());
 
-        exceptionNotificationMessage.setSubject(subject);
-        exceptionNotificationMessage.setText(body);
+        exceptionNotificationMessage.setSubject(emailDialogDetail.getSubject());
+        exceptionNotificationMessage.setText(emailDialogDetail.getMessage());
 
         try {
             // send asynchronously to avoid blocking of normal execution

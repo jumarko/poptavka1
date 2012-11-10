@@ -8,14 +8,13 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
+import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -23,7 +22,7 @@ import com.mvp4g.client.view.LazyView;
 
 /**
  *
- * @author ivlcek
+ * @author ivlcek, Martin Slavkovsky (validation)
  */
 @Presenter(view = EmailDialogPopupView.class, multiple = true)
 public class EmailDialogPopupPresenter
@@ -35,16 +34,27 @@ public class EmailDialogPopupPresenter
     private int subjectId;
 
     public interface IEmailDialogPopupView extends LazyView {
-        HasClickHandlers getSendButton();
-        HasClickHandlers getCloseButton();
-        TextArea getTextArea();
-        ListBox getSubjectListBox();
-        TextBox getReEmailTextBox();
-        TextBox getEmailTextBox();
+
+        //Getters
         EmailDialogPopupPresenter getPresenter();
+
+        HasClickHandlers getSendButton();
+
+        HasClickHandlers getCloseButton();
+
+        ListBox getSubjectListBox();
+
+        EmailDialogDetail getEmailDialogDetail();
+
+        boolean isValid();
+
+        //Setter
         void hidePopup();
     }
 
+    /**************************************************************************/
+    /* Inject RPC service                                                     */
+    /**************************************************************************/
     @Inject
     void setMailService(MailRPCServiceAsync service) {
         mailService = service;
@@ -61,26 +71,30 @@ public class EmailDialogPopupPresenter
         // nothing
     }
 
+    /**************************************************************************/
+    /* Bind actions                                                           */
+    /**************************************************************************/
     @Override
     public void bindView() {
         view.getSendButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Martin - add validation for all fields in Contact Us form.
-                String recipient = "pras3xer@gmail.com";
-                String subject = view.getSubjectListBox().getValue(view.getSubjectListBox().getSelectedIndex());
-                String message = extendMessageBody() + view.getTextArea().getText();
-                String from = view.getEmailTextBox().getText();
-                mailService.sendMail(recipient, message, subject, from, new SecuredAsyncCallback<Boolean>(eventBus) {
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        // TODO ivlcek - display success message about sending
-                        GWT.log("Message has been sent to customer support");
-                        hideView();
-                    }
-                });
+                if (view.isValid()) {
+                    EmailDialogDetail dialogDetail = view.getEmailDialogDetail();
+                    dialogDetail.setRecipient("pras3xer@gmail.com");
+                    dialogDetail.setMessage(extendMessageBody() + dialogDetail.getMessage());
+                    dialogDetail.setSubject(view.getSubjectListBox().getValue(
+                            view.getSubjectListBox().getSelectedIndex()));
+                    mailService.sendMail(dialogDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            // TODO ivlcek - display success message about sending
+                            GWT.log("Message has been sent to customer support");
+                            hideView();
+                        }
+                    });
+                }
             }
         });
 
@@ -106,7 +120,6 @@ public class EmailDialogPopupPresenter
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
-
     /**
      * Hides the EmailDialogPopupView.
      */
@@ -118,7 +131,6 @@ public class EmailDialogPopupPresenter
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
-
     private String extendMessageBody() {
         if (Storage.getUser() != null) {
             return "errorId=" + errorId + "\nuserId=" + Storage.getUser().getUserId() + "\n";

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -10,5 +11,5 @@ public interface MailRPCService extends RemoteService {
 
     String URL = "service/mail";
 
-    Boolean sendMail(String recipient, String body, String subject, String sender) throws RPCException;
+    Boolean sendMail(EmailDialogDetail emailDialogDetail) throws RPCException;
 }
