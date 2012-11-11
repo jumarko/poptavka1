@@ -23,6 +23,7 @@
 		.username {
 			float: right;
 			margin: 0 10px;
+			color: #000000;
 		}
 		
 		.newMessageCount {
@@ -38,46 +39,50 @@
 		.pushButton:hover {
 			cursor: pointer;
 		}
+		.login {
+			position: absolute;
+			right: 20px;
+			top: 28px;
+			z-index: 150;
+		}
 	</ui:style>
 
 	<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContent}'>
 		<!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
 
 		<!-- new type -->
+		<!-- Logo -->
+		<!-- <div style="position: absolute; background: url(images/logo.png) no-repeat 
+			scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;"> 
+			</div> -->
+		<!-- end Logo -->
 
-		<div style="margin: auto; width: 1075px; position: relative; height: 110px;">
-			<!-- Logo -->
-			<div
-				style="position: absolute; background: url(images/logo.png) no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;">
+		<!-- Login Button -->
+		<div class='{style.login}'>
+			<div class='{res.layout.loginButton}'>
+				<g:Anchor ui:field="logoutButton">
+					<ui:msg key="logOut">Logout</ui:msg>
+				</g:Anchor>
 			</div>
-			<!-- end Logo -->
+			<div id="loginAnchor"
+				style="position: absolute; width: 150px; right: 0px; z-index: 151;">
+			</div>
+		</div>
 
-			<!-- Login Button -->
-			<div style="position: absolute; right: 20px; top: 0px; z-index: 150;">
-				<div class='{res.layout.loginButton}'>
-					<g:Anchor ui:field="logoutButton">
-						<ui:msg key="logOut">Logout</ui:msg>
-					</g:Anchor>
-				</div>
-				<div id="loginAnchor"
-					style="position: absolute; width: 150px; right: 0px; z-index: 151;">
-				</div>
-			</div>
-
-			<div style="position: absolute; top: 7px; right: 164px; color: #ffffff; width: 356px;">
-				<g:Button ui:field="help" styleName='{style.helpButton}'>
-					<ui:msg key="subjectHelp">Help</ui:msg>
-				</g:Button>
-				<g:Label ui:field="username" styleName='{style.username}'></g:Label>
-				<g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
-				<g:PushButton ui:field='pushButton' enabled='true'
-					styleName='{style.pushButton}'>
-					<g:upFace image='{res.images.envelopeImage}' />
-					<g:upHoveringFace image='{res.images.envelopeHoverImage}' />
-					<g:downFace image='{res.images.envelopeImage}' />
-					<g:downHoveringFace image='{res.images.envelopeImage}' />
-				</g:PushButton>
-			</div>
+		<div
+			style="position: absolute; top: 30px; right: 146px; color: #ffffff; width: 356px;">
+			<g:Button ui:field="help" styleName='{style.helpButton}'>
+				<ui:msg key="subjectHelp">Help</ui:msg>
+			</g:Button>
+			<g:Label ui:field="username" styleName='{style.username}'></g:Label>
+			<g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
+			<g:PushButton ui:field='pushButton' enabled='true'
+				styleName='{style.pushButton}'>
+				<g:upFace image='{res.images.envelopeImage}' />
+				<g:upHoveringFace image='{res.images.envelopeHoverImage}' />
+				<g:downFace image='{res.images.envelopeImage}' />
+				<g:downHoveringFace image='{res.images.envelopeImage}' />
+			</g:PushButton>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

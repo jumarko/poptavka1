@@ -30,6 +30,8 @@ public interface LayoutResource extends CssResource {
     String bodyBackground();
     @ClassName("body-navbar")
     String bodyNavbar();
+    @ClassName("detail-info")
+    String detailInfo();
     @ClassName("login-area")
     String loginArea();
     @ClassName("login-button")

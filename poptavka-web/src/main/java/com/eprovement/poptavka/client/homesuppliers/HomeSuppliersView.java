@@ -5,7 +5,9 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.resources.AsyncDataGrid;
 import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.resources.TreeResources;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
@@ -23,6 +25,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
@@ -129,13 +132,13 @@ public class HomeSuppliersView extends OverflowComposite
 
     public void initCellTree() {
         //Workaround for issue: CellTree disappeared when clicking but outside tree nodes
-        CellTree.Resources resource = GWT.create(CellTree.Resources.class);
+        CellTree.Resources resource = GWT.create(TreeResources.class);
         StyleInjector.injectAtEnd("." + resource.cellTreeStyle().cellTreeTopItem() + " {margin-top: 0px;}");
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,
                 homeSuppliersPresenter.getCategoryService(),
                 Constants.WITHOUT_CHECK_BOXES,
-                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS), null);
+                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS), null, resource);
         Storage.setTree(cellTree);
         // cellTree.setSize("300px", "100px");
         cellTree.setAnimationEnabled(true);
@@ -147,7 +150,8 @@ public class HomeSuppliersView extends OverflowComposite
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns);
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns, this.getPageSize(), resource);
         dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
 
         dataGrid.setSelectionModel(new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER));

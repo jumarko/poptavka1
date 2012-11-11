@@ -6,42 +6,65 @@
 	<!-- injecting style resources -->
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
-	<!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages'
+	<!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' 
 		/> -->
 
 	<g:DockLayoutPanel unit="PX"
-		styleName='{res.layout.bodyFullContainer}'>
+		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
 		<g:west size="320">
-			<g:ScrollPanel>
-				<c:CellTree ui:field="cellTree" />
-			</g:ScrollPanel>
+			<g:DockLayoutPanel unit="PX">
+				<g:north size="75">
+					<g:HTMLPanel></g:HTMLPanel>
+				</g:north>
+				<g:center>
+					<g:ScrollPanel>
+						<c:CellTree ui:field="cellTree" />
+					</g:ScrollPanel>
+				</g:center>
+			</g:DockLayoutPanel>
+		</g:west>
+		<g:west size="20">
+			<g:HTMLPanel></g:HTMLPanel>
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="50">
-                                	<g:VerticalPanel>
-                                        	<g:DecoratorPanel ui:field="filterLabelPanel">
-                                        		<g:Label ui:field="filterLabel"/>
-                                       		</g:DecoratorPanel>
-                                       		<g:HorizontalPanel>
-                                            		<c:SimplePager ui:field="pager" />
-                                            		<g:ListBox ui:field='pageSizeCombo' />
-                                       		</g:HorizontalPanel>
-                                    	</g:VerticalPanel>
+				<g:north size="75">
+					<g:VerticalPanel>
+						<g:DecoratorPanel ui:field="filterLabelPanel">
+							<g:Label ui:field="filterLabel" />
+						</g:DecoratorPanel>
+						<g:HorizontalPanel>
+							<c:SimplePager ui:field="pager" />
+							<g:ListBox ui:field='pageSizeCombo' />
+						</g:HorizontalPanel>
+					</g:VerticalPanel>
 				</g:north>
 				<g:center>
 					<c:DataGrid ui:field="dataGrid" />
 				</g:center>
+				<g:south size="30">
+					<g:HTMLPanel></g:HTMLPanel>
+				</g:south>
 			</g:DockLayoutPanel>
 		</g:center>
-		<g:east size="300">
-			<g:ScrollPanel>
-				<g:HTMLPanel ui:field="detail">
-					<g:Label ui:field="reklama">Reklama</g:Label>
-					<d:SupplierDetailView ui:field="supplierDetailView" />
-					<g:Button ui:field="contactBtn">Contact</g:Button>
-				</g:HTMLPanel>
-			</g:ScrollPanel>
+		<g:east size="350">
+			<g:DockLayoutPanel unit="PX">
+				<g:north size="75">
+					<g:HTMLPanel></g:HTMLPanel>
+				</g:north>
+				<g:center>
+					<g:ScrollPanel>
+						<g:HTMLPanel ui:field="detail" styleName='{res.layout.detailInfo}'>
+							<g:Label ui:field="reklama">Reklama</g:Label>
+							<d:SupplierDetailView ui:field="supplierDetailView" />
+							<g:Button ui:field="contactBtn">Contact</g:Button>
+						</g:HTMLPanel>
+					</g:ScrollPanel>
+				</g:center>
+			</g:DockLayoutPanel>
+		</g:east>
+		<g:east size="20">
+			<g:HTMLPanel></g:HTMLPanel>
 		</g:east>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

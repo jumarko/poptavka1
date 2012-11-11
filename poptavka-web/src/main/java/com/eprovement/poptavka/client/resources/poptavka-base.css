@@ -64,7 +64,7 @@ input,textarea,select {
 	margin: 0 auto;
 	height: 148px;
 	width: 100%;
-	background-color: none;	
+	background-color: none;
 }
 
 .header-content {
@@ -133,12 +133,11 @@ input,textarea,select {
 *	Search Bar Styles
 *
 */
-
 .search-bar {
-    float: left;
-    height: 70px;
-    margin: 20px 20px 0;
-    width: 565px;
+	float: left;
+	height: 70px;
+	margin: 20px 20px 0;
+	width: 565px;
 }
 
 .search-view {
@@ -339,6 +338,14 @@ input,textarea,select {
 	border: thin solid black;
 	border-bottom: none;
 	cursor: pointer;
+}
+
+.detail-info {
+	background: none repeat scroll 0 0 #ffffff;
+	opacity: 0.8;
+	border: 1px solid #C1D2DC;
+	margin: 0 15px 0 5px;
+	border-radius: 5px;
 }
 
 /** DELETE AFTER THIS LINE **/

@@ -19,14 +19,6 @@
 		.list {
 			width: 100px;
 		}
-		
-		.detail-info {
-			background: none repeat scroll 0 0 #ffffff;
-			opacity: 0.8;
-			border: 1px solid #C1D2DC;
-			margin: 0 15px 0 5px;
-			border-radius: 5px;
-		}
 	</ui:style>
 
 	<g:DockLayoutPanel unit="PX"
@@ -75,7 +67,7 @@
 				</g:north>
 				<g:center>
 					<g:ScrollPanel>
-						<g:HTMLPanel styleName='{style.detail-info}'>
+						<g:HTMLPanel styleName='{res.layout.detailInfo}'>
 							<g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
 							<g:SimplePanel ui:field="demandDetailPanel">
 								<d:DemandDetailView ui:field="demandDetail" />
