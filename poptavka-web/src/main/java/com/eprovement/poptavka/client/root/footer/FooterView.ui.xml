@@ -12,11 +12,11 @@
 		.footer-block {
 			display: block;
 			padding: 10px;
-			color: #ffffff;
+			color: #000000;
 		}
 		
 		.footer-block a {
-			color: #ffffff;
+			color: #000000;
 		}
 		
 		.fl {
@@ -31,7 +31,7 @@
 			background: none;
 			border: none;
 			float: right;
-			color: #ffffff;
+			color: #000000;
 			padding: 10px;
 		}
 		
@@ -44,7 +44,7 @@
 			background: none;
 			border: none;
 			float: right;
-			color: #ffffff;
+			color: #000000;
 			padding: 10px 0;
 		}
 	</ui:style>
@@ -53,13 +53,13 @@
 		<div
 			style="margin: auto; width: 1075px; position: relative; padding: 0 10px;">
 			<g:Label styleName='{style.fl} {style.footer-block}'>2012 © eProvement s.r.o.</g:Label>
-			<div style="float: right; color: #ffffff; padding: 10px;">
+			<div style="float: right; color: #000000; padding: 10px;">
 				Terms &amp; Conditions
 			</div>
 			<div class='{style.separator}'>|</div>
 			<g:Button ui:field="contactUs" styleName='{style.footerButton}'>Contact us</g:Button>
 			<div class='{style.separator}'>|</div>
-			<div style="float: right; color: #ffffff; padding: 10px;">
+			<div style="float: right; color: #000000; padding: 10px;">
 				About us
 			</div>
 

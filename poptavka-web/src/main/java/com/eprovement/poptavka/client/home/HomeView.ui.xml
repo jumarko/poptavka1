@@ -34,7 +34,7 @@
 		}
 	</ui:style>-->
 
-	<g:HTMLPanel ui:field="container" styleName='{style.home-container}'>
+	<g:HTMLPanel ui:field="container">
 <!--		<g:DockLayoutPanel ui:field="homeLayoutHolder" unit="PX"
 			styleName='{style.home-layout-holder}'>
 			<g:north size="38">

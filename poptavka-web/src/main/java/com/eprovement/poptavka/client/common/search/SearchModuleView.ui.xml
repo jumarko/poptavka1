@@ -8,35 +8,71 @@
 			font-style: italic;
 		}
 		
+		.search-menu {
+			background: #e8edf0;
+			padding: 6px;
+		}
+		
 		.search-textbox {
-			width: 178px;
-			height: 24px;
+			width: 267px;
+			height: 37px;
+			line-height: 37px;
+			border: 1px solid #aabac1;
+			border-radius: 3px;
+			padding: 8px 6px;
+			color: #002f51;
+		}
+		
+		.blue-button {
+			border: 1px solid #00496b;
+			background: url(images/blue-button.gif) repeat-x;
+			width: 77px;
+			height: 36px;
+			border-radius: 3px;
+			font-weight: bold;
+			color: #ffffff;
+		}
+		
+		.blue-button:hover {
+			cursor: pointer;
 		}
 		
 		.search-list {
-			width: 140px;
+			width: 183px;
 			margin: 0 10px;
-			padding: 2px;
+			padding: 8px 6px;
+			border: 1px solid #aabac1;
+			border-radius: 3px;
+			color: #002f51;
+		}
+		
+		.advanced-search {
+			background: url(images/advanced-search-button.gif) no-repeat 0 7px;
+			border: none;
+			padding: 0 0 0 7px;
+			margin: 3px 0 0 7px;
 		}
 	</ui:style>
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-	<g:HTMLPanel ui:field="container" styleName='{res.layout.searchBar}'>
-		<div ui:field="searchMenu">
+	<g:HTMLPanel ui:field="container">
+		<div ui:field="searchMenu" class='{style.search-menu}'>
 			<g:HorizontalPanel>
 				<g:TextBox ui:field="searchContent" styleName='{style.search-textbox}'>
 					<ui:msg key="searchContent">Search...</ui:msg>
 				</g:TextBox>
 				<g:ListBox ui:field="searchWhat" styleName='{style.search-list}' />
-				<g:Button ui:field="searchBtn">
+				<g:Button ui:field="searchBtn" styleName='{style.blue-button}'>
 					<ui:msg key="search">Search</ui:msg>
 				</g:Button>
-				<g:Button ui:field="advSearchBtn">Advanced</g:Button>
 			</g:HorizontalPanel>
 			<g:PopupPanel ui:field="popupPanel">
 				<adv:AdvanceSearchContentView ui:field="advanceSearchContentView" />
 			</g:PopupPanel>
 		</div>
+
+		<g:Button ui:field="advSearchBtn" styleName='{style.advanced-search}'>Advanced</g:Button>
+
 	</g:HTMLPanel>
 </ui:UiBinder>

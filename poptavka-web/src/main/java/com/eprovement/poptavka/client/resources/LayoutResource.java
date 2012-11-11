@@ -26,6 +26,10 @@ public interface LayoutResource extends CssResource {
     String bodyContainer();
     @ClassName("body-full-container")
     String bodyFullContainer();
+    @ClassName("body-background")
+    String bodyBackground();
+    @ClassName("body-navbar")
+    String bodyNavbar();
     @ClassName("login-area")
     String loginArea();
     @ClassName("login-button")

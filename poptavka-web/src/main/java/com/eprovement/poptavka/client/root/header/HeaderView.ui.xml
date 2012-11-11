@@ -10,34 +10,33 @@
 		.important {
 			font-weight: bold;
 		}
+		
+		.login {
+			position: absolute;
+			right: 20px;
+			top: 28px;
+			z-index: 150;
+		}
 	</ui:style>
 
 	<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContent}'>
-		<!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
+		<!-- Logo -->
+		<!-- <div style="position: absolute; background: url(images/logo.png) no-repeat 
+			scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;"> 
+			</div> -->
+		<!-- end Logo -->
 
-		<!-- new type -->
-
-		<div style="margin: auto; width: 1075px; position: relative; height: 110px;">
-			<!-- Logo -->
-			<div
-				style="position: absolute; background: url(images/logo.png) no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;">
+		<!-- Login Button -->
+		<div class='{style.login}'>
+			<div class='{res.layout.loginButton}'>
+				<g:Anchor ui:field="loginButton">
+					<ui:msg key="logIn">Log In</ui:msg>
+				</g:Anchor>
 			</div>
-			<!-- end Logo -->
-
-			<!-- Login Button -->
-			<div style="position: absolute; right: 20px; top: 0px; z-index: 150;">
-				<div class='{res.layout.loginButton}'>
-					<g:Anchor ui:field="loginButton">
-						<ui:msg key="logIn">Log In</ui:msg>
-					</g:Anchor>
-				</div>
-				<div id="loginAnchor"
-					style="position: absolute; width: 150px; right: 0px; z-index: 151;">
-				</div>
+			<div id="loginAnchor"
+				style="position: absolute; width: 150px; right: 0px; z-index: 151;">
 			</div>
-			
-			<div style="position: absolute; top: 10px; right: 176px; color: #ffffff;">Customer Support</div>
 		</div>
+		<div style="position: absolute; top: 10px; right: 176px; color: #ffffff;">Customer Support</div>
 	</g:HTMLPanel>
-
 </ui:UiBinder>
