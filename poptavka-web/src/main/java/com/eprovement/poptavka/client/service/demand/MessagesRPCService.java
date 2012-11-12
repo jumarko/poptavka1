@@ -14,6 +14,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 /**
@@ -25,24 +26,28 @@ public interface MessagesRPCService extends RemoteService {
 
     String URL = "service/messagesmodule";
 
-    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) throws RPCException;
+    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) throws RPCException,
+            ApplicationSecurityException;
 
-    MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException;
+    MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException,
+            ApplicationSecurityException;
 
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
+            ApplicationSecurityException;
 
-    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException,
+            ApplicationSecurityException;
 
     List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
-        throws RPCException;
+        throws RPCException, ApplicationSecurityException;
 
     List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
-        throws RPCException;
+        throws RPCException, ApplicationSecurityException;
 
     List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder)
-        throws RPCException;
+        throws RPCException, ApplicationSecurityException;
 
-    void deleteMessages(List<Long> messagesIds) throws RPCException;
+    void deleteMessages(List<Long> messagesIds) throws RPCException, ApplicationSecurityException;
 
-    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
+    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
 }

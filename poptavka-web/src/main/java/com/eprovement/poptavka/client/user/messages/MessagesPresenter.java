@@ -100,7 +100,9 @@ public class MessagesPresenter
      * particular access role can't access it and loginPopupView will be displayed.
      */
     public void onForward() {
-        eventBus.updateUnreadMessagesCount();
+        if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
+            eventBus.updateUnreadMessagesCount();
+        }
     }
 
     /**************************************************************************/

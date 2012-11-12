@@ -48,7 +48,9 @@ public class ClientDemandsModulePresenter
     }
 
     public void onForward() {
-        eventBus.updateUnreadMessagesCount();
+        if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
+            eventBus.updateUnreadMessagesCount();
+        }
         eventBus.setUpSearchBar(null);
     }
 
