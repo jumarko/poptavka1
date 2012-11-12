@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.AsyncDataGrid;
+import com.eprovement.poptavka.client.resources.CustomPager;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.resources.TreeResources;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
@@ -166,7 +167,7 @@ public class HomeDemandsView extends OverflowComposite
         dataGrid.setPageSize(this.getPageSize());
 
         // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        SimplePager.Resources pagerResources = GWT.create(CustomPager.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 

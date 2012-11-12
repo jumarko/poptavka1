@@ -19,6 +19,33 @@
 		.list {
 			width: 100px;
 		}
+		
+		.gridMenu {
+			margin: 8px 0 0;
+			float: left;
+		}
+		
+		.paginator {
+			margin: 5px 10px;
+		}
+		
+		.pageSize {
+			border-radius: 3px 3px 3px 3px;
+			float: left;
+			height: 31px;
+			margin: 5px 0 0;
+			padding: 6px;
+		}
+
+		.button {
+			background: url(images/new-offer-green.png) no-repeat;
+			border: medium none;
+			color: #FFFFFF;
+			font-weight: bold;
+			height: 40px;
+			padding: 0 0 3px 23px;
+			width: 119px;
+		}
 	</ui:style>
 
 	<g:DockLayoutPanel unit="PX"
@@ -41,14 +68,16 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="75">
-					<g:VerticalPanel>
+					<g:VerticalPanel styleName='{style.gridMenu}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
 						<g:HorizontalPanel>
-							<g:Button ui:field="offerBtn1">Send Offer</g:Button>
-							<c:SimplePager styleName="float:right" ui:field='pager' />
-							<g:ListBox styleName="float:right" ui:field='pageSize' />
+							<g:Button ui:field="offerBtn1" styleName='{style.button}'>Send Offer
+							</g:Button>
+							<c:SimplePager styleName='{style.paginator}'
+								ui:field='pager' />
+							<g:ListBox styleName='{style.pageSize}' ui:field='pageSize' />
 						</g:HorizontalPanel>
 					</g:VerticalPanel>
 				</g:north>
