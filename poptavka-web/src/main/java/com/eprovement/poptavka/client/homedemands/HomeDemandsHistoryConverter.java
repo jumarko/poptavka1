@@ -18,26 +18,38 @@ import java.util.LinkedList;
 @History(type = HistoryConverterType.DEFAULT, name = "demands")
 public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemandsEventBus> {
 
-    public String onGoToHomeDemandsModule(SearchModuleDataHolder searchModuleDataHolder) {
-        if (searchModuleDataHolder == null) {
-            return "";
-        } else {
-            return "filter:" + searchModuleDataHolder.toStringWithIDs();
-        }
-    }
+    public static final String VALUE_SEPARATOR = "=";
+    public static final String ITEM_SEPARATOR = ";";
+    public static final String FILTER_SEPARATOR = ">>";
+    public static final String LIST_BRACKET_LEFT = "(";
+    public static final String LIST_BRACKET_RIGHT = ")";
+    public static final String LIST_ITEM_SEPARATOR = ",";
+    public static final String LIST_ITEM_IDX_SEPARATOR = ":";
 
-    public String onCreateTokenForHistory(
-            LinkedList<TreeItem> openedHierarchy, int page, FullDemandDetail supplierDetail) {
+    public String onCreateTokenForHistory(SearchModuleDataHolder searchDataHolder,
+            LinkedList<TreeItem> openedHierarchy, int page, FullDemandDetail demandDetail) {
         StringBuilder token = new StringBuilder();
+        if (searchDataHolder == null) {
+            token.append("");
+        } else {
+            token.append("filter:");
+            token.append(searchDataHolder.toStringWithIDs());
+            token.append(FILTER_SEPARATOR);
+        }
         //Category
-        token.append("tree=");
+        token.append("tree");
+        token.append(VALUE_SEPARATOR);
         token.append(convertCateoryMapToToken(openedHierarchy));
         //Page
-        token.append(";page=");
+        token.append(ITEM_SEPARATOR);
+        token.append("page");
+        token.append(VALUE_SEPARATOR);
         token.append(page);
-        //Demand
-        token.append(";supId=");
-        token.append(supplierDetail == null ? "-1" : supplierDetail.getDemandId());
+        //Supplier
+        token.append(ITEM_SEPARATOR);
+        token.append("supId");
+        token.append(VALUE_SEPARATOR);
+        token.append(demandDetail == null ? "-1" : demandDetail.getDemandId());
         return token.toString();
     }
 
@@ -47,7 +59,7 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      *
      * @param methodName - name of the called method
      * @param param - string behind '?' in url (module/method?param).
-     *                URL creates goToHomeDemandsModule method in HomeDemandsHistoryConverter class.
+     *                URL is created by createTokenForHistory method in HomeDemandsHistoryConverter class.
      * @param eventBus - HomeDemandsEventBus
      */
     @Override
@@ -62,23 +74,29 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
             eventBus.goToHomeDemandsModule(null);
         } else {
             Storage.setCalledDueToHistory(true);
+            SearchModuleDataHolder searchDataHolder = null;
             if (param.startsWith("filter:")) {
                 param = param.replace("filter:", "");
-                eventBus.goToHomeDemandsModule(SearchModuleDataHolder.parseSearchModuleDataHolder(param));
+                searchDataHolder = SearchModuleDataHolder.parseSearchModuleDataHolder(
+                        param.substring(0, param.indexOf(FILTER_SEPARATOR)));
+            }
+            //When back & forward events -> don't need to call goToHomeSupplierModule
+            // - it would create new universalAsyncTable, ...
+            // - just use what is already created - events will fire appropiate actions
+            //parse param
+            param = param.substring(param.indexOf(FILTER_SEPARATOR) + FILTER_SEPARATOR.length(), param.length());
+            String[] params = param.split(ITEM_SEPARATOR);
+            LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split(VALUE_SEPARATOR)[1]);
+            if (tree.isEmpty()) {
+                eventBus.setModuleByHistory(searchDataHolder, tree, null,
+                        Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
+                        Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
             } else {
-                //When back & forward events -> don't need to call goToHomeDemandModule
-                // - it would create new universalAsyncTable, ...
-                // - just use what is already created - events will fire appropiate actions
-                //parse param
-                String[] params = param.split(";");
-                LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split("=")[1]);
-                if (!tree.isEmpty()) {
-                    eventBus.getCategoryAndSetModuleByHistory(
-                            tree,
-                            tree.getLast().getCategoryId(),
-                            Integer.valueOf(params[1].split("=")[1]),
-                            Long.valueOf(params[2].split("=")[1]));
-                }
+                eventBus.getCategoryAndSetModuleByHistory(
+                        searchDataHolder, tree,
+                        tree.getLast().getCategoryId(),
+                        Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
+                        Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
             }
         }
     }
@@ -89,10 +107,12 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
         str.deleteCharAt(0);
         str.deleteCharAt(str.length() - 1);
         if (!str.toString().isEmpty()) {
-            String[] items = str.toString().split(",");
+            String[] items = str.toString().split(LIST_ITEM_SEPARATOR);
             int level = 1;
             for (String item : items) {
-                tree.add(new TreeItem(Long.valueOf(item.split(":")[0]), level, Integer.valueOf(item.split(":")[1])));
+                tree.add(
+                        new TreeItem(Long.valueOf(item.split(LIST_ITEM_IDX_SEPARATOR)[0]),
+                        level, Integer.valueOf(item.split(":")[1])));
                 level++;
             }
         }
@@ -101,17 +121,17 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
 
     private String convertCateoryMapToToken(LinkedList<TreeItem> openedHierarcy) {
         StringBuilder str = new StringBuilder();
-        str.append("(");
+        str.append(LIST_BRACKET_LEFT);
         if (openedHierarcy != null && !openedHierarcy.isEmpty()) {
             for (TreeItem item : openedHierarcy) {
                 str.append(item.getCategoryId());
-                str.append(":");
+                str.append(LIST_ITEM_IDX_SEPARATOR);
                 str.append(item.getIndex());
-                str.append(",");
+                str.append(LIST_ITEM_SEPARATOR);
             }
             str.deleteCharAt(str.length() - 1);
         }
-        str.append(")");
+        str.append(LIST_BRACKET_RIGHT);
         return str.toString();
     }
 

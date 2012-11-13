@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -58,12 +59,12 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
     /**************************************************************************/
     /* Get Categories data                                                    */
     /**************************************************************************/
-    public void onGetCategoryAndSetModuleByHistory(
+    public void onGetCategoryAndSetModuleByHistory(final SearchModuleDataHolder searchDataHolder,
             final LinkedList<TreeItem> tree, final long categoryID, final int page, final long supplierID) {
         homeDemandsService.getCategory(categoryID, new SecuredAsyncCallback<CategoryDetail>(eventBus) {
             @Override
             public void onSuccess(CategoryDetail result) {
-                eventBus.setModuleByHistory(tree, result, page, supplierID);
+                eventBus.setModuleByHistory(searchDataHolder, tree, result, page, supplierID);
             }
         });
     }

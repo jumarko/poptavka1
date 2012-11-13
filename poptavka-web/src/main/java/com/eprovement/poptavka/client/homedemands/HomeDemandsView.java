@@ -43,9 +43,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This view is to replace DemandsView.java.
+ * Home demands module's view.
  *
- * @author praso
+ * @author praso, Martin Slavkovsky
  */
 public class HomeDemandsView extends OverflowComposite
         implements ReverseViewInterface<HomeDemandsPresenter>, HomeDemandsPresenter.HomeDemandsViewInterface {
@@ -178,7 +178,9 @@ public class HomeDemandsView extends OverflowComposite
      * Add the columns to the table.
      */
     private void initGridColumns() {
+
         // Date of creation
+        /**************************************************************************/
         dataGrid.addColumn(new TextCell(), bundle.createdDate(), true, CREATED_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -203,6 +205,7 @@ public class HomeDemandsView extends OverflowComposite
                 });
 
         // Demand Info
+        /**************************************************************************/
         dataGrid.addColumn(new TextCell(), bundle.demand(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -212,6 +215,7 @@ public class HomeDemandsView extends OverflowComposite
                 });
 
         // Locality
+        /**************************************************************************/
         dataGrid.addColumn(new TextCell(), bundle.locality(), false, LOCALITY_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -226,7 +230,8 @@ public class HomeDemandsView extends OverflowComposite
                     }
                 });
 
-        // Cena
+        // Price
+        /**************************************************************************/
         dataGrid.addColumn(new TextCell(), bundle.price(), true, PRICE_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -235,7 +240,8 @@ public class HomeDemandsView extends OverflowComposite
                     }
                 });
 
-        // Urgencia
+        // Urgence
+        /**************************************************************************/
         dataGrid.addUrgentColumn(Storage.MSGS.urgency());
     }
 

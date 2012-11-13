@@ -56,14 +56,15 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = HomeDemandsPresenter.class, historyConverter = HomeDemandsHistoryConverter.class)
-    String goToHomeDemandsModule(SearchModuleDataHolder filter);
+    @Event(handlers = HomeDemandsPresenter.class)
+    void goToHomeDemandsModule(SearchModuleDataHolder filterHolder);
 
     /**************************************************************************/
     /* History events                                                          */
     /**************************************************************************/
-    @Event(historyConverter = HomeDemandsHistoryConverter.class)
-    String createTokenForHistory(LinkedList<TreeItem> categoryDetail, int page, FullDemandDetail demandDetail);
+    @Event(historyConverter = HomeDemandsHistoryConverter.class, name = "token")
+    String createTokenForHistory(SearchModuleDataHolder filterHolder,
+            LinkedList<TreeItem> categoryDetail, int page, FullDemandDetail demandDetail);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -88,7 +89,8 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     /* Business events handled by Presenter.                                  */
     /**************************************************************************/
     @Event(handlers = HomeDemandsPresenter.class)
-    void setModuleByHistory(LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID);
+    void setModuleByHistory(SearchModuleDataHolder searchDataHolder,
+            LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID);
 
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemands(List<FullDemandDetail> result);
@@ -111,5 +113,6 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     void getDemand(long demandId);
 
     @Event(handlers = HomeDemandsHandler.class)
-    void getCategoryAndSetModuleByHistory(LinkedList<TreeItem> tree, long categoryID, int page, long supplierID);
+    void getCategoryAndSetModuleByHistory(SearchModuleDataHolder searchDataHolder,
+            LinkedList<TreeItem> tree, long categoryID, int page, long supplierID);
 }

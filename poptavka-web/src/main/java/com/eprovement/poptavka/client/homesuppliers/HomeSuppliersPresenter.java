@@ -55,7 +55,7 @@ public class HomeSuppliersPresenter
         SingleSelectionModel getSelectionCategoryModel();
 
         //Table
-        UniversalAsyncGrid getDataGrid();
+        UniversalAsyncGrid<FullSupplierDetail> getDataGrid();
 
         SimplePager getPager();
 
@@ -141,7 +141,7 @@ public class HomeSuppliersPresenter
 
     public void onForward() {
         //This sets content of tab: current view attribute selector (fourth tab) in popup.
-        //However supplier attribute selector is loaded loaded by default in second tab,
+        //However supplier attribute selector is already loaded by default in second tab,
         //another setting in fourth tab is not needed
         eventBus.setUpSearchBar(null);
     }

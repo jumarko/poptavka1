@@ -34,13 +34,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This presenter is to replace DemandsPresenter.java.
+ * Module description:.
+ * Data retrieving handle categorySelectionHandler.
+ * TODO add description of this module.
+ * All changes to CellTree, Table range (Pager), Table Selection is stored to history.
  *
  * @author praso, Martin Slavkovsky
  */
 @Presenter(view = HomeDemandsView.class)
-public class HomeDemandsPresenter extends LazyPresenter<
-        HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus> {
+public class HomeDemandsPresenter
+        extends LazyPresenter<HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus> {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -82,6 +85,7 @@ public class HomeDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    private SearchModuleDataHolder searchDataHolder;
     /**
      * Represents CellTree's open nodes hierarchy.
      * According this is created URL token.
@@ -102,16 +106,10 @@ public class HomeDemandsPresenter extends LazyPresenter<
     //FLAGS
     //--------------------------------------------------------------------------
     private long selectedDemand = -1;
-    /**
-     * Sometimes we only need to perform half of actions.
-     */
-    /** Stop processing event CellTree.OpenHandler right after node is opened.
-     * When using setChildOpen to open node but not fire open event */
-    boolean cancelOpenEvent = false;
-    /** Stop processing event DataGrid.RangeChangeHandler.
-     * When we want to set page size but not fire create token event */
-    boolean cancelPagerEvent = false;
-    int pageFromToken = -1;
+    private boolean calledFromHistory = false;
+    private boolean sameCategorySelection = false;
+    private boolean categoryOrPageHasChanged = false;
+    private int pageFromToken = 0;
     /**
      * To control possible dead locks.
      * There are two different events that need to be handled and perform same actions:
@@ -123,10 +121,10 @@ public class HomeDemandsPresenter extends LazyPresenter<
      * 2. When selecting node's OBJECT of CellTree, it fires SelectionChangeHandler event, but doesn't OPEN the node.
      *    Therefore we need to OPEN node manually when handling SELECTION event.
      */
-    boolean selectedEvent = false; //tells APP that selection event was made first
-    boolean openedEvent = false; //tells APP that open event was made first
+    private boolean selectedEvent = false; //tells APP that selection event was made first
+    private boolean openedEvent = false; //tells APP that open event was made first
     /**************************************************************************/
-    /* RPC Service*/
+    /* RPC Service                                                            */
     /* Need RPC service defined here because we need to pass it to CellTree   */
     /* and then to CategoryDataProvider                                       */
     /**************************************************************************/
@@ -155,83 +153,24 @@ public class HomeDemandsPresenter extends LazyPresenter<
     /* Navigation events                                                      */
     /**************************************************************************/
     /**
-     * Navigate processing according to given view type: depends if forwarded from menu, welcome, search.
-     *
-     * @param filter
-     * @param homeDemandsViewType
+     * Main Navigation method called either by default application startup or by searching mechanism.
+     * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
+     *                               - it's also used as pointer to differ root and child sections
      */
-    public void onGoToHomeDemandsModule(SearchModuleDataHolder filter) {
-        //start up initialization
+    public void onGoToHomeDemandsModule(SearchModuleDataHolder searchModuleDataHolder) {
+        //flags initialization
+        //----------------------------------------------------------------------
+        calledFromHistory = false;
         actualOpenedHierarchy.clear();
         lastOpened = view.getCellTree().getRootTreeNode();
+        //no selection nor open event was made
         openedEvent = false;
         selectedEvent = false;
 
-        if (filter == null) {
-            //HOME_DEMANDS_BY_DEFAULT
-            goToHomeDemands();
-        } else {
-            //HOME_DEMANDS_BY_WELCOME
-            if (filter.getSearchText().isEmpty()
-                    && filter.getLocalities().isEmpty()
-                    && filter.getAttributes().isEmpty()
-                    && filter.getCategories().size() == 1) {
-                goToHomeDemands(filter.getCategories().get(0));
-            } else {
-                //HOME_DEMANDS_BY_SEARCH
-                goToHomeDemands(filter);
-            }
-        }
-    }
-
-    /**
-     * Forwarded from menu selection.
-     */
-    private void goToHomeDemands() {
-        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_DEFAULT);
-        //Set visibility
-        view.getFilterLabel().setText("");
-        view.getFilterLabelPanel().setVisible(false);
-        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
-        closeAllNodes(view.getCellTree().getRootTreeNode());
-        //get data
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(null));
-    }
-
-    /**
-     * Forwarded from welcome view - root category selection
-     * @param rootCategoryDetail - category detail object selected from root categories menu on welcome view
-     */
-    private void goToHomeDemands(CategoryDetail rootCategoryDetail) {
-        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
-        //select given category
-        view.getSelectionCategoryModel().setSelected(rootCategoryDetail, true);
-        //open appropiate node
-        openNode(getIndex(view.getCellTree().getRootTreeNode(), rootCategoryDetail));
-        //remove text
-        view.getFilterLabel().setText("");
-        //set visibility
-        view.getFilterLabelPanel().setVisible(false);
-    }
-
-    /**
-     * Forwarded from search module, when searching criteria were provided.
-     * @param searchDataHolder - searching criteria
-     */
-    private void goToHomeDemands(SearchModuleDataHolder searchDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_SEARCH);
-        //unselect categories
-        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
-        //close celltree nodes
-        closeAllNodes(view.getCellTree().getRootTreeNode());
-        //display message that search was performed
-        //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
-        //ale ak bude dynamicky (zobrazia searching criteria), tak ano
-        view.getFilterLabel().setText("Results satisfying searching criteria:" + searchDataHolder.toString());
-        //set visibility
-        view.getFilterLabelPanel().setVisible(true);
-        //getData
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        //widget initialization
+        //----------------------------------------------------------------------
+        restoreFiltering(searchModuleDataHolder);
+        deselectCellTree(); //fire event which retrieve data
     }
 
     /**
@@ -243,90 +182,192 @@ public class HomeDemandsPresenter extends LazyPresenter<
      * @param page - Table's page stored and parsed from URL
      * @param demandID - Demand's ID stored and parsed from URL
      */
-    public void onSetModuleByHistory(
+    public void onSetModuleByHistory(SearchModuleDataHolder filterHolder,
             LinkedList<TreeItem> historyTree, CategoryDetail categoryDetail, int page, long demandID) {
-        //force table to show loading indicator
-        view.getPager().startLoading();
+        calledFromHistory = true;
+        restoreFiltering(filterHolder);
+        restoreCellTreeOpenedNodes(historyTree, categoryDetail);
+        restoreCellTreeSelectionAndTableData(categoryDetail, page);
+        restoreTableSelection(demandID);
+    }
 
+    /**************************************************************************/
+    /* Restoring methods                                                      */
+    /**************************************************************************/
+    /**
+     * Set currentlyLoadedView, filterLabel, searchDataHolder according to given filter.
+     *
+     * @param filterHolder
+     * - if null - hides filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_DEFAULT
+     * - if not null - display filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_SEARCH
+     */
+    private void restoreFiltering(SearchModuleDataHolder filterHolder) {
+        //FILTER
+        //----------------------------------------------------------------------
+        if (filterHolder == null) {
+            Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
+            view.getFilterLabel().setText("");
+            view.getFilterLabelPanel().setVisible(false);
+        } else {
+            //HOME_DEMANDS_BY_WELCOME
+            if (filterHolder.getSearchText().isEmpty()
+                    && filterHolder.getLocalities().isEmpty()
+                    && filterHolder.getAttributes().isEmpty()
+                    && filterHolder.getCategories().size() == 1) {
+                Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
+                //select given category
+                view.getSelectionCategoryModel().setSelected(filterHolder.getCategories().get(0), true);
+                //open appropiate node
+                openNode(getIndex(view.getCellTree().getRootTreeNode(), filterHolder.getCategories().get(0)));
+                view.getFilterLabel().setText("");
+                view.getFilterLabelPanel().setVisible(false);
+            } else {
+                //HOME_DEMANDS_BY_SEARCH
+                Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
+                //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
+                //ale ak bude dynamicky (zobrazia searching criteria), tak ano
+                view.getFilterLabel().setText("Results satisfying searching criteria:" + filterHolder.toString());
+                view.getFilterLabelPanel().setVisible(true);
+            }
+
+        }
+        searchDataHolder = filterHolder;
+    }
+
+    /**
+     * Open CellTree nodes according to given historyTree.
+     * @param historyTree - opened nodes hierarchy to restore.
+     * @param categoryDetail - selected CellTree's object - category
+     */
+    private void restoreCellTreeOpenedNodes(LinkedList<TreeItem> historyTree, CategoryDetail categoryDetail) {
         //1 - TREE
         //----------------------------------------------------------------------
-        //invoked by URL
-        //When app started from scrach, actualOpenedHierarchy is empty, because it only stores
-        //CellTree's open nodes hierarchy of actual app state.
-        if (actualOpenedHierarchy.isEmpty()) {
-            //Therefore, if this method was called and actualOpenedHierarchy is empty,
-            //app was invoked from URL, no by back & forward events (actualOpenedHierarchy wouldn't be empty)
-            //Open CellTree's nodes accorting to hierarchy stored in URL
-            //Set fag to false - tells app that nodes will be opened programicaly, not by user
-            selectedEvent = true;
-            //Opening will be performed "from scratch" - from CellTree root.
-            lastOpened = view.getCellTree().getRootTreeNode();
-            //"From scratch" - user while stored URL hierarchy
-            temporaryOpenedHierarchy = new LinkedList<TreeItem>(historyTree); //make a copy
-            if (!temporaryOpenedHierarchy.isEmpty()) {
-                openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
-            }
+        //if no opened nodes hierarchy must be restored -> no open nodes required -> close all nodes
+        if (historyTree.isEmpty()) {
+            closeAllNodes(view.getCellTree().getRootTreeNode());
         } else {
-            //So, if this method was called and actualOpenedHierarchy is NOT empty,
-            //back & forward events were performed
-            //And if actual open nodes state differs to the one in URL, we can define
-            //according to the length of those lists, what kind of action was performed - back or forward
-            if (actualOpenedHierarchy.size() > historyTree.size()) {
-                /** BACKWARDS opening must be performed.
-                 * - open node to the left from actual node **/
-                selectedEvent = true;
-                modifyLastOpened(categoryDetail.getLevel());
-                modifyTemporaryHierarchy(historyTree, categoryDetail.getLevel());
-                if (!temporaryOpenedHierarchy.isEmpty()) {
-                    openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+            //If actual opened nodes hierarchy is the same as the one that shoul be restored, skip
+            if (!actualOpenedHierarchy.equals(historyTree)) {
+
+                //When app started from scrach, actualOpenedHierarchy is empty, because it only stores
+                //CellTree's open nodes hierarchy of actual app state.
+                if (actualOpenedHierarchy.isEmpty()) { //or Storage.isAppCalledByURL()
+                    //Therefore, if this method was called and actualOpenedHierarchy is empty,
+                    //app was invoked from URL, no by back & forward events (actualOpenedHierarchy wouldn't be empty)
+                    //Open CellTree's nodes accorting to hierarchy stored in URL
+                    //Set fag to false - tells app that nodes will be opened programicaly, not by user
+                    selectedEvent = true;
+                    //Opening will be performed "from scratch" - from CellTree root.
+                    lastOpened = view.getCellTree().getRootTreeNode();
+                    //"From scratch" - user while stored URL hierarchy
+                    temporaryOpenedHierarchy = new LinkedList<TreeItem>(historyTree); //make a copy
+                    if (!temporaryOpenedHierarchy.isEmpty()) {
+                        openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+                    }
+                } else {
+                    //So, if this method was called and actualOpenedHierarchy is NOT empty,
+                    //back & forward events were performed
+                    //And if actual open nodes state differs to the one in URL, we can define
+                    //according to the length of those lists, what kind of action was performed - back or forward
+                    if (actualOpenedHierarchy.size() > historyTree.size()) {
+                        /** BACKWARDS opening must be performed.
+                         * - open node to the left from actual node **/
+                        selectedEvent = true;
+                        modifyLastOpened(categoryDetail.getLevel());
+                        modifyTemporaryHierarchy(historyTree, categoryDetail.getLevel());
+                        if (!temporaryOpenedHierarchy.isEmpty()) {
+                            openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+                        }
+                    } else if (actualOpenedHierarchy.size() <= historyTree.size()) {
+                        /** FORWARD opening must be performed.
+                         * - open node to the right from actual node **/
+                        selectedEvent = true;
+                        int level = getLevel();
+                        modifyLastOpened(level);
+                        modifyTemporaryHierarchy(historyTree, level);
+                        if (!temporaryOpenedHierarchy.isEmpty()) {
+                            openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
+                        }
+                    }
                 }
-            } else if (actualOpenedHierarchy.size() <= historyTree.size()) {
-                /** FORWARD opening must be performed.
-                 * - open node to the right from actual node **/
-                selectedEvent = true;
-                int level = getLevel();
-                modifyLastOpened(level);
-                modifyTemporaryHierarchy(historyTree, level);
-                if (!temporaryOpenedHierarchy.isEmpty()) {
-                    openNode(temporaryOpenedHierarchy.removeFirst().getIndex());
-                }
+                //Set actual state of CellTree's open nodes hierarchy according to history one.
+                this.actualOpenedHierarchy = historyTree;
             }
         }
-        //Set actual state of CellTree's open nodes hierarchy according to history one.
-        this.actualOpenedHierarchy = historyTree;
+    }
 
-        //2 - TABLE
+    /**
+     * Restore CellTree selection which fires events to retrieve table data.
+     * @param categoryDetail - category detail to select
+     * @param page - table page to be displayed
+     */
+    private void restoreCellTreeSelectionAndTableData(CategoryDetail categoryDetail, int page) {
+
+        //2 - TABLE - PAGER
         //----------------------------------------------------------------------
-        //select CATEGORY and PAGER
-
         //If Selection is different from actual one -> new category is going to be selected.
         //Therefore we need to reset pager to 0 page and cancel event whitch creates token (See Bind method).
         //No new token is wanted, because this all is already called because of history,
         //therefore there is already token - the one we are resuming/reestablishing now.
-        //reset table and pager to particular state, but data retrieving leave to categorySelectionEvent.
-        this.pageFromToken = page;
-        openedEvent = true; //open nodes event have already been handled - in 1 - Tree part
+
         //Select category
         //Selection can be handled by part one (see above) by not denying open events.
         //But when app is invoked from URL, opening nodes can take some presious time, therefore
         //open nodes and at the same time select category (despite it's not visible yet),
         //but it fires an event for retrieving data - and that can take also some presious time
         //-> do it at the same time - there is everything asynchronous anyway
-        view.getSelectionCategoryModel().setSelected(categoryDetail, true);
 
+        //Set flags
+        this.pageFromToken = page;
+        openedEvent = true; //open nodes event have already been handled - in 1 - Tree part
+
+        //If no category is selected - Table holds all demands data & cellTree is closed
+        if (categoryDetail == null) { //or historyTree.isEmpty()
+            sameCategorySelection = false;
+            deselectCellTree();
+        } else {
+            //But if category is selected, differ two cases
+            //If same category is selected -> setPage must fire getData on dataProvider
+            //If other category is selected -> setPage must not fire getData on dataProvider,
+            //because new data will be retrieved therefore there is no point to do that
+            if (view.getSelectionCategoryModel().getSelectedObject() == null) {
+                //must call deselect therefore set it to false
+                sameCategorySelection = false;
+            } else {
+                sameCategorySelection = view.getSelectionCategoryModel().getSelectedObject().equals(categoryDetail);
+            }
+            if (sameCategorySelection) {
+                selectCategoryChangeHandlerInner(categoryDetail);
+            } else {
+                categoryOrPageHasChanged = true;
+                view.getSelectionCategoryModel().setSelected(categoryDetail, true);
+            }
+        }
+    }
+
+    /**
+     * Restore table selection according to given demandId.
+     * @param demandID to restore. If == -1, no selection will be made.
+     */
+    private void restoreTableSelection(long demandID) {
         //3 - demand DETAIL
         //----------------------------------------------------------------------
-        FullDemandDetail demandDetail = (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid()
-                .getSelectionModel()).getSelectedObject();
-        //If there is already selected some demand detail and we are resuming history state
-        //where there is no selection, deselect table selection and hide detail widget.
-        if (demandID == -1 && demandDetail != null) {
-            view.hideDemandDetail();
-            ((SingleSelectionModel) view.getDataGrid().getSelectionModel()).setSelected(demandDetail, false);
+        //There is always no selection - because deselectDataGrid is called in SelectionCategoryHandler
+
+        //If there is demandId stored in token
+        if (demandID != -1) {
+            //and if category or page has changed (new data are going to be retireved)
+            if (categoryOrPageHasChanged) {
+                //therefore set token's demandID to selectedDemand attribute for later usage
+                //(when new data are displayed) to get and select demand object detail
+                this.selectedDemand = demandID;
+            } else {
+                //and if category or page has not changed (no changes to data are going to be made,
+                //just change table selection), no display methods will be called, therefore,
+                //getDemand method won't be fired -> do it manualy
+                eventBus.getDemand(demandID);
+            }
         }
-        //But if there should be selected some demand detail object, remember its ID and when
-        //data are retrieved, select it (See displayDemands method).
-        this.selectedDemand = demandID;
     }
 
     /**************************************************************************/
@@ -375,15 +416,7 @@ public class HomeDemandsPresenter extends LazyPresenter<
         view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                pageFromToken = -1;
-                //In some cases we need to set pager size to 0, which fires this event
-                //but we don't want to create token, therefore deny fired event if
-                //cancelPagerEvent flag is True.
-                if (cancelPagerEvent) {
-                    cancelPagerEvent = false;
-                } else {
-                    createTokenForHistory(selectedDemand == -1 ? false : true);
-                }
+                createTokenForHistory();
             }
         });
     }
@@ -414,11 +447,12 @@ public class HomeDemandsPresenter extends LazyPresenter<
         view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
             @Override
             public void onOpen(OpenEvent<TreeNode> event) {
-                /**************************************************************/
-                //get selected node object
+                //Get selected node object
+                //--------------------------------------------------------------
                 CategoryDetail selectedCategory = (CategoryDetail) event.getTarget().getValue();
 
-                /**************************************************************/
+                //Select category of needed
+                //--------------------------------------------------------------
                 openedEvent = true; //OPEN NODE event's semafor BEGIN >>>>>>>
                 //If opening node was done first, select opened node's object in selection model
                 if (!selectedEvent) {
@@ -439,8 +473,9 @@ public class HomeDemandsPresenter extends LazyPresenter<
                 }
                 selectedEvent = false; //SELECT CATEGORY event's semafor END <<<<<<<
 
-                //update last open node state
-                lastOpened = event.getTarget();
+                //update flags
+                //----------------------------------------------------------------------
+                lastOpened = event.getTarget(); //update last open node state
             }
         });
     }
@@ -456,13 +491,33 @@ public class HomeDemandsPresenter extends LazyPresenter<
             public void onSelectionChange(SelectionChangeEvent event) {
                 //get selected item
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
+                //if new selection was made, need to set searchDataHolder = null before creating
+                //token for new selection made in categorySelection.onSelected.
+                if (selected != null) {
+                    searchDataHolder = null;
+                }
 
                 selectCategoryChangeHandlerInner(selected);
             }
         });
     }
 
+    /**
+     * Handle main functionality as opening nodes, setting pager and retrieving data.
+     * Is called either from by selecting SelectionCategoryModel or when reestablishing history.
+     *
+     * @param selected
+     */
     private void selectCategoryChangeHandlerInner(CategoryDetail selected) {
+        //Table selection
+        //----------------------------------------------------------------------
+        //If new category is selected, already selected demand won't match -> deselect
+        //Deselecting table object is needed desptite table data provider has changed,
+        //because selection model holds its selected object independent to data provider.
+        deselectGridSelection();
+
+        //Open cellTree nodes if needed
+        //----------------------------------------------------------------------
         if (selected != null) {
             //User selection was made -> reset filtering
             view.getFilterLabelPanel().setVisible(false);
@@ -484,43 +539,69 @@ public class HomeDemandsPresenter extends LazyPresenter<
             } else {
                 selectedEvent = false; //SELECT CATEGORY event's semafor END <<<<<<<
             }
-            openedEvent = false; //OPEN NODE event's semafor END <<<<<<<
+        }
+        openedEvent = false; //OPEN NODE event's semafor END <<<<<<<
 
-            //Initialization - table, pager ... create token if need
-            //----------------------------------------------------------
-            //If new category selected, selected demand won't match -> deselect
-            deselectGridSelection();
-            //and hide demand detail widget
-            view.hideDemandDetail();
-            view.getPager().startLoading();
-            //if page and pager.page is equal, setting page won't fire rangeChange event -> manual
-            //v podstate to bude volane takto vzdy (==ak nenastala ziadna zmena),
-            //ak ale nastane zmena stranky tabulky, vtedy token vytvory iny hadler - rangeChanged na dataGride
-            if (pageFromToken == -1) { //no history
-                //If new category is selected, pager must be set to page 0,
-                //but if page is already 0, range change event won't ne fire,
-                //therefor new token won't be created -> create token here
-                createTokenForHistory(false);
-            } else {
-                //If new category is selected, pager must be set to page 0
-                //It also fires range change event which creates new token
-                cancelPagerEvent = true;
-                view.getDataGrid().cancelRangeChangedEvent();
-                view.getDataGrid().setPageStart(pageFromToken * view.getDataGrid().getPageSize());
+        //Set pager
+        //----------------------------------------------------------------------
+        //If any changed has been made, pager must be set to right page. Setting different
+        //page that is already selected fires dataGrid.RangeChangeEvent that handles creating token.
+        //In some scenarious we don't want to create another token, therefore differ two cases:
+        //1) If setting page is called from history, cancel any attemts to create new token
+        if (calledFromHistory) {
+            //if actual page differs to history page, pager.setPage fires dataGrid.RangeChangeEvent
+            //that handles creating token -> cancel creating new token in this scenario
+            if (view.getPager().getPage() != pageFromToken) {
+                eventBus.setHistoryStoredForNextOne(false);
             }
 
-            //Retrieve data
-            //----------------------------------------------------------
-            //Set selected category as filter and pass it to filter through that category
-            SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
-            searchDataHolder.getCategories().add(selected);
-
-            //Retrieve data
-            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+            //If same category is selected -> setPage must fire getData on dataProvider
+            //If other category is selected -> setPage need not fire getData on dataProvider,
+            //because new data will be retrieved therefore there is no point to do that
+            //(we don't need to get data on page 0 on actual data because new
+            //data will be retrieved)
+            if (!sameCategorySelection) {
+                view.getDataGrid().cancelRangeChangedEvent();
+            }
+            calledFromHistory = false;
+            view.getPager().setPage(pageFromToken);
+            //2) If setting page is called by user, make sure to create new token
         } else {
-            //If no category is selected, close all nodes
-            closeAllNodes(view.getCellTree().getRootTreeNode());
+            //If user selected new category, pager must be reset to 0 and again:
+            //If same page is set -> setPage won't fire getData on dataProvider
+            //If different page is set -> setPage to 0 will fire getData on dataProvider,
+            //therefore cancel rangeChangeEvent because new data will be retrieved
+            //(we don't need to get data on page 0 on actual data because new
+            //data will be retrieved)
+            if (view.getPager().getPage() != 0) {
+                view.getDataGrid().cancelRangeChangedEvent();
+            }
+            view.getPager().setPage(0);
+            createTokenForHistory();
         }
+
+        //Retireve data if needed
+        //----------------------------------------------------------------------
+        if (!sameCategorySelection) {
+            if (selected == null) {
+                //Retrieve data
+                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
+                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+            } else {
+                //cancel filtering if user selected category from celltree
+                view.getFilterLabelPanel().setVisible(false);
+                //Set selected category as filter and pass it to filter through that category
+                SearchModuleDataHolder filterHolder = new SearchModuleDataHolder();
+                filterHolder.getCategories().add(selected);
+                //Retrieve data
+                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
+                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(filterHolder));
+            }
+        }
+
+        //Reset flags
+        //----------------------------------------------------------------------
+        sameCategorySelection = false;
     }
 
     /**
@@ -539,7 +620,7 @@ public class HomeDemandsPresenter extends LazyPresenter<
                     //retrieve demand detail info and display it
                     view.displayDemandDetail(selected);
                     //create token for this selection
-                    createTokenForHistory(false);
+                    createTokenForHistory();
                 }
             }
         });
@@ -583,13 +664,12 @@ public class HomeDemandsPresenter extends LazyPresenter<
      * Display demands of selected category.
      * @param list
      */
-    public void onDisplayDemands(List<FullDemandDetail> result) {
-        view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), result);
+    public void onDisplayDemands(List<FullDemandDetail> list) {
+        view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
         //If demand must be selected, get its detail and select in selectionModel
         if (selectedDemand != -1) {
             eventBus.getDemand(selectedDemand);
         }
-//        view.getDataGrid().redraw();
     }
 
     /**************************************************************************/
@@ -743,31 +823,36 @@ public class HomeDemandsPresenter extends LazyPresenter<
     }
 
     /**
-     * Cancel table selection.
+     * Cancel cell tree selection and close all its nodes.
+     */
+    private void deselectCellTree() {
+        view.getSelectionCategoryModel().setSelected(view.getSelectionCategoryModel().getSelectedObject(), false);
+        //close celltree nodes
+        closeAllNodes(view.getCellTree().getRootTreeNode());
+    }
+
+    /**
+     * Cancel table selection and hide supplier detail.
      */
     private void deselectGridSelection() {
         SingleSelectionModel selectionModel = (SingleSelectionModel) view.getDataGrid().getSelectionModel();
-        FullDemandDetail demand = (FullDemandDetail) (selectionModel).getSelectedObject();
-        selectionModel.setSelected(demand, false);
+        FullDemandDetail supplier = (FullDemandDetail) (selectionModel).getSelectedObject();
+        if (supplier != null) {
+            selectionModel.setSelected(supplier, false);
+        }
+        selectedDemand = -1L;
+        view.hideDemandDetail();
     }
 
     /**
      * Creates token for history according to CellTree's open nodes hierarchy, table page, table selection.
      * @param setStorageHistoryPointerValue
      */
-    private void createTokenForHistory(boolean setStorageHistoryPointerValue) {
-        //Create token only if new input from user was made and new token must be created
-        if (!Storage.isCalledDueToHistory()) {
-            //Demand
-            FullDemandDetail demand =
-                    (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                    .getSelectedObject();
+    private void createTokenForHistory() {
+        FullDemandDetail demand =
+                (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                .getSelectedObject();
 
-            eventBus.createTokenForHistory(actualOpenedHierarchy, view.getPager().getPage(), demand);
-        }
-        //reset poitner - only if it is to no use anymore ->
-        //if selected demand's id was present in URL, pointer will be used to decide
-        //whether to select demand, or not, after loading data to table.
-        Storage.setCalledDueToHistory(setStorageHistoryPointerValue);
+        eventBus.createTokenForHistory(searchDataHolder, actualOpenedHierarchy, view.getPager().getPage(), demand);
     }
 }

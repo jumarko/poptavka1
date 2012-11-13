@@ -42,6 +42,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Home suppliers module's view.
+ *
+ * @author Martin Slavkovsky
+ */
 public class HomeSuppliersView extends OverflowComposite
         implements ReverseViewInterface<HomeSuppliersPresenter>, HomeSuppliersPresenter.SuppliersViewInterface {
 
@@ -263,7 +268,7 @@ public class HomeSuppliersView extends OverflowComposite
 
     /** Table. **/
     @Override
-    public UniversalAsyncGrid getDataGrid() {
+    public UniversalAsyncGrid<FullSupplierDetail> getDataGrid() {
         return dataGrid;
     }
 

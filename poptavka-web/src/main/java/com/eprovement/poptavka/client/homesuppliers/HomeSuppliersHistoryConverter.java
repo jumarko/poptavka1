@@ -58,7 +58,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      *
      * @param methodName - name of the called method
      * @param param - string behind '?' in url (module/method?param).
-     *                URL creates onAddToPath method in HomeSuppliersHistoryConverter class.
+     *                URL is created by createTokenForHistory method in HomeSuppliersHistoryConverter class.
      * @param eventBus - HomeSuppliersEventBus
      */
     @Override
