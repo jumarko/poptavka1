@@ -164,8 +164,9 @@ public class UniversalTableWidget extends Composite {
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
 
+//        grid.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
         pager.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
-        grid.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
+        pager.setDisplay(grid);
     }
 
     /**
@@ -173,7 +174,7 @@ public class UniversalTableWidget extends Composite {
      */
     private void initTable() {
         // Create a CellTable.
-        grid = new UniversalAsyncGrid<FullOfferDetail>(gridColumns);
+        grid = new UniversalAsyncGrid<FullOfferDetail>(FullOfferDetail.KEY_PROVIDER, gridColumns);
         grid.setHeight("500px");
 
 

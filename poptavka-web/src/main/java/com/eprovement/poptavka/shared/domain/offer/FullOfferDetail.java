@@ -2,12 +2,12 @@ package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
-import java.io.Serializable;
-
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.google.gwt.view.client.ProvidesKey;
+import java.io.Serializable;
 import java.util.Date;
 
 public class FullOfferDetail implements Serializable, TableDisplay {
@@ -21,6 +21,14 @@ public class FullOfferDetail implements Serializable, TableDisplay {
     private UserMessageDetail userMessageDetail = new UserMessageDetail();
     private OfferDetail offerDetail = new OfferDetail();
     private FullDemandDetail demandDetail = new FullDemandDetail();
+    //Keyprovider
+    public static final ProvidesKey<FullOfferDetail> KEY_PROVIDER =
+            new ProvidesKey<FullOfferDetail>() {
+                @Override
+                public Object getKey(FullOfferDetail item) {
+                    return item == null ? null : item.getOfferDetail().getDemandId();
+                }
+            };
 
     public FullOfferDetail() {
     }

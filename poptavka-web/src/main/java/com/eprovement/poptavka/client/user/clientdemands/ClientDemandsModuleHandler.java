@@ -325,8 +325,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    public void onGetClientAssignedDemand(long offerID) {
-        clientDemandsService.getClientAssignedDemand(offerID, new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+    public void onGetClientAssignedDemand(long demandID) {
+        clientDemandsService.getClientAssignedDemand(demandID, new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
             @Override
             public void onSuccess(FullOfferDetail result) {
                 eventBus.selectClientAssignedDemand(result);

@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEven
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -38,6 +39,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Presenter(view = ClientOffersView.class)
 public class ClientOffersPresenter
@@ -79,11 +81,8 @@ public class ClientOffersPresenter
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedDemandOffer = -1;
-    private boolean cancelTokenCreation = false;
     private long selectedClientOfferedDemandId = -1;
     private long selectedClientOfferedDemandOfferId = -1;
-    private int demandPageFromToken = -1;
-    private int offerPageFromToken = -1;
     private FieldUpdater textFieldUpdater = null;
 
     /**************************************************************************/
@@ -116,7 +115,6 @@ public class ClientOffersPresenter
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        eventBus.createTokenForHistory1(0);
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
@@ -130,22 +128,19 @@ public class ClientOffersPresenter
         //Select Menu - my demands - selected
         eventBus.selectClientDemandsMenu(Constants.CLIENT_OFFERED_DEMANDS);
         //
-        cancelTokenCreation = true;
-        view.getDemandGrid().cancelRangeChangedEvent();
-        view.getDemandGrid().setPageStart(parentTablePage * view.getDemandGrid().getPageSize());
-        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
-                parentTablePage * view.getDemandGrid().getPageSize(),
-                view.getDemandGrid().getPageSize(),
-                filterHolder,
-                null));
+        //If current page differ to stored one, cancel events that would be fire automatically but with no need
+        if (view.getDemandPager().getPage() != parentTablePage) {
+            view.getDemandGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
+            eventBus.setHistoryStoredForNextOne(false);
+        }
+        view.getDemandPager().setPage(parentTablePage);
+        //Change visibility
         view.setOfferTableVisible(false);
         view.setDemandTableVisible(true);
 
         this.selectedClientOfferedDemandId = -1;
 
-        if (Storage.isAppCalledByURL()) {
-            eventBus.displayView(view.getWidgetView());
-        }
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onInitClientOfferedDemandOffersByHistory(ClientDemandDetail clientDemandDetail,
@@ -160,20 +155,28 @@ public class ClientOffersPresenter
         view.setDemandTableVisible(false);
         view.setOfferTableVisible(true);
         //
-        cancelTokenCreation = true;
-        view.getOfferGrid().getGrid().cancelRangeChangedEvent();
-        view.getOfferGrid().getGrid().setPageStart(childTablePage * view.getOfferGrid().getGrid().getPageSize());
-        view.getOfferGrid().getGrid().getDataCount(eventBus, new SearchDefinition(
-                childTablePage * view.getOfferGrid().getGrid().getPageSize(),
-                view.getOfferGrid().getGrid().getPageSize(),
-                filterHolder,
-                null));
-
-        this.selectedClientOfferedDemandOfferId = childId;
-
-        if (Storage.isAppCalledByURL()) {
-            eventBus.displayView(view.getWidgetView());
+        if (view.getOfferGrid().getPager().getPage() != childTablePage) {
+            view.getOfferGrid().getGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
+            eventBus.setHistoryStoredForNextOne(false);
         }
+        view.getOfferGrid().getPager().setPage(childTablePage);
+        //if selection differs to the restoring one
+        boolean wasEqual = false;
+        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getGrid().getSelectionModel();
+        for (ClientDemandConversationDetail cdcd : (Set<
+                ClientDemandConversationDetail>) selectionModel.getSelectedSet()) {
+            if (cdcd.getSupplierId() == childId) {
+                wasEqual = true;
+            }
+        }
+        if (wasEqual) {
+            this.selectedClientOfferedDemandOfferId = childId;
+        } else {
+            selectionModel.clear();
+            eventBus.getClientDemandConversation(childId);
+        }
+
+        eventBus.displayView(view.getWidgetView());
     }
 
     /**************************************************************************/
@@ -217,6 +220,7 @@ public class ClientOffersPresenter
     }
 
     public void onSelectClientOfferedDemandOffer(FullOfferDetail detail) {
+        eventBus.setHistoryStoredForNextOne(false); //don't create token
         //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
         //nejak vytvorit event na upadatefieldoch
         //Dolezite je len detail, ostatne atributy sa nepouzivaju
@@ -255,7 +259,8 @@ public class ClientOffersPresenter
             public void update(Boolean value) {
                 List<FullOfferDetail> rows = view.getOfferGrid().getGrid().getVisibleItems();
                 for (FullOfferDetail row : rows) {
-                    ((MultiSelectionModel) view.getOfferGrid().getGrid().getSelectionModel()).setSelected(row, value);
+                    ((MultiSelectionModel) view.getOfferGrid().getGrid()
+                            .getSelectionModel()).setSelected(row, value);
                 }
             }
         });
@@ -313,13 +318,15 @@ public class ClientOffersPresenter
                     lastOpenedDemandOffer = object.getUserMessageDetail().getId();
                     object.setRead(true);
                     view.getOfferGrid().getGrid().redraw();
+                    view.setDemandTableVisible(false);
+                    view.setOfferTableVisible(true);
                     displayDetailContent(object);
-                    if (cancelTokenCreation) {
-                        cancelTokenCreation = false;
-                    } else {
-                        eventBus.createTokenForHistory2(Storage.getDemandId(),
-                                view.getOfferPager().getPage(), object.getOfferDetail().getId());
-                    }
+                    MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getGrid()
+                            .getSelectionModel();
+                    selectionModel.clear();
+                    selectionModel.setSelected(object, true);
+                    eventBus.createTokenForHistory2(Storage.getDemandId(),
+                            view.getOfferPager().getPage(), object.getOfferDetail().getId());
                 }
             }
         };
@@ -386,39 +393,26 @@ public class ClientOffersPresenter
 
     /**************************************************************************/
     /**
-     * Handle table range change by creating token for new range/page.
+     * If demand table range change (page changed), create token for new data (different page).
      */
     private void demandGridRangeChangeHandler() {
         view.getDemandGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                demandPageFromToken = -1;
-                //In some cases we need to set pager size to 0, which fires this event
-                //but we don't want to create token, therefore deny fired event if
-                //cancelPagerEvent flag is True.
-                if (cancelTokenCreation) {
-                    cancelTokenCreation = false;
-                } else {
-                    eventBus.createTokenForHistory1(view.getDemandPager().getPage());
-                }
+                eventBus.createTokenForHistory1(view.getDemandPager().getPage());
             }
         });
     }
 
+    /**
+     * If offer table range change (page changed), create token for new data (different page).
+     */
     private void offerGridRangeChangeHandler() {
         view.getOfferGrid().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                offerPageFromToken = -1;
-                //In some cases we need to set pager size to 0, which fires this event
-                //but we don't want to create token, therefore deny fired event if
-                //cancelPagerEvent flag is True.
-                if (cancelTokenCreation) {
-                    cancelTokenCreation = false;
-                } else {
-                    eventBus.createTokenForHistory2(
-                            Storage.getDemandId(), view.getOfferPager().getPage(), -1);
-                }
+                eventBus.createTokenForHistory2(
+                        Storage.getDemandId(), view.getOfferPager().getPage(), -1);
             }
         });
     }

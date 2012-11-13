@@ -6,8 +6,8 @@ package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
-import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -58,15 +58,15 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     /**************************************************************************/
-    /* History events                                                          */
+    /* History events                                                         */
     /**************************************************************************/
-    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class)
+    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class, name = "token1")
     String createTokenForHistory1(int parentTablePage);
 
-    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class)
+    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class, name = "token2")
     String createTokenForHistory2(long parentId, int childTablePage, long childId);
 
-    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class)
+    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class, name = "token3")
     String createTokenForHistory3(int parentTablePage, long parentId);
 
     /**************************************************************************/

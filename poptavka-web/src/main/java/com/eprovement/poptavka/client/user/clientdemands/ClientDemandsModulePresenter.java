@@ -119,7 +119,8 @@ public class ClientDemandsModulePresenter
                 break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);
-                view.setContent(new ClientDemandsModuleWelcomeView());
+//                view.setContent(new ClientDemandsModuleWelcomeView());
+                eventBus.displayView(new ClientDemandsModuleWelcomeView());
                 break;
         }
     }

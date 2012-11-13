@@ -18,7 +18,16 @@ import java.util.HashMap;
 @History(type = HistoryConverterType.DEFAULT, name = "clientDemands")
 public class ClientDemandsModuleHistoryConverter implements HistoryConverter<ClientDemandsModuleEventBus> {
 
-    public static final String DEMAND = "demand";
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
+    @Inject
+    protected UserRPCServiceAsync service = null;
+    //
+    public static final String NONE_STRING = "welcome";
+    public static final String CLIENT_DEMANDS_STRING = "clientDemands";
+    public static final String CLIENT_OFFERED_DEMANDS_STRING = "clientOfferedDemands";
+    public static final String CLIENT_ASSIGNED_DEMANDS_STRING = "clientAssignedDemands";
     //kvoli vytvaraniu a aktualizovaniu tokenov, musim rozlysovat separatory, aby som dokazal
     //aktualizovat spravny podtokne
     public static final String PARENT_TABLE_SEPARATOR = ">";
@@ -26,17 +35,23 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
     public static final String FILTER_SEPARATOR = ">>>";
     public static final String ITEM_SEPARATOR = ";";
     public static final String VALUE_SEPARATOR = "=";
-    @Inject
-    protected UserRPCServiceAsync service = null;
 
+    /**************************************************************************/
+    /* Convert to token methods.                                              */
+    /**************************************************************************/
     public String onGoToClientDemandsModule(SearchModuleDataHolder filtersHolder, int loadWidget) {
         StringBuilder token = new StringBuilder();
         if (filtersHolder == null) {
             token.append("widget");
             token.append(VALUE_SEPARATOR);
             //TODO Martin - loadWidget - dat meno, nie id
-            token.append(loadWidget);
-
+            token.append(getWidgetName(loadWidget));
+            if (loadWidget != Constants.NONE) {
+                token.append(PARENT_TABLE_SEPARATOR);
+                token.append("page1");
+                token.append(VALUE_SEPARATOR);
+                token.append(0);
+            }
         } else {
             token.append(com.google.gwt.user.client.History.getToken());
             token.append(FILTER_SEPARATOR);
@@ -126,6 +141,9 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
         return newToken.toString();
     }
 
+    /**************************************************************************/
+    /* Convert from token method.                                             */
+    /**************************************************************************/
     @Override
     public void convertFromToken(String historyName, String param, final ClientDemandsModuleEventBus eventBus) {
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
@@ -141,7 +159,7 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
             String[] parentTableParts;
             String[] childTableParts;
 
-            switch (Integer.parseInt(tokenParts.get("").split(VALUE_SEPARATOR)[1])) { //e.g: widget=10
+            switch (parseWidgetName(tokenParts.get("").split(VALUE_SEPARATOR)[1])) { //e.g: widget=clientDemands
                 case Constants.CLIENT_DEMANDS:
                     //Child table
                     if (tokenParts.get(CHILD_TABLE_SEPARATOR) != null) {
@@ -185,17 +203,27 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
                     //parse filter
                     eventBus.initClientAssignedDemandsByHistory(
                             Integer.parseInt(parentTableParts[0].split(VALUE_SEPARATOR)[1]),
-                            Long.parseLong(parentTableParts[0].split(VALUE_SEPARATOR)[1]),
+                            Long.parseLong(parentTableParts[1].split(VALUE_SEPARATOR)[1]),
                             SearchModuleDataHolder.parseSearchModuleDataHolder(tokenParts.get(FILTER_SEPARATOR)));
                     break;
                 default:
-                    eventBus.goToHomeSuppliersModule(
-                            SearchModuleDataHolder.parseSearchModuleDataHolder(tokenParts.get(FILTER_SEPARATOR)));
+                    eventBus.setHistoryStoredForNextOne(false);
+                    eventBus.goToClientDemandsModule(
+                            SearchModuleDataHolder.parseSearchModuleDataHolder(tokenParts.get(FILTER_SEPARATOR)),
+                            Constants.NONE);
                     break;
             }
         }
     }
 
+    @Override
+    public boolean isCrawlable() {
+        return false;
+    }
+
+    /**************************************************************************/
+    /* Helper methods.                                                        */
+    /**************************************************************************/
     private HashMap<String, String> getTokenParts(String token) {
         HashMap<String, String> tokenParts = new HashMap<String, String>();
         //Token like:
@@ -241,8 +269,28 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
         return tokenParts;
     }
 
-    @Override
-    public boolean isCrawlable() {
-        return false;
+    private String getWidgetName(int widgetConst) {
+        switch (widgetConst) {
+            case Constants.CLIENT_DEMANDS:
+                return CLIENT_DEMANDS_STRING;
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                return CLIENT_OFFERED_DEMANDS_STRING;
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                return CLIENT_ASSIGNED_DEMANDS_STRING;
+            default:
+                return NONE_STRING;
+        }
+    }
+
+    private int parseWidgetName(String widgetName) {
+        if (widgetName.equals(CLIENT_DEMANDS_STRING)) {
+            return Constants.CLIENT_DEMANDS;
+        } else if (widgetName.equals(CLIENT_OFFERED_DEMANDS_STRING)) {
+            return Constants.CLIENT_OFFERED_DEMANDS;
+        } else if (widgetName.equals(CLIENT_ASSIGNED_DEMANDS_STRING)) {
+            return Constants.CLIENT_ASSIGNED_DEMANDS;
+        } else {
+            return Constants.NONE;
+        }
     }
 }
