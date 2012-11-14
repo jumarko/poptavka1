@@ -24,11 +24,13 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.RangeChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Presenter(view = SupplierDemandsView.class)
 public class SupplierDemandsPresenter extends LazyPresenter<
@@ -43,7 +45,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
 
         IsWidget getWidgetView();
     }
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -51,14 +52,18 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     private ViewType type = ViewType.EDITABLE;
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
+    private FieldUpdater textFieldUpdater;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedDemandContest = -1;
+    private long selectedSupplierDemandId = -1;
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override
     public void bindView() {
+        // Range Change Handlers
+        tableRangeChangeHandler();
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
@@ -85,6 +90,47 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         }
     }
 
+    public void onInitSupplierDemandsByHistory(int tablePage, long selectedId, SearchModuleDataHolder filterHolder) {
+        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_DEMANDS);
+        //Select Menu - my demands - selected
+        eventBus.selectSupplierDemandsMenu(Constants.SUPPLIER_POTENTIAL_DEMANDS);
+        //
+        //If current page differ to stored one, cancel events that would be fire automatically but with no need
+        if (view.getTableWidget().getPager().getPage() != tablePage) {
+            //cancel range change event in asynch data provider
+            view.getTableWidget().getGrid().cancelRangeChangedEvent();
+            eventBus.setHistoryStoredForNextOne(false);
+        }
+        view.getTableWidget().getPager().setPage(tablePage);
+
+        //if selection differs to the restoring one
+        boolean wasEqual = false;
+        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
+                .getGrid().getSelectionModel();
+        for (FullOfferDetail offer : (Set<
+                FullOfferDetail>) selectionModel.getSelectedSet()) {
+            if (offer.getOfferDetail().getDemandId() == selectedId) {
+                wasEqual = true;
+            }
+        }
+        this.selectedSupplierDemandId = selectedId;
+        if (selectedId != -1 && !wasEqual) {
+            selectionModel.clear();
+            lastOpenedDemandContest = -1;
+            eventBus.getSupplierDemand(selectedId);
+        }
+
+        if (Storage.isAppCalledByURL()) {
+            view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(
+                    tablePage * view.getTableWidget().getGrid().getPageSize(),
+                    view.getTableWidget().getGrid().getPageSize(),
+                    filterHolder,
+                    null));
+        }
+
+        eventBus.displayView(view.getWidgetView());
+    }
+
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
@@ -100,11 +146,20 @@ public class SupplierDemandsPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplaySupplierDemandsData(List<FullOfferDetail> data) {
-        GWT.log("++ onResponseSupplierAssignedDemands");
+    public void onDisplaySupplierDemands(List<FullOfferDetail> data) {
+        GWT.log("++ onResponseSupplierPotentialDemands");
 
         view.getTableWidget().getGrid().getDataProvider().updateRowData(
                 view.getTableWidget().getGrid().getStart(), data);
+
+        if (selectedSupplierDemandId != -1) {
+            eventBus.getSupplierDemand(lastOpenedDemandContest);
+        }
+    }
+
+    public void onSelectSupplierDemand(FullOfferDetail detail) {
+        eventBus.setHistoryStoredForNextOne(false);
+        textFieldUpdater.update(-1, detail, null);
     }
 
     /**
@@ -139,14 +194,25 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    public void tableRangeChangeHandler() {
+        view.getTableWidget().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+            @Override
+            public void onRangeChange(RangeChangeEvent event) {
+                eventBus.createTokenForHistory(
+                        view.getTableWidget().getPager().getPage(), selectedSupplierDemandId);
+            }
+        });
+    }
     // TableWidget handlers
+
     public void addCheckHeaderUpdater() {
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
                 List<FullOfferDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
                 for (FullOfferDetail row : rows) {
-                    ((MultiSelectionModel) view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
+                    ((MultiSelectionModel) view.getTableWidget().getGrid()
+                            .getSelectionModel()).setSelected(row, value);
                 }
             }
         });
@@ -186,7 +252,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     }
 
     public void addColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, Object>() {
+        textFieldUpdater = new FieldUpdater<FullOfferDetail, Object>() {
             @Override
             public void update(int index, FullOfferDetail object, Object value) {
                 if (lastOpenedDemandContest != object.getUserMessageDetail().getId()) {

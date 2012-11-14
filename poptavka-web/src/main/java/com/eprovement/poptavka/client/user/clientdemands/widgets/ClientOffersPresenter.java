@@ -140,6 +140,14 @@ public class ClientOffersPresenter
 
         this.selectedClientOfferedDemandId = -1;
 
+        if (Storage.isAppCalledByURL()) {
+            view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
+                    parentTablePage * view.getDemandGrid().getPageSize(),
+                    view.getDemandGrid().getPageSize(),
+                    filterHolder,
+                    null));
+        }
+
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -174,6 +182,14 @@ public class ClientOffersPresenter
         } else {
             selectionModel.clear();
             eventBus.getClientDemandConversation(childId);
+        }
+
+        if (Storage.isAppCalledByURL()) {
+            view.getOfferGrid().getGrid().getDataCount(eventBus, new SearchDefinition(
+                    childTablePage * view.getOfferGrid().getGrid().getPageSize(),
+                    view.getOfferGrid().getGrid().getPageSize(),
+                    filterHolder,
+                    null));
         }
 
         eventBus.displayView(view.getWidgetView());

@@ -68,7 +68,6 @@ public final class Constants {
     public static final int CLIENT_ASSIGNED_DEMANDS = 12;
     // Supplier
     public static final int SUPPLIER_POTENTIAL_DEMANDS = 15;
-    public static final int SUPPLIER_POTENTIAL_DEMAND_DISCUSSIONS = 13;
     public static final int SUPPLIER_OFFERS = 16;
     public static final int SUPPLIER_ASSIGNED_DEMANDS = 17;
 

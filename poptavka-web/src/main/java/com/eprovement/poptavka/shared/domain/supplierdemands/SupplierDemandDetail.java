@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class SupplierDemandProjectDetail implements Serializable, TableDisplay {
+public class SupplierDemandDetail implements Serializable, TableDisplay {
 
     /**
      * Generated serialVersionUID.
@@ -33,11 +33,11 @@ public class SupplierDemandProjectDetail implements Serializable, TableDisplay {
     private Date deliveryDate;
     private boolean read = false;
     private boolean starred = false;
-    public static final ProvidesKey<SupplierDemandProjectDetail> KEY_PROVIDER =
-            new ProvidesKey<SupplierDemandProjectDetail>() {
+    public static final ProvidesKey<SupplierDemandDetail> KEY_PROVIDER =
+            new ProvidesKey<SupplierDemandDetail>() {
 
                 @Override
-                public Object getKey(SupplierDemandProjectDetail item) {
+                public Object getKey(SupplierDemandDetail item) {
                     return item == null ? null : item.getDemandId();
                 }
             };

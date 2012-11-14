@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.RangeChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -61,6 +62,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     @Override
     public void bindView() {
+        dataGridRangeChangeHandler();
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
@@ -115,6 +117,14 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             selectionModel.clear();
             lastOpenedAssignedDemand = -1;
             eventBus.getClientAssignedDemand(parentId);
+        }
+
+        if (Storage.isAppCalledByURL()) {
+            view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(
+                    parentTablePage * view.getTableWidget().getGrid().getPageSize(),
+                    view.getTableWidget().getGrid().getPageSize(),
+                    filterHolder,
+                    null));
         }
 
         eventBus.displayView(view.getWidgetView());
@@ -179,7 +189,19 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    /**
+     * Handle table range change by creating token for new range/page.
+     */
+    private void dataGridRangeChangeHandler() {
+        view.getTableWidget().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+            @Override
+            public void onRangeChange(RangeChangeEvent event) {
+                eventBus.createTokenForHistory3(view.getTableWidget().getPager().getPage(), lastOpenedAssignedDemand);
+            }
+        });
+    }
     // Field Updaters
+
     public void addCheckHeaderUpdater() {
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override

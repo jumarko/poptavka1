@@ -47,7 +47,6 @@ public interface LocalizableMessages extends Messages {
     String searchInClientOfferedDemandOffers();
     String searchInClientAssignedDemands();
     String searchInSuppliersPotentialDemands();
-    String searchInSuppliersPotentialDemandDiscussions();
     String searchInSuppliersOffers();
     String searchInSuppliersAssignedDemands();
     //home - searchPanel - popup current view tab name

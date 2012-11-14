@@ -260,7 +260,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Button actions - messaging.                                            */
     /**************************************************************************/
-    public void onGetOfferStatusChange(OfferDetail offerDetail) {
+    public void onUpdateOfferStatus(OfferDetail offerDetail) {
         GWT.log("STATE: " + offerDetail.getState());
         clientDemandsService.changeOfferState(offerDetail, new SecuredAsyncCallback<OfferDetail>(eventBus) {
             @Override

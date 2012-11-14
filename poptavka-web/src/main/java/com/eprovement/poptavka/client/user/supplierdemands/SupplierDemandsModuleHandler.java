@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -73,8 +74,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-//                        eventBus.displaySupplierPotentialDemands(result);
-                        eventBus.displaySupplierDemandsData(result);
+                        eventBus.displaySupplierDemands(result);
                     }
                 });
     }
@@ -82,7 +82,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffersCount(
-                Storage.getUser().getUserId(), searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+                Storage.getUser().getUserId(), searchDefinition,
+                new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
                         grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -96,7 +97,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-                        eventBus.displaySupplierDemandsData(result);
+                        eventBus.displaySupplierDemands(result);
                     }
                 });
     }
@@ -119,7 +120,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-                        eventBus.displaySupplierDemandsData(result);
+                        eventBus.displaySupplierDemands(result);
                     }
                 });
     }
@@ -161,17 +162,24 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     public void onRequestFinishOffer(FullOfferDetail fullOfferDetail) {
         supplierDemandsService.finishOffer(fullOfferDetail, new SecuredAsyncCallback<Void>(eventBus) {
-
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
             }
         });
     }
+    //request? better would be update
+
+    public void onRequestEditOffer(FullOfferDetail fullOfferDetail) {
+        //TODO RPC
+    }
+
+    public void onRequestCancelOffer(OfferDetail offerDetail) {
+        //TODO RPC
+    }
 
     public void onUpdateUnreadMessagesCount() {
         supplierDemandsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
-
             @Override
             public void onSuccess(UnreadMessagesDetail result) {
                 // empty i.e number of new messages could be retrieved
@@ -179,5 +187,41 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
             }
         });
+    }
+
+    public void onUpdateOfferStatus(OfferDetail offerDetail) {
+        //TODO RPC
+    }
+
+    /**************************************************************************/
+    /* Get Detail object for selecting in selection models                    */
+    /**************************************************************************/
+    public void onGetSupplierDemand(long demandID) {
+        supplierDemandsService.getSupplierDemand(demandID, new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+            @Override
+            public void onSuccess(FullOfferDetail result) {
+                eventBus.selectSupplierDemand(result);
+            }
+        });
+    }
+
+    public void onGetSupplierOffer(long offerID) {
+        supplierDemandsService.getSupplierOffer(offerID,
+                new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(FullOfferDetail result) {
+                        eventBus.selectSupplierOffer(result);
+                    }
+                });
+    }
+
+    public void onGetSupplierAssignedDemand(long demandID) {
+        supplierDemandsService.getSupplierAssignedDemand(demandID,
+                new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(FullOfferDetail result) {
+                        eventBus.selectSupplierAssignedDemand(result);
+                    }
+                });
     }
 }

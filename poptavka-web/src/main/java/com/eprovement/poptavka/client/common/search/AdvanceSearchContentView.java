@@ -84,9 +84,6 @@ public class AdvanceSearchContentView extends Composite
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
                 currentViewAttributesLabel.setText(Storage.MSGS.suppliersPotentialDemandsTabName());
                 break;
-            case Constants.SUPPLIER_POTENTIAL_DEMAND_DISCUSSIONS:
-                currentViewAttributesLabel.setText(Storage.MSGS.suppliersPotentialDemandDiscussionsTabName());
-                break;
             case Constants.SUPPLIER_OFFERS:
                 currentViewAttributesLabel.setText(Storage.MSGS.suppliersOffersTabName());
                 break;

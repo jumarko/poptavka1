@@ -161,6 +161,14 @@ public class ClientDemandsPresenter
 
         this.selectedClientDemandId = -1;
 
+        if (Storage.isAppCalledByURL()) {
+            view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
+                    parentTablePage * view.getDemandGrid().getPageSize(),
+                    view.getDemandGrid().getPageSize(),
+                    filterHolder,
+                    null));
+        }
+
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -191,11 +199,20 @@ public class ClientDemandsPresenter
                 wasEqual = true;
             }
         }
+
         this.selectedClientDemandConversationId = childId;
         if (childId != -1 && !wasEqual) {
             selectionModel.clear();
             lastOpenedDemandConversation = -1;
             eventBus.getClientDemandConversation(childId);
+        }
+
+        if (Storage.isAppCalledByURL()) {
+            view.getConversationGrid().getDataCount(eventBus, new SearchDefinition(
+                    childTablePage * view.getConversationGrid().getPageSize(),
+                    view.getConversationGrid().getPageSize(),
+                    filterHolder,
+                    null));
         }
 
         eventBus.displayView(view.getWidgetView());
@@ -317,7 +334,7 @@ public class ClientDemandsPresenter
                 if (lastOpenedDemandConversation != object.getUserMessageId()) {
                     lastOpenedDemandConversation = object.getUserMessageId();
                     object.setRead(true);
-                    view.getConversationGrid().redraw();
+//                    view.getConversationGrid().redraw();
                     view.setDemandTableVisible(false);
                     view.setConversationTableVisible(true);
                     displayDetailContent(object);

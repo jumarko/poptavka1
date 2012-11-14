@@ -232,8 +232,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
                 return Storage.MSGS.searchInClientAssignedDemands();
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
                 return Storage.MSGS.searchInSuppliersPotentialDemands();
-            case Constants.SUPPLIER_POTENTIAL_DEMAND_DISCUSSIONS:
-                return Storage.MSGS.searchInSuppliersPotentialDemandDiscussions();
             case Constants.SUPPLIER_OFFERS:
                 return Storage.MSGS.searchInSuppliersOffers();
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:

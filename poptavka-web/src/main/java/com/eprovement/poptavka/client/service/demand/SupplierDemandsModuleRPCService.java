@@ -1,10 +1,12 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -121,4 +123,16 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
+
+    /**************************************************************************/
+    /* Get Detail object for selecting in selection models                    */
+    /**************************************************************************/
+    FullOfferDetail getSupplierDemand(long supplierDemandID) throws RPCException, ApplicationSecurityException;
+
+    ClientDemandConversationDetail getSupplierDemandConversation(long supplierDemandConversationID) throws RPCException,
+            ApplicationSecurityException;
+
+    FullOfferDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
+
+    FullOfferDetail getSupplierAssignedDemand(long demandID) throws RPCException, ApplicationSecurityException;
 }

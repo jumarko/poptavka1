@@ -72,6 +72,8 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
+    //Module navigation
+    //--------------------------------------------------------------------------
     /**
      * The only entry point to this module. This module is not asynchronous.
      *
@@ -80,6 +82,8 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModulePresenter.class, historyConverter = ClientDemandsModuleHistoryConverter.class)
     String goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
+    //Init by default
+    //--------------------------------------------------------------------------
     @Event(handlers = ClientDemandsPresenter.class)
     void initClientDemands(SearchModuleDataHolder filter);
 
@@ -89,7 +93,8 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void initClientAssignedDemands(SearchModuleDataHolder filter);
 
-    /** HISTORY. **/
+    //Init by history
+    //--------------------------------------------------------------------------
     @Event(handlers = ClientDemandsPresenter.class)
     void initClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder);
 
@@ -105,7 +110,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
             ClientDemandDetail result, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void initClientAssignedDemandsByHistory(int parentTablePage, long parentId, SearchModuleDataHolder filterHolder);
+    void initClientAssignedDemandsByHistory(int tablePage, long selectedId, SearchModuleDataHolder filterHolder);
 
     /**************************************************************************/
     /* Navigation Parent events */
@@ -138,7 +143,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void loginFromSession();
 
     /**************************************************************************/
-    /* Business events handled by DemandModulePresenter.                      */
+    /* Business events handled by ClientDemandsModulePresenter.               */
     /**************************************************************************/
     // Forward methods don't need history converter because they have its owns
     @Event(handlers = ClientDemandsModulePresenter.class)
@@ -205,7 +210,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void updateUnreadMessagesCount();
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void getOfferStatusChange(OfferDetail offerDetail);
+    void updateOfferStatus(OfferDetail offerDetail);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void getClientDemand(long clientDemandID);
