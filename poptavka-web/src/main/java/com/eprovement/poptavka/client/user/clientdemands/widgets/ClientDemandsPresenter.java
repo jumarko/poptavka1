@@ -74,8 +74,6 @@ public class ClientDemandsPresenter
 
         UniversalAsyncGrid<ClientDemandConversationDetail> getConversationGrid();
 
-        int getConversationPageSize();
-
         List<Long> getSelectedIdList();
 
         Set<ClientDemandConversationDetail> getSelectedMessageList();

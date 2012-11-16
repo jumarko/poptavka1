@@ -10,16 +10,17 @@ import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.AsyncDataGrid;
-import com.eprovement.poptavka.client.resources.CustomPager;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.resources.TreeResources;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -29,11 +30,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -79,6 +78,7 @@ public class HomeDemandsView extends OverflowComposite
     private static final int TITLE_COL_WIDTH = 200;
     private static final int LOCALITY_COL_WIDTH = 150;
     private static final int PRICE_WIDTH = 80;
+    private static final int URGENT_COL_WIDTH = 50;
     //Table definitions
     @UiField(provided = true)
     UniversalAsyncGrid<FullDemandDetail> dataGrid;
@@ -88,9 +88,7 @@ public class HomeDemandsView extends OverflowComposite
             });
     //Pager
     @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSize;
+    UniversalPagerWidget pager;
     //CellTree
     @UiField(provided = true)
     CellTree cellTree;
@@ -117,13 +115,7 @@ public class HomeDemandsView extends OverflowComposite
     /**************************************************************************/
     @Override
     public void createView() {
-        pageSize = new ListBox();
-        pageSize.addItem("10");
-        pageSize.addItem("20");
-        pageSize.addItem("30");
-        pageSize.setSelectedIndex(0);
-
-        initCellTable();
+        initTableAndPager();
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -155,20 +147,17 @@ public class HomeDemandsView extends OverflowComposite
     /**
      * Initialize this example.
      */
-    private void initCellTable() {
-        // Create a CellTable.
+    private void initTableAndPager() {
+        pager = new UniversalPagerWidget();
+        // Create a CellTable
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns, this.getPageSize(), resource);
-        dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns, pager.getPageSize(), resource);
+        dataGrid.setMinimumTableWidth(CREATED_DATE_COL_WIDTH + TITLE_COL_WIDTH
+                + +LOCALITY_COL_WIDTH + PRICE_WIDTH + URGENT_COL_WIDTH, Style.Unit.PX);
         // Selection handler
         dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
 
-        dataGrid.setRowCount(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())), true);
-        dataGrid.setPageSize(this.getPageSize());
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(CustomPager.class);
-        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        // bind pager to grid
         pager.setDisplay(dataGrid);
 
         initGridColumns();
@@ -267,19 +256,17 @@ public class HomeDemandsView extends OverflowComposite
 
     @Override
     public SimplePager getPager() {
-        return pager;
+        return pager.getPager();
     }
 
-    @Override
-    public ListBox getPageSizeCombo() {
-        return pageSize;
-    }
-
-    @Override
-    public int getPageSize() {
-        return Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex()));
-    }
-
+//    @Override
+//    public ListBox getPageSizeCombo() {
+//        return pager.getPageSizeListBox();
+//    }
+//    @Override
+//    public int getPageSize() {
+//        return pager.getPageSize();
+//    }
     /** Filter. **/
     @Override
     public DecoratorPanel getFilterLabelPanel() {

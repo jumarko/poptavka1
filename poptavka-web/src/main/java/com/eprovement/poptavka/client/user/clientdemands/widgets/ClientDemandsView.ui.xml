@@ -29,8 +29,7 @@
                             <g:Label>
                                 <ui:msg key="clientProjectsTitle">Vypis klientovych poptaviek</ui:msg>
                             </g:Label>
-                            <c:SimplePager ui:field='demandPager' styleName='{res.layout.pager}'/>
-                            <g:ListBox ui:field='demandPageSize' />
+                            <s:UniversalPagerWidget ui:field='demandPager' />
                         </g:HorizontalPanel>
                         <g:HorizontalPanel ui:field="conversationHeader">
                             <g:Button ui:field="backBtn">
@@ -38,8 +37,7 @@
                             </g:Button>
                             <g:Label ui:field="demandTitlelabel"/>
                             <g:ListBox ui:field="actions"/>
-                            <c:SimplePager ui:field='conversationPager' styleName='{res.layout.pager}'/>
-                            <g:ListBox ui:field='conversationPageSize' />
+                            <s:UniversalPagerWidget ui:field='conversationPager'/>
                         </g:HorizontalPanel>
                     </g:HorizontalPanel>
                 </g:north>

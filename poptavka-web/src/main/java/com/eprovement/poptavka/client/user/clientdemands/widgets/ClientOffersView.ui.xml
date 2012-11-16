@@ -29,8 +29,7 @@
                             <g:Label>
                                 <ui:msg key="clientContestsTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
                             </g:Label>
-                            <c:SimplePager ui:field='demandPager' />
-                            <g:ListBox ui:field='demandPageSize' />
+                            <s:UniversalPagerWidget ui:field='demandPager' />
                         </g:HorizontalPanel>
                         <g:HorizontalPanel ui:field="contestHeader">
                             <g:Button ui:field="backBtn">

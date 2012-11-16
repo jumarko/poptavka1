@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
 	<ui:with field='res'
@@ -11,12 +12,8 @@
 			<g:HorizontalPanel ui:field="demandHeader">
 				<g:Label ui:field="tableNameLabel" />
 				<g:ListBox ui:field="actionBox" />
-				<c:SimplePager ui:field='pager' styleName='{res.layout.pager}' />
-				<g:ListBox ui:field='pageSize' />
+				<s:UniversalPagerWidget ui:field='pager'/>
 			</g:HorizontalPanel>
-			<!-- <g:HTMLPanel styleName='{res.layout.pager}'> <table style="width:100%"> 
-				<tr> <td align='center'> <c:SimplePager ui:field='pager' styleName='{res.layout.pager}'/> 
-				<g:ListBox ui:field='pageSize' /> </td> </tr> </table> </g:HTMLPanel> -->
 		</g:north>
 		<g:center>
 			<s:UniversalAsyncGrid ui:field="grid"/>

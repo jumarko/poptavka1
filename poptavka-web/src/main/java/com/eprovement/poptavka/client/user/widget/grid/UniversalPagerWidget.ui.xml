@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+    <ui:style>
+        .paginator {
+        margin: 5px 10px;
+        }
+
+        .pageSize {
+        border-radius: 3px 3px 3px 3px;
+        float: left;
+        height: 31px;
+        margin: 5px 0 0;
+        padding: 6px;
+        }
+    </ui:style>
+
+    <g:HorizontalPanel>
+        <c:SimplePager ui:field='pager' styleName='{style.paginator}'/>
+        <g:ListBox ui:field='pageSize' styleName='{style.pageSize}'/>
+    </g:HorizontalPanel>
+</ui:UiBinder>

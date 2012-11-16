@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.resources.TreeResources;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
@@ -28,12 +29,10 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -77,7 +76,7 @@ public class HomeSuppliersView extends OverflowComposite
     private static final int SUPPLIER_NAME_COL_WIDTH = 120;
     private static final int RATING_COL_WIDTH = 50;
     private static final int ADDRESS_COL_WIDTH = 60;
-    private static final int LOCALITY_COL_WIDTH = 50;
+//    private static final int LOCALITY_COL_WIDTH = 50;
     private static final int LOGO_COL_WIDTH = 25;
     //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
@@ -86,9 +85,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true)
     UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
+    UniversalPagerWidget pager;
     @UiField
     Label reklama, filterLabel;
     @UiField
@@ -120,19 +117,15 @@ public class HomeSuppliersView extends OverflowComposite
     /**************************************************************************/
     @Override
     public void createView() {
-        pageSizeCombo = new ListBox();
-        pageSizeCombo.addItem("10");
-        pageSizeCombo.addItem("20");
-        pageSizeCombo.addItem("30");
-        pageSizeCombo.setSelectedIndex(0);
-
-        initDataGrid();
+        initTableAndPager();
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
 
         reklama.setVisible(true);
         detail.setVisible(false);
         LOGGER.info("CreateView pre DisplaySuppliers");
+
+        StyleResource.INSTANCE.layout().ensureInjected();
     }
 
     public void initCellTree() {
@@ -149,27 +142,26 @@ public class HomeSuppliersView extends OverflowComposite
         cellTree.setAnimationEnabled(true);
     }
 
-    private void initDataGrid() {
+    private void initTableAndPager() {
         // Create a DataGrid.
         GWT.log("Admin Suppliers initDataGrid initialized");
+
+        //Create pager
+        pager = new UniversalPagerWidget();
+
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns, this.getPageSize(), resource);
-        dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
-
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(
+                KEY_PROVIDER, gridColumns, pager.getPageSize(), resource);
+        dataGrid.setMinimumTableWidth(LOGO_COL_WIDTH + SUPPLIER_NAME_COL_WIDTH
+                + RATING_COL_WIDTH + ADDRESS_COL_WIDTH, Unit.PX);
+        // Selection handler
         dataGrid.setSelectionModel(new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER));
 
-        dataGrid.setMinimumTableWidth(SUPPLIER_NAME_COL_WIDTH + RATING_COL_WIDTH
-                + ADDRESS_COL_WIDTH + LOCALITY_COL_WIDTH, Unit.PX);
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        // bind pager to grid
         pager.setDisplay(dataGrid);
-        pager.setPageSize(this.getPageSize());
-        StyleResource.INSTANCE.layout().ensureInjected();
 
         // Initialize the columns.
         initTableColumns();
@@ -274,17 +266,7 @@ public class HomeSuppliersView extends OverflowComposite
 
     @Override
     public SimplePager getPager() {
-        return pager;
-    }
-
-    @Override
-    public ListBox getPageSizeCombo() {
-        return pageSizeCombo;
-    }
-
-    @Override
-    public int getPageSize() {
-        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
+        return pager.getPager();
     }
 
     /** Filter. **/

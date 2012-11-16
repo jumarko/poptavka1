@@ -27,6 +27,7 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
@@ -160,24 +161,28 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         super();
         this.gridColumns = gridColumns;
         this.setCustomEmptyTableNotification();
+        setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
 
     public UniversalAsyncGrid(List<String> gridColumns, int pageSize, Resources resources) {
         super(pageSize, resources);
         this.gridColumns = gridColumns;
         this.setCustomEmptyTableNotification();
+        setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
 
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
         this.gridColumns = gridColumns;
         this.setCustomEmptyTableNotification();
+        setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
 
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns, int pageSize, Resources resources) {
         super(pageSize, resources, keyProvider);
         this.gridColumns = gridColumns;
         this.setCustomEmptyTableNotification();
+        setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
 
     /**************************************************************************/

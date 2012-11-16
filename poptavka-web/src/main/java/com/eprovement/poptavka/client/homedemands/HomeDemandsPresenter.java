@@ -9,8 +9,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.user.cellview.client.CellTree;
@@ -21,7 +19,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -59,10 +56,6 @@ public class HomeDemandsPresenter
         UniversalAsyncGrid<FullDemandDetail> getDataGrid();
 
         SimplePager getPager();
-
-        ListBox getPageSizeCombo();
-
-        int getPageSize();
 
         //Detail
         void displayDemandDetail(FullDemandDetail fullDemandDetail);
@@ -403,7 +396,6 @@ public class HomeDemandsPresenter
         cellTreeOpenHandler();
         selectionCategoryChangeHandler();
         dataGridSelectioModelChangeHandler();
-        pageSizeChangeHandler();
     }
 
     /**************************************************************************/
@@ -622,28 +614,6 @@ public class HomeDemandsPresenter
                     //create token for this selection
                     createTokenForHistory();
                 }
-            }
-        });
-    }
-
-    /**
-     * Reset pager and table when page size changed.
-     */
-    private void pageSizeChangeHandler() {
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                view.getDataGrid().setRowCount(0, true);
-
-                int newPage = Integer.valueOf(view.getPageSizeCombo().
-                        getItemText(view.getPageSizeCombo().getSelectedIndex()));
-
-                view.getDataGrid().setRowCount(newPage, true);
-
-                int page = view.getPager().getPageStart() / view.getPager().getPageSize();
-
-                view.getPager().setPageStart(page * newPage);
-                view.getPager().setPageSize(newPage);
             }
         });
     }

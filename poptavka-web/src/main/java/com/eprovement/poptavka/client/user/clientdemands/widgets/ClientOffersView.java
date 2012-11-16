@@ -2,21 +2,22 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.resources.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionModel;
@@ -44,9 +45,7 @@ public class ClientOffersView extends Composite
     private static final int VALID_TO_DATE_COL_WIDTH = 30;
     //pager definition
     @UiField(provided = true)
-    SimplePager demandPager;
-    @UiField(provided = true)
-    ListBox demandPageSize;
+    UniversalPagerWidget demandPager;
     /**************************************************************************/
     /* DemandOfferTable Attrinbutes                                         */
     /**************************************************************************/
@@ -76,17 +75,11 @@ public class ClientOffersView extends Composite
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
-        //init pagesize lsit
-        demandPageSize = new ListBox();
-        demandPageSize.addItem("10");
-        demandPageSize.addItem("20");
-        demandPageSize.addItem("30");
-        demandPageSize.setSelectedIndex(2);
 
         initDemandTable();
         initOfferTable();
-
         initWidget(uiBinder.createAndBindUi(this));
+
         setOfferTableVisible(false);
     }
 
@@ -98,22 +91,21 @@ public class ClientOffersView extends Composite
                 new String[]{
                     "title", "price", "finnishDate", "validTo"
                 });
-        // Create a CellTable.
-        demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(gridColumns);
+        // Create a Pager.
+        demandPager = new UniversalPagerWidget();
+        // Create a Table.
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
+                gridColumns, demandPager.getPageSize(), resource);
         demandGrid.setWidth("800px");
         demandGrid.setHeight("500px");
-//        demandGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
-        demandGrid.setRowCount(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())), true);
-        demandGrid.setPageSize(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())));
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         final SelectionModel<ClientDemandDetail> selectionModel =
                 new SingleSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
         demandGrid.setSelectionModel(selectionModel);
 
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        demandPager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
+        // Bind pager to Table.
         demandPager.setDisplay(demandGrid);
 
         initDemandTableColumns();
@@ -168,7 +160,7 @@ public class ClientOffersView extends Composite
 
         // Valid-to date column
         demandGrid.addColumn(
-                new TextCell(), Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -200,7 +192,7 @@ public class ClientOffersView extends Composite
     //Pager
     @Override
     public SimplePager getDemandPager() {
-        return demandPager;
+        return demandPager.getPager();
     }
 
     @Override

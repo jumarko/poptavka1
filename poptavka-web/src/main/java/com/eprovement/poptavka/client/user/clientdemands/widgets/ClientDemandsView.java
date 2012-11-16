@@ -1,20 +1,21 @@
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.resources.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -53,9 +54,7 @@ public class ClientDemandsView extends Composite
     private static final int VALID_TO_DATE_COL_WIDTH = 30;
     //pager definition
     @UiField(provided = true)
-    SimplePager demandPager;
-    @UiField(provided = true)
-    ListBox demandPageSize;
+    UniversalPagerWidget demandPager;
     /**************************************************************************/
     /* DemandConversationTable Attrinbutes                                         */
     /**************************************************************************/
@@ -76,9 +75,7 @@ public class ClientDemandsView extends Composite
     private static final int DATE_COL_WIDTH = 20;
     //pager definition
     @UiField(provided = true)
-    SimplePager conversationPager;
-    @UiField(provided = true)
-    ListBox conversationPageSize;
+    UniversalPagerWidget conversationPager;
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
@@ -103,18 +100,6 @@ public class ClientDemandsView extends Composite
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
-        //init pagesize lsit
-        demandPageSize = new ListBox();
-        demandPageSize.addItem("10");
-        demandPageSize.addItem("20");
-        demandPageSize.addItem("30");
-        demandPageSize.setSelectedIndex(2);
-
-        conversationPageSize = new ListBox();
-        conversationPageSize.addItem("10");
-        conversationPageSize.addItem("20");
-        conversationPageSize.addItem("30");
-        conversationPageSize.setSelectedIndex(2);
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());
@@ -124,37 +109,36 @@ public class ClientDemandsView extends Composite
         actions.addItem(Storage.MSGS.unstar());
         actions.setSelectedIndex(0);
 
-        initDemandTable();
-        initConversationTable();
-
+        initDemandTableAndPager();
+        initConversationTableAndPager();
         initWidget(uiBinder.createAndBindUi(this));
+
         setConversationTableVisible(false);
     }
 
     /**
      * Initialize this example.
      */
-    private void initDemandTable() {
+    private void initDemandTableAndPager() {
         List<String> gridColumns = Arrays.asList(
                 new String[]{
                     "status", "title", "price", "finnishDate", "validTo"
                 });
-        // Create a CellTable.
-        demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(gridColumns);
+        // Create a Pager.
+        demandPager = new UniversalPagerWidget();
+        // Create a Table.
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
+                gridColumns, demandPager.getPageSize(), resource);
         demandGrid.setWidth("800px");
         demandGrid.setHeight("500px");
-//        demandGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
-        demandGrid.setRowCount(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())), true);
-        demandGrid.setPageSize(Integer.valueOf(demandPageSize.getItemText(demandPageSize.getSelectedIndex())));
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         final SelectionModel<ClientDemandDetail> selectionModel =
                 new SingleSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
         demandGrid.setSelectionModel(selectionModel);
 
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        demandPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        // Bind pager to demandGrid
         demandPager.setDisplay(demandGrid);
 
         initDemandTableColumns();
@@ -163,16 +147,18 @@ public class ClientDemandsView extends Composite
     /**
      * Initialize this example.
      */
-    private void initConversationTable() {
+    private void initConversationTableAndPager() {
         List<String> gridColumns = Arrays.asList(new String[]{"supplierName", "body", "date"});
-        // Create a CellTable.
-        conversationGrid = new UniversalAsyncGrid<ClientDemandConversationDetail>(gridColumns);
+
+        // Create a Pager.
+        conversationPager = new UniversalPagerWidget();
+        // Create a Table.
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        conversationGrid = new UniversalAsyncGrid<ClientDemandConversationDetail>(
+                gridColumns, demandPager.getPageSize(), resource);
         conversationGrid.setWidth("800px");
         conversationGrid.setHeight("500px");
 
-        conversationGrid.setRowCount(Integer.valueOf(
-                conversationPageSize.getItemText(conversationPageSize.getSelectedIndex())), true);
-        conversationGrid.setPageSize(getConversationPageSize());
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         final SelectionModel<ClientDemandConversationDetail> selectionModel =
@@ -180,9 +166,7 @@ public class ClientDemandsView extends Composite
         conversationGrid.setSelectionModel(
                 selectionModel, DefaultSelectionEventManager.<ClientDemandConversationDetail>createCheckboxManager());
 
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        conversationPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        // Bind pager to Table
         conversationPager.setDisplay(conversationGrid);
 
         initConversationTableColumns();
@@ -231,7 +215,7 @@ public class ClientDemandsView extends Composite
 
         // Valid-to date column
         demandGrid.addColumn(
-                new TextCell(), Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -351,12 +335,12 @@ public class ClientDemandsView extends Composite
     //Pagers
     @Override
     public SimplePager getDemandPager() {
-        return demandPager;
+        return demandPager.getPager();
     }
 
     @Override
     public SimplePager getConversationPager() {
-        return conversationPager;
+        return conversationPager.getPager();
     }
 
     // Others
@@ -368,12 +352,6 @@ public class ClientDemandsView extends Composite
     @Override
     public UniversalAsyncGrid<ClientDemandConversationDetail> getConversationGrid() {
         return conversationGrid;
-    }
-
-    //Nemusi byt override nie?
-    @Override
-    public int getConversationPageSize() {
-        return Integer.valueOf(conversationPageSize.getItemText(conversationPageSize.getSelectedIndex()));
     }
 
     @Override

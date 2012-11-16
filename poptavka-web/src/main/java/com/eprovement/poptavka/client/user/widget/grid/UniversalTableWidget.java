@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.resources.AsyncDataGrid;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -12,6 +13,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
@@ -100,20 +102,13 @@ public class UniversalTableWidget extends Composite {
     private static final String DOWNLOAD_OFFER_IMAGE_COLUMN = "downloadOffer";
     private static final String FINNISHED_IMAGE_COLUMN = "finnished";
     private List<String> gridColumns = new ArrayList<String>();
-    //pager definition
+    //others
     @UiField(provided = true)
-    SimplePager pager;
+    UniversalPagerWidget pager;
     @UiField(provided = true)
-    ListBox pageSize, actionBox;
+    ListBox actionBox;
     @UiField
     Label tableNameLabel;
-    //Pager definition
-    //How many options in page size combo is generated.
-    private static final int PAGE_SIZE_ITEMS_COUNT = 5;
-    //Represent gab between page size options.
-    private static final int PAGE_SIZE_MULTIPLICANT = 5;
-    //Which of the items of pageSize combo is selected. by default.
-    private static final int PAGE_SIZE_ITEM_SELECTED = 2;
     //Other
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
@@ -145,36 +140,22 @@ public class UniversalTableWidget extends Composite {
             default:
                 break;
         }
-        initTable();
+        initTableAndPager();
         initActionBox();
 
         initWidget(uiBinder.createAndBindUi(this));
     }
 
     /**
-     * Initialize pager and page size list box.
-     */
-    private void initPager() {
-        pageSize = new ListBox();
-        for (int i = 1; i < PAGE_SIZE_ITEMS_COUNT; i++) {
-            pageSize.addItem(Integer.toString(i * PAGE_SIZE_MULTIPLICANT));
-        }
-        pageSize.setSelectedIndex(PAGE_SIZE_ITEM_SELECTED);
-
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
-
-//        grid.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
-        pager.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
-        pager.setDisplay(grid);
-    }
-
-    /**
      * Initialize table: universalAsyncGrid.
      */
-    private void initTable() {
+    private void initTableAndPager() {
+        // Create a Pager.
+        pager = new UniversalPagerWidget();
         // Create a CellTable.
-        grid = new UniversalAsyncGrid<FullOfferDetail>(FullOfferDetail.KEY_PROVIDER, gridColumns);
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        grid = new UniversalAsyncGrid<FullOfferDetail>(
+                FullOfferDetail.KEY_PROVIDER, gridColumns, pager.getPageSize(), resource);
         grid.setHeight("500px");
 
 
@@ -185,7 +166,9 @@ public class UniversalTableWidget extends Composite {
         grid.setSelectionModel(
                 selectionModel, DefaultSelectionEventManager.<FullOfferDetail>createCheckboxManager());
 
-        initPager();
+        // bind pager to grid
+        pager.setDisplay(grid);
+
         initTableColumns();
     }
 
@@ -466,7 +449,7 @@ public class UniversalTableWidget extends Composite {
 
     //Pager
     public SimplePager getPager() {
-        return pager;
+        return pager.getPager();
     }
 
     //Columns
