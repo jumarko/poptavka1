@@ -24,6 +24,14 @@ public final class Constants {
     }
 
     /**************************************************************************/
+    /* Action box Contants                                                    */
+    /**************************************************************************/
+    public static final int READ = -20;
+    public static final int UNREAD = -21;
+    public static final int STARED = -22;
+    public static final int UNSTARED = -23;
+
+    /**************************************************************************/
     /* Common Contants                                                        */
     /**************************************************************************/
     public static final int NONE = 0;

@@ -18,7 +18,6 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -284,22 +283,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         //send message to client that offer was finished
     }
 
-    public List<FullOfferDetail> getFakeData() throws RPCException {
-        FullOfferDetail detail = new FullOfferDetail();
-        detail.getOfferDetail().setDemandId(1L);
-        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
-        detail.getOfferDetail().setClientName("Martin Slavkovsky");
-        detail.getOfferDetail().setSupplierName("Good Data");
-        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
-        detail.getOfferDetail().setRating(90);
-        detail.getOfferDetail().setPrice(10000);
-        detail.getOfferDetail().setFinishDate(new Date());
-        detail.getOfferDetail().setCreatedDate(new Date());
-        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
-        list.add(detail);
-        return list;
-    }
-
     /**
      * This method will update number of unread messages of logged user.
      * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
@@ -327,66 +310,46 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public FullOfferDetail getSupplierDemand(long supplierDemandID) throws RPCException, ApplicationSecurityException {
-        return new FullOfferDetail();
+    public FullOfferDetail getSupplierDemand(long supplierDemandID)
+        throws RPCException, ApplicationSecurityException {
+        return getFakeItemById(supplierDemandID);
     }
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public ClientDemandConversationDetail getSupplierDemandConversation(long supplierDemandConversationID) throws
-            RPCException, ApplicationSecurityException {
-        //Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
-        if (supplierDemandConversationID == 1L) {
-            ClientDemandConversationDetail a1 = new ClientDemandConversationDetail();
-            a1.setRead(false);
-            a1.setUserMessageId(1L);
-            a1.setSupplierId(1L);
-            a1.setSupplierName("Good Data");
-            MessageDetail md1 = new MessageDetail();
-            md1.setBody("Tak ak date cenu o 10% dole ta to beriem.");
-            a1.setMessageDetail(md1);
-            a1.setDate(new Date());
-            return a1;
-        } else if (supplierDemandConversationID == 2L) {
-            ClientDemandConversationDetail a2 = new ClientDemandConversationDetail();
-            a2.setRead(false);
-            a2.setUserMessageId(2L);
-            a2.setSupplierId(2L);
-            a2.setSupplierName("Eprovement");
-            MessageDetail md2 = new MessageDetail();
-            md2.setBody("Chcem chcem chcem!!!");
-            a2.setMessageDetail(md2);
-            a2.setDate(new Date());
-            return a2;
-        } else if (supplierDemandConversationID == 3L) {
-            ClientDemandConversationDetail a3 = new ClientDemandConversationDetail();
-            a3.setRead(false);
-            a3.setUserMessageId(3L);
-            a3.setSupplierId(3L);
-            a3.setSupplierName("CoraGeo");
-            MessageDetail md3 = new MessageDetail();
-            md3.setBody("To nic lepsie nemate?");
-            a3.setMessageDetail(md3);
-            a3.setDate(new Date());
-            return a3;
-        } else {
-            return new ClientDemandConversationDetail();
-        }
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public FullOfferDetail getSupplierOffer(long supplierDemandID) throws RPCException,
-            ApplicationSecurityException {
-        //staci takto? alebo treba nejak rozlisovat demand a offeredDemand
-        return new FullOfferDetail();
+    public FullOfferDetail getSupplierOffer(long supplierDemandID)
+        throws RPCException, ApplicationSecurityException {
+        return getFakeItemById(supplierDemandID);
     }
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public FullOfferDetail getSupplierAssignedDemand(long assignedDemandID)
         throws RPCException, ApplicationSecurityException {
-        if (assignedDemandID == 1L) {
+        return getFakeItemById(assignedDemandID);
+    }
+
+    /**************************************************************************/
+    /* Fake data                                                              */
+    /**************************************************************************/
+    private List<FullOfferDetail> getFakeData() throws RPCException {
+        FullOfferDetail detail = new FullOfferDetail();
+        detail.getOfferDetail().setDemandId(1L);
+        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
+        detail.getOfferDetail().setClientName("Martin Slavkovsky");
+        detail.getOfferDetail().setSupplierName("Good Data");
+        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
+        detail.getOfferDetail().setRating(90);
+        detail.getOfferDetail().setPrice(10000);
+        detail.getOfferDetail().setFinishDate(new Date());
+        detail.getOfferDetail().setCreatedDate(new Date());
+        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
+        list.add(detail);
+        return list;
+    }
+
+    private FullOfferDetail getFakeItemById(long itemId) {
+        if (itemId == 1L) {
             FullOfferDetail d1 = new FullOfferDetail();
             d1.getOfferDetail().setDemandId(1L);
             d1.getOfferDetail().setState(OfferStateType.ACCEPTED);
@@ -401,7 +364,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             umd1.setId(1L);
             d1.setUserMessageDetail(umd1);
             return d1;
-        } else if (assignedDemandID == 2L) {
+        } else if (itemId == 2L) {
             FullOfferDetail d2 = new FullOfferDetail();
             d2.getOfferDetail().setDemandId(2L);
             d2.getOfferDetail().setState(OfferStateType.ACCEPTED);

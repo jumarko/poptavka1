@@ -46,7 +46,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
 
         IsWidget getWidgetView();
     }
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -117,10 +116,13 @@ public class SupplierOffersPresenter extends LazyPresenter<
             }
         }
         this.selectedSupplierOfferId = selectedId;
-        if (selectedId != -1 && !wasEqual) {
+        if (selectedId == -1) {
             selectionModel.clear();
-            lastOpenedOffer = -1;
-            eventBus.getSupplierAssignedDemand(selectedId);
+        } else {
+            if (!wasEqual) {
+                lastOpenedOffer = -1;
+                eventBus.getSupplierOffer(selectedId);
+            }
         }
 
         if (Storage.isAppCalledByURL()) {
@@ -163,6 +165,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
         eventBus.setHistoryStoredForNextOne(false);
         textFieldUpdater.update(-1, detail, null);
     }
+
     /**
      * New data are fetched from db.
      *
@@ -197,7 +200,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
     /**************************************************************************/
     public void addTableRangeChangeHandler() {
         view.getTableWidget().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
-
             @Override
             public void onRangeChange(RangeChangeEvent event) {
                 eventBus.createTokenForHistory(
@@ -206,6 +208,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
         });
     }
     // Field Updaters
+
     public void addCheckHeaderUpdater() {
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
@@ -266,8 +269,9 @@ public class SupplierOffersPresenter extends LazyPresenter<
         textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {
-                if (lastOpenedOffer != object.getUserMessageDetail().getId()) {
-                    lastOpenedOffer = object.getUserMessageDetail().getId();
+                //getUserMessageDetail() -> getOfferDetail() due to fake data
+                if (lastOpenedOffer != object.getOfferDetail().getDemandId()) {
+                    lastOpenedOffer = object.getOfferDetail().getDemandId();
                     object.getUserMessageDetail().setRead(true);
 //                    view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
@@ -277,7 +281,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
                     selectionModel.clear();
                     selectionModel.setSelected(object, true);
                     eventBus.createTokenForHistory(
-                            view.getTableWidget().getPager().getPage(), object.getOfferDetail().getId());
+                            view.getTableWidget().getPager().getPage(), object.getOfferDetail().getDemandId());
                 }
             }
         };
@@ -293,16 +297,16 @@ public class SupplierOffersPresenter extends LazyPresenter<
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getTableWidget().getActionBox().getSelectedIndex()) {
-                    case 1:
+                    case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 2:
+                    case Constants.UNREAD:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
-                    case 3:
+                    case Constants.STARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 4:
+                    case Constants.UNSTARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
                     default:

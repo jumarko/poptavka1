@@ -46,10 +46,7 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
             //TODO Martin - loadWidget - dat meno, nie id
             token.append(getWidgetName(loadWidget));
             if (loadWidget != Constants.NONE) {
-                token.append(TABLE_SEPARATOR);
-                token.append("page");
-                token.append(VALUE_SEPARATOR);
-                token.append(0);
+                createTokenPart(token, 0, -1L);
             }
         } else {
             token.append(com.google.gwt.user.client.History.getToken());
@@ -71,14 +68,7 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
         } else {
             newToken.append(oldParams.substring(0, lastSeparatorIndex));
         }
-        newToken.append(TABLE_SEPARATOR);
-        newToken.append("page");
-        newToken.append(VALUE_SEPARATOR);
-        newToken.append(tablePage);
-        newToken.append(ITEM_SEPARATOR);
-        newToken.append("id");
-        newToken.append(VALUE_SEPARATOR);
-        newToken.append(selectedId);
+        createTokenPart(newToken, tablePage, selectedId);
         return newToken.toString();
     }
 
@@ -94,13 +84,15 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
         // TODO martin - nizsie mas dve volania eventBus.goToHomeSuppliersModule co je zrejme nespravne. Mal by si volat
         // asi goToSupplierDemandsModule a nie home suppliers
         if (param == null) { //nikdy nebude null, predsa aspon widget=10 bude nie? --->>> upravit podmienky
+            eventBus.setHistoryStoredForNextOne(false);
             eventBus.goToHomeSuppliersModule(null);
         } else {
             HashMap<String, String> tokenParts = getTokenParts(param);
-            String[] tableParts = tokenParts.get(TABLE_SEPARATOR).split(ITEM_SEPARATOR);
+            String[] tableParts;
 
             switch (parseWidgetName(tokenParts.get("").split(VALUE_SEPARATOR)[1])) { //e.g: widget=supplierDemands
                 case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                    tableParts = tokenParts.get(TABLE_SEPARATOR).split(ITEM_SEPARATOR);
 
                     if (tokenParts.get(TABLE_SEPARATOR) != null) {
                         eventBus.initSupplierDemandsByHistory(
@@ -111,6 +103,7 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
                     }
                     break;
                 case Constants.SUPPLIER_OFFERS: //e.g: page=0;id=133
+                    tableParts = tokenParts.get(TABLE_SEPARATOR).split(ITEM_SEPARATOR);
 
                     if (tokenParts.get(TABLE_SEPARATOR) != null) {
                         eventBus.initSupplierOffersByHistory(
@@ -122,11 +115,14 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
 
                     break;
                 case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                    tableParts = tokenParts.get(TABLE_SEPARATOR).split(ITEM_SEPARATOR);
 
-                    eventBus.initSupplierAssignedDemandsByHistory(
-                            Integer.parseInt(tableParts[0].split(VALUE_SEPARATOR)[1]),
-                            Long.parseLong(tableParts[1].split(VALUE_SEPARATOR)[1]),
-                            SearchModuleDataHolder.parseSearchModuleDataHolder(tokenParts.get(FILTER_SEPARATOR)));
+                    if (tokenParts.get(TABLE_SEPARATOR) != null) {
+                        eventBus.initSupplierAssignedDemandsByHistory(
+                                Integer.parseInt(tableParts[0].split(VALUE_SEPARATOR)[1]),
+                                Long.parseLong(tableParts[1].split(VALUE_SEPARATOR)[1]),
+                                SearchModuleDataHolder.parseSearchModuleDataHolder(tokenParts.get(FILTER_SEPARATOR)));
+                    }
                     break;
                 default:
                     eventBus.setHistoryStoredForNextOne(false);
@@ -146,6 +142,18 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
+    private String createTokenPart(StringBuilder token, int tablePage, long selectedId) {
+        token.append(TABLE_SEPARATOR);
+        token.append("page");
+        token.append(VALUE_SEPARATOR);
+        token.append(tablePage);
+        token.append(ITEM_SEPARATOR);
+        token.append("id");
+        token.append(VALUE_SEPARATOR);
+        token.append(selectedId);
+        return token.toString();
+    }
+
     private HashMap<String, String> getTokenParts(String token) {
         HashMap<String, String> tokenParts = new HashMap<String, String>();
         //Token like:

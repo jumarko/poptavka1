@@ -116,10 +116,13 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             }
         }
         this.selectedSupplierAssignedDemandId = selectedId;
-        if (selectedId != -1 && !wasEqual) {
+        if (selectedId == -1) {
             selectionModel.clear();
-            lastOpenedAssignedDemand = -1;
-            eventBus.getSupplierAssignedDemand(selectedId);
+        } else {
+            if (!wasEqual) {
+                lastOpenedAssignedDemand = -1;
+                eventBus.getSupplierAssignedDemand(selectedId);
+            }
         }
 
         if (Storage.isAppCalledByURL()) {
@@ -264,6 +267,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {
+                //getUserMessageDetail() -> getOfferDetail() due to fake data
                 if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
                     lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
                     object.getUserMessageDetail().setRead(true);
@@ -291,16 +295,16 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getTableWidget().getActionBox().getSelectedIndex()) {
-                    case 1:
+                    case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 2:
+                    case Constants.UNREAD:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
-                    case 3:
+                    case Constants.STARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 4:
+                    case Constants.UNSTARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
                     default:

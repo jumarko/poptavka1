@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -63,8 +62,6 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     /* Get Detail object for selecting in selection models                    */
     /**************************************************************************/
     void getSupplierDemand(long id, AsyncCallback<FullOfferDetail> calback);
-
-    void getSupplierDemandConversation(long id, AsyncCallback<ClientDemandConversationDetail> calback);
 
     void getSupplierOffer(long id, AsyncCallback<FullOfferDetail> calback);
 

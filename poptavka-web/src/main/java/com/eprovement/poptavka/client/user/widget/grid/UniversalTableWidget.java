@@ -154,15 +154,14 @@ public class UniversalTableWidget extends Composite {
         pager = new UniversalPagerWidget();
         // Create a CellTable.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        grid = new UniversalAsyncGrid<FullOfferDetail>(
-                FullOfferDetail.KEY_PROVIDER, gridColumns, pager.getPageSize(), resource);
+        grid = new UniversalAsyncGrid<FullOfferDetail>(gridColumns, pager.getPageSize(), resource);
         grid.setHeight("500px");
 
 
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         final SelectionModel<FullOfferDetail> selectionModel =
-                new MultiSelectionModel<FullOfferDetail>();
+                new MultiSelectionModel<FullOfferDetail>(FullOfferDetail.KEY_PROVIDER);
         grid.setSelectionModel(
                 selectionModel, DefaultSelectionEventManager.<FullOfferDetail>createCheckboxManager());
 

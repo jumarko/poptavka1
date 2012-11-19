@@ -153,6 +153,7 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
         // TODO martin - nizsie mas dve volania eventBus.goToHomeSuppliersModule co je zrejme nespravne. Mal by si volat
         // asi goToClientDemandsModule a nie home suppliers
         if (param == null) { //nikdy nebude null, predsa aspon widget=10 bude nie? --->>> upravit podmienky
+            eventBus.setHistoryStoredForNextOne(false);
             eventBus.goToHomeSuppliersModule(null);
         } else {
             HashMap<String, String> tokenParts = getTokenParts(param);

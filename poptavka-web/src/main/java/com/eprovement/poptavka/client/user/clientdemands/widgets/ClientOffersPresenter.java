@@ -368,16 +368,16 @@ public class ClientOffersPresenter
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getOfferGrid().getActionBox().getSelectedIndex()) {
-                    case 1:
+                    case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
                         break;
-                    case 2:
+                    case Constants.UNREAD:
                         eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), false);
                         break;
-                    case 3:
+                    case Constants.STARED:
                         eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
                         break;
-                    case 4:
+                    case Constants.UNSTARED:
                         eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedIdList(), false);
                         break;
                     default:

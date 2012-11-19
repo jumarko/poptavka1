@@ -78,7 +78,6 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                     }
                 });
     }
-    //
 
     private void getSupplierOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffersCount(
@@ -97,11 +96,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-                        eventBus.displaySupplierDemands(result);
+                        eventBus.displaySupplierOffers(result);
                     }
                 });
     }
-    //
 
     private void getSupplierAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemandsCount(
@@ -120,7 +118,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
-                        eventBus.displaySupplierDemands(result);
+                        eventBus.displaySupplierAssignedDemands(result);
                     }
                 });
     }

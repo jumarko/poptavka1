@@ -250,6 +250,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {
+                //getUserMessageDetail() -> getOfferDetail() due to fake data
                 if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
                     lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
                     object.setRead(true);
@@ -277,16 +278,16 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getTableWidget().getActionBox().getSelectedIndex()) {
-                    case 1:
+                    case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 2:
+                    case Constants.UNREAD:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
-                    case 3:
+                    case Constants.STARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 4:
+                    case Constants.UNSTARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
                     default:

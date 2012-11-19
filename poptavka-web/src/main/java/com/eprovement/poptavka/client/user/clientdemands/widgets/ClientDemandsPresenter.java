@@ -356,16 +356,16 @@ public class ClientDemandsPresenter
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getActions().getSelectedIndex()) {
-                    case 1:
+                    case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getSelectedIdList(), true);
                         break;
-                    case 2:
+                    case Constants.UNREAD:
                         eventBus.requestReadStatusUpdate(view.getSelectedIdList(), false);
                         break;
-                    case 3:
+                    case Constants.STARED:
                         eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
                         break;
-                    case 4:
+                    case Constants.UNSTARED:
                         eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
                         break;
                     default:

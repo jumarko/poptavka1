@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -128,9 +127,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     /* Get Detail object for selecting in selection models                    */
     /**************************************************************************/
     FullOfferDetail getSupplierDemand(long supplierDemandID) throws RPCException, ApplicationSecurityException;
-
-    ClientDemandConversationDetail getSupplierDemandConversation(long supplierDemandConversationID) throws RPCException,
-            ApplicationSecurityException;
 
     FullOfferDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
 

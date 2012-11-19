@@ -54,7 +54,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedDemandContest = -1;
+    private long lastOpenedPotentialDemand = -1;
     private long selectedSupplierDemandId = -1;
 
     /**************************************************************************/
@@ -114,10 +114,13 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             }
         }
         this.selectedSupplierDemandId = selectedId;
-        if (selectedId != -1 && !wasEqual) {
+        if (selectedId == -1) {
             selectionModel.clear();
-            lastOpenedDemandContest = -1;
-            eventBus.getSupplierDemand(selectedId);
+        } else {
+            if (!wasEqual) {
+                lastOpenedPotentialDemand = -1;
+                eventBus.getSupplierDemand(selectedId);
+            }
         }
 
         if (Storage.isAppCalledByURL()) {
@@ -153,7 +156,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                 view.getTableWidget().getGrid().getStart(), data);
 
         if (selectedSupplierDemandId != -1) {
-            eventBus.getSupplierDemand(lastOpenedDemandContest);
+            eventBus.getSupplierDemand(lastOpenedPotentialDemand);
         }
     }
 
@@ -255,11 +258,19 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         textFieldUpdater = new FieldUpdater<FullOfferDetail, Object>() {
             @Override
             public void update(int index, FullOfferDetail object, Object value) {
-                if (lastOpenedDemandContest != object.getUserMessageDetail().getId()) {
-                    lastOpenedDemandContest = object.getUserMessageDetail().getId();
+                //getUserMessageDetail() -> getOfferDetail() due to fake data
+                if (lastOpenedPotentialDemand != object.getOfferDetail().getDemandId()) {
+                    lastOpenedPotentialDemand = object.getOfferDetail().getDemandId();
                     object.getUserMessageDetail().setRead(true);
-                    view.getTableWidget().getGrid().redraw();
+//                    view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
+                    MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
+                            .getGrid().getSelectionModel();
+                    selectionModel.clear();
+                    selectionModel.setSelected(object, true);
+                    eventBus.createTokenForHistory(
+                            view.getTableWidget().getPager().getPage(),
+                            object.getOfferDetail().getDemandId());
                 }
             }
         };
@@ -278,16 +289,16 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getTableWidget().getActionBox().getSelectedIndex()) {
-                    case 1:
+                    case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 2:
+                    case Constants.UNREAD:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
-                    case 3:
+                    case Constants.STARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
-                    case 4:
+                    case Constants.UNSTARED:
                         eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
                     default:

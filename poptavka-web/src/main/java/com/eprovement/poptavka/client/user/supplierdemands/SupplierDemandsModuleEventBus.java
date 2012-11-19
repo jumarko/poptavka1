@@ -71,7 +71,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
      * @param filter - defines data holder to be displayed in advanced search bar
      */
     @Event(handlers = SupplierDemandsModulePresenter.class,
-                historyConverter = SupplierDemandsModuleHistoryConverter.class)
+                historyConverter = SupplierDemandsModuleHistoryConverter.class, name = "supplierDemands")
     String goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     //Init by default
