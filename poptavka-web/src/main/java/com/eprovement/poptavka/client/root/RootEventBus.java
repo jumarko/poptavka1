@@ -321,7 +321,7 @@ public interface RootEventBus extends EventBusWithLookup {
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
-    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes);
+    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(handlers = CategorySelectorPresenter.class)
     void setCategoryData(List<CategoryDetail> list);
@@ -338,7 +338,7 @@ public interface RootEventBus extends EventBusWithLookup {
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** LocalitySelector section. **/
     @Event(handlers = RootPresenter.class)
-    void initLocalityWidget(SimplePanel embedToWidget);
+    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
 
     //Musi byt takto, lebo ak sa vrati v stack layout paneli, tak dany presenter uz bude neaktivny
     //a pre response na pripadne zmeny uzivatelom nebude fungovat spravny widget

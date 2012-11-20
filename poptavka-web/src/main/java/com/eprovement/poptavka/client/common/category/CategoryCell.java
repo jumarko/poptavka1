@@ -15,6 +15,12 @@ public class CategoryCell extends AbstractCell<CategoryDetail> {
     //DisplayCountOfWhat
     public static final int DISPLAY_COUNT_OF_DEMANDS = 0;
     public static final int DISPLAY_COUNT_OF_SUPPLIERS = 1;
+    public static final int DISPLAY_COUNT_DISABLED = -1;
+    //Display string Constants
+    public static final String LEFT_BRACE = "(";
+    public static final String RIGHT_BRACE = ")";
+    public static final String SPACE = " ";
+    //
     private int displayCountOfWhat = -1;
 
     /**
@@ -30,18 +36,22 @@ public class CategoryCell extends AbstractCell<CategoryDetail> {
             StringBuilder text = new StringBuilder();
 
             text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-            text.append(" (");
             switch (displayCountOfWhat) {
                 case DISPLAY_COUNT_OF_DEMANDS:
-                    text.append(value.getDemands());
+                    text.append(SPACE);
+                    text.append(LEFT_BRACE);
+                    text.append(value.getDemandsCount());
+                    text.append(RIGHT_BRACE);
                     break;
                 case DISPLAY_COUNT_OF_SUPPLIERS:
-                    text.append(value.getSuppliers());
+                    text.append(SPACE);
+                    text.append(LEFT_BRACE);
+                    text.append(value.getSuppliersCount());
+                    text.append(RIGHT_BRACE);
                     break;
                 default:
                     break;
             }
-            text.append(")");
 
             sb.appendEscaped(text.toString());
         }

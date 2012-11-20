@@ -98,10 +98,6 @@ public class CategoryTreeViewModel implements TreeViewModel {
                 return parent.getFirstChildElement().getFirstChildElement().getFirstChildElement();
             }
 
-            /**
-             * Render items of hashcell. Define whether to render also checkbox or
-             * only text.
-             */
             @Override
             protected <X> void render(Context context, CategoryDetail value,
                     SafeHtmlBuilder sb, HasCell<CategoryDetail, X> hasCell) {

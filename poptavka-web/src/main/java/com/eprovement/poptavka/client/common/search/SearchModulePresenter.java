@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.search;
 
+import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
@@ -212,7 +213,8 @@ public class SearchModulePresenter
                                         .getCategorySelectorPanel().getWidget() == null) {
                                     eventBus.initCategoryWidget(
                                             view.getAdvanceSearchContentView().getCategorySelectorPanel(),
-                                            Constants.WITH_CHECK_BOXES);
+                                            Constants.WITH_CHECK_BOXES,
+                                            CategoryCell.DISPLAY_COUNT_DISABLED);
                                 }
                                 break;
                             case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
@@ -220,7 +222,9 @@ public class SearchModulePresenter
                                 if (view.getAdvanceSearchContentView()
                                         .getLocalitySelectorPanel().getWidget() == null) {
                                     eventBus.initLocalityWidget(
-                                            view.getAdvanceSearchContentView().getLocalitySelectorPanel());
+                                            view.getAdvanceSearchContentView().getLocalitySelectorPanel(),
+                                            Constants.WITH_CHECK_BOXES,
+                                            CategoryCell.DISPLAY_COUNT_DISABLED);
                                 }
                                 break;
                             default:

@@ -5,16 +5,17 @@ import java.io.Serializable;
 
 public class CategoryDetail implements Serializable {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -8677227400869014970L;
     private long id;
     private String name;
-    //vyjadruje pocet alebo ID???
-    private long demands;
-    //vyjadruje pocet alebo ID???
-    private long suppliers;
+    private long demandsCount;
+    private long suppliersCount;
     //category level
     private int level = -1;
     //if parent = false, no child category exists;
@@ -29,6 +30,9 @@ public class CategoryDetail implements Serializable {
         }
     };
 
+    /**************************************************************************/
+    /* Initialization                                                          */
+    /**************************************************************************/
     public CategoryDetail() {
     }
 
@@ -43,58 +47,67 @@ public class CategoryDetail implements Serializable {
     private void init(Long catId, String nameString, long demandCount, long supplierCount) {
         this.id = catId;
         this.name = nameString;
-        this.demands = demandCount;
-        this.suppliers = supplierCount;
+        this.demandsCount = demandCount;
+        this.suppliersCount = supplierCount;
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public long getDemandsCount() {
+        return demandsCount;
     }
 
-    public long getDemands() {
-        return demands;
-    }
-
-    public void setDemands(long demands) {
-        this.demands = demands;
-    }
-
-    public long getSuppliers() {
-        return suppliers;
-    }
-
-    public void setSuppliers(long suppliers) {
-        this.suppliers = suppliers;
+    public long getSuppliersCount() {
+        return suppliersCount;
     }
 
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public boolean isLeaf() {
         return leaf;
+    }
+
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDemandsCount(long demandsCount) {
+        this.demandsCount = demandsCount;
+    }
+
+    public void setSuppliersCount(long suppliersCount) {
+        this.suppliersCount = suppliersCount;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public void setLeaf(boolean isLeaf) {
         this.leaf = isLeaf;
     }
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
         return name;

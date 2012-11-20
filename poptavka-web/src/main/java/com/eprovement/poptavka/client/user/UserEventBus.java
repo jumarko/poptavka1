@@ -250,10 +250,10 @@ public interface UserEventBus extends EventBusWithLookup, BaseChildEventBus {
     void initDemandBasicForm(SimplePanel holderPanel);
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderPanel, int checkboxes);
+    void initCategoryWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel holderPanel);
+    void initLocalityWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
     void initDemandAdvForm(SimplePanel holderPanel);

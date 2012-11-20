@@ -49,10 +49,10 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
     /* Additional widgets - init events                                       */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holder, int checkboxes);
+    void initCategoryWidget(SimplePanel holder, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel embedWidget);
+    void initLocalityWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat);
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */

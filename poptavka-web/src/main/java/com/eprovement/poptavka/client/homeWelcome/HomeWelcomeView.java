@@ -175,7 +175,7 @@ class RootCategoryCell extends AbstractCell<CategoryDetail> {
 
         text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
         text.append(" (");
-        text.append(value.getDemands());
+        text.append(value.getDemandsCount());
         text.append(")");
 
         sb.appendEscaped(text.toString());

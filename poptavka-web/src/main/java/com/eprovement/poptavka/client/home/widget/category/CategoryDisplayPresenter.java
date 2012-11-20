@@ -55,9 +55,9 @@ public class CategoryDisplayPresenter
                     Anchor categoryAnchor = new Anchor();
                     categoryAnchor.setText(detail.getName());
                     Label categoryLabel = new Label();
-                    categoryLabel.setText("" + detail.getDemands());
+                    categoryLabel.setText("" + detail.getDemandsCount());
                     htmlString.append("<a href=" + detail.getName() + ">" + detail.getName() + "</a>"
-                            + detail.getDemands());
+                            + detail.getDemandsCount());
                 }
 //                LOGGER.info("List filled");
                 categoryView.setHTML(htmlString.toString());

@@ -51,7 +51,6 @@ public class CategorySelectorView extends Composite
     HTML loader;
     //Cell Brower
     @UiField//(provided = true)
-//    CellBrowser cellBrowser;
     SimplePanel cellBrowserHolder;
     //Cell List
     @UiField(provided = true)
@@ -75,11 +74,11 @@ public class CategorySelectorView extends Composite
     }
 
     @Override
-    public void createCellBrowser(int checkboxes) {
+    public void createCellBrowser(int checkboxes, int displayCountsOfWhat) {
         CellBrowser cellBrowser = new CellBrowser(new CategoryTreeViewModel(
                 cellBrowserSelectionModel,
                 categorySelectorPresenter.getCategoryService(),
-                checkboxes, -1), null);
+                checkboxes, displayCountsOfWhat), null);
         cellBrowser.setSize("950px", "350px");
         cellBrowser.setAnimationEnabled(true);
         cellBrowserHolder.setWidget(cellBrowser);
@@ -120,7 +119,7 @@ public class CategorySelectorView extends Composite
 }
 
 /**
- * The Cell used to render a {@link CategoryDetail}.
+ * The Cell used to render a selected Category detail {@link CategoryDetail} from CellBrowser.
  */
 class ItemCell extends AbstractCell<CategoryDetail> {
 

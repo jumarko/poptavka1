@@ -32,6 +32,8 @@ public class LocalitySelectorPresenter
     /** View interface methods. **/
     public interface LocalitySelectorInterface extends LazyView {
 
+        void createCellBrowser(int checkboxes, int displayCountsOfWhat);
+
         ListDataProvider<LocalityDetail> getCellListDataProvider();
 
         MultiSelectionModel<LocalityDetail> getCellBrowserSelectionModel();
@@ -51,7 +53,6 @@ public class LocalitySelectorPresenter
     @Override
     public void bindView() {
         view.getCellBrowserSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 List<LocalityDetail> selectedList = new ArrayList<LocalityDetail>(
@@ -60,7 +61,6 @@ public class LocalitySelectorPresenter
             }
         });
         view.getCellListSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 view.getCellBrowserSelectionModel().setSelected(
@@ -76,7 +76,8 @@ public class LocalitySelectorPresenter
         return localityService;
     }
 
-    public void initLocalityWidget(SimplePanel embedWidget) {
+    public void initLocalityWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat) {
+        view.createCellBrowser(checkboxes, displayCountsOfWhat);
         embedWidget.setWidget(view.getWidgetView());
     }
 
@@ -102,7 +103,6 @@ public class LocalitySelectorPresenter
     private void setData(final ListBox box, final List<LocalityDetail> list) {
         box.clear();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
             @Override
             public void execute() {
                 for (int i = 0; i < list.size(); i++) {

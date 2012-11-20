@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -102,13 +103,21 @@ public class SupplierCreationPresenter
                         LOGGER.info(" -> Category Widget");
                         if (maxSelectedTab < 1) {
                             eventBus.initCategoryWidget(
-                                    view.getCategoryHolder(), Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS);
+                                    view.getCategoryHolder(),
+                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
+                                    CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
                         }
+                        //Don't need to active CategorySelectorPresenter, because he is the only one
+                        //action listener after data retrieving process.
+                        //(In Localities, there are two listeners after data are retrieved)
                         break;
                     case 2:
                         LOGGER.info(" -> Locality Widget");
                         if (maxSelectedTab < 2) {
-                            eventBus.initLocalityWidget(view.getLocalityHolder());
+                            eventBus.initLocalityWidget(
+                                    view.getLocalityHolder(),
+                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
+                                    CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
                         } else {
                             eventBus.activateLocalityWidgetPresenter();
                         }

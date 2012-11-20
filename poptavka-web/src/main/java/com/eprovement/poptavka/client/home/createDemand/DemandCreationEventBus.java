@@ -63,10 +63,10 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void loadingHide();
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderWidget, int checkboxes);
+    void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel holderWidget);
+    void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);

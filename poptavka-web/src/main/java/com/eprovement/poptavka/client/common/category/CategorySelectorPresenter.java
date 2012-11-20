@@ -26,7 +26,7 @@ public class CategorySelectorPresenter
 
     public interface CategorySelectorInterface extends LazyView {
 
-        void createCellBrowser(int checkboxes);
+        void createCellBrowser(int checkboxes, int displayCountsOfWhat);
 
         ListDataProvider<CategoryDetail> getCellListDataProvider();
 
@@ -70,8 +70,8 @@ public class CategorySelectorPresenter
         return categoryService;
     }
 
-    public void initCategoryWidget(SimplePanel embedWidget, int checkboxes) {
-        view.createCellBrowser(checkboxes);
+    public void initCategoryWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat) {
+        view.createCellBrowser(checkboxes, displayCountsOfWhat);
         embedWidget.setWidget(view.getWidgetView());
     }
 

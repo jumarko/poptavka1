@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
+import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -94,13 +95,18 @@ public class DemandCreationPresenter
                         LOGGER.info(" -> Category Widget");
                         if (maxSelectedTab < 1) {
                             eventBus.initCategoryWidget(
-                                    view.getHolderPanel(CATEGORY), Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS);
+                                    view.getHolderPanel(CATEGORY),
+                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
+                                    CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
                         }
                         break;
                     case 2:
                         LOGGER.info(" -> Locality Widget");
                         if (maxSelectedTab < 2) {
-                            eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
+                            eventBus.initLocalityWidget(
+                                    view.getHolderPanel(LOCALITY),
+                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
+                                    CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
                         }
                         break;
                     case 3:
