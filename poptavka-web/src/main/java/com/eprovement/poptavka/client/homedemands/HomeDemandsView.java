@@ -214,7 +214,9 @@ public class HomeDemandsView extends OverflowComposite
                             str.append(loc.getName());
                             str.append(",\n");
                         }
-                        str.delete(str.length() - 2, str.length());
+                        if (!str.toString().isEmpty()) {
+                            str.delete(str.length() - 2, str.length());
+                        }
                         return str.toString();
                     }
                 });
