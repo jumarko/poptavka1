@@ -125,7 +125,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
             }
         }
 
-        if (Storage.isAppCalledByURL()) {
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(
                     tablePage * view.getTableWidget().getGrid().getPageSize(),
                     view.getTableWidget().getGrid().getPageSize(),

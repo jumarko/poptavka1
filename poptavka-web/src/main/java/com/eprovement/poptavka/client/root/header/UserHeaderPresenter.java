@@ -69,9 +69,6 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
         rb.setCallback(new RequestCallback() {
             @Override
             public void onResponseReceived(Request request, Response response) {
-                if (!Storage.isLogoutDueToHistory()) {
-                    eventBus.registerLogEventForHistory();
-                }
                 if (response.getStatusCode() == Response.SC_OK) { // 200 everything is ok.
                     LOGGER.info("User=" + Storage.getUser().getEmail() + " has logged out!");
                     //remove user from session management to force user input login information

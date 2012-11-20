@@ -8,7 +8,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.user.client.History;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -91,12 +90,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                     @Override
                     public void onResponseReceived(final Request request, final Response response) {
-                        //If loging was successfull, create token for history
-                        //But only of new token should be created - invoked by user
-                        //If login due to history was made - existed token will be used
-                        if (!Storage.isLoginDueToHistory()) {
-                            eventBus.registerLogEventForHistory();
-                        }
                         int status = response.getStatusCode();
                         LOGGER.fine("Response status code = " + status);
                         if (status == Response.SC_OK) { // 200: everything's ok
@@ -182,29 +175,21 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     /**************************************************************************/
     /* History helper methods                                                 */
     /**************************************************************************/
+    /**
+     * Set account layout and forward user to appropriate module according to his role.
+     * Called from login method only during normal login - by user.
+     */
     private void forwardUser() {
         //Set account layout
         eventBus.atAccount();
-        //If login process was invoked because of history
-        //forward history to next stored token, not default one
-        if (Storage.isLoginDueToHistory()) {
-            if (Storage.getForwardHistory().equals(Storage.BACK)) {
-                History.back();
-            } else {
-                History.forward();
-            }
-        } else {
-            if (Storage.isAppCalledByURL() == null || !Storage.isAppCalledByURL()) {
-                //if login was not invoked because of history, but user did so,
-                //forward user to appropriate module according to his roles
-                if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                        BusinessUserDetail.BusinessRole.SUPPLIER)) {
-                    eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                        BusinessUserDetail.BusinessRole.CLIENT)) {
-                    eventBus.goToClientDemandsModule(null, Constants.NONE);
-                }
-            }
+
+        //forward user to welcome view of appropriate module according to his roles
+        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.SUPPLIER)) {
+            eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.CLIENT)) {
+            eventBus.goToClientDemandsModule(null, Constants.NONE);
         }
     }
 }

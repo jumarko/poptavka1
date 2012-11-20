@@ -119,7 +119,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             eventBus.getClientAssignedDemand(parentId);
         }
 
-        if (Storage.isAppCalledByURL()) {
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(
                     parentTablePage * view.getTableWidget().getGrid().getPageSize(),
                     view.getTableWidget().getGrid().getPageSize(),

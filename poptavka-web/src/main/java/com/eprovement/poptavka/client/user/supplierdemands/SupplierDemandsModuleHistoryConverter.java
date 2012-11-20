@@ -77,15 +77,16 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
     /**************************************************************************/
     @Override
     public void convertFromToken(String historyName, String param, final SupplierDemandsModuleEventBus eventBus) {
+        //If application is called by URL, log in user and forward him to overview (goToSupplierDemandModule.Welcome)
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            // login from session method
+            Storage.setAppCalledByURL(false);
             eventBus.loginFromSession();
+            return;
         }
-        // TODO martin - nizsie mas dve volania eventBus.goToHomeSuppliersModule co je zrejme nespravne. Mal by si volat
-        // asi goToSupplierDemandsModule a nie home suppliers
-        if (param == null) { //nikdy nebude null, predsa aspon widget=10 bude nie? --->>> upravit podmienky
+
+        if (param == null) { //nikdy nebude null, predsa aspon widget=welcome minimalne
             eventBus.setHistoryStoredForNextOne(false);
-            eventBus.goToHomeSuppliersModule(null);
+            eventBus.goToSupplierDemandsModule(null, Constants.NONE);
         } else {
             HashMap<String, String> tokenParts = getTokenParts(param);
             String[] tableParts;

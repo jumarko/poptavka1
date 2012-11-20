@@ -140,7 +140,7 @@ public class ClientOffersPresenter
 
         this.selectedClientOfferedDemandId = -1;
 
-        if (Storage.isAppCalledByURL()) {
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
                     parentTablePage * view.getDemandGrid().getPageSize(),
                     view.getDemandGrid().getPageSize(),
@@ -184,7 +184,7 @@ public class ClientOffersPresenter
             eventBus.getClientDemandConversation(childId);
         }
 
-        if (Storage.isAppCalledByURL()) {
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             view.getOfferGrid().getGrid().getDataCount(eventBus, new SearchDefinition(
                     childTablePage * view.getOfferGrid().getGrid().getPageSize(),
                     view.getOfferGrid().getGrid().getPageSize(),

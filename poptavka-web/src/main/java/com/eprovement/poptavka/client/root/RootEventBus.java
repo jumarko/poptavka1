@@ -240,16 +240,6 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootHandler.class)
     void loginFromSession();
 
-    /**************************************************************************/
-    /* History events                                                         */
-    /**************************************************************************/
-    /**
-     * Creates token for history when login or logout process is invoked.
-     * @return token
-     */
-    @Event(historyConverter = RootHistoryConverter.class)
-    String registerLogEventForHistory();
-
     /**
      * This event will be called in case an error occurs while loading the
      * ChildModule code.

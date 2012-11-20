@@ -1,13 +1,16 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
-
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.Editor.Ignore;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -17,13 +20,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -89,21 +90,19 @@ public class FormDemandBasicView extends Composite
 
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         endDate.setFormat(new DateBox.DefaultFormat(dateFormat));
-        endDate.addHandler(new BlurHandler() {
-
+        endDate.getDatePicker().getParent().addHandler(new CloseHandler<PopupPanel>() {
             @Override
-            public void onBlur(BlurEvent event) {
+            public void onClose(CloseEvent event) {
                 validateEndDate();
             }
-        }, BlurEvent.getType());
+        }, CloseEvent.getType());
         validToDate.setFormat(new DateBox.DefaultFormat(dateFormat));
-        validToDate.addHandler(new BlurHandler() {
-
+        validToDate.getDatePicker().getParent().addHandler(new CloseHandler<PopupPanel>() {
             @Override
-            public void onBlur(BlurEvent event) {
+            public void onClose(CloseEvent event) {
                 validateValidToDate();
             }
-        }, BlurEvent.getType());
+        }, CloseEvent.getType());
 
     }
 
