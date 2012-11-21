@@ -76,7 +76,6 @@ public class HomeSuppliersView extends OverflowComposite
     private static final int SUPPLIER_NAME_COL_WIDTH = 120;
     private static final int RATING_COL_WIDTH = 50;
     private static final int ADDRESS_COL_WIDTH = 60;
-//    private static final int LOCALITY_COL_WIDTH = 50;
     private static final int LOGO_COL_WIDTH = 25;
     //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
@@ -217,31 +216,11 @@ public class HomeSuppliersView extends OverflowComposite
                             str.append(", ");
                         }
                         if (!str.toString().isEmpty()) {
-                            str.delete(str.length() - 1, str.length());
+                            str.delete(str.length() - 2, str.length());
                         }
                         return str.toString();
                     }
                 });
-
-        // Locality.
-        /**************************************************************************/
-//        dataGrid.addColumn(new TextCell(), Storage.MSGS.locality(), false, LOCALITY_COL_WIDTH,
-//                new UniversalAsyncGrid.GetValue() {
-//                    @Override
-//                    public String getValue(Object object) {
-//                        StringBuilder str = new StringBuilder();
-//                        if (((FullSupplierDetail) object).getLocalities() != null) {
-//                            for (LocalityDetail loc : ((FullSupplierDetail) object).getLocalities()) {
-//                                str.append(loc.getName());
-//                                str.append(", ");
-//                            }
-//                            if (str.length() > 2) {
-//                                str.delete(str.length() - 2, str.length());
-//                            }
-//                        }
-//                        return str.toString();
-//                    }
-//                });
     }
 
     /**************************************************************************/

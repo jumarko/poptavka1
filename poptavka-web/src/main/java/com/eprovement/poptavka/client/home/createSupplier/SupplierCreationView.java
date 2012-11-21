@@ -38,92 +38,109 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class SupplierCreationView extends OverflowComposite
         implements SupplierCreationPresenter.CreationViewInterface, ProvidesValidate {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
-    interface CreationViewUiBinder extends UiBinder<Widget, SupplierCreationView> {    }
 
+    interface CreationViewUiBinder extends UiBinder<Widget, SupplierCreationView> {
+    }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
-    //step1
-    @UiField TabLayoutPanel mainPanel;
-    @UiField SimplePanel supplierInfoHolder;
-    @UiField HorizontalPanel agreementPanel;
-    //step2
-    @UiField SimplePanel categoryHolder;
-    //step3
-    @UiField SimplePanel localityHolder;
-    //step4
-    @UiField SimplePanel serviceHolder;
-    @UiField CheckBox agreedCheck;
-    @UiField Button registerBtn;
-    @UiField Anchor conditionLink;
+    private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
+    @UiField
+    StatusIconLabel basicStatus, categoryStatus, localityStatus, serviceStatus;
+    @UiField
+    SimplePanel supplierInfoHolder, categoryHolder, localityHolder, serviceHolder;
+    @UiField
+    TabLayoutPanel mainPanel;
+    @UiField
+    HorizontalPanel agreementPanel;
+    @UiField
+    CheckBox agreedCheck;
+    @UiField
+    Button registerBtn, nextButton1, nextButton2, nextButton3;
+    @UiField
+    Anchor conditionLink;
+    @UiField
+    SimplePanel tableHolder;
 
-    @UiField StatusIconLabel basicStatus, categoryStatus, localityStatus, serviceStatus;
-
-    @UiField SimplePanel tableHolder;
-
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    @Override
     public void createView() {
-        ArrayList<String> titles = new ArrayList<String>();
-        titles.add("Item-A");
-        titles.add("Item-B");
-        titles.add("Item-C");
-        titles.add("Item-D");
         initWidget(uiBinder.createAndBindUi(this));
 
         /** filling status list **/
         StatusIconLabel[] array = {basicStatus, categoryStatus, localityStatus, serviceStatus};
         statusLabels = Arrays.asList(array);
+        /** filling panels list **/
+        SimplePanel[] panels = {supplierInfoHolder, categoryHolder, localityHolder, serviceHolder};
+        holderPanels = Arrays.asList(panels);
 
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();
         StyleResource.INSTANCE.createTabPanel().ensureInjected();
-        setParentOverflow(supplierInfoHolder, Overflow.AUTO);
-        setParentOverflow(categoryHolder, Overflow.AUTO);
-        setParentOverflow(localityHolder, Overflow.AUTO);
-        setParentOverflow(serviceHolder, Overflow.AUTO);
-
+        for (SimplePanel panel : holderPanels) {
+            setParentOverflow(panel, Overflow.AUTO);
+        }
+        categoryHolder.setSize("956px", "350px");
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
+    /**************************************************************************/
+    /* UiHandler                                                              */
+    /**************************************************************************/
+    @UiHandler("agreedCheck")
+    public void agreedCheckChanged(ClickEvent e) {
+        agreementPanel.setStyleName(StyleResource.INSTANCE.common().emptyStyle());
     }
 
-    @Override
-    public SimplePanel getLocalityHolder() {
-        return localityHolder;
-    }
-
-    @Override
-    public SimplePanel getCategoryHolder() {
-        return categoryHolder;
-    }
-
-    @Override
-    public SimplePanel getSupplierInfoHolder() {
-        return supplierInfoHolder;
-    }
-
-    @Override
-    public SimplePanel getServiceHolder() {
-        return serviceHolder;
-    }
-
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    /** PANELS. **/
     @Override
     public TabLayoutPanel getMainPanel() {
         return mainPanel;
     }
 
     @Override
-    public StatusIconLabel getStatusLabel(int order) {
-        return statusLabels.get(order - 1);
+    public SimplePanel getHolderPanel(int order) {
+        return holderPanels.get(order);
     }
 
+    @Override
+    public StatusIconLabel getStatusLabel(int order) {
+        return statusLabels.get(order);
+    }
+
+    /** BUTTONS. **/
     @Override
     public HasClickHandlers getRegisterButton() {
         return registerBtn;
     }
 
+    @Override
+    public Button getNextButton1() {
+        return nextButton1;
+    }
+
+    @Override
+    public Button getNextButton2() {
+        return nextButton2;
+    }
+
+    @Override
+    public Button getNextButton3() {
+        return nextButton3;
+    }
+
+    /** OTHERS. **/
     @Override
     public Anchor getConditionLink() {
         return conditionLink;
@@ -142,7 +159,6 @@ public class SupplierCreationView extends OverflowComposite
         panel.setWidth("580px");
 
         closeButton.addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent arg0) {
                 panel.hide();
@@ -156,11 +172,6 @@ public class SupplierCreationView extends OverflowComposite
         panel.show();
     }
 
-    @UiHandler("agreedCheck")
-    public void agreedCheckChanged(ClickEvent e) {
-        agreementPanel.setStyleName(StyleResource.INSTANCE.common().emptyStyle());
-    }
-
     @Override
     public boolean isValid() {
         if (agreedCheck.getValue()) {
@@ -172,6 +183,11 @@ public class SupplierCreationView extends OverflowComposite
             agreementPanel.setStyleName(StyleResource.INSTANCE.common().errorField());
             return false;
         }
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 
     /**
@@ -199,7 +215,6 @@ public class SupplierCreationView extends OverflowComposite
 
         // Add a close button at the bottom of the dialog
         Button closeButton = new Button(MSGS.close(), new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 dialogBox.hide();

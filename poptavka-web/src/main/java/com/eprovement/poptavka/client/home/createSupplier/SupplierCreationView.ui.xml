@@ -9,20 +9,20 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.client.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
-    
+
     <ui:style>
-		.tabIndex1 { z-index: 1;}
-		.tabIndex2 { z-index: 2;}
-		.tabIndex3 { z-index: 3;}
-		.tabIndex4 { z-index: 4;}
-		.tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
-		
-		.selectorLayout {width: 980px; height: 350px;}
-	</ui:style>
+        .tabIndex1 { z-index: 1;}
+        .tabIndex2 { z-index: 2;}
+        .tabIndex3 { z-index: 3;}
+        .tabIndex4 { z-index: 4;}
+        .tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
+
+        .selectorLayout {width: 980px; height: 350px;}
+    </ui:style>
 
     <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
         <g:TabLayoutPanel ui:field='mainPanel'
-			styleName='{res.createTabPanel.createTabPanel}' barUnit='PX' barHeight='50'>
+                          styleName='{res.createTabPanel.createTabPanel}' barUnit='PX' barHeight='50'>
             <g:tab>
                 <g:customHeader size="30">
                     <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex5}">
@@ -37,7 +37,12 @@
                                             description='{text.basicDescription}' />
                     </g:south>
                     <g:center>
-                        <g:SimplePanel ui:field="supplierInfoHolder" />
+                        <g:VerticalPanel>
+                            <g:SimplePanel ui:field="supplierInfoHolder" />
+                            <g:Button ui:field="nextButton1" >
+                                <ui:msg key="nextButton">Next</ui:msg>
+                            </g:Button>
+                        </g:VerticalPanel>
                     </g:center>
                 </g:DockLayoutPanel>
             </g:tab>
@@ -55,7 +60,12 @@
                                             description='{text.catDescription}' />
                     </g:south>
                     <g:center>
-                        <g:SimplePanel ui:field="categoryHolder" />
+                        <g:VerticalPanel>
+                            <g:SimplePanel ui:field="categoryHolder" />
+                            <g:Button ui:field="nextButton2" >
+                                <ui:msg key="nextButton">Next</ui:msg>
+                            </g:Button>
+                        </g:VerticalPanel>
                     </g:center>
                 </g:DockLayoutPanel>
             </g:tab>
@@ -73,7 +83,12 @@
                                             description='{text.locDescription}' />
                     </g:south>
                     <g:center>
-                        <g:SimplePanel ui:field="localityHolder" />
+                        <g:VerticalPanel>
+                            <g:SimplePanel ui:field="localityHolder" />
+                            <g:Button ui:field="nextButton3" >
+                                <ui:msg key="nextButton">Next</ui:msg>
+                            </g:Button>
+                        </g:VerticalPanel>
                     </g:center>
                 </g:DockLayoutPanel>
             </g:tab>

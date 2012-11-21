@@ -24,34 +24,44 @@ import com.eprovement.poptavka.client.resources.StyleResource;
 
 public class DemandCreationView extends OverflowComposite implements DemandCreationPresenter.CreationViewInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
-    interface CreationViewUiBinder extends UiBinder<Widget, DemandCreationView> {    }
 
+    interface CreationViewUiBinder extends UiBinder<Widget, DemandCreationView> {
+    }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final Logger LOGGER = Logger.getLogger("DemandCreationView");
-
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-
     private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
-
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
+    @UiField
+    StatusIconLabel basicStatus, categoryStatus, localityStatus, advStatus, userStatus;
+    @UiField
+    SimplePanel basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder;
+    @UiField
+    TabLayoutPanel mainPanel;
+    @UiField
+    DockLayoutPanel userFormPanel;
+    @UiField
+    Button demandCreateBtn, nextButton1, nextButton2, nextButton3, nextButton4;
 
-    @UiField TabLayoutPanel mainPanel;
-    @UiField DockLayoutPanel userFormPanel;
-
-    @UiField SimplePanel basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder;
-    @UiField StatusIconLabel basicStatus, categoryStatus, localityStatus, advStatus, userStatus;
-
-    @UiField Button demandCreateBtn;
-
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
         /** filling status list **/
         StatusIconLabel[] array = {basicStatus, categoryStatus, localityStatus, advStatus, userStatus};
         statusLabels = Arrays.asList(array);
-
+        /** filling panels list **/
         SimplePanel[] panels = {basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder};
-        holderPanels  = Arrays.asList(panels);
+        holderPanels = Arrays.asList(panels);
 
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();
@@ -62,31 +72,57 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         categoryHolder.setSize("956px", "350px");
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public void toggleLoginRegistration() {
-        demandCreateBtn.setVisible(!demandCreateBtn.isVisible());
-        switchUserFormMessages(demandCreateBtn.isVisible());
-
-    }
-
-    @Override
-    public HasClickHandlers getCreateDemandButton() {
-        return demandCreateBtn;
-    }
-
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    /** PANELS. **/
     @Override
     public TabLayoutPanel getMainPanel() {
         return mainPanel;
     }
 
     @Override
+    public SimplePanel getHolderPanel(int order) {
+        return holderPanels.get(order);
+    }
+
+    @Override
     public StatusIconLabel getStatusLabel(int order) {
-        return statusLabels.get(order - 1);
+        return statusLabels.get(order);
+    }
+
+    /** BUTTONS. **/
+    @Override
+    public HasClickHandlers getCreateDemandButton() {
+        return demandCreateBtn;
+    }
+
+    @Override
+    public Button getNextButton1() {
+        return nextButton1;
+    }
+
+    @Override
+    public Button getNextButton2() {
+        return nextButton2;
+    }
+
+    @Override
+    public Button getNextButton3() {
+        return nextButton3;
+    }
+
+    @Override
+    public Button getNextButton4() {
+        return nextButton4;
+    }
+
+    /** OTHERS. **/
+    @Override
+    public void toggleLoginRegistration() {
+        demandCreateBtn.setVisible(!demandCreateBtn.isVisible());
+        switchUserFormMessages(demandCreateBtn.isVisible());
+
     }
 
     public void switchUserFormMessages(boolean toRegister) {
@@ -99,8 +135,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     }
 
     @Override
-    public SimplePanel getHolderPanel(int order) {
-        return holderPanels.get(order - 1);
+    public Widget getWidgetView() {
+        return this;
     }
-
 }

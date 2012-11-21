@@ -43,6 +43,12 @@ public class DemandCreationPresenter
 
     private final static Logger LOGGER = Logger.getLogger("DemandCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    // Main Panel Tab Constants
+    private static final int FIRST_TAB_BASIC = 0;
+    private static final int SECOND_TAB_CATEGORY = 1;
+    private static final int THIRD_TAB_LOCALITY = 2;
+    private static final int FOURTH_TAB_ADVANCE = 3;
+    private static final int FIFTH_TAB_LOGIN = 4;
     // TODO praso - All this presenters should be moved into this particular
     // module otherwise they will fall in left-over fragment
     private FormDemandBasicPresenter demandBasicForm = null;
@@ -51,74 +57,99 @@ public class DemandCreationPresenter
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
+        /** Panels. **/
         TabLayoutPanel getMainPanel();
-
-        Widget getWidgetView();
-
-        void toggleLoginRegistration();
 
         StatusIconLabel getStatusLabel(int order);
 
         SimplePanel getHolderPanel(int order);
 
+        /** Buttons. **/
         HasClickHandlers getCreateDemandButton();
+
+        HasClickHandlers getNextButton1();
+
+        HasClickHandlers getNextButton2();
+
+        HasClickHandlers getNextButton3();
+
+        HasClickHandlers getNextButton4();
+
+        /** Other. **/
+        void toggleLoginRegistration();
+
+        Widget getWidgetView();
     }
 
+    /**************************************************************************/
+    /* Bind handlers                                                          */
+    /**************************************************************************/
     @Override
     public void bindView() {
+        addMainPanelBeforeSelectionHandler();
+        addMainPanelSelectionHandler();
+        addCreateDemandButtonHandler();
+        addNextButtonsHandlers();
+    }
+
+    // Bind helper methods
+    //--------------------------------------------------------------------------
+    private void addMainPanelBeforeSelectionHandler() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
                 if (view.getMainPanel().getSelectedIndex() < eventItem) {
-                    boolean result = canContinue(eventItem);
-                    if (!result) {
-                        // TODO change to global status changer eventBus call
-                        event.cancel();
+                    //if previous step is valid, continue
+                    if (canContinue(eventItem - 1)) {
+                        view.getStatusLabel(eventItem - 1).setPassedSmall(true);
                     } else {
-                        // TODO change to global status changer eventBus call
-                        view.getStatusLabel(eventItem).setPassedSmall(result);
+                        view.getStatusLabel(eventItem - 1).setPassedSmall(false);
+                        event.cancel();
                     }
                 }
             }
         });
+    }
+
+    private void addMainPanelSelectionHandler() {
         view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
                 switch (event.getSelectedItem()) {
-                    case 0:
+                    case FIRST_TAB_BASIC:
                         LOGGER.info(" -> Supplier Info Form");
-                        if (maxSelectedTab < 0) {
-                            eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
+                        if (maxSelectedTab < FIRST_TAB_BASIC) {
+                            eventBus.initDemandBasicForm(view.getHolderPanel(FIRST_TAB_BASIC));
                         }
-                    case 1:
+                    case SECOND_TAB_CATEGORY:
                         LOGGER.info(" -> Category Widget");
-                        if (maxSelectedTab < 1) {
+                        if (maxSelectedTab < SECOND_TAB_CATEGORY) {
                             eventBus.initCategoryWidget(
-                                    view.getHolderPanel(CATEGORY),
+                                    view.getHolderPanel(SECOND_TAB_CATEGORY),
                                     Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                                     CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
                         }
                         break;
-                    case 2:
+                    case THIRD_TAB_LOCALITY:
                         LOGGER.info(" -> Locality Widget");
-                        if (maxSelectedTab < 2) {
+                        if (maxSelectedTab < THIRD_TAB_LOCALITY) {
                             eventBus.initLocalityWidget(
-                                    view.getHolderPanel(LOCALITY),
+                                    view.getHolderPanel(THIRD_TAB_LOCALITY),
                                     Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                                     CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
                         }
                         break;
-                    case 3:
+                    case FOURTH_TAB_ADVANCE:
                         LOGGER.info(" -> init Demand Form supplierService");
-                        if (maxSelectedTab < 3) {
-                            eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
+                        if (maxSelectedTab < FOURTH_TAB_ADVANCE) {
+                            eventBus.initDemandAdvForm(view.getHolderPanel(FOURTH_TAB_ADVANCE));
                         }
                         break;
-                    case 4:
+                    case FIFTH_TAB_LOGIN:
                         LOGGER.info(" -> init Login Form supplierService");
-                        if (maxSelectedTab < 4) {
-                            eventBus.initLoginForm(view.getHolderPanel(LOGIN));
+                        if (maxSelectedTab < FIFTH_TAB_LOGIN) {
+                            eventBus.initLoginForm(view.getHolderPanel(FIFTH_TAB_LOGIN));
                         }
                         break;
                     default:
@@ -129,22 +160,37 @@ public class DemandCreationPresenter
                 }
             }
         });
+    }
+
+    private void addCreateDemandButtonHandler() {
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (canContinue(LOGIN)) {
+                if (canContinue(FIFTH_TAB_LOGIN)) {
                     registerNewCient();
                 }
             }
         });
+    }
 
+    private void addNextButtonsHandlers() {
+        ClickHandler clickHandler = new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getMainPanel().selectTab(view.getMainPanel().getSelectedIndex() + 1, true);
+            }
+        };
+        view.getNextButton1().addClickHandler(clickHandler);
+        view.getNextButton2().addClickHandler(clickHandler);
+        view.getNextButton3().addClickHandler(clickHandler);
+        view.getNextButton4().addClickHandler(clickHandler);
     }
 
     /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
+        eventBus.initDemandBasicForm(view.getHolderPanel(FIRST_TAB_BASIC));
     }
 
     public void onForward() {
@@ -196,13 +242,13 @@ public class DemandCreationPresenter
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
         FormDemandBasicInterface basicValues =
-                (FormDemandBasicInterface) view.getHolderPanel(BASIC).getWidget();
+                (FormDemandBasicInterface) view.getHolderPanel(FIRST_TAB_BASIC).getWidget();
         CategorySelectorInterface categoryValues =
-                (CategorySelectorInterface) view.getHolderPanel(CATEGORY).getWidget();
+                (CategorySelectorInterface) view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget();
         LocalitySelectorInterface localityValues =
-                (LocalitySelectorInterface) view.getHolderPanel(LOCALITY).getWidget();
+                (LocalitySelectorInterface) view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget();
         FormDemandAdvViewInterface advValues =
-                (FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget();
+                (FormDemandAdvViewInterface) view.getHolderPanel(FOURTH_TAB_ADVANCE).getWidget();
 
         // Fill in the FullDemandDetail obejct from former holder panels.
         FullDemandDetail demand = new FullDemandDetail();
@@ -230,8 +276,9 @@ public class DemandCreationPresenter
     /** showing error after login failure. **/
     public void onLoginError() {
         // TODO change to global status changer eventBus call
-        view.getStatusLabel(LOGIN).setStyleState(StyleResource.INSTANCE.common().errorMessage(), State.ERROR_16);
-        view.getStatusLabel(LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
+        view.getStatusLabel(FIFTH_TAB_LOGIN).setStyleState(
+                StyleResource.INSTANCE.common().errorMessage(), State.ERROR_16);
+        view.getStatusLabel(FIFTH_TAB_LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
     }
 
     /**************************************************************************/
@@ -247,16 +294,12 @@ public class DemandCreationPresenter
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterClient());
         // ClientDetail instance
-        FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getHolderPanel(LOGIN).getWidget();
+        FormRegistrationInterface registerWidget =
+                (FormRegistrationInterface) view.getHolderPanel(FIFTH_TAB_LOGIN).getWidget();
         BusinessUserDetail newClient = registerWidget.getNewClient();
         eventBus.registerNewClient(newClient);
 
     }
-    private static final int BASIC = 1;
-    private static final int CATEGORY = 2;
-    private static final int LOCALITY = 3;
-    private static final int ADVANCED = 4;
-    private static final int LOGIN = 5;
 
     private boolean canContinue(int step) {
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();

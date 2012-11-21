@@ -24,7 +24,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
@@ -77,7 +76,7 @@ public class HomeDemandsView extends OverflowComposite
     private static final int CREATED_DATE_COL_WIDTH = 90;
     private static final int TITLE_COL_WIDTH = 200;
     private static final int LOCALITY_COL_WIDTH = 150;
-    private static final int PRICE_WIDTH = 80;
+//    private static final int PRICE_WIDTH = 80;
     private static final int URGENT_COL_WIDTH = 50;
     //Table definitions
     @UiField(provided = true)
@@ -108,7 +107,7 @@ public class HomeDemandsView extends OverflowComposite
     @UiField
     Button offerBtn1, offerBtn2;
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
+//    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -153,7 +152,7 @@ public class HomeDemandsView extends OverflowComposite
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns, pager.getPageSize(), resource);
         dataGrid.setMinimumTableWidth(CREATED_DATE_COL_WIDTH + TITLE_COL_WIDTH
-                + +LOCALITY_COL_WIDTH + PRICE_WIDTH + URGENT_COL_WIDTH, Style.Unit.PX);
+                + +LOCALITY_COL_WIDTH + URGENT_COL_WIDTH, Style.Unit.PX);
         // Selection handler
         dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
 
@@ -223,13 +222,13 @@ public class HomeDemandsView extends OverflowComposite
 
         // Price
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.price(), true, PRICE_WIDTH,
-                new UniversalAsyncGrid.GetValue<String>() {
-                    @Override
-                    public String getValue(Object object) {
-                        return currencyFormat.format(((FullDemandDetail) object).getPrice());
-                    }
-                });
+//        dataGrid.addColumn(new TextCell(), bundle.price(), true, PRICE_WIDTH,
+//                new UniversalAsyncGrid.GetValue<String>() {
+//                    @Override
+//                    public String getValue(Object object) {
+//                        return currencyFormat.format(((FullDemandDetail) object).getPrice());
+//                    }
+//                });
 
         // Urgence
         /**************************************************************************/

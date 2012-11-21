@@ -6,15 +6,15 @@
 	<!-- injecting style resources -->
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
-	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />	
-	
+	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
 	<ui:style>
 		.tabIndex1 { z-index: 1;}
 		.tabIndex2 { z-index: 2;}
 		.tabIndex3 { z-index: 3;}
 		.tabIndex4 { z-index: 4;}
 		.tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
-		
+
 		.selectorLayout {width: 980px; height: 350px;}
 	</ui:style>
 
@@ -35,7 +35,12 @@
 							description='{text.basicDescription}' />
 					</g:south>
 					<g:center>
-						<g:SimplePanel ui:field="basicInfoHolder" />
+                                                <g:VerticalPanel>
+                                                        <g:SimplePanel ui:field="basicInfoHolder" />
+                                                        <g:Button ui:field="nextButton1" >
+                                                                <ui:msg key="nextButton">Next</ui:msg>
+                                                        </g:Button>
+                                                </g:VerticalPanel>
 					</g:center>
 				</g:DockLayoutPanel>
 			</g:tab>
@@ -53,7 +58,16 @@
 							description='{text.catDescription}' />
 					</g:south>
 					<g:center>
-						<g:SimplePanel ui:field="categoryHolder" styleName='{style.selectorLayout}'/>
+                                                <g:VerticalPanel>
+                                                        <g:Label>
+                                                            <ui:msg key="categorySelectorInfoLabel">Select the most suitable category.
+                                                            The more accurate category the more relevant suppliers will contact you.</ui:msg>
+                                                        </g:Label>
+                                                        <g:SimplePanel ui:field="categoryHolder" styleName='{style.selectorLayout}'/>
+                                                        <g:Button ui:field="nextButton2">
+                                                                <ui:msg key="nextButton">Next</ui:msg>
+                                                        </g:Button>
+                                                </g:VerticalPanel>
 					</g:center>
 				</g:DockLayoutPanel>
 			</g:tab>
@@ -71,7 +85,12 @@
 							description='{text.locDescription}' />
 					</g:south>
 					<g:center>
-						<g:SimplePanel ui:field="localityHolder" />
+                                                <g:VerticalPanel>
+                                                        <g:SimplePanel ui:field="localityHolder" />
+                                                        <g:Button ui:field="nextButton3">
+                                                                <ui:msg key="nextButton">Next</ui:msg>
+                                                        </g:Button>
+                                                </g:VerticalPanel>
 					</g:center>
 				</g:DockLayoutPanel>
 			</g:tab>
@@ -89,7 +108,12 @@
 							description='{text.advDescription}' />
 					</g:south>
 					<g:center>
-						<g:SimplePanel ui:field="advInfoHolder" />
+                                                <g:VerticalPanel>
+                                                        <g:SimplePanel ui:field="advInfoHolder" />
+                                                        <g:Button ui:field="nextButton4">
+                                                                <ui:msg key="nextButton">Next</ui:msg>
+                                                        </g:Button>
+                                                </g:VerticalPanel>
 					</g:center>
 				</g:DockLayoutPanel>
 			</g:tab>

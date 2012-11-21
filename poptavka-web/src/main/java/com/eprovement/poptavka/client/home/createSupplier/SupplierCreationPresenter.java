@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
@@ -9,12 +8,8 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
-import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,138 +24,56 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
         extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, SupplierCreationEventBus> {
 
+    // Main Panel Tab Constants
+    private static final int FIRST_TAB_BASIC = 0;
+    private static final int SECOND_TAB_CATEGORY = 1;
+    private static final int THIRD_TAB_LOCALITY = 2;
+    private static final int FOURTH_TAB_SERVICE = 3;
     private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private int maxSelectedTab = -1;
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
+        /** Panels. **/
         TabLayoutPanel getMainPanel();
 
-        SimplePanel getSupplierInfoHolder();
-
-        SimplePanel getLocalityHolder();
-
-        SimplePanel getCategoryHolder();
-
-        SimplePanel getServiceHolder();
-
-        HasClickHandlers getRegisterButton();
-
-        Anchor getConditionLink();
-
-        Widget getWidgetView();
+        SimplePanel getHolderPanel(int order);
 
         StatusIconLabel getStatusLabel(int order);
+
+        /** Buttons. **/
+        HasClickHandlers getRegisterButton();
+
+        HasClickHandlers getNextButton1();
+
+        HasClickHandlers getNextButton2();
+
+        HasClickHandlers getNextButton3();
+
+        /** Other. **/
+        Anchor getConditionLink();
 
         void showConditions();
 
         boolean isValid();
-    }
 
-    @Override
-    public void bindView() {
-        view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
-            @Override
-            public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
-                int eventItem = event.getItem();
-                if (view.getMainPanel().getSelectedIndex() < eventItem) {
-                    boolean result = canContinue(eventItem);
-                    view.getStatusLabel(eventItem).setPassedSmall(result);
-                    if (!result) {
-                        event.cancel();
-                    } else {
-                        view.getStatusLabel(eventItem).setPassedSmall(result);
-                    }
-                }
-            }
-        });
-        view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
-            @Override
-            public void onSelection(SelectionEvent<Integer> event) {
-                switch (event.getSelectedItem()) {
-                    case 0:
-                        LOGGER.info(" -> Supplier Info Form");
-                        if (maxSelectedTab < 0) {
-                            //Otherwise load widget
-                            eventBus.initSupplierForm(view.getSupplierInfoHolder());
-                        } else {
-                            //If already loaded, just activate presenter for holding requests
-                            eventBus.activateAddressWidgetPresenter();
-                        }
-                    case 1:
-                        LOGGER.info(" -> Category Widget");
-                        if (maxSelectedTab < 1) {
-                            eventBus.initCategoryWidget(
-                                    view.getCategoryHolder(),
-                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                                    CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
-                        }
-                        //Don't need to active CategorySelectorPresenter, because he is the only one
-                        //action listener after data retrieving process.
-                        //(In Localities, there are two listeners after data are retrieved)
-                        break;
-                    case 2:
-                        LOGGER.info(" -> Locality Widget");
-                        if (maxSelectedTab < 2) {
-                            eventBus.initLocalityWidget(
-                                    view.getLocalityHolder(),
-                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                                    CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
-                        } else {
-                            eventBus.activateLocalityWidgetPresenter();
-                        }
-                        break;
-                    case 3:
-                        LOGGER.info(" -> init Service Form supplierService");
-                        if (maxSelectedTab < 3) {
-                            initServices();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                if (maxSelectedTab < event.getSelectedItem()) {
-                    maxSelectedTab = event.getSelectedItem();
-                }
-            }
-        });
-        view.getRegisterButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (canContinue(SERVICE)) {
-                    LOGGER.fine("register him!");
-                    registerSupplier();
-                } else {
-                    LOGGER.fine("cannot continue");
-                }
-            }
-        });
-        view.getConditionLink().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                view.showConditions();
-            }
-        });
+        Widget getWidgetView();
     }
 
     /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        eventBus.initSupplierForm(view.getSupplierInfoHolder());
-
     }
 
     public void onForward() {
@@ -177,38 +90,140 @@ public class SupplierCreationPresenter
      * Used to navigate/invoke supplier creation module.
      */
     public void onGoToCreateSupplierModule() {
-        //nothing
-    }
-    /**************************************************************************/
-    /* Business events handled by presenter                                   */
-    /**************************************************************************/
-    private SupplierServicePresenter supplierService = null;
-    private SupplierInfoPresenter supplierInfo = null;
-
-    public void onInitServiceForm(SimplePanel serviceHolder) {
-        if (supplierService != null) {
-            eventBus.removeHandler(supplierService);
-        }
-        supplierService = eventBus.addHandler(SupplierServicePresenter.class);
-        supplierService.initServiceForm(serviceHolder);
+        eventBus.initSupplierForm(view.getHolderPanel(FIRST_TAB_BASIC));
     }
 
-    public void onInitSupplierForm(SimplePanel supplierInfoHolder) {
-        if (supplierInfo != null) {
-            eventBus.removeHandler(supplierInfo);
-        }
-        supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
-        supplierInfo.onInitSupplierForm(supplierInfoHolder);
+    /**************************************************************************/
+    /* Bind handlers                                                          */
+    /**************************************************************************/
+    @Override
+    public void bindView() {
+        addMainPanelBeforeSelectionHandler();
+        addMainPanelSelectionHandler();
+        addRegisterButtonHandler();
+        addConditionLinkHandler();
+        addNextButtonsHandlers();
+    }
+
+    private void addMainPanelBeforeSelectionHandler() {
+        view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+            @Override
+            public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
+                int eventItem = event.getItem();
+                if (view.getMainPanel().getSelectedIndex() < eventItem) {
+                    //if previous step is valid, continue
+                    if (canContinue(eventItem - 1)) {
+                        view.getStatusLabel(eventItem - 1).setPassedSmall(true);
+                    } else {
+                        view.getStatusLabel(eventItem - 1).setPassedSmall(false);
+                        event.cancel();
+                    }
+                }
+            }
+        });
+    }
+
+    private void addMainPanelSelectionHandler() {
+        view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
+            @Override
+            public void onSelection(SelectionEvent<Integer> event) {
+                switch (event.getSelectedItem()) {
+                    case FIRST_TAB_BASIC:
+                        LOGGER.info(" -> Supplier Info Form");
+                        if (maxSelectedTab < FIRST_TAB_BASIC) {
+                            //Otherwise load widget
+                            eventBus.initSupplierForm(view.getHolderPanel(FIRST_TAB_BASIC));
+                        } else {
+                            //If already loaded, just activate presenter for holding requests
+                            eventBus.activateAddressWidgetPresenter();
+                        }
+                    case SECOND_TAB_CATEGORY:
+                        LOGGER.info(" -> Category Widget");
+                        if (maxSelectedTab < SECOND_TAB_CATEGORY) {
+                            eventBus.initCategoryWidget(
+                                    view.getHolderPanel(SECOND_TAB_CATEGORY),
+                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
+                                    CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
+                        }
+                        //Don't need to active CategorySelectorPresenter, because he is the only one
+                        //action listener after data retrieving process.
+                        //(In Localities, there are two listeners after data are retrieved)
+                        break;
+                    case THIRD_TAB_LOCALITY:
+                        LOGGER.info(" -> Locality Widget");
+                        if (maxSelectedTab < THIRD_TAB_LOCALITY) {
+                            eventBus.initLocalityWidget(
+                                    view.getHolderPanel(THIRD_TAB_LOCALITY),
+                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
+                                    CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
+                        } else {
+                            eventBus.activateLocalityWidgetPresenter();
+                        }
+                        break;
+                    case FOURTH_TAB_SERVICE:
+                        LOGGER.info(" -> init Service Form supplierService");
+                        if (maxSelectedTab < FOURTH_TAB_SERVICE) {
+                            eventBus.initServiceForm(view.getHolderPanel(FOURTH_TAB_SERVICE));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (maxSelectedTab < event.getSelectedItem()) {
+                    maxSelectedTab = event.getSelectedItem();
+                }
+            }
+        });
+    }
+
+    private void addRegisterButtonHandler() {
+        view.getRegisterButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (canContinue(FOURTH_TAB_SERVICE)) {
+                    LOGGER.fine("registxer him!");
+                    registerSupplier();
+                } else {
+                    LOGGER.fine("cannot continue");
+                }
+            }
+        });
+    }
+
+    private void addConditionLinkHandler() {
+        view.getConditionLink().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                view.showConditions();
+            }
+        });
+
+    }
+
+    private void addNextButtonsHandlers() {
+        ClickHandler clickHandler = new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getMainPanel().selectTab(view.getMainPanel().getSelectedIndex() + 1, true);
+            }
+        };
+        view.getNextButton1().addClickHandler(clickHandler);
+        view.getNextButton2().addClickHandler(clickHandler);
+        view.getNextButton3().addClickHandler(clickHandler);
     }
 
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
     private void registerSupplier() {
-        SupplierInfoInterface info = (SupplierInfoInterface) view.getSupplierInfoHolder().getWidget();
-        LocalitySelectorInterface locs = (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
-        CategorySelectorInterface cats = (CategorySelectorInterface) view.getCategoryHolder().getWidget();
-        ServiceWidget service = (ServiceWidget) view.getServiceHolder().getWidget();
+        SupplierInfoInterface info =
+                (SupplierInfoInterface) view.getHolderPanel(FIRST_TAB_BASIC).getWidget();
+        CategorySelectorInterface cats =
+                (CategorySelectorInterface) view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget();
+        LocalitySelectorInterface locs =
+                (LocalitySelectorInterface) view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget();
+        ServiceWidget service =
+                (ServiceWidget) view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget();
 
         BusinessUserDetail newSupplier = info.createSupplier();
         newSupplier.getSupplier().setLocalities(locs.getCellListDataProvider().getList());
@@ -219,51 +234,10 @@ public class SupplierCreationPresenter
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterClient());
     }
-    private static final int INFO = 1;
-    private static final int CATEGORY = 2;
-    private static final int LOCALITY = 3;
-    private static final int SERVICE = 4;
 
     private boolean canContinue(int step) {
-        if (step == INFO) {
-            ProvidesValidate widget =
-                    (ProvidesValidate) view.getSupplierInfoHolder().getWidget();
-            return widget.isValid();
-        }
-        if (step == CATEGORY) {
-            ProvidesValidate widget =
-                    (ProvidesValidate) view.getCategoryHolder().getWidget();
-            return widget.isValid();
-        }
-        if (step == LOCALITY) {
-            ProvidesValidate widget =
-                    (ProvidesValidate) view.getLocalityHolder().getWidget();
-            return widget.isValid();
-        }
-        if (step == SERVICE) {
-            return view.isValid();
-        }
-        //can't reach
-        return false;
-    }
-    // TODO preco mame v presenteri SupplierRPCServiceAsync objekt??? Tymto uplne porusujeme
-    // MVP model. Rozhranim ma byt predsa eventbus. OPRAVIT !!! a nerobit taketo chyby !!!
-    @Inject
-    private SupplierCreationRPCServiceAsync supplierCreationRpcService = null;
-
-    public void setService(SupplierCreationRPCServiceAsync service) {
-        this.supplierCreationRpcService = service;
-    }
-
-    private void initServices() {
-        supplierCreationRpcService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>(eventBus) {
-            @Override
-            public void onSuccess(ArrayList<ServiceDetail> data) {
-                LOGGER.info(" -> Service Form init & fill data");
-                ServiceWidget serviceWidget = new ServiceWidget();
-                view.getServiceHolder().setWidget(serviceWidget);
-                serviceWidget.setData(data);
-            }
-        });
+        ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
+        LOGGER.fine(widget.getClass().getName());
+        return widget.isValid();
     }
 }

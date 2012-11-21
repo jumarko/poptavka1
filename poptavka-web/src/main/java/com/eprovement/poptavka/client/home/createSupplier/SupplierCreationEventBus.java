@@ -6,6 +6,11 @@
  */
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
@@ -13,10 +18,8 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.mvp4g.client.event.EventBusWithLookup;
+import java.util.ArrayList;
 
 /**
  *
@@ -85,25 +88,34 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
-    /**************************************************************************/
-    /* Business events handled by Presenters.                                 */
-    /**************************************************************************/
-    @Event(handlers = SupplierCreationPresenter.class)
-    void initServiceForm(SimplePanel serviceHolder);
 
-    @Event(handlers = SupplierCreationPresenter.class)
-    void initSupplierForm(SimplePanel supplierInfoHolder);
+    /**************************************************************************/
+    /* Business events handled by SupplierInfoPresenters.                     */
+    /**************************************************************************/
+    @Event(handlers = SupplierInfoPresenter.class)
+    void initSupplierForm(SimplePanel holderPanel);
 
     @Event(handlers = SupplierInfoPresenter.class)
     void checkFreeEmailResponse(Boolean result);
 
     /**************************************************************************/
+    /* Business events handled by SupplierServicePresenter.                   */
+    /**************************************************************************/
+    @Event(handlers = SupplierServicePresenter.class)
+    void initServiceForm(SimplePanel holderPanel);
+
+    @Event(handlers = SupplierServicePresenter.class)
+    void setServices(ArrayList<ServiceDetail> services);
+
+    /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
+    @Event(handlers = SupplierCreationHandler.class)
+    void getServices();
+
     @Event(handlers = SupplierCreationHandler.class)
     void registerSupplier(BusinessUserDetail newSupplier);
 
     @Event(handlers = SupplierCreationHandler.class)
     void checkFreeEmail(String value);
-
 }

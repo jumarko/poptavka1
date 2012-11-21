@@ -79,6 +79,7 @@ public interface LocalizableMessages extends Messages {
     String semiStrongPassword();
     String passwordsMatch();
     String passwordsUnmatch();
+    String categorySelectorInfoLabel();
 
     //supplier registration
     String agreementMessage();
@@ -251,6 +252,7 @@ public interface LocalizableMessages extends Messages {
     String denyOfferButton();
     String answerButton();
     String closeDemandButton();
+    String nextButton();
 
     //Explanation texts to table image columns
 
