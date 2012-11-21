@@ -84,9 +84,6 @@ public interface Images extends ClientBundle {
     @Source("urgency-green.png")
     ImageResource normal();
 
-    @Source("blueCyrcle.png")
-    ImageResource lessNormal();
-
     @Source("new.png")
     ImageResource newDemand();
 

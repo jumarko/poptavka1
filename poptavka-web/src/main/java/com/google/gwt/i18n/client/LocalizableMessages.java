@@ -212,6 +212,9 @@ public interface LocalizableMessages extends Messages {
     String sentDate();
     String createdTime();
     String urgency();
+    String urgentHigh();
+    String urgentLess();
+    String urgentNormal();
     String commonInfo();
     String minRating();
     String maxOffers();

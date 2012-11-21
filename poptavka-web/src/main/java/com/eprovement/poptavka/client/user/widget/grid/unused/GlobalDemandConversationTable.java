@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.user.widget.grid.unused;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -12,18 +11,19 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 
 import java.util.Random;
 
+/*
+ * This class is not used
+ */
 public class GlobalDemandConversationTable extends CellTable<ClientDemandMessageDetail> {
 
     private ListDataProvider<ClientDemandMessageDetail> dataProvider
@@ -178,29 +178,29 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
 //            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
 
             //TODO Martin - i18
-            if (value.equals(DemandStatus.CRAWLED.getValue())) { //(0-4) velmi specha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();
-                GWT.log("crawled");
-
-            } else if (value.equals(DemandStatus.ACTIVE.getValue())) { //(5-8) specha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessUrgent()).getHTML();
-
-            } else if (value.equals(DemandStatus.ASSIGNED.getValue())) { //(9-12) nespecha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().normal()).getHTML();
-
-            } else if (value.equals(DemandStatus.CANCELED.getValue())) { //(13-oo) vobec nespecha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
-            } else if (value.equals(DemandStatus.CLOSED.getValue())) { //(13-oo) vobec nespecha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
-            } else if (value.equals(DemandStatus.FINISHED.getValue())) { //(13-oo) vobec nespecha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
-            } else if (value.equals(DemandStatus.INACTIVE.getValue())) { //(13-oo) vobec nespecha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
-            } else if (value.equals(DemandStatus.NEW.getValue())) { //(13-oo) vobec nespecha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().newDemand()).getHTML();
-            } else if (value.equals(DemandStatus.TO_BE_CHECKED.getValue())) { //(13-oo) vobec nespecha
-                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
-            }
+//            if (value.equals(DemandStatus.CRAWLED.getValue())) { //(0-4) velmi specha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();
+//                GWT.log("crawled");
+//
+//            } else if (value.equals(DemandStatus.ACTIVE.getValue())) { //(5-8) specha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessUrgent()).getHTML();
+//
+//            } else if (value.equals(DemandStatus.ASSIGNED.getValue())) { //(9-12) nespecha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().normal()).getHTML();
+//
+//            } else if (value.equals(DemandStatus.CANCELED.getValue())) { //(13-oo) vobec nespecha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+//            } else if (value.equals(DemandStatus.CLOSED.getValue())) { //(13-oo) vobec nespecha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+//            } else if (value.equals(DemandStatus.FINISHED.getValue())) { //(13-oo) vobec nespecha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+//            } else if (value.equals(DemandStatus.INACTIVE.getValue())) { //(13-oo) vobec nespecha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+//            } else if (value.equals(DemandStatus.NEW.getValue())) { //(13-oo) vobec nespecha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().newDemand()).getHTML();
+//            } else if (value.equals(DemandStatus.TO_BE_CHECKED.getValue())) { //(13-oo) vobec nespecha
+//                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+//            }
             sb.appendHtmlConstant("<table>");
             // Add the contact image.
             sb.appendHtmlConstant("<tr><td>");
