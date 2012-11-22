@@ -80,6 +80,21 @@ public interface LocalizableMessages extends Messages {
     String passwordsMatch();
     String passwordsUnmatch();
     String categorySelectorInfoLabel();
+    String loginOrRegisterToContinueLabel();
+    String loggedSuccessfully();
+    String registerSuccessfully();
+    String createDemandButton();
+    String createAnotherDemandButton();
+    String seeMyDemandsButton();
+    String seeAllDemandsButton();
+    String activateButton();
+    String sendAgainButton();
+    String enterActivationCode();
+    String activationCodeSent();
+    String newActivationCodeSent();
+    String activationPassed();
+    String activationFailed();
+    String newActivationCodeSentFailed();
 
     //supplier registration
     String agreementMessage();

@@ -1,7 +1,10 @@
-package com.eprovement.poptavka.client.home.createDemand;
+package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.home.createDemand.DemandCreationEventBus;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -13,6 +16,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -20,47 +24,75 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-
 @Presenter(view = FormUserRegistrationView.class)
-public class FormUserRegistrationPresenter extends
-    LazyPresenter<FormUserRegistrationPresenter.FormRegistrationInterface, DemandCreationEventBus> {
+public class FormUserRegistrationPresenter
+        extends LazyPresenter<FormUserRegistrationPresenter.FormRegistrationInterface, DemandCreationEventBus> {
 
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
+    //Constants
+    private static final int SHORT = 5;
+    private static final int LONG = 8;
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    //Attributes
+    private ActivationCodePopupPresenter activationPopup;
+    private BusinessUserDetail clientToRegister;
 
+    /**************************************************************************/
+    /* VIEW INTERFACE                                                         */
+    /**************************************************************************/
     public interface FormRegistrationInterface extends LazyView {
 
-        Widget getWidgetView();
+        /** SETTERS. **/
+        void setMailFlag(boolean flag);
 
+        void setPasswordFlag(boolean flag);
+
+        void setPasswordLengthFlag(boolean flag);
+
+        void toggleCompanyButtons(boolean toggle);
+
+        /** GETTERS. **/
+        //Buttons
         RadioButton getPersonButton();
 
         RadioButton getCompanyButton();
 
-        Button getToLoginButton();
+        Button getBackButton();
 
+        Button getRegisterButton();
+
+        //TextBoxes
         HasValueChangeHandlers<String> getEmailBox();
 
         PasswordTextBox getPwdBox();
 
         PasswordTextBox getPwdConfirmBox();
 
+        //StatusIconLabels
         StatusIconLabel getMailStatus();
 
         StatusIconLabel getPwdStatus();
 
         StatusIconLabel getPwdConfirmStatus();
 
-        void toggleCompanyButtons(boolean toggle);
-
+        //data
         BusinessUserDetail getNewClient();
 
-        void setMailFlag(boolean flag);
-
-        void setPasswordFlag(boolean flag);
-
-        void setPasswordLengthFlag(boolean flag);
+        Widget getWidgetView();
     }
 
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
+    public void onInitRegistrationForm(SimplePanel embedToWidget) {
+        embedToWidget.setWidget(view.getWidgetView());
+    }
+
+    /**************************************************************************/
+    /* BIND                                                                   */
+    /**************************************************************************/
     @Override
     public void bindView() {
         view.getPersonButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -79,13 +111,21 @@ public class FormUserRegistrationPresenter extends
                 }
             }
         });
-        view.getToLoginButton().addClickHandler(new ClickHandler() {
+        view.getBackButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
                 //just for toggle button
-                eventBus.toggleLoginRegistration();
-                eventBus.initLoginForm((SimplePanel) view.getWidgetView().getParent());
+//                eventBus.toggleLoginRegistration(); ???
+                eventBus.backToZeroTab();
 
+            }
+        });
+        view.getRegisterButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                clientToRegister = view.getNewClient();
+                //register a shof popup na activation code
+                eventBus.registerNewClient(clientToRegister);
             }
         });
         view.getEmailBox().addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -109,10 +149,9 @@ public class FormUserRegistrationPresenter extends
         });
     }
 
-    public void onInitRegistrationForm(SimplePanel embedToWidget) {
-        embedToWidget.setWidget(view.getWidgetView());
-    }
-
+    /**************************************************************************/
+    /* METHODS                                                                */
+    /**************************************************************************/
     public void onCheckFreeEmailResponse(Boolean isAvailable) {
         if (isAvailable) {
             view.setMailFlag(true);
@@ -128,6 +167,51 @@ public class FormUserRegistrationPresenter extends
         }
     }
 
+    public void onResponseRegisterNewClient(BusinessUserDetail client) {
+        //TODO delete just dor DEVEL purposes
+        clientToRegister = client;
+        if (activationPopup != null) {
+            eventBus.removeHandler(activationPopup);
+        }
+        activationPopup = eventBus.addHandler(ActivationCodePopupPresenter.class);
+        activationPopup.goToActivationCodePopup(clientToRegister);
+    }
+
+    public void onResponseActivateClient(boolean activated) {
+        activationPopup.getView().getStatusLabel().setPassedSmall(activated);
+
+        //inform user
+        if (activated) {
+            activationPopup.getView().getStatusLabel().setMessage(MSGS.activationPassed());
+            //close activation popup
+            ((PopupPanel) activationPopup.getView().getWidgetView()).hide();
+            //login user automatically
+            eventBus.autoLogin(
+                    clientToRegister.getEmail(),
+                    clientToRegister.getPassword(),
+                    Constants.HOME_CREATE_DEMAND);
+        } else {
+            activationPopup.getView().getStatusLabel().setMessage(MSGS.activationFailed());
+            activationPopup.getView().getReportButton().setVisible(true);
+        }
+    }
+
+    public void onResponseSendActivationCodeAgain(boolean sent) {
+        activationPopup.getView().getStatusLabel().setPassedSmall(sent);
+
+        //inform user
+        if (sent) {
+            activationPopup.getView().getStatusLabel().setMessage(
+                    MSGS.newActivationCodeSent() + clientToRegister.getEmail());
+        } else {
+            activationPopup.getView().getStatusLabel().setMessage(MSGS.newActivationCodeSentFailed());
+            activationPopup.getView().getReportButton().setVisible(true);
+        }
+    }
+
+    /**************************************************************************/
+    /* HELPER METHODS                                                         */
+    /**************************************************************************/
     /** Visualization methods. **/
     private void initVisualMailCheck(String value) {
         // TODO change to global status changer eventBus call
@@ -140,9 +224,6 @@ public class FormUserRegistrationPresenter extends
             view.getMailStatus().setStateWithDescription(State.ERROR_16, MSGS.malformedEmail());
         }
     }
-
-    private static final int SHORT = 5;
-    private static final int LONG = 8;
 
     private void initVisualPwdCheck(String value) {
         view.getPwdStatus().setVisible(true);

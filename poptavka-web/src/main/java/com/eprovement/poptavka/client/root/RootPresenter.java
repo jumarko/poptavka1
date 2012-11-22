@@ -23,7 +23,9 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
+import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
@@ -39,6 +41,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
     private AddressSelectorPresenter addressSelector = null;
+    private LoginPopupPresenter login = null;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -142,6 +145,28 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /**************************************************************************/
+    /* Login events                                                           */
+    /**************************************************************************/
+    /**
+     * Method displays the LoginPoupView so that user can enter credentials and log in.
+     */
+    public void onLogin(int widgetToLoad) {
+        if (login != null) {
+            eventBus.removeHandler(login);
+        }
+        login = eventBus.addHandler(LoginPopupPresenter.class);
+        login.loadWidget(widgetToLoad);
+    }
+
+    /**
+     * Method displays the LoginPoupView and enter credentials to auto log in.
+     */
+    public void onAutoLogin(String email, String password, int widgetToLoad) {
+        onLogin(widgetToLoad);
+        login.doAutoLogin(email, password);
+    }
+
+    /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
     public void onNotFound() {
@@ -196,13 +221,17 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onInitAddressWidget(SimplePanel holderPanel) {
         if (addressSelector != null) {
-            eventBus.removeHandler(localitySelector);
+            eventBus.removeHandler(addressSelector);
         }
         addressSelector = eventBus.addHandler(AddressSelectorPresenter.class);
         addressSelector.initAddressWidget(holderPanel);
     }
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
+    }
+
+    public void onInitEmailDialogPopup() {
+        eventBus.addHandler(EmailDialogPopupPresenter.class);
     }
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;

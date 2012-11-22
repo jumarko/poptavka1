@@ -6,6 +6,8 @@
  */
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.home.createDemand.widget.FormUserRegistrationPresenter;
+import com.eprovement.poptavka.client.home.createDemand.widget.FormLoginPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -55,6 +57,15 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void login(int widgetToLoad);
+
+    @Event(forwardToParent = true)
+    void autoLogin(String email, String password, int widgetToLoad);
+
+    @Event(forwardToParent = true)
+    void atAccount();
+
     // TODO Praso - GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
@@ -69,6 +80,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
+    void initEmailDialogPopup();
+
+    @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)
@@ -76,8 +90,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
+
     /**************************************************************************/
-    /* Business events handled by Presenters.                                 */
+    /* Business events handled by DemandCreatoinPresenter.                    */
     /**************************************************************************/
     @Event(handlers = DemandCreationPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
@@ -85,26 +100,39 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(handlers = DemandCreationPresenter.class)
     void initDemandAdvForm(SimplePanel holderWidget);
 
-    @Event(handlers = DemandCreationPresenter.class)
-    void toggleLoginRegistration();
-
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void initRegistrationForm(SimplePanel holderWidget);
-
-    @Event(handlers = FormLoginPresenter.class)
-    void initLoginForm(SimplePanel holderWidget);
+//    @Event(handlers = DemandCreationPresenter.class)
+//    void toggleLoginRegistration();
 
     @Event(handlers = DemandCreationPresenter.class)
     void loginError();
 
     @Event(handlers = DemandCreationPresenter.class)
-    void prepareNewDemandForNewClient(BusinessUserDetail client);
+    void responseCreateDemand();
 
-//    @Event(handlers = SupplierCreationPresenter.class)
-//    void initServiceForm(SimplePanel serviceHolder);
-//
-//    @Event(handlers = SupplierCreationPresenter.class)
-//    void initSupplierForm(SimplePanel supplierInfoHolder);
+    @Event(handlers = DemandCreationPresenter.class)
+    void backToZeroTab();
+
+    /**************************************************************************/
+    /* Business events handled by FormUserRegustratoinPresenter.              */
+    /**************************************************************************/
+    @Event(handlers = FormUserRegistrationPresenter.class)
+    void initRegistrationForm(SimplePanel holderWidget);
+
+    @Event(handlers = FormUserRegistrationPresenter.class)
+    void responseRegisterNewClient(BusinessUserDetail client);
+
+    @Event(handlers = FormUserRegistrationPresenter.class)
+    void responseActivateClient(boolean activated);
+
+    @Event(handlers = FormUserRegistrationPresenter.class)
+    void responseSendActivationCodeAgain(boolean sent);
+
+    /**************************************************************************/
+    /* Business events handled by FormLoginPresenter.                         */
+    /**************************************************************************/
+    @Event(handlers = FormLoginPresenter.class)
+    void initLoginForm(SimplePanel holderWidget);
+
     @Event(handlers = FormUserRegistrationPresenter.class)
     void checkFreeEmailResponse(Boolean result);
 
@@ -120,12 +148,16 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void createDemand(FullDemandDetail detail, Long clientId);
 
     // TODO praso - check if this one is used in suppliserCreationModule. we shouln't have duplicates
-    @Event(handlers = DemandCreationHandler.class)
-    void verifyExistingClient(String email, String password);
+//    @Event(handlers = DemandCreationHandler.class)
+//    void verifyExistingClient(String email, String password);
 //    @Event(handlers = SupplierCreationHandler.class)
 //    void checkFreeEmail(String value);
-
     @Event(handlers = DemandCreationHandler.class)
     void checkFreeEmail(String value);
 
+    @Event(handlers = DemandCreationHandler.class)
+    void activateClient(String activationCode);
+
+    @Event(handlers = DemandCreationHandler.class)
+    void sentActivationCodeAgain(BusinessUserDetail client);
 }

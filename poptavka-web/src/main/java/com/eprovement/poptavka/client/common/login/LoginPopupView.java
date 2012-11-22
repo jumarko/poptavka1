@@ -175,22 +175,22 @@ public class LoginPopupView extends PopupPanel
 
     /** Getters values from HTML form. */
     @Override
-    public String getPassword() {
+    public TextBox getPassword() {
 //        return ((InputElement) Document.get().getElementById(PASSWORD_ID)).getValue();
-        return passwordTextBox.getValue();
+        return passwordTextBox;
     }
 
     @Override
-    public String getLogin() {
+    public TextBox getLogin() {
 //        return ((InputElement) Document.get().getElementById(LOGIN_ID)).getValue();
-        return emailTextBox.getValue();
+        return emailTextBox;
     }
 
     @Override
     public boolean isValid() {
         // TODO ivlcek - maybe we should check the lenght of email and password to avoid 1 - 4 character long values
         // TODO ivlcek - are values somehow checked against some sort sql attacks?
-        if ((getLogin().length() == 0) || (getPassword().length() == 0)) {
+        if ((getLogin().getText().length() == 0) || (getPassword().getText().length() == 0)) {
             clearStatusLabel();
             statusLabel = new SimpleIconLabel(MSGS.emptyCredentials(), true);
             statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());

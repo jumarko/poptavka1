@@ -2,25 +2,23 @@ package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
-import com.eprovement.poptavka.client.common.StatusIconLabel.State;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
+import com.eprovement.poptavka.client.resources.StyleResource;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import com.eprovement.poptavka.client.resources.StyleResource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class DemandCreationView extends OverflowComposite implements DemandCreationPresenter.CreationViewInterface {
 
@@ -39,15 +37,19 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
     @UiField
-    StatusIconLabel basicStatus, categoryStatus, localityStatus, advStatus, userStatus;
+    StatusIconLabel userStatus, basicStatus, categoryStatus, localityStatus, advStatus;
     @UiField
-    SimplePanel basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder;
+    SimplePanel userFormHolder, basicInfoHolder, categoryHolder, localityHolder, advInfoHolder;
     @UiField
     TabLayoutPanel mainPanel;
     @UiField
     DockLayoutPanel userFormPanel;
     @UiField
-    Button demandCreateBtn, nextButton1, nextButton2, nextButton3, nextButton4;
+    Button loginBtn, registerBtn, createDemandBtn, createAnotherDemandBtn, seeMyDemandsBtn, seeAllDemandsBtn;
+    @UiField
+    Button nextButton1, nextButton2, nextButton3, nextButton4;
+    @UiField
+    Label infoLabelTab1;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -57,10 +59,10 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         initWidget(uiBinder.createAndBindUi(this));
 
         /** filling status list **/
-        StatusIconLabel[] array = {basicStatus, categoryStatus, localityStatus, advStatus, userStatus};
+        StatusIconLabel[] array = {userStatus, basicStatus, categoryStatus, localityStatus, advStatus};
         statusLabels = Arrays.asList(array);
         /** filling panels list **/
-        SimplePanel[] panels = {basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder};
+        SimplePanel[] panels = {userFormHolder, basicInfoHolder, categoryHolder, localityHolder, advInfoHolder};
         holderPanels = Arrays.asList(panels);
 
         /** style implementation and overflow tweaks **/
@@ -86,15 +88,46 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         return holderPanels.get(order);
     }
 
+    /** LABELS. **/
     @Override
     public StatusIconLabel getStatusLabel(int order) {
         return statusLabels.get(order);
     }
 
+    @Override
+    public Label getInfoLabelTab1() {
+        return infoLabelTab1;
+    }
+
     /** BUTTONS. **/
     @Override
-    public HasClickHandlers getCreateDemandButton() {
-        return demandCreateBtn;
+    public Button getLoginBtn() {
+        return loginBtn;
+    }
+
+    @Override
+    public Button getRegisterBtn() {
+        return registerBtn;
+    }
+
+    @Override
+    public Button getCreateDemandButton() {
+        return createDemandBtn;
+    }
+
+    @Override
+    public Button getCreateAnotherDemandBtn() {
+        return createAnotherDemandBtn;
+    }
+
+    @Override
+    public Button getSeeMyDemandsBtn() {
+        return seeMyDemandsBtn;
+    }
+
+    @Override
+    public Button getSeeAllDemandsBtn() {
+        return seeAllDemandsBtn;
     }
 
     @Override
@@ -118,21 +151,21 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     }
 
     /** OTHERS. **/
-    @Override
-    public void toggleLoginRegistration() {
-        demandCreateBtn.setVisible(!demandCreateBtn.isVisible());
-        switchUserFormMessages(demandCreateBtn.isVisible());
-
-    }
-
-    public void switchUserFormMessages(boolean toRegister) {
-        if (toRegister) {
-            userStatus.setTexts(MSGS.regMessage(), MSGS.regDescription());
-            userStatus.setStyleState(StyleResource.INSTANCE.common().infoMessage(), State.INFO_16);
-        } else {
-            userStatus.setTexts(MSGS.loginMessage(), MSGS.loginDescription());
-        }
-    }
+//    @Override
+//    public void toggleLoginRegistration() {
+//        createDemandBtn.setVisible(!createDemandBtn.isVisible());
+//        switchUserFormMessages(createDemandBtn.isVisible());
+//
+//    }
+//
+//    public void switchUserFormMessages(boolean toRegister) {
+//        if (toRegister) {
+//            userStatus.setTexts(MSGS.regMessage(), MSGS.regDescription());
+//            userStatus.setStyleState(StyleResource.INSTANCE.common().infoMessage(), State.INFO_16);
+//        } else {
+//            userStatus.setTexts(MSGS.loginMessage(), MSGS.loginDescription());
+//        }
+//    }
 
     @Override
     public Widget getWidgetView() {

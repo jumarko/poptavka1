@@ -28,4 +28,8 @@ public interface DemandCreationRPCService extends RemoteService {
      * @param email ęmail address to be checked
      */
     boolean checkFreeEmail(String email) throws RPCException;
+
+    boolean activateClient(String activationCode) throws RPCException;
+
+    boolean sentActivationCodeAgain(BusinessUserDetail client) throws RPCException;
 }

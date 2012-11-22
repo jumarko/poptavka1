@@ -117,6 +117,12 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 eventBus.initSupplierAssignedDemands(filter);
                 break;
+            case Constants.HOME_CREATE_DEMAND:
+                eventBus.goToCreateDemandModule();
+                break;
+            case Constants.HOME_CREATE_SUPPLIERS:
+                eventBus.goToCreateSupplierModule();
+                break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);
                 eventBus.displayView(new SupplierDemandsModuleWelcomeView());

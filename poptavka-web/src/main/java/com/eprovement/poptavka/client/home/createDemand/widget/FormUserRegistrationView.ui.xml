@@ -15,8 +15,8 @@
         <g:RadioButton name="type" ui:field="companyRadio">
             <ui:msg key="company">Company</ui:msg>
         </g:RadioButton>
-        <g:Button ui:field="toLoginBtn">
-            <ui:msg key="toLogin">To Login Page</ui:msg>
+        <g:Button ui:field="backBtn">
+            <ui:msg key="back">Back</ui:msg>
         </g:Button>
         <div>
             <div style="float: left;">
@@ -188,5 +188,8 @@
                 </table>
             </div>
         </div>
+        <g:Button ui:field="registerBtn">
+            <ui:msg key="register">Register</ui:msg>
+        </g:Button>
     </g:HTMLPanel>
 </ui:UiBinder>

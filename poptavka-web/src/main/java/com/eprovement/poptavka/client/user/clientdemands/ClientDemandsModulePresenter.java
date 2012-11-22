@@ -117,6 +117,12 @@ public class ClientDemandsModulePresenter
             case Constants.CLIENT_ASSIGNED_DEMANDS:
                 eventBus.initClientAssignedDemands(filter);
                 break;
+            case Constants.HOME_CREATE_DEMAND:
+                eventBus.goToCreateDemandModule();
+                break;
+            case Constants.HOME_CREATE_SUPPLIERS:
+                eventBus.goToCreateSupplierModule();
+                break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);
                 eventBus.displayView(new ClientDemandsModuleWelcomeView());

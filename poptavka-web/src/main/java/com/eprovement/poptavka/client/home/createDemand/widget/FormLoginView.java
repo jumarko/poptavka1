@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.client.home.createDemand;
+package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -14,18 +14,23 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 
+//TODO Martin - 21.11.2012 - not used any more, delete
 public class FormLoginView extends Composite implements FormLoginPresenter.FormLoginInterface, ProvidesValidate {
 
     private static FormLoginViewUiBinder uiBinder = GWT.create(FormLoginViewUiBinder.class);
 
     interface FormLoginViewUiBinder extends UiBinder<Widget, FormLoginView> {
     }
-
-    @UiField TextBox mailBox;
-    @UiField PasswordTextBox passBox;
-    @UiField Button loginBtn;
-    @UiField HTML errorMsg;
-    @UiField Button registerBtn;
+    @UiField
+    TextBox mailBox;
+    @UiField
+    PasswordTextBox passBox;
+    @UiField
+    Button loginBtn;
+    @UiField
+    HTML errorMsg;
+    @UiField
+    Button registerBtn;
 
     @Override
     public void createView() {
@@ -70,5 +75,4 @@ public class FormLoginView extends Composite implements FormLoginPresenter.FormL
         }
         return isValid;
     }
-
 }

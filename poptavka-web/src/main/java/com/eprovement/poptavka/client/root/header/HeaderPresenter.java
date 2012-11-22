@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root.header;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -9,8 +10,6 @@ import com.google.gwt.user.client.Window.ClosingEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView.IHeaderPresenter;
@@ -38,9 +37,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
 
             @Override
             public void onClick(ClickEvent event) {
-                //If user invoked login process, set pointer to false
-                Storage.setLoginDueToHistory(false);
-                onLogin();
+                eventBus.login(Constants.NONE);
             }
         });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
@@ -50,12 +47,5 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
 //                Cookies.setCookie("login", "no");
             }
         });
-    }
-
-    /**
-     * Method displays the LoginPoupView so that user can enter credentials and log in.
-     */
-    public void onLogin() {
-        eventBus.addHandler(LoginPopupPresenter.class);
     }
 }

@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.client.home.createDemand;
+package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,7 +12,9 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.home.createDemand.DemandCreationEventBus;
 
+//TODO Martin - 21.11.2012 - not used any more, delete
 @Presenter(view = FormLoginView.class)
 public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLoginInterface, DemandCreationEventBus> {
 
@@ -46,7 +48,7 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
         view.getRegisterBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.toggleLoginRegistration();
+//                eventBus.toggleLoginRegistration();
                 eventBus.initRegistrationForm((SimplePanel) view.getWidgetView().getParent());
             }
         });
@@ -63,7 +65,7 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
         // TODO hash passwd
 
         //verifying existing user
-        eventBus.verifyExistingClient(view.getLogin(), view.getPassword());
+//        eventBus.verifyExistingClient(view.getLogin(), view.getPassword());
         //signal event
         eventBus.loadingShow(MSGS.progressLogingUser());
     }

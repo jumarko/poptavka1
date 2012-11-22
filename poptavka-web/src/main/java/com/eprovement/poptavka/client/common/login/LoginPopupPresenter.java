@@ -23,6 +23,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.ui.TextBox;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
@@ -33,6 +34,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private static final String DEFAULT_SPRING_LOGOUT_URL = "j_spring_security_logout";
     private static final int COOKIE_TIMEOUT = 1000 * 60 * 60 * 24;
     private final short timeout = 1500;
+    private int widgetToLoad = Constants.NONE;
     private MailRPCServiceAsync mailService = null;
     private String springLoginUrl = null;
     private String logoutUrl = null;
@@ -41,9 +43,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         boolean isValid();
 
-        String getLogin();
+        TextBox getLogin();
 
-        String getPassword();
+        TextBox getPassword();
 
         void hidePopup();
 
@@ -73,9 +75,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             rb.setHeader("Content-Type", "application/x-www-form-urlencoded");
             final StringBuilder sbParams = new StringBuilder(100);
             sbParams.append("j_username=");
-            sbParams.append(URL.encode(view.getLogin()));
+            sbParams.append(URL.encode(view.getLogin().getText()));
             sbParams.append("&j_password=");
-            sbParams.append(URL.encode(view.getPassword()));
+            sbParams.append(URL.encode(view.getPassword().getText()));
 
             try {
                 rb.sendRequest(sbParams.toString(), new RequestCallback() {
@@ -114,6 +116,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 // TODO jumarko - Shall we send email notifications when this happens?
             }
         }
+    }
+
+    public void doAutoLogin(String email, String password) {
+        view.getLogin().setText(email);
+        view.getPassword().setText(password);
+        doLogin();
     }
 
     /**
@@ -186,10 +194,14 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         //forward user to welcome view of appropriate module according to his roles
         if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER)) {
-            eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+            eventBus.goToSupplierDemandsModule(null, widgetToLoad);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.CLIENT)) {
-            eventBus.goToClientDemandsModule(null, Constants.NONE);
+            eventBus.goToClientDemandsModule(null, widgetToLoad);
         }
+    }
+
+    public void loadWidget(int widgetId) {
+        this.widgetToLoad = widgetId;
     }
 }

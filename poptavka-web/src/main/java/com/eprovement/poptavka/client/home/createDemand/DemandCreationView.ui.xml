@@ -1,150 +1,172 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-	xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
-	<!-- injecting style resources -->
-	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
-	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <!-- injecting style resources -->
+    <ui:with field='res'
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-	<ui:style>
-		.tabIndex1 { z-index: 1;}
-		.tabIndex2 { z-index: 2;}
-		.tabIndex3 { z-index: 3;}
-		.tabIndex4 { z-index: 4;}
-		.tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
+    <ui:style>
+        .tabIndex1 { z-index: 1;}
+        .tabIndex2 { z-index: 2;}
+        .tabIndex3 { z-index: 3;}
+        .tabIndex4 { z-index: 4;}
+        .tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
 
-		.selectorLayout {width: 980px; height: 350px;}
-	</ui:style>
+        .selectorLayout {width: 980px; height: 350px;}
+    </ui:style>
 
-	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-		<g:TabLayoutPanel ui:field='mainPanel'
-			styleName='{res.createTabPanel.createTabPanel}' barUnit='PX' barHeight='50'>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex5}">
-						1.
-						<ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='basicStatus'
-							style='{res.common.infoMessage}' message='{text.basicMessage}'
-							description='{text.basicDescription}' />
-					</g:south>
-					<g:center>
-                                                <g:VerticalPanel>
-                                                        <g:SimplePanel ui:field="basicInfoHolder" />
-                                                        <g:Button ui:field="nextButton1" >
-                                                                <ui:msg key="nextButton">Next</ui:msg>
-                                                        </g:Button>
-                                                </g:VerticalPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex4}">
-						2.
-						<ui:msg key="catsSelection">Category selection</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='categoryStatus'
-							style='{res.common.infoMessage}' message='{text.catMessage}'
-							description='{text.catDescription}' />
-					</g:south>
-					<g:center>
-                                                <g:VerticalPanel>
-                                                        <g:Label>
-                                                            <ui:msg key="categorySelectorInfoLabel">Select the most suitable category.
-                                                            The more accurate category the more relevant suppliers will contact you.</ui:msg>
-                                                        </g:Label>
-                                                        <g:SimplePanel ui:field="categoryHolder" styleName='{style.selectorLayout}'/>
-                                                        <g:Button ui:field="nextButton2">
-                                                                <ui:msg key="nextButton">Next</ui:msg>
-                                                        </g:Button>
-                                                </g:VerticalPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex3}">
-						3.
-						<ui:msg key="locsSelection">Locality selection</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='localityStatus'
-							style='{res.common.infoMessage}' message='{text.locMessage}'
-							description='{text.locDescription}' />
-					</g:south>
-					<g:center>
-                                                <g:VerticalPanel>
-                                                        <g:SimplePanel ui:field="localityHolder" />
-                                                        <g:Button ui:field="nextButton3">
-                                                                <ui:msg key="nextButton">Next</ui:msg>
-                                                        </g:Button>
-                                                </g:VerticalPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex2}">
-						4.
-						<ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='advStatus'
-							style='{res.common.infoMessage}' message='{text.advMessage}'
-							description='{text.advDescription}' />
-					</g:south>
-					<g:center>
-                                                <g:VerticalPanel>
-                                                        <g:SimplePanel ui:field="advInfoHolder" />
-                                                        <g:Button ui:field="nextButton4">
-                                                                <ui:msg key="nextButton">Next</ui:msg>
-                                                        </g:Button>
-                                                </g:VerticalPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex1}">
-						5.
-						<ui:msg key="loginOrRegister">Log in or register</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" ui:field='userFormPanel'>
-					<g:north size="20">
-						<g:SimplePanel ui:field="userFormHolder" />
-					</g:north>
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='userStatus'
-							style='{res.common.infoMessage}' message='{text.loginMessage}'
-							description='{text.loginDescription}' />
-					</g:south>
-					<g:center>
-						<g:HTMLPanel>
-							<div style="margin-left: 200px;">
-								<br />
-								<g:Button ui:field="demandCreateBtn" visible="false">
-									<ui:msg key='regAndCreate'>Register and Create</ui:msg>
-								</g:Button>
-							</div>
-						</g:HTMLPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-		</g:TabLayoutPanel>
-	</g:HTMLPanel>
+    <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
+        <g:TabLayoutPanel ui:field='mainPanel'
+                          styleName='{res.createTabPanel.createTabPanel}' barUnit='PX' barHeight='50'>
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex1}">
+                        0.
+                        <ui:msg key="loginOrRegister">Log in or register</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" ui:field='userFormPanel'>
+                    <g:north size="30">
+                        <g:VerticalPanel>
+                            <g:Label ui:field="infoLabelTab1"/>
+                            <g:SimplePanel ui:field="userFormHolder" />
+                            <g:HorizontalPanel>
+                                <g:Button ui:field="loginBtn">
+                                    <ui:msg key="loginBtn">Login</ui:msg>
+                                </g:Button>
+                                <g:Button ui:field="registerBtn">
+                                    <ui:msg key="registerBtn">Register for FREE</ui:msg>
+                                </g:Button>
+                            </g:HorizontalPanel>
+
+                        </g:VerticalPanel>
+                    </g:north>
+                    <g:center>
+                        <g:Button ui:field="nextButton1" visible="false">
+                            <ui:msg key='nextButton'>Next</ui:msg>
+                        </g:Button>
+                    </g:center>
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='userStatus'
+                                            style='{res.common.infoMessage}' message='{text.loginOrRegisterToContinueLabel}'
+                                            description='{text.loginDescription}' />
+                    </g:south>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex1}">
+                        1.
+                        <ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='basicStatus'
+                                            style='{res.common.infoMessage}' message='{text.basicMessage}'
+                                            description='{text.basicDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:VerticalPanel>
+                            <g:SimplePanel ui:field="basicInfoHolder" />
+                            <g:Button ui:field="nextButton2" >
+                                <ui:msg key="nextButton">Next</ui:msg>
+                            </g:Button>
+                        </g:VerticalPanel>
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex2}">
+                        2.
+                        <ui:msg key="catsSelection">Category selection</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='categoryStatus'
+                                            style='{res.common.infoMessage}' message='{text.catMessage}'
+                                            description='{text.catDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:VerticalPanel>
+                            <g:Label>
+                                <ui:msg key="categorySelectorInfoLabel">Select the most suitable category.
+                                    The more accurate category the more relevant suppliers will contact you.
+                                </ui:msg>
+                            </g:Label>
+                            <g:SimplePanel ui:field="categoryHolder" styleName='{style.selectorLayout}'/>
+                            <g:Button ui:field="nextButton3">
+                                <ui:msg key="nextButton">Next</ui:msg>
+                            </g:Button>
+                        </g:VerticalPanel>
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex3}">
+                        3.
+                        <ui:msg key="locsSelection">Locality selection</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='localityStatus'
+                                            style='{res.common.infoMessage}' message='{text.locMessage}'
+                                            description='{text.locDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:VerticalPanel>
+                            <g:SimplePanel ui:field="localityHolder" />
+                            <g:Button ui:field="nextButton4">
+                                <ui:msg key="nextButton">Next</ui:msg>
+                            </g:Button>
+                        </g:VerticalPanel>
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex5}">
+                        4.
+                        <ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:north size="20">
+                        <g:SimplePanel ui:field="advInfoHolder" />
+                    </g:north>
+                    <g:center>
+                        <g:HorizontalPanel>
+                            <g:Button ui:field="createDemandBtn">
+                                <ui:msg key='createDemandButton'>Create demand</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="createAnotherDemandBtn">
+                                <ui:msg key='createAnotherDemandButton'>Create another demand</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="seeMyDemandsBtn">
+                                <ui:msg key='seeMyDemandsButton'>See my demands</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="seeAllDemandsBtn">
+                                <ui:msg key='seeAllDemandsButton'>See all demands</ui:msg>
+                            </g:Button>
+                        </g:HorizontalPanel>
+                    </g:center>
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='advStatus'
+                                            style='{res.common.infoMessage}' message='{text.advMessage}'
+                                            description='{text.advDescription}' />
+                    </g:south>
+
+
+                </g:DockLayoutPanel>
+            </g:tab>
+        </g:TabLayoutPanel>
+    </g:HTMLPanel>
 </ui:UiBinder>

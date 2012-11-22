@@ -288,8 +288,11 @@ public interface RootEventBus extends EventBusWithLookup {
     /**
      * Login is handled by HeaderPresenter so that event handler can be set up before calling LoginPopupPresenter.
      */
-    @Event(handlers = HeaderPresenter.class)
-    void login();
+    @Event(handlers = RootPresenter.class)
+    void login(int widgetToLoad);
+
+    @Event(handlers = RootPresenter.class)
+    void autoLogin(String email, String password, int widgetToLoad);
 
     @Event(handlers = UserHeaderPresenter.class)
     void logout();
@@ -358,6 +361,12 @@ public interface RootEventBus extends EventBusWithLookup {
      */
     @Event(handlers = {LocalitySelectorPresenter.class, AddressSelectorPresenter.class })
     void setLocalityData(LocalityType localityType, List<LocalityDetail> localityList);
+
+    /**************************************************************************/
+    /* EMAIL DIALOG POPUP.                                                    */
+    /**************************************************************************/
+    @Event(handlers = RootPresenter.class)
+    void initEmailDialogPopup();
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

@@ -8,7 +8,7 @@ import com.mvp4g.client.annotation.Event;
 public interface BaseChildEventBus {
 
     @Event(forwardToParent = true)
-    void login();
+    void login(int widgetToLoad);
 
     @Event(forwardToParent = true)
     void displayError(int errorResponseCode, String errorId);

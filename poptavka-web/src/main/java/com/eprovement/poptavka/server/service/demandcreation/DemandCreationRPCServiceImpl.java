@@ -220,4 +220,16 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     public boolean checkFreeEmail(String email) throws RPCException {
         return clientService.checkFreeEmail(email);
     }
+
+    @Override
+    public boolean activateClient(String activationCode) throws RPCException {
+        //TODO backend
+        return true;
+    }
+
+    @Override
+    public boolean sentActivationCodeAgain(BusinessUserDetail client) throws RPCException {
+        //TODO backend
+        return true;
+    }
 }
