@@ -22,8 +22,8 @@ public class SupplierDemandsModuleView extends Composite
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Button supplierNewDemands, supplierOffers, supplierAssignedDemands,
-    supplierCreateDemand, supplierCreateSupplier, allDemands, allSuppliers;
+    Button supplierNewDemands, supplierOffers, supplierAssignedDemands;
+    Button supplierCreateDemand, supplierCreateSupplier, allDemands, allSuppliers;
 
     /**************************************************************************/
     /* Initialization                                                            */

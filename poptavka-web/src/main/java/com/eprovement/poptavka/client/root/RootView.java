@@ -108,4 +108,9 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         SearchModuleView searchBarView = (SearchModuleView) searchBar.getWidget();
         searchBarView.setAttributeSelectorWidget(advanceSearchWidget);
     }
+
+    @Override
+    public SimplePanel getBody() {
+        return this.body;
+    }
 }

@@ -48,6 +48,8 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     }
 
     public void onForward() {
+        //Must be set before any widget start initialize because of autoDisplay feature
+        Storage.setCurrentlyLoadedView(Constants.USER_SUPPLIER_MODULE);
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
@@ -124,7 +126,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 eventBus.goToCreateSupplierModule();
                 break;
             default:
-                Storage.setCurrentlyLoadedView(Constants.NONE);
+                Storage.setCurrentlyLoadedView(Constants.SUPPLIER_DEMANDS_WELCOME);
                 eventBus.displayView(new SupplierDemandsModuleWelcomeView());
                 break;
         }

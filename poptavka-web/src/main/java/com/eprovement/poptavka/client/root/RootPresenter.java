@@ -24,10 +24,12 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleView;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
@@ -68,7 +70,12 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onSetBody(IsWidget body) {
         GWT.log("Body widget set");
-        view.setBody(body);
+        //If want to display create demand module in user part, display it in content of clientDemandsModule
+        if ((Storage.getCurrentlyLoadedView() == Constants.HOME_CREATE_DEMAND) && (Storage.getUser() != null)) {
+            ((ClientDemandsModuleView) view.getBody().getWidget()).setContent(body);
+        } else {
+            view.setBody(body);
+        }
     }
 
     public void onSetFooter(IsWidget footer) {

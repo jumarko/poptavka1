@@ -69,12 +69,14 @@ public final class Constants {
 
     /* Demands module */
     // Client
+    public static final int CLIENT_DEMANDS_WELCOME = 9;
     public static final int CLIENT_DEMANDS = 10;
     public static final int CLIENT_DEMAND_DISCUSSIONS = 18;
     public static final int CLIENT_OFFERED_DEMANDS = 11;
     public static final int CLIENT_OFFERED_DEMAND_OFFERS = 19;
     public static final int CLIENT_ASSIGNED_DEMANDS = 12;
     // Supplier
+    public static final int SUPPLIER_DEMANDS_WELCOME = 14;
     public static final int SUPPLIER_POTENTIAL_DEMANDS = 15;
     public static final int SUPPLIER_OFFERS = 16;
     public static final int SUPPLIER_ASSIGNED_DEMANDS = 17;

@@ -28,7 +28,7 @@
                                 <ui:msg key="assignedDemands">Assigned demands</ui:msg>
                             </g:Button>
                         </li>
-                        <li>
+<!--                        <li>
                             <g:Button ui:field="supplierCreateDemand">
                                 <ui:msg key="createDemandLink">Create Demand</ui:msg>
                             </g:Button>
@@ -48,7 +48,7 @@
                             <g:Button ui:field="allSuppliers">
                                 <ui:msg key="allSuppliersLink">All Suppliers</ui:msg>
                             </g:Button>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </g:HTMLPanel>

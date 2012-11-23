@@ -39,6 +39,16 @@
                             </g:Button>
                         </li>
                         <li>
+                            <g:Button>
+                                <ui:msg key="menuHomeDemands">Demands</ui:msg><br /><br />
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button>
+                                <ui:msg key="menuHomeSuppliers">Suppliers</ui:msg><br /><br />
+                            </g:Button>
+                        </li>
+                        <li>
                             <g:Button ui:field="administration">
 <!--                                        <ui:msg key='administration'>Admistration</ui:msg>-->Admistration
                             </g:Button>
