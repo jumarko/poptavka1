@@ -246,12 +246,12 @@ public class SupplierInfoView extends Composite
         user.setLastName(lastName.getText());
         //Address
         AddressDetail address = new AddressDetail();
-//        address.setCountry(addressSelector.getCountryText());
-        address.setRegion(((AddressSelectorView) addressHolder.getWidget()).getRegionText());
-        address.setCity(((AddressSelectorView) addressHolder.getWidget()).getCityText());
-        address.setDistrict(((AddressSelectorView) addressHolder.getWidget()).getDistrictText());
-        address.setStreet(((AddressSelectorView) addressHolder.getWidget()).getStreetText());
-        address.setZipCode(((AddressSelectorView) addressHolder.getWidget()).getZipCodeText());
+        address.setCountry(((AddressSelectorView) addressHolder.getWidget()).getCountry());
+        address.setRegion(((AddressSelectorView) addressHolder.getWidget()).getRegion());
+        address.setCity(((AddressSelectorView) addressHolder.getWidget()).getCity());
+        address.setDistrict(((AddressSelectorView) addressHolder.getWidget()).getDistrict());
+        address.setStreet(((AddressSelectorView) addressHolder.getWidget()).getStreet());
+        address.setZipCode(((AddressSelectorView) addressHolder.getWidget()).getZipCode());
 
         user.addAddress(address);
 

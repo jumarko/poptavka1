@@ -32,6 +32,15 @@ public interface ValidationMessages extends ConstantsWithLookup {
     /**************************************************************************/
     /** Create Demand Module - error messages.                                */
     /**************************************************************************/
+    @Key("country.noMatch")
+    String countryNotMatch();
+
+    @Key("region.notMatch")
+    String regionNotMatch();
+
+    @Key("city.notMatch")
+    String cityNotMatch();
+
     @Key("address.notBlank.country")
     String addressNotBlankCountry();
 

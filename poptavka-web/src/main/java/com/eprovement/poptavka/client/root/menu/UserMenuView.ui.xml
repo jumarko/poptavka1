@@ -1,8 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:with field='res'
-             type='com.eprovement.poptavka.client.resources.StyleResource' />
+
+    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
 
     <ui:style>
         .important {
@@ -41,15 +41,11 @@
                         <li>
                             <g:Button>
                                 <ui:msg key="menuHomeDemands">Demands</ui:msg>
-                                <br />
-                                <br />
                             </g:Button>
                         </li>
                         <li>
                             <g:Button>
                                 <ui:msg key="menuHomeSuppliers">Suppliers</ui:msg>
-                                <br />
-                                <br />
                             </g:Button>
                         </li>
                         <li>

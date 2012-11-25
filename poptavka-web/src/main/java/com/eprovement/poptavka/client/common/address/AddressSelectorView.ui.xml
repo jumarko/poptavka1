@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:v='urn:import:com.eprovement.poptavka.client.common.address'>
 
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
 <!--    TODO Martin - vhodit do StyleResource a vsade kde je validacia pouzit z resource-->
@@ -30,7 +31,7 @@
                         <ui:msg key="country">Country</ui:msg>
                     </td>
                     <td>
-                        <g:ListBox styleName="{style.listBoxWidth}" ui:field="country"/>
+                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="country"/>
                         <g:Label styleName="{style.error}" ui:field="countryErrorLabel"/>
                     </td>
                 </tr>
@@ -39,7 +40,7 @@
                         <ui:msg key="region">Region</ui:msg>
                     </td>
                     <td>
-                        <g:ListBox styleName="{style.listBoxWidth}" ui:field="region"/>
+                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="region"/>
                         <g:Label styleName="{style.error}" ui:field="regionErrorLabel"/>
                     </td>
                 </tr>
@@ -48,7 +49,7 @@
                         <ui:msg key="city">City</ui:msg>
                     </td>
                     <td>
-                        <g:ListBox styleName="{style.listBoxWidth}" ui:field="city"/>
+                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="city"/>
                         <g:Label styleName="{style.error}" ui:field="cityErrorLabel"/>
                     </td>
                 </tr>
@@ -61,7 +62,7 @@
                         <g:Label styleName="{style.error}" ui:field="zipErrorLabel"/>
                     </td>
                 </tr>
-                <tr>
+<!--                <tr>
                     <td>
                         <ui:msg key="district">District</ui:msg>
                     </td>
@@ -69,7 +70,7 @@
                         <g:ListBox styleName="{style.listBoxWidth}" ui:field="district"/>
                         <g:Label styleName="{style.error}" ui:field="districtErrorLabel"/>
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td>
                         <ui:msg key="street">Street</ui:msg>
