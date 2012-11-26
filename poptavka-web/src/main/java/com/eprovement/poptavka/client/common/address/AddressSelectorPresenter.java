@@ -168,18 +168,18 @@ public class AddressSelectorPresenter
             }
         }, BlurEvent.getType());
         /** SELECTION. **/
-//        view.getCity().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
-//            @Override
-//            public void onSelection(SelectionEvent<Suggestion> event) {
-//                if (!view.getCity().getText().isEmpty()) {
-//                    regionMatch = true;
+        view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+            @Override
+            public void onSelection(SelectionEvent<Suggestion> event) {
+                if (!view.getCitySuggestBox().getText().isEmpty()) {
+                    regionMatch = true;
 //                    LocalityDetailMultiWordSuggestion suggestion =
 //                            (LocalityDetailMultiWordSuggestion) event.getSelectedItem();
-//                    eventBus.getChildLocalities(LocalityType.DISTRICT,
-//        suggestion.getLocalityDetail().getCode(), null);
-//                }
-//            }
-//        });
+//                    eventBus.getChildLocalities(
+//                            LocalityType.DISTRICT, suggestion.getLocalityDetail().getCode(), null);
+                }
+            }
+        });
     }
 
     /**************************************************************************/

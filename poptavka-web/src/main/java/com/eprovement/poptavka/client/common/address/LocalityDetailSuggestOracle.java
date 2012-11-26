@@ -34,6 +34,11 @@ public class LocalityDetailSuggestOracle extends MultiWordSuggestOracle {
         List<LocalityDetailMultiWordSuggestion> matchingPeople =
                 new ArrayList<LocalityDetailMultiWordSuggestion>(limit);
 
+        //if user type in before data are loaded
+        if (localitySuggestions == null) {
+            return matchingPeople;
+        }
+
         // only begin to search after the user has type two characters
         if (query.length() >= MIN_CHARS_TO_SEARCH) {
             String prefixToMatch = query.toLowerCase();

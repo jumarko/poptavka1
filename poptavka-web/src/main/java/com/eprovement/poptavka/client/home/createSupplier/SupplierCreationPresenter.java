@@ -7,8 +7,8 @@ import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServiceView;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -222,8 +222,8 @@ public class SupplierCreationPresenter
                 (CategorySelectorInterface) view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget();
         LocalitySelectorInterface locs =
                 (LocalitySelectorInterface) view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget();
-        ServiceWidget service =
-                (ServiceWidget) view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget();
+        SupplierServiceView service =
+                (SupplierServiceView) view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget();
 
         BusinessUserDetail newSupplier = info.createSupplier();
         newSupplier.getSupplier().setLocalities(locs.getCellListDataProvider().getList());
@@ -236,8 +236,13 @@ public class SupplierCreationPresenter
     }
 
     private boolean canContinue(int step) {
-        ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
-        LOGGER.fine(widget.getClass().getName());
-        return widget.isValid();
+        if (step == FOURTH_TAB_SERVICE) {
+            //is aggreement terms checked?
+            return view.isValid();
+        } else {
+            ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
+            LOGGER.fine(widget.getClass().getName());
+            return widget.isValid();
+        }
     }
 }

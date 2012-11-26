@@ -17,6 +17,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -227,6 +228,8 @@ public class AddressSelectorView extends Composite
     @Override
     public boolean isValid() {
         validateAddress();
+        //for devel purposes
+        valid.remove(DISTRICT);
         return valid.isEmpty();
     }
 
