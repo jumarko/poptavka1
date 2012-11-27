@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.security;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Response;
@@ -123,7 +124,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
     @Override
     public void onAuthorizationExpected(String messageForUser) {
         // TODO ivlcek - we could display a message to user that he is not authorized for this action
-        lookupEventbus.dispatch("login");
+        lookupEventbus.dispatch("login", Constants.NONE);
     }
 
     /*
