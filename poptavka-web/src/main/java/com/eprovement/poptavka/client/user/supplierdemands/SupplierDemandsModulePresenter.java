@@ -79,30 +79,30 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
         });
-        view.getSupplierCreateDemand().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemandModule();
-            }
-        });
-        view.getSupplierCreateSupplier().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplierModule();
-            }
-        });
-        view.getAllDemands().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToHomeDemandsModule(null);
-            }
-        });
-        view.getAllSuppliers().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliersModule(null);
-            }
-        });
+//        view.getSupplierCreateDemand().addClickHandler(new ClickHandler() {
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                eventBus.goToCreateDemandModule();
+//            }
+//        });
+//        view.getSupplierCreateSupplier().addClickHandler(new ClickHandler() {
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                eventBus.goToCreateSupplierModule();
+//            }
+//        });
+//        view.getAllDemands().addClickHandler(new ClickHandler() {
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                eventBus.goToHomeDemandsModule(null);
+//            }
+//        });
+//        view.getAllSuppliers().addClickHandler(new ClickHandler() {
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                eventBus.goToHomeSuppliersModule(null);
+//            }
+//        });
     }
 
     /**************************************************************************/
