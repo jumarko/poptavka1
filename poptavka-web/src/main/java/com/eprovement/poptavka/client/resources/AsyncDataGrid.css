@@ -13,21 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-@def selectionBorderWidth 2px;
+@def selectionBorderWidth  2px ;
 
 .dataGridWidget {
 	
 }
 
 .dataGridFirstColumn {
+	color: #1cae00;
+	font-weight: bold;
 }
 
 .dataGridLastColumn {
-
+	
 }
 
 .dataGridFooter {
-	border-top: 2px solid #ff0000;
 	padding: 3px 15px;
 	text-align: left;
 	color: #4b4a4a;
@@ -39,7 +40,7 @@
 @sprite .dataGridHeader {
 	border-bottom: 1px solid #fea100;
 	gwt-image: 'dataGridHeader';
-	padding: 3px 15px;
+	padding: 5px 12px 3px 12px;
 	text-align: left;
 	color: #ffffff;
 	overflow: hidden;
@@ -47,6 +48,11 @@
 	font-size: 18px;
 	font-weight: normal;
 	text-shadow: none;
+}
+
+.dataGridHeader:hover {
+	color: #fff;
+	text-decoration: underline;
 }
 
 .dataGridCell {
@@ -59,7 +65,7 @@
 }
 
 .dataGridFirstColumnHeader {
-	background-position: -2px 0;
+	background-position: -2px 0 !important;
 	border-radius: 6px 0 0 0;
 	-moz-border-radius: 6px 0 0 0;
 	-webkit-border-radius: 6px 0 0 0;
@@ -78,6 +84,7 @@
 .dataGridSortableHeader {
 	cursor: pointer;
 	cursor: hand;
+	/* gwt-image: 'dataGridSortableHeader'; */
 }
 
 .dataGridSortableHeader:hover {
@@ -86,11 +93,11 @@
 }
 
 .dataGridSortedHeaderAscending {
-	
+	gwt-image: 'dataGridSortedHeaderAscending';
 }
 
 .dataGridSortedHeaderDescending {
-	
+	gwt-image: 'dataGridSortedHeaderDescending';
 }
 
 .dataGridEvenRow {
@@ -99,24 +106,28 @@
 }
 
 .dataGridEvenRowCell {
-	border-top: 1px solid #f3f7fb;
+	border: none;
+	border-bottom: 1px dashed #919799;
 }
 
 .dataGridOddRow {
 	background: #ffffff;
-	opacity: 0.8;
+	opacity: 0.95;
 }
 
 .dataGridOddRowCell {
-	border-top: 1px solid #f3f7fb;
+	border: none;
+	border-bottom: 1px dashed #919799;
 }
 
 .dataGridHoveredRow {
-	background: #eee;
+	background: #fffcd1;
+	opacity: 1;
 }
 
 .dataGridHoveredRowCell {
-	border-top: 1px solid #eee;
+	border: none;
+	border-bottom: 1px dashed #919799;
 }
 
 .dataGridKeyboardSelectedRow {
@@ -124,23 +135,26 @@
 }
 
 .dataGridKeyboardSelectedRowCell {
-	border-top: 1px solid #eee;
+	border: none;
+	border-bottom: 1px dashed #919799;
 }
 
 .dataGridSelectedRow {
-	background: #628cd5;
-	color: white;
 	height: auto;
 	overflow: auto;
+	background: #fffcd1;
+	opacity: 1;
 }
 
 .dataGridSelectedRowCell {
 	border: none;
+	border-bottom: 1px dashed #919799;
+	color: #000;
 }
 
 /**
  * The keyboard selected cell is visible over selection.
  */
 .dataGridKeyboardSelectedCell {
-	border: none;
+	
 }

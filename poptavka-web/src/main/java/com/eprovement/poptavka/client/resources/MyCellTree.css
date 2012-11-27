@@ -17,8 +17,9 @@
 	background: #ffffff;
 	opacity: 0.8;
 	border: 1px solid #C1D2DC;
-	margin: 0 15px 30px;
+	margin: 0 0 30px 15px;
 	border-radius: 5px;
+	color: #003e5f;
 }
 
 .cellTreeEmptyMessage {
@@ -28,10 +29,14 @@
 
 .cellTreeItem {
 	padding-top: 4px;
-	padding-bottom: 4px;
+	padding-bottom: 0px;
 	cursor: hand;
 	cursor: pointer;
 	zoom: 1;
+}
+
+.cellTreeItem .cellTreeItem {
+	background: url(images/cellTreeItemBorder.gif) top left no-repeat;
 }
 
 .cellTreeItemImage {
@@ -54,13 +59,12 @@
 
 .cellTreeTopItem {
 	font-weight: normal;
-	color: #003e5f;
 	margin-top: 20px;
-	padding: 3px 13px 3px 10px !important;
+	padding: 3px 13px 3px 10px !important;	
 }
 
 .cellTreeTopItemImage {
-	top: 14px;	
+	top: 14px;
 }
 
 .cellTreeWidget div div div div:first-child .cellTreeTopItem .cellTreeTopItemImageValue
@@ -69,7 +73,6 @@
 }
 
 .cellTreeTopItem .cellTreeTopItemImageValue {
-	background: url(images/cellTreeItemBorder.gif) top left no-repeat;
 	padding-bottom: 1px;
 	height: 27px;
 	line-height: 27px;

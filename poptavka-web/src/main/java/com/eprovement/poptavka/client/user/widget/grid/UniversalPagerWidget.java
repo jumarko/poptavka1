@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
+import com.eprovement.poptavka.client.resources.UniversalPager;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -71,7 +72,7 @@ public class UniversalPagerWidget extends Composite {
      * Initialize pager and page size list box.
      */
     private void initPager() { //DataGrid grid) {
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        SimplePager.Resources pagerResources = GWT.create(UniversalPager.class);
         pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
 
         pager.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));

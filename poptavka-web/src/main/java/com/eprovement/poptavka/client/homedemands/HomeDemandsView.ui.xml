@@ -1,9 +1,8 @@
 <!-- Uncomment this for XHTML entities <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent"> -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-        xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail"
-        xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+	xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
@@ -12,25 +11,25 @@
 			font-weight: bold;
 			width: auto;
 		}
-
+		
 		.panel {
 			width: 400px;
 			spacing: 5;
 		}
-
+		
 		.list {
 			width: 100px;
 		}
-
+		
 		.gridMenu {
 			margin: 8px 0 0;
 			float: left;
 		}
-
+		
 		.paginator {
 			margin: 5px 10px;
 		}
-
+		
 		.pageSize {
 			border-radius: 3px 3px 3px 3px;
 			float: left;
@@ -38,7 +37,7 @@
 			margin: 5px 0 0;
 			padding: 6px;
 		}
-
+		
 		.button {
 			background: url(images/new-offer-green.png) no-repeat;
 			border: medium none;
