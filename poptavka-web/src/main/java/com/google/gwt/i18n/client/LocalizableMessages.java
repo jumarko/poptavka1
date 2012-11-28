@@ -79,8 +79,16 @@ public interface LocalizableMessages extends Messages {
     String semiStrongPassword();
     String passwordsMatch();
     String passwordsUnmatch();
+    String formDemandBasicInfoLabel();
+    String formDemandAdvInfoLabel();
     String categorySelectorInfoLabel();
+    String localitySelectorInfoLabel();
     String loginOrRegisterToContinueLabel();
+    String registerInfoLabel();
+    String validationErrorInfoLabel();
+    String ok();
+    String contactInfo();
+    String demandCreatedAndForwarding();
     String loggedSuccessfully();
     String registerSuccessfully();
     String createDemandButton();
@@ -271,6 +279,7 @@ public interface LocalizableMessages extends Messages {
     String answerButton();
     String closeDemandButton();
     String nextButton();
+    String backButton();
 
     //Explanation texts to table image columns
 

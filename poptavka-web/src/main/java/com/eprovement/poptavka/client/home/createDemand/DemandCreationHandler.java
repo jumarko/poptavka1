@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -61,6 +63,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
         BusinessUserDetail c = new BusinessUserDetail();
         c.setEmail("martin@user.cz");
         c.setPassword("kreslo");
+        eventBus.loadingHide();
         eventBus.responseRegisterNewClient(c);
     }
 
@@ -77,8 +80,8 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 //            }
 //        });
     }
-
     private boolean bool = true;
+
     public void onSentActivationCodeAgain(BusinessUserDetail client) {
         //TODO remove - fake - for devel
         bool = !bool;
@@ -105,8 +108,11 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                     @Override
                     public void onSuccess(FullDemandDetail result) {
                         // signal event
-                        eventBus.responseCreateDemand();
-                        eventBus.loadingHide();
+//                        eventBus.responseCreateDemand();
+//                        eventBus.loadingHide();
+                        eventBus.loadingShow(Storage.MSGS.demandCreatedAndForwarding());
+                        eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
+
                         // TODO forward to user/atAccount
 //                        eventBus.addNewDemand(result);
                     }

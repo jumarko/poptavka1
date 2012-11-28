@@ -50,6 +50,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/
     @Event(forwardToParent = true)
+    void loadingShow(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void loadingHide();
+
+    @Event(forwardToParent = true)
     void requestDetailWrapperPresenter();
 
     //Pozor, staci prezenter zavolat raz a uz je aktivny

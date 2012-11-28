@@ -6,12 +6,14 @@ import com.eprovement.poptavka.client.resources.StyleResource;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,11 +47,12 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     @UiField
     DockLayoutPanel userFormPanel;
     @UiField
-    Button loginBtn, registerBtn, createDemandBtn, createAnotherDemandBtn, seeMyDemandsBtn, seeAllDemandsBtn;
+    Button loginBtn, registerBtn, createDemandBtn;
     @UiField
-    Button nextButton1, nextButton2, nextButton3, nextButton4;
+    Button nextButtonTab2, nextButtonTab3, nextButtonTab4,
+    backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
     @UiField
-    Label infoLabelTab1;
+    HTML firstTabHeader;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -75,6 +78,46 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     }
 
     /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    /** NEXT. **/
+    @UiHandler("nextButtonTab2")
+    public void nextButtonTab2ClickHandler(ClickEvent event) {
+        selectNextTab();
+    }
+
+    @UiHandler("nextButtonTab3")
+    public void nextButtonTab3ClickHandler(ClickEvent event) {
+        selectNextTab();
+    }
+
+    @UiHandler("nextButtonTab4")
+    public void nextButtonTab4ClickHandler(ClickEvent event) {
+        selectNextTab();
+    }
+
+    /** BACK. **/
+    @UiHandler("backButtonTab2")
+    public void backButtonTab2ClickHandler(ClickEvent event) {
+        selectPreviousTab();
+    }
+
+    @UiHandler("backButtonTab3")
+    public void backButtonTab3ClickHandler(ClickEvent event) {
+        selectPreviousTab();
+    }
+
+    @UiHandler("backButtonTab4")
+    public void backButtonTab4ClickHandler(ClickEvent event) {
+        selectPreviousTab();
+    }
+
+    @UiHandler("backButtonTab5")
+    public void backButtonTab5ClickHandler(ClickEvent event) {
+        selectPreviousTab();
+    }
+
+    /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
     /** PANELS. **/
@@ -94,9 +137,10 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         return statusLabels.get(order);
     }
 
+    /** HEADERS. **/
     @Override
-    public Label getInfoLabelTab1() {
-        return infoLabelTab1;
+    public HTML getFirstTabHeader() {
+        return firstTabHeader;
     }
 
     /** BUTTONS. **/
@@ -115,41 +159,6 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         return createDemandBtn;
     }
 
-    @Override
-    public Button getCreateAnotherDemandBtn() {
-        return createAnotherDemandBtn;
-    }
-
-    @Override
-    public Button getSeeMyDemandsBtn() {
-        return seeMyDemandsBtn;
-    }
-
-    @Override
-    public Button getSeeAllDemandsBtn() {
-        return seeAllDemandsBtn;
-    }
-
-    @Override
-    public Button getNextButton1() {
-        return nextButton1;
-    }
-
-    @Override
-    public Button getNextButton2() {
-        return nextButton2;
-    }
-
-    @Override
-    public Button getNextButton3() {
-        return nextButton3;
-    }
-
-    @Override
-    public Button getNextButton4() {
-        return nextButton4;
-    }
-
     /** OTHERS. **/
 //    @Override
 //    public void toggleLoginRegistration() {
@@ -166,9 +175,19 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
 //            userStatus.setTexts(MSGS.loginMessage(), MSGS.loginDescription());
 //        }
 //    }
-
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void selectNextTab() {
+        mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
+    }
+
+    private void selectPreviousTab() {
+        mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }
 }

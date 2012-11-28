@@ -140,6 +140,7 @@ public class ClientDemandsPresenter
         if (this.detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
         }
+        eventBus.loadingHide();
     }
 
     public void onInitClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {

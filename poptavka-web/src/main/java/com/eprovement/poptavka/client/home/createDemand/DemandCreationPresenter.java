@@ -12,6 +12,7 @@ import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPres
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter.FormDemandAdvViewInterface;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter.FormDemandBasicInterface;
+import com.eprovement.poptavka.client.home.createDemand.widget.FormUserRegistrationPresenter;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -26,8 +27,8 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,23 +38,26 @@ import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-@Presenter(view = DemandCreationView.class)
+@Presenter(view = DemandCreationView.class, multiple = true)
 public class DemandCreationPresenter
         extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("DemandCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     // Main Panel Tab Constants
-    private static final int ZERO_TAB_LOGIN = 0;
-    private static final int FIRST_TAB_FORM = 1;
-    private static final int SECOND_TAB_CATEGORY = 2;
-    private static final int THIRD_TAB_LOCALITY = 3;
-    private static final int FOURTH_TAB_ADVANCE = 4;
+    private static final int FIRST_TAB_LOGIN = 0;
+    private static final int SECOND_TAB_FORM = 1;
+    private static final int THIRD_TAB_CATEGORY = 2;
+    private static final int FOURTH_TAB_LOCALITY = 3;
+    private static final int FIFTH_TAB_ADVANCE = 4;
     // TODO praso - All this presenters should be moved into this particular
     // module otherwise they will fall in left-over fragment
     private FormDemandBasicPresenter demandBasicForm = null;
     private FormDemandAdvPresenter demandAdvForm = null;
+    private FormUserRegistrationPresenter registrationForm = null;
     private int maxSelectedTab = -1;
+    //flags
+    private boolean blockFirstTab = false;
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
@@ -65,33 +69,19 @@ public class DemandCreationPresenter
         /** Labels. **/
         StatusIconLabel getStatusLabel(int order);
 
-        Label getInfoLabelTab1();
-
         /** Buttons. **/
         //Comment - what's the difference in compile report if using return values: HasClickHandlers vs Button
         Button getCreateDemandButton();
-
-        Button getCreateAnotherDemandBtn();
-
-        Button getSeeMyDemandsBtn();
-
-        Button getSeeAllDemandsBtn();
 
         Button getLoginBtn();
 
         Button getRegisterBtn();
 
-        Button getNextButton1();
-
-        Button getNextButton2();
-
-        Button getNextButton3();
-
-        Button getNextButton4();
+        /** Headers. **/
+        HTML getFirstTabHeader();
 
         /** Other. **/
 //        void toggleLoginRegistration();
-
         Widget getWidgetView();
     }
 
@@ -107,7 +97,6 @@ public class DemandCreationPresenter
         addLoginButtonHandler();
         addRegisterButtonHandler();
         addCreateDemandButtonHandler();
-        addNextButtonsHandlers();
     }
 
     // Bind helper methods
@@ -117,12 +106,17 @@ public class DemandCreationPresenter
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
+                if (eventItem == FIRST_TAB_LOGIN && blockFirstTab) {
+                    event.cancel();
+                }
                 if (view.getMainPanel().getSelectedIndex() < eventItem) {
                     //if previous step is valid, continue
                     if (canContinue(eventItem - 1)) {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(true);
+                        view.getStatusLabel(eventItem - 1).setMessage(MSGS.ok());
                     } else {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(false);
+                        view.getStatusLabel(eventItem - 1).setMessage(getErrorInfoLabel(eventItem - 1));
                         event.cancel();
                     }
                 }
@@ -135,39 +129,33 @@ public class DemandCreationPresenter
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
                 switch (event.getSelectedItem()) {
-//                    case ZERO_TAB_LOGIN:
-//                        LOGGER.info(" -> init Login Form supplierService");
-//                        if (maxSelectedTab < ZERO_TAB_LOGIN) {
-//                            eventBus.initLoginForm(view.getHolderPanel(ZERO_TAB_LOGIN));
-//                        }
-//                        break;
-                    case FIRST_TAB_FORM:
+                    case SECOND_TAB_FORM:
                         LOGGER.info(" -> Supplier Info Form");
-                        if (maxSelectedTab < FIRST_TAB_FORM) {
-                            eventBus.initDemandBasicForm(view.getHolderPanel(FIRST_TAB_FORM));
+                        if (maxSelectedTab < SECOND_TAB_FORM) {
+                            eventBus.initDemandBasicForm(view.getHolderPanel(SECOND_TAB_FORM));
                         }
                         break;
-                    case SECOND_TAB_CATEGORY:
+                    case THIRD_TAB_CATEGORY:
                         LOGGER.info(" -> Category Widget");
-                        if (maxSelectedTab < SECOND_TAB_CATEGORY) {
+                        if (maxSelectedTab < THIRD_TAB_CATEGORY) {
                             eventBus.initCategoryWidget(
-                                    view.getHolderPanel(SECOND_TAB_CATEGORY),
+                                    view.getHolderPanel(THIRD_TAB_CATEGORY),
                                     Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                                     CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
                         }
-                    case THIRD_TAB_LOCALITY:
+                    case FOURTH_TAB_LOCALITY:
                         LOGGER.info(" -> Locality Widget");
-                        if (maxSelectedTab < THIRD_TAB_LOCALITY) {
+                        if (maxSelectedTab < FOURTH_TAB_LOCALITY) {
                             eventBus.initLocalityWidget(
-                                    view.getHolderPanel(THIRD_TAB_LOCALITY),
+                                    view.getHolderPanel(FOURTH_TAB_LOCALITY),
                                     Constants.WITH_CHECK_BOXES,
                                     CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
                         }
                         break;
-                    case FOURTH_TAB_ADVANCE:
+                    case FIFTH_TAB_ADVANCE:
                         LOGGER.info(" -> init Demand Form supplierService");
-                        if (maxSelectedTab < FOURTH_TAB_ADVANCE) {
-                            eventBus.initDemandAdvForm(view.getHolderPanel(FOURTH_TAB_ADVANCE));
+                        if (maxSelectedTab < FIFTH_TAB_ADVANCE) {
+                            eventBus.initDemandAdvForm(view.getHolderPanel(FIFTH_TAB_ADVANCE));
                         }
                         break;
                     default:
@@ -195,8 +183,9 @@ public class DemandCreationPresenter
             public void onClick(ClickEvent event) {
                 view.getLoginBtn().setVisible(false);
                 view.getRegisterBtn().setVisible(false);
+                view.getStatusLabel(FIRST_TAB_LOGIN).setMessage(MSGS.registerInfoLabel());
 //                eventBus.toggleLoginRegistration();
-                eventBus.initRegistrationForm(view.getHolderPanel(ZERO_TAB_LOGIN));
+                eventBus.initRegistrationForm(view.getHolderPanel(FIRST_TAB_LOGIN));
             }
         });
     }
@@ -205,24 +194,11 @@ public class DemandCreationPresenter
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (canContinue(FOURTH_TAB_ADVANCE)) {
+                if (canContinue(FIFTH_TAB_ADVANCE)) {
                     createNewDemand(Storage.getBusinessUserDetail());
                 }
             }
         });
-    }
-
-    private void addNextButtonsHandlers() {
-        ClickHandler clickHandler = new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                view.getMainPanel().selectTab(view.getMainPanel().getSelectedIndex() + 1, true);
-            }
-        };
-        view.getNextButton1().addClickHandler(clickHandler);
-        view.getNextButton2().addClickHandler(clickHandler);
-        view.getNextButton3().addClickHandler(clickHandler);
-        view.getNextButton4().addClickHandler(clickHandler);
     }
 
     /**************************************************************************/
@@ -246,26 +222,21 @@ public class DemandCreationPresenter
      * Used to navigate/invoke demand creation module.
      */
     public void onGoToCreateDemandModule() {
-        //TODO Martin - reset ???? -  nepoakzi nieco s historiou???
-        //TODO Martin - remake later
         if (Storage.getUser() != null) {
-//        if (successfullyLogged) {
-            view.getMainPanel().getTabWidget(ZERO_TAB_LOGIN).getParent().setVisible(false);
-            view.getMainPanel().selectTab(FIRST_TAB_FORM);
-//            onAllowDemandCreation(MSGS.loggedSuccessfully());
+            blockFirstTab = true;
+            //TODO Jaro - add some style which look like disable
+            view.getFirstTabHeader().setStyleName("");
+            view.getMainPanel().selectTab(SECOND_TAB_FORM);
         } else {
-            view.getMainPanel().getTabWidget(ZERO_TAB_LOGIN).getParent().setVisible(true);
-            //ak skryjem nemusim zobrazovat label predsa nie??? - uvidim ako to bude vyzerat,
-            //ak tam bude chybat nejaka informovanost - text, nieco vymysliet
-            view.getInfoLabelTab1().setText(MSGS.loginOrRegisterToContinueLabel());
+            blockFirstTab = false;
         }
     }
 
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
-    //TODO Martin - premysliet, podla mna nemusi byt ak nebude multiple = true
-    //aj tak pouziva dany widget len tu - mozne problemy, ze bude zdrzat data
+    // Inject widgets
+    //--------------------------------------------------------------------------
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
         if (demandBasicForm != null) {
             eventBus.removeHandler(demandBasicForm);
@@ -274,8 +245,6 @@ public class DemandCreationPresenter
         demandBasicForm.initDemandBasicForm(holderWidget);
     }
 
-    //TODO Martin - premysliet, podla mna nemusi byt ak nebude multiple = true
-    //aj tak pouziva dany widget len tu - mozne problemy, ze bude zdrzat data
     public void onInitDemandAdvForm(SimplePanel holderWidget) {
         if (demandAdvForm != null) {
             eventBus.removeHandler(demandAdvForm);
@@ -284,36 +253,32 @@ public class DemandCreationPresenter
         demandAdvForm.initDemandAdvForm(holderWidget);
     }
 
-    public void onResponseCreateDemand() {
-        view.getHolderPanel(FOURTH_TAB_ADVANCE).setVisible(false);
-        view.getCreateDemandButton().setVisible(false);
-
-        view.getStatusLabel(FOURTH_TAB_ADVANCE).setPassedSmall(true);
-        view.getStatusLabel(FOURTH_TAB_ADVANCE).setTexts("Demand successfully created", "Demand successfully created");
-
-        view.getCreateDemandButton().setVisible(false);
-        view.getCreateAnotherDemandBtn().setVisible(true);
-        view.getSeeMyDemandsBtn().setVisible(true);
-        view.getSeeAllDemandsBtn().setVisible(false);
+    public void onInitRegistrationForm(SimplePanel holderWidget) {
+        if (registrationForm != null) {
+            eventBus.removeHandler(registrationForm);
+        }
+        registrationForm = eventBus.addHandler(FormUserRegistrationPresenter.class);
+        registrationForm.initRegistrationForm(holderWidget);
     }
 
+    // Responses
+    //--------------------------------------------------------------------------
     /** Done automatically in step five, when option: register new client is selected. **/
     // -- don't need anymore - after moving registration as first step
     //DO NOT EDIT
 //    public void onToggleLoginRegistration() {
 //        view.toggleLoginRegistration();
 //    }
-
     /** showing error after login failure. **/
     public void onLoginError() {
         // TODO change to global status changer eventBus call
-        view.getStatusLabel(ZERO_TAB_LOGIN).setStyleState(
+        view.getStatusLabel(FIRST_TAB_LOGIN).setStyleState(
                 StyleResource.INSTANCE.common().errorMessage(), State.ERROR_16);
-        view.getStatusLabel(ZERO_TAB_LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
+        view.getStatusLabel(FIRST_TAB_LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
     }
 
     public void onBackToZeroTab() {
-        view.getHolderPanel(ZERO_TAB_LOGIN).clear();
+        view.getHolderPanel(FIRST_TAB_LOGIN).clear();
         view.getLoginBtn().setVisible(true);
         view.getRegisterBtn().setVisible(true);
     }
@@ -334,13 +299,13 @@ public class DemandCreationPresenter
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
         FormDemandBasicInterface basicValues =
-                (FormDemandBasicInterface) view.getHolderPanel(FIRST_TAB_FORM).getWidget();
+                (FormDemandBasicInterface) view.getHolderPanel(SECOND_TAB_FORM).getWidget();
         CategorySelectorInterface categoryValues =
-                (CategorySelectorInterface) view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget();
+                (CategorySelectorInterface) view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget();
         LocalitySelectorInterface localityValues =
-                (LocalitySelectorInterface) view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget();
+                (LocalitySelectorInterface) view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget();
         FormDemandAdvViewInterface advValues =
-                (FormDemandAdvViewInterface) view.getHolderPanel(FOURTH_TAB_ADVANCE).getWidget();
+                (FormDemandAdvViewInterface) view.getHolderPanel(FIFTH_TAB_ADVANCE).getWidget();
 
         // Fill in the FullDemandDetail obejct from former holder panels.
         FullDemandDetail demand = new FullDemandDetail();
@@ -359,8 +324,23 @@ public class DemandCreationPresenter
 
     }
 
+    private String getErrorInfoLabel(int step) {
+        switch (step) {
+            case SECOND_TAB_FORM:
+                return MSGS.validationErrorInfoLabel();
+            case THIRD_TAB_CATEGORY:
+                return MSGS.categorySelectorInfoLabel();
+            case FOURTH_TAB_LOCALITY:
+                return MSGS.localitySelectorInfoLabel();
+            case FIFTH_TAB_ADVANCE:
+                return MSGS.validationErrorInfoLabel();
+            default:
+                return "";
+        }
+    }
+
     private boolean canContinue(int step) {
-        if (step == ZERO_TAB_LOGIN) {
+        if (step == FIRST_TAB_LOGIN) {
             return true;
         } else {
             ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();

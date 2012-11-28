@@ -7,7 +7,6 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.home.createDemand.widget.FormUserRegistrationPresenter;
-import com.eprovement.poptavka.client.home.createDemand.widget.FormLoginPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -18,6 +17,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
@@ -57,6 +57,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
+
     @Event(forwardToParent = true)
     void login(int widgetToLoad);
 
@@ -100,14 +103,17 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(handlers = DemandCreationPresenter.class)
     void initDemandAdvForm(SimplePanel holderWidget);
 
+    @Event(handlers = DemandCreationPresenter.class)
+    void initRegistrationForm(SimplePanel holderWidget);
+
 //    @Event(handlers = DemandCreationPresenter.class)
 //    void toggleLoginRegistration();
 
     @Event(handlers = DemandCreationPresenter.class)
     void loginError();
 
-    @Event(handlers = DemandCreationPresenter.class)
-    void responseCreateDemand();
+//    @Event(handlers = DemandCreationPresenter.class)
+//    void responseCreateDemand();
 
     @Event(handlers = DemandCreationPresenter.class)
     void backToZeroTab();
@@ -116,7 +122,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /* Business events handled by FormUserRegustratoinPresenter.              */
     /**************************************************************************/
     @Event(handlers = FormUserRegistrationPresenter.class)
-    void initRegistrationForm(SimplePanel holderWidget);
+    void checkFreeEmailResponse(Boolean result);
 
     @Event(handlers = FormUserRegistrationPresenter.class)
     void responseRegisterNewClient(BusinessUserDetail client);
@@ -126,15 +132,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(handlers = FormUserRegistrationPresenter.class)
     void responseSendActivationCodeAgain(boolean sent);
-
-    /**************************************************************************/
-    /* Business events handled by FormLoginPresenter.                         */
-    /**************************************************************************/
-    @Event(handlers = FormLoginPresenter.class)
-    void initLoginForm(SimplePanel holderWidget);
-
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void checkFreeEmailResponse(Boolean result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

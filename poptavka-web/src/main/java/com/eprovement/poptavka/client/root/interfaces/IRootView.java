@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.root.interfaces;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 public interface IRootView extends IsWidget {
 
@@ -22,5 +21,4 @@ public interface IRootView extends IsWidget {
 
     void setWaitVisible(boolean visible);
 
-    SimplePanel getBody();
 }

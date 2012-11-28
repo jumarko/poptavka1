@@ -24,7 +24,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-@Presenter(view = FormUserRegistrationView.class)
+@Presenter(view = FormUserRegistrationView.class, multiple = true)
 public class FormUserRegistrationPresenter
         extends LazyPresenter<FormUserRegistrationPresenter.FormRegistrationInterface, DemandCreationEventBus> {
 
@@ -86,7 +86,8 @@ public class FormUserRegistrationPresenter
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
-    public void onInitRegistrationForm(SimplePanel embedToWidget) {
+    /** Injecting widget. **/
+    public void initRegistrationForm(SimplePanel embedToWidget) {
         embedToWidget.setWidget(view.getWidgetView());
     }
 
@@ -123,6 +124,7 @@ public class FormUserRegistrationPresenter
         view.getRegisterButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.loadingShow(MSGS.progressRegisterClient());
                 clientToRegister = view.getNewClient();
                 //register a shof popup na activation code
                 eventBus.registerNewClient(clientToRegister);
