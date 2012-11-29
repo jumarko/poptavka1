@@ -136,7 +136,7 @@ public class AdminInvoicesPresenter
     public void onDisplayAdminTabInvoices(List<InvoiceDetail> invoices) {
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), invoices);
-        Storage.hideLoading();
+        eventBus.loadingHide();
     }
 
     //*************************************************************************/
@@ -291,11 +291,11 @@ public class AdminInvoicesPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
+                    eventBus.loadingShow(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateInvoice(dataToUpdate.get(idx));
                     }
-                    Storage.hideLoading();
+                    eventBus.loadingHide();
                     dataToUpdate.clear();
                     metadataToUpdate.clear();
                     originalData.clear();

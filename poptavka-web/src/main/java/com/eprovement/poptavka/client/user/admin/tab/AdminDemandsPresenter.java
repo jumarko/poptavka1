@@ -121,7 +121,7 @@ public class AdminDemandsPresenter
     public void onDisplayAdminTabDemands(List<FullDemandDetail> demands) {
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), demands);
-        Storage.hideLoading();
+        eventBus.loadingHide();
     }
 
     //*************************************************************************/
@@ -318,11 +318,11 @@ public class AdminDemandsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
+                    eventBus.loadingShow(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateDemand(dataToUpdate.get(idx));
                     }
-                    Storage.hideLoading();
+                    eventBus.loadingHide();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

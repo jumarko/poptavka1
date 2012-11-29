@@ -104,6 +104,11 @@ public class FormDemandBasicView extends Composite
             }
         }, CloseEvent.getType());
 
+        title.setText("poptavka");
+        priceString.setText("1234");
+        endDate.setValue(endDate.getDatePicker().getLastDate());
+        validToDate.setValue(validToDate.getDatePicker().getLastDate());
+        description.setText("Hoj Morho lud tvojho rodu, kto kradmou rukou siahne na tvoju slobodu.");
     }
 
     @UiHandler("title")

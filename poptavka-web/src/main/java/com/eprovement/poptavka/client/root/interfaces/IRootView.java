@@ -19,6 +19,4 @@ public interface IRootView extends IsWidget {
 
     void setFooter(IsWidget footer);
 
-    void setWaitVisible(boolean visible);
-
 }

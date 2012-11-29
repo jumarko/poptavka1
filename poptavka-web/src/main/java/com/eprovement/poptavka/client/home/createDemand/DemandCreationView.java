@@ -50,7 +50,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     Button loginBtn, registerBtn, createDemandBtn;
     @UiField
     Button nextButtonTab2, nextButtonTab3, nextButtonTab4,
-    backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
+    backButtonTab3, backButtonTab4, backButtonTab5;
     @UiField
     HTML firstTabHeader;
 
@@ -97,11 +97,6 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     }
 
     /** BACK. **/
-    @UiHandler("backButtonTab2")
-    public void backButtonTab2ClickHandler(ClickEvent event) {
-        selectPreviousTab();
-    }
-
     @UiHandler("backButtonTab3")
     public void backButtonTab3ClickHandler(ClickEvent event) {
         selectPreviousTab();

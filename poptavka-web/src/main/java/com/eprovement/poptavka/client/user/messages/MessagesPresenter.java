@@ -113,7 +113,7 @@ public class MessagesPresenter
      * @param filter
      */
     public void onGoToMessagesModule(SearchModuleDataHolder filter, int loadWidget) {
-        Storage.showLoading(Storage.MSGS.progressMessagesLayoutInit());
+        eventBus.loadingShow(Storage.MSGS.progressMessagesLayoutInit());
         this.filter = filter;
 
         //Need for search module. To have one entry point.
@@ -141,7 +141,7 @@ public class MessagesPresenter
         }
 
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
-        Storage.hideLoading();
+        eventBus.loadingHide();
     }
 
     /**************************************************************************/

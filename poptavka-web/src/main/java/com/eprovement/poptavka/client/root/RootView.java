@@ -1,11 +1,9 @@
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,8 +20,6 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
     @UiField
     SimplePanel header, body, menu, searchBar, footer;
-    @UiField
-    PopupPanel wait;
 
     interface RootViewUiBinder extends UiBinder<Widget, RootView> {
     }
@@ -37,15 +33,6 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         StyleResource.INSTANCE.standartStyles().ensureInjected();
         StyleResource.INSTANCE.layout().ensureInjected();
 
-        // initialize wait PopupPanel
-        wait.setModal(true);
-        wait.setGlassEnabled(false);
-        wait.center();
-        wait.hide();
-        wait.setAutoHideEnabled(true);
-        wait.setAnimationEnabled(false);
-        wait.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
-        wait.setWidget(new LoadingPopup(MSGS.loading()));
     }
 
     @Override
@@ -81,21 +68,6 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         GWT.log("Header widget view set");
         this.header.setWidget(header);
 
-    }
-
-    @Override
-    public void setWaitVisible(boolean visible) {
-        if (visible) {
-            GWT.log("Show loading popup");
-            wait.setPopupPosition(body.getAbsoluteLeft(), body.getAbsoluteTop());
-            wait.setPixelSize(body.getOffsetWidth(), body.getOffsetHeight());
-            // TODO Jaro - waiting icon must be centered. Now it is centered only in SupplierCreation, DemandCreation
-            // TODO Jaro - waiting popup shouldn't cover Footer as it does now. Ask Ivan for more details.
-            wait.show();
-        } else {
-            GWT.log("Hide loading popup");
-            wait.hide();
-        }
     }
 
     /**

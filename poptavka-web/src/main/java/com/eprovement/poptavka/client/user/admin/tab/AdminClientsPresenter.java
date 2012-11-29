@@ -128,7 +128,7 @@ public class AdminClientsPresenter
     public void onDisplayAdminTabClients(List<ClientDetail> clients) {
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), clients);
-        Storage.hideLoading();
+        eventBus.loadingHide();
     }
 
     //*************************************************************************/
@@ -286,11 +286,11 @@ public class AdminClientsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
+                    eventBus.loadingShow(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateClient(dataToUpdate.get(idx));
                     }
-                    Storage.hideLoading();
+                    eventBus.loadingHide();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

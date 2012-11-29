@@ -165,10 +165,10 @@ public class AdminPresenter
     public void onGoToAdminModule(SearchModuleDataHolder filter, int loadWidget) {
         GWT.log("onGoToAdminModule - som tu");
 
-        Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
+        eventBus.loadingShow(Storage.MSGS.progressAdminLayoutInit());
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
 
-        Storage.hideLoading();
+        eventBus.loadingHide();
         switch (loadWidget) {
             case Constants.ADMIN_ACCESS_ROLE:
                 eventBus.initAccessRoles(filter);

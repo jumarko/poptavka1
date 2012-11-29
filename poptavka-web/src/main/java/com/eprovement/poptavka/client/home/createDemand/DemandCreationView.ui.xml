@@ -71,9 +71,6 @@
                         <g:VerticalPanel>
                             <g:SimplePanel ui:field="basicInfoHolder" />
                             <g:HorizontalPanel>
-                                <g:Button ui:field="backButtonTab2">
-                                    <ui:msg key='backButtonTab'>Back</ui:msg>
-                                </g:Button>
                                 <g:Button ui:field="nextButtonTab2" >
                                     <ui:msg key="nextButtonTab">Next</ui:msg>
                                 </g:Button>

@@ -81,6 +81,12 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void loadingShow(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void loadingHide();
+
     /* Admin module forward section - comunication with parent widget*/
     @Event(forwardToParent = true)
     void clearSearchContent();

@@ -296,7 +296,7 @@ public class DemandCreationPresenter
      * retried from database (if existing client)
      */
     private void createNewDemand(BusinessUserDetail client) {
-        eventBus.loadingShow(MSGS.progressGettingDemandData());
+        eventBus.loadingShow(MSGS.progressCreatingDemand());
 
         FormDemandBasicInterface basicValues =
                 (FormDemandBasicInterface) view.getHolderPanel(SECOND_TAB_FORM).getWidget();
@@ -319,9 +319,6 @@ public class DemandCreationPresenter
 
         demand.setAdvInfo(advValues.getValues());
         eventBus.createDemand(demand, client.getClientId());
-        // TODO Praso - improve loaging method. We can for example show some message to client while waiting
-        eventBus.loadingShow(MSGS.progressCreatingDemand());
-
     }
 
     private String getErrorInfoLabel(int step) {

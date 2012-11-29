@@ -109,7 +109,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                     public void onSuccess(FullDemandDetail result) {
                         // signal event
 //                        eventBus.responseCreateDemand();
-//                        eventBus.loadingHide();
+                        eventBus.loadingHide();
                         eventBus.loadingShow(Storage.MSGS.demandCreatedAndForwarding());
                         eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
 

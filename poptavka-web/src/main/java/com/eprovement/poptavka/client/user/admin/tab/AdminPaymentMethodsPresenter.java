@@ -104,7 +104,7 @@ public class AdminPaymentMethodsPresenter
     public void onDisplayAdminTabPaymentMethods(List<PaymentMethodDetail> list) {
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), list);
-        Storage.hideLoading();
+        eventBus.loadingHide();
     }
 
     //*************************************************************************/
@@ -202,11 +202,11 @@ public class AdminPaymentMethodsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
+                    eventBus.loadingShow(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
 //                        eventBus.updatePaymentDescription(dataToUpdate.get(idx));
                     }
-                    Storage.hideLoading();
+                    eventBus.loadingHide();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

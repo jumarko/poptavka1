@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
+
+    <g:HorizontalPanel>
+        <cm:SimpleIconLabel ui:field='loader' popupEnabled="false" />
+        <g:VerticalPanel>
+            <g:Label ui:field='loadingMessage'></g:Label>
+            <g:Anchor ui:field="reportAnchor" styleName="font-size:1.0em">
+                <ui:msg key="report">report problem</ui:msg>
+            </g:Anchor>
+        </g:VerticalPanel>
+    </g:HorizontalPanel>
+</ui:UiBinder>

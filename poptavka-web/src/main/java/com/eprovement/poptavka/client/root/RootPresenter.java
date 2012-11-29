@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.root;
 
 import com.eprovement.poptavka.client.common.CommonAccessRoles;
-import com.eprovement.poptavka.client.common.LoadingPopup;
+import com.eprovement.poptavka.client.common.LoadingPopupPresenter;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -24,7 +23,6 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
-import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
@@ -37,11 +35,11 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         implements IRootPresenter {
 
-    private PopupPanel popup = null;
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
     private AddressSelectorPresenter addressSelector = null;
     private LoginPopupPresenter login = null;
+    private LoadingPopupPresenter loading = null;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -120,7 +118,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      * You can for example decide to display a wait popup.
      */
     public void onBeforeLoad() {
-        view.setWaitVisible(true);
+        onLoadingShow(Storage.MSGS.loading());
     }
 
     /**
@@ -128,7 +126,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      * You can for example decide to hide a wait popup.
      */
     public void onAfterLoad() {
-        view.setWaitVisible(false);
+        onLoadingHide();
     }
 
     /**************************************************************************/
@@ -174,31 +172,26 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setBody(new Label("Page not found"));
     }
 
-    public void onLoadingShow(String loadingMessage) {
-        if (!(popup == null)) {
-            LoadingPopup popupContent = (LoadingPopup) popup.getWidget();
-            popupContent.setMessage(loadingMessage);
-        } else {
-            createLoadingPopup(loadingMessage);
-        }
-    }
-
-    public void onLoadingHide() {
-        if (popup != null) {
-            popup.hide();
-            popup = null;
-        }
-    }
-
     public void onInitDemandAdvForm(SimplePanel holderWidget) {
     }
 
+    public void onLoadingShow(String loadingMessage) {
+        if (loading == null) {
+            loading = eventBus.addHandler(LoadingPopupPresenter.class);
+        }
+        loading.show(loadingMessage);
+    }
+
     public void onLoadingShowWithAnchor(String loadingMessage, Widget anchor) {
-        if (popup != null) {
-            LoadingPopup popupContent = (LoadingPopup) popup.getWidget();
-            popupContent.setMessage(loadingMessage);
-        } else {
-            createLoadingPopup(loadingMessage, anchor);
+        if (loading == null) {
+            loading = eventBus.addHandler(LoadingPopupPresenter.class);
+        }
+        loading.show(loadingMessage, anchor);
+    }
+
+    public void onLoadingHide() {
+        if (loading != null) {
+            loading.hide();
         }
     }
 
@@ -233,36 +226,37 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     public void onInitEmailDialogPopup() {
         eventBus.addHandler(EmailDialogPopupPresenter.class);
     }
-    private static final int OFFSET_X = 60;
-    private static final int OFFSET_Y = 35;
+//    private static final int OFFSET_X = 60;
+//    private static final int OFFSET_Y = 35;
 
-    private void createLoadingPopup(String loadingMessage, Widget anchor) {
-        popup = new PopupPanel(false, false);
-        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
-        popup.setWidget(new LoadingPopup(loadingMessage));
-        int top = anchor.getAbsoluteTop() + (anchor.getOffsetHeight() / 2);
-        int left = anchor.getAbsoluteLeft() + (anchor.getOffsetWidth() / 2)
-                - OFFSET_X;
-        popup.showRelativeTo(anchor);
-        GWT.log("AbsoluteLeft: " + anchor.getAbsoluteLeft() + " OffsetWidth: "
-                + (anchor.getOffsetWidth()));
-        GWT.log("AbsoluteTop: " + anchor.getAbsoluteTop() + " Offsetheight: "
-                + (anchor.getOffsetHeight()));
-
-        GWT.log("L: " + left + " T: " + top);
-
-        popup.show();
-    }
-
-    private void createLoadingPopup(String loadingMessage) {
-        popup = new PopupPanel(false, false);
-        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
-        popup.setWidget(new LoadingPopup(loadingMessage));
-        popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X,
-                (Window.getClientHeight() / 2) - OFFSET_Y);
-        popup.show();
-    }
-
+//    private void createLoadingPopup(String loadingMessage, Widget anchor) {
+//        popup = new PopupPanel(false, true);
+//        popup.setGlassEnabled(true);
+//        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
+//        popup.setWidget(new LoadingPopup(loadingMessage));
+//        int top = anchor.getAbsoluteTop() + (anchor.getOffsetHeight() / 2);
+//        int left = anchor.getAbsoluteLeft() + (anchor.getOffsetWidth() / 2)
+//                - OFFSET_X;
+//        popup.showRelativeTo(anchor);
+//        GWT.log("AbsoluteLeft: " + anchor.getAbsoluteLeft() + " OffsetWidth: "
+//                + (anchor.getOffsetWidth()));
+//        GWT.log("AbsoluteTop: " + anchor.getAbsoluteTop() + " Offsetheight: "
+//                + (anchor.getOffsetHeight()));
+//
+//        GWT.log("L: " + left + " T: " + top);
+//
+//        popup.show();
+//    }
+//
+//    private void createLoadingPopup(String loadingMessage) {
+//        popup = new PopupPanel(false, true);
+//        popup.setGlassEnabled(true);
+//        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
+//        popup.setWidget(new LoadingPopup(loadingMessage));
+//        popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X,
+//                (Window.getClientHeight() / 2) - OFFSET_Y);
+//        popup.show();
+//    }
     // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
         final DialogBox userInfoPanel = new DialogBox(false, false);

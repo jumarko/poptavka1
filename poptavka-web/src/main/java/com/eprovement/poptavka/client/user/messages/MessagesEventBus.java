@@ -59,6 +59,12 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
+    void loadingShow(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void loadingHide();
+
+    @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
 
     // TODO ivlcek - method loginFromSession() should be available for every module that can be accessed
