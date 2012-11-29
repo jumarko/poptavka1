@@ -9,8 +9,13 @@ public interface AsyncDataGrid extends DataGrid.Resources {
     @Source("datagrid/dataGridHeader.gif")
     ImageResource dataGridHeader();
 
-    //@Source("datagrid/dataGridSortableHeader.gif")
-    //ImageResource dataGridSortableHeader();
+    @Source("datagrid/dataGridSortableHeader.gif")
+    @ImageOptions(flipRtl = true)
+    ImageResource dataGridSortableHeader();
+
+    @Source("datagrid/dataGridLastSortableHeader.gif")
+    @ImageOptions(flipRtl = true)
+    ImageResource dataGridLastSortableHeader();
 
     @Source("datagrid/dataGridSortedHeaderAscending.png")
     @ImageOptions(flipRtl = true)
@@ -20,7 +25,7 @@ public interface AsyncDataGrid extends DataGrid.Resources {
     @ImageOptions(flipRtl = true)
     ImageResource dataGridSortDescending();
 
-    @Source({DataGrid.Style.DEFAULT_CSS, "AsyncDataGrid.css" })
+    @Source({ DataGrid.Style.DEFAULT_CSS, "AsyncDataGrid.css" })
     CustomStyle dataGridStyle();
 
     interface CustomStyle extends DataGrid.Style {
