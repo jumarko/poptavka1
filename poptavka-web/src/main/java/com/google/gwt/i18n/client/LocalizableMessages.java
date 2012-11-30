@@ -6,6 +6,8 @@ public interface LocalizableMessages extends Messages {
 
     String logIn();
     String logOut();
+    String myProfile();
+    String customerService();
     String endDate();
     String expireDate();
     String emptyField();

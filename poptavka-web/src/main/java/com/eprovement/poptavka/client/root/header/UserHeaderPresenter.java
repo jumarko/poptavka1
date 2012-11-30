@@ -2,8 +2,6 @@ package com.eprovement.poptavka.client.root.header;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -19,6 +17,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.user.client.Command;
 import java.util.logging.Logger;
 
 @Presenter(view = UserHeaderView.class)
@@ -32,12 +31,30 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
 
     @Override
     public void bind() {
-        view.getLogoutLink().addClickHandler(new ClickHandler() {
+        view.getMenuLogOut().setCommand(new Command() {
             @Override
-            public void onClick(ClickEvent event) {
-                //If user invoked logout process, set pointer to false
-                Storage.setLogoutDueToHistory(false);
+            public void execute() {
                 onLogout(Constants.HOME_WELCOME_MODULE);
+            }
+        });
+        view.getMenuMyProfile().setCommand(new Command() {
+            @Override
+            public void execute() {
+                Window.alert("Implement My Profile Command in UserHeaderMenuCommands class");
+            }
+        });
+
+        view.getMenuHelp().setCommand(new Command() {
+            @Override
+            public void execute() {
+                Window.alert("Implement Help Command in UserHeaderMenuCommands class");
+            }
+        });
+
+        view.getMenuCustomerService().setCommand(new Command() {
+            @Override
+            public void execute() {
+                Window.alert("Implement Cutom Service Command in UserHeaderMenuCommands class.");
             }
         });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {

@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.root.header;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -14,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
 
 public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
@@ -27,10 +27,7 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     public UserHeaderView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
-
     /** login area **/
-    @UiField
-    Anchor logoutButton;
     @UiField
     HTMLPanel headerHolder;
     @UiField
@@ -39,19 +36,32 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     PushButton pushButton;
     @UiField
     Label newMessagesCount;
+    @UiField
+    MenuItem menuLogOut, menuMyProfile, menuHelp, menuCustomerService;
 
     public UserHeaderView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
     @Override
-    public Anchor getLogoutLink() {
-        return logoutButton;
-    }
-
-    @Override
     public Label getUsername() {
         return username;
+    }
+
+    public MenuItem getMenuLogOut() {
+        return menuLogOut;
+    }
+
+    public MenuItem getMenuMyProfile() {
+        return menuMyProfile;
+    }
+
+    public MenuItem getMenuHelp() {
+        return menuHelp;
+    }
+
+    public MenuItem getMenuCustomerService() {
+        return menuCustomerService;
     }
 
     /**
@@ -65,6 +75,4 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     void handleClick(ClickEvent e) {
         Window.alert("Uzivatel bude presmerovany na modul Messages, kde uvidi neprecitane spravy");
     }
-
-
 }
