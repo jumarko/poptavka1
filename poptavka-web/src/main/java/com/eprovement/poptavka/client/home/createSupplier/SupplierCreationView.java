@@ -31,6 +31,7 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -63,11 +64,10 @@ public class SupplierCreationView extends OverflowComposite
     @UiField
     CheckBox agreedCheck;
     @UiField
-    Button registerBtn, nextButton1, nextButton2, nextButton3;
+    Button nextButtonTab1, nextButtonTab2, nextButtonTab3, registerBtn,
+    backButtonTab2, backButtonTab3, backButtonTab4;
     @UiField
     Anchor conditionLink;
-    @UiField
-    SimplePanel tableHolder;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -96,8 +96,40 @@ public class SupplierCreationView extends OverflowComposite
     /* UiHandler                                                              */
     /**************************************************************************/
     @UiHandler("agreedCheck")
-    public void agreedCheckChanged(ClickEvent e) {
+    public void agreedCheckChanged(ClickEvent event) {
         agreementPanel.setStyleName(StyleResource.INSTANCE.common().emptyStyle());
+    }
+
+    /** NEXT. **/
+    @UiHandler("nextButtonTab1")
+    public void nextButtonTab1ClickHandler(ClickEvent event) {
+        selectNextTab();
+    }
+
+    @UiHandler("nextButtonTab2")
+    public void nextButtonTab2ClickHandler(ClickEvent event) {
+        selectNextTab();
+    }
+
+    @UiHandler("nextButtonTab3")
+    public void nextButtonTab3ClickHandler(ClickEvent event) {
+        selectNextTab();
+    }
+
+    /** BACK. **/
+    @UiHandler("backButtonTab2")
+    public void backButtonTab2ClickHandler(ClickEvent event) {
+        selectPreviousTab();
+    }
+
+    @UiHandler("backButtonTab3")
+    public void backButtonTab3ClickHandler(ClickEvent event) {
+        selectPreviousTab();
+    }
+
+    @UiHandler("backButtonTab4")
+    public void backButtonTab4ClickHandler(ClickEvent event) {
+        selectPreviousTab();
     }
 
     /**************************************************************************/
@@ -123,21 +155,6 @@ public class SupplierCreationView extends OverflowComposite
     @Override
     public HasClickHandlers getRegisterButton() {
         return registerBtn;
-    }
-
-    @Override
-    public Button getNextButton1() {
-        return nextButton1;
-    }
-
-    @Override
-    public Button getNextButton2() {
-        return nextButton2;
-    }
-
-    @Override
-    public Button getNextButton3() {
-        return nextButton3;
     }
 
     /** OTHERS. **/
@@ -188,6 +205,18 @@ public class SupplierCreationView extends OverflowComposite
     public Widget getWidgetView() {
         return this;
     }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void selectNextTab() {
+        mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
+    }
+
+    private void selectPreviousTab() {
+        //history back
+        History.back();
+    }
 }
 
 class AggreementDialogBox extends PopupPanel {
@@ -221,6 +250,5 @@ class AggreementDialogBox extends PopupPanel {
         setGlassEnabled(true);
         setAnimationEnabled(true);
         center();
-//        show();
     }
 }

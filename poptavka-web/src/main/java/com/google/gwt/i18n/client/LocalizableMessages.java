@@ -130,6 +130,7 @@ public interface LocalizableMessages extends Messages {
 
     //global loading popup
     String progressRegisterClient();
+    String progressRegisterSupplier();
     String progressGettingDemandData();
     String progressCreatingDemand();
     String progressLogingUser();

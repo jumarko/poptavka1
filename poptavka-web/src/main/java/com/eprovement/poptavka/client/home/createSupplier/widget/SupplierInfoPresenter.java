@@ -15,14 +15,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-//Ak multiple, musi pouzivat eventBus.addHandler
-//vyuzitie multiple:
-/* e.g. one screen would have two chart components with different supporting data.
- * The presenter responsibility was the same for both, display a bar chart from
- * the under laying data (a simple multi-column query).
- * vid: http://www.summa-tech.com/blog/2011/04/27/mvp4g-multiple-presenters-part-1/*/
-//co nie je nas pripad
-@Presenter(view = SupplierInfoView.class) //, multiple = true)  -- nemusi multiple - ved pouziva len tu
+@Presenter(view = SupplierInfoView.class, multiple = true)
 public class SupplierInfoPresenter
         extends LazyPresenter<SupplierInfoPresenter.SupplierInfoInterface, SupplierCreationEventBus> {
 
@@ -58,7 +51,7 @@ public class SupplierInfoPresenter
         });
     }
 
-    public void onInitSupplierForm(SimplePanel embedToWidget) {
+    public void initSupplierForm(SimplePanel embedToWidget) {
         embedToWidget.setWidget(view.getWidgetView());
         eventBus.initAddressWidget(view.getAddressHolder());
     }

@@ -52,12 +52,24 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = SupplierCreationPresenter.class, historyConverter = SupplierCreationHistoryConverter.class)
-    String goToCreateSupplierModule();
+    @Event(handlers = SupplierCreationPresenter.class)
+    void goToCreateSupplierModule();
+
+    @Event(handlers = SupplierCreationPresenter.class)
+    void goToCreateSupplierModuleByHistory(int selectedTab);
+
+    /**************************************************************************/
+    /* History events                                                         */
+    /**************************************************************************/
+    @Event(historyConverter = SupplierCreationHistoryConverter.class, name = "createSupplier")
+    String registerTabToken(int tab);
 
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void logout(int widgetToLoad);
+
     // TODO praso - odstranit eventy, ktore niesu potrebne a vlozit ich do predka
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
@@ -92,8 +104,8 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**************************************************************************/
     /* Business events handled by SupplierInfoPresenters.                     */
     /**************************************************************************/
-    @Event(handlers = SupplierInfoPresenter.class)
-    void initSupplierForm(SimplePanel holderPanel);
+    @Event(handlers = SupplierCreationPresenter.class)
+    void initSupplierBasicForm(SimplePanel holderPanel);
 
     @Event(handlers = SupplierInfoPresenter.class)
     void checkFreeEmailResponse(Boolean result);
@@ -101,8 +113,8 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**************************************************************************/
     /* Business events handled by SupplierServicePresenter.                   */
     /**************************************************************************/
-    @Event(handlers = SupplierServicePresenter.class)
-    void initServiceForm(SimplePanel holderPanel);
+//    @Event(handlers = SupplierServicePresenter.class)
+//    void initServiceForm(SimplePanel holderPanel);
 
     @Event(handlers = SupplierServicePresenter.class)
     void setServices(ArrayList<ServiceDetail> services);

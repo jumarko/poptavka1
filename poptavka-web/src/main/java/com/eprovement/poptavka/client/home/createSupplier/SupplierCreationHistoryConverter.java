@@ -14,19 +14,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 @History(type = HistoryConverterType.DEFAULT, name = "supplierCreation")
 public class SupplierCreationHistoryConverter implements HistoryConverter<SupplierCreationEventBus> {
 
-    /**
-     * Creates token(URL) for goToCreateSupplierModule method.
-     *
-     * @return token string like module/method?param, where param = home / user
-     */
-    public String onGoToCreateSupplierModule() {
-        /* Martin - Nemusi to byt, pretoze v convertFromToken to neberiem vobec do uvahy.
-        Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
-        if (Storage.getUser() == null) {
-            return "location=home";
-        } else {
-            return "location=user";
-        }
+    public String onRegisterTabToken(int tab) {
+        return "tab=" + (tab + 1);
     }
 
     /**
@@ -45,12 +34,23 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
         } else {
             eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
+
         //if true => URL invocation, because
         //if app is running and module is called, that's module start method is called first
         //and then start method of root module is called.
         //If hisotryOnStart is called, it is the opposite.
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             eventBus.goToCreateSupplierModule();
+        } else {
+            int tab = Integer.parseInt(param.split("=")[1]);
+            //case when supplier registered and back performed
+            //--> forward to supplier creation module again
+            if (tab == 4 && Storage.getUser() != null) {
+                eventBus.goToCreateSupplierModule();
+            //otherwise only select wanted tab
+            } else {
+                eventBus.goToCreateSupplierModuleByHistory(tab - 1);
+            }
         }
     }
 

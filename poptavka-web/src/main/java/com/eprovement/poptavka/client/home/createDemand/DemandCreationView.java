@@ -198,6 +198,5 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     private void selectPreviousTab() {
         //history back
         History.back();
-//        mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }
 }

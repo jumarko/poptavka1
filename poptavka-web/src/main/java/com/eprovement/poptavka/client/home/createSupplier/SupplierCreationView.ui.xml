@@ -39,7 +39,7 @@
                     <g:center>
                         <g:VerticalPanel>
                             <g:SimplePanel ui:field="supplierInfoHolder" />
-                            <g:Button ui:field="nextButton1" >
+                            <g:Button ui:field="nextButtonTab1" >
                                 <ui:msg key="nextButton">Next</ui:msg>
                             </g:Button>
                         </g:VerticalPanel>
@@ -62,9 +62,14 @@
                     <g:center>
                         <g:VerticalPanel>
                             <g:SimplePanel ui:field="categoryHolder" />
-                            <g:Button ui:field="nextButton2" >
-                                <ui:msg key="nextButton">Next</ui:msg>
-                            </g:Button>
+                            <g:HorizontalPanel>
+                                <g:Button ui:field="backButtonTab2" >
+                                    <ui:msg key="backButton">Back</ui:msg>
+                                </g:Button>
+                                <g:Button ui:field="nextButtonTab2" >
+                                    <ui:msg key="nextButton">Next</ui:msg>
+                                </g:Button>
+                            </g:HorizontalPanel>
                         </g:VerticalPanel>
                     </g:center>
                 </g:DockLayoutPanel>
@@ -85,9 +90,14 @@
                     <g:center>
                         <g:VerticalPanel>
                             <g:SimplePanel ui:field="localityHolder" />
-                            <g:Button ui:field="nextButton3" >
-                                <ui:msg key="nextButton">Next</ui:msg>
-                            </g:Button>
+                            <g:HorizontalPanel>
+                                <g:Button ui:field="backButtonTab3" >
+                                    <ui:msg key="backButton">Back</ui:msg>
+                                </g:Button>
+                                <g:Button ui:field="nextButtonTab3" >
+                                    <ui:msg key="nextButton">Next</ui:msg>
+                                </g:Button>
+                            </g:HorizontalPanel>
                         </g:VerticalPanel>
                     </g:center>
                 </g:DockLayoutPanel>
@@ -118,11 +128,14 @@
                                 </g:Anchor>
                             </g:HorizontalPanel>
                             <br />
-                            <g:Button ui:field="registerBtn">
-                                <ui:msg key="registerSupplier">Register Supplier</ui:msg>
-                            </g:Button>
-                            <hr />
-                            <g:SimplePanel ui:field="tableHolder" />
+                            <g:HorizontalPanel>
+                                <g:Button ui:field="backButtonTab4" >
+                                    <ui:msg key="backButton">Back</ui:msg>
+                                </g:Button>
+                                <g:Button ui:field="registerBtn">
+                                    <ui:msg key="registerSupplier">Register Supplier</ui:msg>
+                                </g:Button>
+                            </g:HorizontalPanel>
                             <hr />
                         </g:HTMLPanel>
                     </g:center>

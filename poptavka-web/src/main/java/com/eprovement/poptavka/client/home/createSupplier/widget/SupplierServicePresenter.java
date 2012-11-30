@@ -9,7 +9,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 
-@Presenter(view = SupplierServiceView.class)
+@Presenter(view = SupplierServiceView.class, multiple = true)
 public class SupplierServicePresenter extends
         LazyPresenter<SupplierServicePresenter.SupplierServiceInterface, SupplierCreationEventBus> {
 
@@ -22,7 +22,7 @@ public class SupplierServicePresenter extends
         Widget getWidgetView();
     }
 
-    public void onInitServiceForm(SimplePanel embedToWidget) {
+    public void initServiceForm(SimplePanel embedToWidget) {
         eventBus.getServices();
         embedToWidget.setWidget(view.getWidgetView());
     }

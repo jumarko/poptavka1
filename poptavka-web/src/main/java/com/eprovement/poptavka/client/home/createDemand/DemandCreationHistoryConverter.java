@@ -37,7 +37,6 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             eventBus.goToCreateDemandModule();
         } else {
-            //if tab2 -> tab1 -> logout
             int tab = Integer.parseInt(param.split("=")[1]);
             //case when logged at tab 2 and back performed
             //--> logout and select first tab again

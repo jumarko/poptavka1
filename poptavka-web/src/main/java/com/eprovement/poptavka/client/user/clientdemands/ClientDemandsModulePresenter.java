@@ -122,7 +122,7 @@ public class ClientDemandsModulePresenter
             case Constants.CREATE_DEMAND:
                 eventBus.goToCreateDemandModule();
                 break;
-            case Constants.CREATE_SUPPLIERS:
+            case Constants.CREATE_SUPPLIER:
                 eventBus.goToCreateSupplierModule();
                 break;
             default:
@@ -159,7 +159,7 @@ public class ClientDemandsModulePresenter
             case Constants.CREATE_DEMAND:
                 view.getClientCreateDemand().setStyleName("");
                 break;
-            case Constants.CREATE_SUPPLIERS:
+            case Constants.CREATE_SUPPLIER:
                 view.getClientCreateSupplier().setStyleName("");
                 break;
             case Constants.HOME_DEMANDS_MODULE:

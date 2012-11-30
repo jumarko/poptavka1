@@ -70,9 +70,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(forwardToParent = true)
-    void login(int widgetToLoad);
-
-    @Event(forwardToParent = true)
     void autoLogin(String email, String password, int widgetToLoad);
 
     @Event(forwardToParent = true)

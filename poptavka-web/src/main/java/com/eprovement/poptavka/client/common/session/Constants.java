@@ -64,7 +64,7 @@ public final class Constants {
     public static final int HOME_SUPPLIERS_BY_SEARCH = 91;
     public static final int HOME_SUPPLIERS_BY_HISTORY = 92;
     //
-    public static final int CREATE_SUPPLIERS = 1;
+    public static final int CREATE_SUPPLIER = 1;
     public static final int CREATE_DEMAND = 2;
 
     /* Demands module */
