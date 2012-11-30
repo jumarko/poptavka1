@@ -19,7 +19,6 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
-import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
@@ -49,7 +48,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);
     private DemandService demandService;
     private LocalityService localityService;
-    private CategoryService categoryService;
     private ClientService clientService;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
@@ -64,11 +62,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
     }
 
     @Autowired
@@ -144,10 +137,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
         return localityService.getLocality(code);
 //        return localityService.getById(10);
-    }
-
-    public Category getCategory(Long id) throws RPCException {
-        return categoryService.getById(id);
     }
 
     /**
