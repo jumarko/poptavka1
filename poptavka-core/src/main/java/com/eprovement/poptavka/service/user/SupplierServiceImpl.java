@@ -45,7 +45,8 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         setDao(supplierDao);
         this.notificationUtils = new NotificationUtils(registerService);
         this.supplierAccessRoles = Arrays.asList(
-                getRegisterService().getValue(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE, AccessRole.class));
+                getRegisterService().getValue(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE, AccessRole.class),
+                getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class));
     }
 
     @Override
