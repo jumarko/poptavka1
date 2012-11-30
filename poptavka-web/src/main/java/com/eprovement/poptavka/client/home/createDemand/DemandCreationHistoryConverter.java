@@ -14,19 +14,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 @History(type = HistoryConverterType.DEFAULT, name = "demandCreation")
 public class DemandCreationHistoryConverter implements HistoryConverter<DemandCreationEventBus> {
 
-    /**
-     * Creates token(URL) for goToCreateDemandModule method.
-     *
-     * @return token string like module/method?param, where param = home / user
-     */
-    public String onGoToCreateDemandModule() {
-        /* Martin - Nemusi to byt, pretoze v convertFromToken to neberiem vobec do uvahy.
-                   Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
-        if (Storage.getUser() == null) {
-            return "location=home";
-        } else {
-            return "location=user";
-        }
+    public String onRegisterTabToken(int tab) {
+        return "tab=" + (tab + 1);
     }
 
     /**
@@ -45,8 +34,23 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
         } else {
             eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
-        if (Storage.isAppCalledByURL()) {
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             eventBus.goToCreateDemandModule();
+        } else {
+            //if tab2 -> tab1 -> logout
+            int tab = Integer.parseInt(param.split("=")[1]);
+            //case when logged at tab 2 and back performed
+            //--> logout and select first tab again
+            if (tab == 1) {
+                eventBus.logout(Constants.CREATE_DEMAND);
+                //case when logged -> back -> forward
+                //---> login and select second tab again
+            } else if (tab == 2 && Storage.getUser() == null) {
+                eventBus.login(Constants.CREATE_DEMAND);
+                //otherwise only select wanted tab
+            } else {
+                eventBus.goToCreateDemandModuleByHistory(tab - 1);
+            }
         }
     }
 

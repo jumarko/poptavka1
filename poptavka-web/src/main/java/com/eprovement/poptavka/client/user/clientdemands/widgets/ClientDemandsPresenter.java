@@ -133,6 +133,7 @@ public class ClientDemandsPresenter
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         eventBus.setUpSearchBar(new Label("Client's projects attibure's selector will be here."));
         searchDataHolder = filter;
+        eventBus.createTokenForHistory1(0);
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
         eventBus.displayView(view.getWidgetView());

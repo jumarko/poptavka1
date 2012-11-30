@@ -119,10 +119,10 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 eventBus.initSupplierAssignedDemands(filter);
                 break;
-            case Constants.HOME_CREATE_DEMAND:
+            case Constants.CREATE_DEMAND:
                 eventBus.goToCreateDemandModule();
                 break;
-            case Constants.HOME_CREATE_SUPPLIERS:
+            case Constants.CREATE_SUPPLIERS:
                 eventBus.goToCreateSupplierModule();
                 break;
             default:
@@ -157,10 +157,10 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 view.getSupplierAssignedDemandsButton().setStyleName("");
                 break;
-            case Constants.HOME_CREATE_DEMAND:
+            case Constants.CREATE_DEMAND:
                 view.getSupplierCreateDemand().setStyleName("");
                 break;
-            case Constants.HOME_CREATE_SUPPLIERS:
+            case Constants.CREATE_SUPPLIERS:
                 view.getSupplierCreateSupplier().setStyleName("");
                 break;
             case Constants.HOME_DEMANDS_MODULE:

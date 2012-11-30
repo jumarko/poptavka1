@@ -295,7 +295,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void autoLogin(String email, String password, int widgetToLoad);
 
     @Event(handlers = UserHeaderPresenter.class)
-    void logout();
+    void logout(int widgetToLoad);
 
     /**************************************************************************/
     /* LOADING.                                                               */

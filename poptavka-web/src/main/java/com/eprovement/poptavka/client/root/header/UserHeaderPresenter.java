@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root.header;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,7 +19,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.user.client.History;
 import java.util.logging.Logger;
 
 @Presenter(view = UserHeaderView.class)
@@ -33,12 +33,11 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
     @Override
     public void bind() {
         view.getLogoutLink().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 //If user invoked logout process, set pointer to false
                 Storage.setLogoutDueToHistory(false);
-                onLogout();
+                onLogout(Constants.HOME_WELCOME_MODULE);
             }
         });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
@@ -64,7 +63,7 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
     /**
      * Logs out and user is forwarded to HomeWelcomModule.
      */
-    public void onLogout() {
+    public void onLogout(final int widgetToLoad) {
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getLogoutUrl());
         rb.setCallback(new RequestCallback() {
             @Override
@@ -73,7 +72,7 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
                     LOGGER.info("User=" + Storage.getUser().getEmail() + " has logged out!");
                     //remove user from session management to force user input login information
                     Storage.invalidateStorage();
-                    forwardUser();
+                    forwardUser(widgetToLoad);
                 } else {
                     LOGGER.severe("Unexptected response status code while logging out, code="
                             + response.getStatusCode());
@@ -112,20 +111,17 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
     /**************************************************************************/
     /* History helper methods                                                 */
     /**************************************************************************/
-    private void forwardUser() {
+    private void forwardUser(int widgetToLoad) {
         //Set home layout
         eventBus.atHome();
-        //If logout process was invoked because of history
-        //forward history to next stored token, not default one
-        if (Storage.isLogoutDueToHistory()) {
-            if (Storage.getForwardHistory().equals(Storage.BACK)) {
-                History.back();
-            } else {
-                History.forward();
-            }
-        } else {
-            //If logout was invoked by user, forward to default module
-            eventBus.goToHomeWelcomeModule(null);
+        //If logout was invoked by user, forward to default module
+        switch (widgetToLoad) {
+            case Constants.CREATE_DEMAND:
+                eventBus.goToCreateDemandModule();
+                break;
+            default:
+                eventBus.goToHomeWelcomeModule(null);
+                break;
         }
     }
 }

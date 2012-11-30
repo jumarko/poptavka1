@@ -51,8 +51,17 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = DemandCreationPresenter.class, historyConverter = DemandCreationHistoryConverter.class)
-    String goToCreateDemandModule();
+    @Event(handlers = DemandCreationPresenter.class)
+    void goToCreateDemandModule();
+
+    @Event(handlers = DemandCreationPresenter.class)
+    void goToCreateDemandModuleByHistory(int selectedTab);
+
+    /**************************************************************************/
+    /* History events                                                         */
+    /**************************************************************************/
+    @Event(historyConverter = DemandCreationHistoryConverter.class, name = "createDemand")
+    String registerTabToken(int tab);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -65,6 +74,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(forwardToParent = true)
     void autoLogin(String email, String password, int widgetToLoad);
+
+    @Event(forwardToParent = true)
+    void logout(int widgetToLoad);
 
     @Event(forwardToParent = true)
     void atAccount();
@@ -108,13 +120,11 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
 //    @Event(handlers = DemandCreationPresenter.class)
 //    void toggleLoginRegistration();
-
     @Event(handlers = DemandCreationPresenter.class)
     void loginError();
 
 //    @Event(handlers = DemandCreationPresenter.class)
 //    void responseCreateDemand();
-
     @Event(handlers = DemandCreationPresenter.class)
     void backToZeroTab();
 

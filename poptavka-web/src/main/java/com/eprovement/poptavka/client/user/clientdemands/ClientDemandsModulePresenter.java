@@ -119,15 +119,14 @@ public class ClientDemandsModulePresenter
             case Constants.CLIENT_ASSIGNED_DEMANDS:
                 eventBus.initClientAssignedDemands(filter);
                 break;
-            case Constants.HOME_CREATE_DEMAND:
+            case Constants.CREATE_DEMAND:
                 eventBus.goToCreateDemandModule();
                 break;
-            case Constants.HOME_CREATE_SUPPLIERS:
+            case Constants.CREATE_SUPPLIERS:
                 eventBus.goToCreateSupplierModule();
                 break;
             default:
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS_WELCOME);
-                eventBus.displayView(new ClientDemandsModuleWelcomeView());
+                eventBus.initClientDemandsWelcome();
                 break;
         }
     }
@@ -157,10 +156,10 @@ public class ClientDemandsModulePresenter
             case Constants.CLIENT_ASSIGNED_DEMANDS:
                 view.getClientAssignedDemandsButton().setStyleName("");
                 break;
-            case Constants.HOME_CREATE_DEMAND:
+            case Constants.CREATE_DEMAND:
                 view.getClientCreateDemand().setStyleName("");
                 break;
-            case Constants.HOME_CREATE_SUPPLIERS:
+            case Constants.CREATE_SUPPLIERS:
                 view.getClientCreateSupplier().setStyleName("");
                 break;
             case Constants.HOME_DEMANDS_MODULE:

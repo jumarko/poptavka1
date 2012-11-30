@@ -78,7 +78,7 @@ public class SupplierCreationPresenter
 
     public void onForward() {
         LOGGER.info("SupplierCreationPresenter loaded");
-        Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_SUPPLIERS);
+        Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIERS);
         maxSelectedTab = -1;
         eventBus.setUpSearchBar(null);
     }

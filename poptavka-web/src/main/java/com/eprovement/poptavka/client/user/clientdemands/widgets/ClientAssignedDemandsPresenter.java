@@ -80,6 +80,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
         eventBus.setUpSearchBar(new Label("Client's assigned projects attibure's selector will be here."));
         searchDataHolder = filter;
+        eventBus.createTokenForHistory1(0);
         view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
         eventBus.displayView(view.getWidgetView());

@@ -11,6 +11,7 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -154,6 +155,18 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         return createDemandBtn;
     }
 
+    public Button getBackButtonTab3() {
+        return backButtonTab3;
+    }
+
+    public Button getBackButtonTab4() {
+        return backButtonTab4;
+    }
+
+    public Button getBackButtonTab5() {
+        return backButtonTab5;
+    }
+
     /** OTHERS. **/
 //    @Override
 //    public void toggleLoginRegistration() {
@@ -183,6 +196,8 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     }
 
     private void selectPreviousTab() {
-        mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
+        //history back
+        History.back();
+//        mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }
 }

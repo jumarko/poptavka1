@@ -39,25 +39,8 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
     /**************************************************************************/
     /* Convert to token methods.                                              */
     /**************************************************************************/
-    public String onGoToClientDemandsModule(SearchModuleDataHolder filtersHolder, int loadWidget) {
-        StringBuilder token = new StringBuilder();
-        if (filtersHolder == null) {
-            token.append("widget");
-            token.append(VALUE_SEPARATOR);
-            //TODO Martin - loadWidget - dat meno, nie id
-            token.append(getWidgetName(loadWidget));
-            if (loadWidget != Constants.NONE) {
-                token.append(PARENT_TABLE_SEPARATOR);
-                token.append("page1");
-                token.append(VALUE_SEPARATOR);
-                token.append(0);
-            }
-        } else {
-            token.append(com.google.gwt.user.client.History.getToken());
-            token.append(FILTER_SEPARATOR);
-            token.append(filtersHolder.toStringWithIDs());
-        }
-        return token.toString();
+    public String onInitClientDemandsWelcome() {
+        return "welcome";
     }
 
     /**

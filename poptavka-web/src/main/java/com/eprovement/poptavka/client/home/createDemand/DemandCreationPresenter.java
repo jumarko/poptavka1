@@ -128,51 +128,68 @@ public class DemandCreationPresenter
         view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
-                switch (event.getSelectedItem()) {
-                    case SECOND_TAB_FORM:
-                        LOGGER.info(" -> Supplier Info Form");
-                        if (maxSelectedTab < SECOND_TAB_FORM) {
-                            eventBus.initDemandBasicForm(view.getHolderPanel(SECOND_TAB_FORM));
-                        }
-                        break;
-                    case THIRD_TAB_CATEGORY:
-                        LOGGER.info(" -> Category Widget");
-                        if (maxSelectedTab < THIRD_TAB_CATEGORY) {
-                            eventBus.initCategoryWidget(
-                                    view.getHolderPanel(THIRD_TAB_CATEGORY),
-                                    Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                                    CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
-                        }
-                    case FOURTH_TAB_LOCALITY:
-                        LOGGER.info(" -> Locality Widget");
-                        if (maxSelectedTab < FOURTH_TAB_LOCALITY) {
-                            eventBus.initLocalityWidget(
-                                    view.getHolderPanel(FOURTH_TAB_LOCALITY),
-                                    Constants.WITH_CHECK_BOXES,
-                                    CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
-                        }
-                        break;
-                    case FIFTH_TAB_ADVANCE:
-                        LOGGER.info(" -> init Demand Form supplierService");
-                        if (maxSelectedTab < FIFTH_TAB_ADVANCE) {
-                            eventBus.initDemandAdvForm(view.getHolderPanel(FIFTH_TAB_ADVANCE));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                if (maxSelectedTab < event.getSelectedItem()) {
-                    maxSelectedTab = event.getSelectedItem();
-                }
+                addMainPanelSelectionHandlerInner(event);
             }
         });
+    }
+
+    private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
+        switch (event.getSelectedItem()) {
+            case SECOND_TAB_FORM:
+                LOGGER.info(" -> Supplier Info Form");
+                if (maxSelectedTab < SECOND_TAB_FORM) {
+                    if (view.getHolderPanel(SECOND_TAB_FORM).getWidget() == null) {
+                        eventBus.registerTabToken(SECOND_TAB_FORM);
+                        eventBus.initDemandBasicForm(view.getHolderPanel(SECOND_TAB_FORM));
+                    }
+                }
+                break;
+            case THIRD_TAB_CATEGORY:
+                LOGGER.info(" -> Category Widget");
+                if (maxSelectedTab < THIRD_TAB_CATEGORY) {
+                    if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
+                        eventBus.registerTabToken(THIRD_TAB_CATEGORY);
+                        eventBus.initCategoryWidget(
+                                view.getHolderPanel(THIRD_TAB_CATEGORY),
+                                Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
+                                CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
+                    }
+                }
+                break;
+            case FOURTH_TAB_LOCALITY:
+                LOGGER.info(" -> Locality Widget");
+                if (maxSelectedTab < FOURTH_TAB_LOCALITY) {
+                    if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
+                        eventBus.registerTabToken(FOURTH_TAB_LOCALITY);
+                        eventBus.initLocalityWidget(
+                                view.getHolderPanel(FOURTH_TAB_LOCALITY),
+                                Constants.WITH_CHECK_BOXES,
+                                CategoryCell.DISPLAY_COUNT_OF_DEMANDS);
+                    }
+                }
+                break;
+            case FIFTH_TAB_ADVANCE:
+                LOGGER.info(" -> init Demand Form supplierService");
+                if (maxSelectedTab < FIFTH_TAB_ADVANCE) {
+                    if (view.getHolderPanel(FIFTH_TAB_ADVANCE).getWidget() == null) {
+                        eventBus.registerTabToken(FIFTH_TAB_ADVANCE);
+                        eventBus.initDemandAdvForm(view.getHolderPanel(FIFTH_TAB_ADVANCE));
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        if (maxSelectedTab < event.getSelectedItem()) {
+            maxSelectedTab = event.getSelectedItem();
+        }
     }
 
     private void addLoginButtonHandler() {
         view.getLoginBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.login(Constants.HOME_CREATE_DEMAND);
+                eventBus.login(Constants.CREATE_DEMAND);
             }
         });
     }
@@ -205,12 +222,12 @@ public class DemandCreationPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        //nothing
+        eventBus.registerTabToken(FIRST_TAB_LOGIN);
     }
 
     public void onForward() {
         LOGGER.info("DemandCreationPresenter loaded");
-        Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_DEMAND);
+        Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         maxSelectedTab = -1;
         eventBus.setUpSearchBar(null);
     }
@@ -225,11 +242,21 @@ public class DemandCreationPresenter
         if (Storage.getUser() != null) {
             blockFirstTab = true;
             //TODO Jaro - add some style which look like disable
-            view.getFirstTabHeader().setStyleName("");
+//            view.getFirstTabHeader().setStyleName("");
             view.getMainPanel().selectTab(SECOND_TAB_FORM);
         } else {
             blockFirstTab = false;
+            //in case back functionality was performed, set selected tab to first
+            view.getMainPanel().selectTab(FIRST_TAB_LOGIN);
+            //and reset first tab header css
+            //TODO Jaro - remove style which look like disable
+//            view.getFirstTabHeader().removeStyleName("");
         }
+    }
+
+    public void onGoToCreateDemandModuleByHistory(int selectedTab) {
+        eventBus.setHistoryStoredForNextOne(false);
+        view.getMainPanel().selectTab(selectedTab);
     }
 
     /**************************************************************************/

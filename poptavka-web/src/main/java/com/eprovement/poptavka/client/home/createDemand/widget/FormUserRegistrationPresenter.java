@@ -191,7 +191,7 @@ public class FormUserRegistrationPresenter
             eventBus.autoLogin(
                     clientToRegister.getEmail(),
                     clientToRegister.getPassword(),
-                    Constants.HOME_CREATE_DEMAND);
+                    Constants.CREATE_DEMAND);
         } else {
             activationPopup.getView().getStatusLabel().setMessage(MSGS.activationFailed());
             activationPopup.getView().getReportButton().setVisible(true);
