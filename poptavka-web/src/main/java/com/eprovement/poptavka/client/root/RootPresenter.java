@@ -23,6 +23,7 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
+import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
@@ -40,6 +41,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private AddressSelectorPresenter addressSelector = null;
     private LoginPopupPresenter login = null;
     private LoadingPopupPresenter loading = null;
+    private ActivationCodePopupPresenter activation = null;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -225,6 +227,14 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onInitEmailDialogPopup() {
         eventBus.addHandler(EmailDialogPopupPresenter.class);
+    }
+
+    public void onInitActivationCodePopup(BusinessUserDetail client, int widgetToLoad) {
+        if (activation != null) {
+            eventBus.removeHandler(activation);
+        }
+        activation = eventBus.addHandler(ActivationCodePopupPresenter.class);
+        activation.initActivationCodePopup(client, widgetToLoad);
     }
 //    private static final int OFFSET_X = 60;
 //    private static final int OFFSET_Y = 35;

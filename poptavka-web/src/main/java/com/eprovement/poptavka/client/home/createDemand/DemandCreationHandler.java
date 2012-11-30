@@ -56,6 +56,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 //                if (client.getClientId() != -1) {
 //                    //popytaj ten overovaci kod
 //                    eventBus.responseRegisterNewClient(client);
+//                      check if given client is the same as created client - for security ???
 //                }
 //            }
 //        });
@@ -64,34 +65,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
         c.setEmail("martin@user.cz");
         c.setPassword("kreslo");
         eventBus.loadingHide();
-        eventBus.responseRegisterNewClient(c);
-    }
-
-    public void onActivateClient(String activationCode) {
-        if (activationCode.equals("123")) {
-            eventBus.responseActivateClient(true);
-        } else {
-            eventBus.responseActivateClient(false);
-        }
-//        demandCreationService.activateClient(activationCode, new SecuredAsyncCallback<Boolean>(eventBus) {
-//            @Override
-//            public void onSuccess(Boolean result) {
-//                eventBus.responseActivateClient(result);
-//            }
-//        });
-    }
-    private boolean bool = true;
-
-    public void onSentActivationCodeAgain(BusinessUserDetail client) {
-        //TODO remove - fake - for devel
-        bool = !bool;
-        eventBus.responseSendActivationCodeAgain(bool);
-//        demandCreationService.sentActivationCodeAgain(client, new SecuredAsyncCallback<Boolean>(eventBus) {
-//            @Override
-//            public void onSuccess(Boolean result) {
-//                eventBus.responseSendActivationCodeAgain(result);
-//            }
-//        });
+        eventBus.initActivationCodePopup(c, Constants.CREATE_DEMAND);
     }
 
     /**

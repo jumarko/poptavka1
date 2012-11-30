@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
@@ -36,6 +37,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
             public void onSuccess(BusinessUserDetail supplier) {
                 // TODO forward to user/atAccount
                 eventBus.loadingHide();
+                eventBus.initActivationCodePopup(supplier, Constants.SUPPLIER_DEMANDS_WELCOME);
             }
         });
     }

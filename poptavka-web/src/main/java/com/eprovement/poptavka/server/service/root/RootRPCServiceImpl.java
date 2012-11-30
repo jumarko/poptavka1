@@ -262,4 +262,19 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         //Implement sending offer
         return new OfferMessageDetail();
     }
+
+    /**************************************************************************/
+    /* Activation methods                                                     */
+    /**************************************************************************/
+    @Override
+    public boolean activateClient(String activationCode) throws RPCException {
+        //TODO backend
+        return true;
+    }
+
+    @Override
+    public boolean sentActivationCodeAgain(BusinessUserDetail client) throws RPCException {
+        //TODO backend
+        return true;
+    }
 }

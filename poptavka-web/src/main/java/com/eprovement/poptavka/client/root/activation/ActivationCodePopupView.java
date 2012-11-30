@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.client.home.createDemand.widget;
+package com.eprovement.poptavka.client.root.activation;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.google.gwt.core.client.GWT;

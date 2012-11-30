@@ -22,7 +22,4 @@ public interface DemandCreationRPCServiceAsync {
     /** @see UserRPCService#checkFreeEmail(String) */
     void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
 
-    void activateClient(String activationCode, AsyncCallback<Boolean> callback);
-
-    void sentActivationCodeAgain(BusinessUserDetail client, AsyncCallback<Boolean> callback);
 }

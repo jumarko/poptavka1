@@ -70,9 +70,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(forwardToParent = true)
-    void autoLogin(String email, String password, int widgetToLoad);
-
-    @Event(forwardToParent = true)
     void logout(int widgetToLoad);
 
     @Event(forwardToParent = true)
@@ -92,7 +89,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
-    void initEmailDialogPopup();
+    void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);
 
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
@@ -131,15 +128,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(handlers = FormUserRegistrationPresenter.class)
     void checkFreeEmailResponse(Boolean result);
 
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void responseRegisterNewClient(BusinessUserDetail client);
-
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void responseActivateClient(boolean activated);
-
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void responseSendActivationCodeAgain(boolean sent);
-
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
@@ -159,9 +147,4 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(handlers = DemandCreationHandler.class)
     void checkFreeEmail(String value);
 
-    @Event(handlers = DemandCreationHandler.class)
-    void activateClient(String activationCode);
-
-    @Event(handlers = DemandCreationHandler.class)
-    void sentActivationCodeAgain(BusinessUserDetail client);
 }

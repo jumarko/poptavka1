@@ -84,6 +84,9 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
+    void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);
+
+    @Event(forwardToParent = true)
     void activateLocalityWidgetPresenter();
 
     @Event(forwardToParent = true)

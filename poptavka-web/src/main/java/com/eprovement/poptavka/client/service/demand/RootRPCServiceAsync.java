@@ -54,4 +54,11 @@ public interface RootRPCServiceAsync {
     void sendQuestionMessage(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
     void sendOfferMessage(OfferMessageDetail offerMessageToSend, AsyncCallback<OfferMessageDetail> callback);
+
+    /**************************************************************************/
+    /* Activation methods                                                     */
+    /**************************************************************************/
+    void activateClient(String activationCode, AsyncCallback<Boolean> callback);
+
+    void sentActivationCodeAgain(BusinessUserDetail client, AsyncCallback<Boolean> callback);
 }

@@ -182,6 +182,36 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     /**************************************************************************/
+    /* Activation methods                                                     */
+    /**************************************************************************/
+    public void onActivateUser(String activationCode) {
+        if (activationCode.equals("123")) {
+            eventBus.responseActivateUser(true);
+        } else {
+            eventBus.responseActivateUser(false);
+        }
+//        demandCreationService.activateClient(activationCode, new SecuredAsyncCallback<Boolean>(eventBus) {
+//            @Override
+//            public void onSuccess(Boolean result) {
+//                eventBus.responseActivateClient(result);
+//            }
+//        });
+    }
+    private boolean bool = true;
+
+    public void onSentActivationCodeAgain(BusinessUserDetail client) {
+        //TODO remove - fake - for devel
+        bool = !bool;
+        eventBus.responseSendActivationCodeAgain(bool);
+//        demandCreationService.sentActivationCodeAgain(client, new SecuredAsyncCallback<Boolean>(eventBus) {
+//            @Override
+//            public void onSuccess(Boolean result) {
+//                eventBus.responseSendActivationCodeAgain(result);
+//            }
+//        });
+    }
+
+    /**************************************************************************/
     /* History helper methods                                                 */
     /**************************************************************************/
     /**

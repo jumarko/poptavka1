@@ -20,6 +20,7 @@ import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
+import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
@@ -33,6 +34,7 @@ import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.domain.enums.LocalityType;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -262,6 +264,7 @@ public interface RootEventBus extends EventBusWithLookup {
     @BeforeLoadChildModule
     @Event(handlers = RootPresenter.class)
     void beforeLoad();
+
     /**
      * This event will be called after the code is done loading.
      * You can for example decide to hide a wait popup.
@@ -271,6 +274,7 @@ public interface RootEventBus extends EventBusWithLookup {
     @AfterLoadChildModule
     @Event(handlers = RootPresenter.class)
     void afterLoad();
+
     /**************************************************************************/
     /* Parent events - no events for RootModule                               */
     /**************************************************************************/
@@ -371,7 +375,6 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-
     /**************************************************************************/
     /* Business events handled by MenuPresenter --- HOME MENU                 */
     /**************************************************************************/
@@ -449,4 +452,22 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(handlers = DetailsWrapperPresenter.class, passive = true)
     void addConversationMessage(MessageDetail sentMessage, ViewType handlingType);
+
+    /**************************************************************************/
+    /* User Activatoin                                                        */
+    /**************************************************************************/
+    @Event(handlers = RootPresenter.class)
+    void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad);
+
+    @Event(handlers = RootHandler.class)
+    void activateUser(String activationCode);
+
+    @Event(handlers = RootHandler.class)
+    void sentActivationCodeAgain(BusinessUserDetail client);
+
+    @Event(handlers = ActivationCodePopupPresenter.class)
+    void responseActivateUser(boolean activated);
+
+    @Event(handlers = ActivationCodePopupPresenter.class)
+    void responseSendActivationCodeAgain(boolean sent);
 }

@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
+import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
@@ -16,7 +16,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -166,48 +165,6 @@ public class FormUserRegistrationPresenter
 
             // TODO change to global status changer eventBus call
             view.getMailStatus().setState(State.ERROR_16);
-        }
-    }
-
-    public void onResponseRegisterNewClient(BusinessUserDetail client) {
-        //TODO delete just dor DEVEL purposes
-        clientToRegister = client;
-        if (activationPopup != null) {
-            eventBus.removeHandler(activationPopup);
-        }
-        activationPopup = eventBus.addHandler(ActivationCodePopupPresenter.class);
-        activationPopup.goToActivationCodePopup(clientToRegister);
-    }
-
-    public void onResponseActivateClient(boolean activated) {
-        activationPopup.getView().getStatusLabel().setPassedSmall(activated);
-
-        //inform user
-        if (activated) {
-            activationPopup.getView().getStatusLabel().setMessage(MSGS.activationPassed());
-            //close activation popup
-            ((PopupPanel) activationPopup.getView().getWidgetView()).hide();
-            //login user automatically
-            eventBus.autoLogin(
-                    clientToRegister.getEmail(),
-                    clientToRegister.getPassword(),
-                    Constants.CREATE_DEMAND);
-        } else {
-            activationPopup.getView().getStatusLabel().setMessage(MSGS.activationFailed());
-            activationPopup.getView().getReportButton().setVisible(true);
-        }
-    }
-
-    public void onResponseSendActivationCodeAgain(boolean sent) {
-        activationPopup.getView().getStatusLabel().setPassedSmall(sent);
-
-        //inform user
-        if (sent) {
-            activationPopup.getView().getStatusLabel().setMessage(
-                    MSGS.newActivationCodeSent() + clientToRegister.getEmail());
-        } else {
-            activationPopup.getView().getStatusLabel().setMessage(MSGS.newActivationCodeSentFailed());
-            activationPopup.getView().getReportButton().setVisible(true);
         }
     }
 
