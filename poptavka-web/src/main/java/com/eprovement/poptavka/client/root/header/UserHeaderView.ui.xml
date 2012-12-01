@@ -60,8 +60,8 @@
         <!-- Login Button -->
         <!--<div class='{style.login}'>-->
             <g:MenuBar styleName='{style.login}'>
-                <g:MenuItem ui:field="menuRoot" styleName='{res.layout.loginButton}'>
-                    <g:MenuBar ui:field="menuBar" vertical="true">
+                <g:MenuItem ui:field="menuRoot" styleName='{res.layout.logoutButton}'>
+                    <g:MenuBar ui:field="menuBar" vertical="true" styleName='{res.layout.logoutMenuBar}'>
                         <g:MenuItem ui:field="menuLogOut">
                             <ui:msg key="logOut">Log Out</ui:msg>
                         </g:MenuItem>

@@ -36,6 +36,10 @@ public interface LayoutResource extends CssResource {
     String loginArea();
     @ClassName("login-button")
     String loginButton();
+    @ClassName("logout-button")
+    String logoutButton();
+    @ClassName("logout-menu-bar")
+    String logoutMenuBar();
     @ClassName("footer-toggle")
     String footerToggle();
     @ClassName("home-menu")
