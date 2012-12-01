@@ -167,7 +167,13 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public long getClientDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        return 1L;
+        //TODO Backend - refactor this method to speed up performance
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.NEW);
+        final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
+        return clientDemands.size();
     }
 
     /**
@@ -707,7 +713,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientDemandDetail getClientOfferedDemand(long clientDemandID) throws RPCException,
             ApplicationSecurityException {
-        //staci takto? alebo treba nejak rozlisovat demand a offeredDemand
+        //TODO staci takto? alebo treba nejak rozlisovat demand a offeredDemand
         return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
     }
 
