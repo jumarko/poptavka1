@@ -128,9 +128,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public long getSupplierPotentialDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
+        //TODO Martin - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
-        long test = userMessageService.getPotentialDemandsCount(businessUser);
         return userMessageService.getPotentialDemandsCount(businessUser);
     }
 
@@ -152,7 +151,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<FullOfferDetail> getSupplierPotentialDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
+        //TODO Martin - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
         final List<UserMessage> userMessages = userMessageService.getPotentialDemands(businessUser);
         // fill list
