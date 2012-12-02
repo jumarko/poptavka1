@@ -62,6 +62,14 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
     }
 
     @Override
+    public long getPotentialDemandsCount(BusinessUser supplier) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("supplier", supplier);
+
+        return (Long) runNamedQueryForSingleResult("getPotentialDemandsCount", queryParams);
+    }
+
+    @Override
     public List<UserMessage> getPotentialDemands(BusinessUser supplier) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("supplier", supplier);

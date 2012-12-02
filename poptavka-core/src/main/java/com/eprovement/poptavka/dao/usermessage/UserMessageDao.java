@@ -56,6 +56,13 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
     List<UserMessage> getSentItems(User user);
 
     /**
+     * Get's all the user's valid potential demand messages count
+     * @param supplier the supplier to retreive the demand messages for
+     * @return count of <code>UserMesage</code> of the potential demand mesages
+     */
+    long getPotentialDemandsCount(BusinessUser supplier);
+
+    /**
      * Get's all the user's valid potential demand messages
      * @param supplier the supplier to retreive the demand messages for
      * @return list of <code>UserMesage</code> of the potential demand mesages

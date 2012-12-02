@@ -70,6 +70,14 @@ import javax.persistence.NamedQuery;
                         + " and userMessage.message.demand is not NULL"
                         + " and userMessage.message.parent is NULL"
                         + " and userMessage.message.demand.status"
+                        + " = 'ACTIVE'"),
+        @NamedQuery(name = "getPotentialDemandsCount",
+                query = "select count(*)"
+                        + " from UserMessage userMessage "
+                        + "where userMessage.user = :supplier"
+                        + " and userMessage.message.demand is not NULL"
+                        + " and userMessage.message.parent is NULL"
+                        + " and userMessage.message.demand.status"
                         + " = 'ACTIVE'")
 }
 )

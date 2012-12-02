@@ -150,7 +150,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesAll(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                3, listOfClientDemandMessages.size());
+                4, listOfClientDemandMessages.size());
 
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
@@ -172,7 +172,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesUnread(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                3, listOfClientDemandMessages.size());
+                4, listOfClientDemandMessages.size());
 
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",

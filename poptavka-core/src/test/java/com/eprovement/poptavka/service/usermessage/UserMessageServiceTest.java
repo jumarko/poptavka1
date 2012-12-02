@@ -44,6 +44,8 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     private User user;
     private BusinessUser businessUser;
+    private User user2;
+    private BusinessUser businessUser2;
 
 
     @Before
@@ -52,6 +54,11 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         user.setId(111111111L);
         this.businessUser = new BusinessUser();
         businessUser.setId(111111111L);
+        // business/user2 has a supplier role to test getPotentialDemands
+        this.user2 = new User();
+        user2.setId(111111114L);
+        this.businessUser2 = new BusinessUser();
+        businessUser2.setId(111111114L);
     }
 
 
@@ -96,6 +103,18 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(6L, sentItems);
         checkUserMessageExists(304L, sentItems);
         checkUserMessageExists(404L, sentItems);
+    }
+
+    @Test
+    public void testGetPotentialDemandsCount() {
+
+        final long potentialDemandsCount = this.userMessageService
+                .getPotentialDemandsCount(this.businessUser);
+        Assert.assertEquals(4L, potentialDemandsCount);
+        // test for businessUser2
+        final long potentialDemandsCount2 = this.userMessageService
+                .getPotentialDemandsCount(this.businessUser2);
+        Assert.assertEquals(1L, potentialDemandsCount2);
     }
 
     @Test

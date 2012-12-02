@@ -60,6 +60,31 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
      */
     @Override
     @Transactional(readOnly = true)
+    public long getPotentialDemandsCount(BusinessUser supplier) {
+        Preconditions.checkNotNull("Supplier must be specified for finding potential demands", supplier);
+        Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
+                supplier.getId());
+
+        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
+        final Search potentialDemandsSearch = new Search(UserMessage.class);
+        potentialDemandsSearch.addFilterEqual("supplier", supplier);
+        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
+        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
+
+        final long potentialDemandsCount = getDao().getPotentialDemandsCount(supplier);
+        LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
+                supplier, potentialDemandsCount);
+        return potentialDemandsCount;
+    }
+
+    /**
+     *  {@inheritDoc}
+     * <p>
+     *     This implementation requires only <code>id</code> attribute of parameter <code>supplier</code> to be filled.
+     * </p>
+     */
+    @Override
+    @Transactional(readOnly = true)
     public List<UserMessage> getPotentialDemands(BusinessUser supplier) {
         Preconditions.checkNotNull("Supplier must be specified for finding potential demands", supplier);
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
@@ -75,6 +100,31 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
                 supplier, potentialDemands.size());
         return potentialDemands;
+    }
+
+    /**
+     *  {@inheritDoc}
+     * <p>
+     *     This implementation requires only <code>id</code> attribute of parameter <code>supplier</code> to be filled.
+     * </p>
+     * TODO Backend - ivan: I'm not sure if we need method that retrieves count of search results? If so how should it
+     * work? Rework this solution.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public long getPotentialDemandsCount(BusinessUser supplier, Search search) {
+        Preconditions.checkNotNull("Search object must be specified.", search);
+        try {
+            LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{}", supplier);
+            final List<UserMessage> potentialDemands = Searcher.searchCollection(getPotentialDemands(supplier), search);
+            LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{} "
+                    + "potential_demands_size={}", supplier, potentialDemands.size());
+            return Long.valueOf(potentialDemands.size()).longValue();
+
+        } catch (SearcherException ex) {
+            LOGGER.error("action=get_potential_demands_supplier_search status=error supplier{}", ex);
+        }
+        return 0L;
     }
 
     /**
