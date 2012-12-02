@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-@def selectionBorderWidth  2px ;
+@def selectionBorderWidth  2px;
 
 .dataGridWidget {
 	
@@ -59,6 +59,7 @@
 
 .dataGridCell {
 	padding: 2px 15px;
+	line-height: 30px;
 	overflow: hidden;
 	color: #002e50;
 }

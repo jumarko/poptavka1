@@ -1,15 +1,15 @@
-package com.eprovement.poptavka.client.resources;
+package com.eprovement.poptavka.client.resources.celltree;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellTree;
 
-public interface TreeResources extends CellTree.Resources {
-    @Source("images/cellTreeClosedItem.gif")
+public interface CustomCellTree extends CellTree.Resources {
+    @Source("cellTreeClosedItem.gif")
     ImageResource cellTreeClosedItem();
 
-    @Source("images/cellTreeOpenItem.gif")
+    @Source("cellTreeOpenItem.gif")
     ImageResource cellTreeOpenItem();
 
-    @Source("MyCellTree.css")
+    @Source("customCellTree.css")
     CellTree.Style cellTreeStyle();
 }

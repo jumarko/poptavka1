@@ -5,9 +5,9 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.resources.AsyncDataGrid;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.resources.TreeResources;
+import com.eprovement.poptavka.client.resources.celltree.CustomCellTree;
+import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
@@ -129,7 +129,7 @@ public class HomeSuppliersView extends OverflowComposite
 
     public void initCellTree() {
         //Workaround for issue: CellTree disappeared when clicking but outside tree nodes
-        CellTree.Resources resource = GWT.create(TreeResources.class);
+        CellTree.Resources resource = GWT.create(CustomCellTree.class);
         StyleInjector.injectAtEnd("." + resource.cellTreeStyle().cellTreeTopItem() + " {margin-top: 0px;}");
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,

@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.resources.AsyncDataGrid;
+import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;

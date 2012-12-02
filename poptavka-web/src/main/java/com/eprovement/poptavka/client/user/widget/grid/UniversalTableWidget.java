@@ -2,7 +2,7 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.resources.AsyncDataGrid;
+import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
