@@ -174,14 +174,14 @@ public class SupplierDemandsPresenter extends LazyPresenter<
      */
     public void displayDetailContent(FullOfferDetail detail) {
 //        detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestDemandDetail(123L, type);
+        detailSection.requestDemandDetail(21L, type);
 
 //        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestSupplierDetail(142811L, type);
+        detailSection.requestSupplierDetail(20L, type);
 
 //        detailSection.requestContest(detail.getMessageId(),
 //                detail.getUserMessageId(), Storage.getUser().getUserId());
-        detailSection.requestConversation(124L, 289L, 149L);
+        detailSection.requestConversation(198L, 102L, 9L);
     }
 
     public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {

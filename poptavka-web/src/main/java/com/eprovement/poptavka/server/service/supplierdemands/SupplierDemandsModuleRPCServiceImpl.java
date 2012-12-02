@@ -27,6 +27,7 @@ import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -151,21 +152,49 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<FullOfferDetail> getSupplierPotentialDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
         final List<UserMessage> userMessages = userMessageService.getPotentialDemands(businessUser);
-        // fill list
-        ArrayList<PotentialDemandMessage> potentialDemands = new ArrayList<PotentialDemandMessage>();
+//        ArrayList<PotentialDemandMessage> potentialDemands = new ArrayList<PotentialDemandMessage>();
+//        for (UserMessage um : userMessages) {
+//            PotentialDemandMessage detail = potentialDemandMessageConverter.convertToTarget(um);
+//            detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
+//            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
+//            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
+//            // TODO ivlcek - here I should probably fill the other Demand detail attributes
+//            potentialDemands.add(detail);
+//        }
+        // TODO ivlcek - refactor with detail converter
+        ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
+                new ArrayList<SupplierPotentialDemandDetail>();
         for (UserMessage um : userMessages) {
-            PotentialDemandMessage detail = potentialDemandMessageConverter.convertToTarget(um);
-            detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
+            SupplierPotentialDemandDetail detail = new SupplierPotentialDemandDetail();
+            // Client part
+            detail.setClientId(um.getMessage().getDemand().getClient().getId());
+            detail.setClientName(
+                    um.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            // Message part
+            detail.setMessageId(um.getMessage().getId());
+            detail.setThreadRootId(um.getMessage().getThreadRoot().getId());
+            detail.setSenderId(um.getMessage().getSender().getId());
+            detail.setMessageSent(um.getMessage().getSent());
+            // UserMessage part
+            detail.setUserMessageId(um.getId());
+            detail.setIsRead(um.isRead());
+            detail.setIsStarred(um.isStarred());
             detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
-            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
-            // TODO ivlcek - here I should probably fill the other Demand detail attributes
-            potentialDemands.add(detail);
-        }
-        // TODO ivlcek - convert to PotentialDemandMessage detail object
+            detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
+            // Demand part
+            detail.setDemandId(um.getMessage().getDemand().getId());
+            detail.setValidTo(um.getMessage().getDemand().getValidTo());
+            detail.setEndDate(um.getMessage().getDemand().getEndDate());
+            detail.setTitle(um.getMessage().getDemand().getTitle());
+            detail.setPrice(um.getMessage().getDemand().getPrice().toPlainString());
 
+            supplierPotentialDemands.add(detail);
+        }
+
+        // TODO Martin - return supplierPotentialDemands instead of FakeData
+//        return supplierPotentialDemands;
         return getFakeData();
     }
 

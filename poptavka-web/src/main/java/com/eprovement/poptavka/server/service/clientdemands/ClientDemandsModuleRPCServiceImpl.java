@@ -171,9 +171,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
+        // TODO ivlcek - we need to display demands with statuses New, Active, Invalid, Inactive. User operator IN once
+        // Vojto implements it in Searcher.java
         clientDemandsSearch.addFilterEqual("status", DemandStatus.NEW);
-        final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
-        return clientDemands.size();
+        return Searcher.searchCollection(client.getDemands(), clientDemandsSearch).size();
     }
 
     /**
