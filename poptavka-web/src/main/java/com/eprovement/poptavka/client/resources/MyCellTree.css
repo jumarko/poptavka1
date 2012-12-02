@@ -40,7 +40,7 @@
 }
 
 .cellTreeItemImage {
-	top: 8px;
+	top: 7px;
 }
 
 .cellTreeItemImageValue {
@@ -64,7 +64,7 @@
 }
 
 .cellTreeTopItemImage {
-	top: 14px;
+	top: 13px;
 }
 
 .cellTreeWidget div div div div:first-child .cellTreeTopItem .cellTreeTopItemImageValue
