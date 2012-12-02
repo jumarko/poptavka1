@@ -10,16 +10,19 @@ import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.demand.RatingService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -51,10 +54,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     private GeneralService generalService;
     private UserMessageService userMessageService;
     private MessageService messageService;
+    private RatingService ratingService;
     //Converters
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Message, MessageDetail> messageConverter;
+    private Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -68,6 +73,16 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
         this.userMessageService = userMessageService;
+    }
+
+    @Autowired
+    public void setRatingService(RatingService ratingService) {
+        this.ratingService = ratingService;
+    }
+
+    @Autowired
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     //Converters
@@ -89,6 +104,14 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         this.messageConverter = messageConverter;
     }
 
+    @Autowired
+    public void setPotentialDemandMessageConverter(
+            @Qualifier("potentialDemandMessageConverter") Converter<UserMessage, PotentialDemandMessage>
+                    potentialDemandMessageConverter) {
+        this.potentialDemandMessageConverter = potentialDemandMessageConverter;
+    }
+
+
     //************************ SUPPLIER - My Demands **************************/
     /**
      * Get demands of categories that I am interested in.
@@ -106,7 +129,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public long getSupplierPotentialDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        return 1L;
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
+        long test = userMessageService.getPotentialDemandsCount(businessUser);
+        return userMessageService.getPotentialDemandsCount(businessUser);
     }
 
     /**
@@ -128,6 +153,20 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public List<FullOfferDetail> getSupplierPotentialDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
+        final List<UserMessage> userMessages = userMessageService.getPotentialDemands(businessUser);
+        // fill list
+        ArrayList<PotentialDemandMessage> potentialDemands = new ArrayList<PotentialDemandMessage>();
+        for (UserMessage um : userMessages) {
+            PotentialDemandMessage detail = potentialDemandMessageConverter.convertToTarget(um);
+            detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
+            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
+            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
+            // TODO ivlcek - here I should probably fill the other Demand detail attributes
+            potentialDemands.add(detail);
+        }
+        // TODO ivlcek - convert to PotentialDemandMessage detail object
+
         return getFakeData();
     }
 
