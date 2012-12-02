@@ -4,21 +4,17 @@
              xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
     <ui:style>
-        .paginator {
-        margin: 5px 10px;
-        }
-
         .pageSize {
         border-radius: 3px 3px 3px 3px;
         float: left;
         height: 31px;
-        margin: 5px 0 0;
+        margin: 0 8px;
         padding: 6px;
         }
     </ui:style>
 
     <g:HorizontalPanel>
-        <c:SimplePager ui:field='pager' styleName='{style.paginator}'/>
+        <c:SimplePager ui:field='pager'/>
         <g:ListBox ui:field='pageSize' styleName='{style.pageSize}'/>
     </g:HorizontalPanel>
 </ui:UiBinder>

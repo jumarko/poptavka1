@@ -22,7 +22,7 @@
 		}
 		
 		.gridMenu {
-			margin: 12px 0 0;
+			margin: 7px 0 0;
 			float: left;
 		}
 		
@@ -43,7 +43,7 @@
 			color: #FFFFFF;
 			font-weight: bold;
 			height: 31px;
-			padding: 0 0 3px 23px;
+			padding: 0 0 1px 23px;
 			width: 119px;
 		}
 	</ui:style>
@@ -52,7 +52,7 @@
 		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
 		<g:west size="320">
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:HTMLPanel></g:HTMLPanel>
 				</g:north>
 				<g:center>
@@ -67,7 +67,7 @@
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:VerticalPanel styleName='{style.gridMenu}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
@@ -75,7 +75,7 @@
 						<g:HorizontalPanel>
 							<g:Button ui:field="offerBtn1" styleName='{style.button}'>Send Offer
 							</g:Button>
-							<s:UniversalPagerWidget ui:field='pager' />
+							<s:UniversalPagerWidget ui:field='pager' styleName='{style.paginator}'/>
 						</g:HorizontalPanel>
 					</g:VerticalPanel>
 				</g:north>
@@ -89,7 +89,7 @@
 		</g:center>
 		<g:east size="350">
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:HTMLPanel></g:HTMLPanel>
 				</g:north>
 				<g:center>
