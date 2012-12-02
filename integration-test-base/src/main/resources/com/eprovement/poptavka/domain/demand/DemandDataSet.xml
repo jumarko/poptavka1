@@ -31,7 +31,7 @@
     <DEMAND ID="9" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."
             STATUS="NEW" CREATEDDATE="2001-01-01 00:00:01" />
     <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application." PRICE="10000"
-            STATUS="NEW" CREATEDDATE="2010-10-01 13:33:34" />
+            STATUS="ACTIVE" CREATEDDATE="2010-10-01 13:33:34" />
 
     <!--########################################## suppliers for demands ###########################################-->
     <DEMAND_SUPPLIER DEMAND_ID="1" SUPPLIER_ID="1111111114" />

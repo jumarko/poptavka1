@@ -88,7 +88,7 @@
     <MESSAGEUSERROLE ID="52" MESSAGE_ID="5" USER_ID="111111113" TYPE="TO"/>
     <MESSAGEUSERROLE ID="54" MESSAGE_ID="7" USER_ID="111111113" TYPE="TO"/>
 
-    !-- Completely different Thread root -->
+    <!-- Completely different Thread root -->
     <MESSAGE ID="100"
              BODY="Ahoj, ahoj, ahoj, dnes, kupit, slivowitz."
              PARENT_ID="[NULL]"
@@ -192,6 +192,9 @@
              CREATED="2012-07-01"
              BODY="Klient Jožko Hrubý má záujem o super Java aplikáciu. Táto poptávka je atraktívna!."
              SUBJECT="Potential demand for Java application"
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             THREADROOT_ID="501"
              DEMAND_ID="10" />
     <MESSAGE ID="502"
              CREATED="2012-07-01"
