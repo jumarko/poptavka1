@@ -138,6 +138,19 @@ public final class Searcher {
                         }
                     }
                 }
+                if (value instanceof String) {
+                    String stringValue = (String) value;
+                    String filterValue = (String) filter.getValue();
+                    if (filter.getOperator() == Filter.OP_IN) {
+                        belongsToResult = stringValue.contains(filterValue);
+                        if (belongsToResult) {
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
             }
             if (belongsToResult) {
                 result.add(item);

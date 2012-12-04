@@ -117,6 +117,16 @@ public class SearcherTest extends DBUnitIntegrationTest {
         checkUserMessageExists(2L, inboxFiltered);
         checkUserMessageExists(302L, inboxFiltered);
 
+        search = new Search(UserMessage.class);
+        search.addFilter(new Filter("message.demand", demand));
+        search.addFilter(new Filter("message.body", "es mam vel", Filter.OP_IN));
+        inboxFiltered = Searcher.searchCollection(
+                inbox, search);
+        Assert.assertEquals(3, inboxFiltered.size());
+        checkUserMessageExists(2L, inboxFiltered);
+        checkUserMessageExists(202L, inboxFiltered);
+        checkUserMessageExists(302L, inboxFiltered);
+
     }
 
     /**
