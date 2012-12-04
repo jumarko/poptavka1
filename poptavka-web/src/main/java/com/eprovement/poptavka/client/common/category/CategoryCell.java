@@ -17,8 +17,8 @@ public class CategoryCell extends AbstractCell<CategoryDetail> {
     public static final int DISPLAY_COUNT_OF_SUPPLIERS = 1;
     public static final int DISPLAY_COUNT_DISABLED = -1;
     //Display string Constants
-    public static final String LEFT_BRACE = "(";
-    public static final String RIGHT_BRACE = ")";
+    public static final String LEFT_BRACE = "<span style=\"float: right; color: #f16600;\">";
+    public static final String RIGHT_BRACE = "</span>";
     public static final String SPACE = " ";
     //
     private int displayCountOfWhat = -1;
@@ -39,21 +39,22 @@ public class CategoryCell extends AbstractCell<CategoryDetail> {
             switch (displayCountOfWhat) {
                 case DISPLAY_COUNT_OF_DEMANDS:
                     text.append(SPACE);
-                    text.append(LEFT_BRACE);
-                    text.append(value.getDemandsCount());
-                    text.append(RIGHT_BRACE);
+                    sb.appendEscaped(text.toString());
+                    sb.appendHtmlConstant(LEFT_BRACE);
+                    sb.append(value.getDemandsCount());
+                    sb.appendHtmlConstant(RIGHT_BRACE);
                     break;
                 case DISPLAY_COUNT_OF_SUPPLIERS:
                     text.append(SPACE);
-                    text.append(LEFT_BRACE);
-                    text.append(value.getSuppliersCount());
-                    text.append(RIGHT_BRACE);
+                    sb.appendEscaped(text.toString());
+                    sb.appendHtmlConstant(LEFT_BRACE);
+                    sb.append(value.getSuppliersCount());
+                    sb.appendHtmlConstant(RIGHT_BRACE);
                     break;
                 default:
                     break;
             }
 
-            sb.appendEscaped(text.toString());
         }
     }
 }
