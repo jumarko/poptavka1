@@ -244,11 +244,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     public MessageDetail sendQuestionMessage(MessageDetail messageDetailImpl) throws RPCException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
-                    messageDetailImpl.getThreadRootId()),
+                    messageDetailImpl.getParentId()),
                     this.generalService.find(User.class, messageDetailImpl.getSenderId()));
             m.setBody(messageDetailImpl.getBody());
             m.setSubject(messageDetailImpl.getTitle());
-            // TODO set the id correctly, check it
+            messageService.send(m);
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
