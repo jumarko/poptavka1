@@ -19,14 +19,14 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-public class LocalityDetailSuggestOracle extends MultiWordSuggestOracle {
+public class CitySuggestOracle extends MultiWordSuggestOracle {
 
     private static final int MIN_CHARS_TO_SEARCH = 2;
     //Need to provide RPC and EventBus
     private AddressSelectorPresenter addressSelectorPresenter = null;
     private static String localityCode = null;
 
-    public LocalityDetailSuggestOracle(AddressSelectorPresenter presenter) {
+    public CitySuggestOracle(AddressSelectorPresenter presenter) {
         this.addressSelectorPresenter = presenter;
     }
 
@@ -38,8 +38,8 @@ public class LocalityDetailSuggestOracle extends MultiWordSuggestOracle {
                     new SecuredAsyncCallback<List<LocalityDetail>>(addressSelectorPresenter.getEventBus()) {
                         @Override
                         public void onSuccess(List<LocalityDetail> result) {
-                            LocalityDetailSuggestOracle.Response response =
-                                    new LocalityDetailSuggestOracle.Response();
+                            CitySuggestOracle.Response response =
+                                    new CitySuggestOracle.Response();
 
                             Collection<LocalityDetailMultiWordSuggestion> list =
                                     new ArrayList<LocalityDetailMultiWordSuggestion>();
@@ -52,7 +52,7 @@ public class LocalityDetailSuggestOracle extends MultiWordSuggestOracle {
                     });
         } else {
             callback.onSuggestionsReady(suggestRequest,
-                    new LocalityDetailSuggestOracle.Response(
+                    new CitySuggestOracle.Response(
                     Collections.<SuggestOracle.Suggestion>emptyList()));
         }
     }

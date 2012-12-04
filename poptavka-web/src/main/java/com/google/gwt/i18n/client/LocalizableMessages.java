@@ -377,4 +377,13 @@ public interface LocalizableMessages extends Messages {
     String reEnterYourEmail();
     String maximumChars();
     String sendButton();
+
+    //Address Selector
+    String addressCountry();
+    String addressRegion();
+    String addressState();
+    String addressCity();
+    String addressDistrict();
+    String addressZipCode();
+    String addressStreet();
 }

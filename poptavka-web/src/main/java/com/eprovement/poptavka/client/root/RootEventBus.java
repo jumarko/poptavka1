@@ -10,7 +10,6 @@
  */
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.search.SearchModule;
@@ -337,11 +336,6 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
 
-    //Musi byt takto, lebo ak sa vrati v stack layout paneli, tak dany presenter uz bude neaktivny
-    //a pre response na pripadne zmeny uzivatelom nebude fungovat spravny widget
-    @Event(activate = LocalitySelectorPresenter.class, deactivate = AddressSelectorPresenter.class)
-    void activateLocalityWidgetPresenter();
-
     @Event(handlers = RootHandler.class)
     void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);
 
@@ -354,16 +348,13 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void initAddressWidget(SimplePanel embedToWidget);
 
-    @Event(activate = AddressSelectorPresenter.class, deactivate = LocalitySelectorPresenter.class)
-    void activateAddressWidgetPresenter();
-
     //Common Locality & Address selector widget
     /**
      * Decide which presenter to use according to previous calls of initLocalityWidget and initAddressWidget methods.
      * @param localityType
      * @param localityList
      */
-    @Event(handlers = {LocalitySelectorPresenter.class, AddressSelectorPresenter.class })
+    @Event(handlers = LocalitySelectorPresenter.class)
     void setLocalityData(LocalityType localityType, List<LocalityDetail> localityList);
 
     /**************************************************************************/

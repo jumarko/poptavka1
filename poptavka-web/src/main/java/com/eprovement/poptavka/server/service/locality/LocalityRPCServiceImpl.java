@@ -1,14 +1,16 @@
 package com.eprovement.poptavka.server.service.locality;
 
-
 import com.eprovement.poptavka.client.service.demand.LocalityRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
+import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.googlecode.genericdao.search.Filter;
+import com.googlecode.genericdao.search.Search;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +24,19 @@ import java.util.List;
 @Configurable
 public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implements LocalityRPCService {
 
+    private GeneralService generalService;
     private LocalityService localityService;
     private Converter<Locality, LocalityDetail> localityConverter;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalityRPCServiceImpl.class);
 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
+    }
+
+    @Autowired
+    public void setGeneralService(GeneralService generalService) {
+        this.generalService = generalService;
     }
 
     @Autowired
@@ -40,7 +47,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public List<LocalityDetail> getLocalities(LocalityType type) throws RPCException {
-        List<Locality>  localities =  localityService.getLocalities(type);
+        List<Locality> localities = localityService.getLocalities(type);
         return localityConverter.convertToTargetList(localities);
     }
 
@@ -74,5 +81,23 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public List<LocalityDetail> getSubLocalities(String locCode) throws RPCException {
         return localityConverter.convertToTargetList(localityService.getLocality(locCode).getChildren());
+    }
+
+    @Override
+    public List<LocalityDetail> getLocalitySuggests(String locCode, String startWith) throws RPCException {
+        Search locSearch = new Search(Locality.class);
+        if (locCode == null || locCode.isEmpty()) {
+            locSearch.addFilterOr(
+                    Filter.ilike("name", startWith + "%"),
+                    Filter.ilike("name", "% " + startWith + "%"));
+        } else {
+            locSearch.addFilterAnd(
+                    Filter.equal("parent.code", locCode),
+                    Filter.or(
+                    /**/Filter.ilike("name", startWith + "%"),
+                    /**/Filter.ilike("name", "% " + startWith + "%")));
+        }
+        List<Locality> list = generalService.search(locSearch);
+        return localityConverter.convertToTargetList(list);
     }
 }

@@ -2,61 +2,68 @@ package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
-import com.eprovement.poptavka.domain.enums.LocalityType;
+import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor.Ignore;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.ValidationMessages;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
-import java.util.List;
+import com.google.inject.Inject;
 
 @Presenter(view = AddressSelectorView.class, multiple = true)
 public class AddressSelectorPresenter
         extends LazyPresenter<AddressSelectorPresenter.AddressSelectorInterface, RootEventBus> {
+
+    @Inject
+    private LocalityRPCServiceAsync locService;
+
+    public LocalityRPCServiceAsync getLocalityService() {
+        return locService;
+    }
+    //riesit inak, je jedno ci inject tu alebo v handleri? - nieco na sposob metody: provideLocalityService()
+    //a responseLocalityService -> nasetovalo atribut localityService v prezenteri
+    //-- len aby nemuselo byt Inject, ak to nie je vporiadku
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
     /**************************************************************************/
     public interface AddressSelectorInterface extends LazyView {
 
-        //Setters
-        void setSuggestBoxOracleData(LocalityType localityType, List<LocalityDetail> data);
-
         //Getters
-        @Ignore SuggestBox getCountrySuggestBox();
+        @Ignore
+        SuggestBox getRegionSuggestBox(); //state
 
-        @Ignore SuggestBox getRegionSuggestBox();
+        @Ignore
+        SuggestBox getCitySuggestBox();
 
-        @Ignore SuggestBox getCitySuggestBox();
+        @Ignore
+        Label getRegionErrorLabel();
 
-//        ListBox getDistrict();
-
-        @Ignore Label getCountryErrorLabel();
-
-        @Ignore Label getRegionErrorLabel();
-
-        @Ignore Label getCityErrorLabel();
+        @Ignore
+        Label getCityErrorLabel();
 
         boolean isValid();
 
         AddressDetail createAddress();
+
+        void eraseAddressBoxes(String item);
 
         Widget getWidgetView();
     }
@@ -64,14 +71,15 @@ public class AddressSelectorPresenter
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     public static final ValidationMessages MSGSV = GWT.create(ValidationMessages.class);
-    private boolean regionMatch = false;
+    //in case of removeing letters in suggestbox, popup is closed at each time -> dont't call
+    private String regionSuggestSelected = "";
+    private String citySuggestSelected = "";
 
     /**************************************************************************/
     /* BIND                                                                   */
     /**************************************************************************/
     @Override
     public void bindView() {
-        addCountryHandlers();
         addRegionHandlers();
         addCityHandlers();
     }
@@ -79,69 +87,43 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     /* BIND HELPER METHODS                                                    */
     /**************************************************************************/
-    private void addCountryHandlers() {
-        /** FOCUS. **/
-        view.getCountrySuggestBox().addDomHandler(new FocusHandler() {
-            @Override
-            public void onFocus(FocusEvent event) {
-                regionMatch = false;
-                view.getCountrySuggestBox().removeStyleName(Storage.RSCS.common().errorField());
-                view.getCountryErrorLabel().setText("");
-            }
-        }, FocusEvent.getType());
-        /** BLUR. **/
-        view.getCountrySuggestBox().addDomHandler(new BlurHandler() {
-            @Override
-            public void onBlur(BlurEvent event) {
-                if (!regionMatch) {
-                    view.getCountrySuggestBox().setStyleName(Storage.RSCS.common().errorField());
-                    view.getCountryErrorLabel().setText(MSGSV.countryNotMatch());
-                }
-            }
-        }, BlurEvent.getType());
-        /** SELECTION. **/
-        view.getCountrySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
-            @Override
-            public void onSelection(SelectionEvent<Suggestion> event) {
-                if (!view.getCountrySuggestBox().getText().isEmpty()) {
-                    regionMatch = true;
-                    LocalityDetailMultiWordSuggestion suggestion =
-                            (LocalityDetailMultiWordSuggestion) event.getSelectedItem();
-                    eventBus.getChildLocalities(LocalityType.REGION, suggestion.getLocalityDetail().getCode(), null);
-                }
-            }
-        });
-    }
-
     private void addRegionHandlers() {
         /** FOCUS. **/
         view.getRegionSuggestBox().addDomHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                regionMatch = false;
-                view.getRegionSuggestBox().removeStyleName(Storage.RSCS.common().errorField());
-                view.getRegionErrorLabel().setText("");
+                view.getRegionSuggestBox().showSuggestionList();
             }
         }, FocusEvent.getType());
-        /** BLUR. **/
-        view.getRegionSuggestBox().addDomHandler(new BlurHandler() {
+        /** CLOSE POPUP. **/
+        MySuggestDisplay regionPopup = ((MySuggestDisplay) view.getRegionSuggestBox().getSuggestionDisplay());
+        regionPopup.getPopupPanel().addHandler(new CloseHandler<PopupPanel>() {
             @Override
-            public void onBlur(BlurEvent event) {
-                if (!regionMatch) {
+            public void onClose(CloseEvent event) {
+                if (!regionSuggestSelected.isEmpty()
+                        && !regionSuggestSelected.equals(view.getRegionSuggestBox().getText())) {
                     view.getRegionSuggestBox().setStyleName(Storage.RSCS.common().errorField());
                     view.getRegionErrorLabel().setText(MSGSV.regionNotMatch());
                 }
             }
-        }, BlurEvent.getType());
+        }, CloseEvent.getType());
         /** SELECTION. **/
         view.getRegionSuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
             @Override
             public void onSelection(SelectionEvent<Suggestion> event) {
                 if (!view.getRegionSuggestBox().getText().isEmpty()) {
-                    regionMatch = true;
+                    regionSuggestSelected = event.getSelectedItem().getDisplayString();
+                    view.eraseAddressBoxes(AddressSelectorView.REGION);
+                    //get Oracle
+                    CitySuggestOracle cityOracle =
+                            (CitySuggestOracle) view.getCitySuggestBox().getSuggestOracle();
+                    //get Suggestion
                     LocalityDetailMultiWordSuggestion suggestion =
                             (LocalityDetailMultiWordSuggestion) event.getSelectedItem();
-                    eventBus.getChildLocalities(LocalityType.CITY, suggestion.getLocalityDetail().getCode(), null);
+                    cityOracle.setLocalityCodeForNextSuggestions(suggestion.getLocalityDetail().getCode());
+//                    eventBus.getChildLocalities(LocalityType.CITY, suggestion.getLocalityDetail().getCode(), null);
+                    view.getRegionSuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());
+                    view.getRegionErrorLabel().setText("");
                 }
             }
         });
@@ -152,31 +134,34 @@ public class AddressSelectorPresenter
         view.getCitySuggestBox().addDomHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                regionMatch = false;
-                view.getCitySuggestBox().removeStyleName(Storage.RSCS.common().errorField());
-                view.getCityErrorLabel().setText("");
+                view.getCitySuggestBox().showSuggestionList();
             }
         }, FocusEvent.getType());
-        /** BLUR. **/
-        view.getCitySuggestBox().addDomHandler(new BlurHandler() {
+        /** CLOSE POPUP. **/
+        MySuggestDisplay cityPopup = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
+        cityPopup.getPopupPanel().addHandler(new CloseHandler<PopupPanel>() {
             @Override
-            public void onBlur(BlurEvent event) {
-                if (!regionMatch) {
+            public void onClose(CloseEvent event) {
+                if (!citySuggestSelected.isEmpty()
+                        && !citySuggestSelected.equals(view.getCitySuggestBox().getText())) {
                     view.getCitySuggestBox().setStyleName(Storage.RSCS.common().errorField());
                     view.getCityErrorLabel().setText(MSGSV.cityNotMatch());
                 }
             }
-        }, BlurEvent.getType());
+        }, CloseEvent.getType());
         /** SELECTION. **/
         view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
             @Override
             public void onSelection(SelectionEvent<Suggestion> event) {
                 if (!view.getCitySuggestBox().getText().isEmpty()) {
-                    regionMatch = true;
+                    citySuggestSelected = event.getSelectedItem().getDisplayString();
+                    view.eraseAddressBoxes(AddressSelectorView.CITY);
 //                    LocalityDetailMultiWordSuggestion suggestion =
 //                            (LocalityDetailMultiWordSuggestion) event.getSelectedItem();
 //                    eventBus.getChildLocalities(
 //                            LocalityType.DISTRICT, suggestion.getLocalityDetail().getCode(), null);
+                    view.getCitySuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());
+                    view.getCityErrorLabel().setText("");
                 }
             }
         });
@@ -186,14 +171,6 @@ public class AddressSelectorPresenter
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     public void initAddressWidget(SimplePanel embedWidget) {
-        eventBus.getLocalities(LocalityType.COUNTRY, null);
         embedWidget.setWidget(view.getWidgetView());
-    }
-
-    /**************************************************************************/
-    /* METHODS                                                                */
-    /**************************************************************************/
-    public void onSetLocalityData(LocalityType localityType, List<LocalityDetail> list) {
-        view.setSuggestBoxOracleData(localityType, list);
     }
 }

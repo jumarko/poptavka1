@@ -25,6 +25,9 @@ import com.mvp4g.client.view.ReverseViewInterface;
 public class CategorySelectorView extends Composite
         implements ProvidesValidate, ReverseViewInterface<CategorySelectorPresenter>, CategorySelectorInterface {
 
+    /**************************************************************************/
+    /* UIBINDER                                                               */
+    /**************************************************************************/
     private static CategorySelectorUiBinder uiBinder = GWT.create(CategorySelectorUiBinder.class);
 
     interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {

@@ -26,36 +26,37 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <!--Temporary disabled-->
+<!--                <tr>
                     <td>
-                        <ui:msg key="country">Country</ui:msg>
+                        <ui:msg key="addressCountry">Country</ui:msg>
                     </td>
                     <td>
                         <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="country"/>
                         <g:Label styleName="{style.error}" ui:field="countryErrorLabel"/>
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td>
-                        <ui:msg key="region">Region</ui:msg>
+                        <ui:msg key="addressState">State</ui:msg>
                     </td>
                     <td>
-                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="region"/>
+                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="region" limit="7"/>
                         <g:Label styleName="{style.error}" ui:field="regionErrorLabel"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ui:msg key="city">City</ui:msg>
+                        <ui:msg key="addressCity">City</ui:msg>
                     </td>
                     <td>
-                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="city"/>
+                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="city" limit="7"/>
                         <g:Label styleName="{style.error}" ui:field="cityErrorLabel"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ui:msg key="zipCode">Zip Code</ui:msg>
+                        <ui:msg key="addressZipCode">Zip Code</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field="zipCode"/>
@@ -64,7 +65,7 @@
                 </tr>
 <!--                <tr>
                     <td>
-                        <ui:msg key="district">District</ui:msg>
+                        <ui:msg key="addressDistrict">District</ui:msg>
                     </td>
                     <td>
                         <g:ListBox styleName="{style.listBoxWidth}" ui:field="district"/>
@@ -73,7 +74,7 @@
                 </tr>-->
                 <tr>
                     <td>
-                        <ui:msg key="street">Street</ui:msg>
+                        <ui:msg key="addressStreet">Street</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field="street"/>

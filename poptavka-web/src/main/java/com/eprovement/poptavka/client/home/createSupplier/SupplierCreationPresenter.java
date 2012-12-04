@@ -139,10 +139,6 @@ public class SupplierCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
-            case FIRST_TAB_BASIC:
-                LOGGER.info(" -> Supplier Info Form");
-                //If already loaded, just activate presenter for holding requests
-                eventBus.activateAddressWidgetPresenter();
             case SECOND_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
                 if (maxSelectedTab < SECOND_TAB_CATEGORY) {
@@ -169,7 +165,6 @@ public class SupplierCreationPresenter
                                 CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
                     }
                 }
-                eventBus.activateLocalityWidgetPresenter();
                 break;
             case FOURTH_TAB_SERVICE:
                 LOGGER.info(" -> init Service Form supplierService");

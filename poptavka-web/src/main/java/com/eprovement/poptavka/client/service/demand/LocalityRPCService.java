@@ -36,4 +36,6 @@ public interface LocalityRPCService extends RemoteService {
     List<LocalityDetail> getAllRootLocalities() throws RPCException;
 
     List<LocalityDetail> getSubLocalities(String locCode) throws RPCException;
+
+    List<LocalityDetail> getLocalitySuggests(String locCode, String startWith) throws RPCException;
 }
