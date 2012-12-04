@@ -11,7 +11,7 @@
 		<g:north size="105">
 			<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
 				<g:SimplePanel ui:field='header' styleName='{res.layout.headerContent}' />
-				<g:SimplePanel ui:field="menu" styleName='{res.layout.homeMenu}' />
+				<g:SimplePanel ui:field="menu" styleName='{res.layout.homeMenu}'/>
 				<g:SimplePanel ui:field="searchBar" styleName='{res.layout.searchBar}' />
 			</g:HTMLPanel>
 		</g:north>

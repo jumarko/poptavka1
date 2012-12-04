@@ -33,6 +33,7 @@
 			float: right;
 			color: #000000;
 			padding: 10px;
+			text-shadow: 0 0 1px #bbbbbb;
 		}
 		
 		.footerButton:hover {
@@ -46,20 +47,21 @@
 			float: right;
 			color: #000000;
 			padding: 10px 0;
+			text-shadow: 0 0 1px #bbbbbb;
 		}
 	</ui:style>
 
 	<g:HTMLPanel styleName='{res.layout.fullSize} {res.layout.footerContainer}'>
 		<div
-			style="margin: auto; width: 1075px; position: relative; padding: 0 10px;">
+			style="margin: 0 auto; width: 472px; position: relative; padding: 0 10px;">
 			<g:Label styleName='{style.fl} {style.footer-block}'>2012 © eProvement s.r.o.</g:Label>
-			<div style="float: right; color: #000000; padding: 10px;">
+			<div style="float: right; color: #000000; padding: 10px; text-shadow: 0 0 1px #bbbbbb;">
 				Terms &amp; Conditions
 			</div>
 			<div class='{style.separator}'>|</div>
 			<g:Button ui:field="contactUs" styleName='{style.footerButton}'>Contact us</g:Button>
 			<div class='{style.separator}'>|</div>
-			<div style="float: right; color: #000000; padding: 10px;">
+			<div style="float: right; color: #000000; padding: 10px; text-shadow: 0 0 1px #bbbbbb;">
 				About us
 			</div>
 

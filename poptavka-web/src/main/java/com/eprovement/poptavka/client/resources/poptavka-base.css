@@ -134,10 +134,10 @@ input,textarea,select {
 *
 */
 .search-bar {
-	float: left;
-	height: 70px;
-	margin: 20px 20px 0;
-	width: 565px;
+    float: left;
+    height: 70px;
+    margin: 16px 20px 0;
+    width: 312px;
 }
 
 .search-view {
@@ -200,13 +200,16 @@ input,textarea,select {
 }
 
 .logout-menu-bar {
-	/* background: url(images/logout-menubar.png) no-repeat 115px 0px #ffffff; */
+	/*background: url(images/logout-menubar.png) no-repeat 115px 0px #ffffff;*/
 	background: #fff;
     border: 1px solid #C2C8D2;
     color: #6C7175;
     padding: 10px 15px;
     box-shadow: 0 0 6px 1px #c2c8d2;
     width: 110px;
+    position: absolute;
+    top: 10px;
+    left: -54px;
 }
 
 .logout-menu-bar td:hover {

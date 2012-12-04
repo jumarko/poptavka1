@@ -1,61 +1,63 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+	<ui:with field='res'
+		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-    <ui:style>
-        .important {
-        font-weight: bold;
-        }
+	<ui:style>
+		.button1 { background: url(images/menu-icons.png) no-repeat 0 0; }
+		.button2 { background: url(images/menu-icons.png) no-repeat 0 -73px; }
+		.button3 { background: url(images/menu-icons.png) no-repeat 0 -146px; }
+		.button4 { background: url(images/menu-icons.png) no-repeat 0 -219px; }
+		.button5 { background: url(images/menu-icons.png) no-repeat 0 -292px; }
+		
+		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }			
+		.button2:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
+		.button3:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
+		.button4:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
+		.button5:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -292px; }
+	</ui:style>
 
-        .background {
-        background-color: red;
-        }
-    </ui:style>
-    <g:DecoratorPanel>
-        <g:HorizontalPanel>
-            <g:HTMLPanel styleName="style.background">
-                <div ui:field="homeMenu" styleName='{res.layout.homeMenu}'>
-                    <ul ui:field="menuList">
-                        <li>
-                            <g:Button ui:field="client">
-                                <ui:msg key="menuClientDemands">Client</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="supplier">
-                                <ui:msg key="menuSupplierDemands">Supplier</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="inbox">
-                                <ui:msg key='menuMessages'>Messages</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="settings">
-                                <ui:msg key='menuSettings'>Settings</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button>
-                                <ui:msg key="menuHomeDemands">Demands</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button>
-                                <ui:msg key="menuHomeSuppliers">Suppliers</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="administration">
-                                <ui:msg key='menuAdministration'>Admistration</ui:msg>
-                            </g:Button>
-                        </li>
-                    </ul>
-                </div>
-            </g:HTMLPanel>
-        </g:HorizontalPanel>
-    </g:DecoratorPanel>
+	<g:HTMLPanel styleName="style.background">
+		<div ui:field="homeMenu" styleName='{res.layout.homeMenu}'>
+			<ul ui:field="menuList">
+				<li>
+					<g:Button ui:field="client" styleName='{style.button4}'>
+						<ui:msg key="menuClientDemands">Client</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button ui:field="supplier" styleName='{style.button4}'>
+						<ui:msg key="menuSupplierDemands">Supplier</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button ui:field="inbox" styleName='{style.button4}'>
+						<ui:msg key='menuMessages'>Messages</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button ui:field="settings" styleName='{style.button4}'>
+						<ui:msg key='menuSettings'>Settings</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button styleName='{style.button2}'>
+						<ui:msg key="menuHomeDemands">Demands</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button styleName='{style.button4}'>
+						<ui:msg key="menuHomeSuppliers">Suppliers</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button ui:field="administration">
+						<ui:msg key='menuAdministration'>Admistration</ui:msg>
+					</g:Button>
+				</li>
+			</ul>
+		</div>
+	</g:HTMLPanel>
 </ui:UiBinder>

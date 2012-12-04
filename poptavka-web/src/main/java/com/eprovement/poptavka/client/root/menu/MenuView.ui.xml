@@ -12,9 +12,9 @@
 		.button5 { background: url(images/menu-icons.png) no-repeat 0 -292px; }
 		
 		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }			
-		.button2:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
-		.button3:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
-		.button4:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
+		.button2:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
+		.button3:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
+		.button4:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
 		.button5:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -292px; }
 	</ui:style>
 

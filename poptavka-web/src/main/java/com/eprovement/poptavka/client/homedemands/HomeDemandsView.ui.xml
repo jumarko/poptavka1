@@ -28,12 +28,13 @@
 		
 		.paginator {
 			margin: 0px 10px;
+			float: left;
 		}
 		
 		.pageSize {
 			border-radius: 3px 3px 3px 3px;
 			float: left;
-			height: 31px;			
+			height: 31px;
 			padding: 6px;
 		}
 		
@@ -45,6 +46,7 @@
 			height: 31px;
 			padding: 0 0 1px 23px;
 			width: 119px;
+			float: left;
 		}
 	</ui:style>
 
@@ -67,17 +69,16 @@
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="65">
-					<g:VerticalPanel styleName='{style.gridMenu}'>
+				<g:north size="75">
+					<g:HTMLPanel styleName='{style.gridMenu}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-						<g:HorizontalPanel>
-							<g:Button ui:field="offerBtn1" styleName='{style.button}'>Send Offer
-							</g:Button>
-							<s:UniversalPagerWidget ui:field='pager' styleName='{style.paginator}'/>
-						</g:HorizontalPanel>
-					</g:VerticalPanel>
+						<g:Button ui:field="offerBtn1" styleName='{style.button}'>Send Offer
+						</g:Button>
+						<s:UniversalPagerWidget ui:field='pager'
+							styleName='{style.paginator}' />
+					</g:HTMLPanel>
 				</g:north>
 				<g:center>
 					<c:DataGrid ui:field="dataGrid" />
@@ -87,9 +88,9 @@
 				</g:south>
 			</g:DockLayoutPanel>
 		</g:center>
-		<g:east size="350">
+		<g:east size="430">
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="65">
+				<g:north size="75">
 					<g:HTMLPanel></g:HTMLPanel>
 				</g:north>
 				<g:center>

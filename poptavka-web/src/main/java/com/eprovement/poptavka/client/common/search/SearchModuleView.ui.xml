@@ -18,19 +18,21 @@
 			height: 37px;
 			line-height: 37px;
 			border: 1px solid #aabac1;
-			border-radius: 3px;
 			padding: 8px 6px;
 			color: #002f51;
+			border-radius: 3px 0 0 3px;
+			-moz-border-radius: 3px 0 0 3px;
+			-webkit-border-radius: 3px 0 0 3px;
 		}
 		
-		.blue-button {
-			border: 1px solid #00496b;
-			background: url(images/blue-button.gif) repeat-x;
-			width: 77px;
-			height: 36px;
-			border-radius: 3px;
+		.search-button {
+			background: url("images/search-button.png") no-repeat scroll 0 0
+				transparent;
+			border: medium none;
+			color: #FFFFFF;
 			font-weight: bold;
-			color: #ffffff;
+			height: 37px;
+			width: 77px;
 		}
 		
 		.blue-button:hover {
@@ -38,19 +40,20 @@
 		}
 		
 		.search-list {
-			width: 183px;
-			margin: 0 10px;
-			padding: 8px 6px;
-			border: 1px solid #aabac1;
-			border-radius: 3px;
-			color: #002f51;
+			border: 1px solid #AABAC1;
+			border-radius: 2px 2px 2px 2px;
+			color: #002F51;
+			float: right;
+			margin: 6px 8px;
+			padding: 1px 1px 1px 5px;
+			width: 137px;
 		}
 		
 		.advanced-search {
 			background: url(images/advanced-search-button.gif) no-repeat 0 7px;
 			border: none;
+			margin: 8px 0 0 7px;
 			padding: 0 0 0 7px;
-			margin: 3px 0 0 7px;
 		}
 	</ui:style>
 	<ui:with field='res'
@@ -62,9 +65,8 @@
 				<g:TextBox ui:field="searchContent" styleName='{style.search-textbox}'>
 					<ui:msg key="searchContent">Search...</ui:msg>
 				</g:TextBox>
-				<g:ListBox ui:field="searchWhat" styleName='{style.search-list}' />
-				<g:Button ui:field="searchBtn" styleName='{style.blue-button}'>
-					<ui:msg key="search">Search</ui:msg>
+				<g:Button ui:field="searchBtn" styleName='{style.search-button}'>
+					<!-- <ui:msg key="search">Search</ui:msg> -->
 				</g:Button>
 			</g:HorizontalPanel>
 			<g:PopupPanel ui:field="popupPanel">
@@ -73,6 +75,7 @@
 		</div>
 
 		<g:Button ui:field="advSearchBtn" styleName='{style.advanced-search}'>Advanced</g:Button>
+		<g:ListBox ui:field="searchWhat" styleName='{style.search-list}' />
 
 	</g:HTMLPanel>
 </ui:UiBinder>
