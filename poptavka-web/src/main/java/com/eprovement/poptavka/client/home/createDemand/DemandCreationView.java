@@ -39,6 +39,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
+    private int back = 0;
     @UiField
     StatusIconLabel userStatus, basicStatus, categoryStatus, localityStatus, advStatus;
     @UiField
@@ -192,11 +193,18 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /* Helper methods                                                         */
     /**************************************************************************/
     private void selectNextTab() {
-        mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
+        if (back == 0) {
+            mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
+        } else {
+            //history forward - token change when was back and performing next action
+            back--;
+            History.forward();
+        }
     }
 
     private void selectPreviousTab() {
-        //history back
+        //history back - token should change when performing back action
+        back++;
         History.back();
     }
 }

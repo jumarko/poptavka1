@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:h="urn:import:com.eprovement.poptavka.client.root.header">
 
     <ui:with field='res'
              type='com.eprovement.poptavka.client.resources.StyleResource' />
@@ -59,9 +60,9 @@
 
         <!-- Login Button -->
         <!--<div class='{style.login}'>-->
-            <g:MenuBar styleName='{style.login}'>
-                <g:MenuItem ui:field="menuRoot" styleName='{res.layout.logoutButton}'>
-                    <g:MenuBar ui:field="menuBar" vertical="true" styleName='{res.layout.logoutMenuBar}'>
+            <g:MenuBar vertical="false" styleName='{style.login}'>
+                <h:MyMenuItem styleName='{res.layout.logoutButton}'>
+                    <g:MenuBar vertical="true" styleName='{res.layout.logoutMenuBar}'>
                         <g:MenuItem ui:field="menuLogOut">
                             <ui:msg key="logOut">Log Out</ui:msg>
                         </g:MenuItem>
@@ -75,7 +76,7 @@
                             <ui:msg key="customerService">Customer Service</ui:msg>
                         </g:MenuItem>
                     </g:MenuBar>
-                </g:MenuItem>
+                </h:MyMenuItem>
             </g:MenuBar>
 <!--            <div id="loginAnchor"
                  style="position: absolute; width: 150px; right: 0px; z-index: 151;">
