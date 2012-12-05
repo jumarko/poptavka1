@@ -96,6 +96,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     @Test
     public void testGetPotentialDemands() {
 
+        // sentItems test
         final List<UserMessage> sentItems = this.userMessageService
                 .getSentItems(this.user);
 
@@ -103,6 +104,44 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(6L, sentItems);
         checkUserMessageExists(304L, sentItems);
         checkUserMessageExists(404L, sentItems);
+
+        // test for businessUser
+        final List<UserMessage> potentialDemands = this.userMessageService.getPotentialDemands(businessUser);
+        Assert.assertEquals(4, potentialDemands.size());
+        checkUserMessageExists(2L, potentialDemands);
+        checkUserMessageExists(202L, potentialDemands);
+        checkUserMessageExists(302L, potentialDemands);
+        checkUserMessageExists(503L, potentialDemands);
+        checkUserMessageDoesntExists(501L, potentialDemands);
+        checkUserMessageDoesntExists(502L, potentialDemands);
+        checkUserMessageDoesntExists(501L, potentialDemands);
+        checkUserMessageDoesntExists(401L, potentialDemands);
+        checkUserMessageDoesntExists(403L, potentialDemands);
+        checkUserMessageDoesntExists(405L, potentialDemands);
+        checkUserMessageDoesntExists(406L, potentialDemands);
+        checkUserMessageDoesntExists(408L, potentialDemands);
+        checkUserMessageDoesntExists(1L, potentialDemands);
+        checkUserMessageDoesntExists(3L, potentialDemands);
+        checkUserMessageDoesntExists(4L, potentialDemands);
+
+        // test for businessUser2
+        final List<UserMessage> potentialDemands2 = this.userMessageService.getPotentialDemands(businessUser2);
+        Assert.assertEquals(1, potentialDemands2.size());
+        checkUserMessageExists(501L, potentialDemands2);
+        checkUserMessageDoesntExists(502L, potentialDemands2);
+        checkUserMessageDoesntExists(401L, potentialDemands2);
+        checkUserMessageDoesntExists(403L, potentialDemands2);
+        checkUserMessageDoesntExists(405L, potentialDemands2);
+        checkUserMessageDoesntExists(406L, potentialDemands2);
+        checkUserMessageDoesntExists(408L, potentialDemands2);
+        checkUserMessageDoesntExists(1L, potentialDemands2);
+        checkUserMessageDoesntExists(2L, potentialDemands2);
+        checkUserMessageDoesntExists(3L, potentialDemands2);
+        checkUserMessageDoesntExists(4L, potentialDemands2);
+        checkUserMessageDoesntExists(503L, potentialDemands2);
+        checkUserMessageDoesntExists(202L, potentialDemands2);
+        checkUserMessageDoesntExists(302L, potentialDemands2);
+
     }
 
     @Test
@@ -180,6 +219,25 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         Assert.assertNull("The UserMessage shouldn't have been created.",
                 userMessage);
     }
+
+    /**
+     * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
+     *
+     * @param messageId
+     * @param allUserMessages
+     */
+    private void checkUserMessageDoesntExists(final Long userMessageId, Collection<UserMessage> allUserMessages) {
+        Assert.assertFalse(
+                "UserMessage [id=" + userMessageId + "] not expected to be in"
+                + " collection [" + allUserMessages + "] is there.",
+                CollectionUtils.exists(allUserMessages, new Predicate() {
+                    @Override
+                    public boolean evaluate(Object object) {
+                        return userMessageId.equals(((UserMessage) object).getId());
+                    }
+                }));
+    }
+
 
 }
 
