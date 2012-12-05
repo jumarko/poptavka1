@@ -82,10 +82,11 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
 
             formatedCity.appendEscaped(LOCALITY_SEPARATOR);
             formatedCity.appendEscaped(candidates.get(i).getStateName());
-
-            LocalityDetailSuggestion suggestion = new LocalityDetailSuggestion(
-                    candidates.get(i).toString(), formatedCity.toSafeHtml().asString());
-            suggestions.add(suggestion);
+            //Set formated suggestions
+            candidates.get(i).setSuggestion(
+                    candidates.get(i).toString(),
+                    formatedCity.toSafeHtml().asString());
+            suggestions.add(candidates.get(i));
         }
         return suggestions;
     }

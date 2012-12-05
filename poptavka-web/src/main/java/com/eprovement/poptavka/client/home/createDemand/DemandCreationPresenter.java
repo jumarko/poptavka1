@@ -135,20 +135,23 @@ public class DemandCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
+            case FIRST_TAB_LOGIN:
+                eventBus.registerTabToken(FIRST_TAB_LOGIN);
+                break;
             case SECOND_TAB_FORM:
                 LOGGER.info(" -> Supplier Info Form");
+                eventBus.registerTabToken(SECOND_TAB_FORM);
                 if (maxSelectedTab < SECOND_TAB_FORM) {
                     if (view.getHolderPanel(SECOND_TAB_FORM).getWidget() == null) {
-                        eventBus.registerTabToken(SECOND_TAB_FORM);
                         eventBus.initDemandBasicForm(view.getHolderPanel(SECOND_TAB_FORM));
                     }
                 }
                 break;
             case THIRD_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
+                eventBus.registerTabToken(THIRD_TAB_CATEGORY);
                 if (maxSelectedTab < THIRD_TAB_CATEGORY) {
                     if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
-                        eventBus.registerTabToken(THIRD_TAB_CATEGORY);
                         eventBus.initCategoryWidget(
                                 view.getHolderPanel(THIRD_TAB_CATEGORY),
                                 Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
@@ -158,9 +161,9 @@ public class DemandCreationPresenter
                 break;
             case FOURTH_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
+                eventBus.registerTabToken(FOURTH_TAB_LOCALITY);
                 if (maxSelectedTab < FOURTH_TAB_LOCALITY) {
                     if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
-                        eventBus.registerTabToken(FOURTH_TAB_LOCALITY);
                         eventBus.initLocalityWidget(
                                 view.getHolderPanel(FOURTH_TAB_LOCALITY),
                                 Constants.WITH_CHECK_BOXES,
@@ -170,9 +173,9 @@ public class DemandCreationPresenter
                 break;
             case FIFTH_TAB_ADVANCE:
                 LOGGER.info(" -> init Demand Form supplierService");
+                eventBus.registerTabToken(FIFTH_TAB_ADVANCE);
                 if (maxSelectedTab < FIFTH_TAB_ADVANCE) {
                     if (view.getHolderPanel(FIFTH_TAB_ADVANCE).getWidget() == null) {
-                        eventBus.registerTabToken(FIFTH_TAB_ADVANCE);
                         eventBus.initDemandAdvForm(view.getHolderPanel(FIFTH_TAB_ADVANCE));
                     }
                 }

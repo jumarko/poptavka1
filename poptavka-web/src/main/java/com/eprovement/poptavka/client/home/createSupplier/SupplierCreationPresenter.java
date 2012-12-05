@@ -139,26 +139,26 @@ public class SupplierCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
+            case FIRST_TAB_BASIC:
+                eventBus.registerTabToken(FIRST_TAB_BASIC);
+                break;
             case SECOND_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
+                eventBus.registerTabToken(SECOND_TAB_CATEGORY);
                 if (maxSelectedTab < SECOND_TAB_CATEGORY) {
                     if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
-                        eventBus.registerTabToken(SECOND_TAB_CATEGORY);
                         eventBus.initCategoryWidget(
                                 view.getHolderPanel(SECOND_TAB_CATEGORY),
                                 Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                                 CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
                     }
                 }
-                //Don't need to active CategorySelectorPresenter, because he is the only one
-                //action listener after data retrieving process.
-                //(In Localities, there are two listeners after data are retrieved)
                 break;
             case THIRD_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
+                eventBus.registerTabToken(THIRD_TAB_LOCALITY);
                 if (maxSelectedTab < THIRD_TAB_LOCALITY) {
                     if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
-                        eventBus.registerTabToken(THIRD_TAB_LOCALITY);
                         eventBus.initLocalityWidget(
                                 view.getHolderPanel(THIRD_TAB_LOCALITY),
                                 Constants.WITH_CHECK_BOXES,
@@ -168,9 +168,9 @@ public class SupplierCreationPresenter
                 break;
             case FOURTH_TAB_SERVICE:
                 LOGGER.info(" -> init Service Form supplierService");
+                eventBus.registerTabToken(FOURTH_TAB_SERVICE);
                 if (maxSelectedTab < FOURTH_TAB_SERVICE) {
                     if (view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget() == null) {
-                        eventBus.registerTabToken(FOURTH_TAB_SERVICE);
                         onInitSupplierServiceForm(view.getHolderPanel(FOURTH_TAB_SERVICE));
                     }
                 }

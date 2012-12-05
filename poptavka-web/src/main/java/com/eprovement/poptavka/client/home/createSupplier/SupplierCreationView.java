@@ -31,7 +31,6 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -211,19 +210,11 @@ public class SupplierCreationView extends OverflowComposite
     /* Helper methods                                                         */
     /**************************************************************************/
     private void selectNextTab() {
-        if (back == 0) {
-            mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
-        } else {
-            //history forward - token change when was back and performing next action
-            back--;
-            History.forward();
-        }
+        mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
     }
 
     private void selectPreviousTab() {
-        //history back - token should change when performing back action
-        back++;
-        History.back();
+        mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }
 }
 

@@ -6,7 +6,6 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
@@ -245,15 +244,7 @@ public class SupplierInfoView extends Composite
         user.setFirstName(firstName.getText());
         user.setLastName(lastName.getText());
         //Address
-        AddressDetail address = new AddressDetail();
-        address.setCountry(((AddressSelectorView) addressHolder.getWidget()).getCountry());
-        address.setRegion(((AddressSelectorView) addressHolder.getWidget()).getRegion());
-        address.setCity(((AddressSelectorView) addressHolder.getWidget()).getCity());
-        address.setDistrict(((AddressSelectorView) addressHolder.getWidget()).getDistrict());
-        address.setStreet(((AddressSelectorView) addressHolder.getWidget()).getStreet());
-        address.setZipCode(((AddressSelectorView) addressHolder.getWidget()).getZipCode());
-
-        user.addAddress(address);
+        user.addAddress(((AddressSelectorView) addressHolder.getWidget()).createAddress());
 
         return user;
     }

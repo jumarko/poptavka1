@@ -11,7 +11,6 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -193,18 +192,10 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /* Helper methods                                                         */
     /**************************************************************************/
     private void selectNextTab() {
-        if (back == 0) {
-            mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
-        } else {
-            //history forward - token change when was back and performing next action
-            back--;
-            History.forward();
-        }
+        mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
     }
 
     private void selectPreviousTab() {
-        //history back - token should change when performing back action
-        back++;
-        History.back();
+        mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }
 }

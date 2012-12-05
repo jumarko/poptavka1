@@ -4,20 +4,23 @@
  */
 package com.eprovement.poptavka.shared.domain;
 
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import java.io.Serializable;
 
 /**
  *
  * @author Martin Slavkovsky
  */
-public class LocalityDetailSuggestion extends MultiWordSuggestOracle.MultiWordSuggestion
-        implements Serializable {
+public class LocalityDetailSuggestion //MultiWordSuggestOracle.MultiWordSuggestion
+        implements Serializable, Suggestion {
 
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     private static final long serialVersionUID = -6029478783391927533L;
+    /** Suggestion. **/
+    private String displayString;
+    private String replacementString;
     /** State. **/
     private long stateId;
     private String stateCode;
@@ -31,16 +34,25 @@ public class LocalityDetailSuggestion extends MultiWordSuggestOracle.MultiWordSu
     /* INITIALIZATOIN                                                         */
     /**************************************************************************/
     public LocalityDetailSuggestion() {
-        super();
-    }
-
-    public LocalityDetailSuggestion(String replacementString, String displayString) {
-        super(replacementString, displayString);
     }
 
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /** Suggestion. **/
+    public void setDisplayString(String displayString) {
+        this.displayString = displayString;
+    }
+
+    public void setReplacementString(String replacementString) {
+        this.replacementString = replacementString;
+    }
+
+    public void setSuggestion(String replacementString, String displayString) {
+        this.replacementString = replacementString;
+        this.displayString = displayString;
+    }
+
     /** State. **/
     public void setStateId(long stateId) {
         this.stateId = stateId;
@@ -70,6 +82,17 @@ public class LocalityDetailSuggestion extends MultiWordSuggestOracle.MultiWordSu
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /** Suggestion. **/
+    @Override
+    public String getDisplayString() {
+        return displayString;
+    }
+
+    @Override
+    public String getReplacementString() {
+        return replacementString;
+    }
+
     /** State. **/
     public long getStateId() {
         return stateId;
