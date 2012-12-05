@@ -8,8 +8,6 @@ public interface IUserMenuView extends IsWidget {
 
         void goToAdministration();
 
-        void goToSettings();
-
         void goToMessages();
 
         void goToClient();

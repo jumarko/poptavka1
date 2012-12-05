@@ -11,8 +11,8 @@
 		.button3 { background: url(images/menu-icons.png) no-repeat 0 -146px; }
 		.button4 { background: url(images/menu-icons.png) no-repeat 0 -219px; }
 		.button5 { background: url(images/menu-icons.png) no-repeat 0 -292px; }
-		
-		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }			
+
+		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }
 		.button2:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
 		.button3:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
 		.button4:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
@@ -35,11 +35,6 @@
 				<li>
 					<g:Button ui:field="inbox" styleName='{style.button4}'>
 						<ui:msg key='menuMessages'>Messages</ui:msg>
-					</g:Button>
-				</li>
-				<li>
-					<g:Button ui:field="settings" styleName='{style.button4}'>
-						<ui:msg key='menuSettings'>Settings</ui:msg>
 					</g:Button>
 				</li>
 				<li>

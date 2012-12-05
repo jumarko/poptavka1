@@ -34,7 +34,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
                     BusinessUserDetail.BusinessRole.SUPPLIER)) {
                 view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
                 view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, true);
-            /* CLIENT TAB */
+                /* CLIENT TAB */
             } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.CLIENT)) {
                 view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
@@ -50,11 +50,6 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     @Override
     public void goToAdministration() {
         eventBus.goToAdminModule(null, Constants.NONE);
-    }
-
-    @Override
-    public void goToSettings() {
-        eventBus.goToSettingsModule();
     }
 
     @Override

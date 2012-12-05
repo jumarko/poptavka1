@@ -48,18 +48,22 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
         return username;
     }
 
+    @Override
     public MenuItem getMenuLogOut() {
         return menuLogOut;
     }
 
+    @Override
     public MenuItem getMenuMyProfile() {
         return menuMyProfile;
     }
 
+    @Override
     public MenuItem getMenuHelp() {
         return menuHelp;
     }
 
+    @Override
     public MenuItem getMenuCustomerService() {
         return menuCustomerService;
     }

@@ -40,7 +40,8 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
         view.getMenuMyProfile().setCommand(new Command() {
             @Override
             public void execute() {
-                Window.alert("Implement My Profile Command in UserHeaderMenuCommands class");
+                eventBus.userMenuStyleChange(Constants.USER_SETTINGS_MODULE);
+                eventBus.goToSettingsModule();
             }
         });
 

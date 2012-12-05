@@ -24,7 +24,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @UiField
     UListElement menuList;
     @UiField
-    Button client, supplier, inbox, settings, administration;
+    Button client, supplier, inbox, administration;
 
     public UserMenuView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -50,12 +50,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     public void onClickMessages(ClickEvent e) {
         presenter.goToMessages();
         messagesUserMenuStyleChange();
-    }
-
-    @UiHandler("settings")
-    public void onClickSettings(ClickEvent e) {
-        presenter.goToSettings();
-        settingsUserMenuStyleChange();
     }
 
     @UiHandler("administration")
@@ -102,7 +96,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         client.addStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
@@ -110,7 +103,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.addStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
@@ -118,7 +110,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.addStyleName(StyleResource.INSTANCE.layout().selected());
-        settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
@@ -126,7 +117,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        settings.addStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
@@ -134,7 +124,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.addStyleName(StyleResource.INSTANCE.layout().selected());
     }
 

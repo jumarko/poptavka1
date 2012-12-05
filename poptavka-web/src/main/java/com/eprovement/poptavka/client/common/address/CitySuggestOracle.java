@@ -25,7 +25,7 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
 
     private static final int MIN_CHARS_TO_SEARCH = 3;
     private static final String WHITESPACE_STRING = " ";
-    private static final String STRING_LINKER = "-";
+    private static final String NOTHING = "";
     private static final String LOCALITY_SEPARATOR = ", ";
     //Need to provide RPC and EventBus
     private AddressSelectorPresenter addressSelectorPresenter = null;
@@ -96,7 +96,7 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
             return city.split(WHITESPACE_STRING);
             /** Formating more words. **/
         } else {
-            String queryTmp = query.replace(WHITESPACE_STRING, STRING_LINKER); //link query words
+            String queryTmp = query.replace(WHITESPACE_STRING, NOTHING); //link query words
             String cityTmp = city.replace(query, queryTmp); //link city words
             //if cityTmp still contains " " -> consisting of more words
             if (cityTmp.contains(WHITESPACE_STRING)) {
