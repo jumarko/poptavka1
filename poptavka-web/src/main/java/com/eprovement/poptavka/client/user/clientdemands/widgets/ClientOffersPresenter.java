@@ -252,15 +252,10 @@ public class ClientOffersPresenter
      * @param userMessageId ID for demand related contest
      */
     public void displayDetailContent(FullOfferDetail detail) {
-//        detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestDemandDetail(123L, type);
-
-//        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestSupplierDetail(142811L, type);
-
-//        detailSection.requestOffer(detail.getMessageId(),
-//                detail.getUserMessageId(), Storage.getUser().getUserId());
-        detailSection.requestConversation(124L, 289L, 149L);
+        detailSection.requestDemandDetail(detail.getDemandId(), type);
+        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
+        detailSection.requestConversation(detail.getMessageId(),
+                detail.getUserMessageId(), Storage.getUser().getUserId());
     }
 
     /**************************************************************************/

@@ -126,8 +126,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 eventBus.goToCreateSupplierModule();
                 break;
             default:
-                Storage.setCurrentlyLoadedView(Constants.SUPPLIER_DEMANDS_WELCOME);
-                eventBus.displayView(new SupplierDemandsModuleWelcomeView());
+                eventBus.initSupplierDemandsWelcome();
                 break;
         }
     }

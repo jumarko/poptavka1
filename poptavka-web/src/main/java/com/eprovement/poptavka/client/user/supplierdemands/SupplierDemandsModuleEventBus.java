@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.user.supplierdemands;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsWelcomePresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffersPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -85,6 +86,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void initSupplierAssignedDemands(SearchModuleDataHolder filter);
+
+    @Event(handlers = SupplierDemandsWelcomePresenter.class)
+    void initSupplierDemandsWelcome();
 
     //Init by history
     //--------------------------------------------------------------------------

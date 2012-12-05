@@ -174,15 +174,10 @@ public class SupplierDemandsPresenter extends LazyPresenter<
      * @param userMessageId ID for demand related contest
      */
     public void displayDetailContent(SupplierPotentialDemandDetail detail) {
-//        detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestDemandDetail(21L, type);
-
-//        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestSupplierDetail(20L, type);
-
-//        detailSection.requestContest(detail.getMessageId(),
-//                detail.getUserMessageId(), Storage.getUser().getUserId());
-        detailSection.requestConversation(198L, 102L, 9L);
+        detailSection.requestDemandDetail(detail.getDemandId(), type);
+        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
+        detailSection.requestConversation(detail.getMessageId(),
+                detail.getUserMessageId(), Storage.getUser().getUserId());
     }
 
     public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
