@@ -5,6 +5,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -48,7 +49,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierPotentialDemands(long supplierID,
+    List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
     //************************ SUPPLIER - My Offers ***************************/
@@ -119,14 +120,15 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
 
-    void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException;
+    void finishOffer(long id) throws RPCException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 
     /**************************************************************************/
     /* Get Detail object for selecting in selection models                    */
     /**************************************************************************/
-    FullOfferDetail getSupplierDemand(long supplierDemandID) throws RPCException, ApplicationSecurityException;
+    SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID)
+        throws RPCException, ApplicationSecurityException;
 
     FullOfferDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
 

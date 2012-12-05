@@ -76,13 +76,13 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void setMessageStarStatus(List<Long> list, boolean newStatus,
             AsyncCallback<Void> callback);
 
-    void closeDemand(FullDemandDetail demandDetail,
+    void closeDemand(long id,
             AsyncCallback<ArrayList<Void>> callback);
 
-    void acceptOffer(FullOfferDetail fullOfferDetail,
+    void acceptOffer(long id,
             AsyncCallback<ArrayList<Void>> callback);
 
-    void declineOffer(OfferDetail offerDetail,
+    void declineOffer(long id,
             AsyncCallback<ArrayList<Void>> callback);
 
     /**************************************************************************/

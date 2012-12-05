@@ -5,6 +5,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public interface SupplierDemandsModuleRPCServiceAsync {
             AsyncCallback<Long> callback);
 
     void getSupplierPotentialDemands(long supplierID, SearchDefinition searchDefinition,
-            AsyncCallback<List<FullOfferDetail>> callback);
+            AsyncCallback<List<SupplierPotentialDemandDetail>> callback);
 
     //SupplierOffers widget
     void getSupplierOffersCount(long supplierID, SearchDefinition searchDefinition,
@@ -54,14 +55,14 @@ public interface SupplierDemandsModuleRPCServiceAsync {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
 
-    void finishOffer(FullOfferDetail fullOfferDetail, AsyncCallback<Void> callback);
+    void finishOffer(long id, AsyncCallback<Void> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 
     /**************************************************************************/
     /* Get Detail object for selecting in selection models                    */
     /**************************************************************************/
-    void getSupplierDemand(long id, AsyncCallback<FullOfferDetail> calback);
+    void getSupplierDemand(long id, AsyncCallback<SupplierPotentialDemandDetail> calback);
 
     void getSupplierOffer(long id, AsyncCallback<FullOfferDetail> calback);
 

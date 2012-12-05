@@ -8,9 +8,10 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -107,9 +108,9 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         boolean wasEqual = false;
         MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
                 .getGrid().getSelectionModel();
-        for (FullOfferDetail offer : (Set<
-                FullOfferDetail>) selectionModel.getSelectedSet()) {
-            if (offer.getOfferDetail().getDemandId() == selectedId) {
+        for (SupplierPotentialDemandDetail detail : (Set<
+                SupplierPotentialDemandDetail>) selectionModel.getSelectedSet()) {
+            if (detail.getDemandId() == selectedId) {
                 wasEqual = true;
             }
         }
@@ -149,7 +150,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplaySupplierDemands(List<FullOfferDetail> data) {
+    public void onDisplaySupplierDemands(List<IUniversalDetail> data) {
         GWT.log("++ onResponseSupplierPotentialDemands");
 
         view.getTableWidget().getGrid().getDataProvider().updateRowData(
@@ -160,7 +161,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         }
     }
 
-    public void onSelectSupplierDemand(FullOfferDetail detail) {
+    public void onSelectSupplierDemand(SupplierPotentialDemandDetail detail) {
         eventBus.setHistoryStoredForNextOne(false);
         textFieldUpdater.update(-1, detail, null);
     }
@@ -172,7 +173,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
      * @param messageId ID for demand related contest
      * @param userMessageId ID for demand related contest
      */
-    public void displayDetailContent(FullOfferDetail detail) {
+    public void displayDetailContent(SupplierPotentialDemandDetail detail) {
 //        detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestDemandDetail(21L, type);
 
@@ -212,8 +213,8 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
-                List<FullOfferDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
-                for (FullOfferDetail row : rows) {
+                List<IUniversalDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
+                for (IUniversalDetail row : rows) {
                     ((MultiSelectionModel) view.getTableWidget().getGrid()
                             .getSelectionModel()).setSelected(row, value);
                 }
@@ -223,12 +224,12 @@ public class SupplierDemandsPresenter extends LazyPresenter<
 
     public void addStarColumnFieldUpdater() {
         view.getTableWidget().getStarColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, Boolean>() {
+                new FieldUpdater<IUniversalDetail, Boolean>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, Boolean value) {
-                        object.getUserMessageDetail().setStarred(!value);
+                    public void update(int index, IUniversalDetail object, Boolean value) {
+                        object.setStarred(!value);
                         view.getTableWidget().getGrid().redraw();
-                        Long[] item = new Long[]{object.getUserMessageDetail().getId()};
+                        Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
                 });
@@ -236,9 +237,9 @@ public class SupplierDemandsPresenter extends LazyPresenter<
 
     public void addReplyColumnFieldUpdater() {
         view.getTableWidget().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
                         detailSection.getView().getReplyHolder().addQuestionReply();
                     }
                 });
@@ -246,22 +247,22 @@ public class SupplierDemandsPresenter extends LazyPresenter<
 
     public void addSendOfferColumnFieldUpdater() {
         view.getTableWidget().getSendOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
                         detailSection.getView().getReplyHolder().addOfferReply();
                     }
                 });
     }
 
     public void addColumnFieldUpdaters() {
-        textFieldUpdater = new FieldUpdater<FullOfferDetail, Object>() {
+        textFieldUpdater = new FieldUpdater<SupplierPotentialDemandDetail, Object>() {
             @Override
-            public void update(int index, FullOfferDetail object, Object value) {
+            public void update(int index, SupplierPotentialDemandDetail object, Object value) {
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
-                if (lastOpenedPotentialDemand != object.getOfferDetail().getDemandId()) {
-                    lastOpenedPotentialDemand = object.getOfferDetail().getDemandId();
-                    object.getUserMessageDetail().setRead(true);
+                if (lastOpenedPotentialDemand != object.getDemandId()) {
+                    lastOpenedPotentialDemand = object.getDemandId();
+                    object.setRead(true);
 //                    view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
                     MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
@@ -270,17 +271,16 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                     selectionModel.setSelected(object, true);
                     eventBus.createTokenForHistory(
                             view.getTableWidget().getPager().getPage(),
-                            object.getOfferDetail().getDemandId());
+                            object.getDemandId());
                 }
             }
         };
         view.getTableWidget().getClientNameColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
+//        view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getUrgencyColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
+//        view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
     // Widget action handlers

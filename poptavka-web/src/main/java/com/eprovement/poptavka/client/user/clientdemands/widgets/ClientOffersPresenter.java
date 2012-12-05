@@ -8,11 +8,11 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -221,7 +221,7 @@ public class ClientOffersPresenter
         }
     }
 
-    public void onDisplayClientOfferedDemandOffers(List<FullOfferDetail> data) {
+    public void onDisplayClientOfferedDemandOffers(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemandOffers");
 
         view.getOfferGrid().getGrid().getDataProvider().updateRowData(
@@ -274,8 +274,8 @@ public class ClientOffersPresenter
         view.getOfferGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
-                List<FullOfferDetail> rows = view.getOfferGrid().getGrid().getVisibleItems();
-                for (FullOfferDetail row : rows) {
+                List<IUniversalDetail> rows = view.getOfferGrid().getGrid().getVisibleItems();
+                for (IUniversalDetail row : rows) {
                     ((MultiSelectionModel) view.getOfferGrid().getGrid()
                             .getSelectionModel()).setSelected(row, value);
                 }
@@ -285,13 +285,12 @@ public class ClientOffersPresenter
 
     public void addStarColumnFieldUpdater() {
         view.getOfferGrid().getStarColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, Boolean>() {
+                new FieldUpdater<IUniversalDetail, Boolean>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, Boolean value) {
-                        TableDisplay obj = (TableDisplay) object;
+                    public void update(int index, IUniversalDetail object, Boolean value) {
                         object.setStarred(!value);
                         view.getOfferGrid().getGrid().redraw();
-                        Long[] item = new Long[]{object.getUserMessageDetail().getId()};
+                        Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
                 });
@@ -299,9 +298,9 @@ public class ClientOffersPresenter
 
     public void addReplyColumnFieldUpdater() {
         view.getOfferGrid().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
                         detailSection.getView().getReplyHolder().addQuestionReply();
                     }
                 });
@@ -309,20 +308,20 @@ public class ClientOffersPresenter
 
     public void addAcceptOfferColumnFieldUpdater() {
         view.getOfferGrid().getAcceptOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
-                        eventBus.requestAcceptOffer(object);
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
+                        eventBus.requestAcceptOffer(object.getUserMessageId()); //good attribute ???
                     }
                 });
     }
 
     public void addDeclineOfferColumnFieldUpdater() {
         view.getOfferGrid().getDeclineOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
-                        eventBus.requestDeclineOffer(object.getOfferDetail());
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
+                        eventBus.requestDeclineOffer(object.getUserMessageId()); //good attribute ???
                     }
                 });
     }
@@ -350,7 +349,7 @@ public class ClientOffersPresenter
         view.getOfferGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getOfferGrid().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getEndDateColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 

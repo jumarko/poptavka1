@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
@@ -71,9 +72,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     private void getSupplierPotentialDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialDemands(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<SupplierPotentialDemandDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<FullOfferDetail> result) {
+                    public void onSuccess(List<SupplierPotentialDemandDetail> result) {
                         eventBus.displaySupplierDemands(result);
                     }
                 });
@@ -158,8 +159,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    public void onRequestFinishOffer(FullOfferDetail fullOfferDetail) {
-        supplierDemandsService.finishOffer(fullOfferDetail, new SecuredAsyncCallback<Void>(eventBus) {
+    public void onRequestFinishOffer(long id) {
+        supplierDemandsService.finishOffer(id, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
@@ -168,11 +169,11 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     }
     //request? better would be update
 
-    public void onRequestEditOffer(FullOfferDetail fullOfferDetail) {
+    public void onRequestEditOffer(long id) {
         //TODO RPC
     }
 
-    public void onRequestCancelOffer(OfferDetail offerDetail) {
+    public void onRequestCancelOffer(long id) {
         //TODO RPC
     }
 
@@ -195,12 +196,13 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     /* Get Detail object for selecting in selection models                    */
     /**************************************************************************/
     public void onGetSupplierDemand(long demandID) {
-        supplierDemandsService.getSupplierDemand(demandID, new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
-            @Override
-            public void onSuccess(FullOfferDetail result) {
-                eventBus.selectSupplierDemand(result);
-            }
-        });
+        supplierDemandsService.getSupplierDemand(demandID,
+                new SecuredAsyncCallback<SupplierPotentialDemandDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(SupplierPotentialDemandDetail result) {
+                        eventBus.selectSupplierDemand(result);
+                    }
+                });
     }
 
     public void onGetSupplierOffer(long offerID) {

@@ -15,7 +15,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -209,13 +208,13 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestCloseDemand(FullDemandDetail demandDetail);
+    void requestCloseDemand(long id);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestAcceptOffer(FullOfferDetail fullOfferDetail);
+    void requestAcceptOffer(long id);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestDeclineOffer(OfferDetail offerDetail);
+    void requestDeclineOffer(long id);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void updateUnreadMessagesCount();

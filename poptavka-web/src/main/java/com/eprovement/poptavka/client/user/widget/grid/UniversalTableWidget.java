@@ -4,8 +4,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -23,6 +21,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +41,9 @@ import java.util.Set;
  * As for this widget has no presenter, action handlers for column field updater
  * must be defined in widget's presenter that is using this one.
  *
+ * Commented code temporary disabled. If there will be enought place in tables,
+ * some might be included.
+ *
  * @author Martin
  */
 public class UniversalTableWidget extends Composite {
@@ -56,28 +58,28 @@ public class UniversalTableWidget extends Composite {
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
-    UniversalAsyncGrid<FullOfferDetail> grid;
+    UniversalAsyncGrid<IUniversalDetail> grid;
     //table columns
     private Header checkHeader;
-    private Column<FullOfferDetail, Boolean> checkColumn;
-    private Column<FullOfferDetail, Boolean> starColumn;
-    private Column<FullOfferDetail, OfferStateType> offerStateColumn;
-    private Column<FullOfferDetail, String> clientNameColumn;
-    private Column<FullOfferDetail, String> supplierNameColumn;
-    private Column<FullOfferDetail, String> demandTitleColumn;
-    private Column<FullOfferDetail, String> ratingColumn;
-    private Column<FullOfferDetail, String> priceColumn;
-    private Column<FullOfferDetail, Date> urgencyColumn;
-    private Column<FullOfferDetail, String> receiveDateColumn;
-    private Column<FullOfferDetail, String> deliveryDateColumn;
-    private Column<FullOfferDetail, ImageResource> replyImageColumn;
-    private Column<FullOfferDetail, ImageResource> acceptOfferImageColumn;
-    private Column<FullOfferDetail, ImageResource> declineOfferImageColumn;
-    private Column<FullOfferDetail, ImageResource> closeDemandImageColumn;
-    private Column<FullOfferDetail, ImageResource> sendOfferImageColumn;
-    private Column<FullOfferDetail, ImageResource> editOfferImageColumn;
-    private Column<FullOfferDetail, ImageResource> downloadOfferImageColumns;
-    private Column<FullOfferDetail, ImageResource> finnishedImageColumn;
+    private Column<IUniversalDetail, Boolean> checkColumn;
+    private Column<IUniversalDetail, Boolean> starColumn;
+    private Column<IUniversalDetail, OfferStateType> offerStateColumn;
+    private Column<IUniversalDetail, String> clientNameColumn;
+    private Column<IUniversalDetail, String> supplierNameColumn;
+    private Column<IUniversalDetail, String> demandTitleColumn;
+    private Column<IUniversalDetail, String> ratingColumn;
+    private Column<IUniversalDetail, String> priceColumn;
+    private Column<IUniversalDetail, Date> urgencyColumn;
+    private Column<IUniversalDetail, String> receiveDateColumn;
+    private Column<IUniversalDetail, String> endDateColumn;
+    private Column<IUniversalDetail, ImageResource> replyImageColumn;
+    private Column<IUniversalDetail, ImageResource> acceptOfferImageColumn;
+    private Column<IUniversalDetail, ImageResource> declineOfferImageColumn;
+    private Column<IUniversalDetail, ImageResource> closeDemandImageColumn;
+    private Column<IUniversalDetail, ImageResource> sendOfferImageColumn;
+    private Column<IUniversalDetail, ImageResource> editOfferImageColumn;
+    private Column<IUniversalDetail, ImageResource> downloadOfferImageColumns;
+    private Column<IUniversalDetail, ImageResource> finnishedImageColumn;
     //table column width constatnts
     private static final int NAME_COL_WIDTH = 50;
     private static final int DEMAND_TITLE_COL_WIDTH = 50;
@@ -92,7 +94,7 @@ public class UniversalTableWidget extends Composite {
     private static final String PRICE_COLUMN = "price";
     private static final String URGENCY_COLUMN = "endDate";
     private static final String RECEIVED_DATE_COLUMN = "receivedDate"; //Prijate
-    private static final String DELIVERY_DATE_COLUMN = "deliveryDate"; //Dodanie/dorucenie
+    private static final String END_DATE_COLUMN = "endDate"; //Dodanie/dorucenie
     private static final String REPLY_IMAGE_COLUMN = "reply";
     private static final String ACCEPT_OFFER_IMAGE_COLUMN = "acceptOffer";
     private static final String DECLINE_OFFER_IMAGE_COLUMN = "declineOffer";
@@ -112,8 +114,20 @@ public class UniversalTableWidget extends Composite {
     //Other
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
+    //Include KEY_PROVIDER here? Can be general provider for all those possible usages?
+    //If no, UniversalTableWidget - selectionModel creation must be modified
+    //Keyprovider
+    //--------------------------------------------------------------------------
+    private static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
+            new ProvidesKey<IUniversalDetail>() {
+                @Override
+                public Object getKey(IUniversalDetail item) {
+                    return item == null ? null : item.getDemandId();
+                }
+            };
+
     /**************************************************************************/
-    /* Initialization                                                            */
+    /* Initialization                                                         */
     /**************************************************************************/
     /**
      * Constuctor.
@@ -154,16 +168,16 @@ public class UniversalTableWidget extends Composite {
         pager = new UniversalPagerWidget();
         // Create a CellTable.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        grid = new UniversalAsyncGrid<FullOfferDetail>(gridColumns, pager.getPageSize(), resource);
+        grid = new UniversalAsyncGrid<IUniversalDetail>(gridColumns, pager.getPageSize(), resource);
         grid.setHeight("500px");
 
 
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        final SelectionModel<FullOfferDetail> selectionModel =
-                new MultiSelectionModel<FullOfferDetail>(FullOfferDetail.KEY_PROVIDER);
+        final SelectionModel<IUniversalDetail> selectionModel =
+                new MultiSelectionModel<IUniversalDetail>(KEY_PROVIDER);
         grid.setSelectionModel(
-                selectionModel, DefaultSelectionEventManager.<FullOfferDetail>createCheckboxManager());
+                selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
 
         // bind pager to grid
         pager.setDisplay(grid);
@@ -188,7 +202,7 @@ public class UniversalTableWidget extends Composite {
         gridColumns.clear();
         gridColumns.add(SUPPLIER_NAME_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(DELIVERY_DATE_COLUMN);
+        gridColumns.add(END_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(ACCEPT_OFFER_IMAGE_COLUMN);
@@ -203,7 +217,7 @@ public class UniversalTableWidget extends Composite {
         gridColumns.clear();
         gridColumns.add(SUPPLIER_NAME_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(DELIVERY_DATE_COLUMN);
+        gridColumns.add(END_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(CLOSE_DEMAND_IMAGE_COLUMN);
@@ -217,10 +231,10 @@ public class UniversalTableWidget extends Composite {
         gridColumns.clear();
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(DEMAND_TITLE_COLUMN);
-        gridColumns.add(RATING_COLUMN);
+//        gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(URGENCY_COLUMN);
-        gridColumns.add(RECEIVED_DATE_COLUMN);
+//        gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(REPLY_IMAGE_COLUMN);
         gridColumns.add(SEND_OFFER_IMAGE_COLUMN);
     }
@@ -233,7 +247,7 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(DELIVERY_DATE_COLUMN);
+        gridColumns.add(END_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(REPLY_IMAGE_COLUMN);
         gridColumns.add(EDIT_OFFER_IMAGE_COLUMN);
@@ -248,7 +262,7 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(DELIVERY_DATE_COLUMN);
+        gridColumns.add(END_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(FINNISHED_IMAGE_COLUMN);
         gridColumns.add(REPLY_IMAGE_COLUMN);
@@ -284,7 +298,7 @@ public class UniversalTableWidget extends Composite {
         }
 
         addReceivedDateColumn();
-        addDeliveryDateColumn();
+        addEndDateColumn();
     }
 
     private void addImageColumns() {
@@ -337,9 +351,8 @@ public class UniversalTableWidget extends Composite {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            FullOfferDetail detail = (FullOfferDetail) object;
-                            return FullOfferDetail.displayHtml(
-                                    detail.getOfferDetail().getClientName(), detail.isRead());
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            return detail.displayHtml(detail.getClientName(), detail.isRead());
                         }
                     });
         }
@@ -352,9 +365,8 @@ public class UniversalTableWidget extends Composite {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            FullOfferDetail detail = (FullOfferDetail) object;
-                            return FullOfferDetail.displayHtml(
-                                    detail.getOfferDetail().getSupplierName(), detail.isRead());
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            return detail.displayHtml(detail.getSupplierName(), detail.isRead());
                         }
                     });
         }
@@ -367,9 +379,8 @@ public class UniversalTableWidget extends Composite {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            FullOfferDetail detail = (FullOfferDetail) object;
-                            return FullOfferDetail.displayHtml(
-                                    detail.getOfferDetail().getDemandTitle(), detail.isRead());
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            return detail.displayHtml(detail.getTitle(), detail.isRead());
                         }
                     });
         }
@@ -382,9 +393,9 @@ public class UniversalTableWidget extends Composite {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            FullOfferDetail detail = (FullOfferDetail) object;
-                            return ClientDemandDetail.displayHtml(
-                                    Integer.toString(detail.getOfferDetail().getRating()),
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            return detail.displayHtml(
+                                    Integer.toString(detail.getRating()),
                                     detail.isRead());
                         }
                     });
@@ -398,9 +409,8 @@ public class UniversalTableWidget extends Composite {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            FullOfferDetail detail = (FullOfferDetail) object;
-                            return FullOfferDetail.displayHtml(
-                                    detail.getOfferDetail().getPrice().toString(), detail.isRead());
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            return detail.displayHtml(detail.getPrice(), detail.isRead());
                         }
                     });
         }
@@ -413,25 +423,25 @@ public class UniversalTableWidget extends Composite {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            FullOfferDetail detail = (FullOfferDetail) object;
-                            return ClientDemandDetail.displayHtml(
-                                    formatter.format(detail.getOfferDetail().getCreatedDate()),
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            return detail.displayHtml(
+                                    formatter.format(detail.getReceivedDate()),
                                     detail.isRead());
                         }
                     });
         }
     }
 
-    private void addDeliveryDateColumn() {
-        if (gridColumns.contains(DELIVERY_DATE_COLUMN)) {
-            deliveryDateColumn = grid.addColumn(
+    private void addEndDateColumn() {
+        if (gridColumns.contains(END_DATE_COLUMN)) {
+            endDateColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.deliveryDate(), true, COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            FullOfferDetail detail = (FullOfferDetail) object;
-                            return ClientDemandDetail.displayHtml(
-                                    formatter.format(detail.getOfferDetail().getFinishDate()),
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            return detail.displayHtml(
+                                    formatter.format(detail.getEndDate()),
                                     detail.isRead());
                         }
                     });
@@ -442,7 +452,7 @@ public class UniversalTableWidget extends Composite {
     /* Getters                                                                */
     /**************************************************************************/
     //Table
-    public UniversalAsyncGrid<FullOfferDetail> getGrid() {
+    public UniversalAsyncGrid<IUniversalDetail> getGrid() {
         return grid;
     }
 
@@ -452,75 +462,75 @@ public class UniversalTableWidget extends Composite {
     }
 
     //Columns
-    public Column<FullOfferDetail, Boolean> getCheckColumn() {
+    public Column<IUniversalDetail, Boolean> getCheckColumn() {
         return checkColumn;
     }
 
-    public Column<FullOfferDetail, Boolean> getStarColumn() {
+    public Column<IUniversalDetail, Boolean> getStarColumn() {
         return starColumn;
     }
 
-    public Column<FullOfferDetail, String> getClientNameColumn() {
+    public Column<IUniversalDetail, String> getClientNameColumn() {
         return clientNameColumn;
     }
 
-    public Column<FullOfferDetail, String> getSupplierNameColumn() {
+    public Column<IUniversalDetail, String> getSupplierNameColumn() {
         return supplierNameColumn;
     }
 
-    public Column<FullOfferDetail, String> getDemandTitleColumn() {
+    public Column<IUniversalDetail, String> getDemandTitleColumn() {
         return demandTitleColumn;
     }
 
-    public Column<FullOfferDetail, String> getPriceColumn() {
+    public Column<IUniversalDetail, String> getPriceColumn() {
         return priceColumn;
     }
 
-    public Column<FullOfferDetail, String> getReceivedColumn() {
+    public Column<IUniversalDetail, String> getReceivedColumn() {
         return receiveDateColumn;
     }
 
-    public Column<FullOfferDetail, String> getDeliveryColumn() {
-        return deliveryDateColumn;
+    public Column<IUniversalDetail, String> getEndDateColumn() {
+        return endDateColumn;
     }
 
-    public Column<FullOfferDetail, String> getRatingColumn() {
+    public Column<IUniversalDetail, String> getRatingColumn() {
         return ratingColumn;
     }
 
-    public Column<FullOfferDetail, Date> getUrgencyColumn() {
+    public Column<IUniversalDetail, Date> getUrgencyColumn() {
         return urgencyColumn;
     }
 
-    public Column<FullOfferDetail, ImageResource> getReplyImageColumn() {
+    public Column<IUniversalDetail, ImageResource> getReplyImageColumn() {
         return replyImageColumn;
     }
 
-    public Column<FullOfferDetail, ImageResource> getAcceptOfferImageColumn() {
+    public Column<IUniversalDetail, ImageResource> getAcceptOfferImageColumn() {
         return acceptOfferImageColumn;
     }
 
-    public Column<FullOfferDetail, ImageResource> getDeclineOfferImageColumn() {
+    public Column<IUniversalDetail, ImageResource> getDeclineOfferImageColumn() {
         return declineOfferImageColumn;
     }
 
-    public Column<FullOfferDetail, ImageResource> getCloseDemandImageColumn() {
+    public Column<IUniversalDetail, ImageResource> getCloseDemandImageColumn() {
         return closeDemandImageColumn;
     }
 
-    public Column<FullOfferDetail, ImageResource> getSendOfferImageColumn() {
+    public Column<IUniversalDetail, ImageResource> getSendOfferImageColumn() {
         return sendOfferImageColumn;
     }
 
-    public Column<FullOfferDetail, ImageResource> getEditOfferImageColumn() {
+    public Column<IUniversalDetail, ImageResource> getEditOfferImageColumn() {
         return editOfferImageColumn;
     }
 
-    public Column<FullOfferDetail, ImageResource> getDownloadOfferImageColumns() {
+    public Column<IUniversalDetail, ImageResource> getDownloadOfferImageColumns() {
         return downloadOfferImageColumns;
     }
 
-    public Column<FullOfferDetail, ImageResource> getFinnishedImageColumn() {
+    public Column<IUniversalDetail, ImageResource> getFinnishedImageColumn() {
         return finnishedImageColumn;
     }
 
@@ -544,9 +554,9 @@ public class UniversalTableWidget extends Composite {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Set<FullOfferDetail> getSelectedMessageList() {
-        MultiSelectionModel<FullOfferDetail> model =
-                (MultiSelectionModel<FullOfferDetail>) grid.getSelectionModel();
+    public Set<IUniversalDetail> getSelectedMessageList() {
+        MultiSelectionModel<IUniversalDetail> model =
+                (MultiSelectionModel<IUniversalDetail>) grid.getSelectionModel();
         return model.getSelectedSet();
     }
 
@@ -556,10 +566,10 @@ public class UniversalTableWidget extends Composite {
      */
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
-        Set<FullOfferDetail> set = getSelectedMessageList();
-        Iterator<FullOfferDetail> it = set.iterator();
+        Set<IUniversalDetail> set = getSelectedMessageList();
+        Iterator<IUniversalDetail> it = set.iterator();
         while (it.hasNext()) {
-            idList.add(it.next().getUserMessageDetail().getId());
+            idList.add(it.next().getUserMessageId());
         }
         return idList;
     }

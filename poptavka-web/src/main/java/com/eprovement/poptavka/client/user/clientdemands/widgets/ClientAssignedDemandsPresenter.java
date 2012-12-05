@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
@@ -145,7 +146,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplayClientAssignedDemands(List<FullOfferDetail> data) {
+    public void onDisplayClientAssignedDemands(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemands");
 
         view.getTableWidget().getGrid().getDataProvider().updateRowData(
@@ -207,8 +208,8 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
-                List<FullOfferDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
-                for (FullOfferDetail row : rows) {
+                List<IUniversalDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
+                for (IUniversalDetail row : rows) {
                     ((MultiSelectionModel) view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
@@ -216,12 +217,12 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     public void addStarColumnFieldUpdater() {
-        view.getTableWidget().getStarColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, Boolean>() {
+        view.getTableWidget().getStarColumn().setFieldUpdater(new FieldUpdater<IUniversalDetail, Boolean>() {
             @Override
-            public void update(int index, FullOfferDetail object, Boolean value) {
+            public void update(int index, IUniversalDetail object, Boolean value) {
                 object.setStarred(!value);
                 view.getTableWidget().getGrid().redraw();
-                Long[] item = new Long[]{object.getUserMessageDetail().getId()};
+                Long[] item = new Long[]{object.getUserMessageId()};
                 eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
             }
         });
@@ -229,9 +230,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
     public void addReplyColumnFieldUpdater() {
         view.getTableWidget().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
                         detailSection.getView().getReplyHolder().addQuestionReply();
                     }
                 });
@@ -239,10 +240,10 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
     public void addCloseDemandColumnFieldUpdater() {
         view.getTableWidget().getCloseDemandImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
-                        eventBus.requestCloseDemand(object.getDemandDetail());
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
+                        eventBus.requestCloseDemand(object.getDemandId());
                     }
                 });
     }
@@ -270,7 +271,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         view.getTableWidget().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getEndDateColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 

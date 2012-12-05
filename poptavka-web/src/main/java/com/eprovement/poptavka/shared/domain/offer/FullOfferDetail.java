@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.offer;
 
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
@@ -10,7 +11,12 @@ import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
 
-public class FullOfferDetail implements Serializable, TableDisplay {
+/**
+ * TODO refactoring, maybe deleted later.
+ *
+ * @author Martin Slavkovsky
+ */
+public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDetail {
 
     /**
      * Generated serialVersionUID.
@@ -76,7 +82,7 @@ public class FullOfferDetail implements Serializable, TableDisplay {
      * @param trustedHtml
      * @return string in html tags
      */
-    public static String displayHtml(String trustedHtml, boolean isRead) {
+    public String displayHtml(String trustedHtml, boolean isRead) {
         if (isRead) {
             return trustedHtml;
         } else {
@@ -111,11 +117,101 @@ public class FullOfferDetail implements Serializable, TableDisplay {
 
     @Override
     public DemandStatus getDemandStatus() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return demandDetail.getDemandStatus();
     }
 
     @Override
     public OfferStateType getOfferState() {
         return this.offerDetail.getState();
+    }
+
+    @Override
+    public long getClientId() {
+        return demandDetail.getClientId();
+    }
+
+    @Override
+    public String getClientName() {
+        return offerDetail.getClientName();
+    }
+
+    @Override
+    public long getSupplierId() {
+        return offerDetail.getSupplierId();
+    }
+
+    @Override
+    public String getSupplierName() {
+        return offerDetail.getSupplierName();
+    }
+
+    @Override
+    public int getRating() {
+        return offerDetail.getRating();
+    }
+
+    @Override
+    public long getMessageId() {
+        return userMessageDetail.getMessageDetail().getMessageId();
+    }
+
+    @Override
+    public long getThreadRootId() {
+        return userMessageDetail.getMessageDetail().getThreadRootId();
+    }
+
+    @Override
+    public long getSenderId() {
+        return userMessageDetail.getMessageDetail().getSenderId();
+    }
+
+    @Override
+    public Date getMessageSent() {
+        return userMessageDetail.getMessageDetail().getSent();
+    }
+
+    @Override
+    public long getUserMessageId() {
+        return userMessageDetail.getId();
+    }
+
+    @Override
+    public int getMessageCount() {
+        return userMessageDetail.getMessageCount();
+    }
+
+    @Override
+    public int getUnreadMessageCount() {
+        return userMessageDetail.getUnreadMessageCount();
+    }
+
+    @Override
+    public Date getDeliveryDate() {
+        return new Date();
+    }
+
+    @Override
+    public long getDemandId() {
+        return demandDetail.getDemandId();
+    }
+
+    @Override
+    public Date getValidTo() {
+        return demandDetail.getValidToDate();
+    }
+
+    @Override
+    public Date getReceivedDate() {
+        return demandDetail.getCreated();
+    }
+
+    @Override
+    public String getTitle() {
+        return demandDetail.getTitle();
+    }
+
+    @Override
+    public String getPrice() {
+        return demandDetail.getPrice().toString();
     }
 }

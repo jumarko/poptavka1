@@ -183,11 +183,11 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException, ApplicationSecurityException;
 
-    void closeDemand(FullDemandDetail demandDetail) throws RPCException, ApplicationSecurityException;
+    void closeDemand(long id) throws RPCException, ApplicationSecurityException;
 
-    void acceptOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException;
+    void acceptOffer(long id) throws RPCException, ApplicationSecurityException;
 
-    void declineOffer(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException;
+    void declineOffer(long id) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Messages methods                                                       */

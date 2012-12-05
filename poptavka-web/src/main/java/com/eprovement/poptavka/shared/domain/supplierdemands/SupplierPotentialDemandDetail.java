@@ -4,6 +4,8 @@
  */
 package com.eprovement.poptavka.shared.domain.supplierdemands;
 
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,27 +13,23 @@ import java.util.Date;
  *
  * @author Ivan
  */
-public class SupplierPotentialDemandDetail implements Serializable {
+public class SupplierPotentialDemandDetail implements Serializable, IUniversalDetail {
 
     private static final long serialVersionUID = -6019479783491937543L;
-
     // Client part
     private long clientId;
     private String clientName; // column 2
-
     // Message part
     private long messageId;
     private long threadRootId;
     private long senderId;
     private Date messageSent; // column 5
-
     // UserMessage part
     private long userMessageId;
     private boolean isRead;
     private boolean isStarred; // column 1
     private int messageCount; // all messages between Supplier and Client regarding this potential demand
     private int unreadMessageCount; // number of Supplier's unread messages regarding this potential demand
-
     // Demand part
     private long demandId;
     private Date validTo;
@@ -39,9 +37,22 @@ public class SupplierPotentialDemandDetail implements Serializable {
     private String title; // column 3
     private String price; // column ? - maybe we will not display this in table
 
+    // Keyprovider
+    //--------------------------------------------------------------------------
+    public static final ProvidesKey<SupplierPotentialDemandDetail> KEY_PROVIDER =
+            new ProvidesKey<SupplierPotentialDemandDetail>() {
+                @Override
+                public Object getKey(SupplierPotentialDemandDetail item) {
+                    return item == null ? null : item.getDemandId();
+                }
+            };
+
+    // Client part
+    //--------------------------------------------------------------------------
     /**
      * @return the clientId
      */
+    @Override
     public long getClientId() {
         return clientId;
     }
@@ -56,6 +67,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the clientName
      */
+    @Override
     public String getClientName() {
         return clientName;
     }
@@ -67,9 +79,29 @@ public class SupplierPotentialDemandDetail implements Serializable {
         this.clientName = clientName;
     }
 
+    // Supplier part
+    //--------------------------------------------------------------------------
+    @Override
+    public long getSupplierId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getSupplierName() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getRating() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // Message part
+    //--------------------------------------------------------------------------
     /**
      * @return the messageId
      */
+    @Override
     public long getMessageId() {
         return messageId;
     }
@@ -84,6 +116,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the threadRootId
      */
+    @Override
     public long getThreadRootId() {
         return threadRootId;
     }
@@ -98,6 +131,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the senderId
      */
+    @Override
     public long getSenderId() {
         return senderId;
     }
@@ -112,6 +146,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the messageSent
      */
+    @Override
     public Date getMessageSent() {
         return messageSent;
     }
@@ -123,9 +158,12 @@ public class SupplierPotentialDemandDetail implements Serializable {
         this.messageSent = messageSent;
     }
 
+    // UserMessage part
+    //--------------------------------------------------------------------------
     /**
      * @return the userMessageId
      */
+    @Override
     public long getUserMessageId() {
         return userMessageId;
     }
@@ -140,34 +178,39 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the isRead
      */
-    public boolean isIsRead() {
+    @Override
+    public boolean isRead() {
         return isRead;
     }
 
     /**
      * @param isRead the isRead to set
      */
-    public void setIsRead(boolean isRead) {
+    @Override
+    public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
 
     /**
      * @return the isStarred
      */
-    public boolean isIsStarred() {
+    @Override
+    public boolean isStarred() {
         return isStarred;
     }
 
     /**
      * @param isStarred the isStarred to set
      */
-    public void setIsStarred(boolean isStarred) {
+    @Override
+    public void setStarred(boolean isStarred) {
         this.isStarred = isStarred;
     }
 
     /**
      * @return the messageCount
      */
+    @Override
     public int getMessageCount() {
         return messageCount;
     }
@@ -182,6 +225,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the unreadMessageCount
      */
+    @Override
     public int getUnreadMessageCount() {
         return unreadMessageCount;
     }
@@ -193,9 +237,17 @@ public class SupplierPotentialDemandDetail implements Serializable {
         this.unreadMessageCount = unreadMessageCount;
     }
 
+    @Override
+    public Date getDeliveryDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // Demand part
+    //--------------------------------------------------------------------------
     /**
      * @return the demandId
      */
+    @Override
     public long getDemandId() {
         return demandId;
     }
@@ -210,6 +262,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the validTo
      */
+    @Override
     public Date getValidTo() {
         return validTo;
     }
@@ -224,6 +277,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the endDate
      */
+    @Override
     public Date getEndDate() {
         return endDate;
     }
@@ -235,9 +289,15 @@ public class SupplierPotentialDemandDetail implements Serializable {
         this.endDate = endDate;
     }
 
+    @Override
+    public Date getReceivedDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /**
      * @return the title
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -252,6 +312,7 @@ public class SupplierPotentialDemandDetail implements Serializable {
     /**
      * @return the price
      */
+    @Override
     public String getPrice() {
         return price;
     }
@@ -263,4 +324,20 @@ public class SupplierPotentialDemandDetail implements Serializable {
         this.price = price;
     }
 
+    // Display
+    //--------------------------------------------------------------------------
+    /**
+     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
+     * User CANNOT call this nethod due to security issues.
+     * @param trustedHtml
+     * @return string in html tags
+     */
+    @Override
+    public String displayHtml(String trustedHtml, boolean isRead) {
+        if (isRead) {
+            return trustedHtml;
+        } else {
+            return "<strong>" + trustedHtml + "</strong>";
+        }
+    }
 }

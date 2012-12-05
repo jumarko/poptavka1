@@ -422,38 +422,41 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<FullOfferDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        //1
-        FullOfferDetail d1 = new FullOfferDetail();
-        d1.getOfferDetail().setDemandId(1L);
-        d1.getOfferDetail().setState(OfferStateType.ACCEPTED);
-        d1.getOfferDetail().setClientName("Martin Slavkovsky");
-        d1.getOfferDetail().setSupplierName("Good Data");
-        d1.getOfferDetail().setDemandTitle("Poptavka 1234");
-        d1.getOfferDetail().setRating(90);
-        d1.getOfferDetail().setPrice(10000);
-        d1.getOfferDetail().setFinishDate(new Date());
-        d1.getOfferDetail().setCreatedDate(new Date());
-        UserMessageDetail umd1 = new UserMessageDetail();
-        umd1.setId(1L);
-        d1.setUserMessageDetail(umd1);
-        //2
-        FullOfferDetail d2 = new FullOfferDetail();
-        d2.getOfferDetail().setDemandId(2L);
-        d2.getOfferDetail().setState(OfferStateType.ACCEPTED);
-        d2.getOfferDetail().setClientName("Ivan Vlcek");
-        d2.getOfferDetail().setSupplierName("CoraGeo");
-        d2.getOfferDetail().setDemandTitle("Poptavka na GIS");
-        d2.getOfferDetail().setRating(90);
-        d2.getOfferDetail().setPrice(10000);
-        d2.getOfferDetail().setFinishDate(new Date());
-        d2.getOfferDetail().setCreatedDate(new Date());
-        UserMessageDetail umd2 = new UserMessageDetail();
-        umd2.setId(2L);
-        d2.setUserMessageDetail(umd2);
-        //
+        FullOfferDetail detail = new FullOfferDetail();
+        detail.getOfferDetail().setSupplierId(1L);
+        detail.getOfferDetail().setDemandId(1L);
+        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
+        detail.getOfferDetail().setClientName("Martin Slavkovsky");
+        detail.getOfferDetail().setSupplierName("Good Data");
+        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
+        detail.getOfferDetail().setRating(90);
+        detail.getOfferDetail().setPrice(10000);
+        detail.getOfferDetail().setFinishDate(new Date());
+        detail.getOfferDetail().setCreatedDate(new Date());
+
+        FullDemandDetail demand = new FullDemandDetail();
+        demand.setClientId(1L);
+        demand.setDemandId(1L);
+        demand.setTitle("Poptavka 1234");
+        demand.setPrice("21342");
+        demand.setValidToDate(new Date());
+        demand.setCreated(new Date());
+        demand.setEndDate(new Date());
+        detail.setDemandDetail(demand);
+
+        UserMessageDetail umd = new UserMessageDetail();
+        MessageDetail md = new MessageDetail();
+        md.setMessageId(1L);
+        md.setThreadRootId(1L);
+        md.setSenderId(1L);
+        md.setSent(new Date());
+        umd.setMessageDetail(md);
+        umd.setMessageCount(10);
+        umd.setUnreadMessageCount(10);
+        detail.setUserMessageDetail(umd);
+
         List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
-        list.add(d1);
-        list.add(d2);
+        list.add(detail);
         return list;
     }
 
@@ -536,9 +539,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void closeDemand(FullDemandDetail demandDetail) throws RPCException, ApplicationSecurityException {
+    public void closeDemand(long id) throws RPCException, ApplicationSecurityException {
         //TODO Juraj - skontrolovat
-        Demand demand = demandConverter.convertToSource(demandDetail);
+        Demand demand = generalService.find(Demand.class, id);
         demand.setStatus(DemandStatus.CLOSED);
         generalService.merge(demand);
         //Asi nech zmizne aj zo SupplierAssignedDemands
@@ -553,7 +556,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void acceptOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException {
+    public void acceptOffer(long id) throws RPCException, ApplicationSecurityException {
         //TODO Juraj
         //Accept given offer (offerDetail.getOfferDetail())
         //Decline all other offers of given demand (offerDetail.getDemandDetail())
@@ -569,7 +572,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void declineOffer(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
+    public void declineOffer(long id) throws RPCException, ApplicationSecurityException {
         //TODO Juraj
         //Decline given offer
     }

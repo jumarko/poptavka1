@@ -112,7 +112,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         this.potentialDemandMessageConverter = potentialDemandMessageConverter;
     }
 
-
     //************************ SUPPLIER - My Demands **************************/
     /**
      * Get demands of categories that I am interested in.
@@ -150,7 +149,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierPotentialDemands(long supplierID,
+    public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
         final List<UserMessage> userMessages = userMessageService.getPotentialDemands(businessUser);
@@ -179,8 +178,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             detail.setMessageSent(um.getMessage().getSent());
             // UserMessage part
             detail.setUserMessageId(um.getId());
-            detail.setIsRead(um.isRead());
-            detail.setIsStarred(um.isStarred());
+            detail.setRead(um.isRead());
+            detail.setStarred(um.isStarred());
             detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
             detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
             // Demand part
@@ -194,8 +193,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         }
 
         // TODO Martin - return supplierPotentialDemands instead of FakeData
-//        return supplierPotentialDemands;
-        return getFakeData();
+        return supplierPotentialDemands;
+//        return getFakeData();
     }
 
     //************************ SUPPLIER - My Offers ***************************/
@@ -344,7 +343,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public void finishOffer(FullOfferDetail fullOfferDetail) throws RPCException, ApplicationSecurityException {
+    public void finishOffer(long id) throws RPCException, ApplicationSecurityException {
         //TODO Juraj - finish offer
         //set OfferState to finished
         //send message to client that offer was finished
@@ -377,9 +376,10 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public FullOfferDetail getSupplierDemand(long supplierDemandID)
+    public SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID)
         throws RPCException, ApplicationSecurityException {
-        return getFakeItemById(supplierDemandID);
+        //TODO Ivan
+        return new SupplierPotentialDemandDetail();
     }
 
     @Override
@@ -401,6 +401,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     /**************************************************************************/
     private List<FullOfferDetail> getFakeData() throws RPCException {
         FullOfferDetail detail = new FullOfferDetail();
+        detail.getOfferDetail().setSupplierId(1L);
         detail.getOfferDetail().setDemandId(1L);
         detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
         detail.getOfferDetail().setClientName("Martin Slavkovsky");
@@ -410,44 +411,67 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         detail.getOfferDetail().setPrice(10000);
         detail.getOfferDetail().setFinishDate(new Date());
         detail.getOfferDetail().setCreatedDate(new Date());
+
+        FullDemandDetail demand = new FullDemandDetail();
+        demand.setClientId(1L);
+        demand.setDemandId(1L);
+        demand.setTitle("Poptavka 1234");
+        demand.setPrice("21342");
+        demand.setValidToDate(new Date());
+        demand.setCreated(new Date());
+        demand.setEndDate(new Date());
+        detail.setDemandDetail(demand);
+
+        UserMessageDetail umd = new UserMessageDetail();
+        MessageDetail md = new MessageDetail();
+        md.setMessageId(1L);
+        md.setThreadRootId(1L);
+        md.setSenderId(1L);
+        md.setSent(new Date());
+        umd.setMessageDetail(md);
+        umd.setMessageCount(10);
+        umd.setUnreadMessageCount(10);
+        detail.setUserMessageDetail(umd);
+
         List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
         list.add(detail);
         return list;
     }
 
     private FullOfferDetail getFakeItemById(long itemId) {
-        if (itemId == 1L) {
-            FullOfferDetail d1 = new FullOfferDetail();
-            d1.getOfferDetail().setDemandId(1L);
-            d1.getOfferDetail().setState(OfferStateType.ACCEPTED);
-            d1.getOfferDetail().setClientName("Martin Slavkovsky");
-            d1.getOfferDetail().setSupplierName("Good Data");
-            d1.getOfferDetail().setDemandTitle("Poptavka 1234");
-            d1.getOfferDetail().setRating(90);
-            d1.getOfferDetail().setPrice(10000);
-            d1.getOfferDetail().setFinishDate(new Date());
-            d1.getOfferDetail().setCreatedDate(new Date());
-            UserMessageDetail umd1 = new UserMessageDetail();
-            umd1.setId(1L);
-            d1.setUserMessageDetail(umd1);
-            return d1;
-        } else if (itemId == 2L) {
-            FullOfferDetail d2 = new FullOfferDetail();
-            d2.getOfferDetail().setDemandId(2L);
-            d2.getOfferDetail().setState(OfferStateType.ACCEPTED);
-            d2.getOfferDetail().setClientName("Ivan Vlcek");
-            d2.getOfferDetail().setSupplierName("CoraGeo");
-            d2.getOfferDetail().setDemandTitle("Poptavka na GIS");
-            d2.getOfferDetail().setRating(90);
-            d2.getOfferDetail().setPrice(10000);
-            d2.getOfferDetail().setFinishDate(new Date());
-            d2.getOfferDetail().setCreatedDate(new Date());
-            UserMessageDetail umd2 = new UserMessageDetail();
-            umd2.setId(2L);
-            d2.setUserMessageDetail(umd2);
-            return d2;
-        } else {
-            return new FullOfferDetail();
-        }
+        FullOfferDetail detail = new FullOfferDetail();
+        detail.getOfferDetail().setSupplierId(1L);
+        detail.getOfferDetail().setDemandId(1L);
+        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
+        detail.getOfferDetail().setClientName("Martin Slavkovsky");
+        detail.getOfferDetail().setSupplierName("Good Data");
+        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
+        detail.getOfferDetail().setRating(90);
+        detail.getOfferDetail().setPrice(10000);
+        detail.getOfferDetail().setFinishDate(new Date());
+        detail.getOfferDetail().setCreatedDate(new Date());
+
+        FullDemandDetail demand = new FullDemandDetail();
+        demand.setClientId(1L);
+        demand.setDemandId(1L);
+        demand.setTitle("Poptavka 1234");
+        demand.setPrice("21342");
+        demand.setValidToDate(new Date());
+        demand.setCreated(new Date());
+        demand.setEndDate(new Date());
+        detail.setDemandDetail(demand);
+
+        UserMessageDetail umd = new UserMessageDetail();
+        MessageDetail md = new MessageDetail();
+        md.setMessageId(1L);
+        md.setThreadRootId(1L);
+        md.setSenderId(1L);
+        md.setSent(new Date());
+        umd.setMessageDetail(md);
+        umd.setMessageCount(10);
+        umd.setUnreadMessageCount(10);
+        detail.setUserMessageDetail(umd);
+
+        return detail;
     }
 }

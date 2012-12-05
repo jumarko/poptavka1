@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -230,8 +229,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    public void onRequestCloseDemand(FullDemandDetail demandDetail) {
-        clientDemandsService.closeDemand(demandDetail, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
+    public void onRequestCloseDemand(long demandId) {
+        clientDemandsService.closeDemand(demandId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
                 //Empty by default
@@ -239,8 +238,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         });
     }
 
-    public void onRequestAcceptOffer(FullOfferDetail fullOfferDetail) {
-        clientDemandsService.acceptOffer(fullOfferDetail, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
+    public void onRequestAcceptOffer(long id) {
+        clientDemandsService.acceptOffer(id, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
                 //Empty by default
@@ -248,8 +247,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         });
     }
 
-    public void onRequestDeclineOffer(OfferDetail offerDetail) {
-        clientDemandsService.declineOffer(offerDetail, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
+    public void onRequestDeclineOffer(long id) {
+        clientDemandsService.declineOffer(id, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
                 //Empty by default

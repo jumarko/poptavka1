@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -150,7 +151,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplaySupplierOffers(List<FullOfferDetail> data) {
+    public void onDisplaySupplierOffers(List<IUniversalDetail> data) {
         GWT.log("++ onResponseSupplierOffers");
 
         view.getTableWidget().getGrid().getDataProvider().updateRowData(
@@ -213,8 +214,8 @@ public class SupplierOffersPresenter extends LazyPresenter<
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
-                List<FullOfferDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
-                for (FullOfferDetail row : rows) {
+                List<IUniversalDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
+                for (IUniversalDetail row : rows) {
                     ((MultiSelectionModel) view.getTableWidget().getGrid()
                             .getSelectionModel()).setSelected(row, value);
                 }
@@ -224,12 +225,12 @@ public class SupplierOffersPresenter extends LazyPresenter<
 
     public void addStarColumnFieldUpdater() {
         view.getTableWidget().getStarColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, Boolean>() {
+                new FieldUpdater<IUniversalDetail, Boolean>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, Boolean value) {
-                        object.getUserMessageDetail().setStarred(!value);
+                    public void update(int index, IUniversalDetail object, Boolean value) {
+                        object.setStarred(!value);
                         view.getTableWidget().getGrid().redraw();
-                        Long[] item = new Long[]{object.getUserMessageDetail().getId()};
+                        Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
                 });
@@ -237,9 +238,9 @@ public class SupplierOffersPresenter extends LazyPresenter<
 
     public void addReplyColumnFieldUpdater() {
         view.getTableWidget().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
                         detailSection.getView().getReplyHolder().addQuestionReply();
                     }
                 });
@@ -247,9 +248,9 @@ public class SupplierOffersPresenter extends LazyPresenter<
 
     public void addEditOfferColumnFieldUpdater() {
         view.getTableWidget().getEditOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
                         //TODO how to edit offer
                     }
                 });
@@ -257,9 +258,9 @@ public class SupplierOffersPresenter extends LazyPresenter<
 
     public void addDownloadOfferColumnFieldUpdater() {
         view.getTableWidget().getDownloadOfferImageColumns().setFieldUpdater(
-                new FieldUpdater<FullOfferDetail, ImageResource>() {
+                new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
-                    public void update(int index, FullOfferDetail object, ImageResource value) {
+                    public void update(int index, IUniversalDetail object, ImageResource value) {
                         //TODO how to download offer
                     }
                 });
@@ -289,7 +290,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
         view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getEndDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
     private void addActionChangeHandler() {

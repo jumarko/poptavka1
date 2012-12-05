@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -136,10 +137,10 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* Business events handled by SupplierDemandsPresenter.                   */
     /**************************************************************************/
     @Event(handlers = SupplierDemandsPresenter.class)
-    void displaySupplierDemands(List<FullOfferDetail> result);
+    void displaySupplierDemands(List<SupplierPotentialDemandDetail> result);
 
     @Event(handlers = SupplierDemandsPresenter.class)
-    void selectSupplierDemand(FullOfferDetail detail);
+    void selectSupplierDemand(SupplierPotentialDemandDetail detail);
 
     /**************************************************************************/
     /* Business events handled by SupplierOffersPresenter.                      */
@@ -171,13 +172,13 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestFinishOffer(FullOfferDetail fullOfferDetail);
+    void requestFinishOffer(long id);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestEditOffer(FullOfferDetail fullOfferDetail);
+    void requestEditOffer(long id);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestCancelOffer(OfferDetail offerDetail);
+    void requestCancelOffer(long id);
 
     //Updaters
     //--------------------------------------------------------------------------
