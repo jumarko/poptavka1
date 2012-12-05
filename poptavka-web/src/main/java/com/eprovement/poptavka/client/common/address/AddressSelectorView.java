@@ -9,7 +9,6 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.Editor.Ignore;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.i18n.client.ValidationMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -58,7 +57,7 @@ public class AddressSelectorView extends Composite
     private final static String ERROR_STYLE = StyleResource.INSTANCE.common().errorField();
     /** UiBinder Attributes. **/
     @UiField(provided = true)
-    SuggestBox region, city;
+    SuggestBox city;
     //TODO Martin -- ZipCode by sa mohol doplnat sam, ked uz som vybral mesto z ciselnika???
     @UiField
     TextBox street, zipCode;
@@ -68,12 +67,13 @@ public class AddressSelectorView extends Composite
      */
     @UiField
     @Ignore
-    Label regionErrorLabel, cityErrorLabel, streetErrorLabel, zipErrorLabel;
+    Label cityErrorLabel, streetErrorLabel, zipErrorLabel;
     /** Class attributes. **/
     //Presenter
     private AddressSelectorPresenter addressSelectorPresenter;
-    //Validation
-    private ValidationMessages messages = GWT.create(ValidationMessages.class);
+    //Address
+    private String region;
+    private String cityTmp;
 
     interface Driver extends SimpleBeanEditorDriver<AddressDetail, AddressSelectorView> {
     }
@@ -91,10 +91,6 @@ public class AddressSelectorView extends Composite
 
     @Override
     public void createView() {
-        region = new SuggestBox(
-                new RegionSuggestOracle(addressSelectorPresenter),
-                new TextBox(),
-                new MySuggestDisplay());
         city = new SuggestBox(
                 new CitySuggestOracle(addressSelectorPresenter),
                 new TextBox(),
@@ -108,6 +104,9 @@ public class AddressSelectorView extends Composite
         StyleResource.INSTANCE.layout().ensureInjected();
     }
 
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
     @UiHandler("street")
     public void validateStreet(BlurEvent e) {
         AddressDetail detail = driver.flush();
@@ -124,12 +123,22 @@ public class AddressSelectorView extends Composite
         this.displayPropertyError(ZIP_CODE, violations);
     }
 
-    public void validateAddress() {
-        AddressDetail detail = driver.flush();
-        Set<ConstraintViolation<AddressDetail>> violations = validator.validate(detail, Default.class);
-        this.displayErrors(violations);
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public void setState(String state) {
+        this.region = state;
     }
 
+    @Override
+    public void setCity(String city) {
+        this.cityTmp = city;
+    }
+
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
     @Override
     public AddressDetail createAddress() {
         AddressDetail address = new AddressDetail();
@@ -143,17 +152,8 @@ public class AddressSelectorView extends Composite
         return address;
     }
 
-    /**************************************************************************/
-    /* GETTERS                                                                */
-    /**************************************************************************/
     //SuggestBoxes
     //--------------------------------------------------------------------------
-    @Override
-    @Ignore
-    public SuggestBox getRegionSuggestBox() {
-        return region;
-    }
-
     @Override
     @Ignore
     public SuggestBox getCitySuggestBox() {
@@ -164,12 +164,6 @@ public class AddressSelectorView extends Composite
     //--------------------------------------------------------------------------
     @Override
     @Ignore
-    public Label getRegionErrorLabel() {
-        return regionErrorLabel;
-    }
-
-    @Override
-    @Ignore
     public Label getCityErrorLabel() {
         return cityErrorLabel;
     }
@@ -177,15 +171,15 @@ public class AddressSelectorView extends Composite
     //Strings for validation
     //--------------------------------------------------------------------------
     public String getCountry() {
-        return "";
+        return "United States";
     }
 
     public String getRegion() {
-        return region.getText();
+        return region;
     }
 
     public String getCity() {
-        return city.getText();
+        return cityTmp;
     }
 
     public String getDistrict() {
@@ -204,10 +198,8 @@ public class AddressSelectorView extends Composite
     //--------------------------------------------------------------------------
     @Override
     public boolean isValid() {
-        validateAddress();
-        //remove those items from validation - TODO in later versions
-        valid.remove(COUNTRY);
-        valid.remove(DISTRICT);
+        validateZipCode(null);
+        validateStreet(null);
         return valid.isEmpty();
     }
 
@@ -221,33 +213,17 @@ public class AddressSelectorView extends Composite
     /**************************************************************************/
     //Validation
     //--------------------------------------------------------------------------
-    private void displayErrors(Set<ConstraintViolation<AddressDetail>> violations) {
-        setError2(REGION, NORMAL_STYLE, "");
-        setError2(CITY, NORMAL_STYLE, "");
-        setError2(STREET, NORMAL_STYLE, "");
-        setError2(ZIP_CODE, NORMAL_STYLE, "");
-        valid.clear();
-
-        for (ConstraintViolation<AddressDetail> violation : violations) {
-            setError2(violation.getPropertyPath().toString(), ERROR_STYLE, violation.getMessage());
-            valid.add(violation.getPropertyPath().toString());
-        }
-    }
-
     private void displayPropertyError(String item, Set<ConstraintViolation<AddressDetail>> violations) {
         for (ConstraintViolation<AddressDetail> violation : violations) {
-            setError2(item, ERROR_STYLE, violation.getMessage());
+            setError(item, ERROR_STYLE, violation.getMessage());
             valid.add(item);
         }
-        setError2(item, NORMAL_STYLE, "");
+        setError(item, NORMAL_STYLE, "");
         valid.remove(item);
     }
 
-    public void setError2(String itemPath, String style, String errorMessage) {
-        if (itemPath.equals(REGION)) {
-            this.region.setStyleName(style);
-            this.regionErrorLabel.setText(errorMessage);
-        } else if (itemPath.equals(CITY)) {
+    public void setError(String itemPath, String style, String errorMessage) {
+        if (itemPath.equals(CITY)) {
             this.city.setStyleName(style);
             this.cityErrorLabel.setText(errorMessage);
         } else if (itemPath.equals(STREET)) {
@@ -260,14 +236,8 @@ public class AddressSelectorView extends Composite
     }
 
     @Override
-    public void eraseAddressBoxes(String item) {
-        if (item.equals(REGION)) {
-            city.setText("");
-            zipCode.setText("");
-            street.setText("");
-        } else if (item.equals(CITY)) {
-            zipCode.setText("");
-            street.setText("");
-        }
+    public void eraseAddressBoxes() {
+        zipCode.setText("");
+        street.setText("");
     }
 }

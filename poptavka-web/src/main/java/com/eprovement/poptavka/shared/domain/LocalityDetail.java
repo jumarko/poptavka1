@@ -19,6 +19,7 @@ public class LocalityDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = 8480517227278818048L;
+    private LocalityDetail parent;
     private Long id;
     private String name;
     private String code;
@@ -59,6 +60,10 @@ public class LocalityDetail implements Serializable {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    public LocalityDetail getParent() {
+        return parent;
+    }
+
     public Long getId() {
         return id;
     }
@@ -90,6 +95,10 @@ public class LocalityDetail implements Serializable {
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    public void setParent(LocalityDetail parent) {
+        this.parent = parent;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

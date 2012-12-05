@@ -4,16 +4,11 @@
  */
 package com.eprovement.poptavka.client.common.address;
 
-import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Callback;
 import com.google.gwt.user.client.ui.SuggestOracle.Request;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  *
@@ -34,22 +29,22 @@ public class RegionSuggestOracle extends MultiWordSuggestOracle {
     public void requestSuggestions(final Request suggestRequest, final Callback callback) {
         if (suggestRequest.getQuery().length() >= MIN_CHARS_TO_SEARCH) {
 
-            addressSelectorPresenter.getLocalityService().getLocalitySuggests(localityCode, suggestRequest.getQuery(),
-                    new SecuredAsyncCallback<List<LocalityDetail>>(addressSelectorPresenter.getEventBus()) {
-                        @Override
-                        public void onSuccess(List<LocalityDetail> result) {
-                            RegionSuggestOracle.Response response =
-                                    new RegionSuggestOracle.Response();
-
-                            Collection<LocalityDetailMultiWordSuggestion> list =
-                                    new ArrayList<LocalityDetailMultiWordSuggestion>();
-                            for (LocalityDetail loc : result) {
-                                list.add(new LocalityDetailMultiWordSuggestion(loc));
-                            }
-                            response.setSuggestions(list);
-                            callback.onSuggestionsReady(suggestRequest, response);
-                        }
-                    });
+//            addressSelectorPresenter.getLocalityService().getLocalitySuggests(localityCode, suggestRequest.getQuery(),
+//                    new SecuredAsyncCallback<List<LocalityDetail>>(addressSelectorPresenter.getEventBus()) {
+//                        @Override
+//                        public void onSuccess(List<LocalityDetail> result) {
+//                            RegionSuggestOracle.Response response =
+//                                    new RegionSuggestOracle.Response();
+//
+//                            Collection<LocalityDetailSuggestion> list =
+//                                    new ArrayList<LocalityDetailSuggestion>();
+//                            for (LocalityDetail loc : result) {
+//                                list.add(new LocalityDetailSuggestion(loc));
+//                            }
+//                            response.setSuggestions(list);
+//                            callback.onSuggestionsReady(suggestRequest, response);
+//                        }
+//                    });
         } else {
             callback.onSuggestionsReady(suggestRequest,
                     new RegionSuggestOracle.Response(

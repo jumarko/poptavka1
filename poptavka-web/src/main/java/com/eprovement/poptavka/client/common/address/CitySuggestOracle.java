@@ -5,26 +5,27 @@
 package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetailSuggestion;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Callback;
 import com.google.gwt.user.client.ui.SuggestOracle.Request;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
+ * Provide data for City suggest box in AddressSelector widget.
+ * According to user selection starts searching for data where each word of city name
+ * starts with user input. Searching starts when user's input meets min chars required
+ * represented by MIN_CHARS_TO_SEARCH constant in this class.
  *
  * @author Martin Slavkovsky
  */
 public class CitySuggestOracle extends MultiWordSuggestOracle {
 
-    private static final int MIN_CHARS_TO_SEARCH = 2;
+    private static final int MIN_CHARS_TO_SEARCH = 3;
     //Need to provide RPC and EventBus
     private AddressSelectorPresenter addressSelectorPresenter = null;
-    private static String localityCode = null;
 
     public CitySuggestOracle(AddressSelectorPresenter presenter) {
         this.addressSelectorPresenter = presenter;
@@ -32,39 +33,27 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
 
     @Override
     public void requestSuggestions(final Request suggestRequest, final Callback callback) {
+        addressSelectorPresenter.getCitySuggestionPopup().setPopupPosition(
+                addressSelectorPresenter.getView().getCitySuggestBox());
         if (suggestRequest.getQuery().length() >= MIN_CHARS_TO_SEARCH) {
-
-            addressSelectorPresenter.getLocalityService().getLocalitySuggests(localityCode, suggestRequest.getQuery(),
-                    new SecuredAsyncCallback<List<LocalityDetail>>(addressSelectorPresenter.getEventBus()) {
+            addressSelectorPresenter.getCitySuggestionPopup().showLoadingContent();
+            addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(suggestRequest.getQuery(),
+                    new SecuredAsyncCallback<List<LocalityDetailSuggestion>>(addressSelectorPresenter.getEventBus()) {
                         @Override
-                        public void onSuccess(List<LocalityDetail> result) {
-                            CitySuggestOracle.Response response =
-                                    new CitySuggestOracle.Response();
-
-                            Collection<LocalityDetailMultiWordSuggestion> list =
-                                    new ArrayList<LocalityDetailMultiWordSuggestion>();
-                            for (LocalityDetail loc : result) {
-                                list.add(new LocalityDetailMultiWordSuggestion(loc));
+                        public void onSuccess(List<LocalityDetailSuggestion> result) {
+                            CitySuggestOracle.Response response = new CitySuggestOracle.Response();
+                            Collection<LocalityDetailSuggestion> list =
+                                    new ArrayList<LocalityDetailSuggestion>();
+                            for (LocalityDetailSuggestion loc : result) {
+                                list.add(new LocalityDetailSuggestion(loc.toString(), loc.toString()));
                             }
                             response.setSuggestions(list);
+                            addressSelectorPresenter.getCitySuggestionPopup().showOriginalContent();
                             callback.onSuggestionsReady(suggestRequest, response);
                         }
                     });
         } else {
-            callback.onSuggestionsReady(suggestRequest,
-                    new CitySuggestOracle.Response(
-                    Collections.<SuggestOracle.Suggestion>emptyList()));
+            addressSelectorPresenter.getCitySuggestionPopup().showInfoLabelContent();
         }
     }
-
-    /**
-     * Set locality code for next suggestions. Method sets localityCode attribute,
-     * which is always passed as attribute to RPC while <b>requestSuggestions</b> method is called.
-     *
-     * @param locCode
-     */
-    public static void setLocalityCodeForNextSuggestions(String locCode) {
-        localityCode = locCode;
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -8,6 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetailSuggestion;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 @RemoteServiceRelativePath(LocalityRPCService.URL)
@@ -38,4 +38,6 @@ public interface LocalityRPCService extends RemoteService {
     List<LocalityDetail> getSubLocalities(String locCode) throws RPCException;
 
     List<LocalityDetail> getLocalitySuggests(String locCode, String startWith) throws RPCException;
+
+    List<LocalityDetailSuggestion> getCityWithStateSuggestions(String cityLike) throws RPCException;
 }

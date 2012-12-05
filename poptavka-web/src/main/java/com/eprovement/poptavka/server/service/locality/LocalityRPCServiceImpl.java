@@ -8,6 +8,7 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetailSuggestion;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
@@ -27,6 +28,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     private GeneralService generalService;
     private LocalityService localityService;
     private Converter<Locality, LocalityDetail> localityConverter;
+    private Converter<Locality, LocalityDetailSuggestion> localitySuggestionConverter;
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalityRPCServiceImpl.class);
 
     @Autowired
@@ -40,9 +42,16 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Autowired
-    public void setDemandConverter(
+    public void setLocalityConverter(
             @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
         this.localityConverter = localityConverter;
+    }
+
+    @Autowired
+    public void setLocalitySuggestionConverter(
+            @Qualifier("localitySuggestionConverter") Converter<
+                    Locality, LocalityDetailSuggestion> localitySuggestionConverter) {
+        this.localitySuggestionConverter = localitySuggestionConverter;
     }
 
     @Override
@@ -95,9 +104,22 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
                     Filter.equal("parent.code", locCode),
                     Filter.or(
                     /**/Filter.ilike("name", startWith + "%"),
-                    /**/Filter.ilike("name", "% " + startWith + "%")));
+                    /**/ Filter.ilike("name", "% " + startWith + "%")));
         }
         List<Locality> list = generalService.search(locSearch);
         return localityConverter.convertToTargetList(list);
+    }
+
+    @Override
+    public List<LocalityDetailSuggestion> getCityWithStateSuggestions(String cityLike) throws RPCException {
+        Search locSearch = new Search(Locality.class);
+
+        locSearch.addFilterAnd(
+                Filter.equal("type", LocalityType.CITY),
+                Filter.or(
+                /**/ Filter.ilike("name", cityLike + "%"),
+                /**/ Filter.ilike("name", "% " + cityLike + "%")));
+        List<Locality> list = generalService.search(locSearch);
+        return localitySuggestionConverter.convertToTargetList(list);
     }
 }

@@ -36,7 +36,7 @@
                         <g:Label styleName="{style.error}" ui:field="countryErrorLabel"/>
                     </td>
                 </tr>-->
-                <tr>
+<!--                <tr>
                     <td>
                         <ui:msg key="addressState">State</ui:msg>
                     </td>
@@ -44,7 +44,7 @@
                         <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="region" limit="7"/>
                         <g:Label styleName="{style.error}" ui:field="regionErrorLabel"/>
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td>
                         <ui:msg key="addressCity">City</ui:msg>

@@ -13,6 +13,7 @@
     <bean id="filterConverter" class="com.eprovement.poptavka.server.converter.FilterConverter" />
     <bean id="categoryConverter" class="com.eprovement.poptavka.server.converter.CategoryConverter" />
     <bean id="localityConverter" class="com.eprovement.poptavka.server.converter.LocalityConverter" />
+    <bean id="localitySuggestionConverter" class="com.eprovement.poptavka.server.converter.LocalitySuggestionConverter" />
     <bean id="activationEmailConverter" class="com.eprovement.poptavka.server.converter.ActivationEmailConverter" />
     <bean id="addressConverter" class="com.eprovement.poptavka.server.converter.AddressConverter" />
     <bean id="baseDemandConverter" class="com.eprovement.poptavka.server.converter.BaseDemandConverter" />
