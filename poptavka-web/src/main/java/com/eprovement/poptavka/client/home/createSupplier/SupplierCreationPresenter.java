@@ -92,6 +92,10 @@ public class SupplierCreationPresenter
         view.getMainPanel().selectTab(FIRST_TAB_BASIC);
         eventBus.registerTabToken(FIRST_TAB_BASIC);
         eventBus.initSupplierBasicForm(view.getHolderPanel(FIRST_TAB_BASIC));
+        //remove widgets to force widget to init them again
+        view.getHolderPanel(SECOND_TAB_CATEGORY).setWidget(null);
+        view.getHolderPanel(THIRD_TAB_LOCALITY).setWidget(null);
+        view.getHolderPanel(FOURTH_TAB_SERVICE).setWidget(null);
     }
 
     public void onGoToCreateSupplierModuleByHistory(int selectedTab) {
@@ -119,8 +123,10 @@ public class SupplierCreationPresenter
                     //if previous step is valid, continue
                     if (canContinue(eventItem - 1)) {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(true);
+                        view.getStatusLabel(eventItem - 1).setMessage(MSGS.ok());
                     } else {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(false);
+                        view.getStatusLabel(eventItem - 1).setMessage(getErrorInfoLabel(eventItem - 1));
                         event.cancel();
                     }
                 }
@@ -249,6 +255,19 @@ public class SupplierCreationPresenter
         eventBus.registerSupplier(newSupplier);
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterSupplier());
+    }
+
+    private String getErrorInfoLabel(int step) {
+        switch (step) {
+            case SECOND_TAB_CATEGORY:
+                return MSGS.categorySelectorInfoLabel();
+            case THIRD_TAB_LOCALITY:
+                return MSGS.localitySelectorInfoLabel();
+            case FOURTH_TAB_SERVICE:
+                return MSGS.serviceSelectorInfoLabel();
+            default:
+                return "";
+        }
     }
 
     private boolean canContinue(int step) {

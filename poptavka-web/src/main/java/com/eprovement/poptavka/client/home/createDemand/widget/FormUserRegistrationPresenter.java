@@ -116,7 +116,7 @@ public class FormUserRegistrationPresenter
             public void onClick(ClickEvent arg0) {
                 //just for toggle button
 //                eventBus.toggleLoginRegistration(); ???
-                eventBus.backToZeroTab();
+                eventBus.restoreDefaultFirstTab();
 
             }
         });

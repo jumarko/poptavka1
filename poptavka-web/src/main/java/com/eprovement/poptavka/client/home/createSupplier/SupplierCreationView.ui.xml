@@ -33,7 +33,7 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='basicStatus'
-                                            style='{res.common.infoMessage}' message='{text.basicMessage}'
+                                            style='{res.common.infoMessage}' message='{text.providePersonalInfoLabel}'
                                             description='{text.basicDescription}' />
                     </g:south>
                     <g:center>
@@ -56,7 +56,7 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='categoryStatus'
-                                            style='{res.common.infoMessage}' message='{text.catMessage}'
+                                            style='{res.common.infoMessage}' message='{text.categorySelectorInfoLabel}'
                                             description='{text.catDescription}' />
                     </g:south>
                     <g:center>
@@ -84,7 +84,7 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='localityStatus'
-                                            style='{res.common.infoMessage}' message='{text.locMessage}'
+                                            style='{res.common.infoMessage}' message='{text.localitySelectorInfoLabel}'
                                             description='{text.locDescription}' />
                     </g:south>
                     <g:center>
@@ -112,7 +112,7 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='serviceStatus'
-                                            style='{res.common.infoMessage}' message='{text.advMessage}'
+                                            style='{res.common.infoMessage}' message='{text.serviceSelectorInfoLabel}'
                                             description='{text.advDescription}' />
                     </g:south>
                     <g:center>

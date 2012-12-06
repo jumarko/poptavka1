@@ -242,6 +242,12 @@ public class DemandCreationPresenter
      * Used to navigate/invoke demand creation module.
      */
     public void onGoToCreateDemandModule() {
+        //remove widgets to force widget to init them again
+        onRestoreDefaultFirstTab();
+        view.getHolderPanel(SECOND_TAB_FORM).setWidget(null);
+        view.getHolderPanel(THIRD_TAB_CATEGORY).setWidget(null);
+        view.getHolderPanel(FOURTH_TAB_LOCALITY).setWidget(null);
+        view.getHolderPanel(FIFTH_TAB_ADVANCE).setWidget(null);
         if (Storage.getUser() != null) {
             blockFirstTab = true;
             //TODO Jaro - add some style which look like disable
@@ -307,7 +313,7 @@ public class DemandCreationPresenter
         view.getStatusLabel(FIRST_TAB_LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
     }
 
-    public void onBackToZeroTab() {
+    public void onRestoreDefaultFirstTab() {
         view.getHolderPanel(FIRST_TAB_LOGIN).clear();
         view.getLoginBtn().setVisible(true);
         view.getRegisterBtn().setVisible(true);

@@ -4,7 +4,6 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.inject.Inject;
@@ -26,7 +25,6 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     /**************************************************************************/
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
     private DemandCreationRPCServiceAsync demandCreationService = null;
-    private UserRPCServiceAsync userRpcService;
 
     /**************************************************************************/
     /* Inject RPCs                                                            */
@@ -34,11 +32,6 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     @Inject
     void setDemandCreationModuleRPCServiceAsync(DemandCreationRPCServiceAsync service) {
         demandCreationService = service;
-    }
-
-    @Inject
-    void setUserRpcService(UserRPCServiceAsync userRpcService) {
-        this.userRpcService = userRpcService;
     }
 
     /**************************************************************************/
@@ -49,23 +42,18 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      *
      * @param client newly created client
      */
-    public void onRegisterNewClient(BusinessUserDetail client) {
-//        demandCreationService.createNewClient(client, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-//            @Override
-//            public void onSuccess(BusinessUserDetail client) {
-//                if (client.getClientId() != -1) {
-//                    //popytaj ten overovaci kod
-//                    eventBus.responseRegisterNewClient(client);
-//                      check if given client is the same as created client - for security ???
-//                }
-//            }
-//        });
-        //TODO remove - fake - just for devel
-        BusinessUserDetail c = new BusinessUserDetail();
-        c.setEmail("martin@user.cz");
-        c.setPassword("kreslo");
-        eventBus.loadingHide();
-        eventBus.initActivationCodePopup(c, Constants.CREATE_DEMAND);
+    public void onRegisterNewClient(final BusinessUserDetail newClient) {
+        demandCreationService.createNewClient(newClient, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+            @Override
+            public void onSuccess(BusinessUserDetail client) {
+                if (client.getClientId() != -1) {
+                    eventBus.loadingHide();
+                    //popytaj ten overovaci kod
+                    eventBus.initActivationCodePopup(newClient, Constants.CREATE_DEMAND);
+                    //check if given client is the same as created client - for security ???
+                }
+            }
+        });
     }
 
     /**
@@ -81,14 +69,9 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                 new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
                     @Override
                     public void onSuccess(FullDemandDetail result) {
-                        // signal event
-//                        eventBus.responseCreateDemand();
                         eventBus.loadingHide();
                         eventBus.loadingShow(Storage.MSGS.demandCreatedAndForwarding());
                         eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
-
-                        // TODO forward to user/atAccount
-//                        eventBus.addNewDemand(result);
                     }
                 });
         LOGGER.info("submitting new demand");
@@ -100,7 +83,6 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);
                 eventBus.checkFreeEmailResponse(result);
-                // eventBus.checkFreeEmailResponse();
             }
         });
     }

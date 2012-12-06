@@ -120,7 +120,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 //    @Event(handlers = DemandCreationPresenter.class)
 //    void responseCreateDemand();
     @Event(handlers = DemandCreationPresenter.class)
-    void backToZeroTab();
+    void restoreDefaultFirstTab();
 
     /**************************************************************************/
     /* Business events handled by FormUserRegustratoinPresenter.              */

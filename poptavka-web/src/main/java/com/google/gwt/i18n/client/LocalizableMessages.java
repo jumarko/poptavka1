@@ -85,6 +85,8 @@ public interface LocalizableMessages extends Messages {
     String formDemandAdvInfoLabel();
     String categorySelectorInfoLabel();
     String localitySelectorInfoLabel();
+    String serviceSelectorInfoLabel();
+    String providePersonalInfoLabel();
     String loginOrRegisterToContinueLabel();
     String registerInfoLabel();
     String validationErrorInfoLabel();

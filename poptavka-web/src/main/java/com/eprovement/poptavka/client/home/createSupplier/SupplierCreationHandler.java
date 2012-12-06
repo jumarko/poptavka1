@@ -30,14 +30,14 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
         supplierCreationService = service;
     }
 
-    public void onRegisterSupplier(BusinessUserDetail newSupplier) {
+    public void onRegisterSupplier(final BusinessUserDetail newSupplier) {
         supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
 
             @Override
             public void onSuccess(BusinessUserDetail supplier) {
                 // TODO forward to user/atAccount
                 eventBus.loadingHide();
-                eventBus.initActivationCodePopup(supplier, Constants.SUPPLIER_DEMANDS_WELCOME);
+                eventBus.initActivationCodePopup(newSupplier, Constants.SUPPLIER_DEMANDS_WELCOME);
             }
         });
     }
