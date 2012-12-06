@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.Cell;
@@ -343,7 +342,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         Column<T, OfferStateType> col = new Column<T, OfferStateType>(new OfferStateImageCell()) {
             @Override
             public OfferStateType getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
+                IUniversalDetail obj = (IUniversalDetail) object;
                 return obj.getOfferState();
             }
         };
@@ -377,7 +376,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         Column<T, DemandStatus> col = new Column<T, DemandStatus>(new DemandStatusImageCell()) {
             @Override
             public DemandStatus getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
+                IUniversalDetail obj = (IUniversalDetail) object;
                 return obj.getDemandStatus();
             }
         };
@@ -399,7 +398,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         Column<T, Date> urgencyColumn = new Column<T, Date>(new UrgentImageCell()) {
             @Override
             public Date getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
+                IUniversalDetail obj = (IUniversalDetail) object;
                 return obj.getEndDate();
             }
         };
@@ -424,7 +423,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         Column<T, Boolean> col = new Column<T, Boolean>(new StarCell()) {
             @Override
             public Boolean getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
+                IUniversalDetail obj = (IUniversalDetail) object;
                 return obj.isStarred();
             }
         };

@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.user.widget.grid;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -63,7 +62,6 @@ public class UniversalTableWidget extends Composite {
     private Header checkHeader;
     private Column<IUniversalDetail, Boolean> checkColumn;
     private Column<IUniversalDetail, Boolean> starColumn;
-    private Column<IUniversalDetail, OfferStateType> offerStateColumn;
     private Column<IUniversalDetail, String> clientNameColumn;
     private Column<IUniversalDetail, String> supplierNameColumn;
     private Column<IUniversalDetail, String> demandTitleColumn;
@@ -283,8 +281,10 @@ public class UniversalTableWidget extends Composite {
         checkColumn = grid.addCheckboxColumn(checkHeader);
         // Star Column - always create this column
         starColumn = grid.addStarColumn();
-        // Offer state column - always create this column
-        offerStateColumn = grid.addOfferStateColumn(Storage.MSGS.state());
+        // Offer state column
+        //grid.addOfferStateColumn(Storage.MSGS.state());
+        // Demand state column
+        grid.addDemandStatusColumn(Storage.MSGS.state());
 
         addImageColumns();
         addClientNameColumn();

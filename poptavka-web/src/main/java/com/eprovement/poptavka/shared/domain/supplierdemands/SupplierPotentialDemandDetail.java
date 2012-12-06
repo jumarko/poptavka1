@@ -5,6 +5,8 @@
 package com.eprovement.poptavka.shared.domain.supplierdemands;
 
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
@@ -323,6 +325,20 @@ public class SupplierPotentialDemandDetail implements Serializable, IUniversalDe
     public void setPrice(String price) {
         this.price = price;
     }
+
+    @Override
+    public DemandStatus getDemandStatus() {
+        return DemandStatus.ACTIVE;
+    }
+
+
+    // Offer part
+    //--------------------------------------------------------------------------
+    @Override
+    public OfferStateType getOfferState() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
     // Display
     //--------------------------------------------------------------------------
