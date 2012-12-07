@@ -7,6 +7,7 @@ package com.eprovement.poptavka.shared.domain.supplierdemands;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +16,7 @@ import java.util.Date;
  *
  * @author Ivan
  */
-public class SupplierPotentialDemandDetail implements Serializable, IUniversalDetail {
+public class SupplierPotentialDemandDetail implements Serializable, TableDisplay, IUniversalDetail {
 
     private static final long serialVersionUID = -6019479783491937543L;
     // Client part

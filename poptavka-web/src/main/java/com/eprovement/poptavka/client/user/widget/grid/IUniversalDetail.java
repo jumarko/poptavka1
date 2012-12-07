@@ -4,8 +4,6 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
-import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import java.util.Date;
 
 /**
@@ -72,12 +70,6 @@ public interface IUniversalDetail {
     String getTitle();
 
     String getPrice();
-
-    DemandStatus getDemandStatus();
-
-    // Offer part
-    //--------------------------------------------------------------------------
-    OfferStateType getOfferState();
 
     // Display
     //--------------------------------------------------------------------------

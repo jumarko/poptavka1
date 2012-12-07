@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
@@ -62,24 +63,34 @@ public class UserConversationPanel extends Composite {
     public void setMessageList(List<MessageDetail> messages, boolean collapsed) {
         messagePanel.clear();
 
-        // Last message is visible, when there are more messages
-        // last message is always stored for reply
-        replyToMessage = messages.get(messages.size() - 1);
+        /* Find last message from client and store it for possible reply.
+         * If last message is supplier's, replyToMessage will be pointing at that
+         * message -> if supplier would like to send another question without
+         * waiting for client's response on previous one, he will basically
+         * send question message to himselft -> there is no sense to do that
+         * in this scenario - chat messages */
+        for (int j = messages.size() - 1; j >= 0; j--) {
+            //Check if sender is not the same as logged user - in case two messages from same user
+            long senderId = messages.get(j).getSenderId();
+            long userId = Storage.getUser().getUserId();
+//            if (messages.get(j).getSenderId() != Storage.getUser().getUserId()) {
+            if (senderId != userId) {
+                replyToMessage = messages.get(j);
+            }
+        }
 
         GWT.log("UserConversation MessageList size: " + messages.size());
 
-        if (messages.size() > 1) {
-            for (int i = 1; i < messages.size(); i++) {
-                if (i == messages.size() - 1) {
-                    messagePanel.add(new SimpleMessageWindow(messages.get(i), false));
-                } else {
-                    messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
-                }
+        for (int i = 0; i < messages.size(); i++) {
+            if (i == messages.size() - 1) {
+                messagePanel.add(new SimpleMessageWindow(messages.get(i), false));
+            } else {
+                messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
             }
-            ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
-            ((SimpleMessageWindow) messagePanel.getWidget(
-                    messagePanel.getWidgetCount() - 1)).setMessageStyle(MessageDisplayType.LAST);
         }
+        ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
+        ((SimpleMessageWindow) messagePanel.getWidget(
+                messagePanel.getWidgetCount() - 1)).setMessageStyle(MessageDisplayType.LAST);
 
         messageCount = messagePanel.getWidgetCount();
 
@@ -98,7 +109,15 @@ public class UserConversationPanel extends Composite {
             newLastMessage = MessageDisplayType.LAST;
         }
         messagePanel.add(new SimpleMessageWindow(lastMessage, false, newLastMessage));
-        replyToMessage = lastMessage;
+        /* Why setting replyToMessage here?
+         * This method is called only when supplier posted new question message and that
+         * mesasge is added to messages list. If user whould like to send another message
+         * replyToMessage will be pointing to his last message -> he will basically send
+         * question message to himselft -> there is no sense in that in this scenario (chat messages).
+         * How will be working refresh? If Client send reply and that reply is going to be
+         * added to supplier message list by this method, we must differ this situations
+         * if (lastMessage.getSenderId() != Storage.getUser().getUserId()) check must be applied : */
+//        replyToMessage = lastMessage;
 
         messageCount = messagePanel.getWidgetCount();
     }

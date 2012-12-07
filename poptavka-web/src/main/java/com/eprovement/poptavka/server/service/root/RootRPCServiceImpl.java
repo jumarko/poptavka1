@@ -237,20 +237,23 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
 
     /**
      * Message sent by supplier about a query to potential demand.
-     * @param messageDetailImpl
+     * @param questionMessageToSend
      * @return message
      */
     @Override
-    public MessageDetail sendQuestionMessage(MessageDetail messageDetailImpl) throws RPCException {
+    public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
         try {
-            Message m = messageService.newReply(this.messageService.getById(
-                    messageDetailImpl.getParentId()),
-                    this.generalService.find(User.class, messageDetailImpl.getSenderId()));
-            m.setBody(messageDetailImpl.getBody());
-            m.setSubject(messageDetailImpl.getTitle());
-            messageService.send(m);
-            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
-            return messageDetailFromDB;
+            Message message = messageService.newReply(this.messageService.getById(
+                    questionMessageToSend.getParentId()),
+                    this.generalService.find(User.class, questionMessageToSend.getSenderId()));
+            message.setBody(questionMessageToSend.getBody());
+            message.setSubject(questionMessageToSend.getTitle());
+            messageService.send(message);
+//            Don't undersand create method here?
+//            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(message));
+//            Isn't creating detail object enough?
+//            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(message);
+            return messageConverter.convertToTarget(message);
         } catch (MessageException ex) {
             Logger.getLogger(RootRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -258,8 +261,9 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public OfferMessageDetail sendOfferMessage(OfferMessageDetail offerMessageDetail) throws RPCException {
+    public OfferMessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
         //Implement sending offer
+        //What is the difference between question message and offer message - what attributes???
         return new OfferMessageDetail();
     }
 

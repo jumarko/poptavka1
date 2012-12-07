@@ -22,10 +22,19 @@ import java.util.List;
 public class DetailsWrapperPresenter
         extends LazyPresenter<DetailsWrapperPresenter.IDetailWrapper, RootEventBus> {
 
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
+    /** Constants. **/
     public static final int DEMAND = 0;
     public static final int SUPPLIER = 1;
     public static final int CHAT = 2;
+    /** Class Attributes. **/
+    private ViewType type;
 
+    /**************************************************************************/
+    /* VIEW INTERFACE                                                         */
+    /**************************************************************************/
     public interface IDetailWrapper extends LazyView {
 
         Widget getWidgetView();
@@ -47,10 +56,12 @@ public class DetailsWrapperPresenter
         void setChat(List<MessageDetail> chatMessages, boolean collapsed);
     }
 
+    /**************************************************************************/
+    /* BIND                                                                   */
+    /**************************************************************************/
     @Override
     public void bindView() {
         view.getReplyHolder().getSubmitBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 //is message to send valid
@@ -82,8 +93,10 @@ public class DetailsWrapperPresenter
             }
         });
     }
-    private ViewType type;
 
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
     /**
      * Initialize widget and sets his type.
      *
@@ -97,6 +110,65 @@ public class DetailsWrapperPresenter
         this.type = viewType;
     }
 
+    /**************************************************************************/
+    /* Methods                                                                */
+    /**************************************************************************/
+    /**
+     * Sent message is displayed and reply window is enabled again.
+     *
+     * @param sentMessage
+     */
+    public void onAddConversationMessage(MessageDetail sentMessage, ViewType handlingType) {
+        if (type.equals(handlingType)) {
+            view.getConversationPanel().addMessage(sentMessage);
+            //TODO
+            //if switched to one common interface, this should be replaced.
+            view.getReplyHolder().setNormalStyle();
+        }
+    }
+
+    /**
+     * CLIENT ONLY Display offer message from presenter. Client can react to it.
+     *
+     * @param offerDetail
+     *            offer detail
+     */
+//    public void onSetOfferMessage(OfferDetail offerDetail) {
+//
+//        OfferWindowPresenter presenter = eventBus
+//                .addHandler(OfferWindowPresenter.class);
+//        presenter.setOfferDetail(offerDetail);
+//        GWT.log("OFFER ID: " + offerDetail.getOfferId());
+//        view.getConversationPanel().addOfferMessagePresenter(presenter);
+//    }
+    /**************************************************************************/
+    /* Request methods                                                        */
+    /**************************************************************************/
+    //Radej takto, ako mat v kazdom eventbuse forward metody.
+    /*
+     * Request/Response Method pair
+     * DemandDetail for detail section
+     * @param demandId
+     * @param type
+     */
+    public void requestDemandDetail(Long demandId, ViewType type) {
+        showLoading(DetailsWrapperPresenter.DEMAND);
+        eventBus.requestDemandDetail(demandId, type);
+    }
+
+    public void requestSupplierDetail(Long supplierId, ViewType type) {
+        showLoading(DetailsWrapperPresenter.SUPPLIER);
+        eventBus.requestSupplierDetail(supplierId, type);
+    }
+
+    public void requestConversation(long messageId, Long userMessageId, Long userId) {
+        showLoading(DetailsWrapperPresenter.CHAT);
+        eventBus.requestConversation(messageId, userMessageId, userId);
+    }
+
+    /**************************************************************************/
+    /* Response methods                                                       */
+    /**************************************************************************/
     /**
      * Response method for fetching demandDetail.
      *
@@ -129,38 +201,19 @@ public class DetailsWrapperPresenter
      * @param supplierListType
      */
     public void onResponseConversation(List<MessageDetail> chatMessages, ViewType wrapperType) {
-        //neccessary check for method to be executed only in appropriate presenter
-        if (type.equals(wrapperType)) {
-            //display chat
-            //TODO
-            //boolean param - for collapsed conversation can be fetched from UserDetail object (some kind of setting)
-            //example
-            //Storage.getUser().getMessageCollapsedSetting();
-            view.setChat(chatMessages, true);
-        }
+        view.setChat(chatMessages, true);
     }
 
-    /**
-     * Sent message is displayed and reply window is enabled again.
-     *
-     * @param sentMessage
-     */
-    public void onAddConversationMessage(MessageDetail sentMessage, ViewType handlingType) {
-        if (type.equals(handlingType)) {
-            view.getConversationPanel().addMessage(sentMessage);
-            //TODO
-            //if switched to one common interface, this should be replaced.
-            view.getReplyHolder().setNormalStyle();
-        }
-    }
-
+    /**************************************************************************/
+    /* HELPER methods                                                         */
+    /**************************************************************************/
     /**
      * *GUI* Toggle loading icon when getting clicking on some demand Depending on its argument,
      * chosen element is toggled.
      *
      * @param value value of component do toggle loading image.
      */
-    public void showLoading(int value) {
+    private void showLoading(int value) {
         switch (value) {
             case DEMAND:
                 view.toggleDemandLoading();
@@ -174,44 +227,5 @@ public class DetailsWrapperPresenter
             default:
                 break;
         }
-    }
-
-    /**
-     * CLIENT ONLY Display offer message from presenter. Client can react to it.
-     *
-     * @param offerDetail
-     *            offer detail
-     */
-//    public void onSetOfferMessage(OfferDetail offerDetail) {
-//
-//        OfferWindowPresenter presenter = eventBus
-//                .addHandler(OfferWindowPresenter.class);
-//        presenter.setOfferDetail(offerDetail);
-//        GWT.log("OFFER ID: " + offerDetail.getOfferId());
-//        view.getConversationPanel().addOfferMessagePresenter(presenter);
-//    }
-    /**************************************************************************/
-    /* Get data                                                               */
-    /**************************************************************************/
-    //Radej takto, ako mat v kazdom eventbuse forward metody.
-    /*
-     * Request/Response Method pair
-     * DemandDetail for detail section
-     * @param demandId
-     * @param type
-     */
-    public void requestDemandDetail(Long demandId, ViewType type) {
-        showLoading(DetailsWrapperPresenter.DEMAND);
-        eventBus.requestDemandDetail(demandId, type);
-    }
-
-    public void requestSupplierDetail(Long supplierId, ViewType type) {
-        showLoading(DetailsWrapperPresenter.SUPPLIER);
-        eventBus.requestSupplierDetail(supplierId, type);
-    }
-
-    public void requestConversation(long messageId, Long userMessageId, Long userId) {
-        showLoading(DetailsWrapperPresenter.CHAT);
-        eventBus.requestConversation(messageId, userMessageId, userId);
     }
 }

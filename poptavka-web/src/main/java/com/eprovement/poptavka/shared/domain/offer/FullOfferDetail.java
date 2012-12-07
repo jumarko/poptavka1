@@ -5,6 +5,7 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public class FullOfferDetail implements Serializable, IUniversalDetail {
+public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDetail {
 
     /**
      * Generated serialVersionUID.
@@ -81,6 +82,7 @@ public class FullOfferDetail implements Serializable, IUniversalDetail {
      * @param trustedHtml
      * @return string in html tags
      */
+    @Override
     public String displayHtml(String trustedHtml, boolean isRead) {
         if (isRead) {
             return trustedHtml;
