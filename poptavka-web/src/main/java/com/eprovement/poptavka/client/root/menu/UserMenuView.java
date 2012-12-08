@@ -28,7 +28,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
 
     public UserMenuView() {
         initWidget(uiBinder.createAndBindUi(this));
-        menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
     }
 
     /**************************************************************************/

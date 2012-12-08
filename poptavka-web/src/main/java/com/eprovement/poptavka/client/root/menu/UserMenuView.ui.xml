@@ -11,45 +11,51 @@
 		.button3 { background: url(images/menu-icons.png) no-repeat 0 -146px; }
 		.button4 { background: url(images/menu-icons.png) no-repeat 0 -219px; }
 		.button5 { background: url(images/menu-icons.png) no-repeat 0 -292px; }
+		.button6 { background: url(images/menu-icons.png) no-repeat 0 -365px; }
+		.button7 { background: url(images/menu-icons.png) no-repeat 0 -438px; }
+		.button8 { background: url(images/menu-icons.png) no-repeat 0 -511px; }
 
 		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }
-		.button2:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
-		.button3:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
-		.button4:hover  { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
+		.button2:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
+		.button3:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
+		.button4:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
 		.button5:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -292px; }
+		.button6:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -365px; }
+		.button7:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -438px; }
+		.button8:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -511px; }
 	</ui:style>
 
-	<g:HTMLPanel styleName="style.background">
-		<div ui:field="homeMenu" styleName='{res.layout.homeMenu}'>
+	<g:HTMLPanel>
+		<div ui:field="homeMenu">
 			<ul ui:field="menuList">
 				<li>
-					<g:Button ui:field="client" styleName='{style.button4}'>
-						<ui:msg key="menuClientDemands">Client</ui:msg>
+					<g:Button ui:field="client" styleName='{style.button6}'>
+						<ui:msg key="menuClientDemands">Client</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
 					<g:Button ui:field="supplier" styleName='{style.button4}'>
-						<ui:msg key="menuSupplierDemands">Supplier</ui:msg>
+						<ui:msg key="menuSupplierDemands">Supplier</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
-					<g:Button ui:field="inbox" styleName='{style.button4}'>
-						<ui:msg key='menuMessages'>Messages</ui:msg>
+					<g:Button ui:field="inbox" styleName='{style.button8}'>
+						<ui:msg key='menuMessages'>Messages</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
 					<g:Button styleName='{style.button2}'>
-						<ui:msg key="menuHomeDemands">Demands</ui:msg>
+						<ui:msg key="menuHomeDemands">Demands</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
 					<g:Button styleName='{style.button4}'>
-						<ui:msg key="menuHomeSuppliers">Suppliers</ui:msg>
+						<ui:msg key="menuHomeSuppliers">Suppliers</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
 					<g:Button ui:field="administration">
-						<ui:msg key='menuAdministration'>Admistration</ui:msg>
+						<ui:msg key='menuAdministration'>Admistration</ui:msg><br /><br />
 					</g:Button>
 				</li>
 			</ul>
