@@ -68,7 +68,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(7, inbox.size());
+        Assert.assertEquals(8, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
@@ -76,6 +76,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(302L, inbox);
         checkUserMessageExists(402L, inbox);
         checkUserMessageExists(407L, inbox);
+        checkUserMessageExists(503L, inbox);
     }
 
     @Test
@@ -83,7 +84,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(7, inbox.size());
+        Assert.assertEquals(8, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
@@ -91,6 +92,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(302L, inbox);
         checkUserMessageExists(402L, inbox);
         checkUserMessageExists(407L, inbox);
+        checkUserMessageExists(503L, inbox);
     }
 
     @Test

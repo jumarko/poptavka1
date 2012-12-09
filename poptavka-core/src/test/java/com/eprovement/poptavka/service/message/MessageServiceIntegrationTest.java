@@ -103,7 +103,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.TO).build());
-        Assert.assertEquals(7, allUserReceivedMessages.size());
+        Assert.assertEquals(8, allUserReceivedMessages.size());
         checkUserMessageExists(1L, allUserReceivedMessages);
         checkUserMessageExists(2L, allUserReceivedMessages);
         checkUserMessageExists(4L, allUserReceivedMessages);

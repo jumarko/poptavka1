@@ -101,6 +101,15 @@ public final class Searcher {
                         break;
                     }
                 }
+                if (filter.getOperator() == Filter.OP_IN) {
+                    belongsToResult = ((Collection<Object>) filter.getValue())
+                            .contains(value);
+                    if (belongsToResult) {
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
                 if (Arrays.asList(type.getInterfaces()).contains(
                         Comparable.class)) {
                     Comparable comparableValue = (Comparable) value;
@@ -141,7 +150,7 @@ public final class Searcher {
                 if (value instanceof String) {
                     String stringValue = (String) value;
                     String filterValue = (String) filter.getValue();
-                    if (filter.getOperator() == Filter.OP_IN) {
+                    if (filter.getOperator() == Filter.OP_LIKE) {
                         belongsToResult = stringValue.contains(filterValue);
                         if (belongsToResult) {
                             continue;

@@ -8,6 +8,7 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,13 +36,16 @@ public class SearcherTest extends DBUnitIntegrationTest {
 
     private User user;
     private Demand demand;
+    private Demand demand10;
 
     @Before
     public void setUp() {
         this.user = new User();
         this.demand = new Demand();
+        this.demand10 = new Demand();
         user.setId(111111111L);
         demand.setId(2L);
+        demand10.setId(10L);
     }
 
     @Test
@@ -118,15 +122,19 @@ public class SearcherTest extends DBUnitIntegrationTest {
         checkUserMessageExists(302L, inboxFiltered);
 
         search = new Search(UserMessage.class);
-        search.addFilter(new Filter("message.demand", demand));
-        search.addFilter(new Filter("message.body", "es mam vel", Filter.OP_IN));
+        List<Demand> demands = new ArrayList();
+        demands.add(demand);
+        demands.add(demand10);
+        search.addFilter(new Filter("message.demand", demands, Filter.OP_IN));
         inboxFiltered = Searcher.searchCollection(
                 inbox, search);
-        Assert.assertEquals(3, inboxFiltered.size());
+        Assert.assertEquals(6, inboxFiltered.size());
         checkUserMessageExists(2L, inboxFiltered);
+        checkUserMessageExists(4L, inboxFiltered);
+        checkUserMessageExists(8L, inboxFiltered);
         checkUserMessageExists(202L, inboxFiltered);
         checkUserMessageExists(302L, inboxFiltered);
-
+        checkUserMessageExists(503L, inboxFiltered);
     }
 
     /**
