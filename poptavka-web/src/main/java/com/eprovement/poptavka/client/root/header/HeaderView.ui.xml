@@ -10,13 +10,6 @@
 		.important {
 			font-weight: bold;
 		}
-		
-		.login {
-			position: absolute;
-			right: 20px;
-			top: 28px;
-			z-index: 150;
-		}
 	</ui:style>
 
 	<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContent}'>
@@ -27,7 +20,7 @@
 		<!-- end Logo -->
 
 		<!-- Login Button -->
-		<div class='{style.login}'>
+		<div class='{res.layout.login}'>
 			<div class='{res.layout.loginButton}'>
 				<g:Anchor ui:field="loginButton">
 					<ui:msg key="logIn">Log In</ui:msg>
@@ -37,6 +30,11 @@
 				style="position: absolute; width: 150px; right: 0px; z-index: 151;">
 			</div>
 		</div>
-		<div style="position: absolute; top: 10px; right: 176px; color: #ffffff;">Customer Support</div>
+
+		<!-- help button -->
+		<div class='{res.layout.loginBar}'>
+			<g:Button styleName='{res.layout.helpButton}'>
+			</g:Button>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
