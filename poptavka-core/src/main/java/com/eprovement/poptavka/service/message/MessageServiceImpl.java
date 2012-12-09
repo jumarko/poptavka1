@@ -88,7 +88,13 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         }
         MessageUserRole messageUserRole = new MessageUserRole();
         messageUserRole.setMessage(message);
-        messageUserRole.setUser(inReplyTo.getSender());
+        Message addresseeMessage = inReplyTo;
+        while (addresseeMessage.getParent() != null
+                && !addresseeMessage.equals(addresseeMessage.getParent())
+                && addresseeMessage.getSender().equals(user)) {
+            addresseeMessage = addresseeMessage.getParent();
+        }
+        messageUserRole.setUser(addresseeMessage.getSender());
         messageUserRole.setType(MessageUserRoleType.TO);
         List<MessageUserRole> messageUserRoles = new ArrayList();
         messageUserRoles.add(messageUserRole);
