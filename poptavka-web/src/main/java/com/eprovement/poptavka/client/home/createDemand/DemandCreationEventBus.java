@@ -83,6 +83,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void loadingHide();
 
     @Event(forwardToParent = true)
+    void initAddressWidget(SimplePanel embedToWidget);
+
+    @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
@@ -146,5 +149,4 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 //    void checkFreeEmail(String value);
     @Event(handlers = DemandCreationHandler.class)
     void checkFreeEmail(String value);
-
 }

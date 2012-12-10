@@ -36,22 +36,22 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
 
     @Override
     public void requestSuggestions(final Request suggestRequest, final Callback callback) {
-        addressSelectorPresenter.getCitySuggestionPopup().setPopupPosition(
+        addressSelectorPresenter.getCitySuggestionPopup().setLoadingPopupPosition(
                 addressSelectorPresenter.getView().getCitySuggestBox());
         if (suggestRequest.getQuery().length() >= MIN_CHARS_TO_SEARCH) {
-            addressSelectorPresenter.getCitySuggestionPopup().showLoadingContent();
+            addressSelectorPresenter.getCitySuggestionPopup().showLoading();
             addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(suggestRequest.getQuery(),
                     new SecuredAsyncCallback<List<LocalityDetailSuggestion>>(addressSelectorPresenter.getEventBus()) {
                         @Override
                         public void onSuccess(List<LocalityDetailSuggestion> result) {
                             CitySuggestOracle.Response response = new CitySuggestOracle.Response();
                             response.setSuggestions(convertToFormattedSuggestions(suggestRequest.getQuery(), result));
-                            addressSelectorPresenter.getCitySuggestionPopup().showOriginalContent();
+                            addressSelectorPresenter.getCitySuggestionPopup().hideLoadingPopup();
                             callback.onSuggestionsReady(suggestRequest, response);
                         }
                     });
         } else {
-            addressSelectorPresenter.getCitySuggestionPopup().showInfoLabelContent();
+            addressSelectorPresenter.getCitySuggestionPopup().showLoadingInfoLabel();
         }
     }
 

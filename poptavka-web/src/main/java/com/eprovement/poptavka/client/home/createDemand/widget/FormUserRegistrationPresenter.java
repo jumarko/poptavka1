@@ -53,6 +53,9 @@ public class FormUserRegistrationPresenter
         void toggleCompanyButtons(boolean toggle);
 
         /** GETTERS. **/
+        //Panels
+        SimplePanel getAddressHolder();
+
         //Buttons
         RadioButton getPersonButton();
 
@@ -88,6 +91,7 @@ public class FormUserRegistrationPresenter
     /** Injecting widget. **/
     public void initRegistrationForm(SimplePanel embedToWidget) {
         embedToWidget.setWidget(view.getWidgetView());
+        eventBus.initAddressWidget(view.getAddressHolder());
     }
 
     /**************************************************************************/

@@ -154,6 +154,11 @@
                         </td>
                     </tr>
                     <tr>
+                        <td colspan="3">
+                            <g:SimplePanel ui:field="addressHolder"/>
+                        </td>
+                    </tr>
+                    <!--                    <tr>
                         <th colspan="3">
                             <ui:msg key="address">Address</ui:msg>
                         </th>
@@ -190,7 +195,7 @@
                         <td>
                             &nbsp;&nbsp;&nbsp;
                         </td>
-                    </tr>
+                    </tr>-->
                 </table>
             </div>
         </div>

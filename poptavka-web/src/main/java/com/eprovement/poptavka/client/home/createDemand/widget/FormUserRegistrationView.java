@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
@@ -13,6 +14,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
@@ -39,13 +41,15 @@ public class FormUserRegistrationView extends Composite
     @UiField
     Button backBtn, registerBtn;
     @UiField
-    TextBox companyNameBox, companyIdBox, companyTaxBox, websiteBox, streetBox;
+    TextBox companyNameBox, companyIdBox, companyTaxBox, websiteBox;
     @UiField
-    TextBox cityBox, zipBox, nameBox, surnameBox, phoneBox, mailBox;
+    TextBox nameBox, surnameBox, phoneBox, mailBox;
     @UiField
     PasswordTextBox passBox, passConfirmBox;
     @UiField
     StatusIconLabel mailStatus, pwdStatus, pwdCheckStatus;
+    @UiField
+    SimplePanel addressHolder;
     private boolean mailFlag = false;
     private boolean passFlag = false;
     private boolean passLength = false;
@@ -60,9 +64,6 @@ public class FormUserRegistrationView extends Composite
         companyWidgets.add(companyIdBox);
         companyWidgets.add(companyTaxBox);
 
-        widgets.add(streetBox);
-        widgets.add(cityBox);
-        widgets.add(zipBox);
         widgets.add(nameBox);
         widgets.add(surnameBox);
         widgets.add(phoneBox);
@@ -111,6 +112,12 @@ public class FormUserRegistrationView extends Composite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /** PANEL. **/
+    @Override
+    public SimplePanel getAddressHolder() {
+        return addressHolder;
+    }
+
     /** BUTTONS. **/
     @Override
     public Button getBackButton() {
@@ -180,13 +187,9 @@ public class FormUserRegistrationView extends Composite
         client.setPhone(phoneBox.getText());
         client.setWebsite(websiteBox.getText());
 
-        AddressDetail address = new AddressDetail();
-        address.setCity(cityBox.getText());
-        address.setStreet(streetBox.getText());
-        address.setZipCode(zipBox.getText());
-
         ArrayList<AddressDetail> addresses = new ArrayList<AddressDetail>();
-        addresses.add(address);
+        AddressSelectorView address = (AddressSelectorView) addressHolder.getWidget();
+        addresses.add(address.createAddress());
         client.setAddresses(addresses);
 
         return client;

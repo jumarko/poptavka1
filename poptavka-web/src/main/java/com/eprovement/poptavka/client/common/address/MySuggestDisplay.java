@@ -10,10 +10,10 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class needed to access SuggestBox's popup.
+ * Class also contain another popup to display loading information.
  *
  * @author Martin Slavkovsky
  */
@@ -21,12 +21,11 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
 
     private static final int OFFSET_LEFT = 0;
     private static final int OFFSET_TOP = 20;
-    private Widget originalContent;
     private SimpleIconLabel loader = new SimpleIconLabel();
-    private Label message = new Label("Type at least 3 chars to begin search.");
+    private Label message = new Label(Storage.MSGS.addressLoadingInfoLabel());
+    private PopupPanel loadingPopup = new PopupPanel();
 
     public MySuggestDisplay() {
-        originalContent = super.getPopupPanel().getWidget();
         loader.setImageResource(Storage.RSCS.images().loadIcon32());
     }
 
@@ -35,23 +34,22 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
         return super.getPopupPanel();
     }
 
-    public void showOriginalContent() {
-        super.getPopupPanel().setWidget(originalContent);
-        //show will fire callback.onSuggestionsReady
+    public void hideLoadingPopup() {
+        loadingPopup.hide();
     }
 
-    public void showInfoLabelContent() {
-        super.getPopupPanel().setWidget(message);
-        super.getPopupPanel().show();
+    public void showLoadingInfoLabel() {
+        loadingPopup.setWidget(message);
+        loadingPopup.show();
     }
 
-    public void showLoadingContent() {
-        super.getPopupPanel().setWidget(loader);
-        super.getPopupPanel().show();
+    public void showLoading() {
+        loadingPopup.setWidget(loader);
+        loadingPopup.show();
     }
 
-    public void setPopupPosition(SuggestBox suggestBox) {
-        super.getPopupPanel().setPopupPosition(
+    public void setLoadingPopupPosition(SuggestBox suggestBox) {
+        loadingPopup.setPopupPosition(
                 DOM.getAbsoluteLeft(suggestBox.getElement()) + OFFSET_LEFT,
                 DOM.getAbsoluteTop(suggestBox.getElement()) + OFFSET_TOP);
     }

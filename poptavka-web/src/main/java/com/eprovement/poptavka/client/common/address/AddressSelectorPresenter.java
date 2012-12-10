@@ -19,6 +19,8 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.ValidationMessages;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -73,7 +75,7 @@ public class AddressSelectorPresenter
     public static final ValidationMessages MSGSV = GWT.create(ValidationMessages.class);
     //in case of removeing letters in suggestbox, popup is closed at each time -> dont't call
 //    private String regionSuggestSelected = "";
-    private String citySuggestSelected = "";
+    private String citySuggestSelected = null;
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -137,15 +139,28 @@ public class AddressSelectorPresenter
         view.getCitySuggestBox().addDomHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
+                //show actual suggest list and remove error style if any
                 view.getCitySuggestBox().showSuggestionList();
+                view.getCitySuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());
+                view.getCityErrorLabel().setText("");
             }
         }, FocusEvent.getType());
+        /** VALUE CHANGE. **/
+        view.getCitySuggestBox().addHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                //if suggestbox content changed, reset flag to force user through validation
+                //to select some locality again
+                citySuggestSelected = null;
+            }
+        }, ValueChangeEvent.getType());
         /** CLOSE POPUP. **/
         getCitySuggestionPopup().getPopupPanel().addHandler(new CloseHandler<PopupPanel>() {
             @Override
             public void onClose(CloseEvent event) {
-                if (!citySuggestSelected.isEmpty()
-                        && !citySuggestSelected.equals(view.getCitySuggestBox().getText())) {
+                //validate suggest box if suggest list popup is closed
+                if (citySuggestSelected == null
+                        || !citySuggestSelected.equals(view.getCitySuggestBox().getText())) {
                     view.getCitySuggestBox().setStyleName(Storage.RSCS.common().errorField());
                     view.getCityErrorLabel().setText(MSGSV.cityNotMatch());
                 }
@@ -155,9 +170,11 @@ public class AddressSelectorPresenter
         view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
             @Override
             public void onSelection(SelectionEvent<Suggestion> event) {
+                //set locality after selecting item from suggest list popup
                 if (!view.getCitySuggestBox().getText().isEmpty()) {
                     view.eraseAddressBoxes();
                     LocalityDetailSuggestion suggestion = (LocalityDetailSuggestion) event.getSelectedItem();
+                    citySuggestSelected = suggestion.getDisplayString();
                     view.setState(suggestion.getStateName());
                     view.setCity(suggestion.getCityName());
                     view.getCitySuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());

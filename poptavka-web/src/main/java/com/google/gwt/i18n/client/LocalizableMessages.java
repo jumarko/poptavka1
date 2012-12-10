@@ -388,4 +388,5 @@ public interface LocalizableMessages extends Messages {
     String addressDistrict();
     String addressZipCode();
     String addressStreet();
+    String addressLoadingInfoLabel();
 }
