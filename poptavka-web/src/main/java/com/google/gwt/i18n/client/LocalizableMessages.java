@@ -389,4 +389,9 @@ public interface LocalizableMessages extends Messages {
     String addressZipCode();
     String addressStreet();
     String addressLoadingInfoLabel();
+
+    //Setting
+    String notifyImmediately();
+    String notifyDaily();
+    String notifyWeekly();
 }

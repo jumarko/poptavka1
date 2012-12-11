@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 
 @Presenter(view = AddressSelectorView.class, multiple = true)
@@ -57,6 +58,12 @@ public class AddressSelectorPresenter
         //Getters
         @Ignore
         SuggestBox getCitySuggestBox();
+
+        @Ignore
+        TextBox getStreetTextBox();
+
+        @Ignore
+        TextBox getZipCodeTextBox();
 
         @Ignore
         Label getCityErrorLabel();

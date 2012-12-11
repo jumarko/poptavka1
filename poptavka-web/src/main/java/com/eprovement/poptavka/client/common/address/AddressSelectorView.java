@@ -160,6 +160,18 @@ public class AddressSelectorView extends Composite
         return city;
     }
 
+    @Override
+    @Ignore
+    public TextBox getStreetTextBox() {
+        return street;
+    }
+
+    @Override
+    @Ignore
+    public TextBox getZipCodeTextBox() {
+        return zipCode;
+    }
+
     //Labels
     //--------------------------------------------------------------------------
     @Override

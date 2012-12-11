@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -9,6 +10,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 @Debug(logLevel = LogLevel.DETAILED)
@@ -45,13 +47,27 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
+    void loadingShow(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void loadingHide();
+
+    @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
+
+    @Event(forwardToParent = true)
+    void initAddressWidget(SimplePanel embedToWidget);
+
+    @Event(forwardToParent = true)
+    void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
+
+    @Event(forwardToParent = true)
+    void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
 
     // TODO ivlcek - method loginFromSession() should be available for every module that can be accessed
     // just by entering URL into browser
 //    @Event(forwardToParent = true)
 //    void loginFromSession();
-
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 
@@ -63,6 +79,12 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /**************************************************************************/
     @Event(handlers = SettingsPresenter.class)
     void setSettings(SettingsDetail detail);
+
+    /**************************************************************************/
+    /* Business events handled by UserSettingsPresenter.                      */
+    /**************************************************************************/
+    @Event(handlers = UserSettingsPresenter.class)
+    void setUserSettings(SettingsDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

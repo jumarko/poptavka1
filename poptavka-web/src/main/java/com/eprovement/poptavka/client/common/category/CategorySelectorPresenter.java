@@ -70,6 +70,16 @@ public class CategorySelectorPresenter
         return categoryService;
     }
 
+    /**
+     *
+     * @param embedWidget - panel where widget will be set up.
+     * @param checkboxes - Constants.WITHOUT_CHECK_BOXES /
+     *                     Constants.WITH_CHECK_BOXES    /
+     *                     Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS
+     * @param displayCountsOfWhat - CategoryCell.DISPLAY_COUNT_OF_DEMANDS   /
+     *                              CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS /
+     *                              CategoryCell.DISPLAY_COUNT_DISABLED
+     */
     public void initCategoryWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat) {
         view.createCellBrowser(checkboxes, displayCountsOfWhat);
         embedWidget.setWidget(view.getWidgetView());
