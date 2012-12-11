@@ -35,6 +35,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -87,6 +88,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(forwardToParent = true)
     void loadingHide();
 
+    @Event(forwardToParent = true)
+    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
+//    , List<CategoryDetail> categories
     /* Admin module forward section - comunication with parent widget*/
     @Event(forwardToParent = true)
     void clearSearchContent();

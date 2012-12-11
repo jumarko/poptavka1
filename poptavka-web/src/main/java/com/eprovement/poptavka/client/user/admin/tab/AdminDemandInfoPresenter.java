@@ -4,6 +4,8 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.category.CategoryCell;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -17,6 +19,7 @@ import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.mvp4g.client.presenter.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,8 @@ public class AdminDemandInfoPresenter
         extends BasePresenter<AdminDemandInfoPresenter.AdminDemandInfoInterface, AdminEventBus> {
 
     public interface AdminDemandInfoInterface {
+
+        PopupPanel getCategorySelectorPopup();
 
         Widget getWidgetView();
 
@@ -234,13 +239,19 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                categoryHistory.clear();
-                view.getEditCatList().clear();
-                view.getEditCatList().setEnabled(true);
-                view.getBackCatBtn().setEnabled(false);
-                categoryHistory.add(new String[]{"root", "root"});
-                view.getEditCatPanel().setVisible(true);
-                eventBus.getAdminDemandRootCategories();
+                eventBus.initCategoryWidget(
+                        view.getCategorySelectorPopup(),
+                        Constants.WITH_CHECK_BOXES,
+                        CategoryCell.DISPLAY_COUNT_DISABLED);
+                view.getCategorySelectorPopup().show();
+
+//                categoryHistory.clear();
+//                view.getEditCatList().clear();
+//                view.getEditCatList().setEnabled(true);
+//                view.getBackCatBtn().setEnabled(false);
+//                categoryHistory.add(new String[]{"root", "root"});
+//                view.getEditCatPanel().setVisible(true);
+//                eventBus.getAdminDemandRootCategories();
             }
         });
     }

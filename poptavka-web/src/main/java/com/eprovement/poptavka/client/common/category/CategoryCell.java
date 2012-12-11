@@ -36,17 +36,16 @@ public class CategoryCell extends AbstractCell<CategoryDetail> {
             StringBuilder text = new StringBuilder();
 
             text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
+            sb.appendEscaped(text.toString());
             switch (displayCountOfWhat) {
                 case DISPLAY_COUNT_OF_DEMANDS:
                     text.append(SPACE);
-                    sb.appendEscaped(text.toString());
                     sb.appendHtmlConstant(LEFT_BRACE);
                     sb.append(value.getDemandsCount());
                     sb.appendHtmlConstant(RIGHT_BRACE);
                     break;
                 case DISPLAY_COUNT_OF_SUPPLIERS:
                     text.append(SPACE);
-                    sb.appendEscaped(text.toString());
                     sb.appendHtmlConstant(LEFT_BRACE);
                     sb.append(value.getSuppliersCount());
                     sb.appendHtmlConstant(RIGHT_BRACE);

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -162,6 +163,17 @@ public class AdminDemandsPresenter
         addCommitButtonHandler();
         addRollbackButtonHandler();
         addRefreshButtonHandler();
+        view.getAdminDemandDetail().getEditCatBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.initCategoryWidget(
+                        view.getAdminDemandDetail().getCategorySelectorPopup(),
+                        Constants.WITH_CHECK_BOXES,
+                        CategoryCell.DISPLAY_COUNT_DISABLED);
+                view.getAdminDemandDetail().getCategorySelectorPopup().center();
+            }
+        });
     }
 
     /**

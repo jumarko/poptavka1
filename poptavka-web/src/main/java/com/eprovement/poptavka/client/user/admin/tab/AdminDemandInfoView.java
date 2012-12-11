@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -60,6 +61,12 @@ public class AdminDemandInfoView extends Composite implements
     @UiField
     Label catPath, locPath;
     private FullDemandDetail demandInfo;
+    private PopupPanel categorySelectorPopup;
+
+    @Override
+    public PopupPanel getCategorySelectorPopup() {
+        return categorySelectorPopup;
+    }
 
     @Override
     public Widget getWidgetView() {
@@ -158,6 +165,14 @@ public class AdminDemandInfoView extends Composite implements
         editCatList.setEnabled(false);
         editLocList.setEnabled(false);
         initDemandInfoForm();
+        createCategorySelectorPopup();
+    }
+
+    private void createCategorySelectorPopup() {
+        categorySelectorPopup = new PopupPanel(true);
+        categorySelectorPopup.setSize("300px", "300px");
+        categorySelectorPopup.setGlassEnabled(true);
+        categorySelectorPopup.hide();
     }
 
     @Override
