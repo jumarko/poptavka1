@@ -1,17 +1,18 @@
 package com.eprovement.poptavka.shared.domain.settings;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * represents all types of system users
  * @author Beho
  *
  */
-public class SettingsDetail implements Serializable {
+public class SettingDetail implements Serializable {
 
     /**
      *
@@ -23,6 +24,7 @@ public class SettingsDetail implements Serializable {
         CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIN
     }
     /** Instances of roles. **/
+    private long userId;
     private SupplierDetail supplier = null;
     private String email;
     private String firstName;
@@ -33,16 +35,23 @@ public class SettingsDetail implements Serializable {
     private String description;
     private String taxId;
     private String website;
-    private List<AddressDetail> addresses;
+    private ArrayList<AddressDetail> addresses;
     private int clientRating;
 
-    public SettingsDetail() {
+    public SettingDetail() {
     }
 
-    public SettingsDetail(String email, String password) {
+    public SettingDetail(String email, String password) {
         this.email = email;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -100,12 +109,12 @@ public class SettingsDetail implements Serializable {
         this.website = website;
     }
 
-    public List<AddressDetail> getAddresses() {
+    public ArrayList<AddressDetail> getAddresses() {
         return addresses;
     }
 
     public void setAddresses(List<AddressDetail> addresses) {
-        this.addresses = addresses;
+        this.addresses = new ArrayList<AddressDetail>(addresses);
     }
 
     public String getEmail() {

@@ -8,7 +8,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import com.eprovement.poptavka.client.service.demand.SettingsRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 
 @EventHandler
 public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
@@ -18,9 +18,9 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
 
     public void onGetLoggedUser(long userId) {
         GWT.log("HomeSettingsHandler handling user" + userId);
-        settingsService.getUserSettings(userId, new SecuredAsyncCallback<SettingsDetail>(eventBus) {
+        settingsService.getUserSettings(userId, new SecuredAsyncCallback<SettingDetail>(eventBus) {
             @Override
-            public void onSuccess(SettingsDetail result) {
+            public void onSuccess(SettingDetail result) {
                 GWT.log("uspesny settingsDetail");
                 eventBus.setSettings(result);
 
@@ -35,6 +35,16 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
                 // empty i.e number of new messages could be retrieved
                 GWT.log("UpdateUnreadMessagesCount retrieved, number=" + result.getUnreadMessagesCount());
                 eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
+            }
+        });
+    }
+
+    public void onRequestUpdateSettings(SettingDetail settingsDetail) {
+        settingsService.updateSettings(settingsDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
+
+            @Override
+            public void onSuccess(Boolean result) {
+                eventBus.responseUpdateSettings(result);
             }
         });
     }

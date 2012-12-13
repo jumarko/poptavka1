@@ -4,6 +4,8 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.client.common.address.AddressSelectorView;
+import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -11,6 +13,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -44,8 +47,7 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     ListBox newMessageOptions, newDemandOptions, newSystemMessageOptions,
     newOperatorMessageOptions, demandStateChangeOptions;
     @UiField
-    DisclosurePanel disclosureAddress; //disclosureDescription,
-    //disclosureCommon, disclosureContact, disclosureNotification, disclosurePayment;
+    DisclosurePanel disclosureAddress;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -64,69 +66,64 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
         return disclosureAddress;
     }
 
-//    @Override
-//    public DisclosurePanel getDisclosureCommon() {
-//        return disclosureCommon;
-//    }
-//
-//    @Override
-//    public DisclosurePanel getDisclosureContact() {
-//        return disclosureContact;
-//    }
-//
-//    @Override
-//    public DisclosurePanel getDisclosureNotification() {
-//        return disclosureNotification;
-//    }
-//
-//    @Override
-//    public DisclosurePanel getDisclosurePayment() {
-//        return disclosurePayment;
-//    }
-//
-//    @Override
-//    public DisclosurePanel getDisclosureDescription() {
-//        return disclosureDescription;
-//    }
-
     /** TEXTBOXES. **/
+    @Override
     public TextBox getCompanyName() {
         return companyName;
     }
 
+    @Override
     public TextBox getWeb() {
         return web;
     }
 
+    @Override
     public TextBox getEmail() {
         return email;
     }
 
+    @Override
     public TextBox getPhone() {
         return phone;
     }
 
+    @Override
     public TextBox getFirstName() {
         return firstName;
     }
 
+    @Override
     public TextBox getLastName() {
         return lastName;
     }
 
+    @Override
     public TextBox getIdentificationNumber() {
         return identificationNumber;
     }
 
+    @Override
     public TextBox getTaxNumber() {
         return taxNumber;
     }
 
+    @Override
     public TextArea getDescriptionBox() {
         return descriptionBox;
     }
 
     /** OTHERS. **/
+    @Override
+    public AddressDetail getAddress() {
+        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
+        AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
+        if (addressWidget == null) {
+            return null;
+        } else {
+            return addressWidget.createAddress();
+        }
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

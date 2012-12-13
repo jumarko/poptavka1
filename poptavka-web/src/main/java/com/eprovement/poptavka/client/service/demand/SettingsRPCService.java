@@ -4,7 +4,7 @@ import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -13,7 +13,9 @@ public interface SettingsRPCService extends RemoteService {
 
     String URL = "service/settings";
 
-    SettingsDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException;
+    SettingDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
+
+    Boolean updateSettings(SettingDetail settingsDetail) throws RPCException, ApplicationSecurityException;
 }

@@ -4,14 +4,20 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
 
 /**
  *
@@ -37,6 +43,9 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     DisclosurePanel categories, localities, services;
     @UiField(provided = true)
     PopupPanel categorySelectorPopup, localitySelectorPopup;
+    //
+    private List<CategoryDetail> categoriesList;
+    private List<LocalityDetail> localitiesList;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -66,22 +75,76 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     }
 
     /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public void setSupplierSettings(SettingDetail detail) {
+        if (detail.getSupplier().getOverallRating() != null) {
+            supplierRating.setText(Integer.toString(detail.getSupplier().getOverallRating()));
+        }
+        categoriesList = detail.getSupplier().getCategories();
+        setCategoriesHeader(detail.getSupplier().getCategories().toString());
+        localitiesList = detail.getSupplier().getLocalities();
+        setLocalitiesHeader(detail.getSupplier().getLocalities().toString());
+        setServicesHeader(detail.getSupplier().getServices().toString());
+    }
+
+    /** HEADER. **/
+    @Override
+    public void setCategoriesHeader(String headerText) {
+        ((HasText) categories.getHeader().asWidget()).setText(
+                Storage.MSGS.categories() + ": " + headerText);
+    }
+
+    @Override
+    public void setLocalitiesHeader(String headerText) {
+        ((HasText) localities.getHeader().asWidget()).setText(
+                Storage.MSGS.localities() + ": " + headerText);
+    }
+
+    @Override
+    public void setServicesHeader(String headerText) {
+        ((HasText) services.getHeader().asWidget()).setText(
+                Storage.MSGS.services() + ": " + headerText);
+    }
+
+    @Override
+    public void setCategoriesList(List<CategoryDetail> categoriesList) {
+        this.categoriesList = categoriesList;
+    }
+
+    @Override
+    public void setLocalitiesList(List<LocalityDetail> localitiesList) {
+        this.localitiesList = localitiesList;
+    }
+
+    /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
     /** PANELS. **/
     @Override
-    public DisclosurePanel getCategories() {
+    public DisclosurePanel getCategoriesPanel() {
         return categories;
     }
 
     @Override
-    public DisclosurePanel getLocalities() {
+    public DisclosurePanel getLocalitiesPanel() {
         return localities;
     }
 
     @Override
-    public DisclosurePanel getServices() {
+    public DisclosurePanel getServicesPanel() {
         return services;
+    }
+
+    @Override
+    public PopupPanel getCategorySelectorPopup() {
+        return categorySelectorPopup;
+    }
+
+    @Override
+    public PopupPanel getLocalitySelectorPopup() {
+        return localitySelectorPopup;
     }
 
     /** TEXTBOXES. **/
@@ -91,6 +154,16 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     }
 
     /** OTHERES. **/
+    @Override
+    public List<CategoryDetail> getCategories() {
+        return categoriesList;
+    }
+
+    @Override
+    public List<LocalityDetail> getLocalities() {
+        return localitiesList;
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

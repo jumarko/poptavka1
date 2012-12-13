@@ -4,20 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SupplierDetail implements Serializable {
 
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -8271479725303195283L;
-
     private Long supplierId;
     private Integer overallRating;
     private boolean certified;
     private String description;
-    private List<LocalityDetail> localities;
-    private List<CategoryDetail> categories;
+    private ArrayList<LocalityDetail> localities;
+    private ArrayList<CategoryDetail> categories;
     private ArrayList<Integer> services = new ArrayList<Integer>();
 
     public SupplierDetail() {
@@ -39,21 +37,26 @@ public class SupplierDetail implements Serializable {
         this.certified = certified;
     }
 
-    public List<LocalityDetail> getLocalities() {
+    public ArrayList<LocalityDetail> getLocalities() {
         return localities;
     }
 
     public void setLocalities(List<LocalityDetail> localities) {
-        this.localities = localities;
+        if (localities != null) {
+            this.localities = new ArrayList<LocalityDetail>(localities);
+        }
     }
 
-    public List<CategoryDetail> getCategories() {
+    public ArrayList<CategoryDetail> getCategories() {
         return categories;
     }
 
     public void setCategories(List<CategoryDetail> categories) {
-        this.categories = categories;
+        if (categories != null) {
+            this.categories = new ArrayList<CategoryDetail>(categories);
+        }
     }
+
     public String getDescription() {
         return description;
     }

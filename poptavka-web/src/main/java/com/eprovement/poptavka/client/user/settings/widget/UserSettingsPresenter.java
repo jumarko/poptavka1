@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter.UserSettingsViewInterface;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -60,6 +60,8 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
         TextArea getDescriptionBox();
 
         //Others
+        AddressDetail getAddress();
+
         Widget getWidgetView();
     }
     /**************************************************************************/
@@ -67,7 +69,7 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
     /**************************************************************************/
     private static final int MAX_DESC_CHARS = 50;
     //
-    private SettingsDetail settingsDetail;
+    private SettingDetail settingsDetail;
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -103,14 +105,12 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
     /**************************************************************************/
     public void initUserSettings(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
-
-        eventBus.loadingHide();
     }
 
     /**************************************************************************/
     /* METHODS                                                                */
     /**************************************************************************/
-    public void onSetUserSettings(SettingsDetail detail) {
+    public void onSetUserSettings(SettingDetail detail) {
         this.settingsDetail = detail;
 
         view.getCompanyName().setText(detail.getCompanyName());
@@ -124,12 +124,14 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
         view.getDescriptionBox().setText(detail.getDescription());
 
         setAddressesHeader(detail.getAddresses().get(0).toString());
+
+        eventBus.loadingHide();
     }
 
     /**************************************************************************/
     /* HELPER METHODS                                                         */
     /**************************************************************************/
-    private void setAddressesContent(SettingsDetail detail) {
+    private void setAddressesContent(SettingDetail detail) {
         SimplePanel addressHolder = (SimplePanel) view.getDisclosureAddress().getContent();
         AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
         if (detail.getAddresses() != null && !detail.getAddresses().isEmpty()) {

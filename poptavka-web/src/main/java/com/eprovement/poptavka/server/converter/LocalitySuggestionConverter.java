@@ -35,11 +35,11 @@ public final class LocalitySuggestionConverter extends AbstractConverter<Localit
         LocalityDetailSuggestion detail = new LocalityDetailSuggestion();
         //get STATE ->> CITY->DISTRICT->STATE
         detail.setStateId(localityCity.getParent().getParent().getId());
-        detail.setStateName(localityCity.getParent().getParent().getCode());
+        detail.setStateCode(localityCity.getParent().getParent().getCode());
         detail.setStateName(localityCity.getParent().getParent().getName());
 
         detail.setCityId(localityCity.getId());
-        detail.setCityName(localityCity.getCode());
+        detail.setCityCode(localityCity.getCode());
         detail.setCityName(localityCity.getName());
 
         return detail;

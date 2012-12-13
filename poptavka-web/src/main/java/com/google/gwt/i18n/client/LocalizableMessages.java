@@ -395,4 +395,7 @@ public interface LocalizableMessages extends Messages {
     String notifyImmediately();
     String notifyDaily();
     String notifyWeekly();
+    String updatedOK();
+    String updatedNotOK();
+    String updatingProfile();
 }

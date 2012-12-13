@@ -4,9 +4,18 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public final class AddressConverter extends AbstractConverter<Address, AddressDetail> {
+
+    private LocalityService localityService;
+
+    @Autowired
+    public void setLocalityService(LocalityService localityService) {
+        this.localityService = localityService;
+    }
 
     private AddressConverter() {
         // Spring instantiates converters - see converters.xml
@@ -17,15 +26,12 @@ public final class AddressConverter extends AbstractConverter<Address, AddressDe
         AddressDetail detail = new AddressDetail();
         if (address.getCity() != null) {
             detail.setCity(address.getCity().getName());
-        }
-        if (address.getStreet() != null) {
-            StringBuilder fullStreet = new StringBuilder(address.getStreet());
-            fullStreet.append(" ");
-            if (address.getFlatNum() != null && !address.getFlatNum().equals("")) {
-                fullStreet.append(address.getFlatNum());
-            }
-            if (address.getHouseNum() != null && !address.getHouseNum().equals("")) {
-                fullStreet.append(address.getHouseNum());
+            detail.setCityCode(address.getCity().getCode());
+            if (address.getCity().getParent() != null) {
+                detail.setRegion(address.getCity().getParent().getName());
+                if (address.getCity().getParent().getParent() != null) {
+                    detail.setCountry(address.getCity().getParent().getParent().getName());
+                }
             }
         }
         detail.setStreet(address.getStreet());
@@ -36,7 +42,10 @@ public final class AddressConverter extends AbstractConverter<Address, AddressDe
 
     @Override
     public Address convertToSource(AddressDetail addressDetail) {
-        throw new UnsupportedOperationException("Conversion from AddressDetail to domain object Address "
-                + "is not implemented yet!");
+        Address address = new Address();
+        address.setCity(localityService.getLocality(addressDetail.getCityCode()));
+        address.setStreet(addressDetail.getStreet());
+        address.setZipCode(addressDetail.getZipCode());
+        return address;
     }
 }

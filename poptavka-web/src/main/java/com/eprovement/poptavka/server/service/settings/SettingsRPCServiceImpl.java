@@ -28,7 +28,7 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,6 +43,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     private GeneralService generalService;
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Address, AddressDetail> addressConverter;
 
     @Autowired
     public void setLocalityConverter(
@@ -56,15 +57,22 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         this.categoryConverter = categoryConverter;
     }
 
+    @Autowired
+    public void setAddressConverter(
+            @Qualifier("addressConverter") Converter<Address, AddressDetail> addressConverter) {
+        this.addressConverter = addressConverter;
+    }
+
     //TODO Nahradit konverterom???
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public SettingsDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException {
+    public SettingDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException {
         GWT.log("Getting user settings for user:" + userId);
         final BusinessUser user = (BusinessUser) generalService.searchUnique(new Search(User.class).addFilterEqual("id",
                 userId));
 
-        SettingsDetail settingsDetail = new SettingsDetail();
+        SettingDetail settingsDetail = new SettingDetail();
+        settingsDetail.setUserId(userId);
 
         List<BusinessUserRole> roles = user.getBusinessUserRoles();
         for (BusinessUserRole role : roles) {
@@ -97,13 +105,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         settingsDetail.setTaxId(user.getBusinessUserData().getTaxId());
         List<AddressDetail> addresses = new ArrayList<AddressDetail>();
         for (Address address : user.getAddresses()) {
-            AddressDetail detail = new AddressDetail();
-            if (address.getCity() != null) {
-                detail.setCity(address.getCity().getName());
-            }
-            detail.setStreet(address.getStreet());
-            detail.setZipCode(address.getZipCode());
-            addresses.add(detail);
+            addresses.add(addressConverter.convertToTarget(address));
         }
         settingsDetail.setAddresses(addresses);
         GWT.log("User settings get:" + settingsDetail.getFirstName());
@@ -134,5 +136,47 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
         unreadMessagesDetail.setUnreadMessagesCount(99);
         return unreadMessagesDetail;
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public Boolean updateSettings(SettingDetail settingsDetail) throws RPCException, ApplicationSecurityException {
+        final BusinessUser user = (BusinessUser) generalService.searchUnique(
+                new Search(User.class).addFilterEqual("id", settingsDetail.getUserId()));
+
+        List<BusinessUserRole> roles = user.getBusinessUserRoles();
+        for (BusinessUserRole role : roles) {
+            role.getBusinessUser().setEmail(settingsDetail.getEmail());
+            if (role instanceof Client) {
+                Client client = (Client) role;
+                client.setOveralRating(settingsDetail.getClientRating());
+
+            }
+            if (role instanceof Supplier) {
+                Supplier supplier = (Supplier) role;
+                if (settingsDetail.getSupplier().getOverallRating() != null) {
+                    supplier.setOveralRating(settingsDetail.getSupplier().getOverallRating());
+                }
+                supplier.setLocalities(localityConverter.convertToSourceList(
+                        settingsDetail.getSupplier().getLocalities()));
+                supplier.setCategories(categoryConverter.convertToSourceList(
+                        settingsDetail.getSupplier().getCategories()));
+            }
+
+        }
+        user.getBusinessUserData().setPersonFirstName(settingsDetail.getFirstName());
+        user.getBusinessUserData().setPersonLastName(settingsDetail.getLastName());
+        user.getBusinessUserData().setPhone(settingsDetail.getPhone());
+        user.getBusinessUserData().setIdentificationNumber(settingsDetail.getIdentificationNumber());
+        user.getBusinessUserData().setCompanyName(settingsDetail.getCompanyName());
+        user.getBusinessUserData().setDescription(settingsDetail.getDescription());
+        user.getBusinessUserData().setTaxId(settingsDetail.getTaxId());
+        List<Address> addresses = new ArrayList<Address>();
+        for (AddressDetail addressDetail : settingsDetail.getAddresses()) {
+            addresses.add(addressConverter.convertToSource(addressDetail));
+        }
+        user.setAddresses(addresses);
+        generalService.merge(user);
+        return true;
     }
 }

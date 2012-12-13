@@ -74,6 +74,7 @@ public class AddressSelectorView extends Composite
     //Address
     private String region;
     private String cityTmp;
+    private String cityCode;
 
     interface Driver extends SimpleBeanEditorDriver<AddressDetail, AddressSelectorView> {
     }
@@ -136,6 +137,11 @@ public class AddressSelectorView extends Composite
         this.cityTmp = city;
     }
 
+    @Override
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
@@ -145,6 +151,7 @@ public class AddressSelectorView extends Composite
         address.setCountry(getCountry());
         address.setRegion(getRegion());
         address.setCity(getCity());
+        address.setCityCode(getCityCode());
         address.setDistrict(getDistrict());
         address.setStreet(getStreet());
         address.setZipCode(getZipCode());
@@ -192,6 +199,10 @@ public class AddressSelectorView extends Composite
 
     public String getCity() {
         return cityTmp;
+    }
+
+    public String getCityCode() {
+        return cityCode;
     }
 
     public String getDistrict() {

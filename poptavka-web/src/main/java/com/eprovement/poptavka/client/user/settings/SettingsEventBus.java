@@ -13,7 +13,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 
-import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
@@ -88,19 +88,22 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Event(handlers = SettingsPresenter.class)
-    void setSettings(SettingsDetail detail);
+    void setSettings(SettingDetail detail);
+
+    @Event(handlers = SettingsPresenter.class)
+    void responseUpdateSettings(Boolean updated);
 
     /**************************************************************************/
     /* Business events handled by UserSettingsPresenter.                      */
     /**************************************************************************/
     @Event(handlers = UserSettingsPresenter.class)
-    void setUserSettings(SettingsDetail detail);
+    void setUserSettings(SettingDetail detail);
 
     @Event(handlers = ClientSettingsPresenter.class)
-    void setClientSettings(SettingsDetail detail);
+    void setClientSettings(SettingDetail detail);
 
     @Event(handlers = SupplierSettingsPresenter.class)
-    void setSupplierSettings(SettingsDetail detail);
+    void setSupplierSettings(SettingDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -110,4 +113,7 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
 
     @Event(handlers = SettingsHandler.class)
     void updateUnreadMessagesCount();
+
+    @Event(handlers = SettingsHandler.class)
+    void requestUpdateSettings(SettingDetail settingsDetail);
 }

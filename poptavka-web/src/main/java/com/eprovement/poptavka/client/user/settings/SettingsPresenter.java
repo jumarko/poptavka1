@@ -6,16 +6,23 @@ import com.mvp4g.client.annotation.Presenter;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
+import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsView;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
+import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsView;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
-import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
+import com.eprovement.poptavka.client.user.settings.widget.UserSettingsView;
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.Arrays;
 
 @Presenter(view = SettingsView.class)
 public class SettingsPresenter
@@ -29,66 +36,11 @@ public class SettingsPresenter
     private ClientSettingsPresenter clientPresenter = null;
     private SupplierSettingsPresenter supplierPresenter = null;
     //
-    private SettingsDetail settingsDetail;
+    private SettingDetail settingsDetail;
 
     //IsWidget musi byt kvoli funkcii ChildAutoDisplay
     public interface HomeSettingsViewInterface extends LazyView, IsWidget {
 
-//        Widget getWidgetView();
-//
-//        TextBox getCompanyName();
-//
-//        TextBox getClientRating();
-//
-//        TextBox getSupplierRating();
-//
-//        TextBox getStreet();
-//
-//        TextBox getCity();
-//
-//        TextBox getZipCode();
-//
-//        TextArea getCategoriesBox();
-//
-//        TextArea getLocalitiesBox();
-//
-//        TextBox getWeb();
-//
-//        TextBox getEmail();
-//
-//        TextBox getPhone();
-//
-//        TextBox getFirstName();
-//
-//        TextBox getLastName();
-//
-//        TextBox getIdentificationNumber();
-//
-//        TextBox getTaxNumber();
-//
-//        TextArea getDescriptionBox();
-//
-//        TextArea getServicesBox();
-//
-//        CheckBox getNewMessageButton();
-//
-//        ListBox getNewMessageOptions();
-//
-//        CheckBox getNewDemandButton();
-//
-//        ListBox getNewDemandOptions();
-//
-//        CheckBox getNewSystemMessageButton();
-//
-//        ListBox getNewSystemMessageOptions();
-//
-//        CheckBox getNewOperatorMessageButton();
-//
-//        ListBox getNewOperatorMessageOptions();
-//
-//        CheckBox getDemandStateChangeButton();
-//
-//        ListBox getDemandStateChangeOptions();
         StackLayoutPanel getStackPanel();
 
         SimplePanel getUserSettingsPanel();
@@ -96,6 +48,10 @@ public class SettingsPresenter
         SimplePanel getClientSettingsPanel();
 
         SimplePanel getSupplierSettingsPanel();
+
+        Button getUpdateButton();
+
+        void showNofity(Boolean updated);
 
         Widget getWidgetView();
     }
@@ -148,6 +104,16 @@ public class SettingsPresenter
                 }
             }
         });
+        view.getUpdateButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.loadingShow(Storage.MSGS.updatingProfile());
+                updateUserSettings();
+                updateClientSettings();
+                updateSupplierSettings();
+                eventBus.requestUpdateSettings(settingsDetail);
+            }
+        });
     }
 
     /**************************************************************************/
@@ -165,50 +131,15 @@ public class SettingsPresenter
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
-    public void onSetSettings(SettingsDetail detail) {
-
-        //Just store??
+    public void onSetSettings(SettingDetail detail) {
         this.settingsDetail = detail;
-        //volat cez eventBus alebo cez prezenter?
-//        userPresenter.onSetUserSettings(detail);
+        //set userSettings widget because it is loaded on startup
         eventBus.setUserSettings(detail);
-//        GWT.log("SettingsDetail company name" + detail.getCompanyName());
-//        view.getCompanyName().setText(detail.getCompanyName());
-//        view.getClientRating().setText(
-//                Integer.toString(detail.getClientRating()));
-//        if (detail.getSupplier() != null
-//                && detail.getSupplier().getOverallRating() != null) {
-//            view.getSupplierRating().setText(
-//                    Integer.toString(detail.getSupplier().getOverallRating()));
-//        }
-//        view.getStreet().setText(detail.getAddresses().get(0).getStreet());
-//        view.getCity().setText(detail.getAddresses().get(0).getCity());
-//        view.getZipCode().setText(detail.getAddresses().get(0).getZipCode());
-//
-//        StringBuilder categoryBuilder = new StringBuilder();
-//        if (detail.getSupplier() != null) {
-//            for (CategoryDetail category : detail.getSupplier().getCategories()) {
-//                categoryBuilder.append(category.getName());
-//                categoryBuilder.append("\n");
-//            }
-//        }
-//        view.getCategoriesBox().setText(categoryBuilder.toString());
-//
-//        StringBuilder localitiesBuilder = new StringBuilder();
-//        if (detail.getSupplier() != null) {
-//            for (LocalityDetail locality : detail.getSupplier().getLocalities()) {
-//                localitiesBuilder.append(locality.getName());
-//                localitiesBuilder.append("\n");
-//            }
-//        }
-//        view.getLocalitiesBox().setText(localitiesBuilder.toString());
-//        view.getEmail().setText(detail.getEmail());
-//        view.getPhone().setText(detail.getPhone());
-//        view.getFirstName().setText(detail.getFirstName());
-//        view.getLastName().setText(detail.getLastName());
-//        view.getIdentificationNumber().setText(detail.getIdentificationNumber());
-//        view.getTaxNumber().setText(detail.getTaxId());
-//        view.getDescriptionBox().setText(detail.getDescription());
+    }
+
+    public void onResponseUpdateSettings(Boolean updated) {
+        eventBus.loadingHide();
+        view.showNofity(updated);
     }
 
     /**************************************************************************/
@@ -236,5 +167,60 @@ public class SettingsPresenter
         }
         supplierPresenter = eventBus.addHandler(SupplierSettingsPresenter.class);
         supplierPresenter.initUserSettings(holder);
+    }
+
+    /**************************************************************************/
+    /* Update settings methods                                                */
+    /**************************************************************************/
+    /**
+     * Update that part of SettingsDetail that belongs to UserSettings widget.
+     */
+    private void updateUserSettings() {
+        SimplePanel userHolder = (SimplePanel) view.getStackPanel().getWidget(USER_STACK);
+        UserSettingsView userSettings = (UserSettingsView) userHolder.getWidget();
+
+        settingsDetail.setCompanyName(userSettings.getCompanyName().getText());
+        settingsDetail.setWebsite(userSettings.getWeb().getText());
+        settingsDetail.setEmail(userSettings.getEmail().getText());
+        settingsDetail.setPhone(userSettings.getPhone().getText());
+        settingsDetail.setFirstName(userSettings.getFirstName().getText());
+        settingsDetail.setLastName(userSettings.getLastName().getText());
+        settingsDetail.setIdentificationNumber(userSettings.getIdentificationNumber().getText());
+        settingsDetail.setTaxId(userSettings.getTaxNumber().getText());
+        settingsDetail.setDescription(userSettings.getDescriptionBox().getText());
+        if (userSettings.getAddress() != null) {
+            settingsDetail.setAddresses(Arrays.asList(userSettings.getAddress()));
+        }
+    }
+
+    /**
+     * Update that part of SettingsDetail that belongs to ClientSettings widget.
+     */
+    private void updateClientSettings() {
+        SimplePanel clientHolder = (SimplePanel) view.getStackPanel().getWidget(CLIENT_STACK);
+        ClientSettingsView clientSettings = (ClientSettingsView) clientHolder.getWidget();
+
+        //check if clientSettings was event loaded
+        if (clientSettings != null) {
+            settingsDetail.setClientRating(Integer.parseInt(clientSettings.getClientRating().getText()));
+        }
+    }
+
+    /**
+     * Update that part of SettingsDetail that belongs to SupplierSettings widget.
+     */
+    private void updateSupplierSettings() {
+        SimplePanel supplierHolder = (SimplePanel) view.getStackPanel().getWidget(SUPPLIER_STACK);
+        SupplierSettingsView supplierSettings = (SupplierSettingsView) supplierHolder.getWidget();
+
+        //check if supplierSettings was event loaded
+        if (supplierSettings != null) {
+            if (!supplierSettings.getSupplierRating().getText().isEmpty()) {
+                settingsDetail.getSupplier().setOverallRating(Integer.parseInt(
+                        supplierSettings.getSupplierRating().getText()));
+            }
+            settingsDetail.getSupplier().setCategories(supplierSettings.getCategories());
+            settingsDetail.getSupplier().setLocalities(supplierSettings.getLocalities());
+        }
     }
 }
