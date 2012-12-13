@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.client.home.createSupplier.widget;
+package com.eprovement.poptavka.client.common.services;
 
 import com.eprovement.poptavka.client.common.table.RadioTable;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 
-public class SupplierServiceView extends Composite implements SupplierServicePresenter.SupplierServiceInterface {
+public class ServicesSelectorView extends Composite implements ServicesSelectorPresenter.SupplierServiceInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -20,7 +20,7 @@ public class SupplierServiceView extends Composite implements SupplierServicePre
     private static SupplierServiceUiBinder uiBinder = GWT
             .create(SupplierServiceUiBinder.class);
 
-    interface SupplierServiceUiBinder extends UiBinder<Widget, SupplierServiceView> {
+    interface SupplierServiceUiBinder extends UiBinder<Widget, ServicesSelectorView> {
     }
     /**************************************************************************/
     /* Attributes                                                             */

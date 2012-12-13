@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
@@ -25,6 +26,7 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -62,6 +64,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Message, MessageDetail> messageConverter;
+    private Converter<Service, ServiceDetail> serviceConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -127,6 +130,12 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     public void setMessageConverter(
             @Qualifier("messageConverter") Converter<Message, MessageDetail> messageConverter) {
         this.messageConverter = messageConverter;
+    }
+
+    @Autowired
+    public void setServiceConverter(
+            @Qualifier("serviceConverter") Converter<Service, ServiceDetail> serviceConverter) {
+        this.serviceConverter = serviceConverter;
     }
 
     /**************************************************************************/
@@ -280,5 +289,19 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     public boolean sentActivationCodeAgain(BusinessUserDetail client) throws RPCException {
         //TODO backend
         return true;
+    }
+
+    /**************************************************************************/
+    /* Supplier Service methods                                               */
+    /**************************************************************************/
+    @Override
+    public ArrayList<ServiceDetail> getSupplierServices() throws RPCException {
+        List<Service> services = this.generalService.findAll(Service.class);
+        if (services != null) {
+            System.out.println("Services count: " + services.size());
+        } else {
+            System.out.println("NNULLLLLLLL");
+        }
+        return serviceConverter.convertToTargetList(services);
     }
 }

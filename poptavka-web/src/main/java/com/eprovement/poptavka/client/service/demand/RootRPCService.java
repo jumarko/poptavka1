@@ -4,6 +4,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -11,6 +12,7 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,4 +79,9 @@ public interface RootRPCService extends RemoteService {
     boolean activateClient(String activationCode) throws RPCException;
 
     boolean sentActivationCodeAgain(BusinessUserDetail client) throws RPCException;
+
+    /**************************************************************************/
+    /* Supplier Services methods                                              */
+    /**************************************************************************/
+    ArrayList<ServiceDetail> getSupplierServices() throws RPCException;
 }

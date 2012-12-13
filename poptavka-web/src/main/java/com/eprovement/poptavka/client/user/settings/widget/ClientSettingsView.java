@@ -17,17 +17,34 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ClientSettingsView extends Composite implements ClientSettingsPresenter.ClientSettingsViewInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static ClientSettingsView.ClientSettingsViewUiBinder uiBinder = GWT
             .create(ClientSettingsView.ClientSettingsViewUiBinder.class);
 
     interface ClientSettingsViewUiBinder extends UiBinder<Widget, ClientSettingsView> {
     }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     @UiField
     TextBox clientRating;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public TextBox getClientRating() {
+        return clientRating;
     }
 
     @Override

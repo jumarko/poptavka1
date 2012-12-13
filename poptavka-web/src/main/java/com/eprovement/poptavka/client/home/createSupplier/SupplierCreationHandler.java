@@ -10,8 +10,6 @@ import com.mvp4g.client.event.BaseEventHandler;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import java.util.ArrayList;
 
 /**
  * Handler for RPC calls for localities & categories.
@@ -52,12 +50,4 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
         });
     }
 
-    public void onGetServices() {
-        supplierCreationService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>(eventBus) {
-            @Override
-            public void onSuccess(ArrayList<ServiceDetail> data) {
-                eventBus.setServices(data);
-            }
-        });
-    }
 }

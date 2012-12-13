@@ -1,6 +1,6 @@
-package com.eprovement.poptavka.client.home.createSupplier.widget;
+package com.eprovement.poptavka.client.common.services;
 
-import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationEventBus;
+import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -9,9 +9,9 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 
-@Presenter(view = SupplierServiceView.class, multiple = true)
-public class SupplierServicePresenter extends
-        LazyPresenter<SupplierServicePresenter.SupplierServiceInterface, SupplierCreationEventBus> {
+@Presenter(view = ServicesSelectorView.class, multiple = true)
+public class ServicesSelectorPresenter extends
+        LazyPresenter<ServicesSelectorPresenter.SupplierServiceInterface, RootEventBus> {
 
     public interface SupplierServiceInterface extends LazyView {
 
@@ -22,7 +22,7 @@ public class SupplierServicePresenter extends
         Widget getWidgetView();
     }
 
-    public void initServiceForm(SimplePanel embedToWidget) {
+    public void initServicesWidget(SimplePanel embedToWidget) {
         eventBus.getServices();
         embedToWidget.setWidget(view.getWidgetView());
     }

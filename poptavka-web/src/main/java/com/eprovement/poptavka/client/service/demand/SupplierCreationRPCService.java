@@ -6,11 +6,9 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
-import java.util.ArrayList;
 
 /**
  *
@@ -22,8 +20,6 @@ public interface SupplierCreationRPCService extends RemoteService {
     String URL = "service/suppliercreation";
 
     BusinessUserDetail createNewSupplier(BusinessUserDetail supplier) throws RPCException;
-
-    ArrayList<ServiceDetail> getSupplierServices() throws RPCException;
 
     /**
      * Checks wheter given {@code email} is available.

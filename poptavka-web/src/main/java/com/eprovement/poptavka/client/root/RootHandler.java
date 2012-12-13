@@ -9,6 +9,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -21,6 +22,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -230,5 +232,14 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 BusinessUserDetail.BusinessRole.CLIENT)) {
             eventBus.goToClientDemandsModule(null, Constants.NONE);
         }
+    }
+
+    public void onGetServices() {
+        rootService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>(eventBus) {
+            @Override
+            public void onSuccess(ArrayList<ServiceDetail> data) {
+                eventBus.setServices(data);
+            }
+        });
     }
 }

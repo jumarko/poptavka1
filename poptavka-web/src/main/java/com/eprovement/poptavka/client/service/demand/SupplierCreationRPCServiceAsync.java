@@ -5,9 +5,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import java.util.ArrayList;
 
 /**
  *
@@ -16,8 +14,6 @@ import java.util.ArrayList;
 public interface SupplierCreationRPCServiceAsync {
 
     void createNewSupplier(BusinessUserDetail supplier, AsyncCallback<BusinessUserDetail> callback);
-
-    void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
 
     /** @see UserRPCService#checkFreeEmail(String) */
     void checkFreeEmail(String email, AsyncCallback<Boolean> callback);

@@ -9,8 +9,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServiceView;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,7 +43,7 @@ public class SupplierCreationPresenter
     private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private SupplierInfoPresenter supplierBasicForm = null;
-    private SupplierServicePresenter supplierServiceForm = null;
+    private ServicesSelectorPresenter supplierServiceForm = null;
     private int maxSelectedTab = -1;
 
     public interface CreationViewInterface extends LazyView, IsWidget {
@@ -177,7 +177,7 @@ public class SupplierCreationPresenter
                 eventBus.registerTabToken(FOURTH_TAB_SERVICE);
                 if (maxSelectedTab < FOURTH_TAB_SERVICE) {
                     if (view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget() == null) {
-                        onInitSupplierServiceForm(view.getHolderPanel(FOURTH_TAB_SERVICE));
+                        eventBus.initServicesWidget(view.getHolderPanel(FOURTH_TAB_SERVICE));
                     }
                 }
                 break;
@@ -226,13 +226,6 @@ public class SupplierCreationPresenter
         supplierBasicForm.initSupplierForm(holderWidget);
     }
 
-    public void onInitSupplierServiceForm(SimplePanel holderWidget) {
-        if (supplierServiceForm != null) {
-            eventBus.removeHandler(supplierServiceForm);
-        }
-        supplierServiceForm = eventBus.addHandler(SupplierServicePresenter.class);
-        supplierServiceForm.initServiceForm(holderWidget);
-    }
 
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
@@ -244,8 +237,8 @@ public class SupplierCreationPresenter
                 (CategorySelectorInterface) view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget();
         LocalitySelectorInterface locs =
                 (LocalitySelectorInterface) view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget();
-        SupplierServiceView service =
-                (SupplierServiceView) view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget();
+        ServicesSelectorView service =
+                (ServicesSelectorView) view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget();
 
         BusinessUserDetail newSupplier = info.createSupplier();
         newSupplier.getSupplier().setLocalities(locs.getCellListDataProvider().getList());

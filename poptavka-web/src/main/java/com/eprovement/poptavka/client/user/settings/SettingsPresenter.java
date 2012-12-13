@@ -134,11 +134,13 @@ public class SettingsPresenter
                     case CLIENT_STACK:
                         if (view.getClientSettingsPanel().getWidget() == null) {
                             initClientSettings(view.getClientSettingsPanel());
+                            eventBus.setClientSettings(settingsDetail);
                         }
                         break;
                     case SUPPLIER_STACK:
                         if (view.getSupplierSettingsPanel().getWidget() == null) {
                             initSupplierSettings(view.getSupplierSettingsPanel());
+                            eventBus.setSupplierSettings(settingsDetail);
                         }
                         break;
                     default:

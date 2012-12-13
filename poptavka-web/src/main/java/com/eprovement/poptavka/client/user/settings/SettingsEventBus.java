@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
+import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -59,10 +61,13 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     void initAddressWidget(SimplePanel embedToWidget);
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
+    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
 
     @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
+    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
+
+    @Event(forwardToParent = true)
+    void initServicesWidget(SimplePanel embedToWidget);
 
     // TODO ivlcek - method loginFromSession() should be available for every module that can be accessed
     // just by entering URL into browser
@@ -85,6 +90,12 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /**************************************************************************/
     @Event(handlers = UserSettingsPresenter.class)
     void setUserSettings(SettingsDetail detail);
+
+    @Event(handlers = ClientSettingsPresenter.class)
+    void setClientSettings(SettingsDetail detail);
+
+    @Event(handlers = SupplierSettingsPresenter.class)
+    void setSupplierSettings(SettingsDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

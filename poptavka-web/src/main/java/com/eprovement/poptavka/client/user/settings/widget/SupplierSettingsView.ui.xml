@@ -67,7 +67,7 @@
                                 <g:header>
                                     <ui:msg key='categories'>Categories(only suppliers):</ui:msg>
                                 </g:header>
-                                <g:SimplePanel />
+                                <g:PopupPanel ui:field="categorySelectorPopup"/>
                             </g:DisclosurePanel>
                         </td>
                         <td />
@@ -78,23 +78,22 @@
                                 <g:header>
                                     <ui:msg key='localities'>Localities(only suppliers):</ui:msg>
                                 </g:header>
-                                <g:SimplePanel />
+                                <g:PopupPanel ui:field="localitySelectorPopup"/>
                             </g:DisclosurePanel>
                         </td>
                         <td />
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='services'>Services:</ui:msg>
+                            <g:DisclosurePanel ui:field="services">
+                                <g:header>
+                                    <ui:msg key='services'>Services:</ui:msg>
+                                </g:header>
+                                <g:SimplePanel />
+                            </g:DisclosurePanel>
                         </td>
                         <td />
                     </tr>
-                    <tr>
-                        <td colspan='2'>
-                            <g:TextArea ui:field='servicesBox' />
-                        </td>
-                    </tr>
-
                 </table>
             </g:HTMLPanel>
         </g:ScrollPanel>

@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.server.converter;
 
+import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 
@@ -15,14 +16,15 @@ public final class ServiceConverter extends AbstractConverter<Service, ServiceDe
     @Override
     public ServiceDetail convertToTarget(Service service) {
         ServiceDetail detail = new ServiceDetail();
-        detail.setId(service.getId());
-        detail.setTitle(service.getTitle());
-        detail.setDescription(service.getDescription());
-        detail.setPrice(service.getPrice());
-        detail.setPrepaidMonths(service.getPrepaidMonths());
-        detail.setType(service.getServiceType().getValue());
+        if (service.isValid() && service.getServiceType().equals(ServiceType.SUPPLIER)) {
+            detail.setId(service.getId());
+            detail.setTitle(service.getTitle());
+            detail.setDescription(service.getDescription());
+            detail.setPrice(service.getPrice());
+            detail.setPrepaidMonths(service.getPrepaidMonths());
+            detail.setType(service.getServiceType().getValue());
+        }
         return detail;
-
     }
 
     @Override

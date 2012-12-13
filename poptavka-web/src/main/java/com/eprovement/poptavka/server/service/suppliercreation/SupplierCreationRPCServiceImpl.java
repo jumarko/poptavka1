@@ -14,7 +14,6 @@ import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.product.Service;
-import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
@@ -29,7 +28,6 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -83,8 +81,8 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     }
 
     @Autowired
-    public void setBusinessUserConverter(@Qualifier("businessUserConverter") Converter<BusinessUser,
-            BusinessUserDetail> businessUserConverter) {
+    public void setBusinessUserConverter(
+            @Qualifier("businessUserConverter") Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
         this.businessUserConverter = businessUserConverter;
     }
 
@@ -93,7 +91,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
             @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
-
 
     /**
      * Metoda vytvara uzivatela -> BusinessUsera -> rolu klienta a dodavatela pretoze
@@ -210,7 +207,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
             //Ziskaj mesto typu Locality (String -> Locality)
             Locality cityLoc = (Locality) generalService.searchUnique(
                     new Search(Locality.class)
-                        .addFilterEqual("name", detail.getCity())
+                    .addFilterEqual("name", detail.getCity())
                         .addFilterEqual("type", LocalityType.CITY));
 
             //Zisti, ci sa taka adresa nachadza v DB.
@@ -247,34 +244,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
     public Category getCategory(String id) throws RPCException {
         return categoryService.getById(Long.parseLong(id));
-    }
-
-
-    @Override
-    public ArrayList<ServiceDetail> getSupplierServices() throws RPCException {
-        List<Service> services = this.generalService.findAll(Service.class);
-        if (services != null) {
-            System.out.println("Services count: " + services.size());
-        } else {
-            System.out.println("NNULLLLLLLL");
-        }
-        return convertToServiceDetails(services);
-    }
-
-    protected ArrayList<ServiceDetail> convertToServiceDetails(List<Service> services) {
-        ArrayList<ServiceDetail> details = new ArrayList<ServiceDetail>();
-        for (Service sv : services) {
-            if (sv.isValid() && sv.getServiceType().equals(ServiceType.SUPPLIER)) {
-                ServiceDetail detail = new ServiceDetail();
-                detail.setId(sv.getId());
-                detail.setTitle(sv.getTitle());
-                detail.setPrice(sv.getPrice());
-                detail.setPrepaidMonths(sv.getPrepaidMonths().intValue());
-                detail.setDescription(sv.getDescription());
-                details.add(detail);
-            }
-        }
-        return details;
     }
 
     @Override

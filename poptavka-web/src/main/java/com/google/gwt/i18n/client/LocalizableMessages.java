@@ -195,6 +195,7 @@ public interface LocalizableMessages extends Messages {
     String demandDetail();
     String supplierDetail();
     String conversationDetail();
+    String services();
 
     String month();
     String fewMonths();

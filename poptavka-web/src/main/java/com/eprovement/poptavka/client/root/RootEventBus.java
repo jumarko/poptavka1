@@ -13,6 +13,7 @@ package com.eprovement.poptavka.client.root;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.search.SearchModule;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.error.ErrorModule;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
@@ -36,6 +37,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -59,6 +61,7 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBusWithLookup;
+import java.util.ArrayList;
 import java.util.List;
 
 @Events(startPresenter = RootPresenter.class, historyOnStart = true)
@@ -347,6 +350,18 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     @Event(handlers = RootPresenter.class)
     void initAddressWidget(SimplePanel embedToWidget);
+
+    /**************************************************************************/
+    /* SERVICE SELECTOR WIDGET.                                               */
+    /**************************************************************************/
+    @Event(handlers = RootPresenter.class)
+    void initServicesWidget(SimplePanel embedToWidget);
+
+    @Event(handlers = RootHandler.class)
+    void getServices();
+
+    @Event(handlers = ServicesSelectorPresenter.class)
+    void setServices(ArrayList<ServiceDetail> services);
 
     //Common Locality & Address selector widget
     /**

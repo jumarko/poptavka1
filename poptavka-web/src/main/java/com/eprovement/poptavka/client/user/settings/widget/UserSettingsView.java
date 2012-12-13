@@ -44,8 +44,8 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     ListBox newMessageOptions, newDemandOptions, newSystemMessageOptions,
     newOperatorMessageOptions, demandStateChangeOptions;
     @UiField
-    DisclosurePanel disclosureAddress, disclosureCommon, disclosureContact,
-    disclosureNotification, disclosurePayment, disclosureDescription;
+    DisclosurePanel disclosureAddress; //disclosureDescription,
+    //disclosureCommon, disclosureContact, disclosureNotification, disclosurePayment;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -64,26 +64,30 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
         return disclosureAddress;
     }
 
-    public DisclosurePanel getDisclosureCommon() {
-        return disclosureCommon;
-    }
-
-    public DisclosurePanel getDisclosureContact() {
-        return disclosureContact;
-    }
-
-    public DisclosurePanel getDisclosureNotification() {
-        return disclosureNotification;
-    }
-
-    public DisclosurePanel getDisclosurePayment() {
-        return disclosurePayment;
-    }
-
-    public DisclosurePanel getDisclosureDescription() {
-        return disclosureDescription;
-    }
-
+//    @Override
+//    public DisclosurePanel getDisclosureCommon() {
+//        return disclosureCommon;
+//    }
+//
+//    @Override
+//    public DisclosurePanel getDisclosureContact() {
+//        return disclosureContact;
+//    }
+//
+//    @Override
+//    public DisclosurePanel getDisclosureNotification() {
+//        return disclosureNotification;
+//    }
+//
+//    @Override
+//    public DisclosurePanel getDisclosurePayment() {
+//        return disclosurePayment;
+//    }
+//
+//    @Override
+//    public DisclosurePanel getDisclosureDescription() {
+//        return disclosureDescription;
+//    }
 
     /** TEXTBOXES. **/
     public TextBox getCompanyName() {

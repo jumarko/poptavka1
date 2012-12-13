@@ -23,6 +23,7 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
@@ -42,6 +43,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private LoginPopupPresenter login = null;
     private LoadingPopupPresenter loading = null;
     private ActivationCodePopupPresenter activation = null;
+    private ServicesSelectorPresenter services = null;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -235,6 +237,14 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         }
         activation = eventBus.addHandler(ActivationCodePopupPresenter.class);
         activation.initActivationCodePopup(client, widgetToLoad);
+    }
+
+    public void onInitServicesWidget(SimplePanel holderWidget) {
+        if (services != null) {
+            eventBus.removeHandler(services);
+        }
+        services = eventBus.addHandler(ServicesSelectorPresenter.class);
+        services.initServicesWidget(holderWidget);
     }
 //    private static final int OFFSET_X = 60;
 //    private static final int OFFSET_Y = 35;
