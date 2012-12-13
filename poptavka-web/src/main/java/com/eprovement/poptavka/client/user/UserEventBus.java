@@ -18,12 +18,15 @@ import com.eprovement.poptavka.client.user.problems.MyProblemsPresenter;
 import com.eprovement.poptavka.client.user.widget.unused.OldDetailWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
+import java.util.List;
 
 /**
  * !!!! NOT USED ANYMORE !!!!!
@@ -250,10 +253,12 @@ public interface UserEventBus extends EventBusWithLookup, BaseChildEventBus {
     void initDemandBasicForm(SimplePanel holderPanel);
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat);
+    void initCategoryWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
+        List<CategoryDetail> categoriesToSet);
 
     @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat);
+    void initLocalityWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
+        List<LocalityDetail> localitiesToSet);
 
     @Event(forwardToParent = true)
     void initDemandAdvForm(SimplePanel holderPanel);

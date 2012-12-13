@@ -31,7 +31,10 @@ import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import java.util.List;
 
 @Presenter(view = RootView.class)
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
@@ -200,20 +203,22 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /** multiple presenters handling methods **/
-    public void onInitCategoryWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat) {
+    public void onInitCategoryWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
+            List<CategoryDetail> categoriesToSet) {
         if (categorySelector != null) {
             eventBus.removeHandler(categorySelector);
         }
         categorySelector = eventBus.addHandler(CategorySelectorPresenter.class);
-        categorySelector.initCategoryWidget(holderPanel, checkboxes, displayCountsOfWhat);
+        categorySelector.initCategoryWidget(holderPanel, checkboxes, displayCountsOfWhat, categoriesToSet);
     }
 
-    public void onInitLocalityWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat) {
+    public void onInitLocalityWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
+            List<LocalityDetail> localitiesToSet) {
         if (localitySelector != null) {
             eventBus.removeHandler(localitySelector);
         }
         localitySelector = eventBus.addHandler(LocalitySelectorPresenter.class);
-        localitySelector.initLocalityWidget(holderPanel, checkboxes, displayCountsOfWhat);
+        localitySelector.initLocalityWidget(holderPanel, checkboxes, displayCountsOfWhat, localitiesToSet);
     }
 
     public void onInitAddressWidget(SimplePanel holderPanel) {

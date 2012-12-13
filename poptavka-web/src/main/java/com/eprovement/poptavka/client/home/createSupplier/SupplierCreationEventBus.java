@@ -9,6 +9,8 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
@@ -17,6 +19,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
+import java.util.List;
 
 /**
  *
@@ -75,10 +78,12 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     void loadingHide();
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
+    void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
+        List<CategoryDetail> categoriesToSet);
 
     @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat);
+    void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
+        List<LocalityDetail> localitiesToSet);
 
     @Event(forwardToParent = true)
     void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);

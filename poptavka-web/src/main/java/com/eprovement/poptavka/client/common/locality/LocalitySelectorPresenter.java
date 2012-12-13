@@ -76,9 +76,20 @@ public class LocalitySelectorPresenter
         return localityService;
     }
 
-    public void initLocalityWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat) {
+    public void initLocalityWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat,
+            List<LocalityDetail> localitiesToSet) {
         view.createCellBrowser(checkboxes, displayCountsOfWhat);
         embedWidget.setWidget(view.getWidgetView());
+
+        //Set localities if any
+        if (localitiesToSet != null) {
+            for (LocalityDetail locDetail : localitiesToSet) {
+                //Select in cellBrowser
+                view.getCellBrowserSelectionModel().setSelected(locDetail, true);
+                //Display selected categories
+                view.getCellListDataProvider().getList().add(locDetail);
+            }
+        }
     }
 
     //TODO premenovat

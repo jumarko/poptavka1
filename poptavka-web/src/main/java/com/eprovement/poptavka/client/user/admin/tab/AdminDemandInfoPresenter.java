@@ -242,7 +242,8 @@ public class AdminDemandInfoPresenter
                 eventBus.initCategoryWidget(
                         view.getCategorySelectorPopup(),
                         Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED);
+                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                        null);
                 view.getCategorySelectorPopup().show();
 
 //                categoryHistory.clear();

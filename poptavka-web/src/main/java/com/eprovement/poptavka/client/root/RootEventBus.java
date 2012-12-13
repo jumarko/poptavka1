@@ -320,7 +320,8 @@ public interface RootEventBus extends EventBusWithLookup {
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
-    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
+    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
+        List<CategoryDetail> categoriesToSet);
 
     @Event(handlers = CategorySelectorPresenter.class)
     void setCategoryData(List<CategoryDetail> list);
@@ -337,7 +338,8 @@ public interface RootEventBus extends EventBusWithLookup {
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** LocalitySelector section. **/
     @Event(handlers = RootPresenter.class)
-    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
+    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
+        List<LocalityDetail> localitiesToSet);
 
     @Event(handlers = RootHandler.class)
     void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);

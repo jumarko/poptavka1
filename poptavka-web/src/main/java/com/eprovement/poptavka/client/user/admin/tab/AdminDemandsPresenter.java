@@ -170,7 +170,8 @@ public class AdminDemandsPresenter
                 eventBus.initCategoryWidget(
                         view.getAdminDemandDetail().getCategorySelectorPopup(),
                         Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED);
+                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                        null);
                 view.getAdminDemandDetail().getCategorySelectorPopup().center();
             }
         });

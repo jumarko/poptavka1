@@ -214,7 +214,8 @@ public class SearchModulePresenter
                                     eventBus.initCategoryWidget(
                                             view.getAdvanceSearchContentView().getCategorySelectorPanel(),
                                             Constants.WITH_CHECK_BOXES,
-                                            CategoryCell.DISPLAY_COUNT_DISABLED);
+                                            CategoryCell.DISPLAY_COUNT_DISABLED,
+                                            null);
                                 }
                                 break;
                             case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
@@ -224,7 +225,8 @@ public class SearchModulePresenter
                                     eventBus.initLocalityWidget(
                                             view.getAdvanceSearchContentView().getLocalitySelectorPanel(),
                                             Constants.WITH_CHECK_BOXES,
-                                            CategoryCell.DISPLAY_COUNT_DISABLED);
+                                            CategoryCell.DISPLAY_COUNT_DISABLED,
+                                            null);
                                 }
                                 break;
                             default:

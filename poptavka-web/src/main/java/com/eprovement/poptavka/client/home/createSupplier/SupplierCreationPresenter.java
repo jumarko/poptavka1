@@ -156,7 +156,8 @@ public class SupplierCreationPresenter
                         eventBus.initCategoryWidget(
                                 view.getHolderPanel(SECOND_TAB_CATEGORY),
                                 Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
+                                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
+                                null);
                     }
                 }
                 break;
@@ -168,7 +169,8 @@ public class SupplierCreationPresenter
                         eventBus.initLocalityWidget(
                                 view.getHolderPanel(THIRD_TAB_LOCALITY),
                                 Constants.WITH_CHECK_BOXES,
-                                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS);
+                                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
+                                null);
                     }
                 }
                 break;

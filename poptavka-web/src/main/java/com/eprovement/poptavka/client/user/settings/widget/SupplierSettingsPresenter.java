@@ -80,9 +80,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                 eventBus.initCategoryWidget(
                         categoriesPopup,
                         Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                        CategoryCell.DISPLAY_COUNT_DISABLED);
+                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                        settingsDetail.getSupplier().getCategories());
                 categoriesPopup.center();
-//                setCategoriesContent(settingsDetail); //Ako na to???
             }
         });
         categoriesPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -105,9 +105,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                 eventBus.initLocalityWidget(
                         localitiesPopup,
                         Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED);
+                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                        settingsDetail.getSupplier().getLocalities());
                 localitiesPopup.center();
-                setLocalitiesContent(settingsDetail);
             }
         });
         localitiesPopup.addCloseHandler(new CloseHandler<PopupPanel>() {

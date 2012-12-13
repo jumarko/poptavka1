@@ -80,9 +80,20 @@ public class CategorySelectorPresenter
      *                              CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS /
      *                              CategoryCell.DISPLAY_COUNT_DISABLED
      */
-    public void initCategoryWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat) {
+    public void initCategoryWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat,
+            List<CategoryDetail> categoriesToSet) {
         view.createCellBrowser(checkboxes, displayCountsOfWhat);
         embedWidget.setWidget(view.getWidgetView());
+
+        //Set categories if any
+        if (categoriesToSet != null) {
+            for (CategoryDetail catDetail : categoriesToSet) {
+                //Select in cellBrowser
+                view.getCellBrowserSelectionModel().setSelected(catDetail, true);
+                //Display selected categories
+                view.getCellListDataProvider().getList().add(catDetail);
+            }
+        }
     }
 
 //    private void postRequest(int index, String category) {

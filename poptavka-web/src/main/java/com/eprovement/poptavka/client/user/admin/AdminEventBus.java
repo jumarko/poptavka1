@@ -89,7 +89,8 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void loadingHide();
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat);
+    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
+        List<CategoryDetail> categoriesToSet);
 //    , List<CategoryDetail> categories
     /* Admin module forward section - comunication with parent widget*/
     @Event(forwardToParent = true)
