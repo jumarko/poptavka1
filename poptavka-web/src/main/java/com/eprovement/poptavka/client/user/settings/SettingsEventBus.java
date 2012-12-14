@@ -46,6 +46,7 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
      * The only entry point to this module due to code-spliting feature.
      */
     @Event(handlers = SettingsPresenter.class, historyConverter = SettingsHistoryConverter.class)
+            //, navigationEvent = true)
     String goToSettingsModule();
 
     /**************************************************************************/

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.server.service.settings;
 
+import com.eprovement.poptavka.domain.settings.NotificationItem;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
+import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -108,6 +110,19 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             addresses.add(addressConverter.convertToTarget(address));
         }
         settingsDetail.setAddresses(addresses);
+
+        /** NOTIFICATIONS. **/
+        List<NotificationDetail> notifications = new ArrayList<NotificationDetail>();
+        for (NotificationItem item : user.getSettings().getNotificationItems()) {
+            NotificationDetail targetItem = new NotificationDetail();
+            /**/ targetItem.setNotificationIdemId(item.getId());
+            /**/ targetItem.setEnabled(item.isEnabled());
+            /**/ targetItem.setName(item.getNotification().getName());
+            /**/ targetItem.setPeriod(item.getPeriod());
+            notifications.add(targetItem);
+        }
+        settingsDetail.setNotifications(notifications);
+
         GWT.log("User settings get:" + settingsDetail.getFirstName());
         return settingsDetail;
     }
@@ -169,6 +184,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         user.getBusinessUserData().setPhone(settingsDetail.getPhone());
         user.getBusinessUserData().setIdentificationNumber(settingsDetail.getIdentificationNumber());
         user.getBusinessUserData().setCompanyName(settingsDetail.getCompanyName());
+        user.getBusinessUserData().setWebsite(settingsDetail.getWebsite());
         user.getBusinessUserData().setDescription(settingsDetail.getDescription());
         user.getBusinessUserData().setTaxId(settingsDetail.getTaxId());
         List<Address> addresses = new ArrayList<Address>();
@@ -176,6 +192,19 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             addresses.add(addressConverter.convertToSource(addressDetail));
         }
         user.setAddresses(addresses);
+
+        /** NOTIFICATIONS. **/
+        List<NotificationItem> notificationsItems = new ArrayList<NotificationItem>();
+        for (int i = 0; i < user.getSettings().getNotificationItems().size(); i++) {
+            NotificationItem domainItem = user.getSettings().getNotificationItems().get(i);
+            NotificationDetail item = settingsDetail.getNotifications().get(i);
+
+            domainItem.setPeriod(item.getPeriod());
+            domainItem.setEnabled(item.isEnabled());
+            notificationsItems.add(domainItem);
+        }
+        user.getSettings().setNotificationItems(notificationsItems);
+
         generalService.merge(user);
         return true;
     }

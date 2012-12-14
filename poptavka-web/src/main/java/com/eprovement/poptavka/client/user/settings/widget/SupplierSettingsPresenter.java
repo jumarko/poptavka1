@@ -56,6 +56,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
         void setLocalitiesList(List<LocalityDetail> localitiesList);
 
+        SettingDetail updateSupplierSettings(SettingDetail detail);
+
         /** GETTERS. **/
         //Panels
         DisclosurePanel getCategoriesPanel();
@@ -76,6 +78,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         TextBox getSupplierRating();
 
         //Others
+        boolean isSettingChange();
+
         Widget getWidgetView();
     }
     /**************************************************************************/

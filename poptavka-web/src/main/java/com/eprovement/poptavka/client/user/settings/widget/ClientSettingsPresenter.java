@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter.ClientSettingsViewInterface;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -26,7 +25,11 @@ public class ClientSettingsPresenter extends LazyPresenter<ClientSettingsViewInt
     /**************************************************************************/
     public interface ClientSettingsViewInterface extends LazyView {
 
-        TextBox getClientRating();
+        void setClientSettings(SettingDetail detail);
+
+        SettingDetail updateClientSettings(SettingDetail detail);
+
+        boolean isSettingChange();
 
         Widget getWidgetView();
     }
@@ -55,6 +58,6 @@ public class ClientSettingsPresenter extends LazyPresenter<ClientSettingsViewInt
     public void onSetClientSettings(SettingDetail detail) {
         this.settingsDetail = detail;
 
-        view.getClientRating().setText(Integer.toString(detail.getClientRating()));
+        view.setClientSettings(detail);
     }
 }

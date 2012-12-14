@@ -36,6 +36,7 @@ public class SettingDetail implements Serializable {
     private String taxId;
     private String website;
     private ArrayList<AddressDetail> addresses;
+    private ArrayList<NotificationDetail> notifications;
     private int clientRating;
 
     public SettingDetail() {
@@ -147,5 +148,15 @@ public class SettingDetail implements Serializable {
 
     public void setClientRating(int clientRating) {
         this.clientRating = clientRating;
+    }
+
+    public ArrayList<NotificationDetail> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<NotificationDetail> notifications) {
+        if (notifications != null) {
+            this.notifications = new ArrayList<NotificationDetail>(notifications);
+        }
     }
 }

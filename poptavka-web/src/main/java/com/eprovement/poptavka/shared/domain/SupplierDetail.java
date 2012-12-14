@@ -69,8 +69,8 @@ public class SupplierDetail implements Serializable {
         return services;
     }
 
-    public void setServices(ArrayList<Integer> serviceList) {
-        this.services = serviceList;
+    public void setServices(List<Integer> serviceList) {
+        this.services = new ArrayList<Integer>(serviceList);
     }
 
     public void addService(int selectedService) {

@@ -22,11 +22,11 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.Arrays;
 
 @Presenter(view = SettingsView.class)
 public class SettingsPresenter
         extends LazyPresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus> {
+//        implements NavigationConfirmationInterface {
 
     private static final int USER_STACK = 0;
     private static final int CLIENT_STACK = 1;
@@ -72,6 +72,28 @@ public class SettingsPresenter
             eventBus.updateUnreadMessagesCount();
         }
     }
+
+//    @Override
+//    public void confirm(NavigationEventCommand event) {
+//        //pseudo method to verify if the view has changed
+//        boolean isUserChange = ((UserSettingsView) view.getUserSettingsPanel().getWidget()).isSettingChange();
+//        boolean isClientChange = false;
+//        boolean isSupplierChange = false;
+//        if (view.getClientSettingsPanel().getWidget() != null) { //if not yet even initialized
+//            isClientChange = ((ClientSettingsView) view.getClientSettingsPanel().getWidget()).isSettingChange();
+//        }
+//        if (view.getSupplierSettingsPanel().getWidget() != null) { //if not yet even initialized
+//            isSupplierChange = ((SupplierSettingsView) view.getSupplierSettingsPanel().getWidget()).isSettingChange();
+//        }
+//        if (isUserChange && isClientChange && isSupplierChange) {
+//            //Window shouldn't be used inside a presenter
+//            //this is just to give a simple example
+//            if (Window.confirm("Unsafed changes detected. Are you sure you want to leave?."
+//                    + " Any unsaved changes will be lost. Safe changes before leaving.")) {
+//                event.fireEvent();
+//            }
+//        }
+//    }
 
     /**************************************************************************/
     /* Bind                                                                   */
@@ -120,6 +142,7 @@ public class SettingsPresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToSettingsModule() {
+//        eventBus.setNavigationConfirmation(this);
         eventBus.loadingShow(Storage.MSGS.loading());
         initUserSettings(view.getUserSettingsPanel());
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
@@ -179,17 +202,8 @@ public class SettingsPresenter
         SimplePanel userHolder = (SimplePanel) view.getStackPanel().getWidget(USER_STACK);
         UserSettingsView userSettings = (UserSettingsView) userHolder.getWidget();
 
-        settingsDetail.setCompanyName(userSettings.getCompanyName().getText());
-        settingsDetail.setWebsite(userSettings.getWeb().getText());
-        settingsDetail.setEmail(userSettings.getEmail().getText());
-        settingsDetail.setPhone(userSettings.getPhone().getText());
-        settingsDetail.setFirstName(userSettings.getFirstName().getText());
-        settingsDetail.setLastName(userSettings.getLastName().getText());
-        settingsDetail.setIdentificationNumber(userSettings.getIdentificationNumber().getText());
-        settingsDetail.setTaxId(userSettings.getTaxNumber().getText());
-        settingsDetail.setDescription(userSettings.getDescriptionBox().getText());
-        if (userSettings.getAddress() != null) {
-            settingsDetail.setAddresses(Arrays.asList(userSettings.getAddress()));
+        if (userSettings != null && userSettings.isSettingChange()) {
+            settingsDetail = userSettings.updateUserSettings(settingsDetail);
         }
     }
 
@@ -201,8 +215,8 @@ public class SettingsPresenter
         ClientSettingsView clientSettings = (ClientSettingsView) clientHolder.getWidget();
 
         //check if clientSettings was event loaded
-        if (clientSettings != null) {
-            settingsDetail.setClientRating(Integer.parseInt(clientSettings.getClientRating().getText()));
+        if (clientSettings != null && clientSettings.isSettingChange()) {
+            settingsDetail = clientSettings.updateClientSettings(settingsDetail);
         }
     }
 
@@ -214,13 +228,8 @@ public class SettingsPresenter
         SupplierSettingsView supplierSettings = (SupplierSettingsView) supplierHolder.getWidget();
 
         //check if supplierSettings was event loaded
-        if (supplierSettings != null) {
-            if (!supplierSettings.getSupplierRating().getText().isEmpty()) {
-                settingsDetail.getSupplier().setOverallRating(Integer.parseInt(
-                        supplierSettings.getSupplierRating().getText()));
-            }
-            settingsDetail.getSupplier().setCategories(supplierSettings.getCategories());
-            settingsDetail.getSupplier().setLocalities(supplierSettings.getLocalities());
+        if (supplierSettings != null && supplierSettings.isSettingChange()) {
+            settingsDetail = supplierSettings.updateSupplierSettings(settingsDetail);
         }
     }
 }

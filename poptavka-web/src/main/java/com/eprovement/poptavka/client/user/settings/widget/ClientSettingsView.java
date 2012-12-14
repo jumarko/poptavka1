@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -40,11 +41,25 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     }
 
     /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public void setClientSettings(SettingDetail detail) {
+        clientRating.setText(Integer.toString(detail.getClientRating()));
+    }
+
+    @Override
+    public SettingDetail updateClientSettings(SettingDetail detail) {
+        // nothing to set - ratings will be calculated automatically.
+        return detail;
+    }
+
+    /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
     @Override
-    public TextBox getClientRating() {
-        return clientRating;
+    public boolean isSettingChange() {
+        return true;
     }
 
     @Override

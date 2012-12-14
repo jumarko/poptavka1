@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -15,8 +16,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,6 +50,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     //
     private List<CategoryDetail> categoriesList;
     private List<LocalityDetail> localitiesList;
+    private List<String> originalsStorage = new ArrayList<String>();
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -89,21 +94,48 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
         setServicesHeader(detail.getSupplier().getServices().toString());
     }
 
+    @Override
+    public SettingDetail updateSupplierSettings(SettingDetail detail) {
+        detail.getSupplier().setCategories(categoriesList);
+        detail.getSupplier().setLocalities(localitiesList);
+        SimplePanel servicesHolder = (SimplePanel) services.getContent();
+        ServicesSelectorView servicesWidget = (ServicesSelectorView) servicesHolder.getWidget();
+        if (servicesWidget != null) {
+            detail.getSupplier().setServices(Arrays.asList(servicesWidget.getSelectedService()));
+        }
+        return detail;
+    }
+
     /** HEADER. **/
     @Override
     public void setCategoriesHeader(String headerText) {
+        if (originalsStorage.contains(headerText)) {
+            originalsStorage.remove(headerText);
+        } else {
+            originalsStorage.add(headerText);
+        }
         ((HasText) categories.getHeader().asWidget()).setText(
                 Storage.MSGS.categories() + ": " + headerText);
     }
 
     @Override
     public void setLocalitiesHeader(String headerText) {
+        if (originalsStorage.contains(headerText)) {
+            originalsStorage.remove(headerText);
+        } else {
+            originalsStorage.add(headerText);
+        }
         ((HasText) localities.getHeader().asWidget()).setText(
                 Storage.MSGS.localities() + ": " + headerText);
     }
 
     @Override
     public void setServicesHeader(String headerText) {
+        if (originalsStorage.contains(headerText)) {
+            originalsStorage.remove(headerText);
+        } else {
+            originalsStorage.add(headerText);
+        }
         ((HasText) services.getHeader().asWidget()).setText(
                 Storage.MSGS.services() + ": " + headerText);
     }
@@ -162,6 +194,11 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     @Override
     public List<LocalityDetail> getLocalities() {
         return localitiesList;
+    }
+
+    @Override
+    public boolean isSettingChange() {
+        return !originalsStorage.isEmpty();
     }
 
     @Override
