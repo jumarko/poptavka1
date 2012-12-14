@@ -6,7 +6,10 @@ package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.domain.enums.Period;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,6 +18,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +47,8 @@ public class NotificationItemView extends Composite {
     CheckBox enabled;
     @UiField(provided = true)
     ListBox period;
+    @UiField
+    TextBox status;
     //
     private String stringStorage;
     private List<String> originalsStorage = new ArrayList<String>();
@@ -67,26 +73,28 @@ public class NotificationItemView extends Composite {
     }
 
     @UiHandler("enabled")
-    public void addEnabledBlurHandler(BlurEvent event) {
-        if (stringStorage.contains(enabled.getValue().toString())) {
-            originalsStorage.remove(stringStorage);
+    public void addEnabledClickHandler(ClickEvent event) {
+        if (originalsStorage.contains(enabled.getValue().toString())) {
+            originalsStorage.remove(enabled.getValue().toString());
         } else {
             originalsStorage.add(stringStorage);
         }
+        updateStatus();
     }
 
     @UiHandler("period")
-    public void addEnabledPeriodHandler(FocusEvent event) {
+    public void addPeriodFocusHandler(FocusEvent event) {
         stringStorage = period.getItemText(period.getSelectedIndex());
     }
 
     @UiHandler("period")
-    public void addEnabledPeriodHandler(BlurEvent event) {
-        if (stringStorage.contains(period.getItemText(period.getSelectedIndex()))) {
-            originalsStorage.remove(stringStorage);
+    public void addPeriodChangeHandler(ChangeEvent event) {
+        if (originalsStorage.contains(period.getItemText(period.getSelectedIndex()))) {
+            originalsStorage.remove(period.getItemText(period.getSelectedIndex()));
         } else {
             originalsStorage.add(stringStorage);
         }
+        updateStatus();
     }
 
     /**************************************************************************/
@@ -104,7 +112,19 @@ public class NotificationItemView extends Composite {
         return period;
     }
 
+    public TextBox getStatus() {
+        return status;
+    }
+
     public boolean isNotificationChange() {
         return !originalsStorage.isEmpty();
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void updateStatus() {
+        status.setText(originalsStorage.toString());
+        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), status);
     }
 }

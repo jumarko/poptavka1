@@ -29,6 +29,7 @@
                 </td>
             </tr>
         </table>
+        <g:TextBox ui:field="status" visible='false' />
     </g:HTMLPanel>
 
 </ui:UiBinder>

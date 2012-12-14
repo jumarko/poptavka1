@@ -12,12 +12,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 @Presenter(view = ClientDemandsModuleView.class)
 public class ClientDemandsModulePresenter
-        extends LazyPresenter<ClientDemandsModulePresenter.ClientDemandsLayoutInterface, ClientDemandsModuleEventBus> {
+        extends LazyPresenter<ClientDemandsModulePresenter.ClientDemandsLayoutInterface, ClientDemandsModuleEventBus>
+        implements NavigationConfirmationInterface {
 
     public interface ClientDemandsLayoutInterface extends LazyView, IsWidget {
 
@@ -54,6 +57,11 @@ public class ClientDemandsModulePresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setUpSearchBar(null);
+    }
+
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
     }
 
     /**************************************************************************/
@@ -109,6 +117,7 @@ public class ClientDemandsModulePresenter
     /* Navigation events */
     /**************************************************************************/
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
+        eventBus.setNavigationConfirmation(this);
         switch (loadWidget) {
             case Constants.CLIENT_DEMANDS:
                 eventBus.initClientDemands(filter);

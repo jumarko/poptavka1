@@ -9,12 +9,15 @@ import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter.UserSettingsViewInterface;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -45,6 +48,8 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
 
         //Others
         AddressDetail getAddress();
+
+        TextBox getStatus();
 
         boolean isSettingChange();
 
@@ -82,6 +87,12 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
                 SimplePanel addressHolder = ((SimplePanel) view.getDisclosureAddress().getContent());
                 AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
                 view.setAddressesHeader(addressWidget.createAddress().toString());
+            }
+        });
+        view.getStatus().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                eventBus.updateUserStatus(view.isSettingChange());
             }
         });
     }

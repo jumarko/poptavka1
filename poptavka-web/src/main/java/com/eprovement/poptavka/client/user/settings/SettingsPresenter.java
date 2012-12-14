@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.settings;
 
+import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -16,17 +17,20 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 @Presenter(view = SettingsView.class)
 public class SettingsPresenter
-        extends LazyPresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus> {
-//        implements NavigationConfirmationInterface {
+        extends LazyPresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus>
+        implements NavigationConfirmationInterface {
 
     private static final int USER_STACK = 0;
     private static final int CLIENT_STACK = 1;
@@ -41,6 +45,14 @@ public class SettingsPresenter
     //IsWidget musi byt kvoli funkcii ChildAutoDisplay
     public interface HomeSettingsViewInterface extends LazyView, IsWidget {
 
+        /** Setters. **/
+        void updateUserStatus(boolean isChange);
+
+        void updateClientStatus(boolean isChange);
+
+        void updateSupplierStatus(boolean isChange);
+
+        /** Getters. **/
         StackLayoutPanel getStackPanel();
 
         SimplePanel getUserSettingsPanel();
@@ -48,6 +60,8 @@ public class SettingsPresenter
         SimplePanel getClientSettingsPanel();
 
         SimplePanel getSupplierSettingsPanel();
+
+        StatusIconLabel getUserInfoStatus();
 
         Button getUpdateButton();
 
@@ -68,32 +82,33 @@ public class SettingsPresenter
      * particular access role can't access it and loginPopupView will be displayed.
      */
     public void onForward() {
+        eventBus.setNavigationConfirmation(this);
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
     }
 
-//    @Override
-//    public void confirm(NavigationEventCommand event) {
-//        //pseudo method to verify if the view has changed
-//        boolean isUserChange = ((UserSettingsView) view.getUserSettingsPanel().getWidget()).isSettingChange();
-//        boolean isClientChange = false;
-//        boolean isSupplierChange = false;
-//        if (view.getClientSettingsPanel().getWidget() != null) { //if not yet even initialized
-//            isClientChange = ((ClientSettingsView) view.getClientSettingsPanel().getWidget()).isSettingChange();
-//        }
-//        if (view.getSupplierSettingsPanel().getWidget() != null) { //if not yet even initialized
-//            isSupplierChange = ((SupplierSettingsView) view.getSupplierSettingsPanel().getWidget()).isSettingChange();
-//        }
-//        if (isUserChange && isClientChange && isSupplierChange) {
-//            //Window shouldn't be used inside a presenter
-//            //this is just to give a simple example
-//            if (Window.confirm("Unsafed changes detected. Are you sure you want to leave?."
-//                    + " Any unsaved changes will be lost. Safe changes before leaving.")) {
-//                event.fireEvent();
-//            }
-//        }
-//    }
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        //pseudo method to verify if the view has changed
+        boolean isUserChange = ((UserSettingsView) view.getUserSettingsPanel().getWidget()).isSettingChange();
+        boolean isClientChange = false;
+        boolean isSupplierChange = false;
+        if (view.getClientSettingsPanel().getWidget() != null) { //if not yet even initialized
+            isClientChange = ((ClientSettingsView) view.getClientSettingsPanel().getWidget()).isSettingChange();
+        }
+        if (view.getSupplierSettingsPanel().getWidget() != null) { //if not yet even initialized
+            isSupplierChange = ((SupplierSettingsView) view.getSupplierSettingsPanel().getWidget()).isSettingChange();
+        }
+        if (isUserChange && isClientChange && isSupplierChange) {
+            //Window shouldn't be used inside a presenter
+            //this is just to give a simple example
+            if (Window.confirm(Storage.MSGS.notificationLeavingPage())) {
+                updateProfile();
+                event.fireEvent();
+            }
+        }
+    }
 
     /**************************************************************************/
     /* Bind                                                                   */
@@ -129,11 +144,7 @@ public class SettingsPresenter
         view.getUpdateButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.loadingShow(Storage.MSGS.updatingProfile());
-                updateUserSettings();
-                updateClientSettings();
-                updateSupplierSettings();
-                eventBus.requestUpdateSettings(settingsDetail);
+                updateProfile();
             }
         });
     }
@@ -142,7 +153,6 @@ public class SettingsPresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToSettingsModule() {
-//        eventBus.setNavigationConfirmation(this);
         eventBus.loadingShow(Storage.MSGS.loading());
         initUserSettings(view.getUserSettingsPanel());
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
@@ -163,6 +173,18 @@ public class SettingsPresenter
     public void onResponseUpdateSettings(Boolean updated) {
         eventBus.loadingHide();
         view.showNofity(updated);
+    }
+
+    public void onUpdateUserStatus(boolean isChange) {
+        view.updateUserStatus(isChange);
+    }
+
+    public void onUpdateClientStatus(boolean isChange) {
+        view.updateClientStatus(isChange);
+    }
+
+    public void onUpdateSupplierStatus(boolean isChange) {
+        view.updateSupplierStatus(isChange);
     }
 
     /**************************************************************************/
@@ -231,5 +253,13 @@ public class SettingsPresenter
         if (supplierSettings != null && supplierSettings.isSettingChange()) {
             settingsDetail = supplierSettings.updateSupplierSettings(settingsDetail);
         }
+    }
+
+    private void updateProfile() {
+        eventBus.loadingShow(Storage.MSGS.updatingProfile());
+        updateUserSettings();
+        updateClientSettings();
+        updateSupplierSettings();
+        eventBus.requestUpdateSettings(settingsDetail);
     }
 }

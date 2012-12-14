@@ -36,6 +36,8 @@ public class SettingsView extends Composite implements
     SimplePanel userSettingsPanel, clientSettingsPanel, supplierSettingsPanel;
     @UiField
     Button updateButton;
+    @UiField
+    StatusIconLabel userInfoStatus;
     //
     private PopupPanel notify;
     private StatusIconLabel notifyInfoMessage;
@@ -50,6 +52,10 @@ public class SettingsView extends Composite implements
     }
 
     public void createNotifyPopup() {
+        updateUserStatus(true);
+        updateClientStatus(true);
+        updateSupplierStatus(true);
+
         notify = new PopupPanel(true);
         notify.setGlassEnabled(true);
         VerticalPanel vp = new VerticalPanel();
@@ -59,7 +65,6 @@ public class SettingsView extends Composite implements
         //Button
         Button closeBtn = new Button(Storage.MSGS.close());
         closeBtn.addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 notify.hide();
@@ -70,7 +75,7 @@ public class SettingsView extends Composite implements
     }
 
     /**************************************************************************/
-    /*  Getters                                                               */
+    /*  Methods                                                               */
     /**************************************************************************/
     public void showNofity(Boolean updated) {
         if (updated) {
@@ -81,6 +86,28 @@ public class SettingsView extends Composite implements
             notifyInfoMessage.setPassedSmall(updated);
         }
         notify.center();
+    }
+
+    /**************************************************************************/
+    /*  Setters                                                               */
+    /**************************************************************************/
+    @Override
+    public void updateUserStatus(boolean isChange) {
+        if (isChange) {
+            userInfoStatus.setMessage("User profile has changed.");
+            userInfoStatus.setPassedSmall(false);
+        } else {
+            userInfoStatus.setMessage("No changes to user profile.");
+            userInfoStatus.setPassedSmall(true);
+        }
+    }
+
+    @Override
+    public void updateClientStatus(boolean isChange) {
+    }
+
+    @Override
+    public void updateSupplierStatus(boolean isChange) {
     }
 
     /**************************************************************************/
@@ -105,6 +132,12 @@ public class SettingsView extends Composite implements
     @Override
     public SimplePanel getSupplierSettingsPanel() {
         return supplierSettingsPanel;
+    }
+
+    /** STATUS LABELS. **/
+    @Override
+    public StatusIconLabel getUserInfoStatus() {
+        return userInfoStatus;
     }
 
     /** BUTTONS. **/

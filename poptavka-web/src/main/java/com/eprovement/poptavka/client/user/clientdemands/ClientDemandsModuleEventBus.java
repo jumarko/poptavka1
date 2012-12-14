@@ -85,7 +85,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = ClientDemandsModulePresenter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class, navigationEvent = true)
     void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     //Init by default

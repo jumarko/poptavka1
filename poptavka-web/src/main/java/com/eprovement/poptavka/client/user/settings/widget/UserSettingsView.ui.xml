@@ -2,7 +2,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
              ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
              ui:generateLocales='default'>
 
@@ -73,7 +72,7 @@
                                                     <ui:msg key='companyName'>Company Name:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='companyName' />
+                                                    <g:TextBox title="textBoxCompanyName" ui:field='companyName' />
                                                 </td>
                                             </tr>
 
@@ -89,7 +88,8 @@
                                                         <g:HTML />
                                                         <ui:msg key='description'>Description:</ui:msg>
                                                     </g:customHeader>-->
-                                                    <g:TextArea ui:field='descriptionBox' width="450px" height="100px"/>
+                                                    <g:TextArea title="textAreaDescription" ui:field='descriptionBox'
+                                                                width="450px" height="100px"/>
                                                     <!--</g:DisclosurePanel>-->
                                                 </td>
                                             </tr>
@@ -134,7 +134,7 @@
                                                     <ui:msg key='web'>Web site:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='web' />
+                                                    <g:TextBox title="textBoxWebsite" ui:field='web' />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -142,7 +142,7 @@
                                                     <ui:msg key='email'>Email:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='email' />
+                                                    <g:TextBox title="textBoxEmail" ui:field='email' />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -150,7 +150,7 @@
                                                     <ui:msg key='phone'>Phone:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='phone' />
+                                                    <g:TextBox title="textBoxPhone" ui:field='phone' />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -158,7 +158,7 @@
                                                     <ui:msg key='firstName'>First name:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='firstName' />
+                                                    <g:TextBox title="textBoxFirstName" ui:field='firstName' />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -166,7 +166,7 @@
                                                     <ui:msg key='lastName'>Last name:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='lastName' />
+                                                    <g:TextBox title="textBoxLastName" ui:field='lastName' />
                                                 </td>
                                             </tr>
                                         </table>
@@ -194,7 +194,7 @@
                                                     <ui:msg key='identificationNumber'>Identification number:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='identificationNumber' />
+                                                    <g:TextBox title="textBoxIdentificationNumber" ui:field='identificationNumber' />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -202,7 +202,7 @@
                                                     <ui:msg key='taxNumber'>Tax number:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox ui:field='taxNumber' />
+                                                    <g:TextBox title="textBoxTaxNumber" ui:field='taxNumber' />
                                                 </td>
                                             </tr>
                                         </table>
@@ -352,6 +352,7 @@
 
                     </table>
                 </g:HTMLPanel>
+                <g:TextBox ui:field="status" visible="false"/>
             </g:HorizontalPanel>
         </g:ScrollPanel>
     </g:DecoratorPanel>

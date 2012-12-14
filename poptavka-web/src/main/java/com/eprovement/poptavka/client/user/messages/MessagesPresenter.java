@@ -13,13 +13,16 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 
 /**
  * @author Martin Slavkovsky
  */
 @Presenter(view = MessagesView.class, multiple = true)
 public class MessagesPresenter
-        extends BasePresenter<MessagesPresenter.MessagesLayoutInterface, MessagesEventBus> {
+        extends BasePresenter<MessagesPresenter.MessagesLayoutInterface, MessagesEventBus>
+        implements NavigationConfirmationInterface {
 
     private SearchModuleDataHolder filter = null;
 
@@ -105,6 +108,10 @@ public class MessagesPresenter
         }
     }
 
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
+    }
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/

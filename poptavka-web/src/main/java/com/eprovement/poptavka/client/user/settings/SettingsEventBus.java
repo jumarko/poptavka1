@@ -46,7 +46,7 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
      * The only entry point to this module due to code-spliting feature.
      */
     @Event(handlers = SettingsPresenter.class, historyConverter = SettingsHistoryConverter.class)
-            //, navigationEvent = true)
+//            navigationEvent = true)
     String goToSettingsModule();
 
     /**************************************************************************/
@@ -93,6 +93,15 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
 
     @Event(handlers = SettingsPresenter.class)
     void responseUpdateSettings(Boolean updated);
+
+    @Event(handlers = SettingsPresenter.class)
+    void updateUserStatus(boolean isChange);
+
+    @Event(handlers = SettingsPresenter.class)
+    void updateClientStatus(boolean isChange);
+
+    @Event(handlers = SettingsPresenter.class)
+    void updateSupplierStatus(boolean isChange);
 
     /**************************************************************************/
     /* Business events handled by UserSettingsPresenter.                      */

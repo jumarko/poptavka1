@@ -13,12 +13,15 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 @Presenter(view = AdminView.class)
 public class AdminPresenter
-        extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus> {
+        extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus>
+        implements NavigationConfirmationInterface {
 
     public interface AdminModuleInterface extends LazyView, IsWidget {
 
@@ -57,84 +60,72 @@ public class AdminPresenter
     @Override
     public void bindView() {
         view.getDemandsButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_DEMANDS);
             }
         });
         view.getClientsButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_CLIENTS);
             }
         });
         view.getSuppliersButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_SUPPLIERS);
             }
         });
         view.getOffersButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_OFFERS);
             }
         });
         view.getAccessRoleButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_ACCESS_ROLE);
             }
         });
         view.getEmailActivationButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_EMAILS_ACTIVATION);
             }
         });
         view.getInvoiceButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_INVOICES);
             }
         });
         view.getMessageButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_MESSAGES);
             }
         });
         view.getPaymentMethodButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_PAYMENT_METHODS);
             }
         });
         view.getPermissionButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_PERMISSIONS);
             }
         });
         view.getPreferenceButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_PREFERENCES);
             }
         });
         view.getProblemButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_PROBLEMS);
@@ -157,6 +148,11 @@ public class AdminPresenter
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
+    }
+
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
     }
 
     /**************************************************************************/
