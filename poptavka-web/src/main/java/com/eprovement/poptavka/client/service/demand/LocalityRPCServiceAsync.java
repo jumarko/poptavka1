@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetailSuggestion;
+import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 
 public interface LocalityRPCServiceAsync {
 
@@ -23,5 +23,5 @@ public interface LocalityRPCServiceAsync {
 
     void getLocalitySuggests(String locCode, String startWith, AsyncCallback<List<LocalityDetail>> callback);
 
-    void getCityWithStateSuggestions(String cityLike, AsyncCallback<List<LocalityDetailSuggestion>> callback);
+    void getCityWithStateSuggestions(String cityLike, AsyncCallback<List<LocalitySuggestionDetail>> callback);
 }

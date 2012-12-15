@@ -4,11 +4,13 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.service.address.LocalityService;
-import com.eprovement.poptavka.shared.domain.LocalityDetailSuggestion;
+import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public final class LocalitySuggestionConverter extends AbstractConverter<Locality, LocalityDetailSuggestion> {
+public final class LocalitySuggestionConverter extends AbstractConverter<Locality, LocalitySuggestionDetail> {
 
     /**************************************************************************/
     /* RPC Services                                                           */
@@ -31,12 +33,22 @@ public final class LocalitySuggestionConverter extends AbstractConverter<Localit
     /* Convert methods                                                        */
     /**************************************************************************/
     @Override
-    public LocalityDetailSuggestion convertToTarget(Locality localityCity) {
-        LocalityDetailSuggestion detail = new LocalityDetailSuggestion();
-        //get STATE ->> CITY->DISTRICT->STATE
-        detail.setStateId(localityCity.getParent().getParent().getId());
-        detail.setStateCode(localityCity.getParent().getParent().getCode());
-        detail.setStateName(localityCity.getParent().getParent().getName());
+    public LocalitySuggestionDetail convertToTarget(Locality localityCity) {
+        Preconditions.checkArgument(
+                localityCity.getType() == LocalityType.CITY,
+                "Converting locality suggestion but LocalityType expected to be a CITY, but found %s",
+                localityCity.getType());
+        Preconditions.checkNotNull(
+                localityCity.getParent(),
+                "State attribute NULL while converting locality suggestion.",
+                localityCity.getType());
+        LocalitySuggestionDetail detail = new LocalitySuggestionDetail();
+        //get STATE ->> DISTRICT --> CITY--> STATE --> COUNTRY
+        if (localityCity.getParent() != null) {
+            detail.setStateId(localityCity.getParent().getId());
+            detail.setStateCode(localityCity.getParent().getCode());
+            detail.setStateName(localityCity.getParent().getName());
+        }
 
         detail.setCityId(localityCity.getId());
         detail.setCityCode(localityCity.getCode());
@@ -46,7 +58,7 @@ public final class LocalitySuggestionConverter extends AbstractConverter<Localit
     }
 
     @Override
-    public Locality convertToSource(LocalityDetailSuggestion localityDetailSuggestion) {
+    public Locality convertToSource(LocalitySuggestionDetail localityDetailSuggestion) {
         return localityService.getLocality(localityDetailSuggestion.getCityCode());
     }
 }

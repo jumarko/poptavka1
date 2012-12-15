@@ -5,7 +5,7 @@
 package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.shared.domain.LocalityDetailSuggestion;
+import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Callback;
@@ -41,9 +41,9 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
         if (suggestRequest.getQuery().length() >= MIN_CHARS_TO_SEARCH) {
             addressSelectorPresenter.getCitySuggestionPopup().showLoading();
             addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(suggestRequest.getQuery(),
-                    new SecuredAsyncCallback<List<LocalityDetailSuggestion>>(addressSelectorPresenter.getEventBus()) {
+                    new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
                         @Override
-                        public void onSuccess(List<LocalityDetailSuggestion> result) {
+                        public void onSuccess(List<LocalitySuggestionDetail> result) {
                             CitySuggestOracle.Response response = new CitySuggestOracle.Response();
                             response.setSuggestions(convertToFormattedSuggestions(suggestRequest.getQuery(), result));
                             addressSelectorPresenter.getCitySuggestionPopup().hideLoadingPopup();
@@ -55,9 +55,9 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
         }
     }
 
-    private List<LocalityDetailSuggestion> convertToFormattedSuggestions(String query,
-            List<LocalityDetailSuggestion> candidates) {
-        List<LocalityDetailSuggestion> suggestions = new ArrayList<LocalityDetailSuggestion>();
+    private List<LocalitySuggestionDetail> convertToFormattedSuggestions(String query,
+            List<LocalitySuggestionDetail> candidates) {
+        List<LocalitySuggestionDetail> suggestions = new ArrayList<LocalitySuggestionDetail>();
 
         for (int i = 0; i < candidates.size(); i++) {
             String city = candidates.get(i).getCityName(); //apply only on city name

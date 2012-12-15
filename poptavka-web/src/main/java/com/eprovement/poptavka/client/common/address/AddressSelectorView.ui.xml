@@ -26,25 +26,6 @@
                 </tr>
             </thead>
             <tbody>
-                <!--Temporary disabled-->
-<!--                <tr>
-                    <td>
-                        <ui:msg key="addressCountry">Country</ui:msg>
-                    </td>
-                    <td>
-                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="country"/>
-                        <g:Label styleName="{style.error}" ui:field="countryErrorLabel"/>
-                    </td>
-                </tr>-->
-<!--                <tr>
-                    <td>
-                        <ui:msg key="addressState">State</ui:msg>
-                    </td>
-                    <td>
-                        <g:SuggestBox styleName="{style.listBoxWidth}" ui:field="region" limit="7"/>
-                        <g:Label styleName="{style.error}" ui:field="regionErrorLabel"/>
-                    </td>
-                </tr>-->
                 <tr>
                     <td>
                         <ui:msg key="addressCity">City</ui:msg>
@@ -63,15 +44,6 @@
                         <g:Label styleName="{style.error}" ui:field="zipErrorLabel"/>
                     </td>
                 </tr>
-<!--                <tr>
-                    <td>
-                        <ui:msg key="addressDistrict">District</ui:msg>
-                    </td>
-                    <td>
-                        <g:ListBox styleName="{style.listBoxWidth}" ui:field="district"/>
-                        <g:Label styleName="{style.error}" ui:field="districtErrorLabel"/>
-                    </td>
-                </tr>-->
                 <tr>
                     <td>
                         <ui:msg key="addressStreet">Street</ui:msg>

@@ -8,7 +8,7 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetailSuggestion;
+import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
@@ -28,7 +28,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     private GeneralService generalService;
     private LocalityService localityService;
     private Converter<Locality, LocalityDetail> localityConverter;
-    private Converter<Locality, LocalityDetailSuggestion> localitySuggestionConverter;
+    private Converter<Locality, LocalitySuggestionDetail> localitySuggestionConverter;
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalityRPCServiceImpl.class);
 
     @Autowired
@@ -50,7 +50,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     @Autowired
     public void setLocalitySuggestionConverter(
             @Qualifier("localitySuggestionConverter") Converter<
-                    Locality, LocalityDetailSuggestion> localitySuggestionConverter) {
+                    Locality, LocalitySuggestionDetail> localitySuggestionConverter) {
         this.localitySuggestionConverter = localitySuggestionConverter;
     }
 
@@ -111,7 +111,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public List<LocalityDetailSuggestion> getCityWithStateSuggestions(String cityLike) throws RPCException {
+    public List<LocalitySuggestionDetail> getCityWithStateSuggestions(String cityLike) throws RPCException {
         Search locSearch = new Search(Locality.class);
 
         locSearch.addFilterAnd(

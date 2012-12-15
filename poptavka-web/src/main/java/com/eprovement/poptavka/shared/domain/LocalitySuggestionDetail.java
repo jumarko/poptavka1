@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Martin Slavkovsky
  */
-public class LocalityDetailSuggestion //MultiWordSuggestOracle.MultiWordSuggestion
+public class LocalitySuggestionDetail //MultiWordSuggestOracle.MultiWordSuggestion
         implements Serializable, Suggestion {
 
     /**************************************************************************/
@@ -33,7 +33,7 @@ public class LocalityDetailSuggestion //MultiWordSuggestOracle.MultiWordSuggesti
     /**************************************************************************/
     /* INITIALIZATOIN                                                         */
     /**************************************************************************/
-    public LocalityDetailSuggestion() {
+    public LocalitySuggestionDetail() {
     }
 
     /**************************************************************************/

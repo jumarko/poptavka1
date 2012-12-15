@@ -117,7 +117,7 @@ public class ClientDemandsModulePresenter
     /* Navigation events */
     /**************************************************************************/
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
-        eventBus.setNavigationConfirmation(this);
+//        eventBus.setNavigationConfirmation(this);
         switch (loadWidget) {
             case Constants.CLIENT_DEMANDS:
                 eventBus.initClientDemands(filter);
