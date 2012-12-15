@@ -38,6 +38,7 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        clientRating.setEnabled(false);
     }
 
     /**************************************************************************/

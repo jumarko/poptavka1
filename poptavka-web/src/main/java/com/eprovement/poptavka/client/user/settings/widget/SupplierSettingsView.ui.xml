@@ -52,17 +52,16 @@
         <g:ScrollPanel>
             <g:HTMLPanel>
                 <table style="width: 100%;">
-
                     <tr>
                         <td class='{style.label}'>
                             <ui:msg key='supplierRating'>Supplier rating:</ui:msg>
                         </td>
-                        <td colspan='2'>
+                        <td>
                             <g:TextBox ui:field='supplierRating' />
                         </td>
                     </tr>
                     <tr>
-                        <td class='{style.label}'>
+                        <td class='{style.label}' colspan='2'>
                             <g:DisclosurePanel ui:field="categories">
                                 <g:header>
                                     <ui:msg key='categories'>Categories(only suppliers):</ui:msg>
@@ -70,10 +69,9 @@
                                 <g:PopupPanel ui:field="categorySelectorPopup"/>
                             </g:DisclosurePanel>
                         </td>
-                        <td />
                     </tr>
                     <tr>
-                        <td class='{style.label}'>
+                        <td class='{style.label}' colspan='2'>
                             <g:DisclosurePanel ui:field="localities">
                                 <g:header>
                                     <ui:msg key='localities'>Localities(only suppliers):</ui:msg>
@@ -81,10 +79,9 @@
                                 <g:PopupPanel ui:field="localitySelectorPopup"/>
                             </g:DisclosurePanel>
                         </td>
-                        <td />
                     </tr>
                     <tr>
-                        <td class='{style.label}'>
+                        <td class='{style.label}' colspan='2'>
                             <g:DisclosurePanel ui:field="services">
                                 <g:header>
                                     <ui:msg key='services'>Services:</ui:msg>
@@ -92,7 +89,11 @@
                                 <g:SimplePanel />
                             </g:DisclosurePanel>
                         </td>
-                        <td />
+                    </tr>
+                    <tr>
+                        <td colspan='2'>
+                            <g:TextBox ui:field='status' visible='false' />
+                        </td>
                     </tr>
                 </table>
             </g:HTMLPanel>

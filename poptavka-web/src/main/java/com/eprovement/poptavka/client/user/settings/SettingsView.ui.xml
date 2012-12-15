@@ -21,15 +21,21 @@
                     <g:SimplePanel ui:field="userSettingsPanel" />
                 </g:stack>
                 <g:stack>
-                    <g:header size='30'>
-                        Client information
-                    </g:header>
+                    <g:customHeader size='30'>
+                        <g:HorizontalPanel>
+                            <g:Label>Client information   </g:Label>
+                            <cm:StatusIconLabel ui:field='clientInfoStatus'/>
+                        </g:HorizontalPanel>
+                    </g:customHeader>
                     <g:SimplePanel ui:field="clientSettingsPanel" />
                 </g:stack>
                 <g:stack>
-                    <g:header size='30'>
-                        Supplier information
-                    </g:header>
+                    <g:customHeader size='30'>
+                        <g:HorizontalPanel>
+                            <g:Label>Supplier information   </g:Label>
+                            <cm:StatusIconLabel ui:field='supplierInfoStatus'/>
+                        </g:HorizontalPanel>
+                    </g:customHeader>
                     <g:SimplePanel ui:field="supplierSettingsPanel" />
                 </g:stack>
             </g:StackLayoutPanel>

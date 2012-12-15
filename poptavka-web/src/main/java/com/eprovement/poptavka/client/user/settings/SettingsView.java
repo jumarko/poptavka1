@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,7 +38,7 @@ public class SettingsView extends Composite implements
     @UiField
     Button updateButton;
     @UiField
-    StatusIconLabel userInfoStatus;
+    StatusIconLabel userInfoStatus, clientInfoStatus, supplierInfoStatus;
     //
     private PopupPanel notify;
     private StatusIconLabel notifyInfoMessage;
@@ -48,14 +49,16 @@ public class SettingsView extends Composite implements
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        userInfoStatus.setState(State.ACCEPT_16);
+        userInfoStatus.setDescription("No changes made to user settings.");
+        clientInfoStatus.setState(State.ACCEPT_16);
+        clientInfoStatus.setDescription("No changes made to client settings.");
+        supplierInfoStatus.setState(State.ACCEPT_16);
+        supplierInfoStatus.setDescription("No changes made to supplier settings.");
         createNotifyPopup();
     }
 
     public void createNotifyPopup() {
-        updateUserStatus(true);
-        updateClientStatus(true);
-        updateSupplierStatus(true);
-
         notify = new PopupPanel(true);
         notify.setGlassEnabled(true);
         VerticalPanel vp = new VerticalPanel();
@@ -75,10 +78,14 @@ public class SettingsView extends Composite implements
     }
 
     /**************************************************************************/
-    /*  Methods                                                               */
+    /*  Methods handled by view                                               */
     /**************************************************************************/
+    @Override
     public void showNofity(Boolean updated) {
         if (updated) {
+            updateUserStatus(false);
+            updateClientStatus(false);
+            updateSupplierStatus(false);
             notifyInfoMessage.setMessage(Storage.MSGS.updatedOK());
             notifyInfoMessage.setPassedSmall(updated);
         } else {
@@ -88,26 +95,37 @@ public class SettingsView extends Composite implements
         notify.center();
     }
 
-    /**************************************************************************/
-    /*  Setters                                                               */
-    /**************************************************************************/
     @Override
     public void updateUserStatus(boolean isChange) {
         if (isChange) {
-            userInfoStatus.setMessage("User profile has changed.");
-            userInfoStatus.setPassedSmall(false);
+            userInfoStatus.setDescription("User profile has changed.");
+            userInfoStatus.setState(State.INFO_16);
         } else {
-            userInfoStatus.setMessage("No changes to user profile.");
-            userInfoStatus.setPassedSmall(true);
+            userInfoStatus.setDescription("No changes to user profile.");
+            userInfoStatus.setState(State.ACCEPT_16);
         }
     }
 
     @Override
     public void updateClientStatus(boolean isChange) {
+        if (isChange) {
+            clientInfoStatus.setDescription("Client profile has changed.");
+            clientInfoStatus.setState(State.INFO_16);
+        } else {
+            clientInfoStatus.setDescription("No changes to client profile.");
+            clientInfoStatus.setState(State.ACCEPT_16);
+        }
     }
 
     @Override
     public void updateSupplierStatus(boolean isChange) {
+        if (isChange) {
+            supplierInfoStatus.setDescription("Supplier profile has changed.");
+            supplierInfoStatus.setState(State.INFO_16);
+        } else {
+            supplierInfoStatus.setDescription("No changes to supplier profile.");
+            supplierInfoStatus.setState(State.ACCEPT_16);
+        }
     }
 
     /**************************************************************************/

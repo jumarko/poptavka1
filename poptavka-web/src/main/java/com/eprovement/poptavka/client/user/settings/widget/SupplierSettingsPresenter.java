@@ -14,6 +14,8 @@ import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPrese
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -74,8 +76,16 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
         List<LocalityDetail> getLocalities();
 
+        List<Integer> getServices();
+
+        void initChangeCheking(String originalString);
+
+        void evaluateChanges(String newString);
+
         //TextBoxes
         TextBox getSupplierRating();
+
+        TextBox getStatus();
 
         //Others
         boolean isSettingChange();
@@ -95,6 +105,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         addCategoriesHandlers();
         addLocalitiesHandlers();
         addServicesHandlers();
+        addStatusHandler();
     }
 
     /**************************************************************************/
@@ -108,8 +119,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         view.getCategorySelectorPopup(),
                         Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        settingsDetail.getSupplier().getCategories());
+                        view.getCategories());
                 view.getCategorySelectorPopup().center();
+                view.initChangeCheking(view.getCategories().toString());
             }
         });
         view.getCategorySelectorPopup().addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -120,6 +132,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         (CategorySelectorView) view.getCategorySelectorPopup().getWidget();
                 view.setCategoriesList(categoryWidget.getCellListDataProvider().getList());
                 view.setCategoriesHeader(categoryWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
+                view.evaluateChanges(categoryWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
             }
         });
     }
@@ -133,8 +146,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         view.getLocalitySelectorPopup(),
                         Constants.WITH_CHECK_BOXES,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        settingsDetail.getSupplier().getLocalities());
+                        view.getLocalities());
                 view.getLocalitySelectorPopup().center();
+                view.initChangeCheking(view.getLocalities().toString());
             }
         });
         view.getLocalitySelectorPopup().addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -145,6 +159,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         (LocalitySelectorView) view.getLocalitySelectorPopup().getWidget();
                 view.setLocalitiesList(localityWidget.getCellListDataProvider().getList());
                 view.setLocalitiesHeader(localityWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
+                view.evaluateChanges(localityWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
             }
         });
     }
@@ -154,7 +169,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         view.getServicesPanel().addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
+                //todo set widget
                 eventBus.initServicesWidget(servicesPanel);
+                view.initChangeCheking(view.getServices().toString());
             }
         });
         view.getServicesPanel().addCloseHandler(new CloseHandler<DisclosurePanel>() {
@@ -162,6 +179,16 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             public void onClose(CloseEvent<DisclosurePanel> event) {
                 ServicesSelectorView servicesWidget = (ServicesSelectorView) servicesPanel.getWidget();
                 view.setServicesHeader(Integer.toString(servicesWidget.getSelectedService()));
+                view.evaluateChanges(view.getServices().toString());
+            }
+        });
+    }
+
+    public void addStatusHandler() {
+        view.getStatus().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                eventBus.updateSupplierStatus(view.isSettingChange());
             }
         });
     }
