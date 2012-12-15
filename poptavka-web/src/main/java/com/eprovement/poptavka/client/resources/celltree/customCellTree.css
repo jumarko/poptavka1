@@ -37,6 +37,7 @@
 
 .cellTreeItem .cellTreeItem {
 	background: url(images/cellTreeItemBorder.gif) top left no-repeat;
+	padding-right: 25px;
 }
 
 .cellTreeItemImage {
@@ -60,7 +61,7 @@
 .cellTreeTopItem {
 	font-weight: normal;
 	margin-top: 20px;
-	padding: 3px 25px 3px 10px !important;	
+	padding: 3px 0px 3px 10px !important;	
 }
 
 .cellTreeTopItemImage {
@@ -94,6 +95,5 @@
 
 .cellTreeShowMoreButton {
 	padding-left: 16px;
-	padding-left: 10px;
 	outline: none;
 }

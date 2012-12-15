@@ -1098,14 +1098,17 @@ td.datePickerMonth {
     cursor: pointer;
     cursor: hand;
     font-weight: bold;
-    font-size: 1.3em;
+    font-size: 13px;
     padding: 3px;
-    border: 1px solid #bbbbbb;
-    border-bottom: 0px;
-    background: #d3def6 url(images/hborder.png) repeat-x 0px -989px;
+    border-bottom: 1px solid #fea100;
+    background: url(images/header.gif) repeat-x;
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    color: #ffffff;
 }
 .gwt-StackLayoutPanel .gwt-StackLayoutPanelHeader-hovering {
-    background: #d3def6 url(images/hborder.png) repeat-x 0px -1464px;
+    text-decoration: underline;
 }
 .gwt-StackLayoutPanel .gwt-StackLayoutPanelContent {
     border: 1px solid #bbbbbb;

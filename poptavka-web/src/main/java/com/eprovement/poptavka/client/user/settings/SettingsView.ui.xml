@@ -1,49 +1,71 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
-    <g:DockLayoutPanel unit="EM" height="490px">
-        <g:north size="2">
-            <g:Label>
-                <ui:msg key='contactInfoFormTitle'>My Profile</ui:msg>
-            </g:Label>
-        </g:north>
-        <g:center>
-            <g:StackLayoutPanel ui:field="stackPanel" unit='PX' height="440px">
-                <g:stack>
-                    <g:customHeader size='30'>
-                        <g:HorizontalPanel>
-                            <g:Label>User information   </g:Label>
-                            <cm:StatusIconLabel ui:field='userInfoStatus'/>
-                        </g:HorizontalPanel>
-                    </g:customHeader>
-                    <g:SimplePanel ui:field="userSettingsPanel" />
-                </g:stack>
-                <g:stack>
-                    <g:customHeader size='30'>
-                        <g:HorizontalPanel>
-                            <g:Label>Client information   </g:Label>
-                            <cm:StatusIconLabel ui:field='clientInfoStatus'/>
-                        </g:HorizontalPanel>
-                    </g:customHeader>
-                    <g:SimplePanel ui:field="clientSettingsPanel" />
-                </g:stack>
-                <g:stack>
-                    <g:customHeader size='30'>
-                        <g:HorizontalPanel>
-                            <g:Label>Supplier information   </g:Label>
-                            <cm:StatusIconLabel ui:field='supplierInfoStatus'/>
-                        </g:HorizontalPanel>
-                    </g:customHeader>
-                    <g:SimplePanel ui:field="supplierSettingsPanel" />
-                </g:stack>
-            </g:StackLayoutPanel>
-        </g:center>
-        <g:south size="2">
-            <g:Button ui:field='updateButton'>
-                <ui:msg key='demandDetailFormUpdateButton'>Update Profile</ui:msg>
-            </g:Button>
-        </g:south>
-    </g:DockLayoutPanel>
+	<ui:style>
+		.left {
+			float: left;
+		}
+		
+		.header-image {
+			margin: 5px 0 0 7px;
+		}
+	</ui:style>
+
+	<g:DockLayoutPanel unit="PX" height="100%">
+		<g:west size="180">
+			<g:DockLayoutPanel unit="PX">
+				<g:north size="40">
+					<g:Label>
+						<ui:msg key='contactInfoFormTitle'>My Profile</ui:msg>
+					</g:Label>
+				</g:north>
+				<g:center>
+					<g:HTMLPanel></g:HTMLPanel>
+				</g:center>
+			</g:DockLayoutPanel>
+		</g:west>
+		<g:north size="40">
+			<g:Button ui:field='updateButton'>
+				<ui:msg key='demandDetailFormUpdateButton'>Update Profile</ui:msg>
+			</g:Button>
+		</g:north>
+		<g:center>
+			<g:ScrollPanel>
+				<g:StackLayoutPanel ui:field="stackPanel" unit='PX'
+					height="440px" width="1040px">
+					<g:stack>
+						<g:customHeader size='30'>
+							<g:HTMLPanel>
+								<g:Label styleName='{style.left}'>User information   </g:Label>
+								<cm:StatusIconLabel styleName='{style.left} {style.header-image}'
+									ui:field='userInfoStatus' />
+							</g:HTMLPanel>
+						</g:customHeader>
+						<g:SimplePanel ui:field="userSettingsPanel" />
+					</g:stack>
+					<g:stack>
+						<g:customHeader size='30'>
+							<g:HTMLPanel>
+								<g:Label styleName='{style.left}'>Client information   </g:Label>
+								<cm:StatusIconLabel styleName='{style.left} {style.header-image}'
+									ui:field='clientInfoStatus' />
+							</g:HTMLPanel>
+						</g:customHeader>
+						<g:SimplePanel ui:field="clientSettingsPanel" />
+					</g:stack>
+					<g:stack>
+						<g:customHeader size='30'>
+							<g:HTMLPanel>
+								<g:Label styleName='{style.left}'>Supplier information   </g:Label>
+								<cm:StatusIconLabel styleName='{style.left} {style.header-image}'
+									ui:field='supplierInfoStatus' />
+							</g:HTMLPanel>
+						</g:customHeader>
+						<g:SimplePanel ui:field="supplierSettingsPanel" />
+					</g:stack>
+				</g:StackLayoutPanel>
+			</g:ScrollPanel>
+		</g:center>
+	</g:DockLayoutPanel>
 </ui:UiBinder>

@@ -131,10 +131,13 @@ input,textarea,select {
 }
 
 .home-logo {
-        width: 150px;
-        margin: 0;
-	padding: 0;
-	float: left;
+    float: left;
+    height: 105px;
+    line-height: 105px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 315px;
 }
 
 /*
@@ -142,11 +145,13 @@ input,textarea,select {
 *
 */
 .user-logo {
-        width: 150px;
-        margin: 0;
-	padding: 0;
-	float: left;
-        font-weight: bold;
+    float: left;
+    height: 105px;
+    line-height: 105px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 180px;
 }
 
 /*

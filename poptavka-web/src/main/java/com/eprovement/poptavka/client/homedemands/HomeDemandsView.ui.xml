@@ -69,7 +69,7 @@
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:HTMLPanel styleName='{style.gridMenu}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
@@ -90,7 +90,7 @@
 		</g:center>
 		<g:east size="430">
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:HTMLPanel></g:HTMLPanel>
 				</g:north>
 				<g:center>
