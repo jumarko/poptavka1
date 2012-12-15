@@ -19,7 +19,7 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
     @UiField
-    SimplePanel header, body, menu, searchBar, footer;
+    SimplePanel logo, header, body, menu, searchBar, footer;
 
     interface RootViewUiBinder extends UiBinder<Widget, RootView> {
     }
@@ -68,6 +68,11 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         GWT.log("Header widget view set");
         this.header.setWidget(header);
 
+    }
+
+    @Override
+    public void setLogoStyle(String style) {
+        this.logo.setStyleName(style);
     }
 
     /**

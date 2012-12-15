@@ -42,6 +42,12 @@ public interface LayoutResource extends CssResource {
     @ClassName("detail-info")
     String detailInfo();
 
+    @ClassName("home-logo")
+    String homeLogo();
+
+    @ClassName("user-logo")
+    String userLogo();
+
     /* login styles */
     @ClassName("login")
     String login();

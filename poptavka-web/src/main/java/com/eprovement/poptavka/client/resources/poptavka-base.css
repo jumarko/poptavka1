@@ -130,6 +130,25 @@ input,textarea,select {
 	color: #f4f4f4;
 }
 
+.home-logo {
+        width: 150px;
+        margin: 0;
+	padding: 0;
+	float: left;
+}
+
+/*
+*	User Menu Styles
+*
+*/
+.user-logo {
+        width: 150px;
+        margin: 0;
+	padding: 0;
+	float: left;
+        font-weight: bold;
+}
+
 /*
 *	Search Bar Styles
 *

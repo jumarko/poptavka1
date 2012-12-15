@@ -7,6 +7,8 @@ public interface IRootView extends IsWidget {
     public interface IRootPresenter {
     }
 
+    void setLogoStyle(String style);
+
     void setHeader(IsWidget header);
 
     void setMenu(IsWidget menu);
