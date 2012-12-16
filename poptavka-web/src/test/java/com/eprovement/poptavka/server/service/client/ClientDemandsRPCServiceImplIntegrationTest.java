@@ -132,7 +132,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         final List<ClientDemandDetail> allClientDemands = clientDemandsRPCService.getClientDemands(111111111L, null);
         assertNotNull(allClientDemands);
         // check that there is only one new demand - see DemandsDataSet.xml
-        assertThat(allClientDemands.size(), is(1));
+        assertThat(allClientDemands.size(), is(2));
     }
 
     @Test
