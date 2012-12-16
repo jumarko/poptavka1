@@ -128,9 +128,9 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
         // test for businessUser2
         final List<UserMessage> potentialDemands2 = this.userMessageService.getPotentialDemands(businessUser2);
-        Assert.assertEquals(1, potentialDemands2.size());
+        Assert.assertEquals(2, potentialDemands2.size());
         checkUserMessageExists(501L, potentialDemands2);
-        checkUserMessageDoesntExists(502L, potentialDemands2);
+        checkUserMessageExists(502L, potentialDemands2);
         checkUserMessageDoesntExists(401L, potentialDemands2);
         checkUserMessageDoesntExists(403L, potentialDemands2);
         checkUserMessageDoesntExists(405L, potentialDemands2);
@@ -155,7 +155,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         // test for businessUser2
         final long potentialDemandsCount2 = this.userMessageService
                 .getPotentialDemandsCount(this.businessUser2);
-        Assert.assertEquals(1L, potentialDemandsCount2);
+        Assert.assertEquals(2L, potentialDemandsCount2);
     }
 
     @Test

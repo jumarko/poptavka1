@@ -3,6 +3,7 @@ package com.eprovement.poptavka.service.message;
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.dao.message.MessageFilter;
+import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.Message;
@@ -13,10 +14,9 @@ import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
@@ -150,7 +150,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesAll(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                4, listOfClientDemandMessages.size());
+                5, listOfClientDemandMessages.size());
 
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
@@ -172,7 +172,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesUnread(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                4, listOfClientDemandMessages.size());
+                5, listOfClientDemandMessages.size());
 
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
@@ -355,6 +355,21 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
 
         testUserMessagePresent(reply, user);
 
+    }
+
+
+    @Test
+    public void testGetThreadRootMessage() throws MessageException {
+
+        final Demand demand1 = this.generalService.find(Demand.class, 1L);
+        Message message1 = messageService.getThreadRootMessage(demand1);
+        Assert.assertNull(message1);
+
+        final Demand demand2 = this.generalService.find(Demand.class, 9L);
+        Message message2 = messageService.getThreadRootMessage(demand2);
+        Assert.assertNotNull(message2);
+        Assert.assertEquals("Expected thread root message for demnand [id=" + demand2.getId() + "]"
+                + message2.getId().longValue(), 502L, message2.getId().longValue());
     }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
