@@ -44,9 +44,11 @@ import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.collections.CollectionUtils;
@@ -209,7 +211,24 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         demandStatuses.add(DemandStatus.INACTIVE);
         clientDemandsSearch.addFilterIn("status", demandStatuses);
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
-        return clientDemandConverter.convertToTargetList(clientDemands);
+        ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
+
+        Iterator it = messageService.getListOfClientDemandMessagesUnread(generalService.find(
+                User.class, userId)).entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            // key is message and val is number
+            Message message = (Message) pairs.getKey();
+            for (ClientDemandDetail cdd: cdds) {
+                if (cdd.getDemandId() == message.getDemand().getId()) {
+                    cdd.setUnreadSubmessages(((Integer) pairs.getValue()).intValue());
+                    break;
+                }
+            }
+            it.remove();
+        }
+        return cdds;
     }
 
     /**
