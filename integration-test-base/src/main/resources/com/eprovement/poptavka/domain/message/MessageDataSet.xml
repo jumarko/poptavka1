@@ -200,10 +200,13 @@
              CREATED="2012-07-01"
              BODY="Other client is interested in useful web application!."
              SUBJECT="Potential demand for useful web app."
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             THREADROOT_ID="502"
              DEMAND_ID="9" />
-    
+
     <MESSAGEUSERROLE ID="500" MESSAGE_ID="501" USER_ID="111111111" TYPE="TO"/>
-    
+
     <USERMESSAGE ID="501" ISREAD="1" STARRED="0" MESSAGE_ID="501" USER_ID="111111114" ROLETYPE="TO" MESSAGECONTEXT="0" />
     <USERMESSAGE ID="502" ISREAD="1" STARRED="0" MESSAGE_ID="502" USER_ID="111111114" ROLETYPE="TO" MESSAGECONTEXT="0" />
     <!--other supplier-->
