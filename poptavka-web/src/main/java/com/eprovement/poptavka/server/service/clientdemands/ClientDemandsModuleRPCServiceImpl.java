@@ -166,13 +166,16 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        //TODO Backend - refactor this method to speed up performance
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
-        // TODO ivlcek - we need to display demands with statuses New, Active, Invalid, Inactive. User operator IN once
-        // Vojto implements it in Searcher.java
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.ACTIVE);
+        ArrayList<DemandStatus> demandStatuses = new ArrayList<DemandStatus>();
+        demandStatuses.add(DemandStatus.ACTIVE);
+        demandStatuses.add(DemandStatus.NEW);
+        demandStatuses.add(DemandStatus.INVALID);
+        demandStatuses.add(DemandStatus.INACTIVE);
+        clientDemandsSearch.addFilterIn("status", demandStatuses);
         clientDemandsSearch.addFilterEqual("status", DemandStatus.ACTIVE);
         return Searcher.searchCollection(client.getDemands(), clientDemandsSearch).size();
     }
@@ -199,7 +202,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterEqual("status", DemandStatus.ACTIVE);
+        ArrayList<DemandStatus> demandStatuses = new ArrayList<DemandStatus>();
+        demandStatuses.add(DemandStatus.ACTIVE);
+        demandStatuses.add(DemandStatus.NEW);
+        demandStatuses.add(DemandStatus.INVALID);
+        demandStatuses.add(DemandStatus.INACTIVE);
+        clientDemandsSearch.addFilterIn("status", demandStatuses);
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         return clientDemandConverter.convertToTargetList(clientDemands);
     }
