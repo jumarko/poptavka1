@@ -292,10 +292,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
             cdcd.setDate(messageKey.getSent());
             cdcd.setDemandId(demandID);
+            cdcd.setThreadMessageId(messageKey.getThreadRoot().getId());
             // TODO make converter
             // TODO ivlcek - messageCount and UnreadMessage are not necessary for first version
-            cdcd.setMessageCount(-1);
-            cdcd.setUnreadSubmessages(-1);
+            cdcd.setMessageCount(messageService.getAllDescendantsCount(messageKey, user));
+            cdcd.setUnreadSubmessages(messageService.getUnreadDescendantsCount(messageKey, user));
             cdcd.setMessageDetail(messageConverter.convertToTarget(messageKey));
             cdcd.setMessageId(messageKey.getId());
             cdcd.setRead(userMessage.isRead());
@@ -620,10 +621,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             ApplicationSecurityException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
-                    messageDetailImpl.getThreadRootId()),
+                    messageDetailImpl.getParentId()),
                     this.generalService.find(User.class, messageDetailImpl.getSenderId()));
             m.setBody(messageDetailImpl.getBody());
-            m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
+            m.setSubject(messageDetailImpl.getTitle());
             // TODO set the id correctly, check it
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;

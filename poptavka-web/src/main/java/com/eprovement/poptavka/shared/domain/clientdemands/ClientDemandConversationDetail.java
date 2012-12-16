@@ -22,6 +22,7 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     private static final long serialVersionUID = -530982467233195456L;
     private long demandId;
     private long messageId;
+    private long threadMessageId;
     private long userMessageId;
     private long supplierId;
     private String supplierName;
@@ -159,5 +160,19 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     @Override
     public OfferStateType getOfferState() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @return the threadMessageId
+     */
+    public long getThreadMessageId() {
+        return threadMessageId;
+    }
+
+    /**
+     * @param threadMessageId the threadMessageId to set
+     */
+    public void setThreadMessageId(long threadMessageId) {
+        this.threadMessageId = threadMessageId;
     }
 }
