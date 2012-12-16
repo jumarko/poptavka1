@@ -173,7 +173,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.setSearchClass(Demand.class);
         // TODO ivlcek - we need to display demands with statuses New, Active, Invalid, Inactive. User operator IN once
         // Vojto implements it in Searcher.java
-        clientDemandsSearch.addFilterEqual("status", DemandStatus.NEW);
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.ACTIVE);
         return Searcher.searchCollection(client.getDemands(), clientDemandsSearch).size();
     }
 
@@ -199,7 +199,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterEqual("status", DemandStatus.NEW);
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.ACTIVE);
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         return clientDemandConverter.convertToTargetList(clientDemands);
     }
@@ -220,8 +220,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientDemandConversationsCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        return 1L;
+        //TODO Martin/Ivlcek - change long return type to int
+        Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
+        return root.getChildren().size();
     }
 
     /**
@@ -244,41 +245,73 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientDemandConversationDetail> getClientDemandConversations(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        ClientDemandConversationDetail a1 = new ClientDemandConversationDetail();
-        a1.setRead(false);
-        a1.setUserMessageId(1L);
-        a1.setSupplierId(1L);
-        a1.setSupplierName("Good Data");
-        MessageDetail md1 = new MessageDetail();
-        md1.setBody("Tak ak date cenu o 10% dole ta to beriem.");
-        a1.setMessageDetail(md1);
-        a1.setDate(new Date());
-
-        ClientDemandConversationDetail a2 = new ClientDemandConversationDetail();
-        a2.setRead(false);
-        a2.setUserMessageId(2L);
-        a2.setSupplierId(2L);
-        a2.setSupplierName("Eprovement");
-        MessageDetail md2 = new MessageDetail();
-        md2.setBody("Chcem chcem chcem!!!");
-        a2.setMessageDetail(md2);
-        a2.setDate(new Date());
-
-        ClientDemandConversationDetail a3 = new ClientDemandConversationDetail();
-        a3.setRead(false);
-        a3.setUserMessageId(3L);
-        a3.setSupplierId(3L);
-        a3.setSupplierName("CoraGeo");
-        MessageDetail md3 = new MessageDetail();
-        md3.setBody("To nic lepsie nemate?");
-        a3.setMessageDetail(md3);
-        a3.setDate(new Date());
-
+        User user = generalService.find(User.class, userId);
+        Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
-        list.add(a1);
-        list.add(a2);
-        list.add(a3);
+
+        for (Message messageKey: root.getChildren()) {
+
+            final Search userMessageSearch = new Search(UserMessage.class);
+            userMessageSearch.addFilterEqual("user", user);
+            userMessageSearch.addFilterEqual("message", messageKey);
+            UserMessage userMessage = (UserMessage) generalService.searchUnique(userMessageSearch);
+
+            ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
+            cdcd.setDate(messageKey.getSent());
+            cdcd.setDemandId(demandID);
+            // TODO ivlcek set up a total count value
+            // TODO make converter
+            cdcd.setMessageCount(99);
+            cdcd.setMessageDetail(messageConverter.convertToTarget(messageKey));
+            cdcd.setMessageId(messageKey.getId());
+            cdcd.setRead(userMessage.isRead());
+            cdcd.setStarred(userMessage.isStarred());
+            cdcd.setSupplierId(messageKey.getSender().getId());
+            // TODO ivlcek - change sender email to sender name from business user data
+            cdcd.setSupplierName(messageKey.getSender().getEmail());
+            cdcd.setUnreadSubmessages(99);
+            cdcd.setUserMessageId(userMessage.getId());
+
+            list.add(cdcd);
+        }
+
         return list;
+
+//        ClientDemandConversationDetail a1 = new ClientDemandConversationDetail();
+//        a1.setRead(false);
+//        a1.setUserMessageId(1L);
+//        a1.setSupplierId(1L);
+//        a1.setSupplierName("Good Data");
+//        MessageDetail md1 = new MessageDetail();
+//        md1.setBody("Tak ak date cenu o 10% dole ta to beriem.");
+//        a1.setMessageDetail(md1);
+//        a1.setDate(new Date());
+//
+//        ClientDemandConversationDetail a2 = new ClientDemandConversationDetail();
+//        a2.setRead(false);
+//        a2.setUserMessageId(2L);
+//        a2.setSupplierId(2L);
+//        a2.setSupplierName("Eprovement");
+//        MessageDetail md2 = new MessageDetail();
+//        md2.setBody("Chcem chcem chcem!!!");
+//        a2.setMessageDetail(md2);
+//        a2.setDate(new Date());
+//
+//        ClientDemandConversationDetail a3 = new ClientDemandConversationDetail();
+//        a3.setRead(false);
+//        a3.setUserMessageId(3L);
+//        a3.setSupplierId(3L);
+//        a3.setSupplierName("CoraGeo");
+//        MessageDetail md3 = new MessageDetail();
+//        md3.setBody("To nic lepsie nemate?");
+//        a3.setMessageDetail(md3);
+//        a3.setDate(new Date());
+//
+//
+//        list.add(a1);
+//        list.add(a2);
+//        list.add(a3);
+//        return list;
     }
 
     //************************* CLIENT - My Offers ****************************/

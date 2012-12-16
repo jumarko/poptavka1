@@ -141,7 +141,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
-//        showDevelUserInfoPopupThatShouldBedeletedAfter();
+        showDevelUserInfoPopupThatShouldBedeletedAfter();
         // notify all components that user has logged in
         view.setLogoStyle(Storage.RSCS.layout().userLogo());
     }

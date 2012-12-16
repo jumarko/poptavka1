@@ -31,6 +31,7 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDe
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -61,6 +62,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter;
+    private Converter<Search, SearchDefinition> searchConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -112,6 +114,13 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         this.potentialDemandMessageConverter = potentialDemandMessageConverter;
     }
 
+    @Autowired
+    public void setSearchConverter(
+            @Qualifier("searchConverter") Converter<Search, SearchDefinition> searchConverter) {
+        this.searchConverter = searchConverter;
+    }
+
+
     //************************ SUPPLIER - My Demands **************************/
     /**
      * Get demands of categories that I am interested in.
@@ -130,7 +139,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
-        return userMessageService.getPotentialDemandsCount(businessUser);
+        final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
+        return userMessageService.getPotentialDemandsCount(businessUser, potentialDemandsCountSearch);
     }
 
     /**
@@ -152,16 +162,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
-        final List<UserMessage> userMessages = userMessageService.getPotentialDemands(businessUser);
-//        ArrayList<PotentialDemandMessage> potentialDemands = new ArrayList<PotentialDemandMessage>();
-//        for (UserMessage um : userMessages) {
-//            PotentialDemandMessage detail = potentialDemandMessageConverter.convertToTarget(um);
-//            detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
-//            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
-//            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
-//            // TODO ivlcek - here I should probably fill the other Demand detail attributes
-//            potentialDemands.add(detail);
-//        }
+        final Search potentialDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        final List<UserMessage> userMessages = userMessageService.getPotentialDemands(
+                businessUser, potentialDemandsSearch);
         // TODO ivlcek - refactor with detail converter
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
