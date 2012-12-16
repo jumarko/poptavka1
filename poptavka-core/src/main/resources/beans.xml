@@ -137,7 +137,6 @@
     <bean id="userVerificationService" class="com.eprovement.poptavka.service.user.BusinessUserVerificationServiceImpl">
         <constructor-arg ref="symmetricEncryptor" />
         <constructor-arg ref="generalService" />
-        <property name="deploymentUrl" value="${deployment.url}" />
     </bean>
 
     <!-- Jobs -->

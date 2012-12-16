@@ -7,10 +7,8 @@ import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.exception.IncorrectActivationLinkException;
+import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.service.GeneralService;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import static org.junit.Assert.assertThat;
@@ -31,43 +29,34 @@ public class BusinessUserVerificationServiceIntegrationTest extends DBUnitIntegr
     @Autowired
     private GeneralService generalService;
 
-    private String activationLink;
+    private String activationCode;
 
     @Before
-    public void generateNewLink() {
+    public void generateNewActivationCode() {
         final BusinessUser userToBeActivated = generalService.find(BusinessUser.class, 111111111L);
-        activationLink = userVerificationService.generateActivationLink(userToBeActivated);
+        activationCode = userVerificationService.generateActivationCode(userToBeActivated);
     }
 
     @Test
-    public void generateActivationLink() {
-        Assert.assertFalse(activationLink.isEmpty());
-        Assert.assertTrue(activationLink.startsWith("https://46.137.95.172:8443/poptavka/"));
+    public void generateActivationCode() {
+        Assert.assertFalse(activationCode.isEmpty());
+        Assert.assertTrue("Suspicious activation code since it is too short: actual length=" + activationCode.length(),
+                activationCode.length() > 32);
     }
 
 
     @Test
-    public void verifyActivationLink() {
-        activationLink = decode(activationLink);
-        final User activatedUser = userVerificationService.verifyActivationLink(activationLink);
+    public void verifyActivationCode() {
+        final User activatedUser = userVerificationService.verifyActivationCode(activationCode);
         Assert.assertNotNull(activatedUser);
         assertThat(activatedUser.getId(), is(111111111L));
     }
 
-    @Test(expected = IncorrectActivationLinkException.class)
+    @Test(expected = IncorrectActivationCodeException.class)
     public void verifyActivationLinkForIncorrectLinkInPlaintext() {
-        userVerificationService.verifyActivationLink(
+        userVerificationService.verifyActivationCode(
                 "user/activation?link={\"userEmail\":\"moj@supplier.cz\", \"validity\":100000000");
     }
 
-
-    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
-    private String decode(String urlEncoded) {
-        try {
-            return URLDecoder.decode(urlEncoded, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("Never should occur - unsupported encoding", e);
-        }
-    }
 
 }

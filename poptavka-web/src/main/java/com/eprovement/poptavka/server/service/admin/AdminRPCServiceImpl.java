@@ -459,8 +459,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public void updateEmailActivation(ActivationEmailDetail emailActivationDetail)
         throws RPCException, ApplicationSecurityException {
         ActivationEmail emailActivation = generalService.find(ActivationEmail.class, emailActivationDetail.getId());
-        if (!emailActivation.getActivationLink().equals(emailActivationDetail.getActivationLink())) {
-            emailActivation.setActivationLink(emailActivationDetail.getActivationLink());
+        if (!emailActivation.getActivationCode().equals(emailActivationDetail.getActivationLink())) {
+            emailActivation.setActivationCode(emailActivationDetail.getActivationLink());
         }
         if (!emailActivation.getValidTo().equals(emailActivationDetail.getTimeout())) {
             emailActivation.setValidTo(emailActivationDetail.getTimeout());

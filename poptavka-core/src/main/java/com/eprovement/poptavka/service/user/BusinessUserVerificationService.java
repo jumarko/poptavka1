@@ -4,43 +4,44 @@
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.domain.user.BusinessUser;
-import com.eprovement.poptavka.exception.ExpiredActivationLinkException;
-import com.eprovement.poptavka.exception.IncorrectActivationLinkException;
+import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
+import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.exception.UserNotExistException;
 
 public interface BusinessUserVerificationService {
     /**
-     * Generates new activation link for given user.
-     * Activation link is encrypted with symmetric cipher.
+     * Generates new activation code for given user.
+     * Activation dode is encrypted with symmetric cipher.
      * @param user
-     * @return encrypted activation link
+     * @return encrypted activation code
      */
-    String generateActivationLink(BusinessUser user);
+    String generateActivationCode(BusinessUser user);
 
     /**
-     * Verifies given link if it belongs to the existing user.
-     * @param link link to be verified
+     * Verifies given activation code if it belongs to the existing user.
+     * @param activationCode activation code to be verified
      * @return User which has been verified
-     * @throws com.eprovement.poptavka.exception.IncorrectActivationLinkException
-     *          if link does not correspond to some valid (generated) activation link
-     * @throws com.eprovement.poptavka.exception.ExpiredActivationLinkException if link already expired
-     * @throws com.eprovement.poptavka.exception.UserNotExistException if user with email extracted from activation link
+     * @throws com.eprovement.poptavka.exception.IncorrectActivationCodeException
+     *          if activationCode does not correspond to some valid (generated) activation activationCode
+     * @throws com.eprovement.poptavka.exception.ExpiredActivationCodeException if activationCode already expired
+     * @throws com.eprovement.poptavka.exception.UserNotExistException if user with email extracted from activation
+     *      activationCode
      *      does not exist in user database
      */
-    BusinessUser verifyActivationLink(String link) throws UserNotExistException, ExpiredActivationLinkException,
-            IncorrectActivationLinkException;
+    BusinessUser verifyActivationCode(String activationCode) throws UserNotExistException,
+            ExpiredActivationCodeException, IncorrectActivationCodeException;
 
 
     /**
-     * Verifies user using given {@code activationLink}, that means if correct activation link is provided,
+     * Verifies user using given {@code activationCode}, that means if correct activation code is provided,
      * then appropriate {@link BusinessUser} instance is loaded and for all its {@link BusinessUser#businessUserRoles}
      * verification status ( {@link com.eprovement.poptavka.domain.user.BusinessUserRole#verification} ) is set to
      * {@link com.eprovement.poptavka.domain.enums.Verification#VERIFIED}.
      *
-     * @param activationLink activation link which will be checked and corresponded user will be verified
+     * @param activationCode activation code which will be checked and corresponded user will be verified
      * @return user which has already been verified
      *
-     * @see #verifyActivationLink(String) for various preconditions and exception states
+     * @see #verifyActivationCode(String) for various preconditions and exception states
      */
-    BusinessUser verifyUser(String activationLink);
+    BusinessUser verifyUser(String activationCode);
 }

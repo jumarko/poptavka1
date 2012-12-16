@@ -14,17 +14,17 @@ import java.util.Date;
 @Entity
 public class ActivationEmail extends DomainObject {
 
-    private String activationLink;
+    private String activationCode;
 
     /** After this date the activation will not be possible. */
     private Date validTo;
 
-    public String getActivationLink() {
-        return activationLink;
+    public String getActivationCode() {
+        return activationCode;
     }
 
-    public void setActivationLink(String activationLink) {
-        this.activationLink = activationLink;
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     public Date getValidTo() {
@@ -39,7 +39,7 @@ public class ActivationEmail extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("EmailActivation");
-        sb.append("{activationLink='").append(activationLink).append('\'');
+        sb.append("{activationCode='").append(activationCode).append('\'');
         sb.append(", timeout=").append(validTo);
         sb.append('}');
         return sb.toString();

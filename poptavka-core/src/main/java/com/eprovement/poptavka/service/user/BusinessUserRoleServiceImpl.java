@@ -107,14 +107,14 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
         businessUserRole.setVerification(Verification.UNVERIFIED);
-        // User#activationEmail is set within scope of "generateActivationLink" method
-        final String activationLink =
-                userVerificationService.generateActivationLink(businessUserRole.getBusinessUser());
+        // User#activationEmail is set within scope of "generateActivationCode" method
+        final String activationCode =
+                userVerificationService.generateActivationCode(businessUserRole.getBusinessUser());
         if (mailService != null) {
             LOGGER.info("action=create_new_business_user status=send_activation_email email={} businuessUser={}",
                     businessUserRole.getBusinessUser().getEmail(), businessUserRole.getBusinessUser());
             mailService.sendAsync(
-                    createActivationMailMessage(businessUserRole.getBusinessUser().getEmail(), activationLink));
+                    createActivationMailMessage(businessUserRole.getBusinessUser().getEmail(), activationCode));
         }
 
         createBusinessUserIfNotExist(businessUserRole);
@@ -124,7 +124,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         return createdBusinessUserRole;
     }
 
-    private SimpleMailMessage createActivationMailMessage(String userMail, String activationLink) {
+    private SimpleMailMessage createActivationMailMessage(String userMail, String activationCode) {
         final SimpleMailMessage activationMessage = new SimpleMailMessage();
 
         Locale englishLocale = new Locale("en", "EN");
@@ -136,7 +136,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         activationMessage.setSubject("Poptavka account activation");
 
-        activationMessage.setText(activationEmailText + " \n" + activationLink);
+        activationMessage.setText(activationEmailText + " \n" + activationCode);
         return activationMessage;
 
     }
