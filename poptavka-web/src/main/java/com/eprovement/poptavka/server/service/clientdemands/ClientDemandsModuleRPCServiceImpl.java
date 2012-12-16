@@ -25,6 +25,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.ClientService;
+import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
@@ -72,6 +73,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
     //Services
     private ClientService clientService;
+    private SupplierService supplierService;
     private GeneralService generalService;
     private OfferService offerService;
     private UserMessageService userMessageService;
@@ -91,6 +93,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    @Autowired
+    public void setSupplierService(SupplierService supplierService) {
+        this.supplierService = supplierService;
     }
 
     @Autowired
@@ -275,7 +282,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         User user = generalService.find(User.class, userId);
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
-
         for (Message messageKey: root.getChildren()) {
 
             final Search userMessageSearch = new Search(UserMessage.class);
@@ -286,59 +292,22 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
             cdcd.setDate(messageKey.getSent());
             cdcd.setDemandId(demandID);
-            // TODO ivlcek set up a total count value
             // TODO make converter
-            cdcd.setMessageCount(99);
+            // TODO ivlcek - messageCount and UnreadMessage are not necessary for first version
+            cdcd.setMessageCount(-1);
+            cdcd.setUnreadSubmessages(-1);
             cdcd.setMessageDetail(messageConverter.convertToTarget(messageKey));
             cdcd.setMessageId(messageKey.getId());
             cdcd.setRead(userMessage.isRead());
             cdcd.setStarred(userMessage.isStarred());
-            cdcd.setSupplierId(messageKey.getSender().getId());
-            // TODO ivlcek - change sender email to sender name from business user data
-            cdcd.setSupplierName(messageKey.getSender().getEmail());
-            cdcd.setUnreadSubmessages(99);
+            Supplier supplier = findSupplier(messageKey.getSender().getId());
+            cdcd.setSupplierId(supplier.getId());
+            cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             cdcd.setUserMessageId(userMessage.getId());
 
             list.add(cdcd);
         }
-
         return list;
-
-//        ClientDemandConversationDetail a1 = new ClientDemandConversationDetail();
-//        a1.setRead(false);
-//        a1.setUserMessageId(1L);
-//        a1.setSupplierId(1L);
-//        a1.setSupplierName("Good Data");
-//        MessageDetail md1 = new MessageDetail();
-//        md1.setBody("Tak ak date cenu o 10% dole ta to beriem.");
-//        a1.setMessageDetail(md1);
-//        a1.setDate(new Date());
-//
-//        ClientDemandConversationDetail a2 = new ClientDemandConversationDetail();
-//        a2.setRead(false);
-//        a2.setUserMessageId(2L);
-//        a2.setSupplierId(2L);
-//        a2.setSupplierName("Eprovement");
-//        MessageDetail md2 = new MessageDetail();
-//        md2.setBody("Chcem chcem chcem!!!");
-//        a2.setMessageDetail(md2);
-//        a2.setDate(new Date());
-//
-//        ClientDemandConversationDetail a3 = new ClientDemandConversationDetail();
-//        a3.setRead(false);
-//        a3.setUserMessageId(3L);
-//        a3.setSupplierId(3L);
-//        a3.setSupplierName("CoraGeo");
-//        MessageDetail md3 = new MessageDetail();
-//        md3.setBody("To nic lepsie nemate?");
-//        a3.setMessageDetail(md3);
-//        a3.setDate(new Date());
-//
-//
-//        list.add(a1);
-//        list.add(a2);
-//        list.add(a3);
-//        return list;
     }
 
     //************************* CLIENT - My Offers ****************************/
@@ -699,6 +668,30 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         return clients.get(0);
     }
+
+    private Supplier findSupplier(long userId) {
+        final User user = generalService.find(User.class, userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User with id=" + userId + " does not exist!");
+        }
+        if (StringUtils.isEmpty(user.getEmail())) {
+            throw new IllegalStateException("User has no email. Invalid state of explication! Each user MUST HAVE"
+                    + " a valid email address!");
+        }
+        final List<Supplier> suppliers = this.supplierService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria().withEmail(user.getEmail()).build());
+        if (CollectionUtils.isEmpty(suppliers)) {
+            throw new IllegalArgumentException("No supplier with email=" + user.getEmail() + " has been found!");
+        }
+
+        if (suppliers.size() > 1) {
+            throw new IllegalArgumentException("One supplier with email=" + user.getEmail() + " expected, but found"
+                    + suppliers.size());
+        }
+
+        return suppliers.get(0);
+    }
+
 
     /**
      * This method will update number of unread messages of logged user.
