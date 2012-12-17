@@ -22,8 +22,8 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
     private static final int OFFSET_LEFT = 0;
     private static final int OFFSET_TOP = 20;
     private SimpleIconLabel loader = new SimpleIconLabel();
-    private Label message = new Label(Storage.MSGS.addressLoadingInfoLabel());
-    private PopupPanel loadingPopup = new PopupPanel();
+
+    private PopupPanel loadingPopup = new PopupPanel(true);
 
     public MySuggestDisplay() {
         loader.setImageResource(Storage.RSCS.images().loadIcon32());
@@ -38,8 +38,8 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
         loadingPopup.hide();
     }
 
-    public void showLoadingInfoLabel() {
-        loadingPopup.setWidget(message);
+    public void showLoadingInfoLabel(String message) {
+        loadingPopup.setWidget(new Label(message));
         loadingPopup.show();
     }
 

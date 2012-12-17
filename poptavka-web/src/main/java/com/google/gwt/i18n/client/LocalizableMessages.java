@@ -390,6 +390,7 @@ public interface LocalizableMessages extends Messages {
     String addressZipCode();
     String addressStreet();
     String addressLoadingInfoLabel();
+    String addressSearchShortCities();
 
     //Setting
     String notifyImmediately();

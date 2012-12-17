@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -21,7 +20,7 @@ public interface LocalityRPCServiceAsync {
 
     void getSubLocalities(String locCode, AsyncCallback<List<LocalityDetail>> callback);
 
-    void getLocalitySuggests(String locCode, String startWith, AsyncCallback<List<LocalityDetail>> callback);
-
     void getCityWithStateSuggestions(String cityLike, AsyncCallback<List<LocalitySuggestionDetail>> callback);
+
+    void getShortCityWithStateSuggestions(String cityLike, AsyncCallback<List<LocalitySuggestionDetail>> callback);
 }

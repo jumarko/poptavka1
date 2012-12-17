@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 public class CitySuggestOracle extends MultiWordSuggestOracle {
 
+    private static final int SHORT_CITIES_TO_SEARCH = 2;
     private static final int MIN_CHARS_TO_SEARCH = 3;
     private static final String WHITESPACE_STRING = " ";
     private static final String NOTHING = "";
@@ -38,21 +40,37 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
     public void requestSuggestions(final Request suggestRequest, final Callback callback) {
         addressSelectorPresenter.getCitySuggestionPopup().setLoadingPopupPosition(
                 addressSelectorPresenter.getView().getCitySuggestBox());
-        if (suggestRequest.getQuery().length() >= MIN_CHARS_TO_SEARCH) {
+        if (suggestRequest.getQuery().length() == SHORT_CITIES_TO_SEARCH) {
+            addressSelectorPresenter.getCitySuggestionPopup().showLoadingInfoLabel(
+                    Storage.MSGS.addressSearchShortCities());
+            addressSelectorPresenter.getLocalityService().getShortCityWithStateSuggestions(suggestRequest.getQuery(),
+                    new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
+                        @Override
+                        public void onSuccess(List<LocalitySuggestionDetail> result) {
+                            responseSuggestions(suggestRequest, callback, result);
+                        }
+                    });
+        } else if (suggestRequest.getQuery().length() >= MIN_CHARS_TO_SEARCH) {
             addressSelectorPresenter.getCitySuggestionPopup().showLoading();
             addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(suggestRequest.getQuery(),
                     new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
                         @Override
                         public void onSuccess(List<LocalitySuggestionDetail> result) {
-                            CitySuggestOracle.Response response = new CitySuggestOracle.Response();
-                            response.setSuggestions(convertToFormattedSuggestions(suggestRequest.getQuery(), result));
-                            addressSelectorPresenter.getCitySuggestionPopup().hideLoadingPopup();
-                            callback.onSuggestionsReady(suggestRequest, response);
+                            responseSuggestions(suggestRequest, callback, result);
                         }
                     });
         } else {
-            addressSelectorPresenter.getCitySuggestionPopup().showLoadingInfoLabel();
+            addressSelectorPresenter.getCitySuggestionPopup().showLoadingInfoLabel(
+                    Storage.MSGS.addressLoadingInfoLabel());
         }
+    }
+
+    private void responseSuggestions(final Request suggestRequest, final Callback callback,
+            List<LocalitySuggestionDetail> result) {
+        CitySuggestOracle.Response response = new CitySuggestOracle.Response();
+        response.setSuggestions(convertToFormattedSuggestions(suggestRequest.getQuery(), result));
+        addressSelectorPresenter.getCitySuggestionPopup().hideLoadingPopup();
+        callback.onSuggestionsReady(suggestRequest, response);
     }
 
     private List<LocalitySuggestionDetail> convertToFormattedSuggestions(String query,

@@ -93,29 +93,25 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public List<LocalityDetail> getLocalitySuggests(String locCode, String startWith) throws RPCException {
-        Search locSearch = new Search(Locality.class);
-        if (locCode == null || locCode.isEmpty()) {
-            locSearch.addFilterOr(
-                    Filter.ilike("name", startWith + "%"),
-                    Filter.ilike("name", "% " + startWith + "%"));
-        } else {
-            locSearch.addFilterAnd(
-                    Filter.equal("parent.code", locCode),
-                    Filter.or(
-                    /**/Filter.ilike("name", startWith + "%"),
-                    /**/ Filter.ilike("name", "% " + startWith + "%")));
-        }
-        List<Locality> list = generalService.search(locSearch);
-        return localityConverter.convertToTargetList(list);
-    }
-
-    @Override
     public List<LocalitySuggestionDetail> getCityWithStateSuggestions(String cityLike) throws RPCException {
         Search locSearch = new Search(Locality.class);
 
         locSearch.addFilterAnd(
                 Filter.equal("type", LocalityType.CITY),
+                Filter.or(
+                /**/ Filter.ilike("name", cityLike + "%"),
+                /**/ Filter.ilike("name", "% " + cityLike + "%")));
+        List<Locality> list = generalService.search(locSearch);
+        return localitySuggestionConverter.convertToTargetList(list);
+    }
+
+    @Override
+    public List<LocalitySuggestionDetail> getShortCityWithStateSuggestions(String cityLike) throws RPCException {
+        Search locSearch = new Search(Locality.class);
+
+        locSearch.addFilterAnd(
+                Filter.equal("type", LocalityType.CITY),
+                Filter.ilike("name", "__"),
                 Filter.or(
                 /**/ Filter.ilike("name", cityLike + "%"),
                 /**/ Filter.ilike("name", "% " + cityLike + "%")));
