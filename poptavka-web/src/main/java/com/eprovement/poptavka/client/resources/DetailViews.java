@@ -8,12 +8,30 @@ import com.google.gwt.resources.client.CssResource;
 
 /**
  *
- * @author slavkovsky.martin
+ * @author slavkovsky.martin, Jaro
  */
 public interface DetailViews extends CssResource {
 
     @ClassName("demandDetailTable")
     String demandDetailTable();
+
+    @ClassName("detail-block")
+    String detailBlock();
+
+    @ClassName("detail-header")
+    String detailHeader();
+
+    @ClassName("demand-detail-content")
+    String demandDetailContent();
+
+    @ClassName("detail-block-label")
+    String detailBlockLabel();
+
+    @ClassName("detail-category-label")
+    String detailCategoryLabel();
+
+    @ClassName("detail-locality-label")
+    String detailLocalityLabel();
 
     @ClassName("demandDetailSectionHeader")
     String demandDetailSectionHeader();

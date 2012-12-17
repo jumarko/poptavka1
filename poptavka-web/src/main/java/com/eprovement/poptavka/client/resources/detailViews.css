@@ -1,7 +1,7 @@
 /* 
     Document   : mailBox
     Created on : Feb 7, 2012, 8:18:20 AM
-    Author     : slavkovsky.martin
+    Author     : slavkovsky.martin, Jaro
     Description:
         Purpose of the stylesheet follows.
 */
@@ -12,50 +12,119 @@
 */
 
 /*  DEMAND DETAIL SECTION  */
+.demandDetailSectionHeader {
+	border-bottom: 1px solid #fea100;
+	background: url(images/header.gif) repeat-x;
+	background-position: top left;
+	padding: 0 12px;
+	margin: 0;
+	height: 40px;
+	line-height: 40px;
+	text-align: left;
+	color: #ffffff;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 18px;
+	font-weight: normal;
+	text-shadow: none;
+	border-radius: 6px 6px 0 0;
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+}
 
+.demand-detail-content {
+	background: rgba(255, 255, 255, 0.8);
+	float: left;
+	padding: 12px;
+	width: 376px;
+}
 
-.demandDetailSectionHeader th {
-    font-family: fantasy;
-    font-size: xx-large;
-    background-color: green;
+.detail-block {
+	background: #ffffff;
+	float: left;
+	margin: 0 0 15px;
+	padding: 0 10px 10px;
+	width: 356px;
+	border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	-webkit-border-radius: 4px 4px 0 0;
+}
+
+.detail-block div {
+	float: left;
+}
+
+.detail-header {
+	background: url(images/detail-block-header.png) no-repeat 5px 8px;
+	color: #F06500;
+	font-size: 16px;
+	font-weight: bold;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 0 0 36px;
+	width: 332px;
+	float: left;
+}
+
+.detail-block-label {
+	background: url(images/detail-block-list.gif) no-repeat 6px 6px;
+	color: #000000;
+	float: left;
+	line-height: 20px;
+	padding: 0 0 0 18px;
+	width: 165px;
+}
+
+.detail-category-label {
+	background: #fee1bf;
+	color: #a05c0d;
+	float: left;
+	line-height: 20px;
+	padding: 0 8px;
+	border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	-webkit-border-radius: 4px 4px 0 0;
+}
+
+.detail-locality-label {
+	color: #f06300;
 }
 
 .demandDetailTable {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: left;
+	border: 1px solid black;
+	border-collapse: collapse;
+	text-align: left;
 }
 
 .demandDetailTable th {
-    border: 1px solid black;
-    font-weight: bold;
-    background-color: limegreen;
+	border: 1px solid black;
+	font-weight: bold;
+	background-color: limegreen;
 }
 
 .demandDetailTable td {
-    border: 1px solid black;
+	border: 1px solid black;
 }
 
 /*  SUPPLIER DETAIL SECTION  */
-
 .supplierDetailSectionHeader th {
-    font-family: fantasy;
-    font-size: xx-large;
-    background-color: red;
+	font-family: fantasy;
+	font-size: xx-large;
+	background-color: red;
 }
 
 .supplierDetailTable {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: left;
+	border: 1px solid black;
+	border-collapse: collapse;
+	text-align: left;
 }
 
 .supplierDetailTable th {
-    border: 1px solid black;
-    font-weight: bold;
-    background-color: lightcoral;
+	border: 1px solid black;
+	font-weight: bold;
+	background-color: lightcoral;
 }
 
 .supplierDetailTable td {
-    border: 1px solid black;
+	border: 1px solid black;
 }

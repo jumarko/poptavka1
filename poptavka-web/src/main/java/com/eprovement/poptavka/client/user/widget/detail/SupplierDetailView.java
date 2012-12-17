@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
+import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -32,10 +33,12 @@ public class SupplierDetailView extends Composite {
 
     public SupplierDetailView() {
         initWidget(uiBinder.createAndBindUi(this));
+        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     public SupplierDetailView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
+        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     public Label getOverallRating() {

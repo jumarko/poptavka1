@@ -2,235 +2,135 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:with field='res'
-        type='com.eprovement.poptavka.client.resources.StyleResource' />
+	<ui:with field='res'
+		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-    <g:HTMLPanel ui:field="detail">
-        <table class="{res.detailViews.supplierDetailSectionHeader}">
-            <tr>
-                <th>
-                    <g:Label>
-                        <ui:msg key="supplierInfo">Supplier information</ui:msg>
-                    </g:Label>
-                </th>
-            </tr>
-        </table>
-        <g:ScrollPanel>
-            <g:HTMLPanel>
-                <table class="{res.detailViews.supplierDetailTable}">
-                    <!-- Common info  -->
-                    <tr>
-                        <th colspan="2">
-                            <g:Label>
-                                <ui:msg key="commonInfo">Common info: </ui:msg>
-                            </g:Label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="comapanyName">Company name: </ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="companyName" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="ranking">Overall rating:</ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="overallRating" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="certified">Certified:</ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="certified" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="website">Website:</ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="website" />
-                        </td>
-                    </tr>
-                    
-                    <!-- Address info  -->
-                    <tr>
-                        <th colspan="2">
-                            <g:Label>
-                                <ui:msg key="address">Address: </ui:msg>
-                            </g:Label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="street">Street: </ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="street" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="city">City: </ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="city" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="zipCode">Zip code: </ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="zipCode" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">
-                            <g:Label>
-                                <ui:msg key="categories">Category info</ui:msg>
-                            </g:Label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label ui:field="categories" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">
-                            <g:Label>
-                                <ui:msg key="localities">Locality info</ui:msg>
-                            </g:Label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label ui:field="localities" />
-                        </td>
-                    </tr>
-                    
-                    <!-- Detail info  -->
-                    <tr>
-                        <th colspan="2">
-                            <g:Label>
-                                <ui:msg key="detailInfo">Detail info: </ui:msg>
-                            </g:Label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="firstName">First name:</ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="firstName" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="lastName">Last name: </ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="lastName" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="phone">Phone: </ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="phone" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="email">Email: </ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="email" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="website">Website:</ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="websiteContactPerson" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="invoiceDetail">Invoice detail: </ui:msg>
-                            </g:Label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="taxId">Tax number:</ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="taxId" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:Label>
-                                <ui:msg key="identification">Identification number:</ui:msg>
-                            </g:Label>
-                        </td>
-                        <td>
-                            <g:Label ui:field="identificationNumber" />
-                        </td>
-                    </tr>
-                    
-                    <!-- Description: info  -->
-                    <tr>
-                        <th colspan="2">
-                            <g:Label>
-                                <ui:msg key="description">Description: </ui:msg>
-                            </g:Label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <g:Label ui:field="description" />
-                        </td>
-                    </tr>
-                </table>
-            </g:HTMLPanel>
-        </g:ScrollPanel>
-    </g:HTMLPanel>
+	<g:HTMLPanel ui:field="detail">
+		<h4 class="{res.detailViews.demandDetailSectionHeader}">
+			<ui:msg key="supplierInfo">Supplier information</ui:msg>
+		</h4>		
+		<g:HTMLPanel styleName="{res.detailViews.demandDetailContent}">
+			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+				<!-- Common info -->
+				<g:Label styleName='{res.detailViews.detailHeader}'>
+					<ui:msg key="commonInfo">Common info: </ui:msg>
+				</g:Label>
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="comapanyName">Company name: </ui:msg>
+				</g:Label>
+				<g:Label ui:field="companyName" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="ranking">Overall rating:</ui:msg>
+				</g:Label>
+				<g:Label ui:field="overallRating" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="certified">Certified:</ui:msg>
+				</g:Label>
+				<g:Label ui:field="certified" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="website">Website:</ui:msg>
+				</g:Label>
+				<g:Label ui:field="website" />
+			</g:HTMLPanel>
+
+			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+				<!-- Address info -->
+				<g:Label styleName='{res.detailViews.detailHeader}'>
+					<ui:msg key="address">Address: </ui:msg>
+				</g:Label>
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="street">Street: </ui:msg>
+				</g:Label>
+				<g:Label ui:field="street" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="city">City: </ui:msg>
+				</g:Label>
+				<g:Label ui:field="city" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="zipCode">Zip code: </ui:msg>
+				</g:Label>
+				<g:Label ui:field="zipCode" />
+			</g:HTMLPanel>
+
+			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+				<g:Label styleName='{res.detailViews.detailHeader}'>
+					<ui:msg key="categories">Category info</ui:msg>
+				</g:Label>
+
+				<g:Label styleName='{res.detailViews.detailCategoryLabel}'
+					ui:field="categories" />
+			</g:HTMLPanel>
+
+			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+				<g:Label styleName='{res.detailViews.detailHeader}'>
+					<ui:msg key="localities">Locality info</ui:msg>
+				</g:Label>
+				<g:Label
+					styleName='{res.detailViews.detailBlockLabel} {res.detailViews.detailLocalityLabel}'
+					ui:field="localities" />
+			</g:HTMLPanel>
+
+			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+				<!-- Detail info -->
+				<g:Label styleName='{res.detailViews.detailHeader}'>
+					<ui:msg key="detailInfo">Detail info: </ui:msg>
+				</g:Label>
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="firstName">First name:</ui:msg>
+				</g:Label>
+				<g:Label ui:field="firstName" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="lastName">Last name: </ui:msg>
+				</g:Label>
+				<g:Label ui:field="lastName" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="phone">Phone: </ui:msg>
+				</g:Label>
+				<g:Label ui:field="phone" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="email">Email: </ui:msg>
+				</g:Label>
+				<g:Label ui:field="email" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="website">Website:</ui:msg>
+				</g:Label>
+				<g:Label ui:field="websiteContactPerson" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="invoiceDetail">Invoice detail: </ui:msg>
+				</g:Label>
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="taxId">Tax number:</ui:msg>
+				</g:Label>
+				<g:Label ui:field="taxId" />
+
+				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+					<ui:msg key="identification">Identification number:</ui:msg>
+				</g:Label>
+				<g:Label ui:field="identificationNumber" />
+			</g:HTMLPanel>
+
+			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+				<!-- Description: info -->
+				<g:Label styleName='{res.detailViews.detailHeader}'>
+					<ui:msg key="description">Description: </ui:msg>
+				</g:Label>
+
+				<g:Label ui:field="description" />
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:HTMLPanel>
 </ui:UiBinder> 

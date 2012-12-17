@@ -13,7 +13,7 @@
 		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
 		<g:west size="320">
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:HTMLPanel></g:HTMLPanel>
 				</g:north>
 				<g:center>
@@ -28,7 +28,7 @@
 		</g:west>
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:VerticalPanel>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
@@ -44,9 +44,9 @@
 				</g:south>
 			</g:DockLayoutPanel>
 		</g:center>
-		<g:east size="350">
+		<g:east size="430">
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="75">
+				<g:north size="65">
 					<g:HTMLPanel></g:HTMLPanel>
 				</g:north>
 				<g:center>

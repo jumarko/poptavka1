@@ -46,6 +46,7 @@ public class DemandDetailView extends Composite {
         editButtonsPanel.setVisible(false);
         setStyle(styleResource.common().textBoxAsLabel());
         setEnables(false);
+        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     public DemandDetailView(FullDemandDetail demand) {
@@ -55,6 +56,7 @@ public class DemandDetailView extends Composite {
         editButtonsPanel.setVisible(false);
         setStyle(styleResource.common().textBoxAsLabel());
         setEnables(false);
+        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     /**************************************************************************/
