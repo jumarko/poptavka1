@@ -65,7 +65,7 @@ public class SettingsPresenter
 
         Button getUpdateButton();
 
-        void showNofity(Boolean updated);
+        void showNofity(String message, Boolean updated);
 
         Widget getWidgetView();
     }
@@ -172,7 +172,11 @@ public class SettingsPresenter
 
     public void onResponseUpdateSettings(Boolean updated) {
         eventBus.loadingHide();
-        view.showNofity(updated);
+        if (updated) {
+            view.showNofity(Storage.MSGS.updatedOK(), updated);
+        } else {
+            view.showNofity(Storage.MSGS.updatedNotOK(), updated);
+        }
     }
 
     public void onUpdateUserStatus(boolean isChange) {
@@ -220,46 +224,57 @@ public class SettingsPresenter
     /**
      * Update that part of SettingsDetail that belongs to UserSettings widget.
      */
-    private void updateUserSettings() {
+    private boolean updateUserSettings() {
         SimplePanel userHolder = (SimplePanel) view.getStackPanel().getWidget(USER_STACK);
         UserSettingsView userSettings = (UserSettingsView) userHolder.getWidget();
 
         if (userSettings != null && userSettings.isSettingChange()) {
             settingsDetail = userSettings.updateUserSettings(settingsDetail);
+            return true;
         }
+        return false;
     }
 
     /**
      * Update that part of SettingsDetail that belongs to ClientSettings widget.
      */
-    private void updateClientSettings() {
+    private boolean updateClientSettings() {
         SimplePanel clientHolder = (SimplePanel) view.getStackPanel().getWidget(CLIENT_STACK);
         ClientSettingsView clientSettings = (ClientSettingsView) clientHolder.getWidget();
 
         //check if clientSettings was event loaded
         if (clientSettings != null && clientSettings.isSettingChange()) {
             settingsDetail = clientSettings.updateClientSettings(settingsDetail);
+            return true;
         }
+        return false;
     }
 
     /**
      * Update that part of SettingsDetail that belongs to SupplierSettings widget.
      */
-    private void updateSupplierSettings() {
+    private boolean updateSupplierSettings() {
         SimplePanel supplierHolder = (SimplePanel) view.getStackPanel().getWidget(SUPPLIER_STACK);
         SupplierSettingsView supplierSettings = (SupplierSettingsView) supplierHolder.getWidget();
 
         //check if supplierSettings was event loaded
         if (supplierSettings != null && supplierSettings.isSettingChange()) {
             settingsDetail = supplierSettings.updateSupplierSettings(settingsDetail);
+            return true;
         }
+        return false;
     }
 
     private void updateProfile() {
         eventBus.loadingShow(Storage.MSGS.updatingProfile());
-        updateUserSettings();
-        updateClientSettings();
-        updateSupplierSettings();
-        eventBus.requestUpdateSettings(settingsDetail);
+        boolean update = updateUserSettings();
+        update = update || updateClientSettings();
+        update = update || updateSupplierSettings();
+        if (update) {
+            eventBus.requestUpdateSettings(settingsDetail);
+        } else {
+            eventBus.loadingHide();
+            view.showNofity(Storage.MSGS.nothingToUpdate(), true);
+        }
     }
 }

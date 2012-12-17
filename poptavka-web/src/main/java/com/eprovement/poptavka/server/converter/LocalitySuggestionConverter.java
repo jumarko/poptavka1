@@ -40,14 +40,18 @@ public final class LocalitySuggestionConverter extends AbstractConverter<Localit
                 localityCity.getType());
         Preconditions.checkNotNull(
                 localityCity.getParent(),
+                "District attribute NULL while converting locality suggestion.",
+                localityCity.getType());
+        Preconditions.checkNotNull(
+                localityCity.getParent(),
                 "State attribute NULL while converting locality suggestion.",
                 localityCity.getType());
         LocalitySuggestionDetail detail = new LocalitySuggestionDetail();
-        //get STATE ->> DISTRICT --> CITY--> STATE --> COUNTRY
-        if (localityCity.getParent() != null) {
-            detail.setStateId(localityCity.getParent().getId());
-            detail.setStateCode(localityCity.getParent().getCode());
-            detail.setStateName(localityCity.getParent().getName());
+        //get STATE ->> CITY --> DISTRICT --> STATE --> COUNTRY
+        if (localityCity.getParent() != null && localityCity.getParent().getParent() != null) {
+            detail.setStateId(localityCity.getParent().getParent().getId());
+            detail.setStateCode(localityCity.getParent().getParent().getCode());
+            detail.setStateName(localityCity.getParent().getParent().getName());
         }
 
         detail.setCityId(localityCity.getId());

@@ -4,18 +4,12 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
-import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter.UserSettingsViewInterface;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.logical.shared.OpenEvent;
-import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,14 +31,16 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
 
         void setUserSettings(SettingDetail detail);
 
-        void setAddressesHeader(String address);
+//        void setAddressesHeader(String address);
 
-        void setAddressesContent(SettingDetail detail);
+//        void setAddressesContent(AddressDetail detail);
 
         SettingDetail updateUserSettings(SettingDetail detail);
 
         //Panels
-        DisclosurePanel getDisclosureAddress();
+//        DisclosurePanel getDisclosureAddress();
+
+        SimplePanel getAddressHolder();
 
         //Others
         AddressDetail getAddress();
@@ -74,21 +70,6 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
     /* BIND - Helper methods                                                  */
     /**************************************************************************/
     private void addDisclosureAddressHandlers() {
-        view.getDisclosureAddress().addOpenHandler(new OpenHandler<DisclosurePanel>() {
-            @Override
-            public void onOpen(OpenEvent<DisclosurePanel> event) {
-                eventBus.initAddressWidget((SimplePanel) view.getDisclosureAddress().getContent());
-                view.setAddressesContent(settingsDetail);
-            }
-        });
-        view.getDisclosureAddress().addCloseHandler(new CloseHandler<DisclosurePanel>() {
-            @Override
-            public void onClose(CloseEvent<DisclosurePanel> event) {
-                SimplePanel addressHolder = ((SimplePanel) view.getDisclosureAddress().getContent());
-                AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
-                view.setAddressesHeader(addressWidget.createAddress().toString());
-            }
-        });
         view.getStatus().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
@@ -102,6 +83,7 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
     /**************************************************************************/
     public void initUserSettings(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
+        eventBus.initAddressWidget(view.getAddressHolder());
     }
 
     /**************************************************************************/

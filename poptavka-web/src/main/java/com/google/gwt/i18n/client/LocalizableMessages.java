@@ -398,5 +398,6 @@ public interface LocalizableMessages extends Messages {
     String updatedOK();
     String updatedNotOK();
     String updatingProfile();
+    String nothingToUpdate();
     String notificationLeavingPage();
 }

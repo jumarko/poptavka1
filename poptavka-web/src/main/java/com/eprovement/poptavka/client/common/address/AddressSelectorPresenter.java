@@ -12,7 +12,6 @@ import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.editor.client.Editor.Ignore;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -57,24 +56,20 @@ public class AddressSelectorPresenter
 
         void setCityCode(String cityCode);
 
+        void eraseAddressBoxes();
+
         //Getters
-        @Ignore
         SuggestBox getCitySuggestBox();
 
-        @Ignore
         TextBox getStreetTextBox();
 
-        @Ignore
         TextBox getZipCodeTextBox();
 
-        @Ignore
         Label getCityErrorLabel();
 
         boolean isValid();
 
         AddressDetail createAddress();
-
-        void eraseAddressBoxes();
 
         Widget getWidgetView();
     }

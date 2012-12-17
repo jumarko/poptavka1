@@ -83,7 +83,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan='2'>
-<!--                                                    <g:DisclosurePanel ui:field="disclosureDescription">
+                                                    <!--                                                    <g:DisclosurePanel ui:field="disclosureDescription">
                                                     <g:customHeader>
                                                         <g:HTML />
                                                         <ui:msg key='description'>Description:</ui:msg>
@@ -95,13 +95,21 @@
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}' colspan='2'>
-                                                    <g:DisclosurePanel ui:field="disclosureAddress">
+                                                    <ui:msg key='address'>Address:</ui:msg>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan='2'>
+                                                    <g:SimplePanel ui:field="addressHolder"/>
+                                                    <g:TextBox ui:field="status" visible="false" />
+<!--                                                    <g:DisclosurePanel ui:field="disclosureAddress">
                                                         <g:customHeader>
-                                                            <g:HTML/>
-<!--                                        <ui:msg key='address'>Address:</ui:msg>-->
+                                                            <g:Label styleName='{style.label}'>
+                                                                <ui:msg key='address'>Address:</ui:msg>
+                                                            </g:Label>
                                                         </g:customHeader>
                                                         <g:SimplePanel />
-                                                    </g:DisclosurePanel>
+                                                    </g:DisclosurePanel>-->
                                                 </td>
                                             </tr>
                                         </table>
@@ -352,7 +360,6 @@
 
                     </table>
                 </g:HTMLPanel>
-                <g:TextBox ui:field="status" visible="false"/>
             </g:HorizontalPanel>
         </g:ScrollPanel>
     </g:DecoratorPanel>

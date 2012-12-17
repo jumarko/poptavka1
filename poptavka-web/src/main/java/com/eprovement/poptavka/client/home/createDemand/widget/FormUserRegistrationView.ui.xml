@@ -154,48 +154,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
-                            <g:SimplePanel ui:field="addressHolder"/>
-                        </td>
-                    </tr>
-                    <!--                    <tr>
                         <th colspan="3">
                             <ui:msg key="address">Address</ui:msg>
                         </th>
                     </tr>
                     <tr>
-                        <td>
-                            <ui:msg key="street">Street</ui:msg>
-                        </td>
-                        <td>
-                            <g:TextBox ui:field="streetBox">ulica</g:TextBox>
-                        </td>
-                        <td>
-                            &nbsp;&nbsp;&nbsp;
+                        <td colspan="3">
+                            <g:SimplePanel ui:field="addressHolder"/>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <ui:msg key="city">City</ui:msg>
-                        </td>
-                        <td>
-                            <g:TextBox ui:field="cityBox">Brno</g:TextBox>
-                        </td>
-                        <td>
-                            &nbsp;&nbsp;&nbsp;
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <ui:msg key="zipcode">Zipcode</ui:msg>
-                        </td>
-                        <td>
-                            <g:TextBox ui:field="zipBox">60200</g:TextBox>
-                        </td>
-                        <td>
-                            &nbsp;&nbsp;&nbsp;
-                        </td>
-                    </tr>-->
                 </table>
             </div>
         </div>

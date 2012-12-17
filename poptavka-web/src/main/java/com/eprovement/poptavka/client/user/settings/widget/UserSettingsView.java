@@ -5,7 +5,6 @@
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.address.AddressSelectorView;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
@@ -17,15 +16,11 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
@@ -61,12 +56,14 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     TextArea descriptionBox;
     @UiField
     VerticalPanel notifications;
+//    @UiField
+//    DisclosurePanel disclosureAddress;
     @UiField
-    DisclosurePanel disclosureAddress;
+    SimplePanel addressHolder;
     /** Class attributes. **/
     //Store string between focus and blur events and compare if any changes.
     private String stringStorage;
-    private boolean wasChange = false;
+    private String[] stringStorageCity = new String[3];
     /* If change to some data was made and then that change was reverted to original,
      * we must detect it. We must restore flag pointing that something has changed.
      * This list stores original strings if there was made change to that string.
@@ -85,6 +82,8 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+//        disclosureAddress.setOpen(true);
+//        disclosureAddress.sinkEvents(Event.CLICK);
         focus = new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
@@ -97,9 +96,10 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
             public void onChange(ChangeEvent event) {
                 TextBoxBase source = (TextBoxBase) event.getSource();
                 //case if there was a change but reverted
-                if (originalsStorage.containsKey(source.getTitle())
-                        && originalsStorage.get(source.getTitle()).equals(source.getText())) {
-                    originalsStorage.remove(source.getTitle());
+                if (originalsStorage.containsKey(source.getTitle())) {
+                    if (originalsStorage.get(source.getTitle()).equals(source.getText())) {
+                        originalsStorage.remove(source.getTitle());
+                    }
                 } else {
                     originalsStorage.put(source.getTitle(), stringStorage);
                 }
@@ -157,7 +157,7 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
             notifications.add(notificationWidget);
         }
 
-        setAddressesHeader(detail.getAddresses().get(0).toString());
+        setAddressesContent(detail.getAddresses().get(0));
     }
 
     @Override
@@ -181,68 +181,89 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
             notificationDetail.setPeriod(Period.values()[notificationWidget.getPeriod().getSelectedIndex()]);
         }
 
-        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
-        AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
-        if (addressWidget != null) {
-            detail.setAddresses(Arrays.asList(addressWidget.createAddress()));
+        if (getAddress() != null) {
+            detail.setAddresses(Arrays.asList(getAddress()));
         }
         return detail;
     }
 
-    @Override
-    public void setAddressesContent(SettingDetail detail) {
+//    @Override
+    public void setAddressesContent(AddressDetail detail) {
         //set data
-        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
+//        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
         AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
-        if (detail.getAddresses() != null && !detail.getAddresses().isEmpty()) {
-            AddressDetail addrDetail = detail.getAddresses().get(0);
-            addressWidget.getCitySuggestBox().setText(addrDetail.getCity() + ", " + addrDetail.getRegion());
-            addressWidget.getZipCodeTextBox().setText(addrDetail.getZipCode());
-            addressWidget.getStreetTextBox().setText(addrDetail.getStreet());
+        if (detail != null) {
+            addressWidget.getCitySuggestBox().setText(detail.getCity() + ", " + detail.getRegion());
+            addressWidget.getZipCodeTextBox().setText(detail.getZipCode());
+            addressWidget.getStreetTextBox().setText(detail.getStreet());
         }
         //register handlers
-        addressWidget.getCitySuggestBox().addDomHandler(focus, FocusEvent.getType());
-        addressWidget.getCitySuggestBox().addDomHandler(new ChangeHandler() {
+        addressWidget.getCitySuggestBox().getTextBox().addDomHandler(new FocusHandler() {
+            @Override
+            public void onFocus(FocusEvent event) {
+                AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
+                stringStorageCity[0] = addressWidget.getCitySuggestBox().getText();
+                stringStorageCity[1] = addressWidget.getZipCodeTextBox().getText();
+                stringStorageCity[2] = addressWidget.getStreetTextBox().getText();
+            }
+        }, FocusEvent.getType());
+        addressWidget.getCitySuggestBox().getTextBox().addDomHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                SuggestBox source = (SuggestBox) event.getSource();
-                //case if there was a change but reverted
-                if (originalsStorage.containsKey(source.getTitle())
-                        && originalsStorage.get(source.getTitle()).equals(source.getText())) {
-                    originalsStorage.remove(source.getTitle());
-                } else {
-                    originalsStorage.put(source.getTitle(), stringStorage);
+                AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
+                TextBoxBase source = (TextBoxBase) event.getSource();
+                for (int i = 0; i < stringStorageCity.length; i++) {
+                    switch (i) {
+                        case 0:
+                            source = addressWidget.getCitySuggestBox().getTextBox();
+                            break;
+                        case 1:
+                            source = addressWidget.getZipCodeTextBox();
+                            break;
+                        case 2:
+                            source = addressWidget.getStreetTextBox();
+                            break;
+                        default:
+                            break;
+                    }
+                    //ak uz je zaznam a novy string sa rovna tomu zaznamu, tak sa zmena vratila
+                    if (originalsStorage.containsKey(source.getTitle())) {
+                        if (originalsStorage.get(source.getTitle()).equals(source.getText())) {
+                            originalsStorage.remove(source.getTitle());
+                        }
+                    } else {
+                        originalsStorage.put(source.getTitle(), stringStorageCity[i]);
+                    }
                 }
                 updateStatus();
             }
         }, ChangeEvent.getType());
+
         addressWidget.getZipCodeTextBox().addDomHandler(focus, FocusEvent.getType());
         addressWidget.getZipCodeTextBox().addDomHandler(change, ChangeEvent.getType());
         addressWidget.getStreetTextBox().addDomHandler(focus, FocusEvent.getType());
         addressWidget.getStreetTextBox().addDomHandler(change, ChangeEvent.getType());
     }
 
-    @Override
-    public void setAddressesHeader(String address) {
-        SafeHtmlBuilder header = new SafeHtmlBuilder();
-        buildHeaderBold(header, Storage.MSGS.address());
-        header.appendEscaped(address);
-        ((HTML) disclosureAddress.getHeader()).setHTML(header.toSafeHtml());
-    }
-
+//    @Override
+//    public void setAddressesHeader(String address) {
+//        SafeHtmlBuilder header = new SafeHtmlBuilder();
+//        buildHeaderBold(header, Storage.MSGS.address());
+//        header.appendEscaped(address);
+//        ((HTML) disclosureAddress.getHeader()).setHTML(header.toSafeHtml());
+//    }
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
     /** PANELS. **/
-    @Override
-    public DisclosurePanel getDisclosureAddress() {
-        return disclosureAddress;
-    }
-
+//    @Override
+//    public DisclosurePanel getDisclosureAddress() {
+//        return disclosureAddress;
+//    }
     /** OTHERS. **/
     @Override
     public AddressDetail getAddress() {
-        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
+//        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
         AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
         if (addressWidget == null) {
             return null;
@@ -254,6 +275,11 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     @Override
     public TextBox getStatus() {
         return status;
+    }
+
+    @Override
+    public SimplePanel getAddressHolder() {
+        return addressHolder;
     }
 
     @Override
@@ -278,14 +304,14 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
-    private void buildHeaderBold(SafeHtmlBuilder header, String headerStart) {
-        header.appendHtmlConstant("<strong>");
-        header.appendEscaped(headerStart);
-        header.appendEscaped(": ");
-        header.appendHtmlConstant("</strong>");
-    }
-
+//    private void buildHeaderBold(SafeHtmlBuilder header, String headerStart) {
+//        header.appendHtmlConstant("<strong>");
+//        header.appendEscaped(headerStart);
+//        header.appendEscaped(": ");
+//        header.appendHtmlConstant("</strong>");
+//    }
     private void updateStatus() {
+        status.setText(originalsStorage.toString());
         DomEvent.fireNativeEvent(Document.get().createChangeEvent(), status);
     }
 }

@@ -23,14 +23,18 @@ public final class AddressConverter extends AbstractConverter<Address, AddressDe
 
     @Override
     public AddressDetail convertToTarget(Address address) {
+        //get STATE ->> CITY --> DISTRICT --> STATE --> COUNTRY
         AddressDetail detail = new AddressDetail();
         if (address.getCity() != null) {
             detail.setCity(address.getCity().getName());
             detail.setCityCode(address.getCity().getCode());
             if (address.getCity().getParent() != null) {
-                detail.setRegion(address.getCity().getParent().getName());
+                detail.setDistrict(address.getCity().getParent().getName());
                 if (address.getCity().getParent().getParent() != null) {
-                    detail.setCountry(address.getCity().getParent().getParent().getName());
+                    detail.setRegion(address.getCity().getParent().getParent().getName());
+                    if (address.getCity().getParent().getParent().getParent() != null) {
+                        detail.setCountry(address.getCity().getParent().getParent().getParent().getName());
+                    }
                 }
             }
         }

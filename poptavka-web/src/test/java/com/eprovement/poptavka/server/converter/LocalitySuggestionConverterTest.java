@@ -29,8 +29,8 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
                 localitySuggestionConverter.convertToTarget(locality);
 
         assertNotNull(localitySuggestionDetail);
-        assertThat(Long.toString(localitySuggestionDetail.getCityId()), is("3"));
-        assertThat(localitySuggestionDetail.getCityCode(), is("cat3"));
+        assertThat(Long.toString(localitySuggestionDetail.getCityId()), is("4"));
+        assertThat(localitySuggestionDetail.getCityCode(), is("cat4"));
         assertThat(localitySuggestionDetail.getCityName(), is("cityName"));
         assertThat(Long.toString(localitySuggestionDetail.getStateId()), is("2"));
         assertThat(localitySuggestionDetail.getStateCode(), is("cat2"));
@@ -38,8 +38,10 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
     }
 
     private Locality createTestLocalityCity() {
+        //CITY --> DISTRICT --> STATE --> COUNTRY
         final Locality locality = createLocalityCity();
-        locality.setParent(createLocalityRegion());
+        locality.setParent(createLocalityDistrict());
+        locality.getParent().setParent(createLocalityRegion());
         return locality;
     }
 
@@ -61,21 +63,21 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
         return region;
     }
 
-    private Locality createLocalityCity() {
-        final Locality city = new Locality();
-        city.setId(3L);
-        city.setCode("cat3");
-        city.setName("cityName");
-        city.setType(LocalityType.CITY);
-        return city;
-    }
-
     private Locality createLocalityDistrict() {
         final Locality district = new Locality();
-        district.setId(4L);
-        district.setCode("cat4");
+        district.setId(3L);
+        district.setCode("cat3");
         district.setName("districtName");
         district.setType(LocalityType.DISTRICT);
         return district;
+    }
+
+    private Locality createLocalityCity() {
+        final Locality city = new Locality();
+        city.setId(4L);
+        city.setCode("cat4");
+        city.setName("cityName");
+        city.setType(LocalityType.CITY);
+        return city;
     }
 }

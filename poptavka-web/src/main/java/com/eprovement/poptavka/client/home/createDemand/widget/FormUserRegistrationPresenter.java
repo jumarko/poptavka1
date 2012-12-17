@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
-import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
+import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
@@ -35,7 +35,6 @@ public class FormUserRegistrationPresenter
     private static final int LONG = 8;
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     //Attributes
-    private ActivationCodePopupPresenter activationPopup;
     private BusinessUserDetail clientToRegister;
 
     /**************************************************************************/
@@ -127,10 +126,13 @@ public class FormUserRegistrationPresenter
         view.getRegisterButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.loadingShow(MSGS.progressRegisterClient());
-                clientToRegister = view.getNewClient();
-                //register a shof popup na activation code
-                eventBus.registerNewClient(clientToRegister);
+                //TODO Martin - dorobit ostane validacie, nie len addresa
+                if (((AddressSelectorView) view.getAddressHolder().getWidget()).isValid()) {
+                    eventBus.loadingShow(MSGS.progressRegisterClient());
+                    clientToRegister = view.getNewClient();
+                    //register a shof popup na activation code
+                    eventBus.registerNewClient(clientToRegister);
+                }
             }
         });
         view.getEmailBox().addValueChangeHandler(new ValueChangeHandler<String>() {

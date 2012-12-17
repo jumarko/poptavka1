@@ -81,17 +81,12 @@ public class SettingsView extends Composite implements
     /*  Methods handled by view                                               */
     /**************************************************************************/
     @Override
-    public void showNofity(Boolean updated) {
-        if (updated) {
-            updateUserStatus(false);
-            updateClientStatus(false);
-            updateSupplierStatus(false);
-            notifyInfoMessage.setMessage(Storage.MSGS.updatedOK());
-            notifyInfoMessage.setPassedSmall(updated);
-        } else {
-            notifyInfoMessage.setMessage(Storage.MSGS.updatedNotOK());
-            notifyInfoMessage.setPassedSmall(updated);
-        }
+    public void showNofity(String message, Boolean updated) {
+        updateUserStatus(!updated);
+        updateClientStatus(!updated);
+        updateSupplierStatus(!updated);
+        notifyInfoMessage.setMessage(message);
+        notifyInfoMessage.setPassedSmall(updated);
         notify.center();
     }
 
