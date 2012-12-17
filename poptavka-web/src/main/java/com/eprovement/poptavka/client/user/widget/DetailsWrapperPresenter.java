@@ -171,7 +171,7 @@ public class DetailsWrapperPresenter
      */
     public void requestConversation(long threadRootId, Long userMessageId, Long userId) {
         showLoading(DetailsWrapperPresenter.CHAT);
-        eventBus.requestConversation(661, userMessageId, userId);
+        eventBus.requestConversation(threadRootId, userMessageId, userId);
     }
 
     /**************************************************************************/
