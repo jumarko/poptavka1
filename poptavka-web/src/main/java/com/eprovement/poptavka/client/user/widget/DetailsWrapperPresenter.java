@@ -161,9 +161,17 @@ public class DetailsWrapperPresenter
         eventBus.requestSupplierDetail(supplierId, type);
     }
 
-    public void requestConversation(long messageId, Long userMessageId, Long userId) {
+    /**
+     * Loads conversation between client and supplier. Each conversation begins with threadRoot message that must be
+     * passed here as a parameter.
+     *
+     * @param threadRootId - root message i.e. first demand message in the conversation always created by client
+     * @param userMessageId - userMessageId
+     * @param userId - user who's chatting messages we are going to retrieve
+     */
+    public void requestConversation(long threadRootId, Long userMessageId, Long userId) {
         showLoading(DetailsWrapperPresenter.CHAT);
-        eventBus.requestConversation(messageId, userMessageId, userId);
+        eventBus.requestConversation(661, userMessageId, userId);
     }
 
     /**************************************************************************/
