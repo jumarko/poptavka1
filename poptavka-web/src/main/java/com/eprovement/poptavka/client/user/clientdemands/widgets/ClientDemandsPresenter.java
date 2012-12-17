@@ -244,7 +244,7 @@ public class ClientDemandsPresenter
     }
 
     public void onDisplayClientDemandConversations(List<ClientDemandConversationDetail> data) {
-        GWT.log("++ onResponseClientsDemands");
+        GWT.log("++ onResponseClientsDemandConversation");
 
         view.getConversationGrid().getDataProvider().updateRowData(
                 view.getConversationGrid().getStart(), data);
@@ -276,7 +276,7 @@ public class ClientDemandsPresenter
     public void displayDetailContent(ClientDemandConversationDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestConversation(detail.getMessageId(),
+        detailSection.requestConversation(detail.getThreadMessageId(),
                 detail.getUserMessageId(), Storage.getUser().getUserId());
     }
 

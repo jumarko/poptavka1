@@ -177,7 +177,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         detailSection.requestDemandDetail(detail.getDemandId(), type);
         //commented, because given detail object doesn't provide supplierId
 //        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestConversation(detail.getMessageId(),
+        detailSection.requestConversation(detail.getThreadRootId(),
                 detail.getUserMessageId(), Storage.getUser().getUserId());
     }
 

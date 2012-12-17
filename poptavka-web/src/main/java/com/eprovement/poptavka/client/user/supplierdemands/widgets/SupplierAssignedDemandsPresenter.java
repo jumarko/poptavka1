@@ -183,7 +183,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     public void displayDetailContent(FullOfferDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestConversation(detail.getMessageId(),
+        detailSection.requestConversation(detail.getThreadRootId(),
                 detail.getUserMessageId(), Storage.getUser().getUserId());
     }
 
