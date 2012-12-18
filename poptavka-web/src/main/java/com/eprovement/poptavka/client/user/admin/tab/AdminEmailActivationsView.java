@@ -68,7 +68,7 @@ public class AdminEmailActivationsView extends Composite
     private Column<ActivationEmailDetail, Date> timeoutColumn;
     private List<String> gridColumns = Arrays.asList(
             new String[]{
-                "id", "activationLink", "timeout"
+                "id", "activationCode", "timeout"
             });
     // The key provider that provides the unique ID of a EmailActivationDetail.
     private static final ProvidesKey<ActivationEmailDetail> KEY_PROVIDER = new ProvidesKey<ActivationEmailDetail>() {
@@ -137,12 +137,12 @@ public class AdminEmailActivationsView extends Composite
 
         // Activation link
         activationColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.activationLink(), true, ACTIVATION_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.activationCode(), true, ACTIVATION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
                     public String getValue(Object object) {
-                        return ((ActivationEmailDetail) object).getActivationLink();
+                        return ((ActivationEmailDetail) object).getActivationCode();
                     }
                 });
 
@@ -183,7 +183,7 @@ public class AdminEmailActivationsView extends Composite
      * @return table column: ACTIVATION LINK
      */
     @Override
-    public Column<ActivationEmailDetail, String> getActivationLinkColumn() {
+    public Column<ActivationEmailDetail, String> getActivationCodeColumn() {
         return activationColumn;
     }
 

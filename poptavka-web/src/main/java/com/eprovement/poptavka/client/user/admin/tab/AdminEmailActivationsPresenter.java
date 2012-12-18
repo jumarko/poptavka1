@@ -53,7 +53,7 @@ public class AdminEmailActivationsPresenter
         // TABLE
         UniversalAsyncGrid<ActivationEmailDetail> getDataGrid();
 
-        Column<ActivationEmailDetail, String> getActivationLinkColumn();
+        Column<ActivationEmailDetail, String> getActivationCodeColumn();
 
         Column<ActivationEmailDetail, Date> getTimeoutColumn();
 
@@ -130,7 +130,7 @@ public class AdminEmailActivationsPresenter
     public void bindView() {
         addPageChangedHandler();
         //
-        setActivationLinkColumnUpdater();
+        setActivationCodeColumnUpdater();
         setTimeoutColumnUpdater();
         //
         addCommitButtonHandler();
@@ -154,18 +154,18 @@ public class AdminEmailActivationsPresenter
     }
 
     /**
-     * COLUMN UPDATER - ACTIVATIONLINK.
+     * COLUMN UPDATER - ACTIVATION CODE.
      */
-    private void setActivationLinkColumnUpdater() {
-        view.getActivationLinkColumn().setFieldUpdater(new FieldUpdater<ActivationEmailDetail, String>() {
+    private void setActivationCodeColumnUpdater() {
+        view.getActivationCodeColumn().setFieldUpdater(new FieldUpdater<ActivationEmailDetail, String>() {
 
             @Override
             public void update(int index, ActivationEmailDetail object, String value) {
-                if (!object.getActivationLink().equals(value)) {
+                if (!object.getActivationCode().equals(value)) {
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new ActivationEmailDetail(object));
                     }
-                    object.setActivationLink(value);
+                    object.setActivationCode(value);
                     eventBus.addEmailActivationToCommit(object);
                 }
             }

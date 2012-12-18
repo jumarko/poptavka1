@@ -166,7 +166,7 @@ public interface LocalizableMessages extends Messages {
     String firstName();
     String lastName();
     String expiration();
-    String activationLink();
+    String activationCode();
     String timeout();
     String invoiceNumber();
     String varSymb();

@@ -23,7 +23,7 @@ public class AdminEmailActivationViewView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminEmailActivationViewView> {
     }
     @UiField
-    TextBox idFrom, idTo, activationLink;
+    TextBox idFrom, idTo, activationCode;
     @UiField
     DateBox timeoutFrom, timeoutTo;
     @UiField
@@ -42,9 +42,9 @@ public class AdminEmailActivationViewView extends Composite implements
         if (!idTo.getText().equals("")) {
             filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
-        if (!activationLink.getText().equals("")) {
-            filters.add(new FilterItem("activationLink",
-                    FilterItem.OPERATION_LIKE, activationLink.getText()));
+        if (!activationCode.getText().equals("")) {
+            filters.add(new FilterItem("activationCode",
+                    FilterItem.OPERATION_LIKE, activationCode.getText()));
         }
         if (timeoutFrom.getValue() != null) {
             filters.add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutFrom.getValue()));
@@ -73,7 +73,7 @@ public class AdminEmailActivationViewView extends Composite implements
     void clearBtnAction(ClickEvent event) {
         idFrom.setText("");
         idTo.setText("");
-        activationLink.setText("");
+        activationCode.setText("");
         timeoutFrom.setValue(null);
         timeoutTo.setValue(null);
     }

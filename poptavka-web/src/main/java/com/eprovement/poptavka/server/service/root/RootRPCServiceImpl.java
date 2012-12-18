@@ -307,7 +307,8 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
 
     @Override
     public boolean sendActivationCodeAgain(BusinessUserDetail client) throws RPCException {
-        userVerificationService.sendNewActivationCode(businessUserConverter.convertToSource(client));
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, client.getUserId());
+        userVerificationService.sendNewActivationCode(businessUser);
         // since activation mail has been sent in synchronous fashion everything should be ok
         return true;
     }

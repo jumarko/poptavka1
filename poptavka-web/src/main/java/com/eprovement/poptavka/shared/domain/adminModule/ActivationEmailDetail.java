@@ -18,7 +18,7 @@ public class ActivationEmailDetail implements Serializable {
      */
     private static final long serialVersionUID = -530982467233195456L;
     private Long id;
-    private String activationLink;
+    private String activationCode;
     private Date timeout;
 
     /** for serialization. **/
@@ -32,7 +32,7 @@ public class ActivationEmailDetail implements Serializable {
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeEmailActivation(ActivationEmailDetail emailActivationDetail) {
         id = emailActivationDetail.getId();
-        activationLink = emailActivationDetail.getActivationLink();
+        activationCode = emailActivationDetail.getActivationCode();
         timeout = emailActivationDetail.getTimeout();
     }
 
@@ -44,12 +44,12 @@ public class ActivationEmailDetail implements Serializable {
         this.id = id;
     }
 
-    public String getActivationLink() {
-        return activationLink;
+    public String getActivationCode() {
+        return activationCode;
     }
 
-    public void setActivationLink(String name) {
-        this.activationLink = name;
+    public void setActivationCode(String name) {
+        this.activationCode = name;
     }
 
     public Date getTimeout() {
@@ -64,7 +64,7 @@ public class ActivationEmailDetail implements Serializable {
     public String toString() {
         return "\nGlobal EmailActivation Detail Info:"
                 + "\n    DemandTypeId=" + Long.toString(id)
-                + "\n    Name=" + activationLink
+                + "\n    Name=" + activationCode
                 + "\n    Description=" + timeout;
     }
 

@@ -50,7 +50,7 @@
                     <g:Label>Activation link</g:Label>
                 </li>
                 <li>
-                    <g:TextBox ui:field="activationLink"/>
+                    <g:TextBox ui:field="activationCode"/>
                 </li>
                 <li>
                     <g:Label>Timeout</g:Label>
