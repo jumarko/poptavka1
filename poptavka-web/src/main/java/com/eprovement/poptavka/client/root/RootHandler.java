@@ -196,18 +196,15 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             }
         });
     }
-    private boolean bool = true;
 
-    public void onSentActivationCodeAgain(BusinessUserDetail client) {
-        //TODO remove - fake - for devel
-        bool = !bool;
-        eventBus.responseSendActivationCodeAgain(bool);
-//        demandCreationService.sentActivationCodeAgain(client, new SecuredAsyncCallback<Boolean>(eventBus) {
-//            @Override
-//            public void onSuccess(Boolean result) {
-//                eventBus.responseSendActivationCodeAgain(result);
-//            }
-//        });
+
+    public void onSendActivationCodeAgain(BusinessUserDetail client) {
+        rootService.sendActivationCodeAgain(client, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean activationResult) {
+                eventBus.responseSendActivationCodeAgain(activationResult);
+            }
+        });
     }
 
     /**************************************************************************/

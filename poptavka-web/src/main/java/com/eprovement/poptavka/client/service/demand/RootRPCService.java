@@ -79,7 +79,7 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     UserActivationResult activateClient(String activationCode) throws RPCException;
 
-    boolean sentActivationCodeAgain(BusinessUserDetail client) throws RPCException;
+    boolean sendActivationCodeAgain(BusinessUserDetail client) throws RPCException;
 
     /**************************************************************************/
     /* Supplier Services methods                                              */

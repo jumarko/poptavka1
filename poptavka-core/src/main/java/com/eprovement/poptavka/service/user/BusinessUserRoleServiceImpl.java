@@ -1,34 +1,29 @@
 package com.eprovement.poptavka.service.user;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.eprovement.poptavka.dao.user.BusinessUserRoleDao;
 import com.eprovement.poptavka.domain.enums.Status;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
-import com.eprovement.poptavka.service.mail.MailService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Common ancestor for all implementations of service methods for {@link BusinessUserRole}-s.
@@ -54,7 +49,6 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     private final GeneralService generalService;
     private final RegisterService registerService;
     private BusinessUserVerificationService userVerificationService;
-    private MailService mailService;
 
     public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService,
             BusinessUserVerificationService userVerificationService) {
@@ -107,38 +101,13 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
         businessUserRole.setVerification(Verification.UNVERIFIED);
-        // User#activationEmail is set within scope of "generateActivationCode" method
-        final String activationCode =
-                userVerificationService.generateActivationCode(businessUserRole.getBusinessUser());
-        if (mailService != null) {
-            LOGGER.info("action=create_new_business_user status=send_activation_email email={} businuessUser={}",
-                    businessUserRole.getBusinessUser().getEmail(), businessUserRole.getBusinessUser());
-            mailService.sendAsync(
-                    createActivationMailMessage(businessUserRole.getBusinessUser().getEmail(), activationCode));
-        }
+        userVerificationService.sendNewActivationCodeAsync(businessUserRole.getBusinessUser());
 
         createBusinessUserIfNotExist(businessUserRole);
         final BUR createdBusinessUserRole = super.create(businessUserRole);
         LOGGER.info("action=create_new_business_user_role status=finish businuessUser={}",
                 businessUserRole.getBusinessUser());
         return createdBusinessUserRole;
-    }
-
-    private SimpleMailMessage createActivationMailMessage(String userMail, String activationCode) {
-        final SimpleMailMessage activationMessage = new SimpleMailMessage();
-
-        Locale englishLocale = new Locale("en", "EN");
-        ResourceBundle rb = ResourceBundle.getBundle("localization", englishLocale);
-        String activationEmailText = rb.getString("uc10.mail.sentence1");
-
-        activationMessage.setFrom("poptavka1@gmail.com");
-        activationMessage.setTo(userMail);
-
-        activationMessage.setSubject("Poptavka account activation");
-
-        activationMessage.setText(activationEmailText + " \n" + activationCode);
-        return activationMessage;
-
     }
 
 
@@ -181,10 +150,6 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         return isFree;
     }
 
-
-    public void setMailService(MailService mailService) {
-        this.mailService = mailService;
-    }
 
     protected GeneralService getGeneralService() {
         return generalService;

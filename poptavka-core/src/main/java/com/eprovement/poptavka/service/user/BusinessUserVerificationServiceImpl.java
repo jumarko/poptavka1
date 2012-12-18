@@ -12,6 +12,7 @@ import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.exception.UserNotExistException;
 import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.mail.MailService;
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.lang.Validate;
 import org.codehaus.jackson.annotate.JsonCreator;
@@ -20,10 +21,13 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class BusinessUserVerificationServiceImpl implements BusinessUserVerificationService {
 
@@ -33,6 +37,7 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
 
     private final SymmetricKeyEncryptor symmetricEncryptor;
     private final GeneralService generalService;
+    private MailService mailService;
 
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
@@ -45,6 +50,40 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
         this.symmetricEncryptor = symmetricEncryptor;
         this.generalService = generalService;
     }
+
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
+
+    @Override
+    public String sendNewActivationCode(BusinessUser businessUser) {
+        return sendNewActivationCode(businessUser, false);
+    }
+
+
+    @Override
+    public String sendNewActivationCodeAsync(BusinessUser businessUser) {
+        return sendNewActivationCode(businessUser, true);
+    }
+
+    private String sendNewActivationCode(BusinessUser businessUser, boolean async) {
+        Validate.notNull(businessUser, "businessUser cannot be null!");
+        // User#activationEmail is set within scope of "generateActivationCode" method
+        final String activationCode = generateActivationCode(businessUser);
+        if (mailService != null) {
+            LOGGER.info("action=send_new_activation_email email={} businuessUser={}",
+                    businessUser.getEmail(), businessUser);
+            final SimpleMailMessage activationMailMessage =
+                    createActivationMailMessage(businessUser.getEmail(), activationCode);
+            if (async) {
+                mailService.sendAsync(activationMailMessage);
+            } else {
+                mailService.send(activationMailMessage);
+            }
+        }
+        return activationCode;
+    }
+
 
     @Override
     public String generateActivationCode(BusinessUser businessUser) {
@@ -176,6 +215,23 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
         activationEmail.setActivationCode(serializedEncryptedCode);
         activationEmail.setValidTo(new Date(activationCode.getValidity()));
         user.setActivationEmail(activationEmail);
+    }
+
+    private SimpleMailMessage createActivationMailMessage(String userMail, String activationCode) {
+        final SimpleMailMessage activationMessage = new SimpleMailMessage();
+
+        Locale englishLocale = new Locale("en", "EN");
+        ResourceBundle rb = ResourceBundle.getBundle("localization", englishLocale);
+        String activationEmailText = rb.getString("uc10.mail.sentence1");
+
+        activationMessage.setFrom("poptavka1@gmail.com");
+        activationMessage.setTo(userMail);
+
+        activationMessage.setSubject("Poptavka account activation");
+
+        activationMessage.setText(activationEmailText + " \n" + activationCode);
+        return activationMessage;
+
     }
 
 

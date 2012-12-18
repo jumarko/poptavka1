@@ -9,6 +9,20 @@ import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.exception.UserNotExistException;
 
 public interface BusinessUserVerificationService {
+
+    /**
+     * Generates new activation code for given {@code businessUser} and send it to his mail in a synchronous fashion.
+     * @return generated activation code
+     * @see #generateActivationCode(com.eprovement.poptavka.domain.user.BusinessUser)
+     */
+    String sendNewActivationCode(BusinessUser businessUser);
+
+    /**
+     * The same as {@link #sendNewActivationCode(com.eprovement.poptavka.domain.user.BusinessUser)} but sends
+     * activation email in an <sťrong>asynchronous</sťrong> way.
+     */
+    String sendNewActivationCodeAsync(BusinessUser businessUser);
+
     /**
      * Generates new activation code for given user.
      * Activation dode is encrypted with symmetric cipher.
@@ -44,4 +58,5 @@ public interface BusinessUserVerificationService {
      * @see #verifyActivationCode(String) for various preconditions and exception states
      */
     BusinessUser activateUser(String activationCode);
+
 }

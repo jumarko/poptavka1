@@ -471,7 +471,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void activateUser(String activationCode);
 
     @Event(handlers = RootHandler.class)
-    void sentActivationCodeAgain(BusinessUserDetail client);
+    void sendActivationCodeAgain(BusinessUserDetail client);
 
     @Event(handlers = ActivationCodePopupPresenter.class)
     void responseActivateUser(UserActivationResult activationResult);
