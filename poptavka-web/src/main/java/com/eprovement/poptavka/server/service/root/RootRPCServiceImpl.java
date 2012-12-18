@@ -15,13 +15,17 @@ import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
+import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.exception.MessageException;
+import com.eprovement.poptavka.exception.UserNotExistException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.user.BusinessUserVerificationService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -30,6 +34,7 @@ import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
@@ -57,6 +62,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     private GeneralService generalService;
     private MessageService messageService;
     private UserMessageService userMessageService;
+    private BusinessUserVerificationService userVerificationService;
     //Converters
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
@@ -93,6 +99,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
         this.userMessageService = userMessageService;
+    }
+
+    @Autowired
+    public void setUserVerificationService(BusinessUserVerificationService userVerificationService) {
+        this.userVerificationService = userVerificationService;
     }
 
     //Converters
@@ -280,9 +291,18 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     /* Activation methods                                                     */
     /**************************************************************************/
     @Override
-    public boolean activateClient(String activationCode) throws RPCException {
-        //TODO backend
-        return true;
+    public UserActivationResult activateClient(String activationCode) throws RPCException {
+        try {
+            userVerificationService.activateUser(activationCode);
+        } catch (UserNotExistException unee) {
+            return UserActivationResult.ERROR_UNKNOWN_USER;
+        } catch (IncorrectActivationCodeException iace) {
+            return UserActivationResult.ERROR_INCORRECT_ACTIVATION_CODE;
+        } catch (ExpiredActivationCodeException eace) {
+            return UserActivationResult.ERROR_EXPIRED_ACTIVATION_CODE;
+        }
+
+        return UserActivationResult.OK;
     }
 
     @Override

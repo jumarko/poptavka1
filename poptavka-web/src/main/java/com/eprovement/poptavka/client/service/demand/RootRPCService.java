@@ -8,6 +8,7 @@ import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -76,7 +77,7 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
-    boolean activateClient(String activationCode) throws RPCException;
+    UserActivationResult activateClient(String activationCode) throws RPCException;
 
     boolean sentActivationCodeAgain(BusinessUserDetail client) throws RPCException;
 

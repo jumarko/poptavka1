@@ -105,7 +105,10 @@ public interface LocalizableMessages extends Messages {
     String activationCodeSent();
     String newActivationCodeSent();
     String activationPassed();
-    String activationFailed();
+    String activationFailedUnknownError();
+    String activationFailedUnknownUser();
+    String activationFailedIncorrectActivationCode();
+    String activationFailedExpiredActivationCode();
     String newActivationCodeSentFailed();
 
     //supplier registration

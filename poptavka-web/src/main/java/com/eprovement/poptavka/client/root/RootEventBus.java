@@ -41,6 +41,7 @@ import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -177,7 +178,6 @@ public interface RootEventBus extends EventBusWithLookup {
     void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
 
     /**
-     * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
      * @param filter - provided by search module
      */
     @Event(forwardToModules = MessagesModule.class)
@@ -474,7 +474,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void sentActivationCodeAgain(BusinessUserDetail client);
 
     @Event(handlers = ActivationCodePopupPresenter.class)
-    void responseActivateUser(boolean activated);
+    void responseActivateUser(UserActivationResult activationResult);
 
     @Event(handlers = ActivationCodePopupPresenter.class)
     void responseSendActivationCodeAgain(boolean sent);

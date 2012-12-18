@@ -43,5 +43,5 @@ public interface BusinessUserVerificationService {
      *
      * @see #verifyActivationCode(String) for various preconditions and exception states
      */
-    BusinessUser verifyUser(String activationCode);
+    BusinessUser activateUser(String activationCode);
 }

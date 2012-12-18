@@ -8,6 +8,7 @@ import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
-    void activateClient(String activationCode, AsyncCallback<Boolean> callback);
+    void activateClient(String activationCode, AsyncCallback<UserActivationResult> callback);
 
     void sentActivationCodeAgain(BusinessUserDetail client, AsyncCallback<Boolean> callback);
 

@@ -4,6 +4,7 @@ import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -100,23 +101,27 @@ public class ActivationCodePopupPresenter
     /**************************************************************************/
     /* Response methods                                                       */
     /**************************************************************************/
-    public void onResponseActivateUser(boolean activated) {
+    public void onResponseActivateUser(UserActivationResult activationResult) {
         view.getStatusLabel().setPassedSmall(activated);
 
         //inform user
-        if (activated) {
-            view.getStatusLabel().setMessage(MSGS.activationPassed());
-            //close activation popup
-            ((PopupPanel) view.getWidgetView()).hide();
-            //login user automatically
-            eventBus.autoLogin(
-                    user.getEmail(),
-                    user.getPassword(),
-                    widgetToLoad);
-        } else {
-            view.getStatusLabel().setMessage(MSGS.activationFailed());
-            view.getReportButton().setVisible(true);
+        switch(activationResult) {
+            case OK :
+                reportActivationSuccessAndLoginUser();
+                break;
+            case ERROR_UNKNOWN_USER:
+                reportActivationFailure(MSGS.activationFailedUnknownUser());
+                break;
+            case ERROR_INCORRECT_ACTIVATION_CODE:
+                reportActivationFailure(MSGS.activationFailedIncorrectActivationCode());
+                break;
+            case ERROR_EXPIRED_ACTIVATION_CODE:
+                reportActivationFailure(MSGS.activationFailedExpiredActivationCode());
+                break;
+            default:
+                reportActivationFailure(MSGS.activationFailedUnknownError());
         }
+
     }
 
     public void onResponseSendActivationCodeAgain(boolean sent) {
@@ -127,8 +132,26 @@ public class ActivationCodePopupPresenter
             view.getStatusLabel().setMessage(
                     MSGS.newActivationCodeSent() + user.getEmail());
         } else {
-            view.getStatusLabel().setMessage(MSGS.newActivationCodeSentFailed());
-            view.getReportButton().setVisible(true);
+            reportActivationFailure(MSGS.newActivationCodeSentFailed());
         }
     }
+
+
+    private void reportActivationSuccessAndLoginUser() {
+        view.getStatusLabel().setMessage(MSGS.activationPassed());
+        //close activation popup
+        ((PopupPanel) view.getWidgetView()).hide();
+        //login user automatically
+        eventBus.autoLogin(
+                user.getEmail(),
+                user.getPassword(),
+                widgetToLoad);
+    }
+
+
+    private void reportActivationFailure(String errorMessage) {
+        view.getStatusLabel().setMessage(errorMessage);
+        view.getReportButton().setVisible(true);
+    }
+
 }

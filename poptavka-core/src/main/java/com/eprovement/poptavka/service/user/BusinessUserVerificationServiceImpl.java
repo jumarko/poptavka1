@@ -72,7 +72,7 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
 
     @Override
     @Transactional
-    public BusinessUser verifyUser(String activationCode) {
+    public BusinessUser activateUser(String activationCode) {
         LOGGER.debug("action=verify_user status=start");
 
         final BusinessUser businessUser = verifyActivationCode(activationCode);

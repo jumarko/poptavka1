@@ -14,6 +14,7 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.google.gwt.core.client.GWT;
@@ -187,17 +188,13 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /* Activation methods                                                     */
     /**************************************************************************/
     public void onActivateUser(String activationCode) {
-        if (activationCode.equals("123")) {
-            eventBus.responseActivateUser(true);
-        } else {
-            eventBus.responseActivateUser(false);
-        }
-//        demandCreationService.activateClient(activationCode, new SecuredAsyncCallback<Boolean>(eventBus) {
-//            @Override
-//            public void onSuccess(Boolean result) {
-//                eventBus.responseActivateClient(result);
-//            }
-//        });
+        // TODO martin review: whole (new) activation related logic and also "SentActivationCodeAgain" process
+        rootService.activateClient(activationCode, new SecuredAsyncCallback<UserActivationResult>(eventBus) {
+            @Override
+            public void onSuccess(UserActivationResult result) {
+                eventBus.responseActivateUser(result);
+            }
+        });
     }
     private boolean bool = true;
 
