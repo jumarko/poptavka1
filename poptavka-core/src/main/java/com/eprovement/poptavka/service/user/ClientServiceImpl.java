@@ -36,7 +36,7 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
     private final List<AccessRole> clientAccessRoles;
 
     public ClientServiceImpl(GeneralService generalService, RegisterService registerService,
-            BusinessUserVerificationService userVerificationService) {
+            UserVerificationService userVerificationService) {
         super(generalService, registerService, userVerificationService);
         this.notificationUtils = new NotificationUtils(registerService);
         this.clientAccessRoles = Arrays.asList(

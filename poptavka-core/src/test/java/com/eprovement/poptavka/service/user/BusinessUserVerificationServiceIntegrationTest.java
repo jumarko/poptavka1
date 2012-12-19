@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BusinessUserVerificationServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
-    private BusinessUserVerificationService userVerificationService;
+    private UserVerificationService userVerificationService;
     @Autowired
     private GeneralService generalService;
 

@@ -48,10 +48,10 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
     private final GeneralService generalService;
     private final RegisterService registerService;
-    private BusinessUserVerificationService userVerificationService;
+    private UserVerificationService userVerificationService;
 
     public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService,
-            BusinessUserVerificationService userVerificationService) {
+            UserVerificationService userVerificationService) {
         Preconditions.checkNotNull(generalService);
         Preconditions.checkNotNull(registerService);
         Preconditions.checkNotNull(userVerificationService);
@@ -101,10 +101,12 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
         businessUserRole.setVerification(Verification.UNVERIFIED);
-        userVerificationService.sendNewActivationCodeAsync(businessUserRole.getBusinessUser());
 
         createBusinessUserIfNotExist(businessUserRole);
         final BUR createdBusinessUserRole = super.create(businessUserRole);
+
+        userVerificationService.sendNewActivationCodeAsync(businessUserRole.getBusinessUser());
+
         LOGGER.info("action=create_new_business_user_role status=finish businuessUser={}",
                 businessUserRole.getBusinessUser());
         return createdBusinessUserRole;

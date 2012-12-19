@@ -95,7 +95,7 @@ public class ActivationCodePopupPresenter
     public void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad) {
         this.user = user;
         this.widgetToLoad = widgetToLoad;
-        view.getStatusLabel().setMessage(MSGS.activationCodeSent() + user.getEmail());
+        view.getStatusLabel().setMessage(MSGS.activationCodeSent() + " " + user.getEmail());
     }
 
     /**************************************************************************/
@@ -130,7 +130,7 @@ public class ActivationCodePopupPresenter
         //inform user
         if (sent) {
             view.getStatusLabel().setMessage(
-                    MSGS.newActivationCodeSent() + user.getEmail());
+                    MSGS.newActivationCodeSent() + " " + user.getEmail());
         } else {
             reportActivationFailure(MSGS.newActivationCodeSentFailed());
         }

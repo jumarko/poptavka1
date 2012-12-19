@@ -4,24 +4,27 @@
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.exception.UserNotExistException;
 
-public interface BusinessUserVerificationService {
+public interface UserVerificationService {
 
     /**
      * Generates new activation code for given {@code businessUser} and send it to his mail in a synchronous fashion.
+     * New activation code is persisted.
+     *
      * @return generated activation code
-     * @see #generateActivationCode(com.eprovement.poptavka.domain.user.BusinessUser)
+     * @see #generateActivationCode(com.eprovement.poptavka.domain.user.User)
      */
-    String sendNewActivationCode(BusinessUser businessUser);
+    String sendNewActivationCode(User user);
 
     /**
-     * The same as {@link #sendNewActivationCode(com.eprovement.poptavka.domain.user.BusinessUser)} but sends
+     * The same as {@link #sendNewActivationCode(com.eprovement.poptavka.domain.user.User)} but sends
      * activation email in an <sťrong>asynchronous</sťrong> way.
      */
-    String sendNewActivationCodeAsync(BusinessUser businessUser);
+    String sendNewActivationCodeAsync(User user);
 
     /**
      * Generates new activation code for given user.
@@ -29,7 +32,7 @@ public interface BusinessUserVerificationService {
      * @param user
      * @return encrypted activation code
      */
-    String generateActivationCode(BusinessUser user);
+    String generateActivationCode(User user);
 
     /**
      * Verifies given activation code if it belongs to the existing user.

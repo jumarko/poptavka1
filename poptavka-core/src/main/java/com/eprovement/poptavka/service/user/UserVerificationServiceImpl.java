@@ -8,6 +8,7 @@ import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
+import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.exception.UserNotExistException;
@@ -29,11 +30,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class BusinessUserVerificationServiceImpl implements BusinessUserVerificationService {
+public class UserVerificationServiceImpl implements UserVerificationService {
 
     private static final int DEFAULT_VALIDITY_LENGTH_MILLIS = 7 * 24 * 3600 * 1000;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BusinessUserVerificationServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserVerificationServiceImpl.class);
 
     private final SymmetricKeyEncryptor symmetricEncryptor;
     private final GeneralService generalService;
@@ -42,8 +43,8 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
 
-    public BusinessUserVerificationServiceImpl(SymmetricKeyEncryptor symmetricEncryptor,
-            GeneralService generalService) {
+    public UserVerificationServiceImpl(SymmetricKeyEncryptor symmetricEncryptor,
+                                       GeneralService generalService) {
         Validate.notNull(symmetricEncryptor);
         Validate.notNull(generalService);
 
@@ -56,25 +57,25 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
     }
 
     @Override
-    public String sendNewActivationCode(BusinessUser businessUser) {
+    public String sendNewActivationCode(User businessUser) {
         return sendNewActivationCode(businessUser, false);
     }
 
 
     @Override
-    public String sendNewActivationCodeAsync(BusinessUser businessUser) {
+    public String sendNewActivationCodeAsync(User businessUser) {
         return sendNewActivationCode(businessUser, true);
     }
 
-    private String sendNewActivationCode(BusinessUser businessUser, boolean async) {
-        Validate.notNull(businessUser, "businessUser cannot be null!");
+    private String sendNewActivationCode(User user, boolean async) {
+        Validate.notNull(user, "user cannot be null!");
         // User#activationEmail is set within scope of "generateActivationCode" method
-        final String activationCode = generateActivationCode(businessUser);
+        final String activationCode = generateActivationCode(user);
         if (mailService != null) {
             LOGGER.info("action=send_new_activation_email email={} businuessUser={}",
-                    businessUser.getEmail(), businessUser);
+                    user.getEmail(), user);
             final SimpleMailMessage activationMailMessage =
-                    createActivationMailMessage(businessUser.getEmail(), activationCode);
+                    createActivationMailMessage(user.getEmail(), activationCode);
             if (async) {
                 mailService.sendAsync(activationMailMessage);
             } else {
@@ -86,26 +87,26 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
 
 
     @Override
-    public String generateActivationCode(BusinessUser businessUser) {
-        Validate.notNull(businessUser, "User to be activated must be specified!");
+    public String generateActivationCode(User user) {
+        Validate.notNull(user, "User to be activated must be specified!");
 
         LOGGER.info("action=generate_activation_code status=start email={} businuessUser={}",
-                businessUser.getEmail(), businessUser);
+                user.getEmail(), user);
 
         final Date now = new Date();
         final Date activationValidTo = new Date(now.getTime() + DEFAULT_VALIDITY_LENGTH_MILLIS);
-        final ActivationCode activationCode = new ActivationCode(businessUser.getEmail(), activationValidTo.getTime());
+        final ActivationCode activationCode = new ActivationCode(user.getEmail(), activationValidTo.getTime());
 
         // URL encoding must be performed because encrypted link can contain '/' character
         final String encryptedLink = symmetricEncryptor.encrypt(serializeActivationCode(activationCode));
 
         // emailActivation property can be overwritten multiple times.
-        setActivationEmailForUser(businessUser, activationCode, encryptedLink);
+        saveActivationEmailForUser(user, activationCode, encryptedLink);
 
         LOGGER.info("action=generate_activation_code status=finish email={} validTo={} businuessUser={} ",
-                new Object[] {businessUser.getEmail(), activationValidTo, businessUser});
+                new Object[] {user.getEmail(), activationValidTo, user});
 
-        return businessUser.getActivationEmail().getActivationCode();
+        return user.getActivationEmail().getActivationCode();
     }
 
 
@@ -126,12 +127,12 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
 
         if (alreadyVerified) {
             // al roles have already been verified - no effect
-            LOGGER.debug("action=verify_user status=finish_already_verified businessUser={}", businessUser);
+            LOGGER.debug("action=verify_user status=finish_already_verified user={}", businessUser);
             return businessUser;
         }
 
         generalService.save(businessUser);
-        LOGGER.debug("action=verify_user status=finish_verified businessUser={}", businessUser);
+        LOGGER.debug("action=verify_user status=finish_verified user={}", businessUser);
         return businessUser;
     }
 
@@ -209,12 +210,13 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
     }
 
 
-    private void setActivationEmailForUser(BusinessUser user, ActivationCode activationCode,
-                                           String serializedEncryptedCode) {
+    private void saveActivationEmailForUser(User user, ActivationCode activationCode,
+                                            String serializedEncryptedCode) {
         final ActivationEmail activationEmail = new ActivationEmail();
         activationEmail.setActivationCode(serializedEncryptedCode);
         activationEmail.setValidTo(new Date(activationCode.getValidity()));
         user.setActivationEmail(activationEmail);
+        generalService.save(user);
     }
 
     private SimpleMailMessage createActivationMailMessage(String userMail, String activationCode) {

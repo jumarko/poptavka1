@@ -25,7 +25,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.message.MessageService;
-import com.eprovement.poptavka.service.user.BusinessUserVerificationService;
+import com.eprovement.poptavka.service.user.UserVerificationService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -42,6 +42,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.googlecode.genericdao.search.Search;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,7 +65,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     private GeneralService generalService;
     private MessageService messageService;
     private UserMessageService userMessageService;
-    private BusinessUserVerificationService userVerificationService;
+    private UserVerificationService userVerificationService;
     //Converters
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
@@ -102,7 +105,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Autowired
-    public void setUserVerificationService(BusinessUserVerificationService userVerificationService) {
+    public void setUserVerificationService(UserVerificationService userVerificationService) {
         this.userVerificationService = userVerificationService;
     }
 
@@ -293,7 +296,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public UserActivationResult activateClient(String activationCode) throws RPCException {
         try {
-            userVerificationService.activateUser(activationCode);
+            userVerificationService.activateUser(StringUtils.trimToEmpty(activationCode));
         } catch (UserNotExistException unee) {
             return UserActivationResult.ERROR_UNKNOWN_USER;
         } catch (IncorrectActivationCodeException iace) {
@@ -307,7 +310,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
 
     @Override
     public boolean sendActivationCodeAgain(BusinessUserDetail client) throws RPCException {
-        final BusinessUser businessUser = generalService.find(BusinessUser.class, client.getUserId());
+        // we must search business user by email because detail object doesn't have to proper ID already assigned.
+        // TODO: move this to the common place
+        final Search search = new Search(BusinessUser.class);
+        search.addFilterEqual("email", client.getEmail());
+        final BusinessUser businessUser = (BusinessUser) generalService.searchUnique(search);
         userVerificationService.sendNewActivationCode(businessUser);
         // since activation mail has been sent in synchronous fashion everything should be ok
         return true;

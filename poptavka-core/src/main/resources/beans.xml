@@ -132,7 +132,7 @@
     
     <bean id="notificationItemService" class="com.eprovement.poptavka.service.message.settings.NotificationItemServiceImpl" />
 
-    <bean id="userVerificationService" class="com.eprovement.poptavka.service.user.BusinessUserVerificationServiceImpl">
+    <bean id="userVerificationService" class="com.eprovement.poptavka.service.user.UserVerificationServiceImpl">
         <constructor-arg ref="symmetricEncryptor" />
         <constructor-arg ref="generalService" />
         <property name="mailService" ref="mailService"/>

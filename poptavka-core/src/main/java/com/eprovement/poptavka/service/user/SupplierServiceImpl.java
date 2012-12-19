@@ -39,7 +39,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     private final List<AccessRole> supplierAccessRoles;
 
     public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
-            RegisterService registerService, BusinessUserVerificationService userVerificationService) {
+            RegisterService registerService, UserVerificationService userVerificationService) {
         super(generalService, registerService, userVerificationService);
         Preconditions.checkNotNull(supplierDao);
         setDao(supplierDao);
