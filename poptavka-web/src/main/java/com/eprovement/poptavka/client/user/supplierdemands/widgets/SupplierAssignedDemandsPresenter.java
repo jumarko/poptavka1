@@ -145,6 +145,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
+            this.detailSection.setTabVisibility(DetailsWrapperPresenter.SUPPLIER, false);
         }
     }
 
@@ -182,7 +183,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
      */
     public void displayDetailContent(FullOfferDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
         detailSection.requestConversation(detail.getThreadRootId(),
                 detail.getUserMessageId(), Storage.getUser().getUserId());
     }

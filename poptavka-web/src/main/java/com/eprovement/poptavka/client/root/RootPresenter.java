@@ -40,6 +40,7 @@ import java.util.List;
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         implements IRootPresenter {
 
+    private DetailsWrapperPresenter detailSection = null;
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
     private AddressSelectorPresenter addressSelector = null;
@@ -204,7 +205,20 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         }
     }
 
-    /** multiple presenters handling methods **/
+    /**************************************************************************/
+    /* Multiple presenters handling methods                                   */
+    /**************************************************************************/
+    /**
+     * Request RootEventBus to create DetailWrapperPresenter.
+     */
+    public void onRequestDetailWrapperPresenter() {
+        if (detailSection != null) {
+            eventBus.removeHandler(detailSection);
+        }
+        detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
+        eventBus.responseDetailWrapperPresenter(detailSection);
+    }
+
     public void onInitCategoryWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
             List<CategoryDetail> categoriesToSet) {
         if (categorySelector != null) {
@@ -344,13 +358,5 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.add(m);
         userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
         userInfoPanel.show();
-    }
-
-    /**
-     * Request RootEventBus to create DetailWrapperPresenter.
-     */
-    public void onRequestDetailWrapperPresenter() {
-        DetailsWrapperPresenter detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
-        eventBus.responseDetailWrapperPresenter(detailSection);
     }
 }

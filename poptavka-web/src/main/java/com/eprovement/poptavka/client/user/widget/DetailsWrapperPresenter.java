@@ -12,6 +12,7 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -42,6 +43,8 @@ public class DetailsWrapperPresenter
         void setDemandDetail(FullDemandDetail demandDetail);
 
         void setSupplierDetail(FullSupplierDetail supplierDetail);
+
+        TabLayoutPanel getContainer();
 
         UserConversationPanel getConversationPanel();
 
@@ -141,6 +144,13 @@ public class DetailsWrapperPresenter
 //        GWT.log("OFFER ID: " + offerDetail.getOfferId());
 //        view.getConversationPanel().addOfferMessagePresenter(presenter);
 //    }
+    /**************************************************************************/
+    /* This methods                                                           */
+    /**************************************************************************/
+    public void setTabVisibility(int column, boolean visible) {
+        view.getContainer().getTabWidget(column).getParent().setVisible(visible);
+    }
+
     /**************************************************************************/
     /* Request methods                                                        */
     /**************************************************************************/

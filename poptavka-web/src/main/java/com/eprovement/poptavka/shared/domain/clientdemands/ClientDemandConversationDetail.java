@@ -32,19 +32,15 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     private boolean starred = false;
     private int messageCount = -1;
     private int unreadSubmessages = -1;
-
     public static final ProvidesKey<ClientDemandConversationDetail> KEY_PROVIDER =
             new ProvidesKey<ClientDemandConversationDetail>() {
-
                 @Override
                 public Object getKey(ClientDemandConversationDetail item) {
                     return item == null ? null : item.getUserMessageId();
                 }
             };
 
-
     //---------------------------- GETTERS AND SETTERS --------------------
-
     public long getDemandId() {
         return demandId;
     }
@@ -133,20 +129,6 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         this.messageDetail = messageDetail;
     }
 
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this nethod due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    public static String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return "<strong>" + trustedHtml + "</strong>";
-        }
-    }
-
     @Override
     public Date getEndDate() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -174,5 +156,33 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
      */
     public void setThreadMessageId(long threadMessageId) {
         this.threadMessageId = threadMessageId;
+    }
+
+    /**
+     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
+     * User CANNOT call this nethod due to security issues.
+     * @param trustedHtml
+     * @return string in html tags
+     */
+    public static String displayHtml(String trustedHtml, int unReadSubmessagesCount) {
+        if (unReadSubmessagesCount > 0) {
+            return "<strong>" + trustedHtml + "</strong>";
+        } else {
+            return trustedHtml;
+        }
+    }
+
+    public static String displaySupplierNameHtml(ClientDemandConversationDetail detail) {
+        StringBuilder str = new StringBuilder();
+        str.append(detail.getSupplierName());
+        str.append(" ");
+        str.append(detail.getUnreadSubmessages());
+        str.append("/");
+        str.append(detail.getMessageCount());
+        if (detail.getUnreadSubmessages() > 0) {
+            return "<strong>" + str.toString() + "</strong>";
+        } else {
+            return str.toString();
+        }
     }
 }

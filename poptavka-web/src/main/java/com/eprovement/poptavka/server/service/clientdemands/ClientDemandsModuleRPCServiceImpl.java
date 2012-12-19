@@ -227,7 +227,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             Map.Entry pairs = (Map.Entry) it.next();
             // key is message and val is number
             Message message = (Message) pairs.getKey();
-            for (ClientDemandDetail cdd: cdds) {
+            for (ClientDemandDetail cdd : cdds) {
                 if (cdd.getDemandId() == message.getDemand().getId()) {
                     cdd.setUnreadSubmessages(((Integer) pairs.getValue()).intValue());
                     break;
@@ -282,7 +282,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         User user = generalService.find(User.class, userId);
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
-        for (Message messageKey: root.getChildren()) {
+        for (Message messageKey : root.getChildren()) {
 
             final Search userMessageSearch = new Search(UserMessage.class);
             userMessageSearch.addFilterEqual("user", user);
@@ -692,7 +692,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         return suppliers.get(0);
     }
-
 
     /**
      * This method will update number of unread messages of logged user.

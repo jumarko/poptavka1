@@ -185,7 +185,7 @@ public class ClientDemandsView extends Composite
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(clientDetail.getTitle(), clientDetail.isRead());
+                        return ClientDemandDetail.displayTitleHtml(clientDetail);
                     }
                 });
 
@@ -196,7 +196,9 @@ public class ClientDemandsView extends Composite
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(clientDetail.getPrice(), clientDetail.isRead());
+                        return ClientDemandDetail.displayHtml(
+                                clientDetail.getPrice(),
+                                clientDetail.getUnreadSubmessages());
                     }
                 });
 
@@ -209,7 +211,7 @@ public class ClientDemandsView extends Composite
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
                         return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getEndDate()),
-                                clientDetail.isRead());
+                                clientDetail.getUnreadSubmessages());
                     }
                 });
 
@@ -222,7 +224,7 @@ public class ClientDemandsView extends Composite
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
                         return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getValidToDate()),
-                                clientDetail.isRead());
+                                clientDetail.getUnreadSubmessages());
                     }
                 });
     }
@@ -245,14 +247,14 @@ public class ClientDemandsView extends Composite
         replyColumn = conversationGrid.addIconColumn(
                 Storage.RSCS.images().replyImage(),
                 Storage.MSGS.replyExplanationText());
-        // Demand title column
+        // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
                         ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
-                        return ClientDemandConversationDetail.displayHtml(detail.getSupplierName(), detail.isRead());
+                        return ClientDemandConversationDetail.displaySupplierNameHtml(detail);
                     }
                 });
 
@@ -266,7 +268,8 @@ public class ClientDemandsView extends Composite
                         StringBuilder str = new StringBuilder();
                         str.append(((ClientDemandConversationDetail) object).getMessageDetail().getBody());
                         str.append("...");
-                        return ClientDemandConversationDetail.displayHtml(str.toString(), detail.isRead());
+                        return ClientDemandConversationDetail.displayHtml(
+                                str.toString(), detail.getUnreadSubmessages());
                     }
                 });
 
@@ -279,7 +282,7 @@ public class ClientDemandsView extends Composite
                         ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
                         return ClientDemandConversationDetail.displayHtml(
                                 formatter.format(detail.getDate()),
-                                detail.isRead());
+                                detail.getUnreadSubmessages());
                     }
                 });
     }

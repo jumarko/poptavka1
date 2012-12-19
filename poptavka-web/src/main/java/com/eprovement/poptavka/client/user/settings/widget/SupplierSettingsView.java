@@ -19,8 +19,9 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -51,7 +52,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     private List<CategoryDetail> categoriesList;
     private List<LocalityDetail> localitiesList;
     private List<Integer> servicesList;
-    private List<String> originalsStorage = new ArrayList<String>();
+    private Map<String, String> originalsStorage = new HashMap<String, String>();
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -90,11 +91,15 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     }
 
     @Override
-    public void evaluateChanges(String newString) {
-        if (originalsStorage.contains(newString)) {
-            originalsStorage.remove(newString);
-        } else {
-            originalsStorage.add(stringStorage);
+    public void evaluateChanges(String key, String newString) {
+        if (!stringStorage.equals(newString)) {
+            if (originalsStorage.containsKey(key)) {
+                if (originalsStorage.get(key).equals(newString)) {
+                    originalsStorage.remove(newString);
+                }
+            } else {
+                originalsStorage.put(key, stringStorage);
+            }
         }
         updateStatus();
     }
@@ -150,6 +155,11 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     @Override
     public void setLocalitiesList(List<LocalityDetail> localitiesList) {
         this.localitiesList = localitiesList;
+    }
+
+    @Override
+    public void setServicesList(List<Integer> servicesList) {
+        this.servicesList = servicesList;
     }
 
     /**************************************************************************/
@@ -222,6 +232,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     /* Helper methods                                                         */
     /**************************************************************************/
     private void updateStatus() {
+        status.setText(originalsStorage.toString());
         DomEvent.fireNativeEvent(Document.get().createChangeEvent(), status);
     }
 }

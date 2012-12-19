@@ -32,16 +32,13 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
     private boolean starred = false;
     private int messageCount = -1;
     private int unreadSubmessages = -1;
-
     public static final ProvidesKey<ClientDemandDetail> KEY_PROVIDER =
             new ProvidesKey<ClientDemandDetail>() {
-
                 @Override
                 public Object getKey(ClientDemandDetail item) {
                     return item == null ? null : item.getDemandId();
                 }
             };
-
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public long getDemandId() {
@@ -168,14 +165,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public String getTitle() {
-        return demandTitle;
-    }
-
-    public void setTitle(String title) {
-        demandTitle = title;
-    }
-
     public OfferStateType getOfferState() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -186,11 +175,26 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
      * @param trustedHtml
      * @return string in html tags
      */
-    public static String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
+    public static String displayHtml(String trustedHtml, int unreadSubNessages) {
+        if (unreadSubNessages > 0) {
             return "<strong>" + trustedHtml + "</strong>";
+        } else {
+            return trustedHtml;
+        }
+    }
+
+    public static String displayTitleHtml(ClientDemandDetail clientDemandDetail) {
+        if (clientDemandDetail.getUnreadSubmessages() > 0) {
+            StringBuilder str = new StringBuilder();
+            str.append("<strong>");
+            str.append(clientDemandDetail.getDemandTitle());
+            str.append(" (");
+            str.append(clientDemandDetail.getUnreadSubmessages());
+            str.append(")");
+            str.append("<strong>");
+            return str.toString();
+        } else {
+            return clientDemandDetail.getDemandTitle();
         }
     }
 }

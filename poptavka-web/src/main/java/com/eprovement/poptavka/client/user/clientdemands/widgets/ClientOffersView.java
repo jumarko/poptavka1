@@ -130,7 +130,9 @@ public class ClientOffersView extends Composite
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(clientDetail.getTitle(), clientDetail.isRead());
+                        return ClientDemandDetail.displayHtml(
+                                clientDetail.getDemandTitle(),
+                                clientDetail.getUnreadSubmessages());
                     }
                 });
 
@@ -141,7 +143,9 @@ public class ClientOffersView extends Composite
                     @Override
                     public String getValue(Object object) {
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(clientDetail.getPrice(), clientDetail.isRead());
+                        return ClientDemandDetail.displayHtml(
+                                clientDetail.getPrice(),
+                                clientDetail.getUnreadSubmessages());
                     }
                 });
 
@@ -154,7 +158,7 @@ public class ClientOffersView extends Composite
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
                         return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getEndDate()),
-                                clientDetail.isRead());
+                                clientDetail.getUnreadSubmessages());
                     }
                 });
 
@@ -167,7 +171,7 @@ public class ClientOffersView extends Composite
                         ClientDemandDetail clientDetail = (ClientDemandDetail) object;
                         return ClientDemandDetail.displayHtml(
                                 formatter.format(clientDetail.getValidToDate()),
-                                clientDetail.isRead());
+                                clientDetail.getUnreadSubmessages());
                     }
                 });
     }

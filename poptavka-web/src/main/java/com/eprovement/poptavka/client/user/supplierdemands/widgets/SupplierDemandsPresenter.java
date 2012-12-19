@@ -143,6 +143,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
             this.detailSection.getView().getReplyHolder().getOfferReplyBtn().setVisible(true);
+            this.detailSection.setTabVisibility(DetailsWrapperPresenter.SUPPLIER, false);
         }
     }
 
@@ -175,8 +176,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
      */
     public void displayDetailContent(SupplierPotentialDemandDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
-        //commented, because given detail object doesn't provide supplierId
-//        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
         detailSection.requestConversation(detail.getThreadRootId(),
                 detail.getUserMessageId(), Storage.getUser().getUserId());
     }

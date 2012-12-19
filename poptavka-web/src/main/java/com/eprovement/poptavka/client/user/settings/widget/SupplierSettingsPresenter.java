@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,6 +59,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
         void setLocalitiesList(List<LocalityDetail> localitiesList);
 
+        void setServicesList(List<Integer> servicesList);
+
         SettingDetail updateSupplierSettings(SettingDetail detail);
 
         /** GETTERS. **/
@@ -80,7 +83,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
         void initChangeCheking(String originalString);
 
-        void evaluateChanges(String newString);
+        void evaluateChanges(String key, String newString);
 
         //TextBoxes
         TextBox getSupplierRating();
@@ -95,7 +98,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    private SettingDetail settingsDetail;
+    private static final String CATEGORIES = "categories";
+    private static final String LOCALITIES = "localities";
+    private static final String SERVICES = "services";
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -132,7 +137,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         (CategorySelectorView) view.getCategorySelectorPopup().getWidget();
                 view.setCategoriesList(categoryWidget.getCellListDataProvider().getList());
                 view.setCategoriesHeader(categoryWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
-                view.evaluateChanges(categoryWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
+                view.evaluateChanges(CATEGORIES,
+                        categoryWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
             }
         });
     }
@@ -159,7 +165,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         (LocalitySelectorView) view.getLocalitySelectorPopup().getWidget();
                 view.setLocalitiesList(localityWidget.getCellListDataProvider().getList());
                 view.setLocalitiesHeader(localityWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
-                view.evaluateChanges(localityWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
+                view.evaluateChanges(LOCALITIES,
+                        localityWidget.getCellBrowserSelectionModel().getSelectedSet().toString());
             }
         });
     }
@@ -178,8 +185,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClose(CloseEvent<DisclosurePanel> event) {
                 ServicesSelectorView servicesWidget = (ServicesSelectorView) servicesPanel.getWidget();
+                view.setServicesList(Arrays.asList(servicesWidget.getSelectedService()));
                 view.setServicesHeader(Integer.toString(servicesWidget.getSelectedService()));
-                view.evaluateChanges(view.getServices().toString());
+                view.evaluateChanges(SERVICES, view.getServices().toString());
             }
         });
     }
@@ -204,7 +212,6 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     /* METHODS                                                                */
     /**************************************************************************/
     public void onSetSupplierSettings(SettingDetail detail) {
-        this.settingsDetail = detail;
         view.setSupplierSettings(detail);
     }
 }

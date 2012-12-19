@@ -91,6 +91,11 @@ public class DetailsWrapperView extends Composite
     /* GETTERS                                                                */
     /**************************************************************************/
     @Override
+    public TabLayoutPanel getContainer() {
+        return container;
+    }
+
+    @Override
     public UserConversationPanel getConversationPanel() {
         return conversationPanel;
     }
