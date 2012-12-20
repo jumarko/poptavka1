@@ -134,6 +134,7 @@ public class HomeSuppliersView extends OverflowComposite
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,
                 homeSuppliersPresenter.getCategoryService(),
+                homeSuppliersPresenter.getEventBus(),
                 Constants.WITHOUT_CHECK_BOXES,
                 CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS), null, resource);
         Storage.setTree(cellTree);

@@ -1,11 +1,12 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,7 +24,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
     private SimpleRPCServiceAsync simpleService;
-
 
     @Inject
     void setSimpleService(SimpleRPCServiceAsync service) {
@@ -69,7 +69,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
             public void onClick(ClickEvent event) {
                 // do something
                 simpleService.getData(new SecuredAsyncCallback<String>(eventBus) {
-
                     public void onServiceFailure(Throwable caught) {
                         // Show the RPC error message to the user
                         DialogBox dialogBox = new DialogBox();
@@ -101,7 +100,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
             public void onClick(ClickEvent event) {
                 // do something
                 simpleService.getSecuredData(new SecuredAsyncCallback<String>(eventBus) {
-
                     public void onServiceFailure(Throwable caught) {
                         // Show the RPC error message to the user
                         DialogBox dialogBox = new DialogBox();
@@ -129,11 +127,11 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         });
 
         view.getSendUsEmailButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, "");
-
+                //TODO uncomment and remove second row if ivan will accept changes.
+//                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, "");
+                new SecurityDialogBoxes.AlertBox(eventBus, Storage.MSGS.tryWaiting()).center();
             }
         });
 
@@ -150,7 +148,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     public void onDisplayCategories(ArrayList<CategoryDetail> rootCategories) {
         view.displayCategories(COLUMNS, rootCategories);
     }
-
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/

@@ -14,6 +14,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
     private final DefaultSelectionEventManager<CategoryDetail> selectionManager =
             DefaultSelectionEventManager.createCheckboxManager();
     private CategoryRPCServiceAsync categoryService;
+    private EventBusWithLookup eventBus;
     //Holds constant values of this class.
     private int checkboxesUsage = -1;
     //Holds constanst values from CategoryCell class.
@@ -40,10 +42,12 @@ public class CategoryTreeViewModel implements TreeViewModel {
     /**************************************************************************/
     public CategoryTreeViewModel(final SelectionModel<CategoryDetail> selectionModel,
             CategoryRPCServiceAsync categoryService,
+            EventBusWithLookup eventBus,
             final int checkboxesUsage,
             final int displayCountOfWhat) {
         this.selectionModel = selectionModel;
         this.categoryService = categoryService;
+        this.eventBus = eventBus;
         this.checkboxesUsage = checkboxesUsage;
         this.displayCountOfWhat = displayCountOfWhat;
 
@@ -141,13 +145,13 @@ public class CategoryTreeViewModel implements TreeViewModel {
         CategoryDetail detail = (CategoryDetail) value;
         switch (checkboxesUsage) {
             case Constants.WITH_CHECK_BOXES:
-                CategoryDataProvider dataProvider = new CategoryDataProvider(detail, categoryService);
+                CategoryDataProvider dataProvider = new CategoryDataProvider(detail, categoryService, eventBus);
                 return new DefaultNodeInfo(dataProvider, categoryCell, selectionModel, selectionManager, null);
             case Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS:
-                CategoryDataProvider dataProvider1 = new CategoryDataProvider(detail, categoryService);
+                CategoryDataProvider dataProvider1 = new CategoryDataProvider(detail, categoryService, eventBus);
                 return new DefaultNodeInfo(dataProvider1, categoryCell, selectionModel, selectionManager, null);
             default:
-                CategoryDataProvider dataProvider2 = new CategoryDataProvider(detail, categoryService);
+                CategoryDataProvider dataProvider2 = new CategoryDataProvider(detail, categoryService, eventBus);
                 return new DefaultNodeInfo(dataProvider2, new CategoryCell(displayCountOfWhat), selectionModel, null);
         }
     }

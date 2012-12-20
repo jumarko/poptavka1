@@ -136,6 +136,7 @@ public class HomeDemandsView extends OverflowComposite
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,
                 homeDemandsPresenter.getCategoryService(),
+                homeDemandsPresenter.getEventBus(),
                 Constants.WITHOUT_CHECK_BOXES,
                 CategoryCell.DISPLAY_COUNT_OF_DEMANDS), null, resource);
         Storage.setTree(cellTree);

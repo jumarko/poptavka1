@@ -404,4 +404,7 @@ public interface LocalizableMessages extends Messages {
     String updatingProfile();
     String nothingToUpdate();
     String notificationLeavingPage();
+
+    //Error messages
+    String codelistsNotDisplaying();
 }

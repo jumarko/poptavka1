@@ -9,6 +9,7 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,11 +18,14 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
     private static final Logger LOGGER = Logger.getLogger(LocalityDataProvider.class.getName());
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private LocalityRPCServiceAsync localityService;
+    private EventBusWithLookup eventBus;
     private LocalityDetail localityDetail;
 
-    public LocalityDataProvider(LocalityDetail locCode, LocalityRPCServiceAsync localityService) {
+    public LocalityDataProvider(LocalityDetail locCode, LocalityRPCServiceAsync localityService,
+            EventBusWithLookup eventBus) {
         this.localityDetail = locCode;
         this.localityService = localityService;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -38,7 +42,7 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
                 @Override
                 public void onFailure(Throwable caught) {
                     LOGGER.severe("LocalityDataProvider not working, caught=" + caught.getMessage());
-                    new SecurityDialogBoxes.AlertBox(MSGS.tryWaiting()).show();
+                    new SecurityDialogBoxes.AlertBox(eventBus, MSGS.tryWaiting()).show();
                 }
             });
         } else {
@@ -53,7 +57,7 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
                 @Override
                 public void onFailure(Throwable caught) {
                     LOGGER.severe("LocalityDataProvider not working, caught=" + caught.getMessage());
-                    new SecurityDialogBoxes.AlertBox(MSGS.tryWaiting()).show();
+                    new SecurityDialogBoxes.AlertBox(eventBus, MSGS.tryWaiting()).show();
                 }
             });
         }

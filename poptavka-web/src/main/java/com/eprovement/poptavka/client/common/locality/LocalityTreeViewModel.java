@@ -14,6 +14,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class LocalityTreeViewModel implements TreeViewModel {
     private final DefaultSelectionEventManager<LocalityDetail> selectionManager =
             DefaultSelectionEventManager.createCheckboxManager();
     private LocalityRPCServiceAsync localityService;
+    private EventBusWithLookup eventBus;
     //Holds constant values of this class.
     private int checkboxesUsage = -1;
     //Holds constanst values from CategoryCell class.
@@ -40,10 +42,12 @@ public class LocalityTreeViewModel implements TreeViewModel {
     /**************************************************************************/
     public LocalityTreeViewModel(final SelectionModel<LocalityDetail> selectionModel,
             LocalityRPCServiceAsync localityService,
+            EventBusWithLookup eventBus,
             final int checkboxesUsage,
             final int displayCountOfWhat) {
         this.selectionModel = selectionModel;
         this.localityService = localityService;
+        this.eventBus = eventBus;
         this.checkboxesUsage = checkboxesUsage;
         this.displayCountOfWhat = displayCountOfWhat;
 
@@ -141,13 +145,13 @@ public class LocalityTreeViewModel implements TreeViewModel {
         LocalityDetail detail = (LocalityDetail) value;
         switch (checkboxesUsage) {
             case Constants.WITH_CHECK_BOXES:
-                LocalityDataProvider dataProvider = new LocalityDataProvider(detail, localityService);
+                LocalityDataProvider dataProvider = new LocalityDataProvider(detail, localityService, eventBus);
                 return new DefaultNodeInfo(dataProvider, localityCell, selectionModel, selectionManager, null);
             case Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS:
-                LocalityDataProvider dataProvider1 = new LocalityDataProvider(detail, localityService);
+                LocalityDataProvider dataProvider1 = new LocalityDataProvider(detail, localityService, eventBus);
                 return new DefaultNodeInfo(dataProvider1, localityCell, selectionModel, selectionManager, null);
             default:
-                LocalityDataProvider dataProvider2 = new LocalityDataProvider(detail, localityService);
+                LocalityDataProvider dataProvider2 = new LocalityDataProvider(detail, localityService, eventBus);
                 return new DefaultNodeInfo(dataProvider2, new LocalityCell(displayCountOfWhat), selectionModel, null);
         }
     }

@@ -11,6 +11,7 @@ import com.google.gwt.user.cellview.client.LoadingStateChangeEvent.LoadingState;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,11 +20,14 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
     private static final Logger LOGGER = Logger.getLogger(CategoryDataProvider.class.getName());
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private CategoryRPCServiceAsync categoryService;
+    private EventBusWithLookup eventBus;
     private CategoryDetail categoryDetail;
 
-    public CategoryDataProvider(CategoryDetail locCode, CategoryRPCServiceAsync categoryService) {
+    public CategoryDataProvider(CategoryDetail locCode, CategoryRPCServiceAsync categoryService,
+            EventBusWithLookup eventBus) {
         this.categoryDetail = locCode;
         this.categoryService = categoryService;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                 @Override
                 public void onFailure(Throwable caught) {
                     LOGGER.severe("CategoryDataProvider not working, caught=" + caught.getMessage());
-                    new SecurityDialogBoxes.AlertBox(MSGS.tryWaiting()).show();
+                    new SecurityDialogBoxes.AlertBox(eventBus, MSGS.tryWaiting()).show();
                 }
             });
         } else {
@@ -60,7 +64,7 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                         @Override
                         public void onFailure(Throwable caught) {
                             LOGGER.severe("CategoryDataProvider not working, caught=" + caught.getMessage());
-                            new SecurityDialogBoxes.AlertBox(MSGS.tryWaiting()).show();
+                            new SecurityDialogBoxes.AlertBox(eventBus, MSGS.tryWaiting()).show();
                         }
                     });
         }
