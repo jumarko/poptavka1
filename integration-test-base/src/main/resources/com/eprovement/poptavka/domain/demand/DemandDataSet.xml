@@ -13,9 +13,9 @@
     <DEMANDTYPE ID="3" CODE="all" />
 
     <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."        PRICE="10000"
-            STATUS="NEW" RATING_ID="1" CLIENT_ID="111111111" CREATEDDATE="2011-11-01 13:33:33" />
+            STATUS="NEW" RATING_ID="1" CLIENT_ID="111111112" CREATEDDATE="2011-11-01 13:33:33" />
     <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."    PRICE="10000"
-            STATUS="ACTIVE" RATING_ID="2" CLIENT_ID="111111111" CREATEDDATE="2011-11-02 00:00:01" />
+            STATUS="ACTIVE" RATING_ID="2" CLIENT_ID="111111112" CREATEDDATE="2011-11-02 00:00:01" />
     <DEMAND ID="3" TYPE_ID="1" TITLE="Demand 3" DESCRIPTION="3: All request for java application."           PRICE="1200"
             STATUS="INVALID" RATING_ID="3" CLIENT_ID="111111113" CREATEDDATE="2001-01-01 00:00:01" />
     <DEMAND ID="4" TYPE_ID="1" TITLE="Demand 4" DESCRIPTION="4: Normal request for java application."
