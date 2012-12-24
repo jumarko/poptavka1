@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
         xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
         xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
@@ -126,7 +126,7 @@
                         <td  colspan="2" class='{style.label}'>
 <!--                        <ui:msg key='demandCategoryList'>Category List</ui:msg>-->
                             <g:Label>Category List</g:Label>
-                        
+
                         </td>
                     </tr>
                     <tr>
@@ -136,21 +136,6 @@
                                 <g:Button ui:field='editCatBtn'>
                                     <ui:msg key='demandCategoryList'>Edit</ui:msg>
                                 </g:Button>
-                            </g:VerticalPanel>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align='right'>
-                            <g:VerticalPanel ui:field = "editCatPanel">
-                                <g:Label ui:field="catPath"/>
-                                <g:HorizontalPanel>
-                                    <g:ListBox ui:field = "editCatList" visibleItemCount='10' width = '330' />
-                                </g:HorizontalPanel>
-                                <g:HorizontalPanel>
-                                    <g:Button ui:field = "rootCatBtn">Root</g:Button>
-                                    <g:Button ui:field = "backCatBtn">Back</g:Button>
-                                    <g:Button ui:field = "finnishCatBtn">Finnish</g:Button>
-                                </g:HorizontalPanel>
                             </g:VerticalPanel>
                         </td>
                     </tr>
@@ -167,21 +152,6 @@
                                 <g:Button ui:field='editLocBtn'>
                                     <ui:msg key='demandLocalityList'>Edit</ui:msg>
                                 </g:Button>
-                            </g:VerticalPanel>
-                        </td>
-                    </tr> 
-                    <tr>
-                        <td colspan="2">
-                            <g:VerticalPanel ui:field="editLocPanel">
-                                <g:Label ui:field="locPath"/>
-                                <g:HorizontalPanel>
-                                    <g:ListBox ui:field = "editLocList" visibleItemCount='10' width = '330'/>
-                                </g:HorizontalPanel>
-                                <g:HorizontalPanel>
-                                    <g:Button ui:field = "rootLocBtn">Root</g:Button>
-                                    <g:Button ui:field = "backLocBtn">Back</g:Button>
-                                    <g:Button ui:field = "finnishLocBtn">Finnish</g:Button>
-                                </g:HorizontalPanel>
                             </g:VerticalPanel>
                         </td>
                     </tr>

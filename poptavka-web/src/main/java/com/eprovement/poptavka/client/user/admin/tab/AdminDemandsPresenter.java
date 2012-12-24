@@ -5,6 +5,8 @@
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.common.category.CategoryCell;
+import com.eprovement.poptavka.client.common.category.CategorySelectorView;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -19,12 +21,15 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -168,13 +173,44 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.initCategoryWidget(
-                        view.getAdminDemandDetail().getCategorySelectorPopup(),
+                        view.getAdminDemandDetail().getSelectorWidgetPopup(),
                         Constants.WITH_CHECK_BOXES,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        null);
-                view.getAdminDemandDetail().getCategorySelectorPopup().center();
+                        view.getAdminDemandDetail().getCategories());
+                view.getAdminDemandDetail().getSelectorWidgetPopup().center();
             }
         });
+        view.getAdminDemandDetail().getEditLocBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.initLocalityWidget(
+                        view.getAdminDemandDetail().getSelectorWidgetPopup(),
+                        Constants.WITH_CHECK_BOXES,
+                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                        view.getAdminDemandDetail().getLocalities());
+                view.getAdminDemandDetail().getSelectorWidgetPopup().center();
+            }
+        });
+        view.getAdminDemandDetail().getSelectorWidgetPopup().addCloseHandler(
+                new CloseHandler<PopupPanel>() {
+                    @Override
+                    public void onClose(CloseEvent<PopupPanel> event) {
+                        if (view.getAdminDemandDetail().getSelectorWidgetPopup()
+                                .getWidget() instanceof CategorySelectorView) {
+                            view.getAdminDemandDetail().setCategories(
+                                    ((CategorySelectorView) view.getAdminDemandDetail()
+                                        .getSelectorWidgetPopup().getWidget())
+                                        .getCellListDataProvider().getList());
+                        } else if (view.getAdminDemandDetail().getSelectorWidgetPopup()
+                                .getWidget() instanceof LocalitySelectorView) {
+                            view.getAdminDemandDetail().setLocalities(
+                                    ((LocalitySelectorView) view.getAdminDemandDetail()
+                                        .getSelectorWidgetPopup().getWidget())
+                                        .getCellListDataProvider().getList());
+                        }
+                    }
+                });
     }
 
     /**

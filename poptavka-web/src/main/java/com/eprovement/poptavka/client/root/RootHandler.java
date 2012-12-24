@@ -237,6 +237,9 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
         //forward user to welcome view of appropriate module according to his roles
         if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.ADMIN)) {
+            eventBus.goToAdminModule(null, Constants.NONE);
+        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER)) {
             eventBus.goToSupplierDemandsModule(null, Constants.NONE);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(

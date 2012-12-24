@@ -7,9 +7,6 @@ import com.eprovement.poptavka.client.service.demand.AdminRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.domain.enums.LocalityType;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
@@ -168,62 +165,6 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    //------------------- DEMAND SECTION - CATEGORY SECTION. -------------------------------
-    public void onGetAdminDemandRootCategories() {
-        categoryService.getAllRootCategories(new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> result) {
-                eventBus.displayAdminDemandCategories(result);
-            }
-        });
-    }
-
-    public void onGetAdminDemandSubCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> result) {
-                eventBus.displayAdminDemandCategories(result);
-            }
-        });
-    }
-
-    public void onGetAdminDemandParentCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> result) {
-                eventBus.doBackDemandCategories(result);
-            }
-        });
-    }
-
-    //------------------- DEMAND SECTION - LOCALITY SECTION. -------------------------------
-    public void onGetAdminDemandRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> result) {
-                eventBus.displayAdminDemandLocalities(result);
-            }
-        });
-    }
-
-    public void onGetAdminDemandSubLocalities(String locCode) {
-        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> result) {
-                eventBus.displayAdminDemandLocalities(result);
-            }
-        });
-    }
-
-    public void onGetAdminDemandParentLocalities(String locCode) {
-        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> result) {
-                eventBus.doBackDemandLocalities(result);
-            }
-        });
-    }
-
     /**********************************************************************************************
      ***********************  SUPPLIER SECTION. *****************************************************
      **********************************************************************************************/
@@ -251,62 +192,6 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             @Override
             public void onSuccess(FullSupplierDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
-            }
-        });
-    }
-
-    //----------------------- SUPPLIER SECTION - CATEGORY SECTION. ---------------------------------
-    public void onGetAdminSupplierRootCategories() {
-        categoryService.getAllRootCategories(new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> result) {
-                eventBus.displayAdminSupplierCategories(result);
-            }
-        });
-    }
-
-    public void onGetAdminSupplierSubCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> result) {
-                eventBus.displayAdminSupplierCategories(result);
-            }
-        });
-    }
-
-    public void onGetAdminSupplierParentCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> result) {
-                eventBus.doBackSupplierCategories(result);
-            }
-        });
-    }
-
-    //-------------------------- SUPPLIER SECTION - LOCALITY SECTION. -----------------------------
-    public void onGetAdminSupplierRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> result) {
-                eventBus.displayAdminDemandLocalities(result);
-            }
-        });
-    }
-
-    public void onGetAdminSupplierSubLocalities(String locCode) {
-        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> result) {
-                eventBus.displayAdminSupplierLocalities(result);
-            }
-        });
-    }
-
-    public void onGetAdminSupplierParentLocalities(String locCode) {
-        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> result) {
-                eventBus.doBackSupplierLocalities(result);
             }
         });
     }

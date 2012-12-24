@@ -4,6 +4,9 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.category.CategoryCell;
+import com.eprovement.poptavka.client.common.category.CategorySelectorView;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -19,12 +22,15 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -160,6 +166,47 @@ public class AdminSuppliersPresenter
         addRollbackButtonHandler();
         addRefreshButtonHandler();
         addDetailUpdateBtnHandler();
+        view.getAdminSupplierDetail().getEditCatBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.initCategoryWidget(
+                        view.getAdminSupplierDetail().getSelectorWidgetPopup(),
+                        Constants.WITH_CHECK_BOXES,
+                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                        view.getAdminSupplierDetail().getCategories());
+                view.getAdminSupplierDetail().getSelectorWidgetPopup().center();
+            }
+        });
+        view.getAdminSupplierDetail().getEditLocBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.initLocalityWidget(
+                        view.getAdminSupplierDetail().getSelectorWidgetPopup(),
+                        Constants.WITH_CHECK_BOXES,
+                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                        view.getAdminSupplierDetail().getLocalities());
+                view.getAdminSupplierDetail().getSelectorWidgetPopup().center();
+            }
+        });
+        view.getAdminSupplierDetail().getSelectorWidgetPopup().addCloseHandler(
+                new CloseHandler<PopupPanel>() {
+                    @Override
+                    public void onClose(CloseEvent<PopupPanel> event) {
+                        if (view.getAdminSupplierDetail().getSelectorWidgetPopup()
+                                .getWidget() instanceof CategorySelectorView) {
+                            view.getAdminSupplierDetail().setCategories(
+                                    ((CategorySelectorView) view.getAdminSupplierDetail()
+                                        .getSelectorWidgetPopup().getWidget())
+                                        .getCellListDataProvider().getList());
+                        } else if (view.getAdminSupplierDetail().getSelectorWidgetPopup()
+                                .getWidget() instanceof LocalitySelectorView) {
+                            view.getAdminSupplierDetail().setLocalities(
+                                    ((LocalitySelectorView) view.getAdminSupplierDetail()
+                                        .getSelectorWidgetPopup().getWidget())
+                                        .getCellListDataProvider().getList());
+                        }
+                    }
+                });
     }
 
     /*
@@ -167,7 +214,6 @@ public class AdminSuppliersPresenter
      */
     private void addPageChangeHandler() {
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent arg0) {
                 int page = view.getPager().getPageStart() / view.getPageSize();
@@ -182,7 +228,6 @@ public class AdminSuppliersPresenter
      */
     private void setVerificationColumnUpdater() {
         view.getVerificationColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 for (Verification verification : Verification.values()) {
@@ -203,7 +248,6 @@ public class AdminSuppliersPresenter
      */
     private void setCertifiedColumnUpdater() {
         view.getCertifiedColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, Boolean>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, Boolean value) {
                 if (object.isCertified() != value) {
@@ -222,7 +266,6 @@ public class AdminSuppliersPresenter
      */
     private void setTypeColumnUpdater() {
         view.getSupplierTypeColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 for (BusinessType businessType : BusinessType.values()) {
@@ -245,7 +288,6 @@ public class AdminSuppliersPresenter
      */
     private void setNameColumnUpdater() {
         view.getSupplierNameColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 if (!object.getCompanyName().equals(value)) {
@@ -264,7 +306,6 @@ public class AdminSuppliersPresenter
      */
     private void setSupplierIdColumnUpdater() {
         view.getSupplierIdColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 view.getAdminSupplierDetail().setSupplierDetail(object);
@@ -277,7 +318,6 @@ public class AdminSuppliersPresenter
      */
     private void addCommitButtonHandler() {
         view.getCommitBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
@@ -300,7 +340,6 @@ public class AdminSuppliersPresenter
      */
     private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
@@ -324,7 +363,6 @@ public class AdminSuppliersPresenter
      */
     private void addRefreshButtonHandler() {
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
@@ -342,7 +380,6 @@ public class AdminSuppliersPresenter
      */
     private void addDetailUpdateBtnHandler() {
         view.getAdminSupplierDetail().getUpdateBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.addSupplierToCommit(view.getAdminSupplierDetail().getUpdatedSupplierDetail());

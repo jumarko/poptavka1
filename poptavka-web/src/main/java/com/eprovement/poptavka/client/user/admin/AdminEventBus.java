@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.user.admin;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
-import com.eprovement.poptavka.client.user.admin.tab.AdminDemandInfoPresenter;
+//import com.eprovement.poptavka.client.user.admin.tab.AdminDemandInfoPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminDemandsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminEmailActivationsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminInvoicesPresenter;
@@ -14,7 +14,6 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminPaymentMethodsPresente
 import com.eprovement.poptavka.client.user.admin.tab.AdminPermissionsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminPreferencesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminProblemsPresenter;
-import com.eprovement.poptavka.client.user.admin.tab.AdminSupplierInfoPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminSuppliersPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -90,8 +89,12 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet);
-//    , List<CategoryDetail> categories
+            List<CategoryDetail> categoriesToSet);
+
+    @Event(forwardToParent = true)
+    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
+            List<LocalityDetail> categoriesToSet);
+
     /* Admin module forward section - comunication with parent widget*/
     @Event(forwardToParent = true)
     void clearSearchContent();
@@ -107,10 +110,10 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(forwardToParent = true)
     void loginFromSession();
+
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/
-
     /** Module Initializatin section. **/
     //display widget in content area
     @Event(handlers = AdminPresenter.class)
@@ -239,10 +242,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(handlers = AdminProblemsPresenter.class)
     void displayAdminTabProblems(List<ProblemDetail> clients);
 
-    /*********************** DISPLAY LOOP DATA ***************************************************/
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminTabDemandsLoop(List<FullDemandDetail> list);
-
     /*********************** SHOW DETAILS ********************************************************/
     @Event(handlers = AdminAccessRolesPresenter.class)
     void showDialogBox();
@@ -286,78 +285,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(handlers = AdminProblemsPresenter.class)
     void addProblemToCommit(ProblemDetail problemDetail);
-
-    /*********************** CATEGORIES **********************************************************/
-    //GET ROOT
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandRootCategories();
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierRootCategories();
-
-    //GET SUB
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandSubCategories(Long catId);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierSubCategories(Long catId);
-
-    //GET PARENT
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandParentCategories(Long catId);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierParentCategories(Long catId);
-
-    //DISPLAY
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminDemandCategories(List<CategoryDetail> list);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void displayAdminSupplierCategories(List<CategoryDetail> list);
-
-    //OTHER
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void doBackDemandCategories(List<CategoryDetail> list);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void doBackSupplierCategories(List<CategoryDetail> list);
-
-    /*********************** LOCALITIES ***********************************************************/
-    //GET ROOT
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandRootLocalities();
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierRootLocalities();
-
-    //GET SUB
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandSubLocalities(String locCode);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierSubLocalities(String locCode);
-
-    //GET PARENT
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandParentLocalities(String locCode);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierParentLocalities(String locCode);
-
-    //DISPLAY
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminDemandLocalities(List<LocalityDetail> list);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void displayAdminSupplierLocalities(List<LocalityDetail> list);
-
-    //OTHER
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void doBackDemandLocalities(List<LocalityDetail> list);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void doBackSupplierLocalities(List<LocalityDetail> list);
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface.                          */

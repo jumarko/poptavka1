@@ -193,6 +193,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         //forward user to welcome view of appropriate module according to his roles
         if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.ADMIN)) {
+            eventBus.goToAdminModule(null, widgetToLoad);
+        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER)) {
             eventBus.goToSupplierDemandsModule(null, widgetToLoad);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(

@@ -1,68 +1,73 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-	<g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
-		<g:west size="15">
-			<g:HTMLPanel>
-				<ul>
-					<li>
-						<g:Button ui:field="demandsButton">
-							<ui:msg key="demands">Demands</ui:msg>
-						</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="clientsButton">
-							<ui:msg key="users">Clients</ui:msg>
-						</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="suppliersButton">
-							<ui:msg key="suppliers">Suppliers</ui:msg>
-						</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="offersButton">
-							<ui:msg key="offers">Offers</ui:msg>
-						</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="accessRolesButton">AccessRole</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="emailActivationsButton">EmailActivation</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="invoicesButton">Invoice</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="messagesButton">Message</g:Button>
-					</li>
-<!--					<li>
-						<g:Button ui:field="ourPaymentDetailsButton">OurPaymentDetails</g:Button>
-					</li>-->
-					<li>
-						<g:Button ui:field="paymentMethodsButton">PaymentMethod</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="permissionsButton">Permission</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="preferencesButton">Preference</g:Button>
-					</li>
-					<li>
-						<g:Button ui:field="problemsButton">Problem</g:Button>
-					</li>
-				</ul>
-			</g:HTMLPanel>
-		</g:west>
-		<g:center>
-			<g:ScrollPanel>
-				<g:SimplePanel ui:field="contentPanel"/>
-			</g:ScrollPanel>
-		</g:center>
-	</g:DockLayoutPanel>
+    <g:DockLayoutPanel unit="PX" styleName='{res.layout.fullSize}'>
+        <g:west size="180">
+            <g:HTMLPanel>
+                <!-- Admin submenu -->
+                <div ui:field="supMenu" style="display: block;">
+                    <div class='{res.layout.submenuHeader}'>
+                        Tables:
+                    </div>
+                    <ul class='{res.layout.submenuList}'>
+                        <li>
+                            <g:Button ui:field="demandsButton">
+                                <ui:msg key="demands">Demands</ui:msg>
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="clientsButton">
+                                <ui:msg key="users">Clients</ui:msg>
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="suppliersButton">
+                                <ui:msg key="suppliers">Suppliers</ui:msg>
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="offersButton">
+                                <ui:msg key="offers">Offers</ui:msg>
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="accessRolesButton">AccessRole</g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="emailActivationsButton">EmailActivation</g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="invoicesButton">Invoice</g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="messagesButton">Message</g:Button>
+                        </li>
+                        <!--					<li>
+                                  						<g:Button ui:field="ourPaymentDetailsButton">OurPaymentDetails</g:Button>
+                   					</li>-->
+                        <li>
+                            <g:Button ui:field="paymentMethodsButton">PaymentMethod</g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="permissionsButton">Permission</g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="preferencesButton">Preference</g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="problemsButton">Problem</g:Button>
+                        </li>
+                    </ul>
+                </div>
+            </g:HTMLPanel>
+        </g:west>
+        <g:center>
+            <g:ScrollPanel>
+                <g:SimplePanel ui:field="contentPanel"/>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

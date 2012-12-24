@@ -169,21 +169,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align='right'>
-                        <g:VerticalPanel ui:field = "editCatPanel">
-                            <g:Label ui:field="catPath"/>
-                            <g:HorizontalPanel>
-                                <g:ListBox ui:field = "editCatList" visibleItemCount='10' width = '330' />
-                            </g:HorizontalPanel>
-                            <g:HorizontalPanel>
-                                <g:Button ui:field = "rootCatBtn">Root</g:Button>
-                                <g:Button ui:field = "backCatBtn">Back</g:Button>
-                                <g:Button ui:field = "finnishCatBtn">Finnish</g:Button>
-                            </g:HorizontalPanel>
-                        </g:VerticalPanel>
-                    </td>
-                </tr>
-                <tr>
                     <td  colspan="2" class='{style.label}'>
 <!--                        <ui:msg key='demandLocalityList'>Locality List</ui:msg>-->
                         <g:Label>Locality List</g:Label>
@@ -202,21 +187,6 @@
                 <tr>
                     <td>
                         <lsv:LocalitySelectorView/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <g:VerticalPanel ui:field="editLocPanel">
-                            <g:Label ui:field="locPath"/>
-                            <g:HorizontalPanel>
-                                <g:ListBox ui:field = "editLocList" visibleItemCount='10' width = '330'/>
-                            </g:HorizontalPanel>
-                            <g:HorizontalPanel>
-                                <g:Button ui:field = "rootLocBtn">Root</g:Button>
-                                <g:Button ui:field = "backLocBtn">Back</g:Button>
-                                <g:Button ui:field = "finnishLocBtn">Finnish</g:Button>
-                            </g:HorizontalPanel>
-                        </g:VerticalPanel>
                     </td>
                 </tr>
                 <tr>

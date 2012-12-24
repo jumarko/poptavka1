@@ -18,22 +18,21 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author ivan.vlcek, jarko
  */
-public class AdminDemandInfoView extends Composite implements
-        AdminDemandInfoPresenter.AdminDemandInfoInterface {
+public class AdminDemandInfoView extends Composite {
 
     private static AdminDemandInfoViewUiBinder uiBinder = GWT.create(AdminDemandInfoViewUiBinder.class);
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
@@ -50,132 +49,58 @@ public class AdminDemandInfoView extends Composite implements
     @UiField
     TextBox priceBox, clientID, maxOffers, minRating;
     @UiField
-    ListBox demandStatus, demandType, editCatList,
-    editLocList, categoryList, localityList;
+    ListBox demandStatus, demandType, categoryList, localityList;
     @UiField
-    Button editCatBtn, editLocBtn, createButton, updateButton,
-    finnishCatBtn, finnishLocBtn, backCatBtn, backLocBtn,
-    rootCatBtn, rootLocBtn;
-    @UiField
-    VerticalPanel editCatPanel, editLocPanel;
-    @UiField
-    Label catPath, locPath;
+    Button editCatBtn, editLocBtn, createButton, updateButton;
     private FullDemandDetail demandInfo;
-    private PopupPanel categorySelectorPopup;
+    private ArrayList<CategoryDetail> categories;
+    private ArrayList<LocalityDetail> localities;
+    private PopupPanel selectorWidgetPopup;
 
-    @Override
-    public PopupPanel getCategorySelectorPopup() {
-        return categorySelectorPopup;
+    public PopupPanel getSelectorWidgetPopup() {
+        return selectorWidgetPopup;
     }
 
-    @Override
     public Widget getWidgetView() {
         return this;
     }
 
-    @Override
     public Button getUpdateBtn() {
         return updateButton;
     }
 
-    @Override
     public Button getEditCatBtn() {
         return editCatBtn;
     }
 
-    @Override
     public Button getEditLocBtn() {
         return editLocBtn;
     }
 
-    @Override
-    public Button getFinnishCatBtn() {
-        return finnishCatBtn;
-    }
-
-    @Override
-    public Button getFinnishLocBtn() {
-        return finnishLocBtn;
-    }
-
-    @Override
-    public ListBox getEditCatList() {
-        return editCatList;
-    }
-
-    @Override
-    public ListBox getEditLocList() {
-        return editLocList;
-    }
-
-    @Override
-    public Button getBackCatBtn() {
-        return backCatBtn;
-    }
-
-    @Override
-    public Button getBackLocBtn() {
-        return backLocBtn;
-    }
-
-    @Override
-    public Button getRootCatBtn() {
-        return rootCatBtn;
-    }
-
-    @Override
-    public Button getRootLocBtn() {
-        return rootLocBtn;
-    }
-
-    @Override
-    public VerticalPanel getEditCatPanel() {
-        return editCatPanel;
-    }
-
-    @Override
-    public VerticalPanel getEditLocPanel() {
-        return editLocPanel;
-    }
-
-    @Override
     public ListBox getCategoryList() {
         return categoryList;
     }
 
-    @Override
     public ListBox getLocalityList() {
         return localityList;
     }
 
-    @Override
-    public Label getCatPath() {
-        return catPath;
-    }
-
-    @Override
-    public Label getLocPath() {
-        return locPath;
-    }
-
     public AdminDemandInfoView() {
         initWidget(uiBinder.createAndBindUi(this));
-        editCatPanel.setVisible(false);
-        editLocPanel.setVisible(false);
-        editCatList.setEnabled(false);
-        editLocList.setEnabled(false);
-        initDemandInfoForm();
-        createCategorySelectorPopup();
+        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
+        expirationBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+        endDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+//        initDemandInfoForm();
+        createSelectorWidgetPopup();
     }
 
-    private void createCategorySelectorPopup() {
-        categorySelectorPopup = new PopupPanel(true);
-        categorySelectorPopup.setSize("300px", "300px");
-        categorySelectorPopup.setGlassEnabled(true);
-        categorySelectorPopup.hide();
+    private void createSelectorWidgetPopup() {
+        selectorWidgetPopup = new PopupPanel(true);
+        selectorWidgetPopup.setSize("300px", "300px");
+        selectorWidgetPopup.setGlassEnabled(true);
+        selectorWidgetPopup.hide();
     }
 
-    @Override
     public FullDemandDetail getUpdatedDemandDetail() {
         if (demandInfo == null) {
             return null;
@@ -198,78 +123,111 @@ public class AdminDemandInfoView extends Composite implements
         demandInfo.setMinRating(Integer.valueOf(minRating.getValue()));
         demandInfo.setDemandType(demandType.getItemText(demandType.getSelectedIndex()));
         demandInfo.setDemandStatus(DemandStatus.valueOf(demandStatus.getItemText(demandStatus.getSelectedIndex())));
+        demandInfo.setCategories(categories);
+        demandInfo.setLocalities(localities);
 
         return demandInfo;
     }
 
-    private void initDemandInfoForm() {
-        // initWidget(uiBinder.createAndBindUi(this));
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
-        expirationBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-        endDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+//    private void initDemandInfoForm() {
+//        // initWidget(uiBinder.createAndBindUi(this));
+//        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
+//        expirationBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+//        endDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+//    }
 
-        // Initialize the contact to null.
-        setDemandDetail(null);
+    public ArrayList<CategoryDetail> getCategories() {
+        return categories;
     }
 
-    @Override
-    public void setDemandDetail(FullDemandDetail contact) {
-        this.demandInfo = contact;
-        updateButton.setEnabled(contact != null);
-        if (contact != null) {
-            titleBox.setText(contact.getTitle());
-            descriptionBox.setText(contact.getDescription());
-            priceBox.setText(currencyFormat.format(contact.getPrice()));
-            endDateBox.setValue(contact.getEndDate());
-            expirationBox.setValue(contact.getValidToDate());
-            clientID.setText(String.valueOf(contact.getClientId()));
-            maxOffers.setText(String.valueOf(contact.getMaxOffers()));
-            minRating.setText(String.valueOf(contact.getMinRating()));
+    public void setCategories(List<CategoryDetail> categories) {
+        this.categories = new ArrayList<CategoryDetail>(categories);
+        setCategoryBox(categories);
+    }
 
-            // demand type settings
-            // Add the types to the status box.
-            final ClientDemandType[] types = ClientDemandType.values();
-            int i = 0;
-            int j = 0;
-            demandType.clear();
-            for (ClientDemandType type : types) {
-                demandType.addItem(type.getValue());
-                if (contact.getDemandType() != null
-                        && contact.getDemandType().equalsIgnoreCase(type.getValue())) {
-                    j = i;
-                }
-                i++;
+    public void setCategoryBox(List<CategoryDetail> categoriesList) {
+        categoryList.clear();
+        if (categoriesList != null) {
+            for (CategoryDetail cat : categoriesList) {
+                categoryList.addItem(cat.getName());
             }
-            demandType.setSelectedIndex(j);
 
-            // demand status settings
-            // Add the statuses to the status box.
-            final DemandStatus[] statuses = DemandStatus.values();
-            i = 0;
-            j = 0;
-            demandStatus.clear();
-            for (DemandStatus status : statuses) {
-                demandStatus.addItem(status.getValue());
-                if (contact.getDemandStatus() != null
-                        && contact.getDemandStatus() == DemandStatus.valueOf(status.getValue())) {
-                    j = i;
-                }
-                i++;
+        }
+    }
+
+    public ArrayList<LocalityDetail> getLocalities() {
+        return localities;
+    }
+
+    public void setLocalities(List<LocalityDetail> localities) {
+        this.localities = new ArrayList<LocalityDetail>(localities);
+        setLocalityBox(localities);
+    }
+
+    public void setLocalityBox(List<LocalityDetail> localitiesList) {
+        localityList.clear();
+        if (localitiesList != null) {
+            for (LocalityDetail loc : localitiesList) {
+                localityList.addItem(loc.getName());
             }
-            demandStatus.setSelectedIndex(j);
+        }
+    }
 
-            categoryList.clear();
-            if (contact.getCategories() != null) {
-                for (CategoryDetail cat : contact.getCategories()) {
-                    categoryList.addItem(cat.getName());
-                }
+    public FullDemandDetail getDemandDetail() {
+        return demandInfo;
+    }
 
-            }
-            localityList.clear();
-            if (contact.getLocalities() != null) {
-                for (LocalityDetail loc : contact.getLocalities()) {
-                    localityList.addItem(loc.getName());
+    public void setDemandDetail(FullDemandDetail demand) {
+        if (demand != null) {
+            this.demandInfo = demand;
+            this.categories = demand.getCategories();
+            this.localities = demand.getLocalities();
+
+            updateButton.setEnabled(demand != null);
+            if (demand != null) {
+                titleBox.setText(demand.getTitle());
+                descriptionBox.setText(demand.getDescription());
+                priceBox.setText(currencyFormat.format(demand.getPrice()));
+                endDateBox.setValue(demand.getEndDate());
+                expirationBox.setValue(demand.getValidToDate());
+                clientID.setText(String.valueOf(demand.getClientId()));
+                maxOffers.setText(String.valueOf(demand.getMaxOffers()));
+                minRating.setText(String.valueOf(demand.getMinRating()));
+
+                // demand type settings
+                // Add the types to the status box.
+                final ClientDemandType[] types = ClientDemandType.values();
+                int i = 0;
+                int j = 0;
+                demandType.clear();
+                for (ClientDemandType type : types) {
+                    demandType.addItem(type.getValue());
+                    if (demand.getDemandType() != null
+                            && demand.getDemandType().equalsIgnoreCase(type.getValue())) {
+                        j = i;
+                    }
+                    i++;
                 }
+                demandType.setSelectedIndex(j);
+
+                // demand status settings
+                // Add the statuses to the status box.
+                final DemandStatus[] statuses = DemandStatus.values();
+                i = 0;
+                j = 0;
+                demandStatus.clear();
+                for (DemandStatus status : statuses) {
+                    demandStatus.addItem(status.getValue());
+                    if (demand.getDemandStatus() != null
+                            && demand.getDemandStatus() == DemandStatus.valueOf(status.getValue())) {
+                        j = i;
+                    }
+                    i++;
+                }
+                demandStatus.setSelectedIndex(j);
+
+                setCategoryBox(demand.getCategories());
+                setLocalityBox(demand.getLocalities());
             }
         }
     }
