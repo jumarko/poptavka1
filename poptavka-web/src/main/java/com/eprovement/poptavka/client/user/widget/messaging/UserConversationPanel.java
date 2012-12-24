@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
@@ -125,6 +126,7 @@ public class UserConversationPanel extends Composite {
         //v domain entite nenachadza receiverID, ani sa nikde nepouziva, preco setuje
 //        messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
+        messageDetail.setSupplierId(Storage.getBusinessUserDetail().getSupplierId());
         return messageDetail;
     }
 
@@ -136,11 +138,6 @@ public class UserConversationPanel extends Composite {
      */
     public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
-        // TODO Marin - tu si musime overit ci dodavatel posiela odpoved na spravu od klienta. Ak dodavatel posle po
-        // dve spravy tak musime nastavit setReceiverId na klienta a nie na suppliera. Rovnako funguje GMAIL. ak poslem
-        // dve odpovede po sebe tak sa mi automaticky nastavi reveiver na adresata. Overit si to mozes napr. cez Storage
-        // kde mas aktualneho dodavatela a ak replyToMessage.getSenderId = storage.userId tak musis nastavit ako
-        // receivera klienta
         //v domain entite nenachadza receiverID, ani sa nikde nepouziva, preco setuje
 //        messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());

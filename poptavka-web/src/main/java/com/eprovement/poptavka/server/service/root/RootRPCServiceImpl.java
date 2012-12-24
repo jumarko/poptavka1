@@ -11,6 +11,8 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.Offer;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -42,6 +44,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Date;
 
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.lang.StringUtils;
@@ -291,10 +294,30 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public OfferMessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
-        //Implement sending offer
-        //What is the difference between question message and offer message - what attributes???
-        return new OfferMessageDetail();
+    public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
+        try {
+            Message message = messageService.newReply(this.messageService.getById(
+                    offerMessageToSend.getParentId()),
+                    this.generalService.find(User.class, offerMessageToSend.getSenderId()));
+            message.setBody(offerMessageToSend.getBody());
+            // TODO - no need to set up a subject since it will not be displayed in coverstaion? Discuss with Martin
+            message.setSubject("Offer for demand");
+            // TODO ivlcek - create converter for offer
+            Offer offer = new Offer();
+            offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
+            offer.setFinishDate(offerMessageToSend.getOfferFinishDate());
+            offer.setPrice(offerMessageToSend.getPrice());
+            offer.setState(generalService.find(OfferState.class, 2L));
+            offer.setDemand(message.getDemand());
+            offer.setCreated(new Date());
+            Offer offerFromDB = generalService.save(offer);
+            message.setOffer(offerFromDB);
+            messageService.send(message);
+            return messageConverter.convertToTarget(message);
+        } catch (MessageException ex) {
+            Logger.getLogger(RootRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     /**************************************************************************/

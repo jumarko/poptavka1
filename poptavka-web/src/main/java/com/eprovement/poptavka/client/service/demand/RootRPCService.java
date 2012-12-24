@@ -72,7 +72,7 @@ public interface RootRPCService extends RemoteService {
 
     MessageDetail sendQuestionMessage(MessageDetail messageToSend) throws RPCException;
 
-    OfferMessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException;
+    MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException;
 
     /**************************************************************************/
     /* Activation methods                                                     */

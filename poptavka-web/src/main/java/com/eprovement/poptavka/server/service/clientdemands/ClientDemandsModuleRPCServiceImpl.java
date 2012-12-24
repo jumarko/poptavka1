@@ -22,6 +22,7 @@ import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.server.util.SearchUtils;
 import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.ClientService;
@@ -42,7 +43,6 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -77,6 +77,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private OfferService offerService;
     private UserMessageService userMessageService;
     private MessageService messageService;
+    private DemandService demandService;
     //Converters
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
@@ -117,6 +118,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Autowired
     public void setMessageService(MessageService messageService) {
         this.messageService = messageService;
+    }
+
+    @Autowired
+    public void setDemandService(DemandService demandService) {
+        this.demandService = demandService;
     }
 
     //Converters
@@ -325,7 +331,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientOfferedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        return 1L;
+        return demandService.getClientDemandsWithOfferCount(findClient(userId));
     }
 
     /**
@@ -346,15 +352,27 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientDemandDetail> getClientOfferedDemands(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        List<ClientDemandDetail> list = new ArrayList<ClientDemandDetail>();
-        ClientDemandDetail c = new ClientDemandDetail();
-        c.setDemandId(1L);
-        c.setDemandTitle("demand title");
-        c.setPrice(BigDecimal.valueOf(10200));
-        c.setEndDate(new Date());
-        c.setValidToDate(new Date());
-        list.add(c);
-        return list;
+        // load list of client demands with offer
+        List<Demand> clientDemands = demandService.getClientDemandsWithOffer(findClient(userId));
+        ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
+
+        // load a map of unread messages for all client demands with offer, then iterate this map and
+        // match with clientDemands
+        Iterator it = messageService.getListOfClientDemandMessagesWithOfferUnreadSub(
+                generalService.find(User.class, userId)).entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            // key is messageId and val is number of unread submessages
+            Long messageId = (Long) pairs.getKey();
+            for (ClientDemandDetail cdd : cdds) {
+                if (cdd.getDemandId() == messageId) {
+                    cdd.setUnreadSubmessages(((Integer) pairs.getValue()).intValue());
+                    break;
+                }
+            }
+            it.remove();
+        }
+        return cdds;
     }
 
     /**
@@ -371,7 +389,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public long getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         Search backendSearch = getSearchForgetClientOfferedDemandOffers(searchDefinition, userId, demandID);
-
+        // TODO ivlcek - incorporate searchDefinition for this method
         return generalService.count(backendSearch);
     }
 

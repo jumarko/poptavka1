@@ -164,12 +164,15 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     public void onSendOfferMessage(OfferMessageDetail offerMessageToSend, final ViewType type) {
-        rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<OfferMessageDetail>(eventBus) {
+        rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
-            public void onSuccess(OfferMessageDetail sentMessage) {
+            public void onSuccess(MessageDetail sentMessage) {
                 //Zobrazit offer spravu tiez v konverzacii, alebo ta sa zobrazli
                 //len v SupplierContests???
-//                eventBus.addConversationMessage(sentMessage, type);
+                // TODO martin - presmerovat po poslani ponuky do noveho okna myOffers
+                eventBus.addConversationMessage(sentMessage, type);
+                GWT.log("Offer message [messageId=" + sentMessage.getMessageId()
+                        + "]  has been successfully sent to client");
             }
         });
     }

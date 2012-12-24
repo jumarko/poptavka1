@@ -170,8 +170,8 @@ public class DevelOfferQuestionWindow extends Composite {
             price = 0L;
         }
         offerMessageDetailImpl.setPrice(BigDecimal.valueOf(price));
-        offerMessageDetailImpl.setEndDate(dateBox.getValue());
-
+        offerMessageDetailImpl.setOfferFinishDate(dateBox.getValue());
+        offerMessageDetailImpl.setBody(replyTextArea.getText());
         return offerMessageDetailImpl;
     }
 

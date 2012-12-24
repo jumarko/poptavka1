@@ -2,6 +2,7 @@ package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import java.io.Serializable;
+import java.util.Date;
 
 
 public class OfferMessageDetail extends DemandMessageDetail
@@ -15,6 +16,7 @@ public class OfferMessageDetail extends DemandMessageDetail
     private long offerId;
     private String supplierName;
     private OfferStateType offerState;
+    private Date offerFinishDate;
 
 
     public void setSupplierId(long supplierId) {
@@ -47,5 +49,19 @@ public class OfferMessageDetail extends DemandMessageDetail
 
     public String getOfferState() {
         return offerState.getValue();
+    }
+
+    /**
+     * @return the offerFinishDate
+     */
+    public Date getOfferFinishDate() {
+        return offerFinishDate;
+    }
+
+    /**
+     * @param offerFinishDate the offerFinishDate to set
+     */
+    public void setOfferFinishDate(Date offerFinishDate) {
+        this.offerFinishDate = offerFinishDate;
     }
 }

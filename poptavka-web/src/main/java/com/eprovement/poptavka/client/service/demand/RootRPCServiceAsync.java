@@ -56,7 +56,7 @@ public interface RootRPCServiceAsync {
 
     void sendQuestionMessage(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
-    void sendOfferMessage(OfferMessageDetail offerMessageToSend, AsyncCallback<OfferMessageDetail> callback);
+    void sendOfferMessage(OfferMessageDetail offerMessageToSend, AsyncCallback<MessageDetail> callback);
 
     /**************************************************************************/
     /* Activation methods                                                     */
