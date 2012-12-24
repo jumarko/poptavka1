@@ -18,6 +18,7 @@ import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
+import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
@@ -332,6 +333,28 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     public long getDemandsCount(Category[] categories, Locality[] localities) {
         return this.getDao().getDemandsCount(categories, localities, ResultCriteria.EMPTY_CRITERIA);
+    }
+
+    @Override
+    public long getClientDemandsWithOfferCount(Client client) {
+        Preconditions.checkNotNull("Client must be specified for finding potential demands", client);
+        LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
+
+        final long demandsCount = getDao().getClientDemandsWithOfferCount(client);
+        LOGGER.debug("action=get_client_demands_with_offer_count status=finish client{} demands_count_size={}",
+                client, demandsCount);
+        return demandsCount;
+    }
+
+    @Override
+    public List<Demand> getClientDemandsWithOffer(Client client) {
+        Preconditions.checkNotNull("Client must be specified for finding potential demands", client);
+        LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
+
+        final List<Demand> demands = getDao().getClientDemandsWithOffer(client);
+        LOGGER.debug("action=get_client_demands_with_offer_count status=finish client{} demands_count_size={}",
+                client, demands);
+        return demands;
     }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------

@@ -57,6 +57,7 @@ public class Client extends BusinessUserRole {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Client");
+        sb.append(", ID=").append(this.getId());
         sb.append(", overalRating=").append(overalRating);
         sb.append('}');
         return sb.toString();

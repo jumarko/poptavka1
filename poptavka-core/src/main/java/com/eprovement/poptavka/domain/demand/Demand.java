@@ -72,7 +72,15 @@ import org.hibernate.validator.constraints.NotBlank;
                         + " where demandCategory.demand ="
                         + " demandLocality.demand"
                         + " and demandCategory.category.id in (:categoryIds)"
-                        + " and demandLocality.locality.id in (:localityIds)")
+                        + " and demandLocality.locality.id in (:localityIds)"),
+    @NamedQuery(name = "getClientDemandsWithOfferCount",
+                query = "select count(*) from Demand as demand, Offer as offer"
+                        + " where demand.client = :client"
+                        + " and offer.demand = demand"),
+    @NamedQuery(name = "getClientDemandsWithOffer",
+                query = "select demand from Demand as demand, Offer as offer"
+                        + " where demand.client = :client"
+                        + " and offer.demand = demand")
 })
 public class Demand extends DomainObject {
 

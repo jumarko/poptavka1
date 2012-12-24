@@ -140,6 +140,17 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         checkUserMessageExists(2L, potentialDemandConversation);
         checkUserMessageExists(3L, potentialDemandConversation);
         checkUserMessageExists(4L, potentialDemandConversation);
+
+        // the same test but returns UserMessage instead of Messages
+        final List<UserMessage> potentialDemandConversationUserMessages =
+                this.messageService.getPotentialDemandConversationUserMessages(threadRoot, supplier);
+
+        Assert.assertEquals(4, potentialDemandConversationUserMessages.size());
+        // check if all expected messages are in conversation
+        checkUserMessageExistsUserMessage(1L, potentialDemandConversationUserMessages);
+        checkUserMessageExistsUserMessage(3L, potentialDemandConversationUserMessages);
+        checkUserMessageExistsUserMessage(5L, potentialDemandConversationUserMessages);
+        checkUserMessageExistsUserMessage(7L, potentialDemandConversationUserMessages);
     }
 
     @Test
@@ -186,6 +197,21 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 (Object) 0, (Object) listOfClientDemandMessages.get(threadRoot300));
     }
 
+    @Test
+    public void testGetListOfClientDemandMessagesWithOfferUnread() {
+        final Message threadRoot1 = this.messageService.getById(1L);
+        final Message threadRoot200 = this.messageService.getById(200L);
+        final Message threadRoot300 = this.messageService.getById(300L);
+        final User client = this.generalService.find(User.class, 111111112L);
+        final Map<Long, Integer> listOfClientDemandMessagesWithOffer =
+                this.messageService.getListOfClientDemandMessagesWithOfferUnreadSub(client);
+        Assert.assertEquals("Inacurrate number of threadRoot messages selected",
+                1, listOfClientDemandMessagesWithOffer.size());
+
+        checkUserMessageIdExists(threadRoot300.getId(), listOfClientDemandMessagesWithOffer.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 1, (Object) listOfClientDemandMessagesWithOffer.get(threadRoot300.getId()));
+    }
 
     @Test
     public void testGetDescendants() {
@@ -387,6 +413,41 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                     @Override
                     public boolean evaluate(Object object) {
                         return messageId.equals(((Message) object).getId());
+                    }
+                }));
+    }
+
+    /**
+     * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
+     *
+     * @param messageId
+     * @param allUserMessages
+     */
+    private void checkUserMessageIdExists(final Long messageId, Collection<Long> allUserMessages) {
+        Assert.assertTrue(
+                "Message [id=" + messageId + "] expected to be in collection [" + allUserMessages + "] is not there.",
+                CollectionUtils.exists(allUserMessages, new Predicate() {
+                    @Override
+                    public boolean evaluate(Object object) {
+                        return messageId.equals(((Long) object));
+                    }
+                }));
+    }
+
+    /**
+     * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
+     *
+     * @param messageId
+     * @param allUserMessages
+     */
+    private void checkUserMessageExistsUserMessage(final Long userMessageId, Collection<UserMessage> allUserMessages) {
+        Assert.assertTrue(
+                "UserMessage [id=" + userMessageId + "] expected to be in collection ["
+                    + allUserMessages + "] is not there.",
+                CollectionUtils.exists(allUserMessages, new Predicate() {
+                    @Override
+                    public boolean evaluate(Object object) {
+                        return userMessageId.equals(((UserMessage) object).getId());
                     }
                 }));
     }

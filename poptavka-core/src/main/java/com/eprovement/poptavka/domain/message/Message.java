@@ -67,6 +67,18 @@ import org.hibernate.annotations.CascadeType;
                         + "where subUserMessage.isRead = false"
                         + " and subUserMessage.user = :user"
                         + " and message.demand is not null"
+                        + " and subMessage.offer is null"
+                        + " and message.sender = :sender\n"
+                        + "group by message.id"),
+        @NamedQuery(name = "getListOfClientDemandMessagesWithOfferUnreadSub",
+                query = "select message.id, count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join"
+                        + " subUserMessage.message as subMessage"
+                        + " right join subMessage.threadRoot as message\n"
+                        + "where subUserMessage.isRead = false"
+                        + " and subUserMessage.user = :user"
+                        + " and message.demand is not null"
+                        + " and subMessage.offer is not null"
                         + " and message.sender = :sender\n"
                         + "group by message.id"),
         @NamedQuery(name = "getLastChild",

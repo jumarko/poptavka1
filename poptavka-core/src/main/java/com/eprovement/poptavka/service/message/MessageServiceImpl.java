@@ -135,6 +135,13 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         return getDao().getPotentialDemandConversation(threadRoot, supplierUser);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserMessage> getPotentialDemandConversationUserMessages(Message threadRoot, User supplierUser) {
+        return getDao().getPotentialDemandConversationUserMessages(threadRoot, supplierUser);
+    }
+
     /**
      * Returns message thread root assigned to given demand.
      * @param demand
@@ -182,6 +189,13 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Transactional(readOnly = true)
     public Map<Message, Integer> getListOfClientDemandMessagesUnread(User user) {
         return getDao().getListOfClientDemandMessagesUnread(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<Long, Integer> getListOfClientDemandMessagesWithOfferUnreadSub(User user) {
+        return getDao().getListOfClientDemandMessagesWithOfferUnreadSub(user);
     }
 
     /** {@inheritDoc} */

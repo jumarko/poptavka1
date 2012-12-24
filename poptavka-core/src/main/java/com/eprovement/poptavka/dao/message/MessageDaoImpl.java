@@ -80,6 +80,22 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         return runNamedQuery("getPotentialDemandConversation", queryParams);
     }
 
+    /**
+     * Loads conversation between supplier and  client related to potential demand supplier's queries.
+     *
+     * @param threadRoot
+     * @param supplierUser
+     * @return list of user messages.
+     */
+    @Override
+    public List<UserMessage> getPotentialDemandConversationUserMessages(Message threadRoot, User supplierUser) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("threadRoot", threadRoot);
+        queryParams.put("supplier", supplierUser);
+
+        return runNamedQuery("getPotentialDemandConversationUserMessages", queryParams);
+    }
+
     @Override
     public List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
@@ -100,6 +116,12 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         return longValueMapToIntValueMap(getListOfClientDemandMessagesHelper(user,
                 "getListOfClientDemandMessagesUnreadSub"));
 
+    }
+
+    @Override
+    public Map<Long, Integer> getListOfClientDemandMessagesWithOfferUnreadSub(User user) {
+        return getUnreadSubMessagesForDemandMessageHelper(user,
+                "getListOfClientDemandMessagesWithOfferUnreadSub");
     }
 
     @Override
@@ -235,5 +257,28 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         }
         return result;
 
+    }
+
+    /**
+     * Retrieves a map of demand message ids, that is thread root messages, with number of unread sub-messages.
+     *
+     * @param user
+     * @param queryName
+     * @return map of thread root message ids and their number of unread sub-messages
+     */
+    private Map<Long, Integer> getUnreadSubMessagesForDemandMessageHelper(User user,
+            String queryName) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("sender", user);
+        queryParams.put("user", user);
+
+        List<Object[]> unread = runNamedQuery(
+                queryName,
+                queryParams);
+        Map<Long, Integer> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+        }
+        return unreadMap;
     }
 }

@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
 
 import javax.persistence.Query;
@@ -175,6 +176,19 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return buildResultCriteria(newDemandCriteria, resultCriteria).list();
     }
 
+    @Override
+    public long getClientDemandsWithOfferCount(Client client) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("client", client);
+        return (Long) runNamedQueryForSingleResult("getClientDemandsWithOfferCount", params);
+    }
+
+    @Override
+    public List<Demand> getClientDemandsWithOffer(Client client) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("client", client);
+        return  runNamedQuery("getClientDemandsWithOffer", params);
+    }
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
     public void setTreeItemDao(TreeItemDao treeItemDao) {

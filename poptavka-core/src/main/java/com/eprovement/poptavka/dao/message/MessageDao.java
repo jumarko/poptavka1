@@ -60,6 +60,15 @@ public interface MessageDao extends GenericDao<Message> {
     List<Message> getPotentialDemandConversation(Message message, User supplierUser);
 
     /**
+     * Loads conversation between supplier and  client related to potential demand supplier's queries.
+     *
+     * @param message
+     * @param supplierUser
+     * @return List of user messages
+     */
+    List<UserMessage> getPotentialDemandConversationUserMessages(Message message, User supplierUser);
+
+    /**
      * Returns message thread root assigned to given demand.
      * @param demand
      * @return
@@ -105,6 +114,18 @@ public interface MessageDao extends GenericDao<Message> {
      * demand message itself)
      */
     Map<Message, Integer> getListOfClientDemandMessagesUnread(User user);
+
+    /**
+     * Gets all the demand messages with offer of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param user
+     * @return a map keyed by the user's demand messages containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Long, Integer> getListOfClientDemandMessagesWithOfferUnreadSub(User user);
 
     /**
      * Gets all the descendants (not just the children) of every item

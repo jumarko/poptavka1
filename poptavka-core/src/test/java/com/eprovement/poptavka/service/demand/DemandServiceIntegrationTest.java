@@ -44,8 +44,10 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
-        dtd = "classpath:test.dtd")
+        "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/offer/OfferDataSet.xml" },
+        dtd = "classpath:test.dtd",
+        disableForeignKeyChecks = false)
 public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
@@ -63,6 +65,9 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     @Autowired
     private GeneralService generalService;
 
+
+    private User user;
+    private BusinessUser businessUser;
 
     @Test
     public void testGetDemandTypes() {
@@ -460,6 +465,20 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertThat(demandsCount, Is.is(2L));
     }
 
+    @Test
+    public void testGetClientDemandsWithOffer() {
+        Client client = generalService.find(Client.class, 111111112L);
+        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 2, client.getDemands().size());
+        Client client2 = generalService.find(Client.class, 111111113L);
+        Assert.assertEquals("Number of client demands [" + client2.toString() + "]", 1, client2.getDemands().size());
+
+        Assert.assertEquals("Number of client demands with offer [" + client.toString() + "]", 2L,
+                demandService.getClientDemandsWithOfferCount(client));
+        checkDemandExists(demandService.getClientDemandsWithOffer(client), 2L);
+
+        Assert.assertEquals("Number of client demands with offer [" + client2.toString() + "]", 0L,
+                demandService.getClientDemandsWithOfferCount(client2));
+    }
 
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------

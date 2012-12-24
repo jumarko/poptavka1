@@ -10,6 +10,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.user.Client;
 
 import java.util.List;
 import java.util.Map;
@@ -194,4 +195,18 @@ public interface DemandDao extends GenericDao<Demand> {
 
     long getDemandsCount(Category[] categories, Locality[] localities,
             ResultCriteria resultCriteria);
+
+    /**
+     * Get number of all client demands that have at least one offer.
+     * @param client - client's demands
+     * @return number of client's demands with offers
+     */
+    long getClientDemandsWithOfferCount(Client client);
+
+    /**
+     * Get all client demands that have at least one offer.
+     * @param client - client's demands
+     * @return client's demands with offers
+     */
+    List<Demand> getClientDemandsWithOffer(Client client);
 }

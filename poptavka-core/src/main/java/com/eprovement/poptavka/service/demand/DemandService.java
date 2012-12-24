@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericService;
 
@@ -232,5 +233,19 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return number of demands related to the <code>category</code>(-ies).
      */
     long getDemandsCount(Category[] categories, Locality[] localities);
+
+    /**
+     * Get number of all client demands that have at least one offer.
+     * @param client - client's demands
+     * @return number of client's demands with offers
+     */
+    long getClientDemandsWithOfferCount(Client client);
+
+    /**
+     * Get all client demands that have at least one offer.
+     * @param client - client's demands
+     * @return client's demands with offers
+     */
+    List<Demand> getClientDemandsWithOffer(Client client);
 
 }

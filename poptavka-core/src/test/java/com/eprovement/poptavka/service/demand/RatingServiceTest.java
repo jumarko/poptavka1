@@ -47,7 +47,7 @@ public class RatingServiceTest extends DBUnitIntegrationTest {
 
     @Test
     public void getAvgRatingClientTest() {
-        Integer result = ratingService.getAvgRating(client11);
+        Integer result = ratingService.getAvgRating(client12);
         Assert.assertEquals((Integer) 98, result);
 
         result = ratingService.getAvgRating(client13);
