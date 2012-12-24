@@ -392,8 +392,8 @@ public interface LocalizableMessages extends Messages {
     String addressDistrict();
     String addressZipCode();
     String addressStreet();
-    String addressLoadingInfoLabel();
-    String addressSearchShortCities();
+    String addressLoadingInfoLabel(int minCharsCity);
+    String addressMyCityIsLessInfoLabel(int minCharsCity);
 
     //Setting
     String notifyImmediately();

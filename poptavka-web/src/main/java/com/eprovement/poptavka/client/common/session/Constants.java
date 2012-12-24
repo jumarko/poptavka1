@@ -175,4 +175,8 @@ public final class Constants {
     public static final int SUBJECT_HELP = 1;
     public static final int SUBJECT_GENERAL_QUESTION = 0;
 
+    /**************************************************************************/
+    /* Address selector                                                       */
+    /**************************************************************************/
+    public static final int MIN_CHARS_TO_SEARCH = 3;
 }

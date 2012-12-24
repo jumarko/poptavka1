@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.address;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -101,6 +102,11 @@ public class AddressSelectorPresenter
             @Override
             public void onFocus(FocusEvent event) {
                 //show actual suggest list and remove error style if any
+                if (view.getCitySuggestBox().getText().isEmpty()) {
+                    MySuggestDisplay display = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
+                    display.setLoadingPopupPosition(view.getCitySuggestBox());
+                    display.showShortCitiesInfo(Constants.MIN_CHARS_TO_SEARCH);
+                }
                 view.getCitySuggestBox().showSuggestionList();
                 view.getCitySuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());
                 view.getCityErrorLabel().setText("");

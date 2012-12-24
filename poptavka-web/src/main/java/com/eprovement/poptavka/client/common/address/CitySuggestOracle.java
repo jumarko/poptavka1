@@ -5,7 +5,7 @@
 package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
@@ -25,12 +25,13 @@ import java.util.List;
 public class CitySuggestOracle extends MultiWordSuggestOracle {
 
     private static final int SHORT_CITIES_TO_SEARCH = 2;
-    private static final int MIN_CHARS_TO_SEARCH = 3;
     private static final String WHITESPACE_STRING = " ";
     private static final String NOTHING = "";
     private static final String LOCALITY_SEPARATOR = ", ";
     //Need to provide RPC and EventBus
     private AddressSelectorPresenter addressSelectorPresenter = null;
+    private Request suggestRequest = null;
+    private Callback callback = null;
 
     public CitySuggestOracle(AddressSelectorPresenter presenter) {
         this.addressSelectorPresenter = presenter;
@@ -38,19 +39,13 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
 
     @Override
     public void requestSuggestions(final Request suggestRequest, final Callback callback) {
-        addressSelectorPresenter.getCitySuggestionPopup().setLoadingPopupPosition(
-                addressSelectorPresenter.getView().getCitySuggestBox());
-        if (suggestRequest.getQuery().length() == SHORT_CITIES_TO_SEARCH) {
-            addressSelectorPresenter.getCitySuggestionPopup().showLoadingInfoLabel(
-                    Storage.MSGS.addressSearchShortCities());
-            addressSelectorPresenter.getLocalityService().getShortCityWithStateSuggestions(suggestRequest.getQuery(),
-                    new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
-                        @Override
-                        public void onSuccess(List<LocalitySuggestionDetail> result) {
-                            responseSuggestions(suggestRequest, callback, result);
-                        }
-                    });
-        } else if (suggestRequest.getQuery().length() >= MIN_CHARS_TO_SEARCH) {
+        this.suggestRequest = suggestRequest;
+        this.callback = callback;
+        if (suggestRequest.getQuery().length() < Constants.MIN_CHARS_TO_SEARCH) {
+            addressSelectorPresenter.getCitySuggestionPopup().setOracle(this);
+            addressSelectorPresenter.getCitySuggestionPopup().showShortCitiesInfo(Constants.MIN_CHARS_TO_SEARCH);
+            addressSelectorPresenter.getCitySuggestionPopup().hideSuggestions();
+        } else {
             addressSelectorPresenter.getCitySuggestionPopup().showLoading();
             addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(suggestRequest.getQuery(),
                     new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
@@ -59,16 +54,35 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
                             responseSuggestions(suggestRequest, callback, result);
                         }
                     });
-        } else {
-            addressSelectorPresenter.getCitySuggestionPopup().showLoadingInfoLabel(
-                    Storage.MSGS.addressLoadingInfoLabel());
         }
+    }
+
+    public void requestShortCitySuggestions() {
+        addressSelectorPresenter.getCitySuggestionPopup().showLoading();
+        addressSelectorPresenter.getLocalityService().getShortCityWithStateSuggestions(suggestRequest.getQuery(),
+                new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
+                    @Override
+                    public void onSuccess(List<LocalitySuggestionDetail> result) {
+                        responseSuggestions(suggestRequest, callback, result);
+                    }
+                });
     }
 
     private void responseSuggestions(final Request suggestRequest, final Callback callback,
             List<LocalitySuggestionDetail> result) {
+        if (result.isEmpty()) {
+            addressSelectorPresenter.getCitySuggestionPopup().showNoCitiesFound();
+        } else {
+            CitySuggestOracle.Response response = new CitySuggestOracle.Response();
+            response.setSuggestions(convertToFormattedSuggestions(suggestRequest.getQuery(), result));
+            addressSelectorPresenter.getCitySuggestionPopup().hideLoadingPopup();
+            callback.onSuggestionsReady(suggestRequest, response);
+        }
+    }
+
+    private void responseEmptySuggestions(final Request suggestRequest, final Callback callback) {
         CitySuggestOracle.Response response = new CitySuggestOracle.Response();
-        response.setSuggestions(convertToFormattedSuggestions(suggestRequest.getQuery(), result));
+        response.setSuggestions(new ArrayList<LocalitySuggestionDetail>());
         addressSelectorPresenter.getCitySuggestionPopup().hideLoadingPopup();
         callback.onSuggestionsReady(suggestRequest, response);
     }
