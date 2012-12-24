@@ -224,7 +224,7 @@ public class ClientDemandsPresenter
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+            this.detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel(), type);
         }
     }
 
@@ -400,14 +400,7 @@ public class ClientDemandsPresenter
             public void onClick(ClickEvent event) {
                 view.setConversationTableVisible(false);
                 view.setDemandTableVisible(true);
-                //ziskaj nanovo data?
-                if (view.getDemandGrid().getDataProvider() == null) {
-                    view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
-                            view.getDemandGrid().getStart(),
-                            view.getDemandGrid().getPageSize(),
-                            searchDataHolder,
-                            null));
-                }
+                view.getDemandGrid().refresh();
             }
         });
     }

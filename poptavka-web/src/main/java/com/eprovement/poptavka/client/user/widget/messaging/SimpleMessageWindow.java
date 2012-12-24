@@ -147,6 +147,7 @@ public class SimpleMessageWindow extends Composite {
             if (!messageDetail.isRead()) {
                 NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
                 tableColumns.getItem(0).removeClassName(Storage.RSCS.message().messagesUnread());
+                tableColumns.getItem(DATE_POS).removeClassName(Storage.RSCS.message().messagesUnread());
                 messagePreview.removeClassName(Storage.RSCS.message().messagesUnread());
                 messagePreview.removeClassName(Storage.RSCS.message().messagesUnread());
                 //set message read

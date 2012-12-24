@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.Range;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -477,5 +478,11 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
     public void cancelRangeChangedEvent() {
         cancelRangeChangedEvent = true;
+    }
+
+    public void refresh() {
+        Range range = getVisibleRange();
+        setVisibleRangeAndClearData(range, true); //1st way
+//        RangeChangeEvent.fire(this, range);              //2nd way
     }
 }

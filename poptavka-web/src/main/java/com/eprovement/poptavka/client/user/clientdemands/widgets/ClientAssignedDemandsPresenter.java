@@ -138,7 +138,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+            this.detailSection.initDetailWrapper(view.getTableWidget().getGrid(), view.getWrapperPanel(), type);
         }
     }
 

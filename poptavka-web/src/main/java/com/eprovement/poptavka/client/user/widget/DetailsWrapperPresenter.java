@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.widget;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -36,6 +37,7 @@ public class DetailsWrapperPresenter
     public static final int CHAT = 2;
     /** Class Attributes. **/
     private ViewType type;
+    private UniversalAsyncGrid table = null;
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
@@ -114,9 +116,11 @@ public class DetailsWrapperPresenter
      * @param type
      *            type of view, where is this widget loaded
      */
-    public void initDetailWrapper(SimplePanel detailSection, ViewType viewType) {
+    public void initDetailWrapper(UniversalAsyncGrid table,
+            SimplePanel detailSection, ViewType viewType) {
         detailSection.setWidget(view.getWidgetView());
         this.type = viewType;
+        this.table = table;
     }
 
     /**************************************************************************/
@@ -232,6 +236,7 @@ public class DetailsWrapperPresenter
             public void onChange(ChangeEvent event) {
                 String messagId = ((TextBox) event.getSource()).getText();
                 eventBus.requestReadStatusUpdate(Arrays.asList(Long.valueOf(messagId)), true);
+                table.refresh();
             }
         });
     }

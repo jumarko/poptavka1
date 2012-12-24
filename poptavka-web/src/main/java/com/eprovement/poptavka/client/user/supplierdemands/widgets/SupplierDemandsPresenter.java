@@ -141,7 +141,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
+            this.detailSection.initDetailWrapper(view.getTableWidget().getGrid(), view.getDetailPanel(), type);
             this.detailSection.getView().getReplyHolder().getOfferReplyBtn().setVisible(true);
             this.detailSection.setTabVisibility(DetailsWrapperPresenter.SUPPLIER, false);
         }
