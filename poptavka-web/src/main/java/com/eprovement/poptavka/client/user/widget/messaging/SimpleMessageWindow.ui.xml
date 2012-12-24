@@ -33,5 +33,6 @@
                 </div>
             </div>
         </div>
+        <g:TextBox ui:field="updateRead" visible="false" />
     </g:HTMLPanel>
 </ui:UiBinder>

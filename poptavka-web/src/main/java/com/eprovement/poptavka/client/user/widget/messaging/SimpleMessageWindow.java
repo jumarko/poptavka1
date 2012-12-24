@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
@@ -16,6 +17,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * Dummy message with no actions, just to display data.
@@ -25,25 +30,28 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 public class SimpleMessageWindow extends Composite {
 
     public enum MessageDisplayType {
+
         FIRST, LAST, BOTH, NORMAL;
     }
-
     private static final int DATE_POS = 3;
-
     private static SimpleMessageWindowUiBinder uiBinder = GWT
             .create(SimpleMessageWindowUiBinder.class);
 
     interface SimpleMessageWindowUiBinder extends
             UiBinder<Widget, SimpleMessageWindow> {
     }
-
     private static final StyleResource CSS = GWT.create(StyleResource.class);
-
-    @UiField Element header;
-    @UiField Element body;
-    @UiField Element headerTable;
-    @UiField Element messagePreview;
-
+    @UiField
+    Element header;
+    @UiField
+    Element body;
+    @UiField
+    Element headerTable;
+    @UiField
+    Element messagePreview;
+    @UiField
+    TextBox updateRead;
+    private MessageDetail messageDetail;
     private boolean collapsed = false;
 
     public SimpleMessageWindow() {
@@ -71,16 +79,37 @@ public class SimpleMessageWindow extends Composite {
     }
 
     public void setMessage(MessageDetail message) {
+        String cssBold = Storage.RSCS.message().messagesUnread();
+        String cssColor;
+        if (message.getSenderId() == Storage.getUser().getUserId()) {
+            cssColor = Storage.RSCS.message().messagesMine();
+        } else {
+            cssColor = Storage.RSCS.message().messagesReceived();
+        }
+        this.messageDetail = message;
         NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
         // author
         tableColumns.getItem(0).setInnerText(message.getSubject());
+        tableColumns.getItem(0).addClassName(cssColor);
+        if (!message.isRead()) {
+            tableColumns.getItem(0).addClassName(cssBold);
+        }
 
         // message
         messagePreview.setInnerText(message.getBody());
+        messagePreview.addClassName(cssColor);
+        if (!message.isRead()) {
+            messagePreview.addClassName(cssBold);
+        }
 
         // date
         Date date = message.getSent() == null ? message.getCreated() : message.getSent();
-        tableColumns.getItem(DATE_POS).setInnerText(date.toString());
+        tableColumns.getItem(DATE_POS).setInnerText(DateTimeFormat.getFormat(
+                DateTimeFormat.PredefinedFormat.DATE_SHORT).format(date));
+        tableColumns.getItem(DATE_POS).addClassName(cssColor);
+        if (!message.isRead()) {
+            tableColumns.getItem(DATE_POS).addClassName(cssBold);
+        }
 
         // message body
         // the first child is our content place
@@ -115,8 +144,21 @@ public class SimpleMessageWindow extends Composite {
             body.getStyle().setDisplay(Display.NONE);
         } else {
             body.getStyle().setDisplay(Display.BLOCK);
+            if (!messageDetail.isRead()) {
+                NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
+                tableColumns.getItem(0).removeClassName(Storage.RSCS.message().messagesUnread());
+                messagePreview.removeClassName(Storage.RSCS.message().messagesUnread());
+                messagePreview.removeClassName(Storage.RSCS.message().messagesUnread());
+                //set message read
+                updateRead.setText(Long.toString(messageDetail.getUserMessageId()));
+                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), updateRead);
+            }
         }
         collapsed = !collapsed;
+    }
+
+    public TextBox getUpdateRead() {
+        return updateRead;
     }
 
     /**********************************************************************************/
@@ -139,6 +181,7 @@ public class SimpleMessageWindow extends Composite {
     }
 
     private class MessageToggleHangler implements EventListener {
+
         @Override
         public void onBrowserEvent(Event event) {
             event.preventDefault();

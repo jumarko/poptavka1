@@ -29,16 +29,16 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 + ",\n threadRoodId=" + getThreadRootId()
                 + ",\n demandId=" + getDemandId()
                 + ",\n senderId=" + getSenderId()
-                + ",\n unreadSubmessages=" + getUnreadSubmessages()
                 + ",\n demandTitle=" + getDemandTitle()
                 + ",\n demandStatus=" + getDemandStatus()
+                + ",\n messagesCount=" + getMessageCount()
+                + ",\n unreadSubMessages=" + getUnreadSubMessages()
                 + ",\n endDate=" + getEndDate()
                 + ",\n validToDate=" + getValidToDate()
                 + ",\n price=" + getPrice() + "}\n\n";
     }
     public static final ProvidesKey<ClientDemandMessageDetail> KEY_PROVIDER =
             new ProvidesKey<ClientDemandMessageDetail>() {
-
                 @Override
                 public Object getKey(ClientDemandMessageDetail item) {
                     return item == null ? null : item.getDemandId();

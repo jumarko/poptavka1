@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
+import com.google.common.base.Preconditions;
 
 public final class MessageConverter extends AbstractConverter<Message, MessageDetail> {
 
@@ -15,27 +16,35 @@ public final class MessageConverter extends AbstractConverter<Message, MessageDe
 
     @Override
     public MessageDetail convertToTarget(Message source) {
+        Preconditions.checkNotNull(source);
+        Preconditions.checkNotNull(source.getParent());
+
         MessageDetail detail = new MessageDetail();
+
+        //Message
         detail.setMessageId(source.getId());
-        detail.setParentId(source.getParent() == null ? -1 : source.getParent().getId());
-        detail.setSenderId(source.getSender() == null ? -1 : source.getSender().getId());
-        detail.setThreadRootId(source.getThreadRoot() == null ? -1 : source.getThreadRoot().getId());
+        if (source.getThreadRoot() != null) {
+            detail.setThreadRootId(source.getThreadRoot().getId());
+        }
+        if (source.getParent() != null) {
+            detail.setParentId(source.getParent().getId());
+        }
+        if (source.getSender() != null) {
+            detail.setSenderId(source.getSender().getId());
+        }
+
+        detail.setSubject(source.getSubject());
         detail.setBody(source.getBody());
         detail.setCreated(source.getCreated());
-        //still get annoying nullPE at PotentialDemandsource
-        //so that's the reason for this check    -Beho. 29.11.11
 
-//        m.setFirstBornId(serialVersionUID);
         if (source.getMessageState() != null) {
             detail.setMessageState(source.getMessageState().name());
         }
         detail.setMessageType(MessageType.CONVERSATION.name());
-//        m.setNexSiblingId(serialVersionUID);
-//        m.setReceiverId();
 
         detail.setCreated(convertDate(source.getCreated()));
         detail.setSent(convertDate(source.getSent()));
-        detail.setSubject(source.getSubject());
+
 
         return detail;
     }

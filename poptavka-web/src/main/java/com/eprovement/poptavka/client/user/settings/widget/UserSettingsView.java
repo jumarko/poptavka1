@@ -311,7 +311,7 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
 //        header.appendHtmlConstant("</strong>");
 //    }
     private void updateStatus() {
-        status.setText(originalsStorage.toString());
+//        status.setText(originalsStorage.toString());
         DomEvent.fireNativeEvent(Document.get().createChangeEvent(), status);
     }
 }

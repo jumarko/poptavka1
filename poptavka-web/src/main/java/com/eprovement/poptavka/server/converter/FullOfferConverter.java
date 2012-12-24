@@ -9,7 +9,7 @@ import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -32,11 +32,11 @@ public final class FullOfferConverter extends AbstractConverter<UserMessage, Ful
     /* Other converters                                                       */
     /**************************************************************************/
     private final Converter<Offer, OfferDetail> offerConverter;
-    private final Converter<UserMessage, UserMessageDetail> userMessageConverter;
+    private final Converter<UserMessage, MessageDetail> userMessageConverter;
     private final Converter<Demand, FullDemandDetail> demandConverter;
 
     private FullOfferConverter(Converter<Offer, OfferDetail> offerConverter,
-            Converter<UserMessage, UserMessageDetail> userMessageConverter,
+            Converter<UserMessage, MessageDetail> userMessageConverter,
             Converter<Demand, FullDemandDetail> demandConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(offerConverter);
@@ -52,7 +52,7 @@ public final class FullOfferConverter extends AbstractConverter<UserMessage, Ful
         if (userMessage.getMessage() == null) {
             return detail;
         }
-        detail.setUserMessageDetail(userMessageConverter.convertToTarget(userMessage));
+        detail.setMessageDetail(userMessageConverter.convertToTarget(userMessage));
         detail.setOfferDetail(offerConverter.convertToTarget(userMessage.getMessage().getOffer()));
         detail.setDemandDetail(demandConverter.convertToTarget(userMessage.getMessage().getDemand()));
 

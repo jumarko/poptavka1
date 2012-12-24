@@ -5,8 +5,8 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
@@ -23,8 +23,9 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
      */
     private static final long serialVersionUID = -563380651738612866L;
     // TODO remove dipsplayed
-    private boolean isRead;
-    private UserMessageDetail userMessageDetail = new UserMessageDetail();
+    private int messageCount;
+    private int unreadSubmessages;
+    private MessageDetail messageDetail = new MessageDetail();
     private OfferDetail offerDetail = new OfferDetail();
     private FullDemandDetail demandDetail = new FullDemandDetail();
     //Keyprovider
@@ -48,16 +49,15 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
             return;
         }
         offerDetail.updateWholeOfferDetail(detail.offerDetail);
-        userMessageDetail.updateWholeUserMessage(detail.getUserMessageDetail());
-        isRead = detail.isRead();
+        messageDetail.updateWholeMessage(detail.getMessageDetail());
     }
 
-    public UserMessageDetail getUserMessageDetail() {
-        return userMessageDetail;
+    public MessageDetail getMessageDetail() {
+        return messageDetail;
     }
 
-    public void setUserMessageDetail(UserMessageDetail userMessageDetail) {
-        this.userMessageDetail = userMessageDetail;
+    public void setMessageDetail(MessageDetail userMessageDetail) {
+        this.messageDetail = userMessageDetail;
     }
 
     public OfferDetail getOfferDetail() {
@@ -93,22 +93,22 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
 
     @Override
     public boolean isRead() {
-        return this.userMessageDetail.isRead();
+        return this.messageDetail.isRead();
     }
 
     @Override
     public void setRead(boolean value) {
-        this.userMessageDetail.setRead(value);
+        this.messageDetail.setRead(value);
     }
 
     @Override
     public boolean isStarred() {
-        return this.userMessageDetail.isStarred();
+        return this.messageDetail.isStarred();
     }
 
     @Override
     public void setStarred(boolean value) {
-        this.userMessageDetail.setStarred(value);
+        this.messageDetail.setStarred(value);
     }
 
     @Override
@@ -153,37 +153,37 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
 
     @Override
     public long getMessageId() {
-        return userMessageDetail.getMessageDetail().getMessageId();
+        return messageDetail.getMessageId();
     }
 
     @Override
     public long getThreadRootId() {
-        return userMessageDetail.getMessageDetail().getThreadRootId();
+        return messageDetail.getThreadRootId();
     }
 
     @Override
     public long getSenderId() {
-        return userMessageDetail.getMessageDetail().getSenderId();
+        return messageDetail.getSenderId();
     }
 
     @Override
     public Date getMessageSent() {
-        return userMessageDetail.getMessageDetail().getSent();
+        return messageDetail.getSent();
     }
 
     @Override
     public long getUserMessageId() {
-        return userMessageDetail.getId();
+        return messageDetail.getUserMessageId();
     }
 
     @Override
     public int getMessageCount() {
-        return userMessageDetail.getMessageCount();
+        return messageCount;
     }
 
     @Override
     public int getUnreadMessageCount() {
-        return userMessageDetail.getUnreadMessageCount();
+        return unreadSubmessages;
     }
 
     @Override
@@ -214,5 +214,13 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     @Override
     public String getPrice() {
         return demandDetail.getPrice().toString();
+    }
+
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
+    }
+
+    public void setUnreadSubmessages(int unreadSubmessages) {
+        this.unreadSubmessages = unreadSubmessages;
     }
 }

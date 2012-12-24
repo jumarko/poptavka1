@@ -210,8 +210,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
                     }
                 }
             }
-
-            inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
+//            modify to return MessageDetail
+//            inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
 
         return inboxMessagesDetail;
@@ -304,7 +304,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         List<UserMessageDetail> deletedMessagesDetail = new ArrayList<UserMessageDetail>();
 
         for (UserMessage userMessage : rootDeletedMessages.values()) {
-            deletedMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
+//            modify to return MessageDetail
+//            deletedMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
 
         return deletedMessagesDetail;
@@ -410,7 +411,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
             }
             List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
             for (UserMessage userMessage : inboxMessages) {
-                inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
+//                modify to return MessageDetail
+//                inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
             }
         }
         return null;

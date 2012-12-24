@@ -163,7 +163,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
                     @Override
                     public boolean evaluate(Object object) {
                         return offerId == ((FullOfferDetail) object).getOfferDetail().getId()
-                                && userMessageId == ((FullOfferDetail) object).getUserMessageDetail().getId();
+                                && userMessageId == ((FullOfferDetail) object).getUserMessageId();
                     }
                 }));
     }

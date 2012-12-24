@@ -9,14 +9,18 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.Arrays;
 import java.util.List;
 
 @Presenter(view = DetailsWrapperView.class, multiple = true)
@@ -39,6 +43,8 @@ public class DetailsWrapperPresenter
     public interface IDetailWrapper extends LazyView {
 
         Widget getWidgetView();
+
+        void setMessageReadHandler(ChangeHandler click);
 
         void setDemandDetail(FullDemandDetail demandDetail);
 
@@ -220,6 +226,14 @@ public class DetailsWrapperPresenter
      */
     public void onResponseConversation(List<MessageDetail> chatMessages, ViewType wrapperType) {
         view.setChat(chatMessages, true);
+        //bind messages to handler that updates read status
+        view.setMessageReadHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                String messagId = ((TextBox) event.getSource()).getText();
+                eventBus.requestReadStatusUpdate(Arrays.asList(Long.valueOf(messagId)), true);
+            }
+        });
     }
 
     /**************************************************************************/

@@ -268,7 +268,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
                 if (lastOpenedOffer != object.getOfferDetail().getDemandId()) {
                     lastOpenedOffer = object.getOfferDetail().getDemandId();
-                    object.getUserMessageDetail().setRead(true);
+                    object.getMessageDetail().setRead(true);
 //                    view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
 

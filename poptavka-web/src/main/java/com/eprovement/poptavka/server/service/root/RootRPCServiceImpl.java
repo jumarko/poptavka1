@@ -73,6 +73,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Message, MessageDetail> messageConverter;
+    private Converter<UserMessage, MessageDetail> userMessageConverter;
     private Converter<Service, ServiceDetail> serviceConverter;
 
     /**************************************************************************/
@@ -144,6 +145,12 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     public void setMessageConverter(
             @Qualifier("messageConverter") Converter<Message, MessageDetail> messageConverter) {
         this.messageConverter = messageConverter;
+    }
+
+    @Autowired
+    public void setUserMessageConverter(
+            @Qualifier("userMessageConverter") Converter<UserMessage, MessageDetail> userMessageConverter) {
+        this.userMessageConverter = userMessageConverter;
     }
 
     @Autowired
@@ -236,10 +243,10 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
 
         User user = this.generalService.find(User.class, userId);
-        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
-                threadRoot, user);
-
-        return messageConverter.convertToTargetList(messages);
+        List<UserMessage> userMessages = this.messageService
+                .getPotentialDemandConversationUserMessages(threadRoot, user);
+//        return messageConverter.convertToTargetList(messages);
+        return userMessageConverter.convertToTargetList(userMessages);
     }
 
     /**************************************************************************/
@@ -270,7 +277,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
                     questionMessageToSend.getParentId()),
                     this.generalService.find(User.class, questionMessageToSend.getSenderId()));
             message.setBody(questionMessageToSend.getBody());
-            message.setSubject(questionMessageToSend.getTitle());
+            message.setSubject(questionMessageToSend.getSubject());
             messageService.send(message);
 //            Don't undersand create method here?
 //            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(message));

@@ -425,16 +425,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         demand.setEndDate(new Date());
         detail.setDemandDetail(demand);
 
-        UserMessageDetail umd = new UserMessageDetail();
         MessageDetail md = new MessageDetail();
         md.setMessageId(1L);
         md.setThreadRootId(1L);
         md.setSenderId(1L);
         md.setSent(new Date());
-        umd.setMessageDetail(md);
-        umd.setMessageCount(10);
-        umd.setUnreadMessageCount(10);
-        detail.setUserMessageDetail(umd);
+        detail.setMessageDetail(md);
 
         List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
         list.add(detail);
@@ -470,10 +466,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         md.setThreadRootId(1L);
         md.setSenderId(1L);
         md.setSent(new Date());
-        umd.setMessageDetail(md);
-        umd.setMessageCount(10);
-        umd.setUnreadMessageCount(10);
-        detail.setUserMessageDetail(umd);
+        detail.setMessageDetail(md);
 
         return detail;
     }

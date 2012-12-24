@@ -37,4 +37,13 @@ public interface UserMessageStyle extends CssResource {
 
     @ClassName("reply-text-area")
     String replyTextArea();
+
+    @ClassName("messages-mine")
+    String messagesMine();
+
+    @ClassName("messages-received")
+    String messagesReceived();
+
+    @ClassName("message-unread")
+    String messagesUnread();
 }

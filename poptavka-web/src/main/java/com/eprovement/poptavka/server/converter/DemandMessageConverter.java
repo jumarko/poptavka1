@@ -14,17 +14,17 @@ public final class DemandMessageConverter extends AbstractConverter<UserMessage,
 
     private final Converter<DemandType, DemandTypeDetail> demandTypeConverter;
 
-    private final Converter<UserMessage, MessageDetail> messageDetailConverter;
+    private final Converter<UserMessage, MessageDetail> messageConverter;
 
     private DemandMessageConverter(Converter<DemandType, DemandTypeDetail> demandTypeConverter,
-            Converter<UserMessage, MessageDetail> messageDetailConverter) {
+            Converter<UserMessage, MessageDetail> messageConverter) {
         // Spring instantiates converters - see converters.xml
 
         Validate.notNull(demandTypeConverter);
-        Validate.notNull(messageDetailConverter);
+        Validate.notNull(messageConverter);
 
         this.demandTypeConverter = demandTypeConverter;
-        this.messageDetailConverter = messageDetailConverter;
+        this.messageConverter = messageConverter;
     }
 
     @Override

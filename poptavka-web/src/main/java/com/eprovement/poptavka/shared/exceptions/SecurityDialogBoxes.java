@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.mvp4g.client.event.EventBusWithLookup;
+import java.util.Date;
 
 /**
  * @author dmartin
@@ -42,7 +43,7 @@ public abstract class SecurityDialogBoxes {
             this.setText(TITLE);
             VerticalPanel vp = new VerticalPanel();
             vp.add(new HTML(message));
-            vp.add(SecurityDialogBoxes.getReportButton(eventBusWithLookup, message));
+            vp.add(SecurityDialogBoxes.getReportButton(eventBusWithLookup));
 
             this.setWidget(vp);
         }
@@ -66,27 +67,29 @@ public abstract class SecurityDialogBoxes {
 
             VerticalPanel vp = new VerticalPanel();
             vp.add(new HTML(MSGS.accessDenied()));
-            vp.add(SecurityDialogBoxes.getReportButton(eventBusWithLookup, MSGS.accessDenied()));
+            vp.add(SecurityDialogBoxes.getReportButton(eventBusWithLookup));
 
             this.setWidget(vp);
         }
     }
 
-    protected static Anchor getReportButton(final EventBusWithLookup eventBus, final String errorId) {
+    protected static Anchor getReportButton(final EventBusWithLookup eventBus) {
         Anchor reportButton = new Anchor(Storage.MSGS.report());
         reportButton.setStyleName("font-size:1.0em");
         if (eventBus instanceof BaseChildEventBus) {
             reportButton.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
-                    ((BaseChildEventBus) eventBus).sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, errorId);
+                    ((BaseChildEventBus) eventBus).sendUsEmail(
+                            Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
                 }
             });
         } else if (eventBus instanceof RootEventBus) {
             reportButton.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
-                    ((RootEventBus) eventBus).sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, errorId);
+                    ((RootEventBus) eventBus).sendUsEmail(
+                            Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
                 }
             });
         }

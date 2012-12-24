@@ -20,11 +20,10 @@ public class DemandMessageDetail extends MessageDetail implements
     private Date endDate;
     private Date validToDate;
     private long demandId;
-
+    private int messageCount;
+    private int unreadSubmessages;
     private DemandTypeDetail demandType;
-
     private DemandStatus demandStatus;
-
 
     public String getDemandTitle() {
         return demandTitle;
@@ -92,5 +91,21 @@ public class DemandMessageDetail extends MessageDetail implements
 
     public Date getExpireDate() {
         return null;
+    }
+
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
+    }
+
+    public int getUnreadSubMessages() {
+        return unreadSubmessages;
+    }
+
+    public void setUnreadSubmessages(int unreadSubmessages) {
+        this.unreadSubmessages = unreadSubmessages;
     }
 }

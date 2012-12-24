@@ -60,13 +60,13 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
         // }
         // };
         // Demand Title Column
-        Column<ClientDemandMessageDetail, String> titleColumn
-            = (new Column<ClientDemandMessageDetail, String>(new TextCell()) {
-                @Override
-                public String getValue(ClientDemandMessageDetail object) {
-                    return object.getClientName() + " (" + object.getUnreadSubmessages() + ")";
-                }
-            });
+//        Column<ClientDemandMessageDetail, String> titleColumn
+//            = (new Column<ClientDemandMessageDetail, String>(new TextCell()) {
+//                @Override
+//                public String getValue(ClientDemandMessageDetail object) {
+//                    return object.getClientName() + " (" + object.getUnreadSubmessages() + ")";
+//                }
+//            });
         // Demand Price Column
         Column<ClientDemandMessageDetail, String> priceColumn
             = (new Column<ClientDemandMessageDetail, String>(new TextCell()) {
@@ -144,7 +144,7 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
                 return null;
             }
         });
-        this.addColumn(titleColumn, msgs.title());
+//        this.addColumn(titleColumn, msgs.title());
         this.addColumn(priceColumn, msgs.price());
         this.addColumn(endDateColumn, msgs.endDate());
         this.addColumn(validToDateColumn, msgs.expireDate());

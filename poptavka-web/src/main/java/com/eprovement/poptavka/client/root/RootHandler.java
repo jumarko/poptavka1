@@ -134,6 +134,20 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * Messages methods
      */
     /**
+     * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
+     *
+     * @param selectedIdList list of demands which read status should be changed
+     * @param newStatus of demandList
+     */
+    public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
+        rootService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
+            @Override
+            public void onSuccess(Void result) {
+                //Empty by default
+            }
+        });
+    }
+    /**
      * Send message. IMPORTANT: further implementation of other parts will show, if we need more than this method for
      * chat related stuff
      *

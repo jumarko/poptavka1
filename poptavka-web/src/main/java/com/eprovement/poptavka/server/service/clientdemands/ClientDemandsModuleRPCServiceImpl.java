@@ -34,7 +34,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -474,16 +473,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         demand.setEndDate(new Date());
         detail.setDemandDetail(demand);
 
-        UserMessageDetail umd = new UserMessageDetail();
         MessageDetail md = new MessageDetail();
         md.setMessageId(1L);
         md.setThreadRootId(1L);
         md.setSenderId(1L);
         md.setSent(new Date());
-        umd.setMessageDetail(md);
-        umd.setMessageCount(10);
-        umd.setUnreadMessageCount(10);
-        detail.setUserMessageDetail(umd);
+        detail.setMessageDetail(md);
 
         List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
         list.add(detail);
@@ -624,7 +619,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
                     messageDetailImpl.getParentId()),
                     this.generalService.find(User.class, messageDetailImpl.getSenderId()));
             m.setBody(messageDetailImpl.getBody());
-            m.setSubject(messageDetailImpl.getTitle());
+            m.setSubject(messageDetailImpl.getSubject());
             // TODO set the id correctly, check it
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
@@ -796,9 +791,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             d1.getOfferDetail().setPrice(10000);
             d1.getOfferDetail().setFinishDate(new Date());
             d1.getOfferDetail().setCreatedDate(new Date());
-            UserMessageDetail umd1 = new UserMessageDetail();
-            umd1.setId(1L);
-            d1.setUserMessageDetail(umd1);
+            MessageDetail md1 = new MessageDetail();
+            md1.setUserMessageId(1L);
+            d1.setMessageDetail(md1);
             return d1;
         } else if (assignedDemandID == 2L) {
             FullOfferDetail d2 = new FullOfferDetail();
@@ -811,9 +806,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             d2.getOfferDetail().setPrice(10000);
             d2.getOfferDetail().setFinishDate(new Date());
             d2.getOfferDetail().setCreatedDate(new Date());
-            UserMessageDetail umd2 = new UserMessageDetail();
-            umd2.setId(2L);
-            d2.setUserMessageDetail(umd2);
+            MessageDetail md2 = new MessageDetail();
+            md2.setUserMessageId(2L);
             return d2;
         } else {
             return new FullOfferDetail();

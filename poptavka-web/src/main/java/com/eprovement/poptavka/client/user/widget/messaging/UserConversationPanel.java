@@ -53,6 +53,10 @@ public class UserConversationPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    public FlowPanel getMessagePanel() {
+        return messagePanel;
+    }
+
     /**
      * Display list of messages. When messages are set, control panel should be displayed as well.
      * Message List size is at least always 1
@@ -73,9 +77,10 @@ public class UserConversationPanel extends Composite {
                 messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
             }
         }
-        ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
-        ((SimpleMessageWindow) messagePanel.getWidget(
-                messagePanel.getWidgetCount() - 1)).setMessageStyle(MessageDisplayType.LAST);
+        ((SimpleMessageWindow) messagePanel.getWidget(0))
+                .setMessageStyle(MessageDisplayType.FIRST);
+        ((SimpleMessageWindow) messagePanel.getWidget(messagePanel.getWidgetCount() - 1))
+                .setMessageStyle(MessageDisplayType.LAST);
 
         messageCount = messagePanel.getWidgetCount();
 
@@ -117,7 +122,8 @@ public class UserConversationPanel extends Composite {
      */
     public OfferMessageDetail updateSendingOfferMessage(OfferMessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
-        messageDetail.setReceiverId(replyToMessage.getSenderId());
+        //v domain entite nenachadza receiverID, ani sa nikde nepouziva, preco setuje
+//        messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
         return messageDetail;
     }
@@ -135,7 +141,8 @@ public class UserConversationPanel extends Composite {
         // dve odpovede po sebe tak sa mi automaticky nastavi reveiver na adresata. Overit si to mozes napr. cez Storage
         // kde mas aktualneho dodavatela a ak replyToMessage.getSenderId = storage.userId tak musis nastavit ako
         // receivera klienta
-        messageDetail.setReceiverId(replyToMessage.getSenderId());
+        //v domain entite nenachadza receiverID, ani sa nikde nepouziva, preco setuje
+//        messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
         return messageDetail;
     }

@@ -325,8 +325,8 @@ public class ClientOffersPresenter
         textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {
-                if (lastOpenedDemandOffer != object.getUserMessageDetail().getId()) {
-                    lastOpenedDemandOffer = object.getUserMessageDetail().getId();
+                if (lastOpenedDemandOffer != object.getUserMessageId()) {
+                    lastOpenedDemandOffer = object.getUserMessageId();
                     object.setRead(true);
                     view.getOfferGrid().getGrid().redraw();
                     view.setDemandTableVisible(false);

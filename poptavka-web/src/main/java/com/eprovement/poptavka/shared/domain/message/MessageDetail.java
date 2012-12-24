@@ -19,25 +19,22 @@ public class MessageDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -928374659233195109L;
-    private long messageId;
-    private long threadRootId;
-    private long parentId;
-//    private long firstBornId;
-//    private long nexSiblingId;
-    private String subject;
-    private String title;
-    private String body;
-    private String messageState;
-    private String messageType;
-    private Date created;
-    private Date sent;
-    private long senderId;
-    private long receiverId;
-    private long userMessageId;
-    private boolean read;
-    private boolean starred;
-    private int messageCount;
-    private int unreadSubmessages;
+    //UserMessage
+    private boolean read = false;
+    private boolean starred = false;
+    private long userMessageId = -1;
+    //Message
+    private long messageId = -1;
+    private long threadRootId = -1;
+    private long parentId = -1;
+    private long senderId = -1;
+//    private long receiverId = -1;
+    private String subject = null;
+    private String body = null;
+    private String messageState = null;
+    private String messageType = null;
+    private Date created = null;
+    private Date sent = null;
 
     public MessageDetail() {
     }
@@ -48,23 +45,22 @@ public class MessageDetail implements Serializable {
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeMessage(MessageDetail detail) {
+        //UserMessage
+        read = detail.isRead();
+        starred = detail.isStarred();
+        userMessageId = detail.getUserMessageId();
+        //Message
         messageId = detail.getMessageId();
         threadRootId = detail.getThreadRootId();
         parentId = detail.getParentId();
+        senderId = detail.getSenderId();
+
         subject = detail.getSubject();
-        title = detail.getTitle();
         body = detail.getBody();
         messageState = detail.getMessageState();
         messageType = detail.getMessageType();
         created = detail.getCreated();
         sent = detail.getSent();
-        senderId = detail.getSenderId();
-        receiverId = detail.getReceiverId();
-        read = detail.isRead();
-        starred = detail.isStarred();
-        messageCount = detail.getMessageCount();
-        unreadSubmessages = detail.getUnreadSubmessages();
-        userMessageId = detail.getUserMessageId();
     }
 
     public long getMessageId() {
@@ -110,34 +106,6 @@ public class MessageDetail implements Serializable {
         this.parentId = parentId;
     }
 
-//    TODO for praso: are these attributes/methods needed? They are never used, yet.
-//    /**
-//     * @return the firstBornId
-//     */
-//    public long getFirstBornId() {
-//        return firstBornId;
-//    }
-//
-//    /**
-//     * @param firstBornId the firstBornId to set
-//     */
-//    public void setFirstBornId(long firstBornId) {
-//        this.firstBornId = firstBornId;
-//    }
-//
-//    /**
-//     * @return the nexSiblingId
-//     */
-//    public long getNexSiblingId() {
-//        return nexSiblingId;
-//    }
-//
-//    /**
-//     * @param nexSiblingId the nexSiblingId to set
-//     */
-//    public void setNexSiblingId(long nexSiblingId) {
-//        this.nexSiblingId = nexSiblingId;
-//    }
     /**
      * @return the subject
      */
@@ -225,33 +193,25 @@ public class MessageDetail implements Serializable {
         return senderId;
     }
 
+//    /**
+//     * @return the receiverId
+//     */
+//    public long getReceiverId() {
+//        return receiverId;
+//    }
+//
+//    /**
+//     * @param receiverId the receiverId to set
+//     */
+//    public void setReceiverId(long receiverId) {
+//        this.receiverId = receiverId;
+//    }
+
     /**
      * @param senderId the senderId to set
      */
     public void setSenderId(long senderId) {
         this.senderId = senderId;
-    }
-
-    /**
-     * @return the receiverId
-     */
-    public long getReceiverId() {
-        return receiverId;
-    }
-
-    /**
-     * @param receiverId the receiverId to set
-     */
-    public void setReceiverId(long receiverId) {
-        this.receiverId = receiverId;
-    }
-
-    public int getMessageCount() {
-        return messageCount;
-    }
-
-    public void setMessageCount(int messageCount) {
-        this.messageCount = messageCount;
     }
 
     public boolean isRead() {
@@ -270,33 +230,12 @@ public class MessageDetail implements Serializable {
         this.starred = starred;
     }
 
-    public int getUnreadSubmessages() {
-        return unreadSubmessages;
-    }
-
-    public void setUnreadSubmessages(int unreadSubmessages) {
-        this.unreadSubmessages = unreadSubmessages;
-    }
-
     public long getUserMessageId() {
         return userMessageId;
     }
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getFormattedMessageCount() {
-        return "(" + getMessageCount() + "/"
-                + getUnreadSubmessages() + ")";
     }
 
     public static String displayHtml(String trustedHtml, boolean isRead) {
@@ -310,21 +249,21 @@ public class MessageDetail implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("MessageID: " + messageId);
-        sb.append("\nThreadID: " + threadRootId);
-        sb.append("\nParentID: " + parentId);
-//        sb.append("\nFirstBornIdID: " + firstBornId);
-//        sb.append("\nNexSiblingID: " + nexSiblingId);
-        sb.append("\nSubject: " + subject);
-        sb.append("\nBody: " + body);
-        sb.append("\nMessageState: " + messageState);
-        sb.append("\nDate-Created: " + (created == null ? "null" : created.toString()));
-        sb.append("\nDate-sent: " + (sent == null ? "null" : sent.toString()));
-        sb.append("\nSenderID: " + senderId);
-        sb.append("\nReceiverID: " + receiverId);
+        sb.append("MessageDetail{");
+        sb.append("read=" + read);
+        sb.append(", starred=" + starred);
+        sb.append(", userMessageId=" + userMessageId);
+        sb.append(", messageId=" + messageId);
+        sb.append(", threadRootId=" + threadRootId);
+        sb.append(", parentId=" + parentId);
+        sb.append(", senderId=" + senderId);
+        sb.append(", subject=" + subject);
+        sb.append(", body=" + body);
+        sb.append(", messageState=" + messageState);
+        sb.append(", messageType=" + messageType);
+        sb.append(", created=" + (created == null ? "null" : created.toString()));
+        sb.append(", sent=" + (sent == null ? "null" : sent.toString()));
+        sb.append('}');
         return sb.toString();
     }
-    //    public MessageType getMessageType() {
-    //        return MessageType.CONVERSATION;
-    //    }
 }

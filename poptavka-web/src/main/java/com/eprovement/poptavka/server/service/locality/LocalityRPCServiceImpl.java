@@ -99,7 +99,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         locSearch.addFilterAnd(
                 Filter.equal("type", LocalityType.CITY),
                 Filter.or(
-                /**/ Filter.ilike("name", cityLike + "%"),
+                /**/Filter.ilike("name", cityLike + "%"),
                 /**/ Filter.ilike("name", "% " + cityLike + "%")));
         List<Locality> list = generalService.search(locSearch);
         return localitySuggestionConverter.convertToTargetList(list);
@@ -113,9 +113,26 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
                 Filter.equal("type", LocalityType.CITY),
                 Filter.ilike("name", "__"),
                 Filter.or(
-                /**/ Filter.ilike("name", cityLike + "%"),
-                /**/ Filter.ilike("name", "% " + cityLike + "%")));
+                /**/Filter.ilike("name", cityLike + "%"),
+                /**/Filter.ilike("name", "% " + cityLike + "%")));
         List<Locality> list = generalService.search(locSearch);
-        return localitySuggestionConverter.convertToTargetList(list);
+
+        List<LocalitySuggestionDetail> result = new ArrayList<LocalitySuggestionDetail>();
+        LocalitySuggestionDetail d1 = new LocalitySuggestionDetail();
+        d1.setCityId(1L);
+        d1.setCityName("AB");
+        d1.setStateId(2L);
+        d1.setStateName("Alabama");
+        result.add(d1);
+
+        LocalitySuggestionDetail d2 = new LocalitySuggestionDetail();
+        d2.setCityId(3L);
+        d2.setCityName("CD");
+        d2.setStateId(4L);
+        d2.setStateName("California");
+        result.add(d2);
+
+//        return localitySuggestionConverter.convertToTargetList(list);
+        return result;
     }
 }

@@ -3,11 +3,13 @@ package com.eprovement.poptavka.client.user.widget;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
+import com.eprovement.poptavka.client.user.widget.messaging.SimpleMessageWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -48,6 +50,14 @@ public class DetailsWrapperView extends Composite
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    @Override
+    public void setMessageReadHandler(ChangeHandler click) {
+        for (int i = 0; i < conversationPanel.getMessagePanel().getWidgetCount(); i++) {
+            ((SimpleMessageWindow) conversationPanel.getMessagePanel().getWidget(i))
+                    .getUpdateRead().addChangeHandler(click);
+        }
+    }
+
     @Override
     public void setDemandDetail(FullDemandDetail demand) {
         demandDetail.setDemanDetail(demand);

@@ -446,6 +446,8 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /* Messages                                                               */
     /**************************************************************************/
+    @Event(handlers = RootHandler.class)
+    void requestReadStatusUpdate(List<Long> userMessageIds, boolean isRead);
     /**
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.
