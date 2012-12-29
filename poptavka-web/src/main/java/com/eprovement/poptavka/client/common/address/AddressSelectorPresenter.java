@@ -101,10 +101,11 @@ public class AddressSelectorPresenter
         view.getCitySuggestBox().addDomHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
+                citySuggestSelected = view.getCitySuggestBox().getText();
+                MySuggestDisplay display = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
+                display.setLoadingPopupPosition(view.getCitySuggestBox());
                 //show actual suggest list and remove error style if any
                 if (view.getCitySuggestBox().getText().isEmpty()) {
-                    MySuggestDisplay display = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
-                    display.setLoadingPopupPosition(view.getCitySuggestBox());
                     display.showShortCitiesInfo(Constants.MIN_CHARS_TO_SEARCH);
                 }
                 view.getCitySuggestBox().showSuggestionList();

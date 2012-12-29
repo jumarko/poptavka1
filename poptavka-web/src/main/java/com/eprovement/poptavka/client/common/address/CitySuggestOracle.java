@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class CitySuggestOracle extends MultiWordSuggestOracle {
 
-    private static final int SHORT_CITIES_TO_SEARCH = 2;
     private static final String WHITESPACE_STRING = " ";
     private static final String NOTHING = "";
     private static final String LOCALITY_SEPARATOR = ", ";
@@ -47,7 +46,8 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
             addressSelectorPresenter.getCitySuggestionPopup().hideSuggestions();
         } else {
             addressSelectorPresenter.getCitySuggestionPopup().showLoading();
-            addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(suggestRequest.getQuery(),
+            addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(
+                    getCityFromQuery(suggestRequest.getQuery()),
                     new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
                         @Override
                         public void onSuccess(List<LocalitySuggestionDetail> result) {
@@ -157,5 +157,13 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
         formatedCity.appendHtmlConstant("</strong>");
         formatedCity.appendEscaped(part2);
 
+    }
+
+    private String getCityFromQuery(String query) {
+        if (query.indexOf(LOCALITY_SEPARATOR) == -1) {
+            return query;
+        } else {
+            return query.substring(0, query.indexOf(LOCALITY_SEPARATOR));
+        }
     }
 }
