@@ -24,6 +24,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.LinkedList;
@@ -39,7 +41,8 @@ import java.util.List;
  */
 @Presenter(view = HomeSuppliersView.class)
 public class HomeSuppliersPresenter
-        extends LazyPresenter<HomeSuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus> {
+        extends LazyPresenter<HomeSuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus>
+        implements NavigationConfirmationInterface {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -137,6 +140,11 @@ public class HomeSuppliersPresenter
         //However supplier attribute selector is already loaded by default in second tab,
         //another setting in fourth tab is not needed
         eventBus.setUpSearchBar(null);
+    }
+
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
     }
 
     /**************************************************************************/

@@ -109,6 +109,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     /**************************************************************************/
     @Override
     public void setSupplierSettings(SettingDetail detail) {
+        originalsStorage.clear();
         if (detail.getSupplier().getOverallRating() != null) {
             supplierRating.setText(Integer.toString(detail.getSupplier().getOverallRating()));
         }

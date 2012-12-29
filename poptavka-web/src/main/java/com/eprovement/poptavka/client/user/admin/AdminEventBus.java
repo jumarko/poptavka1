@@ -75,7 +75,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
      * @param filter - defines data holder to be displayed in advanced search bar
      * @param loadWidget - prosim doplnit ???
      */
-    @Event(handlers = AdminPresenter.class, historyConverter = AdminHistoryConverter.class)
+    @Event(handlers = AdminPresenter.class, historyConverter = AdminHistoryConverter.class, navigationEvent = true)
     String goToAdminModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/

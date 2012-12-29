@@ -27,13 +27,16 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.logging.Logger;
 
 @Presenter(view = SupplierCreationView.class, multiple = true)
 public class SupplierCreationPresenter
-        extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, SupplierCreationEventBus> {
+        extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, SupplierCreationEventBus>
+        implements NavigationConfirmationInterface {
 
     // Main Panel Tab Constants
     private static final int FIRST_TAB_BASIC = 0;
@@ -80,6 +83,11 @@ public class SupplierCreationPresenter
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
         maxSelectedTab = -1;
         eventBus.setUpSearchBar(null);
+    }
+
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
     }
 
     /**************************************************************************/
@@ -227,7 +235,6 @@ public class SupplierCreationPresenter
         supplierBasicForm = eventBus.addHandler(SupplierInfoPresenter.class);
         supplierBasicForm.initSupplierForm(holderWidget);
     }
-
 
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */

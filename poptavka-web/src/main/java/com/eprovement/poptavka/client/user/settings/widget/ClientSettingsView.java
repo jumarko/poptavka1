@@ -46,6 +46,7 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     /**************************************************************************/
     @Override
     public void setClientSettings(SettingDetail detail) {
+//        originalsStorage.clear();
         clientRating.setText(Integer.toString(detail.getClientRating()));
     }
 

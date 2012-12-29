@@ -37,9 +37,12 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
     @Override
     public void convertFromToken(String methodName, String param, SettingsEventBus eventBus) {
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+            Storage.setAppCalledByURL(false);
             // login from session method
             eventBus.loginFromSession();
+//            return;
         }
+        eventBus.goToSettingsModule();
     }
 
     @Override

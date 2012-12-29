@@ -6,6 +6,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -49,13 +50,24 @@ public class SettingsView extends Composite implements
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        createNotifyPopup();
+    }
+
+    @Override
+    public void initWidgetDefaults() {
+        //StackLayoutPanel
+        if (stackPanel.getVisibleIndex() == 0) {
+            BeforeSelectionEvent.fire(stackPanel, 0);
+        } else {
+            stackPanel.showWidget(0);
+        }
+        //StatusIconLables
         userInfoStatus.setState(State.ACCEPT_16);
         userInfoStatus.setDescription("No changes made to user settings.");
         clientInfoStatus.setState(State.ACCEPT_16);
         clientInfoStatus.setDescription("No changes made to client settings.");
         supplierInfoStatus.setState(State.ACCEPT_16);
         supplierInfoStatus.setDescription("No changes made to supplier settings.");
-        createNotifyPopup();
     }
 
     public void createNotifyPopup() {

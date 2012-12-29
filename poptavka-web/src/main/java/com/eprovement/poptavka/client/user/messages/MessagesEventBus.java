@@ -52,7 +52,8 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
      * @param filter - defines data holder to be displayed in advanced search bar
      * @param loadWidget - prosim doplnit ???
      */
-    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
+    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class
+            , navigationEvent = true)
     String goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
@@ -71,7 +72,6 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
     // just by entering URL into browser
 //    @Event(forwardToParent = true)
 //    void loginFromSession();
-
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 

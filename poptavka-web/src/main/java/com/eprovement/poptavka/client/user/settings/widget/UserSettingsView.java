@@ -132,6 +132,7 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     /**************************************************************************/
     @Override
     public void setUserSettings(SettingDetail detail) {
+        originalsStorage.clear();
         companyName.setText(detail.getCompanyName());
         web.setText(detail.getWebsite());
         email.setText(detail.getEmail());

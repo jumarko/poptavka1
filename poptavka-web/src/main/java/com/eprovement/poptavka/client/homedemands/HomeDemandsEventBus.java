@@ -56,7 +56,7 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = HomeDemandsPresenter.class)
+    @Event(handlers = HomeDemandsPresenter.class, navigationEvent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filterHolder);
 
     /**************************************************************************/

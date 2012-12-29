@@ -69,7 +69,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
-    @Event(forwardToParent = true)
+    @Event(forwardToParent = true, navigationEvent = true)
     void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(forwardToParent = true)

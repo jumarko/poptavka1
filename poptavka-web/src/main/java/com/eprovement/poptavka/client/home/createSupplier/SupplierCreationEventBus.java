@@ -52,10 +52,10 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = SupplierCreationPresenter.class)
+    @Event(handlers = SupplierCreationPresenter.class, navigationEvent = true)
     void goToCreateSupplierModule();
 
-    @Event(handlers = SupplierCreationPresenter.class)
+    @Event(handlers = SupplierCreationPresenter.class, navigationEvent = true)
     void goToCreateSupplierModuleByHistory(int selectedTab);
 
     /**************************************************************************/

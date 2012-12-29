@@ -55,7 +55,7 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
      * The only entry point to this module due to code-splitting and exclusive
      * fragment.
      */
-    @Event(handlers = HomeSuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class, navigationEvent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/

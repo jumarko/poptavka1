@@ -67,6 +67,9 @@ public class SettingsPresenter
 
         void showNofity(String message, Boolean updated);
 
+        //widget
+        void initWidgetDefaults();
+
         Widget getWidgetView();
     }
 
@@ -82,7 +85,7 @@ public class SettingsPresenter
      * particular access role can't access it and loginPopupView will be displayed.
      */
     public void onForward() {
-//        eventBus.setNavigationConfirmation(this);
+        view.initWidgetDefaults();
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
@@ -90,24 +93,37 @@ public class SettingsPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
+//        Window.confirm("Settings confirm method.");
         //pseudo method to verify if the view has changed
-        boolean isUserChange = ((UserSettingsView) view.getUserSettingsPanel().getWidget()).isSettingChange();
+        boolean isUserChange = false;
         boolean isClientChange = false;
         boolean isSupplierChange = false;
+        if (view.getUserSettingsPanel().getWidget() != null) { //if not yet even initialized
+            isUserChange = ((UserSettingsView) view.getUserSettingsPanel().getWidget()).isSettingChange();
+        }
         if (view.getClientSettingsPanel().getWidget() != null) { //if not yet even initialized
             isClientChange = ((ClientSettingsView) view.getClientSettingsPanel().getWidget()).isSettingChange();
         }
         if (view.getSupplierSettingsPanel().getWidget() != null) { //if not yet even initialized
             isSupplierChange = ((SupplierSettingsView) view.getSupplierSettingsPanel().getWidget()).isSettingChange();
         }
-        if (isUserChange && isClientChange && isSupplierChange) {
+        if (isUserChange || isClientChange || isSupplierChange) {
             //Window shouldn't be used inside a presenter
             //this is just to give a simple example
             if (Window.confirm(Storage.MSGS.notificationLeavingPage())) {
                 updateProfile();
-                event.fireEvent();
+
             }
         }
+        /* fireEvent() - Musim volat vzdy. Malo by to fungovat tak, ze ak nezavolam toto,
+         * mal by som ostat na danom module/widgete, ale nefunguje mi to a stane sa to,
+         * ze naloaduje sa mi novy module/widget, ale token ostane stary - settings -
+         * a preto sa mi aj confirm vola 2x - pri vstupe aj pri vystupe (pretoze je to zavisle od tokenu)
+         * Zeby to malo nieco s autodisplay ?
+         * - workaround - pri odchadzani nevyhodim okno stylu chcete naozaj odist zo stranky? ale
+         * chcete ulozit zmeny? Po potvrdeni ulozit zmeny, zavolam updateProfile()
+         */
+        event.fireEvent();
     }
 
     /**************************************************************************/
@@ -154,9 +170,13 @@ public class SettingsPresenter
     /**************************************************************************/
     public void onGoToSettingsModule() {
         eventBus.loadingShow(Storage.MSGS.loading());
-        initUserSettings(view.getUserSettingsPanel());
+        eventBus.setNavigationConfirmation(this);
+
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
 
+        //Need to retrieve business user data as SettingDetail
+        //BusinessUser is only subset of settingDetail, and there is no point while
+        //login retrieving userSettings because of time it requires.
         eventBus.getLoggedUser(Storage.getUser().getUserId());
 
     }

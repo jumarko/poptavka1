@@ -14,12 +14,14 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.BasePresenter;
 import java.util.ArrayList;
 
 @Presenter(view = HomeWelcomeView.class)
 public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements
-        IHomeWelcomePresenter {
+        IHomeWelcomePresenter, NavigationConfirmationInterface {
 
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
@@ -41,6 +43,11 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         eventBus.setUpSearchBar(null);
         //Martin Temporary commented - not to load categories at application startup
         //eventBus.getRootCategories();
+    }
+
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
     }
 
     /**************************************************************************/

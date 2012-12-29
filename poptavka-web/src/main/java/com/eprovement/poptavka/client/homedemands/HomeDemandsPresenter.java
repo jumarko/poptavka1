@@ -25,6 +25,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.LinkedList;
@@ -40,7 +42,8 @@ import java.util.List;
  */
 @Presenter(view = HomeDemandsView.class)
 public class HomeDemandsPresenter
-        extends LazyPresenter<HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus> {
+        extends LazyPresenter<HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus>
+        implements NavigationConfirmationInterface {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -140,6 +143,11 @@ public class HomeDemandsPresenter
         //However demands attribute selector is already loaded by default in first tab,
         //another setting in fourth tab is not needed
         eventBus.setUpSearchBar(null);
+    }
+
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
     }
 
     /**************************************************************************/

@@ -33,6 +33,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
@@ -40,7 +42,8 @@ import java.util.logging.Logger;
 
 @Presenter(view = DemandCreationView.class, multiple = true)
 public class DemandCreationPresenter
-        extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus> {
+        extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus>
+        implements NavigationConfirmationInterface {
 
     private final static Logger LOGGER = Logger.getLogger("DemandCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -235,6 +238,11 @@ public class DemandCreationPresenter
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         maxSelectedTab = -1;
         eventBus.setUpSearchBar(null);
+    }
+
+    @Override
+    public void confirm(NavigationEventCommand event) {
+        // nothing
     }
 
     /**************************************************************************/

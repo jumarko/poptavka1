@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
@@ -61,6 +62,7 @@ public class ClientDemandsModulePresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
+        Window.confirm("Client Demand confirm method.");
         // nothing
     }
 
