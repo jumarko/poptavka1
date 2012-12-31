@@ -109,7 +109,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<ClientDemandDetail> getClientOfferedDemands(long userId, long demandID,
+    List<ClientDemandDetail> getClientOfferedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**

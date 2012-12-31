@@ -231,9 +231,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             // key is message and val is number
-            Message message = (Message) pairs.getKey();
+            Long messageId = (Long) pairs.getKey();
             for (ClientDemandDetail cdd : cdds) {
-                if (cdd.getDemandId() == message.getDemand().getId()) {
+                if (cdd.getDemandId() == messageId) {
                     cdd.setUnreadSubmessages(((Integer) pairs.getValue()).intValue());
                     break;
                 }
@@ -350,7 +350,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientDemandDetail> getClientOfferedDemands(long userId, long demandID,
+    public List<ClientDemandDetail> getClientOfferedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         // load list of client demands with offer
         List<Demand> clientDemands = demandService.getClientDemandsWithOffer(findClient(userId));
@@ -411,6 +411,55 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Search backendSearch = getSearchForgetClientOfferedDemandOffers(searchDefinition, userId, demandID);
         List<Message> messages = generalService.search(backendSearch);
         System.out.println(messages);
+
+//        // load offers for demand
+//        Demand demand = generalService.find(Demand.class, demandID);
+//        List<Offer> offers = demand.getOffers();
+//        for (Offer offer : offers) {
+//            // TODO ivlcek - fill the detail object with following attributes and fill the list of detail objects
+//            offer.getSupplier();
+//            offer.getDemand();
+//            offer.getPrice();
+//            offer.getState();
+//            offer.getFinishDate();
+//            offer.getCreated();
+//            offer.getId();
+//        }
+//        // for each offer message get a number of unread submessages
+//        // TODO - ivlcek
+//
+//        User user = generalService.find(User.class, userId);
+//        Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
+//        List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
+//        for (Message messageKey : root.getChildren()) {
+//
+//            final Search userMessageSearch = new Search(UserMessage.class);
+//            userMessageSearch.addFilterEqual("user", user);
+//            userMessageSearch.addFilterEqual("message", messageKey);
+//            UserMessage userMessage = (UserMessage) generalService.searchUnique(userMessageSearch);
+//
+//            ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
+//            cdcd.setDate(messageKey.getSent());
+//            cdcd.setDemandId(demandID);
+//            cdcd.setThreadMessageId(messageKey.getThreadRoot().getId());
+//            // TODO make converter
+//            // TODO ivlcek - messageCount and UnreadMessage are not necessary for first version
+//            cdcd.setMessageCount(messageService.getAllDescendantsCount(messageKey, user));
+//            cdcd.setUnreadSubmessages(messageService.getUnreadDescendantsCount(messageKey, user));
+//            cdcd.setMessageDetail(messageConverter.convertToTarget(messageKey));
+//            cdcd.setMessageId(messageKey.getId());
+//            cdcd.setRead(userMessage.isRead());
+//            cdcd.setStarred(userMessage.isStarred());
+//            Supplier supplier = findSupplier(messageKey.getSender().getId());
+//            cdcd.setSupplierId(supplier.getId());
+//            cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
+//            cdcd.setUserMessageId(userMessage.getId());
+//
+//            list.add(cdcd);
+//        }
+//        return list;
+
+
         return fullOfferConverter.convertToTargetList(messages);
     }
 

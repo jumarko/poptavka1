@@ -136,7 +136,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     private void getClientOfferedDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemands(
-                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
+                Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ClientDemandDetail> result) {

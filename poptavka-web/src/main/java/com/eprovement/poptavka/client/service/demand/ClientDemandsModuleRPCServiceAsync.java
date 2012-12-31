@@ -39,7 +39,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void getClientOfferedDemandsCount(long userID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientOfferedDemands(long userID, long demandID, SearchDefinition searchDefinition,
+    void getClientOfferedDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandDetail>> callback);
 
     void getClientOfferedDemandOffersCount(long userID, long demandID, SearchDefinition searchDefinition,

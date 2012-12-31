@@ -208,7 +208,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
-        Map<Message, Integer> unreadSubmessageCounts =
+        Map<Long, Integer> unreadSubmessageCounts =
                 this.messageService.getListOfClientDemandMessagesUnread(businessUser);
         List<UserMessage> userMessages = userMessageService.getUserMessages(
                 new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
@@ -219,10 +219,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             } else {
                 detail.setMessageCount(submessageCounts.get(userMessage.getMessage()).intValue());
             }
-            if (unreadSubmessageCounts.get(userMessage.getMessage()) == null) {
+            if (unreadSubmessageCounts.get(userMessage.getMessage().getId()) == null) {
                 detail.setUnreadSubmessages(0);
             } else {
-                detail.setUnreadSubmessages(unreadSubmessageCounts.get(userMessage.getMessage()));
+                detail.setUnreadSubmessages(unreadSubmessageCounts.get(userMessage.getMessage().getId()));
             }
         }
         return result;
