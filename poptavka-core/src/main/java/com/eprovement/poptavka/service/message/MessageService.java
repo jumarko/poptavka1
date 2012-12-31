@@ -137,7 +137,7 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * of UNREAD messages spanning from the demand message (including the
      * demand message itself)
      */
-    Map<Message, Integer> getListOfClientDemandMessagesUnread(User user);
+    Map<Long, Integer> getListOfClientDemandMessagesUnread(User user);
 
     /**
      * Gets all the demand messages with offer of the given user along with the number of

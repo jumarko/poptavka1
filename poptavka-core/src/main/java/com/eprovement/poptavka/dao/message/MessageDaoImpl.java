@@ -112,9 +112,8 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
-    public Map<Message, Integer> getListOfClientDemandMessagesUnread(User user) {
-        return longValueMapToIntValueMap(getListOfClientDemandMessagesHelper(user,
-                "getListOfClientDemandMessagesUnreadSub"));
+    public Map<Long, Integer> getListOfClientDemandMessagesUnread(User user) {
+        return getUnreadSubMessagesForDemandMessageHelper(user, "getListOfClientDemandMessagesUnreadSub");
 
     }
 
