@@ -176,11 +176,11 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
      * @return string in html tags
      */
     public static String displayHtml(String trustedHtml, int unreadSubNessages) {
-        if (unreadSubNessages > 0) {
-            return "<strong>" + trustedHtml + "</strong>";
-        } else {
-            return trustedHtml;
-        }
+//        if (unreadSubNessages > 0) {
+//            return "<strong>" + trustedHtml + "</strong>";
+//        } else {
+        return trustedHtml;
+//        }
     }
 
     public static String displayTitleHtml(ClientDemandDetail clientDemandDetail) {

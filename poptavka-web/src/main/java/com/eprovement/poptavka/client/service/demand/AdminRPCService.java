@@ -10,6 +10,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -19,6 +20,8 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @RemoteServiceRelativePath(AdminRPCService.URL)
@@ -32,7 +35,8 @@ public interface AdminRPCService extends RemoteService {
     List<FullDemandDetail> getAdminDemands(SearchDefinition searchDefinition) throws RPCException,
             ApplicationSecurityException;
 
-    void updateDemand(FullDemandDetail detailObject) throws RPCException, ApplicationSecurityException;
+    Boolean updateDemands(HashMap<Long, HashSet<ChangeDetail>> changes) throws
+            RPCException, ApplicationSecurityException;
 
     //---------------------- CLIENT ------------------------------------------------
     Long getAdminClientsCount(SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;

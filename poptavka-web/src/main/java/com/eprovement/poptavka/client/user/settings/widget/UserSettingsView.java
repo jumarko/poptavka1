@@ -73,8 +73,8 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
      */
     private Map<String, String> originalsStorage = new HashMap<String, String>();
     //
-    FocusHandler focus = null;
-    ChangeHandler change = null;
+    private FocusHandler focus = null;
+    private ChangeHandler change = null;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */

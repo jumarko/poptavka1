@@ -408,4 +408,7 @@ public interface LocalizableMessages extends Messages {
 
     //Error messages
     String codelistsNotDisplaying();
+
+    //
+    String dateFormat();
 }

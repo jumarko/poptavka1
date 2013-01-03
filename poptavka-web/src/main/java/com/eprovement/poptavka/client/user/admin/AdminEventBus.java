@@ -29,6 +29,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -43,6 +44,8 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
@@ -164,7 +167,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
      **********************************************************************************************/
     /*********************** UPDATE **************************************************************/
     @Event(handlers = AdminHandler.class)
-    void updateDemand(FullDemandDetail demand);
+    void updateDemands(HashMap<Long, HashSet<ChangeDetail>> changes);
 
     @Event(handlers = AdminHandler.class)
     void updateSupplier(FullSupplierDetail supplier);
@@ -247,9 +250,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void showDialogBox();
 
     /*********************** COMMIT **************************************************************/
-    @Event(handlers = AdminDemandsPresenter.class)
-    void addDemandToCommit(FullDemandDetail data);
-
     @Event(handlers = AdminSuppliersPresenter.class)
     void addSupplierToCommit(FullSupplierDetail data);
 
@@ -300,4 +300,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(handlers = AdminHandler.class)
     void updateUnreadMessagesCount();
+
+    @Event(handlers = AdminDemandsPresenter.class)
+    void responseUpdateDemands(Boolean result);
 }

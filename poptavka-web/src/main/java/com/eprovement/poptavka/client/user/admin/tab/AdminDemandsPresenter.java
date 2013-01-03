@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
@@ -13,6 +14,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -24,6 +26,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -36,8 +39,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -47,9 +50,9 @@ import java.util.Map;
 public class AdminDemandsPresenter
         extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, AdminEventBus> {
 
+    private int changeCount = 0;
     //history of changes
-    private Map<Long, FullDemandDetail> dataToUpdate = new HashMap<Long, FullDemandDetail>();
-    private Map<Long, FullDemandDetail> originalData = new HashMap<Long, FullDemandDetail>();
+    private HashMap<Long, HashSet<ChangeDetail>> updatedFields = new HashMap<Long, HashSet<ChangeDetail>>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
     //detail related
@@ -131,23 +134,6 @@ public class AdminDemandsPresenter
     }
 
     //*************************************************************************/
-    //                              DATA CHANGE                               */
-    //*************************************************************************/
-    /**
-     * Store changes made in table data.
-     */
-    public void onAddDemandToCommit(FullDemandDetail data) {
-        dataToUpdate.remove(data.getDemandId());
-        dataToUpdate.put(data.getDemandId(), data);
-        if (detailDisplayed) {
-            view.getAdminDemandDetail().setDemandDetail(data);
-        }
-        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
-    }
-
-    //*************************************************************************/
     //                          ACTION HANDLERS                               */
     //*************************************************************************/
     /**
@@ -169,7 +155,6 @@ public class AdminDemandsPresenter
         addRollbackButtonHandler();
         addRefreshButtonHandler();
         view.getAdminDemandDetail().getEditCatBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.initCategoryWidget(
@@ -181,7 +166,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getAdminDemandDetail().getEditLocBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.initLocalityWidget(
@@ -211,6 +195,49 @@ public class AdminDemandsPresenter
                         }
                     }
                 });
+        view.getAdminDemandDetail().setChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                //vojde tu 2x :(
+                ChangeMonitor source = (ChangeMonitor) event.getSource();
+                source.getChangeDetail().setValue(source.getValue());
+                FullDemandDetail demand = view.getAdminDemandDetail().getDemandDetail();
+                if (source.isModified()) {
+                    if (updatedFields.containsKey(demand.getDemandId())) {
+                        ((HashSet<ChangeDetail>) updatedFields.get(demand.getDemandId())).add(source.getChangeDetail());
+                    } else {
+                        HashSet<ChangeDetail> changes = new HashSet<ChangeDetail>();
+                        changes.add(source.getChangeDetailCopy());
+                        updatedFields.put(demand.getDemandId(), changes);
+                    }
+                    changeCount++;
+                } else {
+                    if (updatedFields.containsKey(demand.getDemandId())) {
+                        HashSet<ChangeDetail> changes =
+                                (HashSet<ChangeDetail>) updatedFields.get(demand.getDemandId());
+                        changes.remove(source.getChangeDetailCopy());
+                        if (changes.isEmpty()) {
+                            updatedFields.remove(demand.getDemandId());
+                            changeCount--;
+                        }
+                    }
+//                    originalsStorage.remove(source);
+                }
+                view.getDataGrid().redraw();
+                view.getChangesLabel().setText(Integer.toString(changeCount));
+            }
+        });
+        view.getDataGrid().setRowStyles(new RowStyles<FullDemandDetail>() {
+            @Override
+            public String getStyleNames(FullDemandDetail rowObject, int rowIndex) {
+//                DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+                //alebo nejaky novy attribute v FullDemandDetail - nieco ako read
+                if (updatedFields.containsKey(rowObject.getDemandId())) {
+                    return Storage.RSCS.common().changed();
+                }
+                return Storage.RSCS.common().emptyStyle();
+            }
+        });
     }
 
     /**
@@ -218,7 +245,6 @@ public class AdminDemandsPresenter
      */
     private void addPageChangeHandler() {
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent arg0) {
                 int page = view.getPager().getPageStart() / view.getPageSize();
@@ -233,15 +259,12 @@ public class AdminDemandsPresenter
      */
     private void setDemandEndColumnUpdater() {
         view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 if (!object.getEndDate().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
+                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.END_DATE,
+                            object.getDemandId(), object.getEndDate(), value);
                     object.setEndDate(value);
-                    eventBus.addDemandToCommit(object);
                 }
             }
         });
@@ -252,15 +275,12 @@ public class AdminDemandsPresenter
      */
     private void setDemandExpirationColumnUpdater() {
         view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 if (!object.getValidToDate().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
+                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.VALID_TO_DATE,
+                            object.getDemandId(), object.getValidToDate(), value);
                     object.setValidToDate(value);
-                    eventBus.addDemandToCommit(object);
                 }
             }
         });
@@ -271,17 +291,14 @@ public class AdminDemandsPresenter
      */
     private void setDemandStatusColumnUpdater() {
         view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 for (DemandStatus demandStatusType : DemandStatus.values()) {
                     if (demandStatusType.getValue().equals(value)) {
-                        if (!object.getDemandStatus().equals(demandStatusType.name())) {
-                            if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                            }
+                        if (!object.getDemandStatus().equals(demandStatusType)) {
+                            manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.DEMAND_STATUS,
+                                    object.getDemandId(), object.getDemandStatus(), value);
                             object.setDemandStatus(DemandStatus.valueOf(demandStatusType.name()));
-                            eventBus.addDemandToCommit(object);
                         }
                     }
                 }
@@ -294,17 +311,14 @@ public class AdminDemandsPresenter
      */
     private void setDemandTypeColumnUpdater() {
         view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 for (ClientDemandType clientDemandType : ClientDemandType.values()) {
                     if (clientDemandType.getValue().equals(value)) {
                         if (!object.getDemandType().equals(clientDemandType.name())) {
-                            if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                            }
+                            manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.DEMAND_TYPE,
+                                    object.getDemandId(), object.getDemandType(), value);
                             object.setDemandType(clientDemandType.name());
-                            eventBus.addDemandToCommit(object);
                         }
                     }
                 }
@@ -317,18 +331,35 @@ public class AdminDemandsPresenter
      */
     private void setDemandTitleColumnUpdater() {
         view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 if (!object.getTitle().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
+                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.TITLE,
+                            object.getDemandId(), object.getTitle(), value);
                     object.setTitle(value);
-                    eventBus.addDemandToCommit(object);
                 }
             }
         });
+    }
+
+    private void manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField demandField,
+            long demandId, Object originalValue, Object value) {
+        if (!updatedFields.containsKey(demandId)) {
+            ChangeDetail changeDetail = new ChangeDetail(demandField);
+            changeDetail.setOriginalValue(originalValue);
+            changeDetail.setValue(value);
+            if (updatedFields.containsKey(demandId)) {
+                updatedFields.get(demandId).add(changeDetail);
+                changeCount++;
+            } else {
+                HashSet<ChangeDetail> changes = new HashSet<ChangeDetail>();
+                changes.add(changeDetail);
+                updatedFields.put(demandId, changes);
+                changeCount++;
+            }
+        }
+        view.getDataGrid().redraw();
+        view.getChangesLabel().setText(Integer.toString(changeCount));
     }
 
     /**
@@ -336,10 +367,10 @@ public class AdminDemandsPresenter
      */
     private void setCidColumnUpdater() {
         view.getCidColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
-                view.getAdminDemandDetail().setDemandDetail(object);
+//                view.getAdminDemandDetail().setDemandDetail(object);
+                displayDemandDetail(object);
             }
         });
     }
@@ -349,12 +380,19 @@ public class AdminDemandsPresenter
      */
     private void setIdColumnUpdater() {
         view.getIdColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
-                view.getAdminDemandDetail().setDemandDetail(object);
+//                view.getAdminDemandDetail().setDemandDetail(object);
+                displayDemandDetail(object);
             }
         });
+    }
+
+    private void displayDemandDetail(FullDemandDetail demand) {
+        view.getAdminDemandDetail().setDemandDetail(demand);
+        if (updatedFields.containsKey(demand.getDemandId())) {
+            view.getAdminDemandDetail().setFieldChanges(updatedFields.get(demand.getDemandId()));
+        }
     }
 
     /**
@@ -362,19 +400,15 @@ public class AdminDemandsPresenter
      */
     private void addCommitButtonHandler() {
         view.getCommitBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateDemand(dataToUpdate.get(idx));
-                    }
-                    eventBus.loadingHide();
-                    dataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
+                    eventBus.loadingShow("Commiting...");
+                    eventBus.updateDemands(updatedFields);
+                    updatedFields.clear();
+                    view.getAdminDemandDetail().resetChangeMonitors();
+                    changeCount = 0;
+                    view.getChangesLabel().setText("0");
                 }
             }
         });
@@ -385,21 +419,17 @@ public class AdminDemandsPresenter
      */
     private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                dataToUpdate.clear();
-                view.getDataGrid().setFocus(true);
-                int idx = 0;
-                for (FullDemandDetail data : originalData.values()) {
-                    idx = view.getDataGrid().getVisibleItems().indexOf(data);
-                    view.getDataGrid().getVisibleItem(idx).updateWholeDemand(data);
+                for (Long demandId : updatedFields.keySet()) {
+                    for (ChangeDetail change : updatedFields.get(demandId)) {
+                        change.revert();
+                    }
+                    updatedFields.clear();
+                    view.getAdminDemandDetail().resetChangeMonitors();
+                    changeCount = 0;
+                    view.getChangesLabel().setText("0");
                 }
-                view.getDataGrid().flush();
-                view.getDataGrid().redraw();
-                Window.alert(view.getChangesLabel().getText() + " changes rolledback.");
-                view.getChangesLabel().setText("0");
-                originalData.clear();
             }
         });
     }
@@ -409,16 +439,35 @@ public class AdminDemandsPresenter
      */
     private void addRefreshButtonHandler() {
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
+                if (updatedFields.isEmpty()) {
                     view.getPager().startLoading();
-                    eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
+//                    eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
+    }
+
+//    public ArrayList<FullDemandDetail> getDataToUpdate(
+//            Map<FullDemandDetail, List<DemandChangeMonitor>> updatedFields) {
+//        ArrayList<FullDemandDetail> demands = new ArrayList<FullDemandDetail>();
+//        for (FullDemandDetail demand : updatedFields.keySet()) {
+//            for (DemandChangeMonitor change : updatedFields.get(demand)) {
+//                demand = demand.updateDemandFieldValue(change.getDemandField(), change.getValue());
+//            }
+//            demands.add(demand);
+//        }
+//        return demands;
+//    }
+    public void onResponseUpdateDemands(Boolean result) {
+        eventBus.loadingHide();
+        if (result) {
+            Window.alert("Changes commited");
+        } else {
+            Window.alert("Error while commiting");
+        }
     }
 }

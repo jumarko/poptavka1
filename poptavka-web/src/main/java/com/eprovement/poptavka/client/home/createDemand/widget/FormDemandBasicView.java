@@ -174,7 +174,7 @@ public class FormDemandBasicView extends Composite
         } catch (Exception ex) {
             Window.alert("Exception: " + ex.getMessage());
         }
-        map.put(DemandField.FINISH_DATE, endDate.getValue());
+        map.put(DemandField.END_DATE, endDate.getValue());
         map.put(DemandField.VALID_TO_DATE, validToDate.getValue());
 
         GWT.log("Filling map with basic values ... DONE");

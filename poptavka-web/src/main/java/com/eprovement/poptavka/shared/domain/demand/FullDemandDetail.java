@@ -33,9 +33,11 @@ public class FullDemandDetail implements Serializable, TableDisplay {
      */
     private static final long serialVersionUID = -530982467233195456L;
 
+    //Only fields that can be updated
     public enum DemandField {
 
-        TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
+        TITLE, DESCRIPTION, PRICE, END_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE,
+        CATEGORIES, LOCALITIES, DEMAND_STATUS, CREATED, EXCLUDE_SUPPLIER
     }
     private ArrayList<LocalityDetail> localities;
     private ArrayList<CategoryDetail> categories;
@@ -90,7 +92,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         this.setTitle((String) map.get(DemandField.TITLE));
         this.setDescription((String) map.get(DemandField.DESCRIPTION));
         this.setPrice((String) map.get(DemandField.PRICE));
-        this.setEndDate((Date) map.get(DemandField.FINISH_DATE));
+        this.setEndDate((Date) map.get(DemandField.END_DATE));
         this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
     }
 
@@ -99,7 +101,6 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         this.minRating = (Integer) map.get(DemandField.MIN_RATING);
         this.demandType = (String) map.get(DemandField.DEMAND_TYPE);
     }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeDemand(FullDemandDetail demand) {
         demandId = demand.getDemandId();

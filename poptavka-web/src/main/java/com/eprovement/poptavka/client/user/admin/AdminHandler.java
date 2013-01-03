@@ -4,8 +4,6 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.AdminRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
@@ -17,6 +15,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -26,17 +25,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @EventHandler
 public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
     @Inject
-    private CategoryRPCServiceAsync categoryService = null;
-    @Inject
-    private LocalityRPCServiceAsync localityService = null;
-    @Inject
-    private AdminRPCServiceAsync generalService = null;
+    private AdminRPCServiceAsync adminService = null;
 
     //*************************************************************************/
     // Overriden methods of IEventBusData interface.                          */
@@ -137,7 +134,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  DEMAND SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminDemandsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminDemandsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
 //                grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -147,7 +144,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminDemands(SearchDefinition searchDefinition) {
-        generalService.getAdminDemands(searchDefinition,
+        adminService.getAdminDemands(searchDefinition,
                 new SecuredAsyncCallback<List<FullDemandDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullDemandDetail> result) {
@@ -156,11 +153,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 });
     }
 
-    public void onUpdateDemand(FullDemandDetail demand) {
-        generalService.updateDemand(demand, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+    public void onUpdateDemands(HashMap<Long, HashSet<ChangeDetail>> changes) {
+        adminService.updateDemands(changes, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
-            public void onSuccess(FullDemandDetail result) {
-//                eventBus.refreshUpdatedDemand(result);
+            public void onSuccess(Boolean result) {
+                eventBus.responseUpdateDemands(result);
             }
         });
     }
@@ -169,7 +166,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  SUPPLIER SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminSuppliersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminSuppliersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminSuppliersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -178,7 +175,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminSuppliers(SearchDefinition searchDefinition) {
-        generalService.getAdminSuppliers(searchDefinition,
+        adminService.getAdminSuppliers(searchDefinition,
                 new SecuredAsyncCallback<List<FullSupplierDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<FullSupplierDetail> result) {
@@ -188,7 +185,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateSupplier(FullSupplierDetail supplier) {
-        generalService.updateSupplier(supplier, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
+        adminService.updateSupplier(supplier, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
             @Override
             public void onSuccess(FullSupplierDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -200,7 +197,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  OFFER SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminOffersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminOffersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -209,7 +206,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminOffers(SearchDefinition searchDefinition) {
-        generalService.getAdminOffers(searchDefinition,
+        adminService.getAdminOffers(searchDefinition,
                 new SecuredAsyncCallback<List<OfferDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<OfferDetail> result) {
@@ -219,7 +216,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateOffer(OfferDetail offer) {
-        generalService.updateOffer(offer, new SecuredAsyncCallback<OfferDetail>(eventBus) {
+        adminService.updateOffer(offer, new SecuredAsyncCallback<OfferDetail>(eventBus) {
             @Override
             public void onSuccess(OfferDetail result) {
                 // TODO: what's wrong with this ?
@@ -232,7 +229,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  CLIENT SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminClientsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminClientsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminClientsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -241,7 +238,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminClients(SearchDefinition searchDefinition) {
-        generalService.getAdminClients(searchDefinition,
+        adminService.getAdminClients(searchDefinition,
                 new SecuredAsyncCallback<List<ClientDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ClientDetail> result) {
@@ -251,7 +248,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateClient(ClientDetail client) {
-        generalService.updateClient(client, new SecuredAsyncCallback<ClientDetail>(eventBus) {
+        adminService.updateClient(client, new SecuredAsyncCallback<ClientDetail>(eventBus) {
             @Override
             public void onSuccess(ClientDetail result) {
                 // TODO: what's wrong with this ?
@@ -264,7 +261,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  ACCESS ROLE SECTION. *************************************************
      **********************************************************************************************/
     public void getAdminAccessRolesCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminAccessRolesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminAccessRolesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -273,7 +270,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminAccessRoles(SearchDefinition searchDefinition) {
-        generalService.getAdminAccessRoles(searchDefinition,
+        adminService.getAdminAccessRoles(searchDefinition,
                 new SecuredAsyncCallback<List<AccessRoleDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<AccessRoleDetail> result) {
@@ -283,7 +280,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateAccessRole(AccessRoleDetail role) {
-        generalService.updateAccessRole(role, new SecuredAsyncCallback<AccessRoleDetail>(eventBus) {
+        adminService.updateAccessRole(role, new SecuredAsyncCallback<AccessRoleDetail>(eventBus) {
             @Override
             public void onSuccess(AccessRoleDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -295,7 +292,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  EMAIL ACTIVATION SECTION.*********************************************
      **********************************************************************************************/
     public void getAdminEmailsActivationCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminEmailsActivationCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminEmailsActivationCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -304,7 +301,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminEmailsActivation(SearchDefinition searchDefinition) {
-        generalService.getAdminEmailsActivation(searchDefinition,
+        adminService.getAdminEmailsActivation(searchDefinition,
                 new SecuredAsyncCallback<List<ActivationEmailDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ActivationEmailDetail> result) {
@@ -314,7 +311,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateEmailActivation(ActivationEmailDetail client) {
-        generalService.updateEmailActivation(client, new SecuredAsyncCallback<ActivationEmailDetail>(eventBus) {
+        adminService.updateEmailActivation(client, new SecuredAsyncCallback<ActivationEmailDetail>(eventBus) {
             @Override
             public void onSuccess(ActivationEmailDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -326,7 +323,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  INVOICE SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminInvoicesCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminInvoicesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminInvoicesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -335,7 +332,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminInvoices(SearchDefinition searchDefinition) {
-        generalService.getAdminInvoices(searchDefinition,
+        adminService.getAdminInvoices(searchDefinition,
                 new SecuredAsyncCallback<List<InvoiceDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<InvoiceDetail> result) {
@@ -345,7 +342,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateInvoice(InvoiceDetail client) {
-        generalService.updateInvoice(client, new SecuredAsyncCallback<InvoiceDetail>(eventBus) {
+        adminService.updateInvoice(client, new SecuredAsyncCallback<InvoiceDetail>(eventBus) {
             @Override
             public void onSuccess(InvoiceDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -357,7 +354,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  Message SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminMessagesCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminMessagesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminMessagesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -366,7 +363,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminMessages(SearchDefinition searchDefinition) {
-        generalService.getAdminMessages(searchDefinition,
+        adminService.getAdminMessages(searchDefinition,
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<MessageDetail> result) {
@@ -376,7 +373,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateMessage(MessageDetail client) {
-        generalService.updateMessage(client, new SecuredAsyncCallback<MessageDetail>(eventBus) {
+        adminService.updateMessage(client, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -388,7 +385,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  OUR PAYMENT DETAILS SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminOurPaymentDetailsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminOurPaymentDetailsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminOurPaymentDetailsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -397,7 +394,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminOurPaymentDetails(SearchDefinition searchDefinition) {
-        generalService.getAdminOurPaymentDetails(searchDefinition,
+        adminService.getAdminOurPaymentDetails(searchDefinition,
                 new SecuredAsyncCallback<List<PaymentDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<PaymentDetail> result) {
@@ -407,7 +404,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateOurPaymentDetail(PaymentDetail client) {
-        generalService.updateOurPaymentDetail(client, new SecuredAsyncCallback<PaymentDetail>(eventBus) {
+        adminService.updateOurPaymentDetail(client, new SecuredAsyncCallback<PaymentDetail>(eventBus) {
             @Override
             public void onSuccess(PaymentDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -419,7 +416,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PAYMENT METHOD SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminPaymentMethodsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminPaymentMethodsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminPaymentMethodsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -428,7 +425,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminPaymentMethods(SearchDefinition searchDefinition) {
-        generalService.getAdminPaymentMethods(searchDefinition,
+        adminService.getAdminPaymentMethods(searchDefinition,
                 new SecuredAsyncCallback<List<PaymentMethodDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<PaymentMethodDetail> result) {
@@ -438,7 +435,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdatePaymentMethod(PaymentMethodDetail paymentMethods) {
-        generalService.updatePaymentMethod(paymentMethods, new SecuredAsyncCallback<PaymentMethodDetail>(eventBus) {
+        adminService.updatePaymentMethod(paymentMethods, new SecuredAsyncCallback<PaymentMethodDetail>(eventBus) {
             @Override
             public void onSuccess(PaymentMethodDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -450,7 +447,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PERMISSIONS SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminPermissionsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminPermissionsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminPermissionsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -459,7 +456,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminPermissions(SearchDefinition searchDefinition) {
-        generalService.getAdminPermissions(searchDefinition,
+        adminService.getAdminPermissions(searchDefinition,
                 new SecuredAsyncCallback<List<PermissionDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<PermissionDetail> result) {
@@ -469,7 +466,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdatePermission(PermissionDetail permissions) {
-        generalService.updatePermission(permissions, new SecuredAsyncCallback<PermissionDetail>(eventBus) {
+        adminService.updatePermission(permissions, new SecuredAsyncCallback<PermissionDetail>(eventBus) {
             @Override
             public void onSuccess(PermissionDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -481,7 +478,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PREFERENCES SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminPreferencesCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminPreferencesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminPreferencesCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -490,7 +487,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminPreferences(SearchDefinition searchDefinition) {
-        generalService.getAdminPreferences(searchDefinition,
+        adminService.getAdminPreferences(searchDefinition,
                 new SecuredAsyncCallback<List<PreferenceDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<PreferenceDetail> result) {
@@ -500,7 +497,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdatePreference(PreferenceDetail client) {
-        generalService.updatePreference(client, new SecuredAsyncCallback<PreferenceDetail>(eventBus) {
+        adminService.updatePreference(client, new SecuredAsyncCallback<PreferenceDetail>(eventBus) {
             @Override
             public void onSuccess(PreferenceDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -512,7 +509,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PROBLEM SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminProblemsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        generalService.getAdminProblemsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        adminService.getAdminProblemsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
@@ -521,7 +518,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminProblems(SearchDefinition searchDefinition) {
-        generalService.getAdminProblems(searchDefinition,
+        adminService.getAdminProblems(searchDefinition,
                 new SecuredAsyncCallback<List<ProblemDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<ProblemDetail> result) {
@@ -531,7 +528,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateProblem(ProblemDetail client) {
-        generalService.updateProblem(client, new SecuredAsyncCallback<ProblemDetail>(eventBus) {
+        adminService.updateProblem(client, new SecuredAsyncCallback<ProblemDetail>(eventBus) {
             @Override
             public void onSuccess(ProblemDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -540,7 +537,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateUnreadMessagesCount() {
-        generalService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
+        adminService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
             @Override
             public void onSuccess(UnreadMessagesDetail result) {
                 // empty i.e number of new messages could be retrieved

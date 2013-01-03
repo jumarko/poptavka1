@@ -24,6 +24,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -124,6 +125,9 @@ public class ClientDemandsPresenter
         addReplyColumnFieldUpdater();
         // Listbox actions
         addActionChangeHandler();
+        // RowStyles
+        addDemandGridRowStyles();
+        addConversationGridRowStyles();
     }
 
     /**************************************************************************/
@@ -401,6 +405,32 @@ public class ClientDemandsPresenter
                 view.setConversationTableVisible(false);
                 view.setDemandTableVisible(true);
                 view.getDemandGrid().refresh();
+            }
+        });
+    }
+
+    private void addDemandGridRowStyles() {
+        view.getDemandGrid().setRowStyles(new RowStyles<ClientDemandDetail>() {
+            @Override
+            public String getStyleNames(ClientDemandDetail row, int rowIndex) {
+                if (row.getUnreadSubmessages() > 0) {
+                    return "font-weight:bold;";
+                } else {
+                    return "";
+                }
+            }
+        });
+    }
+
+    private void addConversationGridRowStyles() {
+        view.getConversationGrid().setRowStyles(new RowStyles<ClientDemandConversationDetail>() {
+            @Override
+            public String getStyleNames(ClientDemandConversationDetail row, int rowIndex) {
+                if (row.getUnreadSubmessages() > 0) {
+                    return "font-weight:bold;";
+                } else {
+                    return "";
+                }
             }
         });
     }

@@ -41,6 +41,9 @@ public interface CommonResource extends CssResource {
     @ClassName("empty_style")
     String emptyStyle();
 
+    @ClassName("changed")
+    String changed();
+
     @ClassName("textBoxAsLabel")
     String textBoxAsLabel();
 }

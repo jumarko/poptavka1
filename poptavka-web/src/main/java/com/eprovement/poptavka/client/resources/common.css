@@ -94,3 +94,7 @@
     background-color: #fff;
     background: transparent;
 }
+
+.changed {
+    background-color: #00FF00;
+}

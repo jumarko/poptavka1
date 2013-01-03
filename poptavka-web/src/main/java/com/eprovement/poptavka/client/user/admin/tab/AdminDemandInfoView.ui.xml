@@ -1,10 +1,13 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+        xmlns:co='urn:import:com.eprovement.poptavka.client.common'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
         xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
         xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateLocales='default'>
+
+    <!--<ui:import field='com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField.*' />-->
 
     <ui:style>
 		.header {
@@ -49,13 +52,17 @@
                     <tr>
                         <td colspan="2" class='{style.label}'>
                             <ui:msg key='title'>Title:</ui:msg>
-                            <g:TextArea ui:field='titleBox' styleName='{style.titleBox}' />
+                            <co:ChangeMonitor ui:field='titleBox' styleName='{style.titleBox}'>
+                                <g:TextBox />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class='{style.label}'>
                             <ui:msg key='description'>Description:</ui:msg>
-                            <g:TextArea ui:field='descriptionBox' styleName='{style.descriptionBox}' />
+                            <co:ChangeMonitor ui:field='descriptionBox' >
+                                <g:TextArea styleName='{style.descriptionBox}' />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -63,7 +70,9 @@
                             <ui:msg key='price'>Price:</ui:msg>
                         </td>
                         <td>
-                            <g:TextBox ui:field='priceBox' styleName='{style.priceBox}' />
+                            <co:ChangeMonitor ui:field='priceBox' styleName='{style.priceBox}' >
+                                <g:TextBox />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -71,7 +80,9 @@
                             <ui:msg key='endDate'>End Date:</ui:msg>
                         </td>
                         <td>
-                            <d:DateBox ui:field='endDateBox' styleName='{style.endDateBox}' />
+                            <co:ChangeMonitor ui:field='endDateBox' styleName='{style.endDateBox}' >
+                                <d:DateBox />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -79,7 +90,9 @@
                             <ui:msg key='expiration'>Expiration:</ui:msg>
                         </td>
                         <td>
-                            <d:DateBox ui:field='expirationBox' styleName='{style.expirationBox}' />
+                            <co:ChangeMonitor ui:field='expirationBox' styleName='{style.expirationBox}' >
+                                <d:DateBox />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -95,7 +108,9 @@
                             <ui:msg key='maxOffers'>Max Offers:</ui:msg>
                         </td>
                         <td>
-                            <g:TextBox ui:field='maxOffers' styleName='{style.maxOffers}' />
+                            <co:ChangeMonitor ui:field='maxOffers' styleName='{style.maxOffers}' >
+                                <g:TextBox />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -103,7 +118,9 @@
                             <ui:msg key='minRating'>MinRating:</ui:msg>
                         </td>
                         <td>
-                            <g:TextBox ui:field='minRating' styleName='{style.minRating}' />
+                            <co:ChangeMonitor ui:field='minRating' styleName='{style.minRating}' >
+                                <g:TextBox />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -111,7 +128,9 @@
                             <ui:msg key='demandType'>Demand Type:</ui:msg>
                         </td>
                         <td>
-                            <g:ListBox ui:field='demandType' styleName='{style.demandType}' />
+                            <co:ChangeMonitor ui:field='demandType' styleName='{style.demandType}' >
+                                <g:ListBox/>
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -119,7 +138,9 @@
                             <ui:msg key='demandStatus'>Demand Status:</ui:msg>
                         </td>
                         <td>
-                            <g:ListBox ui:field='demandStatus' styleName='{style.demandStatus}' />
+                            <co:ChangeMonitor ui:field='demandStatus' styleName='{style.demandStatus}' >
+                                <g:ListBox />
+                            </co:ChangeMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -132,7 +153,9 @@
                     <tr>
                         <td colspan="2" align='right'>
                             <g:VerticalPanel>
-                                <g:ListBox ui:field = "categoryList" visibleItemCount='5' width="330px"/>
+                                <co:ChangeMonitor ui:field = "categoryList">
+                                    <g:ListBox visibleItemCount='5' width = '330' />
+                                </co:ChangeMonitor>
                                 <g:Button ui:field='editCatBtn'>
                                     <ui:msg key='demandCategoryList'>Edit</ui:msg>
                                 </g:Button>
@@ -148,7 +171,9 @@
                     <tr>
                         <td colspan="2" align='right'>
                             <g:VerticalPanel>
-                                <g:ListBox ui:field = "localityList" visibleItemCount='5' width = '330'/>
+                                <co:ChangeMonitor ui:field = "localityList">
+                                    <g:ListBox visibleItemCount='5' width = '330' />
+                                </co:ChangeMonitor>
                                 <g:Button ui:field='editLocBtn'>
                                     <ui:msg key='demandLocalityList'>Edit</ui:msg>
                                 </g:Button>

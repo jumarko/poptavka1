@@ -10,12 +10,15 @@ import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public interface AdminRPCServiceAsync {
@@ -25,8 +28,7 @@ public interface AdminRPCServiceAsync {
 
     void getAdminDemands(SearchDefinition searchDefinition, AsyncCallback<List<FullDemandDetail>> callback);
 
-    void updateDemand(FullDemandDetail detailObject,
-            AsyncCallback<FullDemandDetail> callback);
+    void updateDemands(HashMap<Long, HashSet<ChangeDetail>> changes, AsyncCallback<Boolean> callback);
 
     //---------------------- CLIENT ------------------------------------------------
     void getAdminClientsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);

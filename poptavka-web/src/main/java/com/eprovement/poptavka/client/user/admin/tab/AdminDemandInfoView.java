@@ -4,12 +4,16 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -20,12 +24,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -42,14 +47,11 @@ public class AdminDemandInfoView extends Composite {
             UiBinder<Widget, AdminDemandInfoView> {
     }
     // demand detail input fields
+    @UiField(provided = true)
+    ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox,
+    maxOffers, minRating, demandStatus, demandType, categoryList, localityList;
     @UiField
-    TextArea titleBox, descriptionBox;
-    @UiField
-    DateBox endDateBox, expirationBox;
-    @UiField
-    TextBox priceBox, clientID, maxOffers, minRating;
-    @UiField
-    ListBox demandStatus, demandType, categoryList, localityList;
+    TextBox clientID;
     @UiField
     Button editCatBtn, editLocBtn, createButton, updateButton;
     private FullDemandDetail demandInfo;
@@ -77,21 +79,53 @@ public class AdminDemandInfoView extends Composite {
         return editLocBtn;
     }
 
-    public ListBox getCategoryList() {
+    public ChangeMonitor getCategoryList() {
         return categoryList;
     }
 
-    public ListBox getLocalityList() {
+    public ChangeMonitor getLocalityList() {
         return localityList;
     }
 
+    public ChangeMonitor getTitleBox() {
+        return titleBox;
+    }
+
     public AdminDemandInfoView() {
+        titleBox = new ChangeMonitor(new ChangeDetail(DemandField.TITLE));
+        descriptionBox = new ChangeMonitor(new ChangeDetail(DemandField.DESCRIPTION));
+        endDateBox = new ChangeMonitor(new ChangeDetail(DemandField.END_DATE));
+        expirationBox = new ChangeMonitor(new ChangeDetail(DemandField.VALID_TO_DATE));
+        priceBox = new ChangeMonitor(new ChangeDetail(DemandField.PRICE));
+        maxOffers = new ChangeMonitor(new ChangeDetail(DemandField.MAX_OFFERS));
+        minRating = new ChangeMonitor(new ChangeDetail(DemandField.MIN_RATING));
+        demandStatus = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_STATUS));
+        demandType = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_TYPE));
+        categoryList = new ChangeMonitor(new ChangeDetail(DemandField.CATEGORIES));
+        localityList = new ChangeMonitor(new ChangeDetail(DemandField.LOCALITIES));
+        //
         initWidget(uiBinder.createAndBindUi(this));
+        //
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
-        expirationBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-        endDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-//        initDemandInfoForm();
+        ((DateBox) expirationBox.getWidget()).setFormat(new DateBox.DefaultFormat(dateFormat));
+        ((DateBox) endDateBox.getWidget()).setFormat(new DateBox.DefaultFormat(dateFormat));
+        clientID.setEnabled(false);
+        //
         createSelectorWidgetPopup();
+    }
+
+    public void setChangeHandler(ChangeHandler changeHandler) {
+        titleBox.addChangeHandler(changeHandler);
+        descriptionBox.addChangeHandler(changeHandler);
+        endDateBox.addChangeHandler(changeHandler);
+        expirationBox.addChangeHandler(changeHandler);
+        priceBox.addChangeHandler(changeHandler);
+        maxOffers.addChangeHandler(changeHandler);
+        minRating.addChangeHandler(changeHandler);
+        demandStatus.addChangeHandler(changeHandler);
+        demandType.addChangeHandler(changeHandler);
+        categoryList.addChangeHandler(changeHandler);
+        localityList.addChangeHandler(changeHandler);
     }
 
     private void createSelectorWidgetPopup() {
@@ -105,36 +139,29 @@ public class AdminDemandInfoView extends Composite {
         if (demandInfo == null) {
             return null;
         }
-        boolean t = priceBox.getText() == null;
+        boolean t = priceBox.getValue() == null;
         if (t) {
             GWT.log("d" + t + "max offer");
         }
         GWT.log("d" + t + "max offer");
-        GWT.log("d" + priceBox.getText().equals("") + "price ");
+        GWT.log("d" + priceBox.getValue().equals("") + "price ");
 
         // Update the contact.
-        demandInfo.setTitle(titleBox.getText());
-        demandInfo.setDescription(descriptionBox.getText());
-        demandInfo.setPrice(BigDecimal.valueOf(Double.valueOf(currencyFormat.parse(priceBox.getText()))));
-        demandInfo.setEndDate(endDateBox.getValue());
-        demandInfo.setValidToDate(expirationBox.getValue());
-        demandInfo.setClientId(Long.valueOf(clientID.getText()));
-        demandInfo.setMaxOffers(Integer.valueOf(maxOffers.getValue()));
-        demandInfo.setMinRating(Integer.valueOf(minRating.getValue()));
-        demandInfo.setDemandType(demandType.getItemText(demandType.getSelectedIndex()));
-        demandInfo.setDemandStatus(DemandStatus.valueOf(demandStatus.getItemText(demandStatus.getSelectedIndex())));
+        demandInfo.setTitle((String) titleBox.getValue());
+        demandInfo.setDescription((String) descriptionBox.getValue());
+        demandInfo.setPrice(BigDecimal.valueOf(Double.valueOf(currencyFormat.parse((String) priceBox.getValue()))));
+        demandInfo.setEndDate((Date) endDateBox.getValue());
+        demandInfo.setValidToDate((Date) expirationBox.getValue());
+        demandInfo.setClientId(Long.valueOf((String) clientID.getValue()));
+        demandInfo.setMaxOffers(Integer.valueOf((String) maxOffers.getValue()));
+        demandInfo.setMinRating(Integer.valueOf((String) minRating.getValue()));
+        demandInfo.setDemandType(((String) demandType.getValue()));
+        demandInfo.setDemandStatus(DemandStatus.valueOf((String) demandStatus.getValue()));
         demandInfo.setCategories(categories);
         demandInfo.setLocalities(localities);
 
         return demandInfo;
     }
-
-//    private void initDemandInfoForm() {
-//        // initWidget(uiBinder.createAndBindUi(this));
-//        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
-//        expirationBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-//        endDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-//    }
 
     public ArrayList<CategoryDetail> getCategories() {
         return categories;
@@ -146,10 +173,10 @@ public class AdminDemandInfoView extends Composite {
     }
 
     public void setCategoryBox(List<CategoryDetail> categoriesList) {
-        categoryList.clear();
+        ((ListBox) categoryList.getWidget()).clear();
         if (categoriesList != null) {
             for (CategoryDetail cat : categoriesList) {
-                categoryList.addItem(cat.getName());
+                ((ListBox) categoryList.getWidget()).addItem(cat.getName());
             }
 
         }
@@ -165,10 +192,10 @@ public class AdminDemandInfoView extends Composite {
     }
 
     public void setLocalityBox(List<LocalityDetail> localitiesList) {
-        localityList.clear();
+        ((ListBox) localityList.getWidget()).clear();
         if (localitiesList != null) {
             for (LocalityDetail loc : localitiesList) {
-                localityList.addItem(loc.getName());
+                ((ListBox) localityList.getWidget()).addItem(loc.getName());
             }
         }
     }
@@ -178,6 +205,7 @@ public class AdminDemandInfoView extends Composite {
     }
 
     public void setDemandDetail(FullDemandDetail demand) {
+        resetChangeMonitors();
         if (demand != null) {
             this.demandInfo = demand;
             this.categories = demand.getCategories();
@@ -185,50 +213,108 @@ public class AdminDemandInfoView extends Composite {
 
             updateButton.setEnabled(demand != null);
             if (demand != null) {
-                titleBox.setText(demand.getTitle());
-                descriptionBox.setText(demand.getDescription());
-                priceBox.setText(currencyFormat.format(demand.getPrice()));
-                endDateBox.setValue(demand.getEndDate());
-                expirationBox.setValue(demand.getValidToDate());
-                clientID.setText(String.valueOf(demand.getClientId()));
-                maxOffers.setText(String.valueOf(demand.getMaxOffers()));
-                minRating.setText(String.valueOf(demand.getMinRating()));
+                titleBox.setBothValues(demand.getTitle());
+                descriptionBox.setBothValues(demand.getDescription());
+                priceBox.setBothValues(currencyFormat.format(demand.getPrice()));
+                endDateBox.setBothValues(demand.getEndDate());
+                expirationBox.setBothValues(demand.getValidToDate());
+                clientID.setValue(String.valueOf(demand.getClientId()));
+                maxOffers.setBothValues(String.valueOf(demand.getMaxOffers()));
+                minRating.setBothValues(String.valueOf(demand.getMinRating()));
 
                 // demand type settings
                 // Add the types to the status box.
                 final ClientDemandType[] types = ClientDemandType.values();
                 int i = 0;
                 int j = 0;
-                demandType.clear();
+                ((ListBox) demandType.getWidget()).clear();
                 for (ClientDemandType type : types) {
-                    demandType.addItem(type.getValue());
+                    ((ListBox) demandType.getWidget()).addItem(type.getValue());
                     if (demand.getDemandType() != null
                             && demand.getDemandType().equalsIgnoreCase(type.getValue())) {
                         j = i;
                     }
                     i++;
                 }
-                demandType.setSelectedIndex(j);
+                demandType.setValue(j);
 
                 // demand status settings
                 // Add the statuses to the status box.
                 final DemandStatus[] statuses = DemandStatus.values();
                 i = 0;
                 j = 0;
-                demandStatus.clear();
+                ((ListBox) demandStatus.getWidget()).clear();
                 for (DemandStatus status : statuses) {
-                    demandStatus.addItem(status.getValue());
+                    ((ListBox) demandStatus.getWidget()).addItem(status.getValue());
                     if (demand.getDemandStatus() != null
                             && demand.getDemandStatus() == DemandStatus.valueOf(status.getValue())) {
                         j = i;
                     }
                     i++;
                 }
-                demandStatus.setSelectedIndex(j);
+                demandStatus.setValue(j);
 
                 setCategoryBox(demand.getCategories());
                 setLocalityBox(demand.getLocalities());
             }
         }
+    }
+
+    public void setFieldChanges(HashSet<ChangeDetail> changes) {
+        for (ChangeDetail change : changes) {
+            switch ((DemandField) change.getField()) {
+                case TITLE:
+                    titleBox.setChanged(change);
+                    break;
+                case DESCRIPTION:
+                    descriptionBox.setChanged(change);
+                    break;
+                case PRICE:
+                    priceBox.setChanged(change);
+                    break;
+                case END_DATE:
+                    endDateBox.setChanged(change);
+                    break;
+                case VALID_TO_DATE:
+                    expirationBox.setChanged(change);
+                    break;
+//                case MAX_OFFERS:
+//                    ???
+//                    break;
+                case MIN_RATING:
+                    minRating.setChanged(change);
+                    break;
+                case DEMAND_STATUS:
+                    demandStatus.setChanged(change);
+                    break;
+//                case CREATED:
+//                    break;
+                case CATEGORIES:
+                    //Treba zistovat ci sa kategorie zmenili? Ak ano, ako aby to nebolo narocne?
+                    categoryList.setChanged(change);
+                    break;
+                case LOCALITIES:
+                    localityList.setChanged(change);
+                    break;
+//                case EXCLUDE_SUPPLIER:
+//                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void resetChangeMonitors() {
+        titleBox.reset();
+        descriptionBox.reset();
+        endDateBox.reset();
+        expirationBox.reset();
+        priceBox.reset();
+        maxOffers.reset();
+        minRating.reset();
+        demandStatus.reset();
+        demandType.reset();
+        categoryList.reset();
+        localityList.reset();
     }
 }
