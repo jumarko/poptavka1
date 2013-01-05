@@ -20,7 +20,7 @@
                         <g:Button ui:field="refresh">Refresh</g:Button>
                         <g:Button ui:field="commit">Commit changes</g:Button>
                         <g:Button ui:field="rollback">Rollback changes</g:Button>
-                        <g:Label>Demands changed: </g:Label>
+                        <g:Label>Changed made: </g:Label>
                         <g:Label ui:field="changesLabel"></g:Label>
                     </g:HorizontalPanel>
                 </g:north>

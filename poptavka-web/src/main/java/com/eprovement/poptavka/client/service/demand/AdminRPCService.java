@@ -21,7 +21,7 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 @RemoteServiceRelativePath(AdminRPCService.URL)
@@ -35,7 +35,7 @@ public interface AdminRPCService extends RemoteService {
     List<FullDemandDetail> getAdminDemands(SearchDefinition searchDefinition) throws RPCException,
             ApplicationSecurityException;
 
-    Boolean updateDemands(HashMap<Long, HashSet<ChangeDetail>> changes) throws
+    Boolean updateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes) throws
             RPCException, ApplicationSecurityException;
 
     //---------------------- CLIENT ------------------------------------------------

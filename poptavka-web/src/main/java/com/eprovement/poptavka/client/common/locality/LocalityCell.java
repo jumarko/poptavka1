@@ -18,6 +18,7 @@ public class LocalityCell extends AbstractCell<LocalityDetail> {
     //DisplayCountOfWhat
     public static final int DISPLAY_COUNT_OF_DEMANDS = 0;
     public static final int DISPLAY_COUNT_OF_SUPPLIERS = 1;
+    public static final int DISPLAY_COUNT_DISABLED = -1;
     //Display string Constants
     public static final String LEFT_BRACE = "(";
     public static final String RIGHT_BRACE = ")";

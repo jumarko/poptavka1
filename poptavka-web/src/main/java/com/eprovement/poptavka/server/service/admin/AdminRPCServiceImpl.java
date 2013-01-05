@@ -54,10 +54,9 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.googlecode.genericdao.search.Search;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -238,20 +237,20 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Boolean updateDemands(HashMap<Long, HashSet<ChangeDetail>> changes) throws
+    public Boolean updateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes) throws
             RPCException, ApplicationSecurityException {
         Demand demand = null;
         for (Long demandId : changes.keySet()) {
             demand = demandService.getById(demandId);
             updateDemandFields(demand, changes.get(demandId));
-            generalService.merge(demand);
-//            demandService.update(demand);
+//            generalService.merge(demand);
+            demandService.update(demand);
         }
 
         return true;
     }
 
-    private Demand updateDemandFields(Demand demand, HashSet<ChangeDetail> changes) {
+    private Demand updateDemandFields(Demand demand, ArrayList<ChangeDetail> changes) {
         for (ChangeDetail change : changes) {
             switch ((FullDemandDetail.DemandField) change.getField()) {
                 case TITLE:
@@ -278,18 +277,10 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
                 case DEMAND_STATUS:
                     demand.setStatus(DemandStatus.valueOf((String) change.getValue()));
                     break;
-//                case READ:
-//                    demand.setR((String) change.getValue());
-//                    read = (Boolean) value;
-//                    break;
-//                case STARRED:
-//                    starred = (Boolean) value;
-//                    break;
                 case CREATED:
                     demand.setCreatedDate((Date) change.getValue());
                     break;
                 case CATEGORIES:
-                    //Treba zistovat ci sa kategorie zmenili? Ak ano, ako aby to nebolo narocne?
                     demand.setCategories(categoryConverter.convertToSourceList(
                             (ArrayList<CategoryDetail>) change.getValue()));
                     break;

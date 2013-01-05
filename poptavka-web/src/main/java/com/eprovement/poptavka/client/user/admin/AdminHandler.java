@@ -26,7 +26,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 @EventHandler
@@ -153,7 +153,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 });
     }
 
-    public void onUpdateDemands(HashMap<Long, HashSet<ChangeDetail>> changes) {
+    public void onUpdateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes) {
         adminService.updateDemands(changes, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
             public void onSuccess(Boolean result) {

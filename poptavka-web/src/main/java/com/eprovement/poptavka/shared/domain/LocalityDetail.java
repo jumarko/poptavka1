@@ -2,7 +2,6 @@ package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.google.gwt.view.client.ProvidesKey;
-import java.io.Serializable;
 
 /**
  * Low-bandwitdh representation of Locality designed for direct use on frontend.
@@ -10,7 +9,7 @@ import java.io.Serializable;
  * @author Beho, Martin Slavkovsky
  *
  */
-public class LocalityDetail implements Serializable {
+public class LocalityDetail implements IListDetailObject {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -20,7 +19,7 @@ public class LocalityDetail implements Serializable {
      */
     private static final long serialVersionUID = 8480517227278818048L;
     private LocalityDetail parent;
-    private Long id;
+    private long id;
     private String name;
     private String code;
     private LocalityType localityType;
@@ -64,14 +63,17 @@ public class LocalityDetail implements Serializable {
         return parent;
     }
 
-    public Long getId() {
+    @Override
+    public long getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getCode() {
         return code;
     }

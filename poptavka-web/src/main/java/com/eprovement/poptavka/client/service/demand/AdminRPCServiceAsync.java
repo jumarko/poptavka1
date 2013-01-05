@@ -18,7 +18,7 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface AdminRPCServiceAsync {
@@ -28,7 +28,7 @@ public interface AdminRPCServiceAsync {
 
     void getAdminDemands(SearchDefinition searchDefinition, AsyncCallback<List<FullDemandDetail>> callback);
 
-    void updateDemands(HashMap<Long, HashSet<ChangeDetail>> changes, AsyncCallback<Boolean> callback);
+    void updateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes, AsyncCallback<Boolean> callback);
 
     //---------------------- CLIENT ------------------------------------------------
     void getAdminClientsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);

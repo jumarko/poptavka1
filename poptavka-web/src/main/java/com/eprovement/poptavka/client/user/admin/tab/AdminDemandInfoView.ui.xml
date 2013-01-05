@@ -7,8 +7,6 @@
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateLocales='default'>
 
-    <!--<ui:import field='com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField.*' />-->
-
     <ui:style>
 		.header {
 			font-size: 110%;
@@ -52,8 +50,8 @@
                     <tr>
                         <td colspan="2" class='{style.label}'>
                             <ui:msg key='title'>Title:</ui:msg>
-                            <co:ChangeMonitor ui:field='titleBox' styleName='{style.titleBox}'>
-                                <g:TextBox />
+                            <co:ChangeMonitor ui:field='titleBox'>
+                                <g:TextBox  styleName='{style.titleBox}'/>
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -70,8 +68,8 @@
                             <ui:msg key='price'>Price:</ui:msg>
                         </td>
                         <td>
-                            <co:ChangeMonitor ui:field='priceBox' styleName='{style.priceBox}' >
-                                <g:TextBox />
+                            <co:ChangeMonitor ui:field='priceBox'>
+                                <g:TextBox styleName='{style.priceBox}' />
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -80,8 +78,8 @@
                             <ui:msg key='endDate'>End Date:</ui:msg>
                         </td>
                         <td>
-                            <co:ChangeMonitor ui:field='endDateBox' styleName='{style.endDateBox}' >
-                                <d:DateBox />
+                            <co:ChangeMonitor ui:field='endDateBox'>
+                                <d:DateBox styleName='{style.endDateBox}' />
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -90,8 +88,8 @@
                             <ui:msg key='expiration'>Expiration:</ui:msg>
                         </td>
                         <td>
-                            <co:ChangeMonitor ui:field='expirationBox' styleName='{style.expirationBox}' >
-                                <d:DateBox />
+                            <co:ChangeMonitor ui:field='expirationBox'>
+                                <d:DateBox styleName='{style.expirationBox}' />
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -108,8 +106,8 @@
                             <ui:msg key='maxOffers'>Max Offers:</ui:msg>
                         </td>
                         <td>
-                            <co:ChangeMonitor ui:field='maxOffers' styleName='{style.maxOffers}' >
-                                <g:TextBox />
+                            <co:ChangeMonitor ui:field='maxOffers' >
+                                <g:TextBox styleName='{style.maxOffers}'/>
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -118,8 +116,8 @@
                             <ui:msg key='minRating'>MinRating:</ui:msg>
                         </td>
                         <td>
-                            <co:ChangeMonitor ui:field='minRating' styleName='{style.minRating}' >
-                                <g:TextBox />
+                            <co:ChangeMonitor ui:field='minRating'>
+                                <g:TextBox styleName='{style.minRating}'/>
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -128,8 +126,8 @@
                             <ui:msg key='demandType'>Demand Type:</ui:msg>
                         </td>
                         <td>
-                            <co:ChangeMonitor ui:field='demandType' styleName='{style.demandType}' >
-                                <g:ListBox/>
+                            <co:ChangeMonitor ui:field='demandType'>
+                                <g:ListBox styleName='{style.demandType}'/>
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -138,8 +136,8 @@
                             <ui:msg key='demandStatus'>Demand Status:</ui:msg>
                         </td>
                         <td>
-                            <co:ChangeMonitor ui:field='demandStatus' styleName='{style.demandStatus}' >
-                                <g:ListBox />
+                            <co:ChangeMonitor ui:field='demandStatus'>
+                                <g:ListBox styleName='{style.demandStatus}'/>
                             </co:ChangeMonitor>
                         </td>
                     </tr>
@@ -154,7 +152,7 @@
                         <td colspan="2" align='right'>
                             <g:VerticalPanel>
                                 <co:ChangeMonitor ui:field = "categoryList">
-                                    <g:ListBox visibleItemCount='5' width = '330' />
+                                    <c:CellList ui:field="categoryCellList" />
                                 </co:ChangeMonitor>
                                 <g:Button ui:field='editCatBtn'>
                                     <ui:msg key='demandCategoryList'>Edit</ui:msg>
@@ -172,7 +170,7 @@
                         <td colspan="2" align='right'>
                             <g:VerticalPanel>
                                 <co:ChangeMonitor ui:field = "localityList">
-                                    <g:ListBox visibleItemCount='5' width = '330' />
+                                    <c:CellList ui:field="localityCellList" />
                                 </co:ChangeMonitor>
                                 <g:Button ui:field='editLocBtn'>
                                     <ui:msg key='demandLocalityList'>Edit</ui:msg>

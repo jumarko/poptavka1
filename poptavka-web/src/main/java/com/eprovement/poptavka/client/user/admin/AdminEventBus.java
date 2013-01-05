@@ -45,7 +45,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
@@ -167,7 +167,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
      **********************************************************************************************/
     /*********************** UPDATE **************************************************************/
     @Event(handlers = AdminHandler.class)
-    void updateDemands(HashMap<Long, HashSet<ChangeDetail>> changes);
+    void updateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes);
 
     @Event(handlers = AdminHandler.class)
     void updateSupplier(FullSupplierDetail supplier);

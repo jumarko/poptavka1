@@ -39,7 +39,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,7 +52,7 @@ public class AdminDemandsPresenter
 
     private int changeCount = 0;
     //history of changes
-    private HashMap<Long, HashSet<ChangeDetail>> updatedFields = new HashMap<Long, HashSet<ChangeDetail>>();
+    private HashMap<Long, ArrayList<ChangeDetail>> updatedFields = new HashMap<Long, ArrayList<ChangeDetail>>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
     //detail related
@@ -198,33 +198,7 @@ public class AdminDemandsPresenter
         view.getAdminDemandDetail().setChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                //vojde tu 2x :(
-                ChangeMonitor source = (ChangeMonitor) event.getSource();
-                source.getChangeDetail().setValue(source.getValue());
-                FullDemandDetail demand = view.getAdminDemandDetail().getDemandDetail();
-                if (source.isModified()) {
-                    if (updatedFields.containsKey(demand.getDemandId())) {
-                        ((HashSet<ChangeDetail>) updatedFields.get(demand.getDemandId())).add(source.getChangeDetail());
-                    } else {
-                        HashSet<ChangeDetail> changes = new HashSet<ChangeDetail>();
-                        changes.add(source.getChangeDetailCopy());
-                        updatedFields.put(demand.getDemandId(), changes);
-                    }
-                    changeCount++;
-                } else {
-                    if (updatedFields.containsKey(demand.getDemandId())) {
-                        HashSet<ChangeDetail> changes =
-                                (HashSet<ChangeDetail>) updatedFields.get(demand.getDemandId());
-                        changes.remove(source.getChangeDetailCopy());
-                        if (changes.isEmpty()) {
-                            updatedFields.remove(demand.getDemandId());
-                            changeCount--;
-                        }
-                    }
-//                    originalsStorage.remove(source);
-                }
-                view.getDataGrid().redraw();
-                view.getChangesLabel().setText(Integer.toString(changeCount));
+                addChange((ChangeMonitor) event.getSource());
             }
         });
         view.getDataGrid().setRowStyles(new RowStyles<FullDemandDetail>() {
@@ -352,7 +326,7 @@ public class AdminDemandsPresenter
                 updatedFields.get(demandId).add(changeDetail);
                 changeCount++;
             } else {
-                HashSet<ChangeDetail> changes = new HashSet<ChangeDetail>();
+                ArrayList<ChangeDetail> changes = new ArrayList<ChangeDetail>();
                 changes.add(changeDetail);
                 updatedFields.put(demandId, changes);
                 changeCount++;
@@ -426,7 +400,7 @@ public class AdminDemandsPresenter
                         change.revert();
                     }
                     updatedFields.clear();
-                    view.getAdminDemandDetail().resetChangeMonitors();
+                    view.getAdminDemandDetail().revertChangeMonitors();
                     changeCount = 0;
                     view.getChangesLabel().setText("0");
                 }
@@ -469,5 +443,36 @@ public class AdminDemandsPresenter
         } else {
             Window.alert("Error while commiting");
         }
+    }
+
+    private void addChange(ChangeMonitor source) {
+        source.getChangeDetail().setValue(source.getValue());
+        FullDemandDetail demand = view.getAdminDemandDetail().getDemandDetail();
+        ArrayList<ChangeDetail> changes = (ArrayList<ChangeDetail>) updatedFields.get(demand.getDemandId());
+        if (source.isModified()) {
+            if (updatedFields.containsKey(demand.getDemandId())) {
+                //if contains already - remove before adding new
+                if (changes.contains(source.getChangeDetail())) {
+                    changes.remove(source.getChangeDetail());
+                    changeCount--;
+                }
+                changes.add(source.getChangeDetail());
+            } else {
+                ArrayList<ChangeDetail> changesNew = new ArrayList<ChangeDetail>();
+                changesNew.add(source.getChangeDetailCopy());
+                updatedFields.put(demand.getDemandId(), changesNew);
+            }
+            changeCount++;
+        } else {
+            if (updatedFields.containsKey(demand.getDemandId())) {
+                changes.remove(source.getChangeDetail());
+                if (changes.isEmpty()) {
+                    updatedFields.remove(demand.getDemandId());
+                    changeCount--;
+                }
+            }
+        }
+        view.getDataGrid().redraw();
+        view.getChangesLabel().setText(Integer.toString(changeCount));
     }
 }

@@ -5,6 +5,8 @@
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
+import com.eprovement.poptavka.client.common.category.CategoryCell;
+import com.eprovement.poptavka.client.common.locality.LocalityCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -20,6 +22,7 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
@@ -28,9 +31,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,13 +52,13 @@ public class AdminDemandInfoView extends Composite {
     @UiField(provided = true)
     ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox,
     maxOffers, minRating, demandStatus, demandType, categoryList, localityList;
+    @UiField(provided = true)
+    CellList categoryCellList, localityCellList;
     @UiField
     TextBox clientID;
     @UiField
     Button editCatBtn, editLocBtn, createButton, updateButton;
     private FullDemandDetail demandInfo;
-    private ArrayList<CategoryDetail> categories;
-    private ArrayList<LocalityDetail> localities;
     private PopupPanel selectorWidgetPopup;
 
     public PopupPanel getSelectorWidgetPopup() {
@@ -101,7 +103,9 @@ public class AdminDemandInfoView extends Composite {
         minRating = new ChangeMonitor(new ChangeDetail(DemandField.MIN_RATING));
         demandStatus = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_STATUS));
         demandType = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_TYPE));
+        categoryCellList = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         categoryList = new ChangeMonitor(new ChangeDetail(DemandField.CATEGORIES));
+        localityCellList = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         localityList = new ChangeMonitor(new ChangeDetail(DemandField.LOCALITIES));
         //
         initWidget(uiBinder.createAndBindUi(this));
@@ -157,47 +161,30 @@ public class AdminDemandInfoView extends Composite {
         demandInfo.setMinRating(Integer.valueOf((String) minRating.getValue()));
         demandInfo.setDemandType(((String) demandType.getValue()));
         demandInfo.setDemandStatus(DemandStatus.valueOf((String) demandStatus.getValue()));
-        demandInfo.setCategories(categories);
-        demandInfo.setLocalities(localities);
+        demandInfo.setCategories((ArrayList<CategoryDetail>) demandType.getValue());
+        demandInfo.setLocalities((ArrayList<LocalityDetail>) demandType.getValue());
 
         return demandInfo;
     }
 
     public ArrayList<CategoryDetail> getCategories() {
-        return categories;
+        return (ArrayList<CategoryDetail>) categoryList.getValue();
     }
 
+    /**
+     * Need for CategorySelector when closing to set newly chosen categories.
+     * @param categories
+     */
     public void setCategories(List<CategoryDetail> categories) {
-        this.categories = new ArrayList<CategoryDetail>(categories);
-        setCategoryBox(categories);
-    }
-
-    public void setCategoryBox(List<CategoryDetail> categoriesList) {
-        ((ListBox) categoryList.getWidget()).clear();
-        if (categoriesList != null) {
-            for (CategoryDetail cat : categoriesList) {
-                ((ListBox) categoryList.getWidget()).addItem(cat.getName());
-            }
-
-        }
+        categoryList.setValue(categories);
     }
 
     public ArrayList<LocalityDetail> getLocalities() {
-        return localities;
+        return (ArrayList<LocalityDetail>) localityList.getValue();
     }
 
     public void setLocalities(List<LocalityDetail> localities) {
-        this.localities = new ArrayList<LocalityDetail>(localities);
-        setLocalityBox(localities);
-    }
-
-    public void setLocalityBox(List<LocalityDetail> localitiesList) {
-        ((ListBox) localityList.getWidget()).clear();
-        if (localitiesList != null) {
-            for (LocalityDetail loc : localitiesList) {
-                ((ListBox) localityList.getWidget()).addItem(loc.getName());
-            }
-        }
+        localityList.setValue(localities);
     }
 
     public FullDemandDetail getDemandDetail() {
@@ -208,8 +195,6 @@ public class AdminDemandInfoView extends Composite {
         resetChangeMonitors();
         if (demand != null) {
             this.demandInfo = demand;
-            this.categories = demand.getCategories();
-            this.localities = demand.getLocalities();
 
             updateButton.setEnabled(demand != null);
             if (demand != null) {
@@ -221,6 +206,8 @@ public class AdminDemandInfoView extends Composite {
                 clientID.setValue(String.valueOf(demand.getClientId()));
                 maxOffers.setBothValues(String.valueOf(demand.getMaxOffers()));
                 minRating.setBothValues(String.valueOf(demand.getMinRating()));
+                categoryList.setBothValues(demand.getCategories());
+                localityList.setBothValues(demand.getLocalities());
 
                 // demand type settings
                 // Add the types to the status box.
@@ -236,7 +223,7 @@ public class AdminDemandInfoView extends Composite {
                     }
                     i++;
                 }
-                demandType.setValue(j);
+                demandType.setBothValues(j);
 
                 // demand status settings
                 // Add the statuses to the status box.
@@ -252,15 +239,12 @@ public class AdminDemandInfoView extends Composite {
                     }
                     i++;
                 }
-                demandStatus.setValue(j);
-
-                setCategoryBox(demand.getCategories());
-                setLocalityBox(demand.getLocalities());
+                demandStatus.setBothValues(j);
             }
         }
     }
 
-    public void setFieldChanges(HashSet<ChangeDetail> changes) {
+    public void setFieldChanges(ArrayList<ChangeDetail> changes) {
         for (ChangeDetail change : changes) {
             switch ((DemandField) change.getField()) {
                 case TITLE:
@@ -316,5 +300,19 @@ public class AdminDemandInfoView extends Composite {
         demandType.reset();
         categoryList.reset();
         localityList.reset();
+    }
+
+    public void revertChangeMonitors() {
+        titleBox.revert();
+        descriptionBox.revert();
+        endDateBox.revert();
+        expirationBox.revert();
+        priceBox.revert();
+        maxOffers.revert();
+        minRating.revert();
+        demandStatus.revert();
+        demandType.revert();
+        categoryList.revert();
+        localityList.revert();
     }
 }
