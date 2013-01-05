@@ -7,12 +7,14 @@ package com.eprovement.poptavka.client.user.admin.tab;
 import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
+import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -30,8 +32,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,13 +51,13 @@ public class AdminDemandInfoView extends Composite {
     // demand detail input fields
     @UiField(provided = true)
     ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox,
-    maxOffers, minRating, demandStatus, demandType, categoryList, localityList;
+    maxOffers, minRating, demandStatus, demandType, categoryList, localityList, excludedSupplierList;
     @UiField(provided = true)
-    CellList categoryCellList, localityCellList;
+    CellList categoryCellList, localityCellList, excludedSupplierCellList;
     @UiField
     TextBox clientID;
     @UiField
-    Button editCatBtn, editLocBtn, createButton, updateButton;
+    Button editCatBtn, editLocBtn, editExcludedSupplierBtn, createButton, updateButton;
     private FullDemandDetail demandInfo;
     private PopupPanel selectorWidgetPopup;
 
@@ -81,6 +81,10 @@ public class AdminDemandInfoView extends Composite {
         return editLocBtn;
     }
 
+    public Button getEditExcludedSupplierBtn() {
+        return editExcludedSupplierBtn;
+    }
+
     public ChangeMonitor getCategoryList() {
         return categoryList;
     }
@@ -101,6 +105,8 @@ public class AdminDemandInfoView extends Composite {
         priceBox = new ChangeMonitor(new ChangeDetail(DemandField.PRICE));
         maxOffers = new ChangeMonitor(new ChangeDetail(DemandField.MAX_OFFERS));
         minRating = new ChangeMonitor(new ChangeDetail(DemandField.MIN_RATING));
+        excludedSupplierCellList = new CellList<FullSupplierDetail>(new SupplierCell());
+        excludedSupplierList = new ChangeMonitor(new ChangeDetail(DemandField.EXCLUDE_SUPPLIER));
         demandStatus = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_STATUS));
         demandType = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_TYPE));
         categoryCellList = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
@@ -126,6 +132,7 @@ public class AdminDemandInfoView extends Composite {
         priceBox.addChangeHandler(changeHandler);
         maxOffers.addChangeHandler(changeHandler);
         minRating.addChangeHandler(changeHandler);
+        excludedSupplierList.addChangeHandler(changeHandler);
         demandStatus.addChangeHandler(changeHandler);
         demandType.addChangeHandler(changeHandler);
         categoryList.addChangeHandler(changeHandler);
@@ -139,33 +146,34 @@ public class AdminDemandInfoView extends Composite {
         selectorWidgetPopup.hide();
     }
 
-    public FullDemandDetail getUpdatedDemandDetail() {
-        if (demandInfo == null) {
-            return null;
-        }
-        boolean t = priceBox.getValue() == null;
-        if (t) {
-            GWT.log("d" + t + "max offer");
-        }
-        GWT.log("d" + t + "max offer");
-        GWT.log("d" + priceBox.getValue().equals("") + "price ");
-
-        // Update the contact.
-        demandInfo.setTitle((String) titleBox.getValue());
-        demandInfo.setDescription((String) descriptionBox.getValue());
-        demandInfo.setPrice(BigDecimal.valueOf(Double.valueOf(currencyFormat.parse((String) priceBox.getValue()))));
-        demandInfo.setEndDate((Date) endDateBox.getValue());
-        demandInfo.setValidToDate((Date) expirationBox.getValue());
-        demandInfo.setClientId(Long.valueOf((String) clientID.getValue()));
-        demandInfo.setMaxOffers(Integer.valueOf((String) maxOffers.getValue()));
-        demandInfo.setMinRating(Integer.valueOf((String) minRating.getValue()));
-        demandInfo.setDemandType(((String) demandType.getValue()));
-        demandInfo.setDemandStatus(DemandStatus.valueOf((String) demandStatus.getValue()));
-        demandInfo.setCategories((ArrayList<CategoryDetail>) demandType.getValue());
-        demandInfo.setLocalities((ArrayList<LocalityDetail>) demandType.getValue());
-
-        return demandInfo;
-    }
+//    public FullDemandDetail getUpdatedDemandDetail() {
+//        if (demandInfo == null) {
+//            return null;
+//        }
+//        boolean t = priceBox.getValue() == null;
+//        if (t) {
+//            GWT.log("d" + t + "max offer");
+//        }
+//        GWT.log("d" + t + "max offer");
+//        GWT.log("d" + priceBox.getValue().equals("") + "price ");
+//
+//        // Update the contact.
+//        demandInfo.setTitle((String) titleBox.getValue());
+//        demandInfo.setDescription((String) descriptionBox.getValue());
+//        demandInfo.setPrice(BigDecimal.valueOf(Double.valueOf(currencyFormat.parse((String) priceBox.getValue()))));
+//        demandInfo.setEndDate((Date) endDateBox.getValue());
+//        demandInfo.setValidToDate((Date) expirationBox.getValue());
+//        demandInfo.setClientId(Long.valueOf((String) clientID.getValue()));
+//        demandInfo.setMaxOffers(Integer.valueOf((String) maxOffers.getValue()));
+//        demandInfo.setMinRating(Integer.valueOf((String) minRating.getValue()));
+//        demandInfo.setExcludedSuppliers((ArrayList<FullSupplierDetail>)excludedList.getValue());
+//        demandInfo.setDemandType(((String) demandType.getValue()));
+//        demandInfo.setDemandStatus(DemandStatus.valueOf((String) demandStatus.getValue()));
+//        demandInfo.setCategories((ArrayList<CategoryDetail>) categoryList.getValue());
+//        demandInfo.setLocalities((ArrayList<LocalityDetail>) localityList.getValue());
+//
+//        return demandInfo;
+//    }
 
     public ArrayList<CategoryDetail> getCategories() {
         return (ArrayList<CategoryDetail>) categoryList.getValue();
@@ -187,6 +195,14 @@ public class AdminDemandInfoView extends Composite {
         localityList.setValue(localities);
     }
 
+    public ArrayList<FullSupplierDetail> getExcludedSupplier() {
+        return (ArrayList<FullSupplierDetail>) excludedSupplierList.getValue();
+    }
+
+    public void setExcludedSupplier(List<FullSupplierDetail> localities) {
+        excludedSupplierList.setValue(localities);
+    }
+
     public FullDemandDetail getDemandDetail() {
         return demandInfo;
     }
@@ -206,6 +222,7 @@ public class AdminDemandInfoView extends Composite {
                 clientID.setValue(String.valueOf(demand.getClientId()));
                 maxOffers.setBothValues(String.valueOf(demand.getMaxOffers()));
                 minRating.setBothValues(String.valueOf(demand.getMinRating()));
+                excludedSupplierList.setBothValues(demand.getExcludedSuppliers());
                 categoryList.setBothValues(demand.getCategories());
                 localityList.setBothValues(demand.getLocalities());
 
@@ -262,26 +279,24 @@ public class AdminDemandInfoView extends Composite {
                 case VALID_TO_DATE:
                     expirationBox.setChanged(change);
                     break;
-//                case MAX_OFFERS:
-//                    ???
-//                    break;
+                case MAX_OFFERS:
+                    maxOffers.setChanged(change);
+                    break;
                 case MIN_RATING:
                     minRating.setChanged(change);
                     break;
                 case DEMAND_STATUS:
                     demandStatus.setChanged(change);
                     break;
-//                case CREATED:
-//                    break;
                 case CATEGORIES:
-                    //Treba zistovat ci sa kategorie zmenili? Ak ano, ako aby to nebolo narocne?
                     categoryList.setChanged(change);
                     break;
                 case LOCALITIES:
                     localityList.setChanged(change);
                     break;
-//                case EXCLUDE_SUPPLIER:
-//                    break;
+                case EXCLUDE_SUPPLIER:
+                    excludedSupplierList.setChanged(change);
+                    break;
                 default:
                     break;
             }
@@ -296,6 +311,7 @@ public class AdminDemandInfoView extends Composite {
         priceBox.reset();
         maxOffers.reset();
         minRating.reset();
+        excludedSupplierList.reset();
         demandStatus.reset();
         demandType.reset();
         categoryList.reset();
@@ -310,6 +326,7 @@ public class AdminDemandInfoView extends Composite {
         priceBox.revert();
         maxOffers.revert();
         minRating.revert();
+        excludedSupplierList.revert();
         demandStatus.revert();
         demandType.revert();
         categoryList.revert();

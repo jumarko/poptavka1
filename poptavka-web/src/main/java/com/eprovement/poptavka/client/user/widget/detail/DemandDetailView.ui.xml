@@ -60,33 +60,6 @@
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="detailInfo">Detail info: </ui:msg>
-					</g:Label>
-
-					<g:HTMLPanel>
-						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="maxNumberOfSuppliers">Maximal number of suppliers:</ui:msg>
-						</g:Label>
-						<g:Label ui:field="maxNumberOfSuppliers" />
-					</g:HTMLPanel>
-
-					<g:HTMLPanel>
-						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="minSupplierRating">Minimal supplier rating: </ui:msg>
-						</g:Label>
-						<g:Label ui:field="minSupplierRating" />
-					</g:HTMLPanel>
-
-					<g:HTMLPanel>
-						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="excludedSuppliers">Excluded suppliers: </ui:msg>
-						</g:Label>
-						<c:CellList ui:field="excludedSuppliers" />
-					</g:HTMLPanel>
-				</g:HTMLPanel>
-
-				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
-					<g:Label styleName='{res.detailViews.detailHeader}'>
 						<ui:msg key="description">Description: </ui:msg>
 					</g:Label>
                                         <g:Label ui:field="description" />

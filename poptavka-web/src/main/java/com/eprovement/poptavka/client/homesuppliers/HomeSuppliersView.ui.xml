@@ -9,6 +9,50 @@
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
+        <ui:style>
+		.name {
+			font-weight: bold;
+			width: auto;
+		}
+
+		.panel {
+			width: 400px;
+			spacing: 5;
+		}
+
+		.list {
+			width: 100px;
+		}
+
+		.gridMenu {
+			margin: 7px 0 0;
+			float: left;
+		}
+
+		.paginator {
+			margin: 0px 10px;
+			float: left;
+		}
+
+		.pageSize {
+			border-radius: 3px 3px 3px 3px;
+			float: left;
+			height: 31px;
+			padding: 6px;
+		}
+
+		.button {
+			background: url(images/new-offer-green.png) no-repeat;
+			border: medium none;
+			color: #FFFFFF;
+			font-weight: bold;
+			height: 31px;
+			padding: 0 0 1px 23px;
+			width: 119px;
+			float: left;
+		}
+	</ui:style>
+
 	<g:DockLayoutPanel unit="PX"
 		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
 		<g:west size="320">
@@ -29,12 +73,13 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65">
-					<g:VerticalPanel>
+                                    <g:HTMLPanel styleName='{style.gridMenu}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-        					<s:UniversalPagerWidget ui:field="pager" />
-					</g:VerticalPanel>
+                                                <g:Button ui:field="contactBtn" styleName='{style.button}'>Contact</g:Button>
+        					<s:UniversalPagerWidget ui:field="pager" styleName='{style.paginator}' />
+					</g:HTMLPanel>
 				</g:north>
 				<g:center>
 					<c:DataGrid ui:field="dataGrid" />
@@ -54,7 +99,6 @@
 						<g:HTMLPanel ui:field="detail" styleName='{res.layout.detailInfo}'>
 							<g:Label ui:field="reklama">Reklama</g:Label>
 							<d:SupplierDetailView ui:field="supplierDetailView" />
-							<g:Button ui:field="contactBtn">Contact</g:Button>
 						</g:HTMLPanel>
 					</g:ScrollPanel>
 				</g:center>

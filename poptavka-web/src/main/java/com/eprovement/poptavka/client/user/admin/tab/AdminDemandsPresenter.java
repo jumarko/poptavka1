@@ -383,6 +383,7 @@ public class AdminDemandsPresenter
                     view.getAdminDemandDetail().resetChangeMonitors();
                     changeCount = 0;
                     view.getChangesLabel().setText("0");
+                    view.getDataGrid().redraw();
                 }
             }
         });
@@ -403,6 +404,7 @@ public class AdminDemandsPresenter
                     view.getAdminDemandDetail().revertChangeMonitors();
                     changeCount = 0;
                     view.getChangesLabel().setText("0");
+                    view.getDataGrid().redraw();
                 }
             }
         });

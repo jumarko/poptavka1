@@ -1,16 +1,17 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
+import com.eprovement.poptavka.client.common.category.CategoryCell;
+import com.eprovement.poptavka.client.common.locality.LocalityCell;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,16 +23,15 @@ public class SupplierDetailView extends Composite {
     interface SupplierDetailViewUiBinder extends
             UiBinder<Widget, SupplierDetailView> {
     }
+    @UiField(provided = true)
+    CellList categories, localities;
     @UiField
-    Label overallRating, description, localities, categories, email, companyName,
-    taxId, identificationNumber, firstName, lastName, phone, website, street,
-    city, zipCode, websiteContactPerson, certified;
-    @UiField
-    HTMLPanel detail;
-    //Remember state
-    private BusinessUserDetail userDetail = null;
+    Label overallRating, description, email, companyName, taxId, identificationNumber,
+    firstName, lastName, phone, website, street, city, zipCode, websiteContactPerson, certified;
 
     public SupplierDetailView() {
+        categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
+        localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         initWidget(uiBinder.createAndBindUi(this));
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
@@ -41,100 +41,10 @@ public class SupplierDetailView extends Composite {
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
-    public Label getOverallRating() {
-        return overallRating;
-    }
-
-    public Label getDescription() {
-        return description;
-    }
-
-    public Label getLocalities() {
-        return localities;
-    }
-
-    public Label getCategories() {
-        return categories;
-    }
-
-    public Label getEmail() {
-        return email;
-    }
-
-    public Label getCompanyName() {
-        return companyName;
-    }
-
-    public Label getIdentificationNumber() {
-        return identificationNumber;
-    }
-
-    public Label getFirstName() {
-        return firstName;
-    }
-
-    public Label getLastName() {
-        return lastName;
-    }
-
-    public Label getPhone() {
-        return phone;
-    }
-
-    public HTMLPanel getDetail() {
-        return detail;
-    }
-
-    public Label getWebsite() {
-        return website;
-    }
-
-    public static SupplierDetailViewUiBinder getUiBinder() {
-        return uiBinder;
-    }
-
-    public Label getStreet() {
-        return street;
-    }
-
-    public Label getCity() {
-        return city;
-    }
-
-    public Label getZipCode() {
-        return zipCode;
-    }
-
-    public Label getWebsiteContactPerson() {
-        return websiteContactPerson;
-    }
-
-    public Label getTaxId() {
-        return taxId;
-    }
-
     public void setSupplierDetail(BusinessUserDetail userDetail) {
-        this.userDetail = userDetail;
-        detail.setVisible(true);
-
         description.setText(userDetail.getSupplier().getDescription());
-//    verification = userDetail.get
-        StringBuilder localitiesBuilder = new StringBuilder();
-        for (LocalityDetail s : userDetail.getSupplier().getLocalities()) {
-            localitiesBuilder.append(s.getName());
-            localitiesBuilder.append("\n");
-        }
-        localities.setText(localitiesBuilder.toString());
-        StringBuilder categoriesBuilder = new StringBuilder();
-        for (CategoryDetail s : userDetail.getSupplier().getCategories()) {
-            categoriesBuilder.append(s.getName());
-            categoriesBuilder.append("\n");
-        }
-        categories.setText(categoriesBuilder.toString());
-//    services = userDetail.getSupplier().
-//    bsuRoles = userDetail.getSupplier().
-
-//    businessType = userDetail.get
+        localities.setRowData(userDetail.getSupplier().getLocalities());
+        categories.setRowData(userDetail.getSupplier().getCategories());
         email.setText(userDetail.getEmail());
         companyName.setText(userDetail.getCompanyName());
         identificationNumber.setText(userDetail.getIdentificationNumber());
@@ -151,7 +61,6 @@ public class SupplierDetailView extends Composite {
     }
 
     public void setSupplierDetail(FullSupplierDetail detail) {
-//        detail.setVisible(true);
         if (detail.getOverallRating() == -1) {
             overallRating.setText("");
         } else {
@@ -159,23 +68,8 @@ public class SupplierDetailView extends Composite {
         }
         certified.setText(Boolean.toString(detail.isCertified()));
         description.setText(detail.getDescription());
-//    verification = userDetail.get
-        StringBuilder localitiesBuilder = new StringBuilder();
-        for (LocalityDetail loc : detail.getLocalities()) {
-            localitiesBuilder.append(loc.getName());
-            localitiesBuilder.append("\n");
-        }
-        localities.setText(localitiesBuilder.toString());
-        StringBuilder categoriesBuilder = new StringBuilder();
-        for (CategoryDetail cat : detail.getCategories()) {
-            categoriesBuilder.append(cat.getName());
-            categoriesBuilder.append("\n");
-        }
-        categories.setText(categoriesBuilder.toString());
-//    services = userDetail.getSupplier().
-//    bsuRoles = userDetail.getSupplier().
-
-//    businessType = userDetail.get
+        localities.setRowData(detail.getLocalities());
+        categories.setRowData(detail.getCategories());
         email.setText(detail.getEmail());
         companyName.setText(detail.getCompanyName());
         identificationNumber.setText(detail.getIdentificationNumber());
@@ -187,20 +81,8 @@ public class SupplierDetailView extends Composite {
         street.setText(detail.getAddresses().get(0).getStreet());
         city.setText(detail.getAddresses().get(0).getCity());
         zipCode.setText(detail.getAddresses().get(0).getZipCode());
-//        websiteContactPerson.setText(detail.getWebsite());
+        websiteContactPerson.setText(detail.getWebsite());
         taxId.setText(detail.getTaxId());
 
-    }
-
-    public BusinessUserDetail getSupplierDetail() {
-        return userDetail;
-    }
-
-    public void toggleVisible() {
-        if (detail.isVisible()) {
-            detail.getElement().getStyle().setDisplay(Style.Display.NONE);
-        } else {
-            detail.getElement().getStyle().setDisplay(Style.Display.BLOCK);
-        }
     }
 }

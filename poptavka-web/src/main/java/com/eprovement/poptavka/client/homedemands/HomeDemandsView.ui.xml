@@ -11,33 +11,33 @@
 			font-weight: bold;
 			width: auto;
 		}
-		
+
 		.panel {
 			width: 400px;
 			spacing: 5;
 		}
-		
+
 		.list {
 			width: 100px;
 		}
-		
+
 		.gridMenu {
 			margin: 7px 0 0;
 			float: left;
 		}
-		
+
 		.paginator {
 			margin: 0px 10px;
 			float: left;
 		}
-		
+
 		.pageSize {
 			border-radius: 3px 3px 3px 3px;
 			float: left;
 			height: 31px;
 			padding: 6px;
 		}
-		
+
 		.button {
 			background: url(images/new-offer-green.png) no-repeat;
 			border: medium none;
@@ -74,8 +74,7 @@
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-						<g:Button ui:field="offerBtn1" styleName='{style.button}'>Send Offer
-						</g:Button>
+						<g:Button ui:field="offerBtn" styleName='{style.button}'>Send Offer</g:Button>
 						<s:UniversalPagerWidget ui:field='pager'
 							styleName='{style.paginator}' />
 					</g:HTMLPanel>
@@ -100,7 +99,6 @@
 							<g:SimplePanel ui:field="demandDetailPanel">
 								<d:DemandDetailView ui:field="demandDetail" />
 							</g:SimplePanel>
-							<g:Button ui:field="offerBtn2">Send Offer</g:Button>
 						</g:HTMLPanel>
 					</g:ScrollPanel>
 				</g:center>

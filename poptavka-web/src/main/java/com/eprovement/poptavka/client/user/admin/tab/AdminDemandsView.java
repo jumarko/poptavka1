@@ -112,6 +112,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         initDataGrid();
         initWidget(uiBinder.createAndBindUi(this));
         changesLabel.setText("0");
+        Storage.RSCS.common().ensureInjected();
     }
 
     /**

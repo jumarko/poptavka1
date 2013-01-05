@@ -71,9 +71,7 @@ public class HomeDemandsPresenter
         Label getFilterLabel();
 
         //Buttons
-        Button getOfferBtn1();
-
-        Button getOfferBtn2();
+        Button getOfferBtn();
 
         //Other
         Widget getWidgetView();

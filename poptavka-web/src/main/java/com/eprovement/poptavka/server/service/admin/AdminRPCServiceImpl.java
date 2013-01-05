@@ -268,9 +268,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
                 case VALID_TO_DATE:
                     demand.setValidTo((Date) change.getValue());
                     break;
-//                case MAX_OFFERS:
-//                    ???
-//                    break;
+                case MAX_OFFERS:
+                    demand.setMaxSuppliers((Integer) change.getValue());
+                    break;
                 case MIN_RATING:
                     demand.setMinRating(Integer.parseInt((String) change.getValue()));
                     break;
@@ -385,7 +385,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<OfferDetail> getAdminOffers(SearchDefinition searchDefinition)throws
+    public List<OfferDetail> getAdminOffers(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Offer.class);
@@ -424,7 +424,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminAccessRolesCount(SearchDefinition searchDefinition)throws
+    public Long getAdminAccessRolesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(AccessRole.class);
@@ -433,7 +433,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<AccessRoleDetail> getAdminAccessRoles(SearchDefinition searchDefinition)throws
+    public List<AccessRoleDetail> getAdminAccessRoles(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(AccessRole.class);
@@ -465,7 +465,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminEmailsActivationCount(SearchDefinition searchDefinition)throws
+    public Long getAdminEmailsActivationCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(ActivationEmail.class);
@@ -474,7 +474,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<ActivationEmailDetail> getAdminEmailsActivation(SearchDefinition searchDefinition)throws
+    public List<ActivationEmailDetail> getAdminEmailsActivation(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(ActivationEmail.class);
@@ -483,7 +483,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void updateEmailActivation(ActivationEmailDetail emailActivationDetail)throws
+    public void updateEmailActivation(ActivationEmailDetail emailActivationDetail) throws
             RPCException, ApplicationSecurityException {
         ActivationEmail emailActivation = generalService.find(ActivationEmail.class, emailActivationDetail.getId());
         if (!emailActivation.getActivationCode().equals(emailActivationDetail.getActivationCode())) {
@@ -503,7 +503,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminInvoicesCount(SearchDefinition searchDefinition)throws
+    public Long getAdminInvoicesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Invoice.class);
@@ -512,7 +512,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<InvoiceDetail> getAdminInvoices(SearchDefinition searchDefinition)throws
+    public List<InvoiceDetail> getAdminInvoices(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Invoice.class);
@@ -577,7 +577,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminMessagesCount(SearchDefinition searchDefinition)throws
+    public Long getAdminMessagesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Message.class);
@@ -586,7 +586,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<MessageDetail> getAdminMessages(SearchDefinition searchDefinition)throws
+    public List<MessageDetail> getAdminMessages(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Message.class);
@@ -629,7 +629,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition)throws
+    public Long getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(OurPaymentDetails.class);
@@ -638,7 +638,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<PaymentDetail> getAdminOurPaymentDetails(SearchDefinition searchDefinition)throws
+    public List<PaymentDetail> getAdminOurPaymentDetails(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(OurPaymentDetails.class);
@@ -699,7 +699,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminPaymentMethodsCount(SearchDefinition searchDefinition)throws
+    public Long getAdminPaymentMethodsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(PaymentMethod.class);
@@ -708,7 +708,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<PaymentMethodDetail> getAdminPaymentMethods(SearchDefinition searchDefinition)throws
+    public List<PaymentMethodDetail> getAdminPaymentMethods(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(PaymentMethod.class);
@@ -717,7 +717,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<PaymentMethodDetail> getAdminPaymentMethods()throws
+    public List<PaymentMethodDetail> getAdminPaymentMethods() throws
             RPCException, ApplicationSecurityException {
         final Search search = new Search(PaymentMethod.class);
         search.addSort("id", false);
@@ -726,7 +726,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void updatePaymentMethod(PaymentMethodDetail paymentMethodDetail)throws
+    public void updatePaymentMethod(PaymentMethodDetail paymentMethodDetail) throws
             RPCException, ApplicationSecurityException {
         PaymentMethod paymentMethod = generalService.find(PaymentMethod.class, paymentMethodDetail.getId());
         if (!paymentMethod.getName().equals(paymentMethodDetail.getName())) {
@@ -746,7 +746,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminPermissionsCount(SearchDefinition searchDefinition)throws
+    public Long getAdminPermissionsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Permission.class);
@@ -755,7 +755,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<PermissionDetail> getAdminPermissions(SearchDefinition searchDefinition)throws
+    public List<PermissionDetail> getAdminPermissions(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Permission.class);
@@ -786,7 +786,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminPreferencesCount(SearchDefinition searchDefinition)throws
+    public Long getAdminPreferencesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Preference.class);
@@ -795,7 +795,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<PreferenceDetail> getAdminPreferences(SearchDefinition searchDefinition)throws
+    public List<PreferenceDetail> getAdminPreferences(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Preference.class);
@@ -826,7 +826,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminProblemsCount(SearchDefinition searchDefinition)throws
+    public Long getAdminProblemsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Problem.class);
@@ -835,7 +835,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<ProblemDetail> getAdminProblems(SearchDefinition searchDefinition)throws
+    public List<ProblemDetail> getAdminProblems(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(searchDefinition);
         search.setSearchClass(Problem.class);
