@@ -24,9 +24,9 @@ public class LocalityDaoImpl extends GenericHibernateDao<Locality> implements Lo
     }
 
     @Override
-    public Locality getLocality(String code) {
+    public Locality getLocality(Long id) {
         return (Locality) getHibernateSession().createCriteria(Locality.class)
-                .add(Restrictions.eq("code", code))
+                .add(Restrictions.eq("id", id))
                 .uniqueResult();
     }
 }

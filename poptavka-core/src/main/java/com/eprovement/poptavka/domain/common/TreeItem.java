@@ -45,6 +45,8 @@ public abstract class TreeItem extends DomainObject {
 //    private List<TreeItem> children;
 
 
+    private int treeId;
+
     /** The depth from root TreeItem. */
     private int level;
 
@@ -57,6 +59,13 @@ public abstract class TreeItem extends DomainObject {
     @Column(name = "rightBound")
     private Long rightBound;
 
+    public int getTreeId() {
+        return treeId;
+    }
+
+    public void setTreeId(int treeId) {
+        this.treeId = treeId;
+    }
 
     public int getLevel() {
         return level;

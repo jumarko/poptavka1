@@ -42,8 +42,8 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
     /**
      * Get locality by given code. Code must be a unique identifier!
      *
-     * @param code unique code for identifying locality
+     * @param id unique id for identifying locality
      * @return
      */
-    Locality getLocality(String code);
+    Locality getLocality(Long id);
 }

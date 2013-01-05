@@ -49,11 +49,11 @@ public class AdditionalInfoFillerTest extends DBUnitIntegrationTest {
         this.additionalInfoFiller.execute();
 
         // ... and check it
-        checkCategory("cat0", new AdditionalInfo(10L, 4L));
-        checkCategory("cat11", new AdditionalInfo(4L, 2L));
+        checkCategory(0L, new AdditionalInfo(10L, 4L));
+        checkCategory(11L, new AdditionalInfo(4L, 2L));
 
-        checkLocality("CZ", new AdditionalInfo(10L, 4L));
-        checkLocality("loc121", new AdditionalInfo(2L, 0L));
+        checkLocality(0L, new AdditionalInfo(10L, 4L));
+        checkLocality(121L, new AdditionalInfo(2L, 0L));
     }
 
 
@@ -64,8 +64,8 @@ public class AdditionalInfoFillerTest extends DBUnitIntegrationTest {
      * @param categoryCode unique code of category
      * @param expectedAdditionalInfo additional info that should be set for given category
      */
-    private void checkCategory(String categoryCode, AdditionalInfo expectedAdditionalInfo) {
-        final Category category = this.categoryService.getCategory(categoryCode);
+    private void checkCategory(Long categoryId, AdditionalInfo expectedAdditionalInfo) {
+        final Category category = this.categoryService.getCategory(categoryId);
         Preconditions.checkState(category != null);
         checkCounts(expectedAdditionalInfo, category.getAdditionalInfo());
     }
@@ -74,11 +74,11 @@ public class AdditionalInfoFillerTest extends DBUnitIntegrationTest {
     /**
      * Check if locality with given <code>localityCode</code> has assigned additional info with expected counts.
      *
-     * @param localityCode
+     * @param localityId
      * @param expectedAdditionalInfo
      */
-    private void checkLocality(String localityCode, AdditionalInfo expectedAdditionalInfo) {
-        final Locality locality = this.localityService.getLocality(localityCode);
+    private void checkLocality(Long localityId, AdditionalInfo expectedAdditionalInfo) {
+        final Locality locality = this.localityService.getLocality(localityId);
         Preconditions.checkState(locality != null);
         checkCounts(expectedAdditionalInfo, locality.getAdditionalInfo());
     }

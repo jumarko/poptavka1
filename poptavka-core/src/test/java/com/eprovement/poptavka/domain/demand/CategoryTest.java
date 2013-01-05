@@ -27,31 +27,31 @@ public class CategoryTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetChildren() {
-        checkGetCategoryChildren("cat1", 1, "cat11");
-        checkGetCategoryChildren("cat2", 3, "cat21", "cat22", "cat23");
-        checkGetCategoryChildren("cat3", 1, "cat31");
+        checkGetCategoryChildren(1L, 1, 11L);
+        checkGetCategoryChildren(2L, 3, 21L, 22L, 23L);
+        checkGetCategoryChildren(3L, 1, 31L);
 
-        checkGetCategoryChildren("cat11", 3, "cat111", "cat112", "cat113");
-        checkGetCategoryChildren("cat113", 2, "cat1131", "cat1132");
+        checkGetCategoryChildren(11L, 3, 111L, 112L, 113L);
+        checkGetCategoryChildren(113L, 2, 1131L, 1132L);
 
-        checkGetCategoryChildren("cat31", 2, "cat311", "cat312");
+        checkGetCategoryChildren(31L, 2, 311L, 312L);
     }
 
 
     @Test
     public void testGetAllDescendants() {
         checkGetAllCategoryDescendants(null, 17);
-        checkGetAllCategoryDescendants("cat11", 5);
-        checkGetAllCategoryDescendants("cat113", 2);
-        checkGetAllCategoryDescendants("cat2", 3);
+        checkGetAllCategoryDescendants(11L, 5);
+        checkGetAllCategoryDescendants(113L, 2);
+        checkGetAllCategoryDescendants(2L, 3);
     }
 
     @Test
     public void testGetChildrenCounts() {
         checkGetCategoryChildren(null, 2);
-        checkGetCategoryChildren("cat11", 3);
-        checkGetCategoryChildren("cat113", 2);
-        checkGetCategoryChildren("cat2", 3);
+        checkGetCategoryChildren(11L, 3);
+        checkGetCategoryChildren(113L, 2);
+        checkGetCategoryChildren(2L, 3);
     }
 
 
@@ -62,9 +62,9 @@ public class CategoryTest extends DBUnitIntegrationTest {
                 .maxResults(4)
                 .build();
         checkGetCategoryDescendantsWithAdditionalCriteria(null, maxResults, 4);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat11", maxResults, 4);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat113", maxResults, 2);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat2", maxResults, 3);
+        checkGetCategoryDescendantsWithAdditionalCriteria(11L, maxResults, 4);
+        checkGetCategoryDescendantsWithAdditionalCriteria(113L, maxResults, 2);
+        checkGetCategoryDescendantsWithAdditionalCriteria(2L, maxResults, 3);
     }
 
     @Test
@@ -73,9 +73,9 @@ public class CategoryTest extends DBUnitIntegrationTest {
                 .maxResults(2)
                 .build();
         checkGetCategoryChildrenWithAdditionalCriteria(null, maxResults, 2);
-        checkGetCategoryChildrenWithAdditionalCriteria("cat11", maxResults, 2);
-        checkGetCategoryChildrenWithAdditionalCriteria("cat113", maxResults, 2);
-        checkGetCategoryChildrenWithAdditionalCriteria("cat2", maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria(11L, maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria(113L, maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria(2L, maxResults, 2);
     }
 
     @Test
@@ -85,9 +85,9 @@ public class CategoryTest extends DBUnitIntegrationTest {
                 .firstResult(2)
                 .build();
         checkGetCategoryDescendantsWithAdditionalCriteria(null, maxResults, 4);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat11", maxResults, 3);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat113", maxResults, 0);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat2", maxResults, 1);
+        checkGetCategoryDescendantsWithAdditionalCriteria(11L, maxResults, 3);
+        checkGetCategoryDescendantsWithAdditionalCriteria(113L, maxResults, 0);
+        checkGetCategoryDescendantsWithAdditionalCriteria(2L, maxResults, 1);
     }
 
     @Test
@@ -97,9 +97,9 @@ public class CategoryTest extends DBUnitIntegrationTest {
                 .firstResult(1)
                 .build();
         checkGetCategoryChildrenWithAdditionalCriteria(null, maxResults, 1);
-        checkGetCategoryChildrenWithAdditionalCriteria("cat11", maxResults, 2);
-        checkGetCategoryChildrenWithAdditionalCriteria("cat113", maxResults, 1);
-        checkGetCategoryChildrenWithAdditionalCriteria("cat2", maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria(11L, maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria(113L, maxResults, 1);
+        checkGetCategoryChildrenWithAdditionalCriteria(2L, maxResults, 2);
     }
 
     @Test
@@ -109,39 +109,39 @@ public class CategoryTest extends DBUnitIntegrationTest {
                 .orderByColumns(Arrays.asList("name"))
                 .build();
         checkGetCategoryDescendantsWithAdditionalCriteria(null, criteria, 15);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat11", criteria, 3);
-        checkGetCategoryDescendantsWithAdditionalCriteria("cat113", criteria, 0);
-        final List<Category> cat2 = checkGetCategoryDescendantsWithAdditionalCriteria("cat2", criteria, 1);
+        checkGetCategoryDescendantsWithAdditionalCriteria(11L, criteria, 3);
+        checkGetCategoryDescendantsWithAdditionalCriteria(113L, criteria, 0);
+        final List<Category> cat2 = checkGetCategoryDescendantsWithAdditionalCriteria(2L, criteria, 1);
         Assert.assertEquals("Category 23", (cat2.get(0).getName()));
     }
 
     //----------------------------------- HELPER METHODS ---------------------------------------------------------------
-    private void checkGetCategoryChildren(String parentCategoryCode,
-                                          int expectedChildrenCount, String... expectedChildrenCodes) {
-        final Category cat = categoryDao.getCategory(parentCategoryCode);
+    private void checkGetCategoryChildren(Long parentCategoryId,
+                                          int expectedChildrenCount, Long... expectedChildrenIds) {
+        final Category cat = categoryDao.getCategory(parentCategoryId);
         Assert.assertNotNull(cat);
 
         // check children
         final List<Category> catChildren = cat.getChildren();
         Assert.assertEquals(expectedChildrenCount, catChildren.size());
-        for (String childCode : expectedChildrenCodes) {
-            checkIsCategoryChild(parentCategoryCode, catChildren, childCode);
+        for (Long childId : expectedChildrenIds) {
+            checkIsCategoryChild(parentCategoryId, catChildren, childId);
         }
 
     }
 
-    private void checkIsCategoryChild(String parentCategoryCode, List<Category> categoryChildren, String childCode) {
+    private void checkIsCategoryChild(Long parentCategoryId, List<Category> categoryChildren, Long childId) {
         boolean isCatChild = false;
 
         for (Category catChild : categoryChildren) {
-            if (catChild.getCode().equals(childCode)) {
+            if (catChild.getId().equals(childId)) {
                 isCatChild = true;
                 break;
             }
         }
 
-        Assert.assertTrue("Category with code [" + childCode + "] is not in children of category ["
-                + parentCategoryCode + "] as expected",
+        Assert.assertTrue("Category with id [" + childId + "] is not in children of category ["
+                + parentCategoryId + "] as expected",
                 isCatChild);
         // continue to test another expected category code
     }
@@ -152,10 +152,10 @@ public class CategoryTest extends DBUnitIntegrationTest {
      *
      * @param categoryCode code of category that will be checked.
      */
-    private void checkGetAllCategoryDescendants(String categoryCode, int subCategoriesCount) {
+    private void checkGetAllCategoryDescendants(Long categoryId, int subCategoriesCount) {
         Category category = null;
-        if (categoryCode != null) {
-            category = this.categoryDao.getCategory(categoryCode);
+        if (categoryId != null) {
+            category = this.categoryDao.getCategory(categoryId);
         }
         final List<Category> allCategories = this.treeItemService.getAllDescendants(category, Category.class);
         Assert.assertNotNull(allCategories);
@@ -167,10 +167,10 @@ public class CategoryTest extends DBUnitIntegrationTest {
      *
      * @param categoryCode code of category that will be checked.
      */
-    private void checkGetCategoryChildren(String categoryCode, int subCategoriesCount) {
+    private void checkGetCategoryChildren(Long categoryId, int subCategoriesCount) {
         Category category = null;
-        if (categoryCode != null) {
-            category = this.categoryDao.getCategory(categoryCode);
+        if (categoryId != null) {
+            category = this.categoryDao.getCategory(categoryId);
         }
         final List<Category> allCategories = this.treeItemService.getAllChildren(category, Category.class);
         Assert.assertNotNull(allCategories);
@@ -183,12 +183,12 @@ public class CategoryTest extends DBUnitIntegrationTest {
      *
      * @param categoryCode code of category that will be checked.
      */
-    private List<Category> checkGetCategoryDescendantsWithAdditionalCriteria(String categoryCode,
+    private List<Category> checkGetCategoryDescendantsWithAdditionalCriteria(Long categoryId,
                                                                              ResultCriteria resultCriteria,
                                                                              int subCategoriesCount) {
         Category category = null;
-        if (categoryCode != null) {
-            category = this.categoryDao.getCategory(categoryCode);
+        if (categoryId != null) {
+            category = this.categoryDao.getCategory(categoryId);
         }
         final List<Category> allCategories = this.treeItemService.getAllDescendants(
                 category, Category.class, resultCriteria);
@@ -204,12 +204,12 @@ public class CategoryTest extends DBUnitIntegrationTest {
      *
      * @param categoryCode code of category that will be checked.
      */
-    private List<Category> checkGetCategoryChildrenWithAdditionalCriteria(String categoryCode,
+    private List<Category> checkGetCategoryChildrenWithAdditionalCriteria(Long categoryId,
                                                                              ResultCriteria resultCriteria,
                                                                              int subCategoriesCount) {
         Category category = null;
-        if (categoryCode != null) {
-            category = this.categoryDao.getCategory(categoryCode);
+        if (categoryId != null) {
+            category = this.categoryDao.getCategory(categoryId);
         }
         final List<Category> childCategories = this.treeItemService.getAllChildren(
                 category, Category.class, resultCriteria);

@@ -48,7 +48,6 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
     public LocalityDetail convertToTarget(Locality locality) {
         LocalityDetail detail = new LocalityDetail();
         detail.setId(locality.getId());
-        detail.setCode(locality.getCode());
         detail.setName(locality.getName());
         detail.setLocalityType(locality.getType());
         detail.setDemandsCount(demandService.getDemandsCountQuick(locality));
@@ -61,6 +60,6 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
 
     @Override
     public Locality convertToSource(LocalityDetail localityDetail) {
-        return localityService.getLocality(localityDetail.getCode());
+        return localityService.getLocality(localityDetail.getId());
     }
 }

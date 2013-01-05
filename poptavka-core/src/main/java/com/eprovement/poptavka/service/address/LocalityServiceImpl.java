@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.service.address;
 
-import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.address.LocalityDao;
 import com.eprovement.poptavka.domain.address.Locality;
@@ -8,7 +7,6 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -32,9 +30,8 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
     @Override
     @Cacheable(cacheName = "cache5h")
-    public Locality getLocality(String code) {
-        Preconditions.checkArgument(StringUtils.isNotEmpty(code), "Locality code cannot be empty");
-        return getDao().getLocality(code);
+    public Locality getLocality(Long id) {
+        return getDao().getLocality(id);
     }
 
 

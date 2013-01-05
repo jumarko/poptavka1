@@ -679,6 +679,7 @@ public class HomeDemandsPresenter
         //replace last level index with actual one - selected by user
         actualOpenedHierarchy.add(new TreeItem(
                 selectedCategory.getId(),
+                selectedCategory.getId(),
                 selectedCategory.getLevel(),
                 index));
 

@@ -274,13 +274,13 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * This mehtod is used when <b>locality filtering</b> is required. Get
      * demands count of given localities.
      *
-     * @param localities - define localities to filter throught
+     * @param localities - define localities to filter through
      * @return demands count of given localities
      */
     private Long getLocalityDemandsCount(List<LocalityDetail> localities) {
         List<Locality> locs = new ArrayList<Locality>();
         for (LocalityDetail locDetail : localities) {
-            locs.add(localityService.getLocality(locDetail.getCode()));
+            locs.add(localityService.getLocality(locDetail.getId()));
         }
         return demandService.getDemandsCount(locs.toArray(new Locality[locs.size()]));
     }
@@ -297,7 +297,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private List<FullDemandDetail> getSortedLocalityDemands(SearchDefinition searchDefinition) {
         List<Locality> locs = new ArrayList<Locality>();
         for (LocalityDetail catDetail : searchDefinition.getFilter().getLocalities()) {
-            locs.add(localityService.getLocality(catDetail.getCode()));
+            locs.add(localityService.getLocality(catDetail.getId()));
         }
         return demandConverter.convertToTargetList(demandService.getDemands(
                 criteriaConverter.convertToSource(searchDefinition),
@@ -322,7 +322,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         List<Locality> locs = new ArrayList<Locality>();
         for (LocalityDetail locDetail : localities) {
-            locs.add(localityService.getLocality(locDetail.getCode()));
+            locs.add(localityService.getLocality(locDetail.getId()));
         }
         return demandService.getDemandsCount(
                 cats.toArray(new Category[cats.size()]),
@@ -346,7 +346,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         List<Locality> locs = new ArrayList<Locality>();
         for (LocalityDetail catDetail : searchDefinition.getFilter().getLocalities()) {
-            locs.add(localityService.getLocality(catDetail.getCode()));
+            locs.add(localityService.getLocality(catDetail.getId()));
         }
         return demandConverter.convertToTargetList(demandService.getDemands(
                 criteriaConverter.convertToSource(searchDefinition),
@@ -563,7 +563,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
                 prefix = "demand.";
                 List<Locality> allSubLocalities = new ArrayList<Locality>();
                 for (LocalityDetail loc : definition.getFilter().getLocalities()) {
-                    allSubLocalities.addAll(Arrays.asList(this.getAllSublocalities(loc.getCode())));
+                    allSubLocalities.addAll(Arrays.asList(this.getAllSublocalities(loc.getId())));
                 }
                 search.addFilterIn("locality", allSubLocalities);
             } else {
@@ -656,8 +656,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         return allSubCategories.toArray(new Category[allSubCategories.size()]);
     }
 
-    private Locality[] getAllSublocalities(String code) {
-        final Locality loc = this.localityService.getLocality(code);
+    private Locality[] getAllSublocalities(Long id) {
+        final Locality loc = this.localityService.getLocality(id);
         final List<Locality> allSubLocalites = this.treeItemService.getAllDescendants(loc, Locality.class);
         allSubLocalites.add(loc);
         return allSubLocalites.toArray(new Locality[allSubLocalites.size()]);

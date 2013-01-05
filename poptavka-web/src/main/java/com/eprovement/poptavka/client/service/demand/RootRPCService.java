@@ -42,7 +42,7 @@ public interface RootRPCService extends RemoteService {
      * @param locCode
      * @return list locality children list
      */
-    List<LocalityDetail> getLocalities(String locCode) throws RPCException;
+    List<LocalityDetail> getLocalities(Long locId) throws RPCException;
 
     /**************************************************************************/
     /* Categories methods                                                     */

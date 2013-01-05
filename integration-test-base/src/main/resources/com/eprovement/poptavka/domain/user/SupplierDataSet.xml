@@ -39,18 +39,17 @@
     <!--################################ Suppliers to Localities#####################################################-->
     <!-- loc1 && loc213 -->
     <SUPPLIER_LOCALITY ID="1" SUPPLIER_ID="11" LOCALITY_ID="1" />
-    <SUPPLIER_LOCALITY ID="2" SUPPLIER_ID="11" LOCALITY_ID="11" />
+    <SUPPLIER_LOCALITY ID="2" SUPPLIER_ID="11" LOCALITY_ID="213" />
 
     <SUPPLIER_LOCALITY ID="3" SUPPLIER_ID="12" LOCALITY_ID="2" />
-    <SUPPLIER_LOCALITY ID="4" SUPPLIER_ID="13" LOCALITY_ID="3" />
-    <SUPPLIER_LOCALITY ID="5" SUPPLIER_ID="14" LOCALITY_ID="8" />
+    <SUPPLIER_LOCALITY ID="4" SUPPLIER_ID="13" LOCALITY_ID="11" />
+    <SUPPLIER_LOCALITY ID="5" SUPPLIER_ID="14" LOCALITY_ID="21" />
 
 
     <!--################################ Suppliers to Categories#####################################################-->
-    <SUPPLIER_CATEGORY ID="6" SUPPLIER_ID="11" CATEGORY_ID="4" />
-    <SUPPLIER_CATEGORY ID="7" SUPPLIER_ID="12" CATEGORY_ID="5" />
-    <SUPPLIER_CATEGORY ID="8" SUPPLIER_ID="13" CATEGORY_ID="12" />
-    <SUPPLIER_CATEGORY ID="9" SUPPLIER_ID="14" CATEGORY_ID="14" />
-
-
+    <SUPPLIER_CATEGORY ID="6" SUPPLIER_ID="11" CATEGORY_ID="3" />
+    <SUPPLIER_CATEGORY ID="7" SUPPLIER_ID="12" CATEGORY_ID="11" />
+    <SUPPLIER_CATEGORY ID="8" SUPPLIER_ID="13" CATEGORY_ID="113" />
+    <SUPPLIER_CATEGORY ID="9" SUPPLIER_ID="14" CATEGORY_ID="312" />
+    
 </dataset>

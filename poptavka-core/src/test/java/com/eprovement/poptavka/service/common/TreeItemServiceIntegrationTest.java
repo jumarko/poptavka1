@@ -29,7 +29,7 @@ public class TreeItemServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllLeavesIdsForLocalities() {
-        checkLeaves(Locality.class, 6, new Long[] {5L, 6L, 9L, 10L, 11L, 12L});
+        checkLeaves(Locality.class, 6, new Long[] {211L, 212L, 213L, 214L, 111L, 121L});
     }
 
 
@@ -37,7 +37,7 @@ public class TreeItemServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllLeavesIdsForCategories() {
-        checkLeaves(Category.class, 10, new Long[]{10L, 11L, 15L, 16L, 6L, 7L, 8L, 13L, 14L, 111L});
+        checkLeaves(Category.class, 10, new Long[]{9L, 111L, 112L, 1131L, 1132L, 21L, 22L, 23L, 311L, 312L});
     }
 
 

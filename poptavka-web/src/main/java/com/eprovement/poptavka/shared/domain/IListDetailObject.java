@@ -12,9 +12,7 @@ import java.io.Serializable;
  */
 public interface IListDetailObject extends Serializable {
 
-    long getId();
-
-    String getCode();
+    Long getId();
 
     String getName();
 }

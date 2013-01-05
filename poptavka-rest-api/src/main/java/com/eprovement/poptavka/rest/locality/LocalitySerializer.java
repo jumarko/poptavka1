@@ -15,7 +15,7 @@ public class LocalitySerializer implements Converter<Locality, LocalityDto> {
         Validate.notNull(locality);
 
         final LocalityDto localityDto = new LocalityDto();
-        localityDto.setCode(locality.getCode());
+        localityDto.setId(locality.getId());
         localityDto.setName(locality.getName());
         localityDto.setType(locality.getType().toString());
 

@@ -24,10 +24,10 @@ public interface SupplierRPCService extends RemoteService {
 
     ArrayList<ServiceDetail> getSupplierServices() throws RPCException;
 
-    ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID, String localityCode)
+    ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryId, Long localityId)
         throws RPCException;
 
-    ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID) throws RPCException;
+    ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryId) throws RPCException;
 
     ArrayList<FullSupplierDetail> getSuppliers(int start, int count) throws RPCException;
 
@@ -38,7 +38,7 @@ public interface SupplierRPCService extends RemoteService {
 
     Long getSuppliersCount(Long categoryID) throws RPCException;
 
-    Long getSuppliersCount(Long categoryID, String localityCode) throws RPCException;
+    Long getSuppliersCount(Long categoryID, Long localityId) throws RPCException;
 
     FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail) throws RPCException;
 

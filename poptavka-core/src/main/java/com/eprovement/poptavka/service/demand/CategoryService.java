@@ -27,6 +27,6 @@ public interface CategoryService extends GenericService<Category, CategoryDao> {
 
 
     /** @see com.eprovement.poptavka.dao.demand.CategoryDao#getCategory(String) */
-    Category getCategory(String code);
+    Category getCategory(Long id);
 
 }

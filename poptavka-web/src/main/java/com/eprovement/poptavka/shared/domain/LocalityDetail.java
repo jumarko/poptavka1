@@ -19,9 +19,8 @@ public class LocalityDetail implements IListDetailObject {
      */
     private static final long serialVersionUID = 8480517227278818048L;
     private LocalityDetail parent;
-    private long id;
+    private Long id;
     private String name;
-    private String code;
     private LocalityType localityType;
     private long demandsCount;
     private long suppliersCount;
@@ -35,7 +34,7 @@ public class LocalityDetail implements IListDetailObject {
     public static final ProvidesKey<LocalityDetail> KEY_PROVIDER = new ProvidesKey<LocalityDetail>() {
         @Override
         public Object getKey(LocalityDetail item) {
-            return item == null ? null : item.getCode();
+            return item == null ? null : item.getId();
         }
     };
 
@@ -45,15 +44,9 @@ public class LocalityDetail implements IListDetailObject {
     public LocalityDetail() {
     }
 
-    public LocalityDetail(String name, String code) {
+    public LocalityDetail(String name, Long id) {
         this.name = name;
-        this.code = code;
-    }
-
-    public LocalityDetail(Long id, String name, String code) {
         this.id = id;
-        this.name = name;
-        this.code = code;
     }
 
     /**************************************************************************/
@@ -64,18 +57,13 @@ public class LocalityDetail implements IListDetailObject {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getCode() {
-        return code;
     }
 
     public long getDemandsCount() {
@@ -107,10 +95,6 @@ public class LocalityDetail implements IListDetailObject {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public void setDemandsCount(long demandsCount) {
@@ -148,7 +132,7 @@ public class LocalityDetail implements IListDetailObject {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + (this.code != null ? this.code.hashCode() : 0);
+        hash = 29 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -161,7 +145,7 @@ public class LocalityDetail implements IListDetailObject {
             return false;
         }
         final LocalityDetail other = (LocalityDetail) obj;
-        if ((this.code == null) ? (other.code != null) : !this.code.equals(other.code)) {
+        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
             return false;
         }
         return true;

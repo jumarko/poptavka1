@@ -30,10 +30,10 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
 
         assertNotNull(localitySuggestionDetail);
         assertThat(Long.toString(localitySuggestionDetail.getCityId()), is("4"));
-        assertThat(localitySuggestionDetail.getCityCode(), is("cat4"));
+        assertThat(localitySuggestionDetail.getCityId(), is(4L));
         assertThat(localitySuggestionDetail.getCityName(), is("cityName"));
         assertThat(Long.toString(localitySuggestionDetail.getStateId()), is("2"));
-        assertThat(localitySuggestionDetail.getStateCode(), is("cat2"));
+        assertThat(localitySuggestionDetail.getStateId(), is(2L));
         assertThat(localitySuggestionDetail.getStateName(), is("regionName"));
     }
 
@@ -48,7 +48,7 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
     private Locality createLocalityCountry() {
         final Locality country = new Locality();
         country.setId(1L);
-        country.setCode("cat1");
+        country.setId(1L);
         country.setName("countryName");
         country.setType(LocalityType.COUNTRY);
         return country;
@@ -57,7 +57,7 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
     private Locality createLocalityRegion() {
         final Locality region = new Locality();
         region.setId(2L);
-        region.setCode("cat2");
+        region.setId(2L);
         region.setName("regionName");
         region.setType(LocalityType.REGION);
         return region;
@@ -66,7 +66,7 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
     private Locality createLocalityDistrict() {
         final Locality district = new Locality();
         district.setId(3L);
-        district.setCode("cat3");
+        district.setId(3L);
         district.setName("districtName");
         district.setType(LocalityType.DISTRICT);
         return district;
@@ -75,7 +75,7 @@ public class LocalitySuggestionConverterTest extends BasicIntegrationTest {
     private Locality createLocalityCity() {
         final Locality city = new Locality();
         city.setId(4L);
-        city.setCode("cat4");
+        city.setId(4L);
         city.setName("cityName");
         city.setType(LocalityType.CITY);
         return city;

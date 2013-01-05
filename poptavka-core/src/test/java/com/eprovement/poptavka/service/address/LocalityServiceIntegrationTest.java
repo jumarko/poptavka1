@@ -31,8 +31,8 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetLocalityByCode() {
-        checkLocalityByCode("loc111", "locality111");
-        checkLocalityByCode("loc2", "locality2");
+        checkLocalityById(111L, "locality111");
+        checkLocalityById(2L, "locality2");
     }
 
 
@@ -98,7 +98,7 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllLocalitiesForParent() {
-        final Locality czechRepublic = this.localityService.getLocality("CZ");
+        final Locality czechRepublic = this.localityService.getLocality(0L);
         final List<Locality> allLocalitiesInCzechRepublic = this.treeItemService.getAllDescendants(czechRepublic,
                 Locality.class);
 
@@ -107,8 +107,8 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
 
 
     //--------------------- HELPER METHODS -----------------------------------------------------------------------------
-    private void checkLocalityByCode(String localityCode, String expectedName) {
-        final Locality loc111 = this.localityService.getLocality(localityCode);
+    private void checkLocalityById(Long localityId, String expectedName) {
+        final Locality loc111 = this.localityService.getLocality(localityId);
         Assert.assertNotNull(loc111);
         Assert.assertEquals(expectedName, loc111.getName());
     }

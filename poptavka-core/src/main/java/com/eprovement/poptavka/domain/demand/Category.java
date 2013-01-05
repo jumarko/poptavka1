@@ -26,13 +26,9 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "getRootCategories", query = "from Category c where c.parent is null order by c.name"),
-        @NamedQuery(name = "getCategoryByCode", query = "from Category c where c.code = :code")
+        @NamedQuery(name = "getCategoryById", query = "from Category c where c.id = :id")
 })
 public class Category extends TreeItem implements AdditionalInfoAware {
-
-    /** Business identifier of category. */
-    @Column(length = 64)
-    private String code;
 
     /** The name of category. */
     @Column(length = 64)
@@ -48,14 +44,6 @@ public class Category extends TreeItem implements AdditionalInfoAware {
     @NotAudited
     private Template template;
 
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getName() {
         return name;
@@ -85,8 +73,7 @@ public class Category extends TreeItem implements AdditionalInfoAware {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Category");
-        sb.append("{code='").append(code).append('\'');
-        sb.append(", name='").append(name).append('\'');
+        sb.append("(name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", additionalInfo=").append(additionalInfo);
         sb.append('}');

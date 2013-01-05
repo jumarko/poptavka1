@@ -15,7 +15,7 @@ public class CategorySerializer implements Converter<Category, CategoryDto> {
         Validate.notNull(category);
 
         final CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setCode(category.getCode());
+        categoryDto.setId(category.getId());
         categoryDto.setName(category.getName());
         categoryDto.setDescription(category.getDescription());
 

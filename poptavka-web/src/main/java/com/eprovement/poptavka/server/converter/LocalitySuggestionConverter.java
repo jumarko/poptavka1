@@ -50,12 +50,10 @@ public final class LocalitySuggestionConverter extends AbstractConverter<Localit
         //get STATE ->> CITY --> DISTRICT --> STATE --> COUNTRY
         if (localityCity.getParent() != null && localityCity.getParent().getParent() != null) {
             detail.setStateId(localityCity.getParent().getParent().getId());
-            detail.setStateCode(localityCity.getParent().getParent().getCode());
             detail.setStateName(localityCity.getParent().getParent().getName());
         }
 
         detail.setCityId(localityCity.getId());
-        detail.setCityCode(localityCity.getCode());
         detail.setCityName(localityCity.getName());
 
         return detail;
@@ -63,6 +61,6 @@ public final class LocalitySuggestionConverter extends AbstractConverter<Localit
 
     @Override
     public Locality convertToSource(LocalitySuggestionDetail localityDetailSuggestion) {
-        return localityService.getLocality(localityDetailSuggestion.getCityCode());
+        return localityService.getLocality(localityDetailSuggestion.getCityId());
     }
 }

@@ -26,8 +26,8 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
         final List<Category> rootCategories = categoryService.getRootCategories();
         Assert.assertNotNull(rootCategories);
         Assert.assertEquals(2, rootCategories.size());
-        checkCategory(rootCategories, 0, "cat0", "Root Category");
-        checkCategory(rootCategories, 1, "cat00", "Root Category 2");
+        checkCategory(rootCategories, 0, 0L, "Root Category");
+        checkCategory(rootCategories, 1, 9L, "Root Category 2");
     }
 
 
@@ -35,8 +35,8 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
         final List<Category> rootCategories = categoryService.getRootCategories(ResultCriteria.EMPTY_CRITERIA);
         Assert.assertNotNull(rootCategories);
         Assert.assertEquals(2, rootCategories.size());
-        checkCategory(rootCategories, 0, "cat0", "Root Category");
-        checkCategory(rootCategories, 1, "cat00", "Root Category 2");
+        checkCategory(rootCategories, 0, 0L, "Root Category");
+        checkCategory(rootCategories, 1, 00L, "Root Category 2");
     }
 
     public void testGetRootCategoriesWithMaxResults() {
@@ -54,15 +54,15 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
                 .build());
         Assert.assertNotNull(rootCategories);
         Assert.assertEquals(1, rootCategories.size());
-        checkCategory(rootCategories, 0, "cat00", "Root Category 2");
+        checkCategory(rootCategories, 0, 9L, "Root Category 2");
     }
 
 
 //---------------------------------------------- HELPER METHODS -------------------------------------------------------
 
     private void checkCategory(List<Category> rootCategories, int categoryIndex,
-                               String expectedCode, String expectedName) {
-        Assert.assertEquals(expectedCode, rootCategories.get(categoryIndex).getCode());
+                               Long expectedId, String expectedName) {
+        Assert.assertEquals(expectedId, rootCategories.get(categoryIndex).getId());
         Assert.assertEquals(expectedName, rootCategories.get(categoryIndex).getName());
     }
 

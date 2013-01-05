@@ -139,7 +139,7 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
         newClient.getBusinessUser().setPassword("myPassword");
         newClient.getBusinessUser().setAccessRoles(Arrays.asList(this.generalService.find(AccessRole.class, 1L)));
         final Address clientAddress = new Address();
-        clientAddress.setCity(this.localityService.getLocality("loc211"));
+        clientAddress.setCity(this.localityService.getLocality(211L));
         clientAddress.setStreet("Gotham city");
         clientAddress.setZipCode("12");
         newClient.getBusinessUser().setAddresses(Arrays.asList(clientAddress));

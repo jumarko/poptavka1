@@ -112,6 +112,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         checkUserMessageExists(300L, allUserReceivedMessages);
         checkUserMessageExists(400L, allUserReceivedMessages);
         checkUserMessageExists(402L, allUserReceivedMessages);
+        checkUserMessageExists(501L, allUserReceivedMessages);
     }
 
     @Test

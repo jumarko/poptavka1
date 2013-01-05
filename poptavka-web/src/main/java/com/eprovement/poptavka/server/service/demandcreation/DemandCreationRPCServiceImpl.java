@@ -133,9 +133,9 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     // TODO FIX this, it's not working nullPo interException. -- who use it anyway???
-    public Locality getLocality(String code) throws RPCException {
-        System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
-        return localityService.getLocality(code);
+    public Locality getLocality(Long id) throws RPCException {
+        System.out.println("Locality of id: " + id + ", localityService is null? " + (localityService == null));
+        return localityService.getLocality(id);
 //        return localityService.getById(10);
     }
 
@@ -193,7 +193,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         final List<Address> addresses = new ArrayList<Address>();
         if (clientDetail.getAddresses() != null) {
             for (AddressDetail detail : clientDetail.getAddresses()) {
-                Locality city = this.getLocality(detail.getCity());
+                Locality city = this.getLocality(detail.getCityId());
                 Address address = new Address();
                 address.setCity(city);
                 address.setStreet(detail.getStreet());

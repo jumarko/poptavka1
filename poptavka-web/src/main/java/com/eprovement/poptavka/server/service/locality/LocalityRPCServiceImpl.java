@@ -61,12 +61,12 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     /**
-     * Get children of locality specified by LOCALITY_CODE.
+     * Get children of locality specified by LOCALITY_ID.
      */
     @Override
-    public List<LocalityDetail> getLocalities(String locCode) throws RPCException {
+    public List<LocalityDetail> getLocalities(Long id) throws RPCException {
         LOGGER.info("Getting children localities ");
-        final Locality locality = localityService.getLocality(locCode);
+        final Locality locality = localityService.getLocality(id);
         if (locality != null) {
             return localityConverter.convertToTargetList(locality.getChildren());
         }
@@ -79,7 +79,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         if (locality == null) {
             throw new IllegalArgumentException("Cannot find locality with id=" + id);
         }
-        return new LocalityDetail(locality.getId(), locality.getName(), locality.getCode());
+        return new LocalityDetail(locality.getName(), locality.getId());
     }
 
     @Override
@@ -88,8 +88,8 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public List<LocalityDetail> getSubLocalities(String locCode) throws RPCException {
-        return localityConverter.convertToTargetList(localityService.getLocality(locCode).getChildren());
+    public List<LocalityDetail> getSubLocalities(Long id) throws RPCException {
+        return localityConverter.convertToTargetList(localityService.getLocality(id).getChildren());
     }
 
     @Override

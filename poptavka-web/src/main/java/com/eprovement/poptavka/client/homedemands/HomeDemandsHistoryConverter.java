@@ -112,6 +112,7 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
             for (String item : items) {
                 tree.add(
                         new TreeItem(Long.valueOf(item.split(LIST_ITEM_IDX_SEPARATOR)[0]),
+                        Long.valueOf(item.split(LIST_ITEM_IDX_SEPARATOR)[0]),
                         level, Integer.valueOf(item.split(":")[1])));
                 level++;
             }

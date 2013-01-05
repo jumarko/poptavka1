@@ -70,7 +70,7 @@ public class AddressSelectorView extends Composite
     //Address attributes - needed to remember suggestBox suggestion which is parsed to these attributes
     private String region;
     private String city;
-    private String cityCode;
+    private Long cityId;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -114,8 +114,8 @@ public class AddressSelectorView extends Composite
     }
 
     @Override
-    public void setCityCode(String cityCode) {
-        this.cityCode = cityCode;
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 
     @Override
@@ -133,7 +133,7 @@ public class AddressSelectorView extends Composite
         address.setCountry("United States");
         address.setRegion(region);
         address.setCity(city);
-        address.setCityCode(cityCode);
+        address.setCityId(cityId);
         address.setDistrict("");
         address.setStreet(street.getText());
         address.setZipCode(zipCode.getText());

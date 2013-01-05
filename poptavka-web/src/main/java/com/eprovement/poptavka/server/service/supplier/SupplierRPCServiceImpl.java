@@ -220,7 +220,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Locality> localities = new ArrayList<Locality>();
         for (LocalityDetail localityDetail : supplier.getSupplier().getLocalities()) {
-            localities.add(this.getLocality(localityDetail.getCode()));
+            localities.add(this.getLocality(localityDetail.getId()));
         }
         newSupplier.setLocalities(localities);
     }
@@ -270,9 +270,9 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     // TODO FIX this, it's not working nullPointerException.
-    public Locality getLocality(String code) throws RPCException {
-        System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
-        return localityService.getLocality(code);
+    public Locality getLocality(Long id) throws RPCException {
+        System.out.println("Locality code value: " + id + ", localityService is null? " + (localityService == null));
+        return localityService.getLocality(id);
 //        return localityService.getById(10);
     }
 
@@ -282,10 +282,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(
-            int start, int count, Long categoryID, String localityCode) throws RPCException {
+            int start, int count, Long categoryID, Long localityId) throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
         Category[] categories = {categoryService.getById(categoryID)};
-        Locality[] localities = {localityService.getLocality(localityCode)};
+        Locality[] localities = {localityService.getLocality(localityId)};
         return this.createSupplierDetailList(supplierService.getSuppliers(
                 resultCriteria, categories, localities));
 //                this.getAllSubcategories(categoryID),
@@ -331,10 +331,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public Long getSuppliersCount(Long categoryID, String localityCode) throws RPCException {
+    public Long getSuppliersCount(Long categoryID, Long localityId) throws RPCException {
         return supplierService.getSuppliersCount(
                 new Category[]{categoryService.getById(categoryID)},
-                new Locality[]{localityService.getLocality(localityCode)});
+                new Locality[]{localityService.getLocality(localityId)});
     }
 
     /**
@@ -492,8 +492,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return allSubCategories.toArray(new Category[allSubCategories.size()]);
     }
 
-    private Locality[] getAllSublocalities(String code) {
-        final Locality loc = this.localityService.getLocality(code);
+    private Locality[] getAllSublocalities(Long id) {
+        final Locality loc = this.localityService.getLocality(id);
         final List<Locality> allSubLocalites = this.treeItemService.getAllDescendants(loc, Locality.class);
         allSubLocalites.add(loc);
         return allSubLocalites.toArray(new Locality[allSubLocalites.size()]);
@@ -560,7 +560,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 //        } else if (detail.getHomeSuppliers().getSupplierLocality() != null) {
 //            search = new Search(SupplierLocality.class);
 //            final List<Locality> allSubLocalities = Arrays.asList(
-//                    this.getAllSublocalities(detail.getHomeSuppliers().getSupplierLocality().getCode()));
+//                    this.getAllSublocalities(detail.getHomeSuppliers().getSupplierLocality().getId()));
 //            search.addFilterIn("locality", allSubLocalities);
 //        }
 //        if (detail.getHomeSuppliers().getSupplierName() != null) {
@@ -622,7 +622,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         List<Locality> allSubLocalities = new ArrayList<Locality>();
         for (LocalityDetail loc : detail.getLocalities()) {
             allSubLocalities = Arrays.asList(
-                    this.getAllSublocalities(loc.getCode()));
+                    this.getAllSublocalities(loc.getId()));
         }
         localitySearch.addFilterIn("locality", allSubLocalities);
 

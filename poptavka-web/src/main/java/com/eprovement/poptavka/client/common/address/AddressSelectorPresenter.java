@@ -55,7 +55,7 @@ public class AddressSelectorPresenter
 
         void setCity(String city);
 
-        void setCityCode(String cityCode);
+        void setCityId(Long cityId);
 
         void eraseAddressBoxes();
 
@@ -145,7 +145,7 @@ public class AddressSelectorPresenter
                     citySuggestSelected = suggestion.getDisplayString();
                     view.setState(suggestion.getStateName());
                     view.setCity(suggestion.getCityName());
-                    view.setCityCode(suggestion.getCityCode());
+                    view.setCityId(suggestion.getCityId());
                     view.getCitySuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());
                     view.getCityErrorLabel().setText("");
                 }

@@ -117,7 +117,7 @@ public class LocalitySelectorPresenter
             @Override
             public void execute() {
                 for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(), list.get(i).getCode());
+                    box.addItem(list.get(i).getName(), list.get(i).getId().toString());
                 }
             }
         });

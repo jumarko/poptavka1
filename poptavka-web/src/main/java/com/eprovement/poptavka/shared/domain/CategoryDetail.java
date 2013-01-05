@@ -54,18 +54,13 @@ public class CategoryDetail implements IListDetailObject {
     /* Getters                                                                */
     /**************************************************************************/
     @Override
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getCode() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public long getDemandsCount() {

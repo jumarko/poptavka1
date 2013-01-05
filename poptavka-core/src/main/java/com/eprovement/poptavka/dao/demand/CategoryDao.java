@@ -23,8 +23,8 @@ public interface CategoryDao extends GenericDao<Category> {
     /**
      * Load category object by unique code.
      *
-     * @param code unique code representing category
+     * @param id unique code representing category
      * @return category with given code or null if no such category exists.
      */
-    Category getCategory(String code);
+    Category getCategory(Long id);
 }

@@ -52,9 +52,9 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         });
     }
 
-    public void onGetChildLocalities(final LocalityType localityType, String locCode,
+    public void onGetChildLocalities(final LocalityType localityType, String id,
             final ListDataProvider dataProvider) {
-        rootService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
+        rootService.getLocalities(Long.parseLong(id), new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
             @Override
             public void onSuccess(List<LocalityDetail> list) {
                 if (dataProvider != null) {

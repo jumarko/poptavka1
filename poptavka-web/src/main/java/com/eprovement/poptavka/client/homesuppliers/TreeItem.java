@@ -10,14 +10,24 @@ package com.eprovement.poptavka.client.homesuppliers;
  */
 public class TreeItem {
 
+    private long treeId;
     private long categoryId;
     private int level;
     private int index;
 
-    public TreeItem(long categoryId, int level, int index) {
+    public TreeItem(long treeId, long categoryId, int level, int index) {
+        this.treeId = treeId;
         this.categoryId = categoryId;
         this.level = level;
         this.index = index;
+    }
+
+    public long getTreeId() {
+        return treeId;
+    }
+
+    public void setTreeId(long treeId) {
+        this.treeId = treeId;
     }
 
     public long getCategoryId() {

@@ -67,7 +67,7 @@ public class GeneralServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testSearchDemandsByCategory() {
         final Search demandCategorySearch = new Search(DemandCategory.class);
-        final Category cat1 = this.generalService.find(Category.class, 2L);
+        final Category cat1 = this.generalService.find(Category.class, 1L);
         Assert.assertNotNull(cat1);
         final List<Category> allSubCategories = this.treeItemService.getAllDescendants(cat1, Category.class);
         allSubCategories.add(cat1);

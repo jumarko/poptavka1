@@ -109,7 +109,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         // otherwise following for-each throws NPE if clienDetail#getAddresses returns null
         if (clientDetail.getAddresses() != null) {
             for (AddressDetail detail : clientDetail.getAddresses()) {
-                Locality city = this.getLocality(detail.getCity());
+                Locality city = this.getLocality(detail.getCityId());
                 Address address = new Address();
                 address.setCity(city);
                 address.setStreet(detail.getStreet());
@@ -129,9 +129,9 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
 
     // TODO FIX this, it's not working nullPointerException.
-    public Locality getLocality(String code) throws RPCException {
-        System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
-        return localityService.getLocality(code);
+    public Locality getLocality(Long id) throws RPCException {
+        System.out.println("Locality of id: " + id + ", localityService is null? " + (localityService == null));
+        return localityService.getLocality(id);
     }
 
     /**

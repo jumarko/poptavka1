@@ -6,17 +6,17 @@ package com.eprovement.poptavka.rest.category;
 import java.util.Map;
 
 public class CategoryDto {
-    private String code;
+    private Long id;
     private String name;
     private String description;
     private Map<String, String> links;
 
-    public String getCode() {
-        return code;
+    public Long getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,7 +46,7 @@ public class CategoryDto {
     @Override
     public String toString() {
         return "CategoryDto{"
-                + "code='" + code + '\''
+                + "id='" + id + '\''
                 + ", name='" + name + '\''
                 + ", description='" + description + '\''
                 + ", links=" + links

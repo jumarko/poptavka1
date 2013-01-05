@@ -18,7 +18,7 @@ public class AddressDetail implements Serializable {
     private String region;
     @NotEmpty(message = "{addressNotBlankCity}")
     private String city;
-    private String cityCode;
+    private Long cityId;
     @NotEmpty(message = "{addressNotBlankDistrict}")
     private String district;
     //
@@ -37,7 +37,7 @@ public class AddressDetail implements Serializable {
         this.country = address.getCountry();
         this.region = address.getRegion();
         this.city = address.getCity();
-        this.cityCode = address.getCityCode();
+        this.cityId = address.getCityId();
         this.district = address.getDistrict();
         //
         this.street = address.getStreet();
@@ -76,12 +76,12 @@ public class AddressDetail implements Serializable {
         this.city = cityName;
     }
 
-    public String getCityCode() {
-        return cityCode;
+    public Long getCityId() {
+        return cityId;
     }
 
-    public void setCityCode(String cityCode) {
-        this.cityCode = cityCode;
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 
     public String getStreet() {

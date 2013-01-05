@@ -6,7 +6,6 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,12 +49,12 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     /** {@inheritDoc} */
     @Override
     @Cacheable(cacheName = "cache5h")
-    public Category getCategory(String code) {
-        if (StringUtils.isBlank(code)) {
+    public Category getCategory(Long id) {
+        if (id == null) {
             return null;
         }
 
-        return getDao().getCategory(code);
+        return getDao().getCategory(id);
     }
 
     //----------------------------------  DO NOT MODIFY LOCALITIES USING THIS SERVICE ----------------------------------

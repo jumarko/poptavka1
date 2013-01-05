@@ -25,7 +25,7 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     void getLocalities(LocalityType type, AsyncCallback<List<LocalityDetail>> callback);
 
-    void getLocalities(String locCode, AsyncCallback<List<LocalityDetail>> callback);
+    void getLocalities(Long id, AsyncCallback<List<LocalityDetail>> callback);
 
     /**************************************************************************/
     /* Category methods                                                       */

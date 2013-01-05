@@ -31,9 +31,6 @@ import java.util.List;
 @Entity
 public class Locality extends TreeItem implements AdditionalInfoAware {
 
-    @Column(length = 32)
-    private String code;
-
     private String name;
 
     @Enumerated(value = EnumType.STRING)
@@ -47,13 +44,7 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
     @Cascade(CascadeType.ALL)
     private AdditionalInfo additionalInfo;
 
-
-    public Locality(String code, String name) {
-        this(code, name, null);
-    }
-
-    public Locality(String code, String name, LocalityType type) {
-        this.code = code;
+    public Locality(String name, LocalityType type) {
         this.name = name;
         this.type = type;
     }
@@ -68,14 +59,6 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     /**
@@ -117,7 +100,7 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Locality");
-        sb.append("{code='").append(code).append('\'');
+        sb.append("{id='").append(getId()).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", type=").append(type);
         sb.append(", additionalInfo=").append(additionalInfo);

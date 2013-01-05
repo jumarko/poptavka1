@@ -1,9 +1,7 @@
 package com.eprovement.poptavka.service;
 
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
-import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.base.RealDbTest;
-import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.settings.Settings;
@@ -24,7 +22,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -121,10 +118,10 @@ public class BasicDataInsertingTest extends RealDbTest {
 
         newSupplier.setCertified(false);
 
-        // set supplier locality
-        final Locality locality = localityService.getLocality(JIHOMORAVSKY_KRAJ_CODE);
-        Preconditions.checkState(locality != null, "Locality with code [" + JIHOMORAVSKY_KRAJ_CODE + "] must exist!");
-        newSupplier.setLocalities(Arrays.asList(locality));
+//        // set supplier locality
+//        final Locality locality = localityService.getLocality(JIHOMORAVSKY_KRAJ_CODE);
+//        Preconditions.checkState(locality != null, "Locality with code [" + JIHOMORAVSKY_KRAJ_CODE + "] must exist!");
+//        newSupplier.setLocalities(Arrays.asList(locality));
 
         this.supplierService.create(newSupplier);
     }

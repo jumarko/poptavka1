@@ -28,8 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Ignore // this test is deprecated
 public class AdditionalInfoLoadListenerTest extends DBUnitIntegrationTest {
 
-    private static final String ROOT_CATEGORY_CODE = "0";
-    private static final String ROOT_LOCALITY_CODE = "CZ";
+    private static final Long ROOT_CATEGORY_ID = 0L;
+    private static final Long ROOT_LOCALITY_ID = 0L;
 
     @Autowired
     private LocalityService localityService;
@@ -41,33 +41,33 @@ public class AdditionalInfoLoadListenerTest extends DBUnitIntegrationTest {
 
     @Test
     public void testCategories() {
-        checkCategoryCounts(ROOT_CATEGORY_CODE, 0L, 4L);
-        checkCategoryCounts("cat1", 0L, 2L);
-        checkCategoryCounts("cat2", 0L, 0L);
-        checkCategoryCounts("cat3", 0L, 2L);
-        checkCategoryCounts("cat11", 0L, 2L);
-        checkCategoryCounts("cat111", 0L, 0L);
-        checkCategoryCounts("cat113", 0L, 1L);
-        checkCategoryCounts("cat31", 0L, 1L);
-        checkCategoryCounts("cat312", 0L, 1L);
+        checkCategoryCounts(ROOT_CATEGORY_ID, 0L, 4L);
+        checkCategoryCounts(1L, 0L, 2L);
+        checkCategoryCounts(2L, 0L, 0L);
+        checkCategoryCounts(3L, 0L, 2L);
+        checkCategoryCounts(11L, 0L, 2L);
+        checkCategoryCounts(111L, 0L, 0L);
+        checkCategoryCounts(113L, 0L, 1L);
+        checkCategoryCounts(31L, 0L, 1L);
+        checkCategoryCounts(312L, 0L, 1L);
     }
 
 
     @Test
     public void testLocalities() {
-        checkLocalityCounts(ROOT_LOCALITY_CODE, 10L, 4L);
+        checkLocalityCounts(ROOT_LOCALITY_ID, 10L, 4L);
     }
 
 
     //-------------------------- HELPTER METHODS -----------------------------------------------------------------------
-    private void checkCategoryCounts(String categoryCode, Long expectedDemandCount, Long expectedSupplierCount) {
-        final Category category = this.categoryService.getCategory(categoryCode);
+    private void checkCategoryCounts(Long categoryId, Long expectedDemandCount, Long expectedSupplierCount) {
+        final Category category = this.categoryService.getCategory(categoryId);
         Assert.assertEquals(Long.valueOf(expectedDemandCount), category.getAdditionalInfo().getDemandsCount());
         Assert.assertEquals(Long.valueOf(expectedSupplierCount), category.getAdditionalInfo().getSuppliersCount());
     }
 
-    private void checkLocalityCounts(String localityCode, Long expectedDemandCount, Long expectedSupplierCount) {
-        final Locality locality = this.localityService.getLocality(localityCode);
+    private void checkLocalityCounts(Long localityId, Long expectedDemandCount, Long expectedSupplierCount) {
+        final Locality locality = this.localityService.getLocality(localityId);
         Assert.assertEquals(Long.valueOf(expectedDemandCount), locality.getAdditionalInfo().getDemandsCount());
         Assert.assertEquals(Long.valueOf(expectedSupplierCount), locality.getAdditionalInfo().getSuppliersCount());
     }

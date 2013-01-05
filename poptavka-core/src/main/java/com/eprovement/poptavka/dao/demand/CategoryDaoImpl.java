@@ -36,10 +36,10 @@ public class CategoryDaoImpl extends GenericHibernateDao<Category> implements Ca
 
     /** {@inheritDoc} */
     @Override
-    public Category getCategory(String code) {
+    public Category getCategory(Long id) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("code", code);
-        return (Category) runNamedQueryForSingleResult("getCategoryByCode", params);
+        params.put("id", id);
+        return (Category) runNamedQueryForSingleResult("getCategoryById", params);
     }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------

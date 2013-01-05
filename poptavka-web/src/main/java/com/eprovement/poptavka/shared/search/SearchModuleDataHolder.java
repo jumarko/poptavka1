@@ -186,8 +186,8 @@ public class SearchModuleDataHolder implements Serializable {
         ArrayList<LocalityDetail> localities = new ArrayList<LocalityDetail>();
         String[] locs = items[2].split(VALUE_SEPARATOR);
         if (locs.length > 1) {
-            for (String locCode : locs[1].split(LIST_ITEM_SEPARATOR)) {
-                localities.add(new LocalityDetail("", locCode));
+            for (String locId : locs[1].split(LIST_ITEM_SEPARATOR)) {
+                localities.add(new LocalityDetail("", Long.parseLong(locId)));
             }
         }
         searchModuleDataHolder.setLocalities(localities);

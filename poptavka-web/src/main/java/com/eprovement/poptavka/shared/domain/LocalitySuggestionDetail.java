@@ -23,11 +23,9 @@ public class LocalitySuggestionDetail //MultiWordSuggestOracle.MultiWordSuggesti
     private String replacementString;
     /** State. **/
     private long stateId;
-    private String stateCode;
     private String stateName;
     /** City. **/
     private long cityId;
-    private String cityCode;
     private String cityName;
 
     /**************************************************************************/
@@ -58,10 +56,6 @@ public class LocalitySuggestionDetail //MultiWordSuggestOracle.MultiWordSuggesti
         this.stateId = stateId;
     }
 
-    public void setStateCode(String stateCode) {
-        this.stateCode = stateCode;
-    }
-
     public void setStateName(String stateName) {
         this.stateName = stateName;
     }
@@ -69,10 +63,6 @@ public class LocalitySuggestionDetail //MultiWordSuggestOracle.MultiWordSuggesti
     /** City. **/
     public void setCityId(long cityId) {
         this.cityId = cityId;
-    }
-
-    public void setCityCode(String cityCode) {
-        this.cityCode = cityCode;
     }
 
     public void setCityName(String cityName) {
@@ -98,10 +88,6 @@ public class LocalitySuggestionDetail //MultiWordSuggestOracle.MultiWordSuggesti
         return stateId;
     }
 
-    public String getStateCode() {
-        return stateCode;
-    }
-
     public String getStateName() {
         return stateName;
     }
@@ -109,10 +95,6 @@ public class LocalitySuggestionDetail //MultiWordSuggestOracle.MultiWordSuggesti
     /** City. **/
     public long getCityId() {
         return cityId;
-    }
-
-    public String getCityCode() {
-        return cityCode;
     }
 
     public String getCityName() {

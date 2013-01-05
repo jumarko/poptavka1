@@ -191,7 +191,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Locality> localities = new ArrayList<Locality>();
         for (LocalityDetail localityDetail : supplier.getSupplier().getLocalities()) {
-            localities.add(this.getLocality(localityDetail.getCode()));
+            localities.add(this.getLocality(localityDetail.getId()));
         }
         newSupplier.setLocalities(localities);
     }
@@ -236,9 +236,9 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     }
 
     // TODO FIX this, it's not working nullPointerException.
-    public Locality getLocality(String code) throws RPCException {
-        System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
-        return localityService.getLocality(code);
+    public Locality getLocality(Long id) throws RPCException {
+        System.out.println("Locality of id: " + id + ", localityService is null? " + (localityService == null));
+        return localityService.getLocality(id);
 //        return localityService.getById(10);
     }
 

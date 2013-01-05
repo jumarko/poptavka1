@@ -181,12 +181,12 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     /**
      * Get children of locality specified by LOCALITY_CODE.
      *
-     * @param locCode
+     * @param locId
      * @return list locality children list
      */
     @Override
-    public List<LocalityDetail> getLocalities(String locCode) throws RPCException {
-        final Locality locality = localityService.getLocality(locCode);
+    public List<LocalityDetail> getLocalities(Long locId) throws RPCException {
+        final Locality locality = localityService.getLocality(locId);
         if (locality != null) {
             return localityConverter.convertToTargetList(locality.getChildren());
         }

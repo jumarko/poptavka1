@@ -27,7 +27,7 @@ public final class AddressConverter extends AbstractConverter<Address, AddressDe
         AddressDetail detail = new AddressDetail();
         if (address.getCity() != null) {
             detail.setCity(address.getCity().getName());
-            detail.setCityCode(address.getCity().getCode());
+            detail.setCityId(address.getCity().getId());
             if (address.getCity().getParent() != null) {
                 detail.setDistrict(address.getCity().getParent().getName());
                 if (address.getCity().getParent().getParent() != null) {
@@ -47,7 +47,7 @@ public final class AddressConverter extends AbstractConverter<Address, AddressDe
     @Override
     public Address convertToSource(AddressDetail addressDetail) {
         Address address = new Address();
-        address.setCity(localityService.getLocality(addressDetail.getCityCode()));
+        address.setCity(localityService.getLocality(addressDetail.getCityId()));
         address.setStreet(addressDetail.getStreet());
         address.setZipCode(addressDetail.getZipCode());
         return address;
