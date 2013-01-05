@@ -36,11 +36,11 @@ public class LoginPopupView extends PopupPanel
 
         public PrivateUser(BusinessRole role) {
             if (role == BusinessRole.CLIENT) {
-                name = "ivan.vlcek@test.cz";
+                name = "webgres@gmail.com";
                 pass = "123123";
             }
             if (role == BusinessRole.SUPPLIER) {
-                name = "webgres@gmail.com";
+                name = "pras3xer@gmail.com";
                 pass = "123123";
             }
             if (role == BusinessRole.ADMIN) {
