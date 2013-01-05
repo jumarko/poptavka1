@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.user.widget.detail;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
 import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -25,11 +26,11 @@ public class DemandDetailView extends Composite {
 
     interface DemandDetailViewUiBinder extends UiBinder<Widget, DemandDetailView> {
     }
-    @UiField(provided = true) CellList categories, localities;
-    @UiField Label demandName, price, endDate, validTo, type, maxNumberOfSuppliers,
-    minSupplierRating, excludedSuppliers, description;
+    @UiField(provided = true)
+    CellList categories, localities, excludedSuppliers;
+    @UiField
+    Label demandName, price, endDate, validTo, maxNumberOfSuppliers, minSupplierRating, description;
     //i18n
-    private final StyleResource styleResource = GWT.create(StyleResource.class);
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
     private DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
@@ -41,9 +42,9 @@ public class DemandDetailView extends Composite {
     public DemandDetailView() {
         categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
+        excludedSuppliers = new CellList<FullSupplierDetail>(new SupplierCell());
         initWidget(uiBinder.createAndBindUi(this));
 
-        setStyle(styleResource.common().textBoxAsLabel());
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
@@ -56,30 +57,11 @@ public class DemandDetailView extends Composite {
         price.setText(currencyFormat.format(demandDetail.getPrice()));
         endDate.setText(dateFormat.format(demandDetail.getEndDate()));
         validTo.setText(dateFormat.format(demandDetail.getValidToDate()));
-        type.setText(demandDetail.getDetailType().getValue());
         categories.setRowData(demandDetail.getCategories());
         localities.setRowData(demandDetail.getLocalities());
         maxNumberOfSuppliers.setText(Integer.toString(demandDetail.getMaxOffers()));
         minSupplierRating.setText(Integer.toString(demandDetail.getMinRating()) + "%");
-        StringBuilder excludedSuppliersBuildes = new StringBuilder();
-        for (FullSupplierDetail supplierDetail : demandDetail.getExcludedSuppliers()) {
-            excludedSuppliersBuildes.append(supplierDetail.getCompanyName());
-            excludedSuppliersBuildes.append(", ");
-        }
-        excludedSuppliers.setText(excludedSuppliersBuildes.toString());
+        excludedSuppliers.setRowData(demandDetail.getExcludedSuppliers());
         description.setText(demandDetail.getDescription());
-//        detail.getElement().getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
-    }
-
-    private void setStyle(String cssStyle) {
-        demandName.setStyleName(cssStyle);
-        price.setStyleName(cssStyle);
-        endDate.setStyleName(cssStyle);
-        validTo.setStyleName(cssStyle);
-        type.setStyleName(cssStyle);
-        maxNumberOfSuppliers.setStyleName(cssStyle);
-        minSupplierRating.setStyleName(cssStyle);
-        excludedSuppliers.setStyleName(cssStyle);
-        description.setStyleName(cssStyle);
     }
 }
