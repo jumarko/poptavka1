@@ -19,7 +19,8 @@
             <g:header>
                 <ui:msg key="demandDetail">Demand detail</ui:msg>
             </g:header>
-            <w:DemandDetailView ui:field="demandDetail"></w:DemandDetailView>
+            <g:SimplePanel ui:field="demandDetailHolder"/>
+            <!--<w:DemandDetailView ui:field="demandDetail"></w:DemandDetailView>-->
         </g:tab>
         <g:tab>
             <g:header>

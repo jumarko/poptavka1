@@ -76,7 +76,7 @@ public class ClientOffersPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     //viewType
-    private ViewType type = ViewType.EDITABLE;
+    private ViewType type = ViewType.OFFER;
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand

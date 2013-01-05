@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.widget;
 
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.SimpleMessageWindow;
@@ -13,6 +14,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
@@ -33,7 +35,8 @@ public class DetailsWrapperView extends Composite
     @UiField
     TabLayoutPanel container;
     @UiField
-    DemandDetailView demandDetail;
+    SimplePanel demandDetailHolder;
+//    DemandDetailView demandDetail;
     @UiField
     SupplierDetailView supplierDetail;
     @UiField
@@ -60,8 +63,11 @@ public class DetailsWrapperView extends Composite
 
     @Override
     public void setDemandDetail(FullDemandDetail demand) {
-        demandDetail.setDemanDetail(demand);
-        //demandHeader.toggleLoading();
+        if (demandDetailHolder.getWidget() instanceof DemandDetailView) {
+            ((DemandDetailView) demandDetailHolder.getWidget()).setDemanDetail(demand);
+        } else if (demandDetailHolder.getWidget() instanceof EditableDemandDetailView) {
+            ((EditableDemandDetailView) demandDetailHolder.getWidget()).setDemanDetail(demand);
+        }
     }
 
     @Override
@@ -113,6 +119,11 @@ public class DetailsWrapperView extends Composite
     @Override
     public DevelOfferQuestionWindow getReplyHolder() {
         return replyHolder;
+    }
+
+    @Override
+    public SimplePanel getDemandDetailHolder() {
+        return demandDetailHolder;
     }
 
     @Override

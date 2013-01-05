@@ -76,7 +76,7 @@ public class OldDetailWrapperPresenter extends
      *            type of what detail section should handle this event
      */
     public void onSetFullDemandDetail(FullDemandDetail detail) {
-        view.setDetail(new DemandDetailView(detail));
+//        view.setDetail(new DemandDetailView(detail));
         // GUI visual event
         view.getDemandDetail().setDemanDetail(detail);
         toggleDetailLoading();

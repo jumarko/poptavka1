@@ -50,7 +50,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     /* Attributes                                                             */
     /**************************************************************************/
     //viewType
-    private ViewType type = ViewType.EDITABLE;
+    private ViewType type = ViewType.POTENTIAL;
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;

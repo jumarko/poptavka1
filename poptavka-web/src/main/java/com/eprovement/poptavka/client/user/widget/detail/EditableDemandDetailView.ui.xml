@@ -6,7 +6,7 @@
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-	<g:HTMLPanel>
+	<g:HTMLPanel ui:field="detail">
 		<h4 class="{res.detailViews.demandDetailSectionHeader}">
 			<ui:msg key="demandInfo">Demand information</ui:msg>
 		</h4>
@@ -21,32 +21,32 @@
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="demandName">Demand name: </ui:msg>
 						</g:Label>
-						<g:Label ui:field="demandName" />
+						<g:TextBox ui:field="demandName" />
 					</g:HTMLPanel>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="price">Price:</ui:msg>
 						</g:Label>
-						<g:Label ui:field="price" />
+						<g:TextBox ui:field="price" />
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="endDate">End date:</ui:msg>
 						</g:Label>
-						<g:Label ui:field="endDate" />
+						<g:TextBox ui:field="endDate" />
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="validTo">Valid to: </ui:msg>
 						</g:Label>
-						<g:Label ui:field="validTo" />
+						<g:TextBox ui:field="validTo" />
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="type">Type: </ui:msg>
 						</g:Label>
-						<g:Label ui:field="type" />
+						<g:TextBox ui:field="type" />
 					</g:HTMLPanel>
 				</g:HTMLPanel>
 
@@ -73,21 +73,21 @@
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="maxNumberOfSuppliers">Maximal number of suppliers:</ui:msg>
 						</g:Label>
-						<g:Label ui:field="maxNumberOfSuppliers" />
+						<g:TextBox ui:field="maxNumberOfSuppliers" />
 					</g:HTMLPanel>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="minSupplierRating">Minimal supplier rating: </ui:msg>
 						</g:Label>
-						<g:Label ui:field="minSupplierRating" />
+						<g:TextBox ui:field="minSupplierRating" />
 					</g:HTMLPanel>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="excludedSuppliers">Excluded suppliers: </ui:msg>
 						</g:Label>
-						<g:Label ui:field="excludedSuppliers" />
+						<g:TextBox ui:field="excludedSuppliers" />
 					</g:HTMLPanel>
 				</g:HTMLPanel>
 
@@ -95,7 +95,17 @@
 					<g:Label styleName='{res.detailViews.detailHeader}'>
 						<ui:msg key="description">Description: </ui:msg>
 					</g:Label>
-                                        <g:Label ui:field="description" />
+					<g:TextArea ui:field="description" />
+				</g:HTMLPanel>
+
+				<g:HTMLPanel ui:field="choiceButtonsPanel">
+					<g:Button ui:field="editDemandButton">Edit demand</g:Button>
+					<g:Button ui:field="deleteDemandButton">Delete demand</g:Button>
+				</g:HTMLPanel>
+
+				<g:HTMLPanel ui:field="editButtonsPanel">
+					<g:Button ui:field="submitButton">Submit</g:Button>
+					<g:Button ui:field="cancelButton">Cancel</g:Button>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:ScrollPanel>

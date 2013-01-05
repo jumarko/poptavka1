@@ -2,6 +2,8 @@ package com.eprovement.poptavka.client.user.widget;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
@@ -45,6 +47,8 @@ public class DetailsWrapperPresenter
     public interface IDetailWrapper extends LazyView {
 
         Widget getWidgetView();
+
+        SimplePanel getDemandDetailHolder();
 
         void setMessageReadHandler(ChangeHandler click);
 
@@ -120,6 +124,11 @@ public class DetailsWrapperPresenter
             SimplePanel detailSection, ViewType viewType) {
         detailSection.setWidget(view.getWidgetView());
         this.type = viewType;
+        if (viewType == ViewType.EDITABLE) {
+            view.getDemandDetailHolder().setWidget(new EditableDemandDetailView());
+        } else {
+            view.getDemandDetailHolder().setWidget(new DemandDetailView());
+        }
         this.table = table;
     }
 

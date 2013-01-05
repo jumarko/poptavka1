@@ -120,8 +120,6 @@ public class HomeDemandsView extends OverflowComposite
 
         bannerLabel.setVisible(true);
         demandDetail.setVisible(false);
-        //disable editing demand in this widget
-        demandDetail.getChoiceButtonsPanel().setVisible(false);
         //set offerBtn1 enabled to false as default
         offerBtn1.setEnabled(false);
         offerBtn2.setVisible(false);
