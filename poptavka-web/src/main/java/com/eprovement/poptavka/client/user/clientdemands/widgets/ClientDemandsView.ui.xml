@@ -1,54 +1,53 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
-    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+	<ui:with field='res'
+		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:east size="400">
-            <g:SimplePanel ui:field="wrapperPanel">
-                <g:HTMLPanel>
-                    <div>
-                        <strong>Defail detail panel</strong>
-                        <br />
-                        <br />
-                        <div>
-                            Default content....can contain some advertisements.
-                        </div>
-                    </div>
-                </g:HTMLPanel>
-            </g:SimplePanel>
-        </g:east>
-        <g:center>
-            <g:DockLayoutPanel unit="PX">
-                <g:north size="45">
-                    <g:HorizontalPanel styleName='{res.layout.demandTabContentHeader}'>
-                        <g:HorizontalPanel ui:field="demandHeader">
-                            <g:Label>
-                                <ui:msg key="clientProjectsTitle">Vypis klientovych poptaviek</ui:msg>
-                            </g:Label>
-                            <s:UniversalPagerWidget ui:field='demandPager' />
-                        </g:HorizontalPanel>
-                        <g:HorizontalPanel ui:field="conversationHeader">
-                            <g:Button ui:field="backBtn">
-                                <ui:msg key="backToClientProjects">Spat na vsetky nove poptavky</ui:msg>
-                            </g:Button>
-                            <g:Label ui:field="demandTitlelabel"/>
-                            <g:ListBox ui:field="actions"/>
-                            <s:UniversalPagerWidget ui:field='conversationPager'/>
-                        </g:HorizontalPanel>
-                    </g:HorizontalPanel>
-                </g:north>
-                <g:center>
-                    <g:VerticalPanel>
-                        <s:UniversalAsyncGrid ui:field="demandGrid" />
-                        <s:UniversalAsyncGrid ui:field="conversationGrid" />
-                    </g:VerticalPanel>
-                </g:center>
-            </g:DockLayoutPanel>
-        </g:center>
-    </g:SplitLayoutPanel>
-
+	<g:DockLayoutPanel styleName='{res.layout.fullSize}'>
+		<g:east size="400">
+			<g:SimplePanel ui:field="wrapperPanel">
+				<g:HTMLPanel>
+					<div>
+						<strong>Defail detail panel</strong>
+						<br />
+						<br />
+						<div>
+							Default content....can contain some advertisements.
+						</div>
+					</div>
+				</g:HTMLPanel>
+			</g:SimplePanel>
+		</g:east>
+		<g:center>
+			<g:DockLayoutPanel unit="PX">
+				<g:north size="65">
+					<g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
+						<g:HorizontalPanel ui:field="demandHeader">
+							<g:Label>
+								<ui:msg key="clientProjectsTitle">Vypis klientovych poptaviek</ui:msg>
+							</g:Label>
+							<s:UniversalPagerWidget ui:field='demandPager' />
+						</g:HorizontalPanel>
+						<g:HorizontalPanel ui:field="conversationHeader">
+							<g:Button ui:field="backBtn">
+								<ui:msg key="backToClientProjects">Spat na vsetky nove poptavky</ui:msg>
+							</g:Button>
+							<g:Label ui:field="demandTitlelabel" />
+							<g:ListBox ui:field="actions" />
+							<s:UniversalPagerWidget ui:field='conversationPager' />
+						</g:HorizontalPanel>
+					</g:HorizontalPanel>
+				</g:north>
+				<g:center>
+					<g:VerticalPanel>
+						<s:UniversalAsyncGrid ui:field="demandGrid" />
+						<s:UniversalAsyncGrid ui:field="conversationGrid" />
+					</g:VerticalPanel>
+				</g:center>
+			</g:DockLayoutPanel>
+		</g:center>
+	</g:DockLayoutPanel>
 </ui:UiBinder>

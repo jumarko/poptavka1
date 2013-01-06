@@ -6,7 +6,7 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+    <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
         <g:east size="400">
             <g:SimplePanel ui:field="wrapperPanel">
                 <g:HTMLPanel>
@@ -23,8 +23,8 @@
         </g:east>
         <g:center>
             <g:DockLayoutPanel unit="PX">
-                <g:north size="45">
-                    <g:HorizontalPanel styleName='{res.layout.demandTabContentHeader}'>
+                <g:north size="65">
+                    <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
                         <g:HorizontalPanel ui:field="demandHeader">
                             <g:Label>
                                 <ui:msg key="clientContestsTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
@@ -47,5 +47,5 @@
                 </g:center>
             </g:DockLayoutPanel>
         </g:center>
-    </g:SplitLayoutPanel>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

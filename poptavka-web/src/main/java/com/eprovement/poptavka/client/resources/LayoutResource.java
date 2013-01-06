@@ -52,6 +52,9 @@ public interface LayoutResource extends CssResource {
     @ClassName("toolbar-header")
     String toolbarHeader();
 
+    @ClassName("toolbar-items-block")
+    String toolbarItemsBlock();
+
     /* login styles */
     @ClassName("login")
     String login();
@@ -95,12 +98,6 @@ public interface LayoutResource extends CssResource {
 
     @ClassName("tab-layout-panel")
     String tabLayoutPanel();
-
-    @ClassName("demand-tab-content")
-    String demandTabContent();
-
-    @ClassName("demand-tab-content-header")
-    String demandTabContentHeader();
 
     @ClassName("pager")
     String pager();

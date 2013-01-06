@@ -8,8 +8,8 @@
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
 	<g:DockLayoutPanel unit="PX">
-		<g:north size="45">
-			<g:HorizontalPanel ui:field="demandHeader">
+		<g:north size="65">
+			<g:HorizontalPanel ui:field="demandHeader" styleName="{res.layout.toolbarItemsBlock}">
 				<g:Label ui:field="tableNameLabel" />
 				<g:ListBox ui:field="actionBox" />
 				<s:UniversalPagerWidget ui:field='pager'/>

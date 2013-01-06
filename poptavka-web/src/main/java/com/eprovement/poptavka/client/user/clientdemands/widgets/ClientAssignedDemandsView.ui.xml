@@ -1,12 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-	<g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+	<g:DockLayoutPanel styleName='{res.layout.fullSize}'>
 		<g:east size="400">
 			<g:SimplePanel ui:field="wrapperPanel">
 				<g:HTMLPanel>
@@ -21,8 +20,11 @@
 				</g:HTMLPanel>
 			</g:SimplePanel>
 		</g:east>
+		<g:east size="25">
+			<g:HTMLPanel></g:HTMLPanel>
+		</g:east>		
 		<g:center>
-                        <s:UniversalTableWidget ui:field="tableWidget" />
+			<s:UniversalTableWidget ui:field="tableWidget" />
 		</g:center>
-	</g:SplitLayoutPanel>
+	</g:DockLayoutPanel>
 </ui:UiBinder>

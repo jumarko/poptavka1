@@ -6,7 +6,7 @@
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-	<g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+	<g:DockLayoutPanel styleName='{res.layout.fullSize}'>
 		<g:east size="400">
 			<g:SimplePanel ui:field="detailPanel">
 				<g:HTMLPanel>
@@ -21,8 +21,11 @@
 				</g:HTMLPanel>
 			</g:SimplePanel>
 		</g:east>
+		<g:east size="25">
+			<g:HTMLPanel></g:HTMLPanel>
+		</g:east>
 		<g:center>
 			<s:UniversalTableWidget ui:field="tableWidget" />
 		</g:center>
-	</g:SplitLayoutPanel>
+	</g:DockLayoutPanel>
 </ui:UiBinder>

@@ -88,6 +88,11 @@ input,textarea,select {
 	padding-left: 42px;
 }
 
+.toolbar-items-block {
+	margin: 7px 0 0;
+	float: left;
+}
+
 /*
 *	Home Menu Styles
 *
@@ -321,30 +326,6 @@ input,textarea,select {
 .submenu-list a:hover {
 	cursor: pointer;
 	background: #15676d;
-}
-
-.demand-tab-content {
-	border-left: 2px solid #07545A;
-	border-top: 2px solid #07545A;
-	border-bottom: 2px solid #07545A;
-}
-
-.demand-tab-content-header {
-	background: url(images/tab_header.gif) repeat-x;
-	padding: 9px;
-	width: 100%;
-}
-
-.demand-tab-content-header div {
-	color: #ffffff;
-	padding: 2px 10px;
-	float: left;
-}
-
-.demand-tab-content-header button {
-	border-color: #CCCCCC #BBBBBB #A0A0A0;
-	border-style: solid;
-	border-width: 1px;
 }
 
 .pager {
