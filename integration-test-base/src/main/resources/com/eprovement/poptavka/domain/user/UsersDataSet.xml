@@ -24,7 +24,7 @@
     <!-- User in role supplier-->
     <BUSINESSUSERROLE ID="1111111111" BUSINESSUSER_ID="111111111" VERIFICATION="UNVERIFIED" />
     <CLIENT ID="111111111" />
-    <SUPPLIER ID="1111111111" />
+    <SUPPLIER ID="1111111111" OVERALRATING="0" />
 
     <!-- Encrypted password corresponds to the "ahoj2" -->
     <USERT ID="111111112" EMAIL="velislav@email.com" PASSWORD="2ScrHmE5/qPHYSsYljrBNsMndlJLrvD5mWX+UkfTw2/GnAZsK77M6Cv9j9+WKNxB" SETTINGS_ID="2" />
@@ -51,7 +51,7 @@
     <!-- User in role partner -->
     <BUSINESSUSERROLE ID="11111111114" BUSINESSUSER_ID="111111114" VERIFICATION="UNVERIFIED" />
     <CLIENT ID="111111114" />
-    <SUPPLIER ID="1111111114" />
+    <SUPPLIER ID="1111111114" OVERALRATING="0" />
     <PARTNER ID="11111111114" />
 
     <!--Plaintext passwords should not be allowed!-->
@@ -63,6 +63,6 @@
     <!-- User in role supplier-->
     <BUSINESSUSERROLE ID="11111111115" BUSINESSUSER_ID="1111111115" VERIFICATION="UNVERIFIED" />
     <CLIENT ID="1111111115" />
-    <SUPPLIER ID="11111111115" />
+    <SUPPLIER ID="11111111115" OVERALRATING="0" />
 
 </dataset>
