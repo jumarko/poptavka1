@@ -27,6 +27,9 @@ public interface DetailViews extends CssResource {
     @ClassName("detail-block-label")
     String detailBlockLabel();
 
+    @ClassName("detail-date-label")
+    String detailDateLabel();
+
     @ClassName("detail-category-label")
     String detailCategoryLabel();
 

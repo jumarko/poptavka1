@@ -8,46 +8,47 @@
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 	<ui:style>
 		.name {
-			font-weight: bold;
-			width: auto;
+		font-weight: bold;
+		width: auto;
 		}
 
 		.panel {
-			width: 400px;
-			spacing: 5;
+		width: 400px;
+		spacing: 5;
 		}
 
 		.list {
-			width: 100px;
+		width: 100px;
 		}
 
 		.gridMenu {
-			margin: 7px 0 0;
-			float: left;
+		margin: 7px 0 0;
+		float:left;
 		}
 
 		.paginator {
-			margin: 0px 10px;
-			float: left;
+		margin: 0px 10px;
+		float: left;
 		}
 
 		.pageSize {
-			border-radius: 3px 3px 3px 3px;
-			float: left;
-			height: 31px;
-			padding: 6px;
+		float: left;
+		height: 31px;
+		padding: 6px;
+		border-radius: 3px 3px 3px 3px;
 		}
 
 		.button {
-			background: url(images/new-offer-green.png) no-repeat;
-			border: medium none;
-			color: #FFFFFF;
-			font-weight: bold;
-			height: 31px;
-			padding: 0 0 1px 23px;
-			width: 119px;
-			float: left;
+		background: url(images/new-offer-green.png) no-repeat;
+		padding: 0 0 1px 23px;
+		border: none;
+		color: #FFFFFF;
+		font-weight: bold;
+		height: 31px;
+		width: 119px;
+		float: left;
 		}
+
 	</ui:style>
 
 	<g:DockLayoutPanel unit="PX"
@@ -55,7 +56,9 @@
 		<g:west size="320">
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65">
-					<g:HTMLPanel></g:HTMLPanel>
+					<g:HTMLPanel>
+						<h2 class='{res.layout.toolbarHeader}'>Category</h2>
+					</g:HTMLPanel>
 				</g:north>
 				<g:center>
 					<g:ScrollPanel>
@@ -74,7 +77,8 @@
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-						<g:Button ui:field="offerBtn" styleName='{style.button}'>Send Offer</g:Button>
+						<g:Button ui:field="offerBtn" styleName='{style.button}'>Send Offer
+						</g:Button>
 						<s:UniversalPagerWidget ui:field='pager'
 							styleName='{style.paginator}' />
 					</g:HTMLPanel>

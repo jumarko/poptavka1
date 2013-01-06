@@ -1,55 +1,54 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-        xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail"
-        xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+	xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
 	<!-- injecting style resources -->
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-        <ui:style>
+	<ui:style>
 		.name {
-			font-weight: bold;
-			width: auto;
+		font-weight: bold;
+		width: auto;
 		}
 
 		.panel {
-			width: 400px;
-			spacing: 5;
+		width: 400px;
+		spacing: 5;
 		}
 
 		.list {
-			width: 100px;
+		width: 100px;
 		}
 
 		.gridMenu {
-			margin: 7px 0 0;
-			float: left;
+		margin: 7px 0 0;
+		float: left;
 		}
 
 		.paginator {
-			margin: 0px 10px;
-			float: left;
+		margin: 0px 10px;
+		float: left;
 		}
 
 		.pageSize {
-			border-radius: 3px 3px 3px 3px;
-			float: left;
-			height: 31px;
-			padding: 6px;
+		border-radius: 3px 3px 3px 3px;
+		float: left;
+		height: 31px;
+		padding: 6px;
 		}
 
 		.button {
-			background: url(images/new-offer-green.png) no-repeat;
-			border: medium none;
-			color: #FFFFFF;
-			font-weight: bold;
-			height: 31px;
-			padding: 0 0 1px 23px;
-			width: 119px;
-			float: left;
+		background: url(images/new-offer-green.png) no-repeat;
+		border: medium none;
+		color: #FFFFFF;
+		font-weight: bold;
+		height: 31px;
+		padding: 0 0 1px 23px;
+		width: 119px;
+		float: left;
 		}
 	</ui:style>
 
@@ -58,7 +57,9 @@
 		<g:west size="320">
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65">
-					<g:HTMLPanel></g:HTMLPanel>
+					<g:HTMLPanel>
+						<h2 class='{res.layout.toolbarHeader}'>Category</h2>
+					</g:HTMLPanel>
 				</g:north>
 				<g:center>
 					<g:ScrollPanel>
@@ -73,12 +74,13 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65">
-                                    <g:HTMLPanel styleName='{style.gridMenu}'>
+					<g:HTMLPanel styleName='{style.gridMenu}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-                                                <g:Button ui:field="contactBtn" styleName='{style.button}'>Contact</g:Button>
-        					<s:UniversalPagerWidget ui:field="pager" styleName='{style.paginator}' />
+						<g:Button ui:field="contactBtn" styleName='{style.button}'>Contact</g:Button>
+						<s:UniversalPagerWidget ui:field="pager"
+							styleName='{style.paginator}' />
 					</g:HTMLPanel>
 				</g:north>
 				<g:center>

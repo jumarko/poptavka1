@@ -36,9 +36,6 @@ public interface LayoutResource extends CssResource {
     @ClassName("body-background")
     String bodyBackground();
 
-    @ClassName("body-navbar")
-    String bodyNavbar();
-
     @ClassName("detail-info")
     String detailInfo();
 
@@ -47,6 +44,13 @@ public interface LayoutResource extends CssResource {
 
     @ClassName("user-logo")
     String userLogo();
+
+    /* Tool Bar Styles */
+    @ClassName("toolbar")
+    String bodyNavbar();
+
+    @ClassName("toolbar-header")
+    String toolbarHeader();
 
     /* login styles */
     @ClassName("login")

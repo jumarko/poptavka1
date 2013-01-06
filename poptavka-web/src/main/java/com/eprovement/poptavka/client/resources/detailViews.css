@@ -52,9 +52,10 @@
 
 .detail-block div {
 	float: left;
+	line-height: 20px;
 }
 
-.detail-header {
+.detail-block .detail-header {
 	background: url(images/detail-block-header.png) no-repeat 5px 8px;
 	color: #F06500;
 	font-size: 16px;
@@ -73,21 +74,40 @@
 	line-height: 20px;
 	padding: 0 0 0 18px;
 	width: 165px;
+	font-weight: bold;
+}
+
+.detail-date-label {
+	background: url(images/detail-date-label.png) no-repeat 1px 1px;
+	padding: 0 0 0 24px;
 }
 
 .detail-category-label {
+	float: left;
+}
+
+.detail-category-label div div {
 	background: #fee1bf;
 	color: #a05c0d;
 	float: left;
 	line-height: 20px;
 	padding: 0 8px;
-	border-radius: 4px 4px 0 0;
-	-moz-border-radius: 4px 4px 0 0;
-	-webkit-border-radius: 4px 4px 0 0;
+	margin: 2px 4px;
+	border-radius: 4px 4px;
+	-moz-border-radius: 4px 4px;
+	-webkit-border-radius: 4px 4px;
 }
 
-.detail-locality-label {
+.detail-locality-label div div {
+	float: left;
+}
+
+.detail-locality-label div div {
+	background: url(images/detail-block-list.gif) no-repeat 6px 6px;
 	color: #f06300;
+	float: left;
+	line-height: 20px;
+	padding: 0 0 0 18px;	
 }
 
 .demandDetailTable {

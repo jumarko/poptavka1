@@ -17,25 +17,33 @@
 					<ui:msg key="commonInfo">Common info: </ui:msg>
 				</g:Label>
 
-				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="comapanyName">Company name: </ui:msg>
-				</g:Label>
-				<g:Label ui:field="companyName" />
+				<g:HTMLPanel>
+					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+						<ui:msg key="comapanyName">Company name: </ui:msg>
+					</g:Label>
+					<g:Label ui:field="companyName" />
+				</g:HTMLPanel>
 
-				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="ranking">Overall rating:</ui:msg>
-				</g:Label>
-				<g:Label ui:field="overallRating" />
+				<g:HTMLPanel>
+					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+						<ui:msg key="ranking">Overall rating:</ui:msg>
+					</g:Label>
+					<g:Label ui:field="overallRating" />
+				</g:HTMLPanel>
 
-				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="certified">Certified:</ui:msg>
-				</g:Label>
-				<g:Label ui:field="certified" />
+				<g:HTMLPanel>
+					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+						<ui:msg key="certified">Certified:</ui:msg>
+					</g:Label>
+					<g:Label ui:field="certified" />
+				</g:HTMLPanel>
 
-				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="website">Website:</ui:msg>
-				</g:Label>
-				<g:Label ui:field="website" />
+				<g:HTMLPanel>
+					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+						<ui:msg key="website">Website:</ui:msg>
+					</g:Label>
+					<g:Label ui:field="website" />
+				</g:HTMLPanel>
 			</g:HTMLPanel>
 
 			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>

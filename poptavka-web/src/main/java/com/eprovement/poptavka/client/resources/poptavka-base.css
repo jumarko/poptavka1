@@ -42,10 +42,6 @@ input,textarea,select {
 	height: 100%;
 }
 
-.body-navbar {
-	background: url(images/nav-bar.png) repeat-x left top;
-}
-
 .layout-public-main {
 	min-width: 800px;
 	/* max-width: 1024px; */
@@ -71,6 +67,25 @@ input,textarea,select {
 	padding: 0;
 	height: 100px;
 	float: right;
+}
+
+/*
+* Tool Bar Styles
+*
+*/
+.toolbar {
+	background: url(images/nav-bar.png) repeat-x left top;
+}
+
+.toolbar-header {
+	background: url(images/left-header.png) no-repeat 24px 19px;
+	color: #003153;
+	font-family: Arial, sans-serif;
+	font-size: 21px;
+	font-weight: normal;
+	line-height: 44px;
+	margin: 0;
+	padding-left: 42px;
 }
 
 /*
@@ -131,13 +146,13 @@ input,textarea,select {
 }
 
 .home-logo {
-    float: left;
-    height: 105px;
-    line-height: 105px;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    width: 340px;
+	float: left;
+	height: 105px;
+	line-height: 105px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 340px;
 }
 
 /*
@@ -145,13 +160,13 @@ input,textarea,select {
 *
 */
 .user-logo {
-    float: left;
-    height: 105px;
-    line-height: 105px;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    width: 180px;
+	float: left;
+	height: 105px;
+	line-height: 105px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 180px;
 }
 
 /*
@@ -197,14 +212,14 @@ input,textarea,select {
 */
 .login {
 	float: right;
-    margin: 28px 15px 0;
-    z-index: 150;
+	margin: 28px 15px 0;
+	z-index: 150;
 }
 
 .login-bar {
-    color: #FFFFFF;
-    float: right;
-    margin: 37px 0 0;
+	color: #FFFFFF;
+	float: right;
+	margin: 37px 0 0;
 }
 
 .login-button {
@@ -254,12 +269,12 @@ input,textarea,select {
 
 .help-button {
 	margin: 0;
-    padding: 0;
-    background: url(images/help-button.png) no-repeat;
-    border: none;
-    float: right;
-    height: 20px;
-    width: 20px;
+	padding: 0;
+	background: url(images/help-button.png) no-repeat;
+	border: none;
+	float: right;
+	height: 20px;
+	width: 20px;
 }
 
 .full-size-panel {
@@ -409,7 +424,7 @@ input,textarea,select {
 	cursor: pointer;
 }
 
-.detail-info {	
+.detail-info {
 	margin: 0 0 0 5px;
 	width: 400px;
 	border-radius: 5px;
