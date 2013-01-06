@@ -13,7 +13,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-@Presenter(view = ClientOffersView.class)
+@Presenter(view = ClientOffersView.class, multiple = true)
 public class ClientOffersPresenter
         extends LazyPresenter<ClientOffersPresenter.ClientOffersLayoutInterface, ClientDemandsModuleEventBus> {
 
@@ -112,16 +112,15 @@ public class ClientOffersPresenter
     /**************************************************************************/
     public void onInitClientOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
+
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
         eventBus.createTokenForHistory1(0);
-        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        if (this.detailSection == null) {
-            eventBus.requestDetailWrapperPresenter();
-        }
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitClientOfferedDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
@@ -237,7 +236,7 @@ public class ClientOffersPresenter
         view.getDemandGrid().getSelectionModel().setSelected(detail, true);
     }
 
-    public void onSelectClientOfferedDemandOffer(FullOfferDetail detail) {
+    public void onSelectClientOfferedDemandOffer(ClientOfferedDemandOffersDetail detail) {
         eventBus.setHistoryStoredForNextOne(false); //don't create token
         //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
         //nejak vytvorit event na upadatefieldoch
@@ -252,11 +251,10 @@ public class ClientOffersPresenter
      * @param messageId ID for demand related contest
      * @param userMessageId ID for demand related contest
      */
-    public void displayDetailContent(FullOfferDetail detail) {
+    public void displayDetailContent(ClientOfferedDemandOffersDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestConversation(detail.getMessageId(),
-                detail.getUserMessageId(), Storage.getUser().getUserId());
+        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
     }
 
     /**************************************************************************/
@@ -323,29 +321,29 @@ public class ClientOffersPresenter
     }
 
     public void addTextColumnFieldUpdaters() {
-        textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
+        textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
             @Override
-            public void update(int index, FullOfferDetail object, String value) {
-                if (lastOpenedDemandOffer != object.getUserMessageId()) {
-                    lastOpenedDemandOffer = object.getUserMessageId();
-                    object.setRead(true);
-                    view.getOfferGrid().getGrid().redraw();
-                    view.setDemandTableVisible(false);
-                    view.setOfferTableVisible(true);
-                    displayDetailContent(object);
-                    MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getGrid()
-                            .getSelectionModel();
-                    selectionModel.clear();
-                    selectionModel.setSelected(object, true);
-                    eventBus.createTokenForHistory2(Storage.getDemandId(),
-                            view.getOfferPager().getPage(), object.getOfferDetail().getId());
-                }
+            public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
+//                if (lastOpenedDemandOffer != object.getOfferId()) {
+//                    lastOpenedDemandOffer = object.getOfferId();
+                object.setRead(true);
+//                    view.getOfferGrid().getGrid().redraw();
+//                    view.setDemandTableVisible(false);
+//                    view.setOfferTableVisible(true);
+                displayDetailContent(object);
+                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getGrid()
+                        .getSelectionModel();
+                selectionModel.clear();
+                selectionModel.setSelected(object, true);
+                eventBus.createTokenForHistory2(Storage.getDemandId(),
+                        view.getOfferPager().getPage(), object.getOfferId());
+//                }
             }
         };
         view.getOfferGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getOfferGrid().getEndDateColumn().setFieldUpdater(textFieldUpdater);
+//        view.getOfferGrid().getEndDateColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
@@ -355,6 +353,7 @@ public class ClientOffersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 view.setOfferTableVisible(false);
+                view.setDemandTableVisible(true);
             }
         });
     }
@@ -396,6 +395,7 @@ public class ClientOffersPresenter
                     Storage.setDemandId(selected.getDemandId());
                     Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
+                    view.setDemandTableVisible(false);
                     view.setOfferTableVisible(true);
                     view.getOfferGrid().getGrid().getDataCount(eventBus, null);
                     eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);

@@ -438,7 +438,7 @@ public interface RootEventBus extends EventBusWithLookup {
      * @param userId
      */
     @Event(handlers = RootHandler.class)
-    void requestConversation(long messageId, Long userMessageId, Long userId);
+    void requestConversation(Long threadId, Long userId);
 
     @Event(handlers = DetailsWrapperPresenter.class)
     void responseConversation(List<MessageDetail> chatMessages, ViewType supplierListType);

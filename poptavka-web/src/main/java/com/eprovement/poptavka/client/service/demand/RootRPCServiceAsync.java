@@ -46,8 +46,7 @@ public interface RootRPCServiceAsync {
 
     void getFullSupplierDetail(long supplierId, AsyncCallback<FullSupplierDetail> callback);
 
-    void getConversation(
-            long threadId, long userId, long userMessageId, AsyncCallback<List<MessageDetail>> callback);
+    void getConversation(long threadId, long userId, AsyncCallback<List<MessageDetail>> callback);
 
     /**************************************************************************/
     /* Message methods                                                        */

@@ -42,7 +42,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-@Presenter(view = ClientDemandsView.class)
+@Presenter(view = ClientDemandsView.class, multiple = true)
 public class ClientDemandsPresenter
         extends LazyPresenter<ClientDemandsPresenter.ClientDemandsLayoutInterface, ClientDemandsModuleEventBus> {
 
@@ -135,16 +135,19 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     public void onInitClientDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+        //Set visibility
+        view.setConversationTableVisible(false);
+        view.setDemandTableVisible(true);
+
         eventBus.setUpSearchBar(new Label("Client's projects attibure's selector will be here."));
         searchDataHolder = filter;
         eventBus.createTokenForHistory1(0);
-        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        if (this.detailSection == null) {
-            eventBus.requestDetailWrapperPresenter();
-        }
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.requestDetailWrapperPresenter();
+
         eventBus.loadingHide();
     }
 
@@ -281,8 +284,7 @@ public class ClientDemandsPresenter
     public void displayDetailContent(ClientDemandConversationDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestConversation(detail.getThreadMessageId(),
-                detail.getUserMessageId(), Storage.getUser().getUserId());
+        detailSection.requestConversation(detail.getThreadMessageId(), Storage.getUser().getUserId());
     }
 
     /**************************************************************************/
@@ -331,20 +333,20 @@ public class ClientDemandsPresenter
         textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
             @Override
             public void update(int index, ClientDemandConversationDetail object, String value) {
-                if (lastOpenedDemandConversation != object.getUserMessageId()) {
-                    lastOpenedDemandConversation = object.getUserMessageId();
-                    object.setRead(true);
+//                if (lastOpenedDemandConversation != object.getUserMessageId()) {
+//                    lastOpenedDemandConversation = object.getUserMessageId();
+                object.setRead(true);
 //                    view.getConversationGrid().redraw();
-                    view.setDemandTableVisible(false);
-                    view.setConversationTableVisible(true);
-                    displayDetailContent(object);
-                    MultiSelectionModel selectionModel = (MultiSelectionModel) view.getConversationGrid()
-                            .getSelectionModel();
-                    selectionModel.clear();
-                    selectionModel.setSelected(object, true);
-                    eventBus.createTokenForHistory2(Storage.getDemandId(),
-                            view.getConversationPager().getPage(), object.getSupplierId());
-                }
+                view.setDemandTableVisible(false);
+                view.setConversationTableVisible(true);
+                displayDetailContent(object);
+                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getConversationGrid()
+                        .getSelectionModel();
+                selectionModel.clear();
+                selectionModel.setSelected(object, true);
+                eventBus.createTokenForHistory2(Storage.getDemandId(),
+                        view.getConversationPager().getPage(), object.getSupplierId());
+//                }
             }
         };
         view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
@@ -404,9 +406,11 @@ public class ClientDemandsPresenter
         view.getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
                 view.setConversationTableVisible(false);
                 view.setDemandTableVisible(true);
-                view.getDemandGrid().refresh();
+                view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+//                view.getDemandGrid().refresh();
             }
         });
     }
@@ -416,7 +420,7 @@ public class ClientDemandsPresenter
             @Override
             public String getStyleNames(ClientDemandDetail row, int rowIndex) {
                 if (row.getUnreadSubmessages() > 0) {
-                    return "font-weight:bold;";
+                    return "font-weight:bold !important";
                 } else {
                     return "";
                 }

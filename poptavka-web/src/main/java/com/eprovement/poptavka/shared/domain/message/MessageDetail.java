@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -35,6 +36,15 @@ public class MessageDetail implements Serializable {
     private String messageType = null;
     private Date created = null;
     private Date sent = null;
+
+    public static final ProvidesKey<MessageDetail> KEY_PROVIDER =
+            new ProvidesKey<MessageDetail>() {
+
+                @Override
+                public Object getKey(MessageDetail item) {
+                    return item == null ? null : item.getMessageId();
+                }
+            };
 
     public MessageDetail() {
     }

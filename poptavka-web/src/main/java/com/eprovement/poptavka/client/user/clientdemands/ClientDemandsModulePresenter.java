@@ -6,6 +6,9 @@ package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -43,6 +46,10 @@ public class ClientDemandsModulePresenter
 
         IsWidget getWidgetView();
     }
+
+    private ClientDemandsPresenter clientDemands = null;
+    private ClientOffersPresenter clientOffers = null;
+    private ClientAssignedDemandsPresenter clientAssigendDemands = null;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -122,13 +129,25 @@ public class ClientDemandsModulePresenter
 //        eventBus.setNavigationConfirmation(this);
         switch (loadWidget) {
             case Constants.CLIENT_DEMANDS:
-                eventBus.initClientDemands(filter);
+                if (clientDemands != null) {
+                    eventBus.removeHandler(clientDemands);
+                }
+                clientDemands = eventBus.addHandler(ClientDemandsPresenter.class);
+                clientDemands.onInitClientDemands(filter);
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:
-                eventBus.initClientOffers(filter);
+                if (clientOffers != null) {
+                    eventBus.removeHandler(clientOffers);
+                }
+                clientOffers = eventBus.addHandler(ClientOffersPresenter.class);
+                clientOffers.onInitClientOffers(filter);
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:
-                eventBus.initClientAssignedDemands(filter);
+                if (clientAssigendDemands != null) {
+                    eventBus.removeHandler(clientAssigendDemands);
+                }
+                clientAssigendDemands = eventBus.addHandler(ClientAssignedDemandsPresenter.class);
+                clientAssigendDemands.onInitClientAssignedDemands(filter);
                 break;
             case Constants.CREATE_DEMAND:
                 eventBus.goToCreateDemandModule();

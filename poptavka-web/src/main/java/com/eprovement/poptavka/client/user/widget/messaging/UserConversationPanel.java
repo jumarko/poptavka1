@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
 import com.eprovement.poptavka.client.common.session.Storage;
-import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
@@ -9,12 +8,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.user.widget.messaging.SimpleMessageWindow.MessageDisplayType;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import java.util.List;
 
 /**
@@ -41,9 +40,9 @@ public class UserConversationPanel extends Composite {
 
     interface UserConversationPanelUiBinder extends UiBinder<Widget, UserConversationPanel> {
     }
-    private ArrayList<OfferWindowPresenter> offerPresenters = new ArrayList<OfferWindowPresenter>();
+
     @UiField
-    FlowPanel messagePanel;
+    VerticalPanel messagePanel;
     ClickHandler acceptHandler = null;
     ClickHandler replyHandler = null;
     ClickHandler deleteHandler = null;
@@ -54,7 +53,7 @@ public class UserConversationPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public FlowPanel getMessagePanel() {
+    public VerticalPanel getMessagePanel() {
         return messagePanel;
     }
 
@@ -104,15 +103,6 @@ public class UserConversationPanel extends Composite {
         replyToMessage = lastMessage;
 
         messageCount = messagePanel.getWidgetCount();
-    }
-
-    public void addOfferMessagePresenter(OfferWindowPresenter presenter) {
-        offerPresenters.add(presenter);
-        messagePanel.add(presenter.getWidgetView());
-    }
-
-    public ArrayList<OfferWindowPresenter> clearContent() {
-        return offerPresenters;
     }
 
     /**

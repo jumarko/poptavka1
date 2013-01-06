@@ -19,14 +19,19 @@
             <g:header>
                 <ui:msg key="demandDetail">Demand detail</ui:msg>
             </g:header>
-            <g:SimplePanel ui:field="demandDetailHolder"/>
-            <!--<w:DemandDetailView ui:field="demandDetail"></w:DemandDetailView>-->
+            <w:EditableDemandDetailView ui:field="editableDemandDetail" />
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="demandDetail">Demand detail</ui:msg>
+            </g:header>
+            <w:DemandDetailView ui:field="demandDetail" />
         </g:tab>
         <g:tab>
             <g:header>
                 <ui:msg key="supplierDetail">Supplier detail</ui:msg>
             </g:header>
-            <w:SupplierDetailView ui:field="supplierDetail"></w:SupplierDetailView>
+            <w:SupplierDetailView ui:field="supplierDetail" />
         </g:tab>
         <g:tab>
             <g:header>

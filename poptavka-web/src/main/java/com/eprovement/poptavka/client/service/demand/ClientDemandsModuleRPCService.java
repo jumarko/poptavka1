@@ -210,7 +210,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
 
     ClientDemandDetail getClientOfferedDemand(long clientDemandID) throws RPCException, ApplicationSecurityException;
 
-    FullOfferDetail getClientOfferedDemandOffer(long clientDemandOfferID) throws RPCException,
+    ClientOfferedDemandOffersDetail getClientOfferedDemandOffer(long clientDemandOfferID) throws RPCException,
             ApplicationSecurityException;
 
     FullOfferDetail getClientAssignedDemand(long offerID) throws RPCException, ApplicationSecurityException;

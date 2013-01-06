@@ -69,7 +69,7 @@ public class UniversalTableWidget extends Composite {
     private Column<IUniversalDetail, String> priceColumn;
     private Column<IUniversalDetail, Date> urgencyColumn;
     private Column<IUniversalDetail, String> receiveDateColumn;
-    private Column<IUniversalDetail, String> endDateColumn;
+    private Column<IUniversalDetail, String> finnishDateColumn;
     private Column<IUniversalDetail, ImageResource> replyImageColumn;
     private Column<IUniversalDetail, ImageResource> acceptOfferImageColumn;
     private Column<IUniversalDetail, ImageResource> declineOfferImageColumn;
@@ -92,7 +92,7 @@ public class UniversalTableWidget extends Composite {
     private static final String PRICE_COLUMN = "price";
     private static final String URGENCY_COLUMN = "endDate";
     private static final String RECEIVED_DATE_COLUMN = "receivedDate"; //Prijate
-    private static final String END_DATE_COLUMN = "endDate"; //Dodanie/dorucenie
+    private static final String FINNISH_DATE_COLUMN = "finnishDate"; //Dodanie/dorucenie
     private static final String REPLY_IMAGE_COLUMN = "reply";
     private static final String ACCEPT_OFFER_IMAGE_COLUMN = "acceptOffer";
     private static final String DECLINE_OFFER_IMAGE_COLUMN = "declineOffer";
@@ -200,8 +200,8 @@ public class UniversalTableWidget extends Composite {
         gridColumns.clear();
         gridColumns.add(SUPPLIER_NAME_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(END_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
+        gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(ACCEPT_OFFER_IMAGE_COLUMN);
         gridColumns.add(DECLINE_OFFER_IMAGE_COLUMN);
@@ -215,7 +215,7 @@ public class UniversalTableWidget extends Composite {
         gridColumns.clear();
         gridColumns.add(SUPPLIER_NAME_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(END_DATE_COLUMN);
+        gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(CLOSE_DEMAND_IMAGE_COLUMN);
@@ -245,7 +245,7 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(END_DATE_COLUMN);
+        gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(REPLY_IMAGE_COLUMN);
         gridColumns.add(EDIT_OFFER_IMAGE_COLUMN);
@@ -260,7 +260,7 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(END_DATE_COLUMN);
+        gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
         gridColumns.add(FINNISHED_IMAGE_COLUMN);
         gridColumns.add(REPLY_IMAGE_COLUMN);
@@ -281,10 +281,6 @@ public class UniversalTableWidget extends Composite {
         checkColumn = grid.addCheckboxColumn(checkHeader);
         // Star Column - always create this column
         starColumn = grid.addStarColumn();
-        // Offer state column
-        //grid.addOfferStateColumn(Storage.MSGS.state());
-        // Demand state column
-        grid.addDemandStatusColumn(Storage.MSGS.state());
 
         addImageColumns();
         addClientNameColumn();
@@ -298,7 +294,7 @@ public class UniversalTableWidget extends Composite {
         }
 
         addReceivedDateColumn();
-        addEndDateColumn();
+        addFinnishDateColumn();
     }
 
     private void addImageColumns() {
@@ -352,7 +348,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.displayHtml(detail.getClientName(), detail.isRead());
+                            return detail.getClientName();
                         }
                     });
         }
@@ -366,7 +362,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.displayHtml(detail.getSupplierName(), detail.isRead());
+                            return detail.getSupplierName();
                         }
                     });
         }
@@ -380,7 +376,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.displayHtml(detail.getTitle(), detail.isRead());
+                            return detail.getTitle();
                         }
                     });
         }
@@ -394,9 +390,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.displayHtml(
-                                    Integer.toString(detail.getRating()),
-                                    detail.isRead());
+                            return Integer.toString(detail.getRating());
                         }
                     });
         }
@@ -410,7 +404,7 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.displayHtml(detail.getPrice(), detail.isRead());
+                            return detail.getPrice();
                         }
                     });
         }
@@ -424,25 +418,21 @@ public class UniversalTableWidget extends Composite {
                         @Override
                         public String getValue(Object object) {
                             IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.displayHtml(
-                                    formatter.format(detail.getReceivedDate()),
-                                    detail.isRead());
+                            return formatter.format(detail.getReceivedDate());
                         }
                     });
         }
     }
 
-    private void addEndDateColumn() {
-        if (gridColumns.contains(END_DATE_COLUMN)) {
-            endDateColumn = grid.addColumn(
+    private void addFinnishDateColumn() {
+        if (gridColumns.contains(FINNISH_DATE_COLUMN)) {
+            finnishDateColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.deliveryDate(), true, COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
                             IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.displayHtml(
-                                    formatter.format(detail.getEndDate()),
-                                    detail.isRead());
+                            return formatter.format(detail.getDeliveryDate());
                         }
                     });
         }
@@ -490,8 +480,8 @@ public class UniversalTableWidget extends Composite {
         return receiveDateColumn;
     }
 
-    public Column<IUniversalDetail, String> getEndDateColumn() {
-        return endDateColumn;
+    public Column<IUniversalDetail, String> getFinnishDateColumn() {
+        return finnishDateColumn;
     }
 
     public Column<IUniversalDetail, String> getRatingColumn() {

@@ -239,6 +239,7 @@ public class ClientOffersView extends Composite
     @Override
     public void setOfferTableVisible(boolean visible) {
         contestGrid.setVisible(visible);
+        contestGrid.setSize("600px", "800px");
 //        contestGrid.getGrid().redraw();
         contestHeader.setVisible(visible);
     }

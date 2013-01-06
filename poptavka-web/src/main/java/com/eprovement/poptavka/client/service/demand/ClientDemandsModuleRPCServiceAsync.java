@@ -106,7 +106,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
 
     void getClientOfferedDemand(long id, AsyncCallback<ClientDemandDetail> calback);
 
-    void getClientOfferedDemandOffer(long id, AsyncCallback<FullOfferDetail> calback);
+    void getClientOfferedDemandOffer(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
 
     void getClientAssignedDemand(long id, AsyncCallback<FullOfferDetail> calback);
 }

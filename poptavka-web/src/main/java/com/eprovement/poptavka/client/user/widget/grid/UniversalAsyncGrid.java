@@ -3,11 +3,9 @@ package com.eprovement.poptavka.client.user.widget.grid;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CustomImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
-import com.eprovement.poptavka.client.user.widget.grid.cell.OfferStateImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -206,7 +204,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         if (searchDefinition != null) {
             this.searchDataHolder = searchDefinition.getFilter();
         }
-
+        //remove data to force loading indicator to show up
+//        this.setRowCount(0);
+//        this.setRowData(new ArrayList<T>());
         eventBus.getDataCount(this, searchDefinition);
     }
 
@@ -336,24 +336,27 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     }
 
     /**
+     * We decided that this column doesn't need to be displayed to user
+     */
+    /**
      * Creates offer state image column.
      *
      * @return created offer state image column
      */
-    public Column<T, OfferStateType> addOfferStateColumn(String headerText) {
-        Column<T, OfferStateType> col = new Column<T, OfferStateType>(new OfferStateImageCell()) {
-            @Override
-            public OfferStateType getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
-                return obj.getOfferState();
-            }
-        };
-        //set column style
-        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        addColumn(col, headerText);
-        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
-        return col;
-    }
+//    public Column<T, OfferStateType> addOfferStateColumn(String headerText) {
+//        Column<T, OfferStateType> col = new Column<T, OfferStateType>(new OfferStateImageCell()) {
+//            @Override
+//            public OfferStateType getValue(T object) {
+//                TableDisplay obj = (TableDisplay) object;
+//                return obj.getOfferState();
+//            }
+//        };
+//        //set column style
+//        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
+//        addColumn(col, headerText);
+//        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
+//        return col;
+//    }
 
     public Column<T, ImageResource> addIconColumn(final ImageResource imageResource, String explanationText) {
         Column<T, ImageResource> col = new Column<T, ImageResource>(new CustomImageCell(explanationText)) {

@@ -188,7 +188,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void selectClientOfferedDemand(ClientDemandDetail detail);
 
     @Event(handlers = ClientOffersPresenter.class)
-    void selectClientOfferedDemandOffer(FullOfferDetail detail);
+    void selectClientOfferedDemandOffer(ClientOfferedDemandOffersDetail detail);
 
     /**************************************************************************/
     /* Business events handled by ClientAssignedDemandsPresenter.             */

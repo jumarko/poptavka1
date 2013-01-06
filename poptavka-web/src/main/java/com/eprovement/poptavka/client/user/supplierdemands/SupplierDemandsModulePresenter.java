@@ -6,6 +6,9 @@ package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedDemandsPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffersPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,6 +45,10 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
         IsWidget getWidgetView();
     }
+
+    private SupplierDemandsPresenter supplierDemands = null;
+    private SupplierOffersPresenter supplierOffers = null;
+    private SupplierAssignedDemandsPresenter supplierAssigendDemands = null;
 
     /**************************************************************************/
     /* General Module events */
@@ -119,13 +126,25 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     public void onGoToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         switch (loadWidget) {
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
-                eventBus.initSupplierDemands(filter);
+                if (supplierDemands != null) {
+                    eventBus.removeHandler(supplierDemands);
+                }
+                supplierDemands = eventBus.addHandler(SupplierDemandsPresenter.class);
+                supplierDemands.onInitSupplierDemands(filter);
                 break;
             case Constants.SUPPLIER_OFFERS:
-                eventBus.initSupplierOffers(filter);
+                if (supplierOffers != null) {
+                    eventBus.removeHandler(supplierOffers);
+                }
+                supplierOffers = eventBus.addHandler(SupplierOffersPresenter.class);
+                supplierOffers.onInitSupplierOffers(filter);
                 break;
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
-                eventBus.initSupplierAssignedDemands(filter);
+                if (supplierAssigendDemands != null) {
+                    eventBus.removeHandler(supplierAssigendDemands);
+                }
+                supplierAssigendDemands = eventBus.addHandler(SupplierAssignedDemandsPresenter.class);
+                supplierAssigendDemands.onInitSupplierAssignedDemands(filter);
                 break;
             case Constants.CREATE_DEMAND:
                 eventBus.goToCreateDemandModule();

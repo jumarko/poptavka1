@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
@@ -35,8 +34,9 @@ public class DetailsWrapperView extends Composite
     @UiField
     TabLayoutPanel container;
     @UiField
-    SimplePanel demandDetailHolder;
-//    DemandDetailView demandDetail;
+    EditableDemandDetailView editableDemandDetail;
+    @UiField
+    DemandDetailView demandDetail;
     @UiField
     SupplierDetailView supplierDetail;
     @UiField
@@ -47,7 +47,6 @@ public class DetailsWrapperView extends Composite
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-        container.selectTab(2);
     }
 
     /**************************************************************************/
@@ -63,10 +62,11 @@ public class DetailsWrapperView extends Composite
 
     @Override
     public void setDemandDetail(FullDemandDetail demand) {
-        if (demandDetailHolder.getWidget() instanceof DemandDetailView) {
-            ((DemandDetailView) demandDetailHolder.getWidget()).setDemanDetail(demand);
-        } else if (demandDetailHolder.getWidget() instanceof EditableDemandDetailView) {
-            ((EditableDemandDetailView) demandDetailHolder.getWidget()).setDemanDetail(demand);
+        if (editableDemandDetail.isVisible()) {
+            editableDemandDetail.setDemanDetail(demand);
+        }
+        if (demandDetail.isVisible()) {
+            demandDetail.setDemanDetail(demand);
         }
     }
 
@@ -112,6 +112,21 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
+    public EditableDemandDetailView getEditableDemandDetail() {
+        return editableDemandDetail;
+    }
+
+    @Override
+    public DemandDetailView getDemandDetail() {
+        return demandDetail;
+    }
+
+    @Override
+    public SupplierDetailView getSupplierDetail() {
+        return supplierDetail;
+    }
+
+    @Override
     public UserConversationPanel getConversationPanel() {
         return conversationPanel;
     }
@@ -119,11 +134,6 @@ public class DetailsWrapperView extends Composite
     @Override
     public DevelOfferQuestionWindow getReplyHolder() {
         return replyHolder;
-    }
-
-    @Override
-    public SimplePanel getDemandDetailHolder() {
-        return demandDetailHolder;
     }
 
     @Override

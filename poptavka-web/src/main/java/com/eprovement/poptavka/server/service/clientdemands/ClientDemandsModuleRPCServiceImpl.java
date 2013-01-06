@@ -221,8 +221,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientDemandDetail> getClientDemands(long userId, SearchDefinition searchDefinition)
-        throws RPCException, ApplicationSecurityException, IllegalArgumentException {
+    public List<ClientDemandDetail> getClientDemands(long userId, SearchDefinition searchDefinition) throws
+            RPCException, ApplicationSecurityException, IllegalArgumentException {
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
@@ -844,15 +844,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public FullOfferDetail getClientOfferedDemandOffer(long clientOfferedDemandOfferID) throws RPCException,
-            ApplicationSecurityException {
-        return new FullOfferDetail();
+    public ClientOfferedDemandOffersDetail getClientOfferedDemandOffer(long clientOfferedDemandOfferID) throws
+            RPCException, ApplicationSecurityException {
+        return new ClientOfferedDemandOffersDetail();
     }
 
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public FullOfferDetail getClientAssignedDemand(long assignedDemandID)
-        throws RPCException, ApplicationSecurityException {
+    public FullOfferDetail getClientAssignedDemand(long assignedDemandID) throws
+            RPCException, ApplicationSecurityException {
         if (assignedDemandID == 1L) {
             FullOfferDetail d1 = new FullOfferDetail();
             d1.getOfferDetail().setDemandId(1L);

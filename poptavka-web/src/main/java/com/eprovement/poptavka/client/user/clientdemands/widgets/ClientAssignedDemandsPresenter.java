@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-@Presenter(view = ClientAssignedDemandsView.class)
+@Presenter(view = ClientAssignedDemandsView.class, multiple = true)
 public class ClientAssignedDemandsPresenter extends LazyPresenter<
         ClientAssignedDemandsPresenter.ClientAssignedDemandsLayoutInterface, ClientDemandsModuleEventBus> {
 
@@ -79,16 +79,15 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
+
         eventBus.setUpSearchBar(new Label("Client's assigned projects attibure's selector will be here."));
         searchDataHolder = filter;
         eventBus.createTokenForHistory1(0);
-        view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        if (this.detailSection == null) {
-            eventBus.requestDetailWrapperPresenter();
-        }
+        view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitClientAssignedDemandsByHistory(
@@ -176,8 +175,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void displayDetailContent(FullOfferDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestSupplierDetail(detail.getSupplierId(), type);
-        detailSection.requestConversation(detail.getThreadRootId(),
-                detail.getUserMessageId(), Storage.getUser().getUserId());
+        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
     }
 
     /**************************************************************************/
@@ -248,25 +246,25 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void update(int index, FullOfferDetail object, String value) {
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
-                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
-                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
-                    object.setRead(true);
+//                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
+//                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
+                object.setRead(true);
 //                    view.getTableWidget().getGrid().redraw();
-                    displayDetailContent(object);
-                    MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
-                            .getGrid().getSelectionModel();
-                    selectionModel.clear();
-                    selectionModel.setSelected(object, true);
-                    eventBus.createTokenForHistory3(
-                            view.getTableWidget().getPager().getPage(),
-                            object.getOfferDetail().getDemandId());
-                }
+                displayDetailContent(object);
+                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
+                        .getGrid().getSelectionModel();
+                selectionModel.clear();
+                selectionModel.setSelected(object, true);
+                eventBus.createTokenForHistory3(
+                        view.getTableWidget().getPager().getPage(),
+                        object.getOfferDetail().getDemandId());
+//                }
             }
         };
         view.getTableWidget().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getEndDateColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 

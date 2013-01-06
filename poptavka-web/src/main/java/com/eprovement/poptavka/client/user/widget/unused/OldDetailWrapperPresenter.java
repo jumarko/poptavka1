@@ -208,7 +208,7 @@ public class OldDetailWrapperPresenter extends
         OfferWindowPresenter presenter = eventBus.addHandler(OfferWindowPresenter.class);
         presenter.setFullOfferDetail(fullOfferDetail);
         GWT.log("OFFER ID: " + fullOfferDetail.getOfferDetail().getId());
-        view.getConversationPanel().addOfferMessagePresenter(presenter);
+//        view.getConversationPanel().addOfferMessagePresenter(presenter);
     }
 
     /**

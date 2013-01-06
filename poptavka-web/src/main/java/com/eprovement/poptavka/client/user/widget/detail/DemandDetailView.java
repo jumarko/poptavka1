@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -23,6 +24,7 @@ public class DemandDetailView extends Composite {
 
     interface DemandDetailViewUiBinder extends UiBinder<Widget, DemandDetailView> {
     }
+    private static final String EMPTY = "";
     @UiField(provided = true)
     CellList categories, localities;
     @UiField
@@ -30,7 +32,7 @@ public class DemandDetailView extends Composite {
     //i18n
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
-    private DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd 'of' MMM YYYY ''yy'");
+    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(Storage.MSGS.dateFormat());
 
     /**************************************************************************/
     /* INITIALIZATON                                                          */

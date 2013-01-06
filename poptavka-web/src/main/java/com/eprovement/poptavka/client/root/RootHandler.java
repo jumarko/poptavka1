@@ -117,11 +117,11 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * Load demand/related conversation from DB.
      *
      * @param messageId
-     * @param userMessageId
+     * @param threadId
      * @param userId
      */
-    public void onRequestConversation(long messageId, Long userMessageId, Long userId) {
-        rootService.getConversation(messageId, userId, userMessageId,
+    public void onRequestConversation(Long threadId, Long userId) {
+        rootService.getConversation(threadId, userId,
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<MessageDetail> result) {

@@ -238,8 +238,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
 
     @Override
     // TODO call setMessageReadStatus in body
-    public List<MessageDetail> getConversation(
-            long threadId, long userId, long userMessageId) throws RPCException {
+    public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {
         Message threadRoot = messageService.getById(threadId);
 
 //        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);

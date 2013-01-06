@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-@Presenter(view = SupplierAssignedDemandsView.class)
+@Presenter(view = SupplierAssignedDemandsView.class, multiple = true)
 public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         SupplierAssignedDemandsPresenter.SupplierAssignedDemandsLayoutInterface, SupplierDemandsModuleEventBus> {
 
@@ -47,7 +47,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
 
         IsWidget getWidgetView();
     }
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -82,15 +81,14 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     public void onInitSupplierAssignedDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_ASSIGNED_DEMANDS);
+
         eventBus.setUpSearchBar(new Label("Supplier's assigned projects attibure's selector will be here."));
         searchDataHolder = filter;
-        view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        if (this.detailSection == null) {
-            eventBus.requestDetailWrapperPresenter();
-        }
+        view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitSupplierAssignedDemandsByHistory(
@@ -137,7 +135,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         eventBus.displayView(view.getWidgetView());
     }
 
-
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
@@ -173,7 +170,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         textFieldUpdater.update(-1, detail, null);
     }
 
-
     /**
      * New data are fetched from db.
      *
@@ -183,8 +179,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
      */
     public void displayDetailContent(FullOfferDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestConversation(detail.getThreadRootId(),
-                detail.getUserMessageId(), Storage.getUser().getUserId());
+        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
     }
 
     public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
@@ -213,6 +208,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         });
     }
     // Field Updaters
+
     public void addCheckHeaderUpdater() {
         view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
@@ -264,26 +260,26 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void update(int index, FullOfferDetail object, String value) {
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
-                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
-                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
-                    object.getMessageDetail().setRead(true);
+//                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
+//                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
+                object.getMessageDetail().setRead(true);
 //                    view.getTableWidget().getGrid().redraw();
-                    displayDetailContent(object);
-                    MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
-                            .getGrid().getSelectionModel();
-                    selectionModel.clear();
-                    selectionModel.setSelected(object, true);
-                    eventBus.createTokenForHistory(
-                            view.getTableWidget().getPager().getPage(),
-                            object.getOfferDetail().getDemandId());
-                }
+                displayDetailContent(object);
+                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
+                        .getGrid().getSelectionModel();
+                selectionModel.clear();
+                selectionModel.setSelected(object, true);
+                eventBus.createTokenForHistory(
+                        view.getTableWidget().getPager().getPage(),
+                        object.getOfferDetail().getDemandId());
+//                }
             }
         };
         view.getTableWidget().getClientNameColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getEndDateColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
     private void addActionChangeHandler() {

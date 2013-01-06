@@ -57,7 +57,6 @@ public class SupplierDetailView extends Composite {
         zipCode.setText(userDetail.getAddresses().get(0).getZipCode());
         websiteContactPerson.setText(userDetail.getWebsite());
         taxId.setText(userDetail.getTaxId());
-
     }
 
     public void setSupplierDetail(FullSupplierDetail detail) {

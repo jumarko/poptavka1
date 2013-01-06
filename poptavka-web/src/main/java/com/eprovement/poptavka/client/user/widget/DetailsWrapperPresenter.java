@@ -4,6 +4,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
@@ -34,9 +35,10 @@ public class DetailsWrapperPresenter
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** Constants. **/
-    public static final int DEMAND = 0;
-    public static final int SUPPLIER = 1;
-    public static final int CHAT = 2;
+    public static final int EDITABLE_DEMAND = 0;
+    public static final int DEMAND = 1;
+    public static final int SUPPLIER = 2;
+    public static final int CHAT = 3;
     /** Class Attributes. **/
     private ViewType type;
     private UniversalAsyncGrid table = null;
@@ -48,8 +50,6 @@ public class DetailsWrapperPresenter
 
         Widget getWidgetView();
 
-        SimplePanel getDemandDetailHolder();
-
         void setMessageReadHandler(ChangeHandler click);
 
         void setDemandDetail(FullDemandDetail demandDetail);
@@ -57,6 +57,12 @@ public class DetailsWrapperPresenter
         void setSupplierDetail(FullSupplierDetail supplierDetail);
 
         TabLayoutPanel getContainer();
+
+        DemandDetailView getDemandDetail();
+
+        EditableDemandDetailView getEditableDemandDetail();
+
+        SupplierDetailView getSupplierDetail();
 
         UserConversationPanel getConversationPanel();
 
@@ -125,10 +131,13 @@ public class DetailsWrapperPresenter
         detailSection.setWidget(view.getWidgetView());
         this.type = viewType;
         if (viewType == ViewType.EDITABLE) {
-            view.getDemandDetailHolder().setWidget(new EditableDemandDetailView());
+            setTabVisibility(EDITABLE_DEMAND, true);
+            setTabVisibility(DEMAND, false);
         } else {
-            view.getDemandDetailHolder().setWidget(new DemandDetailView());
+            setTabVisibility(EDITABLE_DEMAND, false);
+            setTabVisibility(DEMAND, true);
         }
+        view.getContainer().selectTab(CHAT);
         this.table = table;
     }
 
@@ -141,12 +150,12 @@ public class DetailsWrapperPresenter
      * @param sentMessage
      */
     public void onAddConversationMessage(MessageDetail sentMessage, ViewType handlingType) {
-        if (type.equals(handlingType)) {
-            view.getConversationPanel().addMessage(sentMessage);
-            //TODO
-            //if switched to one common interface, this should be replaced.
-            view.getReplyHolder().setNormalStyle();
-        }
+//        if (type.equals(handlingType)) {
+        view.getConversationPanel().addMessage(sentMessage);
+        //TODO
+        //if switched to one common interface, this should be replaced.
+        view.getReplyHolder().setNormalStyle();
+//        }
     }
 
     /**
@@ -198,9 +207,9 @@ public class DetailsWrapperPresenter
      * @param userMessageId - userMessageId
      * @param userId - user who's chatting messages we are going to retrieve
      */
-    public void requestConversation(long threadRootId, Long userMessageId, Long userId) {
+    public void requestConversation(long threadRootId, long userId) {
         showLoading(DetailsWrapperPresenter.CHAT);
-        eventBus.requestConversation(threadRootId, userMessageId, userId);
+        eventBus.requestConversation(threadRootId, userId);
     }
 
     /**************************************************************************/
@@ -213,9 +222,9 @@ public class DetailsWrapperPresenter
      */
     public void onResponseDemandDetail(FullDemandDetail demandDetail, ViewType wrapperType) {
         //neccessary check for method to be executed only in appropriate presenter
-        if (type.equals(wrapperType)) {
-            view.setDemandDetail(demandDetail);
-        }
+//        if (type.equals(wrapperType)) {
+        view.setDemandDetail(demandDetail);
+//        }
     }
 
     /**
@@ -225,9 +234,9 @@ public class DetailsWrapperPresenter
      */
     public void onResponseSupplierDetail(FullSupplierDetail supplierDetail, ViewType wrapperType) {
         //neccessary check for method to be executed only in appropriate presenter
-        if (type.equals(wrapperType)) {
-            view.setSupplierDetail(supplierDetail);
-        }
+//        if (type.equals(wrapperType)) {
+        view.setSupplierDetail(supplierDetail);
+//        }
     }
 
     /**
