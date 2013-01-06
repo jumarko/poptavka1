@@ -208,9 +208,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     public void onGetSupplierOffer(long offerID) {
         supplierDemandsService.getSupplierOffer(offerID,
-                new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+                new SecuredAsyncCallback<SupplierOffersDetail>(eventBus) {
                     @Override
-                    public void onSuccess(FullOfferDetail result) {
+                    public void onSuccess(SupplierOffersDetail result) {
                         eventBus.selectSupplierOffer(result);
                     }
                 });

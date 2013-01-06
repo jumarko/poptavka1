@@ -434,9 +434,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public FullOfferDetail getSupplierOffer(long supplierDemandID)
+    public SupplierOffersDetail getSupplierOffer(long supplierDemandID)
         throws RPCException, ApplicationSecurityException {
-        return getFakeItemById(supplierDemandID);
+        return new SupplierOffersDetail();
     }
 
     @Override

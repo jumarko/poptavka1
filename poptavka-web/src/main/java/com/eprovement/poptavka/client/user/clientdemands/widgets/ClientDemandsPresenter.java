@@ -407,10 +407,10 @@ public class ClientDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+                detailSection.clear();
                 view.setConversationTableVisible(false);
                 view.setDemandTableVisible(true);
                 view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-//                view.getDemandGrid().refresh();
             }
         });
     }
@@ -433,7 +433,7 @@ public class ClientDemandsPresenter
             @Override
             public String getStyleNames(ClientDemandConversationDetail row, int rowIndex) {
                 if (row.getUnreadSubmessages() > 0) {
-                    return "font-weight:bold;";
+                    return "font-weight:bold !important";
                 } else {
                     return "";
                 }

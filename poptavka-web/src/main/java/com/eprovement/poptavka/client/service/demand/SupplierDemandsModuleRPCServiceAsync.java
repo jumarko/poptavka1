@@ -65,7 +65,7 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     void getSupplierDemand(long id, AsyncCallback<SupplierPotentialDemandDetail> calback);
 
-    void getSupplierOffer(long id, AsyncCallback<FullOfferDetail> calback);
+    void getSupplierOffer(long id, AsyncCallback<SupplierOffersDetail> calback);
 
     void getSupplierAssignedDemand(long id, AsyncCallback<FullOfferDetail> calback);
 }

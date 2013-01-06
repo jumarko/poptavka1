@@ -100,6 +100,7 @@ public class ClientDemandsView extends Composite
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
+        Storage.RSCS.common().ensureInjected();
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());

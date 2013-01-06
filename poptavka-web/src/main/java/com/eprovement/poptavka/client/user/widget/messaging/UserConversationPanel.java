@@ -141,4 +141,8 @@ public class UserConversationPanel extends Composite {
             messagePanel.getElement().getStyle().setDisplay(Display.BLOCK);
         }
     }
+
+    public void clear() {
+        messagePanel.clear();
+    }
 }

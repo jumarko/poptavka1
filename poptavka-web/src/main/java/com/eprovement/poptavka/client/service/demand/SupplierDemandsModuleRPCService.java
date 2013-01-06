@@ -131,7 +131,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID)
         throws RPCException, ApplicationSecurityException;
 
-    FullOfferDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
+    SupplierOffersDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
 
     FullOfferDetail getSupplierAssignedDemand(long demandID) throws RPCException, ApplicationSecurityException;
 }

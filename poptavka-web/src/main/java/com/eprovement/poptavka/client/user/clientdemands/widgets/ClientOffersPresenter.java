@@ -352,6 +352,7 @@ public class ClientOffersPresenter
         view.getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                detailSection.clear();
                 view.setOfferTableVisible(false);
                 view.setDemandTableVisible(true);
             }

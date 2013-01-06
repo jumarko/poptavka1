@@ -155,7 +155,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void displaySupplierOffers(List<SupplierOffersDetail> result);
 
     @Event(handlers = SupplierOffersPresenter.class)
-    void selectSupplierOffer(FullOfferDetail detail);
+    void selectSupplierOffer(SupplierOffersDetail detail);
 
     /**************************************************************************/
     /* Business events handled by SupplierAssignedDemandsPresenter.           */

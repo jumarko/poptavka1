@@ -283,4 +283,11 @@ public class DetailsWrapperPresenter
                 break;
         }
     }
+
+    public void clear() {
+//        view.getEditableDemandDetail().clear();
+//        view.getDemandDetail().clear();
+//        view.getSupplierDetail().clear();
+        view.getConversationPanel().clear();
+    }
 }

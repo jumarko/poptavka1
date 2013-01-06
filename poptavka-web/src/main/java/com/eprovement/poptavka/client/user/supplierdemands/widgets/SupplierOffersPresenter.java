@@ -11,7 +11,8 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
+//import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -109,9 +110,9 @@ public class SupplierOffersPresenter extends LazyPresenter<
         boolean wasEqual = false;
         MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
                 .getGrid().getSelectionModel();
-        for (FullOfferDetail offer : (Set<
-                FullOfferDetail>) selectionModel.getSelectedSet()) {
-            if (offer.getOfferDetail().getDemandId() == selectedId) {
+        for (SupplierOffersDetail offer : (Set<
+                SupplierOffersDetail>) selectionModel.getSelectedSet()) {
+            if (offer.getDemandId() == selectedId) {
                 wasEqual = true;
             }
         }
@@ -162,7 +163,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
         }
     }
 
-    public void onSelectSupplierOffer(FullOfferDetail detail) {
+    public void onSelectSupplierOffer(SupplierOffersDetail detail) {
         eventBus.setHistoryStoredForNextOne(false);
         textFieldUpdater.update(-1, detail, null);
     }
@@ -174,7 +175,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
      * @param messageId ID for demand related contest
      * @param userMessageId ID for demand related contest
      */
-    public void displayDetailContent(FullOfferDetail detail) {
+    public void displayDetailContent(SupplierOffersDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
     }
@@ -260,13 +261,13 @@ public class SupplierOffersPresenter extends LazyPresenter<
     }
 
     public void addColumnFieldUpdaters() {
-        textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
+        textFieldUpdater = new FieldUpdater<SupplierOffersDetail, String>() {
             @Override
-            public void update(int index, FullOfferDetail object, String value) {
+            public void update(int index, SupplierOffersDetail object, String value) {
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
 //                if (lastOpenedOffer != object.getOfferDetail().getDemandId()) {
 //                    lastOpenedOffer = object.getOfferDetail().getDemandId();
-                object.getMessageDetail().setRead(true);
+                object.setRead(true);
 //                    view.getTableWidget().getGrid().redraw();
                 displayDetailContent(object);
 
@@ -275,7 +276,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
                 eventBus.createTokenForHistory(
-                        view.getTableWidget().getPager().getPage(), object.getOfferDetail().getDemandId());
+                        view.getTableWidget().getPager().getPage(), object.getDemandId());
 //                }
             }
         };
