@@ -88,12 +88,12 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
      * @return list of user messages.
      */
     @Override
-    public List<UserMessage> getPotentialDemandConversationUserMessages(Message threadRoot, User supplierUser) {
+    public List<UserMessage> getConversationUserMessages(Message threadRoot, User supplierUser) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("threadRoot", threadRoot);
         queryParams.put("supplier", supplierUser);
 
-        return runNamedQuery("getPotentialDemandConversationUserMessages", queryParams);
+        return runNamedQuery("getConversationUserMessages", queryParams);
     }
 
     @Override

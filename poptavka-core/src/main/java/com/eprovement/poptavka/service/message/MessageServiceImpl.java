@@ -138,8 +138,8 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public List<UserMessage> getPotentialDemandConversationUserMessages(Message threadRoot, User supplierUser) {
-        return getDao().getPotentialDemandConversationUserMessages(threadRoot, supplierUser);
+    public List<UserMessage> getConversationUserMessages(Message threadRoot, User supplierUser) {
+        return getDao().getConversationUserMessages(threadRoot, supplierUser);
     }
 
     /**

@@ -66,7 +66,7 @@ public interface MessageDao extends GenericDao<Message> {
      * @param supplierUser
      * @return List of user messages
      */
-    List<UserMessage> getPotentialDemandConversationUserMessages(Message message, User supplierUser);
+    List<UserMessage> getConversationUserMessages(Message message, User supplierUser);
 
     /**
      * Returns message thread root assigned to given demand.

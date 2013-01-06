@@ -90,7 +90,7 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param supplierUser
      * @return
      */
-    List<UserMessage> getPotentialDemandConversationUserMessages(Message message, User supplierUser);
+    List<UserMessage> getConversationUserMessages(Message message, User supplierUser);
 
     /**
      * Returns message thread root assigned to given demand.

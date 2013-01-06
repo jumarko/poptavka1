@@ -39,13 +39,13 @@ import javax.persistence.NamedQuery;
                         + " (userMessage.message = :threadRoot OR userMessage.message.threadRoot = :threadRoot)"
                         + "   and userMessage.user = :supplier and userMessage.message.offer is null"),
 
-        @NamedQuery(name = "getPotentialDemandConversationUserMessages",
+        @NamedQuery(name = "getConversationUserMessages",
                 query = " select userMessage"
                         + " from UserMessage userMessage"
                         + " where "
                         // either message itself is thread root or it has given thread root
                         + " (userMessage.message = :threadRoot OR userMessage.message.threadRoot = :threadRoot)"
-                        + "   and userMessage.user = :supplier and userMessage.message.offer is null"),
+                        + "   and userMessage.user = :supplier"),
 
         @NamedQuery(name = "getPotentialOfferConversation",
                 query = " select userMessage.message"

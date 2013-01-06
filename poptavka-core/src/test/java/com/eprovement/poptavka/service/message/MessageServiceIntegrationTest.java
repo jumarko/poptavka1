@@ -144,7 +144,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // the same test but returns UserMessage instead of Messages
         final List<UserMessage> potentialDemandConversationUserMessages =
-                this.messageService.getPotentialDemandConversationUserMessages(threadRoot, supplier);
+                this.messageService.getConversationUserMessages(threadRoot, supplier);
 
         Assert.assertEquals(4, potentialDemandConversationUserMessages.size());
         // check if all expected messages are in conversation
