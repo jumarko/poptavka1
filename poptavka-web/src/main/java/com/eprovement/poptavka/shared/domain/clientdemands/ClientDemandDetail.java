@@ -23,6 +23,7 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
     private long demandId;
     private long messageId;
     private long userMessageId;
+    private long threadRootId;
     private DemandStatus demandStatus;
     private String demandTitle; //title
     private BigDecimal price = null;
@@ -196,5 +197,19 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         } else {
             return clientDemandDetail.getDemandTitle();
         }
+    }
+
+    /**
+     * @return the threadRootId
+     */
+    public long getThreadRootId() {
+        return threadRootId;
+    }
+
+    /**
+     * @param threadRootId the threadRootId to set
+     */
+    public void setThreadRootId(long threadRootId) {
+        this.threadRootId = threadRootId;
     }
 }

@@ -160,6 +160,7 @@ public class ClientOffersPresenter
         //
         clientDemandDetail.setRead(true);
         Storage.setDemandId(clientDemandDetail.getDemandId());
+        Storage.setThreadRootId(clientDemandDetail.getThreadRootId());
         view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
         view.setDemandTableVisible(false);
         view.setOfferTableVisible(true);
@@ -393,6 +394,7 @@ public class ClientOffersPresenter
                 if (selected != null) {
                     selected.setRead(true);
                     Storage.setDemandId(selected.getDemandId());
+                    Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.setOfferTableVisible(true);
                     view.getOfferGrid().getGrid().getDataCount(eventBus, null);

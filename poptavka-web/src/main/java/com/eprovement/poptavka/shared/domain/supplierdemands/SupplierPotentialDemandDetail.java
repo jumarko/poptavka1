@@ -357,4 +357,9 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
             return "<strong>" + trustedHtml + "</strong>";
         }
     }
+
+    @Override
+    public long getOfferId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

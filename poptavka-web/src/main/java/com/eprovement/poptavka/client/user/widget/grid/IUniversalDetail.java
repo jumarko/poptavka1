@@ -80,4 +80,9 @@ public interface IUniversalDetail {
      * @return string in html tags
      */
     String displayHtml(String trustedHtml, boolean isRead);
+
+    // Offer part
+    //--------------------------------------------------------------------------
+    long getOfferId();
+
 }

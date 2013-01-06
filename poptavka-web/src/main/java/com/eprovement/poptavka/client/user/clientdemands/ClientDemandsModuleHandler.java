@@ -9,6 +9,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -161,10 +162,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     private void getClientOfferedDemandOffers(SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandOffers(
-                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
+                Storage.getUser().getUserId(), Storage.getDemandId(), Storage.getThreadRootId(), searchDefinition,
+                new SecuredAsyncCallback<List<ClientOfferedDemandOffersDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<FullOfferDetail> result) {
+                    public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
                         eventBus.displayClientOfferedDemandOffers(result);
                     }
                 });

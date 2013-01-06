@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -45,8 +46,8 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void getClientOfferedDemandOffersCount(long userID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getClientOfferedDemandOffers(long userID, long demandID, SearchDefinition searchDefinition,
-            AsyncCallback<List<FullOfferDetail>> callback);
+    void getClientOfferedDemandOffers(long userID, long demandID, long threadRootId, SearchDefinition searchDefinition,
+            AsyncCallback<List<ClientOfferedDemandOffersDetail>> callback);
 
     //ClientAssignedDemands widget
     void getClientAssignedDemandsCount(long userID, SearchDefinition searchDefinition,

@@ -223,4 +223,9 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     public void setUnreadSubmessages(int unreadSubmessages) {
         this.unreadSubmessages = unreadSubmessages;
     }
+
+    @Override
+    public long getOfferId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -135,7 +136,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getClientOfferedDemandOffers(long userId, long demandID,
+    List<ClientOfferedDemandOffersDetail> getClientOfferedDemandOffers(long userId, long demandID, long threadRootId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     //******************** CLIENT - My Assigned Demands ***********************/

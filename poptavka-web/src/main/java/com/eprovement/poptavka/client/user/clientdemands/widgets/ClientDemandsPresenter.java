@@ -184,6 +184,7 @@ public class ClientDemandsPresenter
         //
         clientDemandDetail.setRead(true);
         Storage.setDemandId(clientDemandDetail.getDemandId());
+        Storage.setThreadRootId(clientDemandDetail.getThreadRootId());
         view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
         view.setDemandTableVisible(false);
         view.setConversationTableVisible(true);
@@ -387,6 +388,7 @@ public class ClientDemandsPresenter
                 if (selected != null) {
                     selected.setRead(true);
                     Storage.setDemandId(selected.getDemandId());
+                    Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.setDemandTableVisible(false);
                     view.setConversationTableVisible(true);

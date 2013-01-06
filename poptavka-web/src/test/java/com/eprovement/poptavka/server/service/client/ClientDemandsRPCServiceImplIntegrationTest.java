@@ -17,6 +17,7 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -141,16 +142,16 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         SearchDefinition searchDefinition = new SearchDefinition();
         long count = clientDemandsRPCService.getClientOfferedDemandOffersCount(111111112L, 2L, searchDefinition);
         assertThat(count, is(2L));
-        List<FullOfferDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
-                111111112L, 2L, searchDefinition);
+        List<ClientOfferedDemandOffersDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
+                111111112L, 2L, 1L, searchDefinition);
         assertThat(offers.size(), is(2));
-        checkFullOfferDetailExists(offers, 11, 5);
-        checkFullOfferDetailExists(offers, 12, 9);
+        checkClientOfferedDemandOffersDetailExists(offers, 11, 5);
+        checkClientOfferedDemandOffersDetailExists(offers, 12, 9);
         searchDefinition.setFilter(new SearchModuleDataHolder());
         searchDefinition.getFilter().setSearchText("Fourth");
-        offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, searchDefinition);
-        assertThat(offers.size(), is(1));
-        checkFullOfferDetailExists(offers, 12, 9);
+        offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, 1L, searchDefinition);
+        assertThat(offers.size(), is(2));
+        checkClientOfferedDemandOffersDetailExists(offers, 12, 9);
     }
 
     private void checkFullOfferDetailExists(List<FullOfferDetail> offers,
@@ -168,4 +169,17 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
                 }));
     }
 
+    private void checkClientOfferedDemandOffersDetailExists(List<ClientOfferedDemandOffersDetail> offers,
+            final long offerId, final long userMessageId) {
+        Assert.assertTrue(
+                "ClientOfferedDemandOffersDetail [offerId=" + offerId + ", userMessageId ="
+                        + userMessageId + "] expected to be in collection ["
+                + offers + "] is not there.",
+                CollectionUtils.exists(offers, new Predicate() {
+                    @Override
+                    public boolean evaluate(Object object) {
+                        return offerId == ((ClientOfferedDemandOffersDetail) object).getOfferId();
+                    }
+                }));
+    }
 }

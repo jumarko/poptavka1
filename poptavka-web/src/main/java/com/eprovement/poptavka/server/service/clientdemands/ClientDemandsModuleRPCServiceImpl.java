@@ -35,6 +35,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -388,9 +389,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        Search backendSearch = getSearchForgetClientOfferedDemandOffers(searchDefinition, userId, demandID);
         // TODO ivlcek - incorporate searchDefinition for this method
-        return generalService.count(backendSearch);
+        Demand demand = generalService.find(Demand.class, demandID);
+        return demand.getOffers().size();
     }
 
     /**
@@ -406,61 +407,42 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getClientOfferedDemandOffers(long userId, long demandID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        Search backendSearch = getSearchForgetClientOfferedDemandOffers(searchDefinition, userId, demandID);
-        List<Message> messages = generalService.search(backendSearch);
-        System.out.println(messages);
+    public List<ClientOfferedDemandOffersDetail> getClientOfferedDemandOffers(long userId, long demandID,
+            long threadRootId, SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
 
-//        // load offers for demand
-//        Demand demand = generalService.find(Demand.class, demandID);
-//        List<Offer> offers = demand.getOffers();
-//        for (Offer offer : offers) {
-//            // TODO ivlcek - fill the detail object with following attributes and fill the list of detail objects
-//            offer.getSupplier();
-//            offer.getDemand();
-//            offer.getPrice();
-//            offer.getState();
-//            offer.getFinishDate();
-//            offer.getCreated();
-//            offer.getId();
-//        }
-//        // for each offer message get a number of unread submessages
-//        // TODO - ivlcek
-//
-//        User user = generalService.find(User.class, userId);
-//        Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
-//        List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
-//        for (Message messageKey : root.getChildren()) {
-//
-//            final Search userMessageSearch = new Search(UserMessage.class);
-//            userMessageSearch.addFilterEqual("user", user);
-//            userMessageSearch.addFilterEqual("message", messageKey);
-//            UserMessage userMessage = (UserMessage) generalService.searchUnique(userMessageSearch);
-//
-//            ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
-//            cdcd.setDate(messageKey.getSent());
-//            cdcd.setDemandId(demandID);
-//            cdcd.setThreadMessageId(messageKey.getThreadRoot().getId());
-//            // TODO make converter
-//            // TODO ivlcek - messageCount and UnreadMessage are not necessary for first version
-//            cdcd.setMessageCount(messageService.getAllDescendantsCount(messageKey, user));
-//            cdcd.setUnreadSubmessages(messageService.getUnreadDescendantsCount(messageKey, user));
-//            cdcd.setMessageDetail(messageConverter.convertToTarget(messageKey));
-//            cdcd.setMessageId(messageKey.getId());
-//            cdcd.setRead(userMessage.isRead());
-//            cdcd.setStarred(userMessage.isStarred());
-//            Supplier supplier = findSupplier(messageKey.getSender().getId());
-//            cdcd.setSupplierId(supplier.getId());
-//            cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
-//            cdcd.setUserMessageId(userMessage.getId());
-//
-//            list.add(cdcd);
-//        }
-//        return list;
+        // load offers for demand
+        User user = generalService.find(User.class, userId);
+        Demand demand = generalService.find(Demand.class, demandID);
+        List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
+        List<Offer> offers = demand.getOffers();
+        for (Offer offer : offers) {
+            ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
 
+            // TODO ivlcek - refactor and create converter, set Rating
+            codod.setSupplierId(offer.getSupplier().getId());
+            codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setDemandId(offer.getDemand().getId());
+            codod.setPrice(offer.getPrice().toPlainString());
+            codod.setDeliveryDate(offer.getFinishDate());
+            codod.setOfferId(offer.getId());
+            codod.setReceivedDate(offer.getCreated());
+//            codod.setRating(offer.getSupplier().getOveralRating());
 
-        return fullOfferConverter.convertToTargetList(messages);
+            Search conversationMessagesSearch = new Search(Message.class);
+            conversationMessagesSearch.addFilterEqual("demand.id", demandID);
+            conversationMessagesSearch.addFilterEqual("sender.id", offer.getSupplier().getBusinessUser().getId());
+            conversationMessagesSearch.addSortAsc("id", false);
+            List<Message> conversationMessages = (generalService.search(conversationMessagesSearch));
+            Message firstSupplierResponse = conversationMessages.get(0);
+
+            codod.setMessageCount(messageService.getAllDescendantsCount(firstSupplierResponse, user));
+            codod.setUnreadMessageCount(messageService.getUnreadDescendantsCount(firstSupplierResponse, user));
+            codod.setThreadRootId(firstSupplierResponse.getThreadRoot().getId());
+            codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+
+            listCodod.add(codod);
+        }
+        return listCodod;
     }
 
     private Search getSearchForgetClientOfferedDemandOffers(SearchDefinition searchDefinition,

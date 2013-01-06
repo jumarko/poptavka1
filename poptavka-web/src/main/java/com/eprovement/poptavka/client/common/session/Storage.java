@@ -47,6 +47,7 @@ public final class Storage {
     private static BusinessUserDetail businessUserDetail = null;
     //client projects - selected demand
     private static long demandId = -1L;
+    private static long threadRootId = -1L;
 
     /**************************************************************************/
     /* History methods                                                        */
@@ -96,6 +97,20 @@ public final class Storage {
      */
     public static void setBusinessUserDetail(BusinessUserDetail aBusinessUserDetail) {
         businessUserDetail = aBusinessUserDetail;
+    }
+
+    /**
+     * @return the threadRootId
+     */
+    public static long getThreadRootId() {
+        return threadRootId;
+    }
+
+    /**
+     * @param aThreadRootId the threadRootId to set
+     */
+    public static void setThreadRootId(long aThreadRootId) {
+        threadRootId = aThreadRootId;
     }
 
     //getters for global final classes

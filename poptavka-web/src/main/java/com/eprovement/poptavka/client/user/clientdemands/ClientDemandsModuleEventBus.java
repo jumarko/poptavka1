@@ -15,6 +15,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -181,7 +182,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void displayClientOfferedDemands(List<ClientDemandDetail> result);
 
     @Event(handlers = ClientOffersPresenter.class)
-    void displayClientOfferedDemandOffers(List<FullOfferDetail> result);
+    void displayClientOfferedDemandOffers(List<ClientOfferedDemandOffersDetail> result);
 
     @Event(handlers = ClientOffersPresenter.class)
     void selectClientOfferedDemand(ClientDemandDetail detail);
