@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.core.client.GWT;
@@ -94,9 +95,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     private void getSupplierOffers(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffers(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<FullOfferDetail> result) {
+                    public void onSuccess(List<SupplierOffersDetail> result) {
                         eventBus.displaySupplierOffers(result);
                     }
                 });

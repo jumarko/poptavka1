@@ -4,6 +4,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -29,7 +30,7 @@ public interface SupplierDemandsModuleRPCServiceAsync {
             AsyncCallback<Long> callback);
 
     void getSupplierOffers(long supplierID, SearchDefinition searchDefinition,
-            AsyncCallback<List<FullOfferDetail>> callback);
+            AsyncCallback<List<SupplierOffersDetail>> callback);
 
     //SupplierAssignedDemands widget
     void getSupplierAssignedDemandsCount(long supplierID, SearchDefinition searchDefinition,

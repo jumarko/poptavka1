@@ -10,6 +10,7 @@ import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
@@ -26,6 +27,7 @@ import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,6 +55,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Configurable
 public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteService
         implements SupplierDemandsModuleRPCService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SupplierDemandsModuleRPCServiceImpl.class);
 
     //Services
     private GeneralService generalService;
@@ -215,7 +221,10 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public long getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        return 1L;
+        Supplier supplier = generalService.find(Supplier.class, supplierID);
+        Search supplierOffersSearch = new Search(Offer.class);
+        supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
+        return generalService.search(supplierOffersSearch).size();
     }
 
     /**
@@ -232,10 +241,48 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierOffers(long supplierID,
+    public List<SupplierOffersDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        LOGGER.debug("getSupplierOffers() params: supplierId=" + supplierID);
         //TODO Martin - implement when implemented on backend
-        return getFakeData();
+        Supplier supplier = generalService.find(Supplier.class, supplierID);
+        Search supplierOffersSearch = new Search(Offer.class);
+        supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
+        List<Offer> offers = generalService.search(supplierOffersSearch);
+        List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
+
+        for (Offer offer : offers) {
+            SupplierOffersDetail sod = new SupplierOffersDetail();
+
+            // TODO ivlcek - refactor and create converter, set Rating
+            sod.setSupplierId(offer.getSupplier().getId());
+            sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            sod.setClientId(offer.getDemand().getClient().getId());
+            sod.setDemandId(offer.getDemand().getId());
+            sod.setPrice(offer.getPrice().toPlainString());
+            sod.setDeliveryDate(offer.getFinishDate());
+            sod.setOfferId(offer.getId());
+            sod.setReceivedDate(offer.getCreated());
+            sod.setRating(offer.getSupplier().getOveralRating());
+
+            Search conversationMessagesSearch = new Search(Message.class);
+            conversationMessagesSearch.addFilterEqual("demand.id", offer.getDemand().getId());
+            conversationMessagesSearch.addFilterEqual("sender.id", offer.getSupplier().getBusinessUser().getId());
+            conversationMessagesSearch.addSortAsc("id", false);
+            List<Message> conversationMessages = (generalService.search(conversationMessagesSearch));
+            Message firstSupplierResponse = conversationMessages.get(0);
+
+            sod.setMessageCount(messageService.getAllDescendantsCount(
+                    firstSupplierResponse, offer.getSupplier().getBusinessUser()));
+            sod.setUnreadMessageCount(messageService.getUnreadDescendantsCount(
+                    firstSupplierResponse, offer.getSupplier().getBusinessUser()));
+            sod.setThreadRootId(firstSupplierResponse.getThreadRoot().getId());
+            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            LOGGER.trace("SupplierOfferDetail=" + sod.toString());
+            listSod.add(sod);
+        }
+        LOGGER.debug("getSupplierOffers() result:" + listSod.size());
+        return listSod;
     }
 
     //******************* SUPPLIER - My Assigned Demands **********************/

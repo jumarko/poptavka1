@@ -4,6 +4,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -75,7 +76,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @return
      */
     //TODO Martin premenovat FullOfferDetail na ContestDetail alebo nieco podobne
-    List<FullOfferDetail> getSupplierOffers(long supplierID,
+    List<SupplierOffersDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
     //******************* SUPPLIER - My Assigned Demands **********************/

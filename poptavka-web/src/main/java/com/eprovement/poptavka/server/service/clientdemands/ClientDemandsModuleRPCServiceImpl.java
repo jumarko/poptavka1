@@ -708,6 +708,17 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return offerDetail;
     }
 
+//    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public OfferDetail acceptOffer(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
+        Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
+        OfferState offerState = offerService.getOfferState(offerDetail.getState().getValue());
+        offer.setState(offerState);
+        offer = (Offer) this.generalService.save(offer);
+        offerDetail.setState(offer.getState().getType());
+        return offerDetail;
+    }
+
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
     private Client findClient(long userId) {
         final User user = generalService.find(User.class, userId);
