@@ -12,7 +12,6 @@ import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
-import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
@@ -29,7 +28,6 @@ import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -633,44 +631,32 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * Accept offer. When some offer is accepted, others are automatically declined.
+     * Accept selected offer and decline other offers and change demand state to ASSIGNED.
      *
-     * @param fullOfferDetail
+     * @param offerId to be accepted
+     * @return
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void acceptOffer(long id) throws RPCException, ApplicationSecurityException {
-        //TODO Juraj
-        //Accept given offer (offerDetail.getOfferDetail())
-        //Decline all other offers of given demand (offerDetail.getDemandDetail())
+    public void acceptOffer(long offerId) throws RPCException, ApplicationSecurityException {
+        Offer offer = this.generalService.find(Offer.class, offerId);
+
+        // set offer as accepted
+        offer.setState(offerService.getOfferState(OfferStateType.ACCEPTED.getValue()));
+        generalService.merge(offer);
+
+        // load other offers and set them as declined
+        Demand demand = offer.getDemand();
+        for (Offer declinedOffer : demand.getOffers()) {
+            declinedOffer.setState(offerService.getOfferState(OfferStateType.ACCEPTED.getValue()));
+            generalService.merge(declinedOffer);
+        }
+        demand.setStatus(DemandStatus.ASSIGNED);
+        generalService.merge(demand);
     }
 
-    /**
-     * Decline offer. When client is not satisfied with and offer, he can decline it. It doesn't influence other offers
-     * of that demand.
-     *
-     * @param offerDetail
-     * @throws RPCException
-     * @throws ApplicationSecurityException
-     */
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void declineOffer(long id) throws RPCException, ApplicationSecurityException {
-        //TODO Juraj
-        //Decline given offer
-    }
-
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Messages methods
-     */
-    /**
-     * ***********************************************************************
-     */
     /**
      * Message sent by supplier about a query to potential demand.
      *
@@ -694,29 +680,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             Logger.getLogger(ClientDemandsModuleRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
-        Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
-
-        OfferState offerState = offerService.getOfferState(offerDetail.getState().getValue());
-        offer.setState(offerState);
-        offer = (Offer) this.generalService.save(offer);
-        offerDetail.setState(offer.getState().getType());
-        return offerDetail;
-    }
-
-//    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public OfferDetail acceptOffer(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException {
-        Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
-        OfferState offerState = offerService.getOfferState(offerDetail.getState().getValue());
-        offer.setState(offerState);
-        offer = (Offer) this.generalService.save(offer);
-        offerDetail.setState(offer.getState().getType());
-        return offerDetail;
     }
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------

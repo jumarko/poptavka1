@@ -100,7 +100,6 @@ public class ClientOffersPresenter
         addStarColumnFieldUpdater();
         addReplyColumnFieldUpdater();
         addAcceptOfferColumnFieldUpdater();
-        addDeclineOfferColumnFieldUpdater();
         addTextColumnFieldUpdaters();
         // Buttons Actions
         addBackButtonHandler();
@@ -305,17 +304,7 @@ public class ClientOffersPresenter
                 new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
                     public void update(int index, IUniversalDetail object, ImageResource value) {
-                        eventBus.requestAcceptOffer(object.getUserMessageId()); //good attribute ???
-                    }
-                });
-    }
-
-    public void addDeclineOfferColumnFieldUpdater() {
-        view.getOfferGrid().getDeclineOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        eventBus.requestDeclineOffer(object.getUserMessageId()); //good attribute ???
+                        eventBus.requestAcceptOffer(object.getOfferId()); //good attribute ??? IV: no, wront attribute
                     }
                 });
     }

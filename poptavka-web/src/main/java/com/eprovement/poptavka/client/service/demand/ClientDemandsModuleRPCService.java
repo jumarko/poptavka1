@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -186,17 +185,13 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
 
     void closeDemand(long id) throws RPCException, ApplicationSecurityException;
 
-    void acceptOffer(long id) throws RPCException, ApplicationSecurityException;
-
-    void declineOffer(long id) throws RPCException, ApplicationSecurityException;
+    void acceptOffer(long offerId) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Messages methods                                                       */
     /**************************************************************************/
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws RPCException,
             ApplicationSecurityException;
-
-    OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException, ApplicationSecurityException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
 

@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -80,10 +79,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void closeDemand(long id,
             AsyncCallback<ArrayList<Void>> callback);
 
-    void acceptOffer(long id,
-            AsyncCallback<ArrayList<Void>> callback);
-
-    void declineOffer(long id,
+    void acceptOffer(long offerId,
             AsyncCallback<ArrayList<Void>> callback);
 
     /**************************************************************************/
@@ -91,9 +87,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     void sendQueryToPotentialDemand(MessageDetail messageToSend,
             AsyncCallback<MessageDetail> callback);
-
-    void changeOfferState(OfferDetail offerDetail,
-            AsyncCallback<OfferDetail> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 

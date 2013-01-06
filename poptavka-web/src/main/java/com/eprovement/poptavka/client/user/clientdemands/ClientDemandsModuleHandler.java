@@ -5,7 +5,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -239,20 +238,14 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         });
     }
 
-    public void onRequestAcceptOffer(long id) {
-        clientDemandsService.acceptOffer(id, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
+    public void onRequestAcceptOffer(long offerId) {
+        GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
+        clientDemandsService.acceptOffer(offerId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
+                GWT.log("onRequestAcceptOffer finished");
                 //Empty by default
-            }
-        });
-    }
-
-    public void onRequestDeclineOffer(long id) {
-        clientDemandsService.declineOffer(id, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
-            @Override
-            public void onSuccess(ArrayList<Void> result) {
-                //Empty by default
+                // TODO martin - forward to assigned demands view
             }
         });
     }
@@ -260,18 +253,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Button actions - messaging.                                            */
     /**************************************************************************/
-    public void onUpdateOfferStatus(OfferDetail offerDetail) {
-        GWT.log("STATE: " + offerDetail.getState());
-        clientDemandsService.changeOfferState(offerDetail, new SecuredAsyncCallback<OfferDetail>(eventBus) {
-            @Override
-            public void onSuccess(OfferDetail result) {
-                //TODO zistit ci bude treba nejaky refresh aj ked mame asyynchDataProvider, asi hej
-                //skusit najpr redreaw na gride
-//                eventBus.setOfferDetailChange(result);
-            }
-        });
-    }
-
     public void onUpdateUnreadMessagesCount() {
         clientDemandsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
             @Override

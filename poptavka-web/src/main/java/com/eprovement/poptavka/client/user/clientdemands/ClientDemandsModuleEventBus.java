@@ -12,7 +12,6 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPre
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -212,16 +211,10 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void requestCloseDemand(long id);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestAcceptOffer(long id);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestDeclineOffer(long id);
+    void requestAcceptOffer(long offerid);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void updateUnreadMessagesCount();
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void updateOfferStatus(OfferDetail offerDetail);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void getClientDemand(long clientDemandID);
