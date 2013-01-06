@@ -87,9 +87,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private Converter<Demand, ClientDemandDetail> clientDemandConverter;
     private Converter<Message, FullOfferDetail> fullOfferConverter;
 
-    /**************************************************************************/
-    /* Autowired methods                                                      */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Autowired methods
+     */
+    /**
+     * ***********************************************************************
+     */
     //Services
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -163,17 +169,22 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         this.fullOfferConverter = fullOfferConverter;
     }
 
-    /**************************************************************************/
-    /* Table getter methods                                                   */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Table getter methods
+     */
+    /**
+     * ***********************************************************************
+     */
     //************************* CLIENT - My Demands ***************************/
     /**
-     * Get all demand's count that has been created by client.
-     * When new demand is created by client, will be involved here.
-     * As Client: "All demands created by me."
+     * Get all demand's count that has been created by client. When new demand is created by client, will be involved
+     * here. As Client: "All demands created by me."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param filter - define searching criteria if any
      * @return count
      */
@@ -198,14 +209,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     /**
      * {@inheritDoc}
      *
-     * <p>
-     *     PERFORMANCE: This implementation can be slow if client has large amount of demands because it loads
-     *     all his demands from DB into the memory and perform filtering afterwards.
-     *     It this is the issue then consider reimplementation of this method.
-     * </p>
+     * <p> PERFORMANCE: This implementation can be slow if client has large amount of demands because it loads all his
+     * demands from DB into the memory and perform filtering afterwards. It this is the issue then consider
+     * reimplementation of this method. </p>
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @return list of demand's detail objects
      * @throws ApplicationSecurityException if user is not authorized to call this method
      * @throws IllegalArgumentException if given user does not exist or it represents user other than client
@@ -245,13 +254,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Client: "Questions made by suppliers to demands made by me." "How many suppliers
-     * are asing something about a certain demand."
+     * When supplier asks something about a demand of some client. The conversation has more messages of course but I
+     * want count of threads. As Client: "Questions made by suppliers to demands made by me." "How many suppliers are
+     * asing something about a certain demand."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param demandID - demand's ID
      * @param filter - define searching criteria if any
      * @return count
@@ -266,13 +274,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads. As
-     * Client: "Questions made by suppliers to demands made by me."
-     * "How many suppliers are asing something about a certain demand."
+     * When supplier asks something about a demand of some client. The conversation has more messages of course but I
+     * want count of threads. As Client: "Questions made by suppliers to demands made by me." "How many suppliers are
+     * asing something about a certain demand."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param demandID - demand's
      * @param start
      * @param maxResult
@@ -319,12 +326,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     //************************* CLIENT - My Offers ****************************/
     /**
-     * Get all demands where have been placed an offer by some supplier.
-     * When supplier place an offer to client's demand, the demand will be involved here.
-     * As Client: "Demands that have already an offer."
+     * Get all demands where have been placed an offer by some supplier. When supplier place an offer to client's
+     * demand, the demand will be involved here. As Client: "Demands that have already an offer."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param filter
      * @return
      */
@@ -336,12 +342,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * Get all demands where have been placed an offer by some supplier.
-     * When supplier place an offer to client's demand, the demand will be involved here.
-     * As Client: "Demands that have already an offer."
+     * Get all demands where have been placed an offer by some supplier. When supplier place an offer to client's
+     * demand, the demand will be involved here. As Client: "Demands that have already an offer."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param demandID - demands's ID
      * @param start
      * @param maxResult
@@ -377,12 +382,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * Get all offers of given demand.
-     * When supplier place an offer to client's demand, the offer will be involved here.
+     * Get all offers of given demand. When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @return offers count of given demand
      */
     @Override
@@ -395,12 +399,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * Get all offers of given demand.
-     * When supplier place an offer to client's demand, the offer will be involved here.
+     * Get all offers of given demand. When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param demandID
      * @param searchDefinition search filter, ordering, ...
      * @return
@@ -426,7 +429,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setOfferId(offer.getId());
             codod.setReceivedDate(offer.getCreated());
-//            codod.setRating(offer.getSupplier().getOveralRating());
+            codod.setRating(offer.getSupplier().getOveralRating());
 
             Search conversationMessagesSearch = new Search(Message.class);
             conversationMessagesSearch.addFilterEqual("demand.id", demandID);
@@ -468,12 +471,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     //******************** CLIENT - My Assigned Demands ***********************/
     /**
-     * Get all offers that were accepted by client to solve a demand.
-     * When client accept an offer, will be involved here.
-     * As Client: "All offers that were accepted by me to solve my demand."
+     * Get all offers that were accepted by client to solve a demand. When client accept an offer, will be involved
+     * here. As Client: "All offers that were accepted by me to solve my demand."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param filter
      * @return
      */
@@ -486,12 +488,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * Get all offers that were accepted by client to solve a demand.
-     * When client accept an offer, will be involved here.
-     * As Client: "All offers that were accepted by me to solve my demand."
+     * Get all offers that were accepted by client to solve a demand. When client accept an offer, will be involved
+     * here. As Client: "All offers that were accepted by me to solve my demand."
      *
-     * @param userId id of user represented by client. Note that userId and userId are different
-     *               If userId represents some different user than client, exception will be thrown
+     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
+     * some different user than client, exception will be thrown
      * @param searchDefinition search filters, ordering
      * @return
      */
@@ -534,9 +535,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return list;
     }
 
-    /**************************************************************************/
-    /* Other getter methods                                                         */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Other getter methods
+     */
+    /**
+     * ***********************************************************************
+     */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException {
@@ -569,12 +576,17 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return messageDetailImpls;
     }
 
-    /**************************************************************************/
-    /* Setter methods                                                         */
-    /**************************************************************************/
     /**
-     * COMMON.
-     * Change 'read' status of sent messages to chosen value
+     * ***********************************************************************
+     */
+    /*
+     * Setter methods
+     */
+    /**
+     * ***********************************************************************
+     */
+    /**
+     * COMMON. Change 'read' status of sent messages to chosen value
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -589,8 +601,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * COMMON.
-     * Change 'star' status of sent messages to chosen value
+     * COMMON. Change 'star' status of sent messages to chosen value
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
@@ -604,8 +615,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * When demand is finished (when supplier delivered what client asked), client can finally close demand.
-     * At the end of whole process.
+     * When demand is finished (when supplier delivered what client asked), client can finally close demand. At the end
+     * of whole process.
      *
      * @param demandDetail
      * @throws RPCException
@@ -637,8 +648,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * Decline offer. When client is not satisfied with and offer, he can decline it. It doesn't influence
-     * other offers of that demand.
+     * Decline offer. When client is not satisfied with and offer, he can decline it. It doesn't influence other offers
+     * of that demand.
      *
      * @param offerDetail
      * @throws RPCException
@@ -651,11 +662,18 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         //Decline given offer
     }
 
-    /**************************************************************************/
-    /* Messages methods                                                       */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Messages methods
+     */
+    /**
+     * ***********************************************************************
+     */
     /**
      * Message sent by supplier about a query to potential demand.
+     *
      * @param messageDetailImpl
      * @return message
      */
@@ -738,9 +756,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * This method will update number of unread messages of logged user.
-     * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
-     * only when PoptavkaUserAuthentication object exist in SecurityContextHolder and we can retrieve userId.
+     * This method will update number of unread messages of logged user. Since this RPC class requires access of
+     * authenticated user (see security-web.xml) this method will be called only when PoptavkaUserAuthentication object
+     * exist in SecurityContextHolder and we can retrieve userId.
      *
      * TODO Vojto - call DB servise to retrieve the number of unread messages for given userId
      *
@@ -758,9 +776,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return unreadMessagesDetail;
     }
 
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Get Detail object for selecting in selection models
+     */
+    /**
+     * ***********************************************************************
+     */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientDemandDetail getClientDemand(long clientDemandID) throws RPCException, ApplicationSecurityException {

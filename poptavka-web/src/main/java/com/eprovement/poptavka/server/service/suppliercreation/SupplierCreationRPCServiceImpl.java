@@ -116,6 +116,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         setNewSupplierUserServices(supplier, newSupplier);
         setNewSuppliersNotificationItems(newSupplier);
         assignBusinessRoleToNewSupplier(newSupplier);
+        newSupplier.setOveralRating(Integer.valueOf(0));
         /** registration process **/
         // TODO - verification will be set after activation link has been received
         final Supplier supplierFromDB = supplierService.create(newSupplier);
