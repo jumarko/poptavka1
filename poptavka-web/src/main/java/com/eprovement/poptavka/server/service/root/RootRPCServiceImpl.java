@@ -40,7 +40,6 @@ import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -243,12 +242,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
             long threadId, long userId, long userMessageId) throws RPCException {
         Message threadRoot = messageService.getById(threadId);
 
-        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
+//        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
 
         User user = this.generalService.find(User.class, userId);
         List<UserMessage> userMessages = this.messageService
-                .getPotentialDemandConversationUserMessages(threadRoot, user);
-//        return messageConverter.convertToTargetList(messages);
+                .getConversationUserMessages(threadRoot, user);
         return userMessageConverter.convertToTargetList(userMessages);
     }
 
