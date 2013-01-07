@@ -2,11 +2,13 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -30,7 +32,7 @@ public class SupplierAssignedDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField(provided = true) UniversalTableWidget tableWidget;
+    @UiField(provided = true) UniversalTableGrid dataGrid;
     @UiField ListBox actionBox;
     @UiField UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel;
@@ -53,16 +55,17 @@ public class SupplierAssignedDemandsView extends Composite
 
     private void initTable() {
         pager = new UniversalPagerWidget();
-        tableWidget = new UniversalTableWidget(Constants.SUPPLIER_ASSIGNED_DEMANDS, pager.getPageSize());
-        pager.setDisplay(tableWidget.getGrid());
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        dataGrid = new UniversalTableGrid(Constants.SUPPLIER_ASSIGNED_DEMANDS, pager.getPageSize(), resource);
+        pager.setDisplay(dataGrid);
     }
 
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
     @Override
-    public UniversalTableWidget getTableWidget() {
-        return tableWidget;
+    public UniversalTableGrid getDataGrid() {
+        return dataGrid;
     }
 
     @Override

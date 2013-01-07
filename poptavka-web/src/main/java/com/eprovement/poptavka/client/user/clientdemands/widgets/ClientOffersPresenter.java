@@ -10,7 +10,7 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEven
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -51,7 +51,7 @@ public class ClientOffersPresenter
         //Table
         UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
 
-        UniversalTableWidget getOfferGrid();
+        UniversalTableGrid getOfferGrid();
 
         //Pager
         SimplePager getDemandPager();
@@ -171,13 +171,13 @@ public class ClientOffersPresenter
         view.setOfferTableVisible(true);
         //
         if (view.getOfferPager().getPage() != childTablePage) {
-            view.getOfferGrid().getGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
+            view.getOfferGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
             eventBus.setHistoryStoredForNextOne(false);
         }
         view.getOfferPager().setPage(childTablePage);
         //if selection differs to the restoring one
         boolean wasEqual = false;
-        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getGrid().getSelectionModel();
+        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getSelectionModel();
         for (ClientDemandConversationDetail cdcd : (Set<
                 ClientDemandConversationDetail>) selectionModel.getSelectedSet()) {
             if (cdcd.getSupplierId() == childId) {
@@ -192,9 +192,9 @@ public class ClientOffersPresenter
         }
 
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getOfferGrid().getGrid().getDataCount(eventBus, new SearchDefinition(
-                    childTablePage * view.getOfferGrid().getGrid().getPageSize(),
-                    view.getOfferGrid().getGrid().getPageSize(),
+            view.getOfferGrid().getDataCount(eventBus, new SearchDefinition(
+                    childTablePage * view.getOfferGrid().getPageSize(),
+                    view.getOfferGrid().getPageSize(),
                     filterHolder,
                     null));
         }
@@ -230,8 +230,8 @@ public class ClientOffersPresenter
     public void onDisplayClientOfferedDemandOffers(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemandOffers");
 
-        view.getOfferGrid().getGrid().getDataProvider().updateRowData(
-                view.getOfferGrid().getGrid().getStart(), data);
+        view.getOfferGrid().getDataProvider().updateRowData(
+                view.getOfferGrid().getStart(), data);
 
         if (selectedClientOfferedDemandOfferId != -1) {
             eventBus.getClientOfferedDemand(selectedClientOfferedDemandOfferId);
@@ -274,9 +274,9 @@ public class ClientOffersPresenter
         view.getOfferGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
-                List<IUniversalDetail> rows = view.getOfferGrid().getGrid().getVisibleItems();
+                List<IUniversalDetail> rows = view.getOfferGrid().getVisibleItems();
                 for (IUniversalDetail row : rows) {
-                    ((MultiSelectionModel) view.getOfferGrid().getGrid()
+                    ((MultiSelectionModel) view.getOfferGrid()
                             .getSelectionModel()).setSelected(row, value);
                 }
             }
@@ -289,7 +289,7 @@ public class ClientOffersPresenter
                     @Override
                     public void update(int index, IUniversalDetail object, Boolean value) {
                         object.setStarred(!value);
-                        view.getOfferGrid().getGrid().redraw();
+                        view.getOfferGrid().redraw();
                         Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
@@ -323,12 +323,11 @@ public class ClientOffersPresenter
 //                if (lastOpenedDemandOffer != object.getOfferId()) {
                 lastOpenedDemandOffer = object.getOfferId();
                 object.setRead(true);
-//                    view.getOfferGrid().getGrid().redraw();
+//                    view.getOfferGrid().redraw();
 //                    view.setDemandTableVisible(false);
 //                    view.setOfferTableVisible(true);
                 displayDetailContent(object);
-                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getGrid()
-                        .getSelectionModel();
+                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
                 eventBus.createTokenForHistory2(Storage.getDemandId(),
@@ -403,7 +402,7 @@ public class ClientOffersPresenter
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.setDemandTableVisible(false);
                     view.setOfferTableVisible(true);
-                    view.getOfferGrid().getGrid().getDataCount(eventBus, null);
+                    view.getOfferGrid().getDataCount(eventBus, null);
                     eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
                 }
             }
@@ -427,7 +426,7 @@ public class ClientOffersPresenter
      * If offer table range change (page changed), create token for new data (different page).
      */
     private void offerGridRangeChangeHandler() {
-        view.getOfferGrid().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+        view.getOfferGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
                 eventBus.createTokenForHistory2(

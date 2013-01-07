@@ -156,9 +156,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     /* Constructors of UniversalAsyncGrid                                     */
     /**************************************************************************/
-    public UniversalAsyncGrid(List<String> gridColumns) {
-        super();
-        this.gridColumns = gridColumns;
+    public UniversalAsyncGrid(int pageSize, Resources resources) {
+        super(pageSize, resources);
         this.setCustomEmptyTableNotification();
         setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
@@ -172,13 +171,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
-        this.gridColumns = gridColumns;
-        this.setCustomEmptyTableNotification();
-        setEmptyTableWidget(new Label(Storage.MSGS.noData()));
-    }
-
-    public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns, int pageSize, Resources resources) {
-        super(pageSize, resources, keyProvider);
         this.gridColumns = gridColumns;
         this.setCustomEmptyTableNotification();
         setEmptyTableWidget(new Label(Storage.MSGS.noData()));
@@ -481,6 +473,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
     public void cancelRangeChangedEvent() {
         cancelRangeChangedEvent = true;
+    }
+
+    public void setGridColumns(List<String> gridColumns) {
+        this.gridColumns = gridColumns;
     }
 
     public void refresh() {

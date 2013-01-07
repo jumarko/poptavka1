@@ -5,7 +5,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -49,7 +49,7 @@ public class ClientOffersView extends Composite
     /**************************************************************************/
     /* DemandOfferTable Attrinbutes                                           */
     /**************************************************************************/
-    @UiField(provided = true) UniversalTableWidget offerGrid;
+    @UiField(provided = true) UniversalTableGrid offerGrid;
     /**************************************************************************/
     /* Other Attrinbutes                                                      */
     /**************************************************************************/
@@ -93,7 +93,7 @@ public class ClientOffersView extends Composite
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
                 gridColumns, demandPager.getPageSize(), resource);
-        demandGrid.setWidth("800px");
+        demandGrid.setWidth("1000px");
         demandGrid.setHeight("500px");
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
@@ -113,10 +113,11 @@ public class ClientOffersView extends Composite
     private void initOfferTable() {
         // Create a Pager.
         offerPager = new UniversalPagerWidget();
-        // Create a CellTable.
-        offerGrid = new UniversalTableWidget(Constants.CLIENT_OFFERED_DEMANDS, offerPager.getPageSize());
+        // Create a DataGrid.
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        offerGrid = new UniversalTableGrid(Constants.CLIENT_OFFERED_DEMANDS, offerPager.getPageSize(), resource);
         // bind pager to grid
-        offerPager.setDisplay(offerGrid.getGrid());
+        offerPager.setDisplay(offerGrid);
     }
 
     /**
@@ -189,7 +190,7 @@ public class ClientOffersView extends Composite
     }
 
     @Override
-    public UniversalTableWidget getOfferGrid() {
+    public UniversalTableGrid getOfferGrid() {
         return offerGrid;
     }
 

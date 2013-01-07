@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -40,7 +40,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
     public interface ClientAssignedDemandsLayoutInterface extends LazyView, IsWidget {
 
-        UniversalTableWidget getTableWidget();
+        UniversalTableGrid getDataGrid();
 
         SimplePager getPager();
 
@@ -90,7 +90,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         eventBus.requestDetailWrapperPresenter();
     }
 
@@ -103,14 +103,13 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         //If current page differ to stored one, cancel events that would be fire automatically but with no need
         if (view.getPager().getPage() != parentTablePage) {
             //cancel range change event in asynch data provider
-            view.getTableWidget().getGrid().cancelRangeChangedEvent();
+            view.getDataGrid().cancelRangeChangedEvent();
             eventBus.setHistoryStoredForNextOne(false);
         }
         view.getPager().setPage(parentTablePage);
         //if selection differs to the restoring one
         boolean wasEqual = false;
-        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
-                .getGrid().getSelectionModel();
+        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid().getSelectionModel();
         for (FullOfferDetail offer : (Set<
                 FullOfferDetail>) selectionModel.getSelectedSet()) {
             if (offer.getOfferDetail().getDemandId() == parentId) {
@@ -125,9 +124,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         }
 
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getTableWidget().getGrid().getDataCount(eventBus, new SearchDefinition(
-                    parentTablePage * view.getTableWidget().getGrid().getPageSize(),
-                    view.getTableWidget().getGrid().getPageSize(),
+            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
+                    parentTablePage * view.getDataGrid().getPageSize(),
+                    view.getDataGrid().getPageSize(),
                     filterHolder,
                     null));
         }
@@ -141,7 +140,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getTableWidget().getGrid(), view.getWrapperPanel(), type);
+            this.detailSection.initDetailWrapper(view.getDataGrid(), view.getWrapperPanel(), type);
         }
     }
 
@@ -152,8 +151,8 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onDisplayClientAssignedDemands(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemands");
 
-        view.getTableWidget().getGrid().getDataProvider().updateRowData(
-                view.getTableWidget().getGrid().getStart(), data);
+        view.getDataGrid().getDataProvider().updateRowData(
+                view.getDataGrid().getStart(), data);
 
         if (selectedClientAssignedDemandId != -1) {
             eventBus.getClientAssignedDemand(selectedClientAssignedDemandId);
@@ -161,7 +160,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     public void onSelectClientAssignedDemand(FullOfferDetail detail) {
-//        view.getTableWidget().getGrid().getSelectionModel().setSelected(detail, true);
+//        view.getDataGrid().getSelectionModel().setSelected(detail, true);
         eventBus.setHistoryStoredForNextOne(false); //don't create token
         //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
         //nejak vytvorit event na upadatefieldoch
@@ -192,7 +191,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
      * Handle table range change by creating token for new range/page.
      */
     private void dataGridRangeChangeHandler() {
-        view.getTableWidget().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+        view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
                 eventBus.createTokenForHistory3(view.getPager().getPage(), lastOpenedAssignedDemand);
@@ -202,23 +201,23 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     // Field Updaters
 
     public void addCheckHeaderUpdater() {
-        view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
+        view.getDataGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
             public void update(Boolean value) {
-                List<IUniversalDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
+                List<IUniversalDetail> rows = view.getDataGrid().getVisibleItems();
                 for (IUniversalDetail row : rows) {
-                    ((MultiSelectionModel) view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
+                    ((MultiSelectionModel) view.getDataGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
         });
     }
 
     public void addStarColumnFieldUpdater() {
-        view.getTableWidget().getStarColumn().setFieldUpdater(new FieldUpdater<IUniversalDetail, Boolean>() {
+        view.getDataGrid().getStarColumn().setFieldUpdater(new FieldUpdater<IUniversalDetail, Boolean>() {
             @Override
             public void update(int index, IUniversalDetail object, Boolean value) {
                 object.setStarred(!value);
-                view.getTableWidget().getGrid().redraw();
+                view.getDataGrid().redraw();
                 Long[] item = new Long[]{object.getUserMessageId()};
                 eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
             }
@@ -226,7 +225,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     public void addReplyColumnFieldUpdater() {
-        view.getTableWidget().getReplyImageColumn().setFieldUpdater(
+        view.getDataGrid().getReplyImageColumn().setFieldUpdater(
                 new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
                     public void update(int index, IUniversalDetail object, ImageResource value) {
@@ -236,7 +235,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     public void addCloseDemandColumnFieldUpdater() {
-        view.getTableWidget().getCloseDemandImageColumn().setFieldUpdater(
+        view.getDataGrid().getCloseDemandImageColumn().setFieldUpdater(
                 new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
                     public void update(int index, IUniversalDetail object, ImageResource value) {
@@ -253,10 +252,10 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 //                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
 //                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
                 object.setRead(true);
-//                    view.getTableWidget().getGrid().redraw();
+//                    view.getDataGrid().redraw();
                 displayDetailContent(object);
-                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
-                        .getGrid().getSelectionModel();
+                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid()
+                        .getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
                 eventBus.createTokenForHistory3(
@@ -265,11 +264,11 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 //                }
             }
         };
-        view.getTableWidget().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
     private void addActionChangeHandler() {
@@ -278,16 +277,16 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             public void onChange(ChangeEvent event) {
                 switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
                         break;
                     case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
                         break;
                     case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
                         break;
                     case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
                         break;
                     default:
                         break;

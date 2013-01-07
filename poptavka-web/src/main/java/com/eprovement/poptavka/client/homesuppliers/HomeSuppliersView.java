@@ -153,8 +153,7 @@ public class HomeSuppliersView extends OverflowComposite
         // used to identify contacts when fields (such as the name and address)
         // change.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(
-                KEY_PROVIDER, gridColumns, pager.getPageSize(), resource);
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(gridColumns, pager.getPageSize(), resource);
         dataGrid.setMinimumTableWidth(LOGO_COL_WIDTH + SUPPLIER_NAME_COL_WIDTH
                 + RATING_COL_WIDTH + ADDRESS_COL_WIDTH, Unit.PX);
         // Selection handler

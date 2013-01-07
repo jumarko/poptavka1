@@ -47,7 +47,7 @@
             <g:HTMLPanel></g:HTMLPanel>
         </g:east>
         <g:center>
-            <s:UniversalTableWidget ui:field="tableWidget" />
+            <s:UniversalTableGrid ui:field="dataGrid" />
         </g:center>
     </g:SplitLayoutPanel>
 </ui:UiBinder>

@@ -2,19 +2,12 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
@@ -42,19 +35,11 @@ import java.util.Set;
  *
  * @author Martin
  */
-public class UniversalTableWidget extends Composite {
+public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
 
-    private static UniversalTableWidgetUiBinder uiBinder =
-            GWT.create(UniversalTableWidgetUiBinder.class);
-
-    interface UniversalTableWidgetUiBinder extends UiBinder<Widget, UniversalTableWidget> {
-    }
     /**************************************************************************/
     /* DemandContestTable Attrinbutes                                         */
     /**************************************************************************/
-    //table definition
-    @UiField(provided = true)
-    UniversalAsyncGrid<IUniversalDetail> grid;
     //table columns
     private Header checkHeader;
     private Column<IUniversalDetail, Boolean> checkColumn;
@@ -99,18 +84,9 @@ public class UniversalTableWidget extends Composite {
     private static final String DOWNLOAD_OFFER_IMAGE_COLUMN = "downloadOffer";
     private static final String FINNISHED_IMAGE_COLUMN = "finnished";
     private List<String> gridColumns = new ArrayList<String>();
-    //others
-//    @UiField(provided = true)
-//    UniversalPagerWidget pager;
-//    @UiField(provided = true)
-//    ListBox actionBox;
-//    @UiField
-//    Label tableNameLabel;
     //Other
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
-    //Include KEY_PROVIDER here? Can be general provider for all those possible usages?
-    //If no, UniversalTableWidget - selectionModel creation must be modified
     //Keyprovider
     //--------------------------------------------------------------------------
     private static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
@@ -129,7 +105,8 @@ public class UniversalTableWidget extends Composite {
      * @param loadedView - define Constant in Constants class which define widget
      * for which table schema is generated.
      */
-    public UniversalTableWidget(int loadedView, int pageSize) {
+    public UniversalTableGrid(int loadedView, int pageSize, Resources resources) {
+        super(pageSize, resources);
         switch (loadedView) {
             case Constants.CLIENT_OFFERED_DEMANDS:
                 initClientOffers();
@@ -149,46 +126,21 @@ public class UniversalTableWidget extends Composite {
             default:
                 break;
         }
-        initTable(pageSize);
-//        initActionBox();
-
-        initWidget(uiBinder.createAndBindUi(this));
+        initTable();
     }
 
     /**
      * Initialize table: universalAsyncGrid.
      */
-    private void initTable(int pageSize) {
-//        // Create a Pager.
-//        pager = new UniversalPagerWidget();
-        // Create a CellTable.
-        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        grid = new UniversalAsyncGrid<IUniversalDetail>(gridColumns, pageSize, resource);
-        grid.setHeight("500px");
-
-
+    private void initTable() {
+        setGridColumns(gridColumns);
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        final SelectionModel<IUniversalDetail> selectionModel =
-                new MultiSelectionModel<IUniversalDetail>(KEY_PROVIDER);
-        grid.setSelectionModel(
-                selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
-
-//        // bind pager to grid
-//        pager.setDisplay(grid);
+        SelectionModel<IUniversalDetail> selectionModel = new MultiSelectionModel<IUniversalDetail>(KEY_PROVIDER);
+        setSelectionModel(selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
 
         initTableColumns();
     }
-
-//    private void initActionBox() {
-//        actionBox = new ListBox();
-//        actionBox.addItem(Storage.MSGS.action());
-//        actionBox.addItem(Storage.MSGS.read());
-//        actionBox.addItem(Storage.MSGS.unread());
-//        actionBox.addItem(Storage.MSGS.star());
-//        actionBox.addItem(Storage.MSGS.unstar());
-//        actionBox.setSelectedIndex(0);
-//    }
 
     /**
      * Generate table schema for ClientAcceptedOffers widget.
@@ -275,9 +227,9 @@ public class UniversalTableWidget extends Composite {
             }
         };
         // CheckBox column - always create this column
-        checkColumn = grid.addCheckboxColumn(checkHeader);
+        checkColumn = addCheckboxColumn(checkHeader);
         // Star Column - always create this column
-        starColumn = grid.addStarColumn();
+        starColumn = addStarColumn();
 
         addImageColumns();
         addClientNameColumn();
@@ -287,7 +239,7 @@ public class UniversalTableWidget extends Composite {
         addPriceColumn();
 
         if (gridColumns.contains(URGENCY_COLUMN)) {
-            urgencyColumn = grid.addUrgentColumn(Storage.MSGS.urgency());
+            urgencyColumn = addUrgentColumn(Storage.MSGS.urgency());
         }
 
         addReceivedDateColumn();
@@ -296,42 +248,42 @@ public class UniversalTableWidget extends Composite {
 
     private void addImageColumns() {
         if (gridColumns.contains(REPLY_IMAGE_COLUMN)) {
-            replyImageColumn = grid.addIconColumn(
+            replyImageColumn = addIconColumn(
                     Storage.RSCS.images().replyImage(),
                     Storage.MSGS.replyExplanationText());
         }
         if (gridColumns.contains(ACCEPT_OFFER_IMAGE_COLUMN)) {
-            acceptOfferImageColumn = grid.addIconColumn(
+            acceptOfferImageColumn = addIconColumn(
                     Storage.RSCS.images().acceptOfferImage(),
                     Storage.MSGS.acceptOfferExplanationText());
         }
         if (gridColumns.contains(DECLINE_OFFER_IMAGE_COLUMN)) {
-            declineOfferImageColumn = grid.addIconColumn(
+            declineOfferImageColumn = addIconColumn(
                     Storage.RSCS.images().declineOfferImage(),
                     Storage.MSGS.declineOfferExplanationText());
         }
         if (gridColumns.contains(CLOSE_DEMAND_IMAGE_COLUMN)) {
-            closeDemandImageColumn = grid.addIconColumn(
+            closeDemandImageColumn = addIconColumn(
                     Storage.RSCS.images().closeDemandImage(),
                     Storage.MSGS.closeDemandExplanationText());
         }
         if (gridColumns.contains(SEND_OFFER_IMAGE_COLUMN)) {
-            sendOfferImageColumn = grid.addIconColumn(
+            sendOfferImageColumn = addIconColumn(
                     Storage.RSCS.images().sendOfferImage(),
                     Storage.MSGS.sendOfferExplanationText());
         }
         if (gridColumns.contains(EDIT_OFFER_IMAGE_COLUMN)) {
-            editOfferImageColumn = grid.addIconColumn(
+            editOfferImageColumn = addIconColumn(
                     Storage.RSCS.images().editOfferImage(),
                     Storage.MSGS.editOfferExplanationText());
         }
         if (gridColumns.contains(DOWNLOAD_OFFER_IMAGE_COLUMN)) {
-            downloadOfferImageColumns = grid.addIconColumn(
+            downloadOfferImageColumns = addIconColumn(
                     Storage.RSCS.images().downloadOfferImage(),
                     Storage.MSGS.downloadOfferExplanationText());
         }
         if (gridColumns.contains(FINNISHED_IMAGE_COLUMN)) {
-            finnishedImageColumn = grid.addIconColumn(
+            finnishedImageColumn = addIconColumn(
                     Storage.RSCS.images().finnishedImage(),
                     Storage.MSGS.finnishedExplanationText());
         }
@@ -339,8 +291,8 @@ public class UniversalTableWidget extends Composite {
 
     private void addClientNameColumn() {
         if (gridColumns.contains(CLIENT_NAME_COLUMN)) {
-            clientNameColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.client(), true, NAME_COL_WIDTH,
+            clientNameColumn = addColumn(
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.client(), true, NAME_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -353,8 +305,8 @@ public class UniversalTableWidget extends Composite {
 
     private void addSupplierNameColumn() {
         if (gridColumns.contains(SUPPLIER_NAME_COLUMN)) {
-            supplierNameColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, NAME_COL_WIDTH,
+            supplierNameColumn = addColumn(
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, NAME_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -367,8 +319,8 @@ public class UniversalTableWidget extends Composite {
 
     private void addDemandTitleColumn() {
         if (gridColumns.contains(DEMAND_TITLE_COLUMN)) {
-            demandTitleColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, DEMAND_TITLE_COL_WIDTH,
+            demandTitleColumn = addColumn(
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, DEMAND_TITLE_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -381,8 +333,8 @@ public class UniversalTableWidget extends Composite {
 
     private void addRatingColumn() {
         if (gridColumns.contains(RATING_COLUMN)) {
-            ratingColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.rating(), true, RATING_COL_WIDTH,
+            ratingColumn = addColumn(
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.rating(), true, RATING_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -395,8 +347,8 @@ public class UniversalTableWidget extends Composite {
 
     private void addPriceColumn() {
         if (gridColumns.contains(PRICE_COLUMN)) {
-            priceColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), false, PRICE_COL_WIDTH,
+            priceColumn = addColumn(
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), false, PRICE_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -409,8 +361,8 @@ public class UniversalTableWidget extends Composite {
 
     private void addReceivedDateColumn() {
         if (gridColumns.contains(RECEIVED_DATE_COLUMN)) {
-            receiveDateColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.received(), true, COL_WIDTH,
+            receiveDateColumn = addColumn(
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.received(), true, COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -423,8 +375,8 @@ public class UniversalTableWidget extends Composite {
 
     private void addFinnishDateColumn() {
         if (gridColumns.contains(FINNISH_DATE_COLUMN)) {
-            finnishDateColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.deliveryDate(), true, COL_WIDTH,
+            finnishDateColumn = addColumn(
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.deliveryDate(), true, COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -438,16 +390,6 @@ public class UniversalTableWidget extends Composite {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
-    //Table
-    public UniversalAsyncGrid<IUniversalDetail> getGrid() {
-        return grid;
-    }
-
-//    //Pager
-//    public SimplePager getPager() {
-//        return pager.getPager();
-//    }
-
     //Columns
     public Column<IUniversalDetail, Boolean> getCheckColumn() {
         return checkColumn;
@@ -526,16 +468,6 @@ public class UniversalTableWidget extends Composite {
         return checkHeader;
     }
 
-//    //Label
-//    public Label getTableNameLabel() {
-//        return tableNameLabel;
-//    }
-//
-//    //ListBox
-//    public ListBox getActionBox() {
-//        return actionBox;
-//    }
-
     /**
      * Get selected objects.
      * @return
@@ -543,7 +475,7 @@ public class UniversalTableWidget extends Composite {
     @SuppressWarnings("unchecked")
     public Set<IUniversalDetail> getSelectedMessageList() {
         MultiSelectionModel<IUniversalDetail> model =
-                (MultiSelectionModel<IUniversalDetail>) grid.getSelectionModel();
+                (MultiSelectionModel<IUniversalDetail>) getSelectionModel();
         return model.getSelectedSet();
     }
 
