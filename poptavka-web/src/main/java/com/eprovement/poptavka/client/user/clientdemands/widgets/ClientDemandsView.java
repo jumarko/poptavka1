@@ -122,8 +122,8 @@ public class ClientDemandsView extends Composite
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
                 gridColumns, demandPager.getPageSize(), resource);
-        demandGrid.setWidth("800px");
-        demandGrid.setHeight("500px");
+        demandGrid.setWidth("100%");
+        demandGrid.setHeight("100%");
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         final SelectionModel<ClientDemandDetail> selectionModel =
@@ -148,8 +148,8 @@ public class ClientDemandsView extends Composite
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         conversationGrid = new UniversalAsyncGrid<ClientDemandConversationDetail>(
                 gridColumns, demandPager.getPageSize(), resource);
-        conversationGrid.setWidth("800px");
-        conversationGrid.setHeight("500px");
+        conversationGrid.setWidth("100%");
+        conversationGrid.setHeight("100%");
 
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.

@@ -93,8 +93,8 @@ public class ClientOffersView extends Composite
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
                 gridColumns, demandPager.getPageSize(), resource);
-        demandGrid.setWidth("1000px");
-        demandGrid.setHeight("500px");
+        demandGrid.setWidth("100%");
+        demandGrid.setHeight("100%");
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         final SelectionModel<ClientDemandDetail> selectionModel =
@@ -251,7 +251,7 @@ public class ClientOffersView extends Composite
     @Override
     public void setOfferTableVisible(boolean visible) {
         offerGrid.setVisible(visible);
-        offerGrid.setSize("500px", "1000px");
+        offerGrid.setSize("100%", "100%");
         offerHeader.setVisible(visible);
         offerToolBar.setVisible(visible);
     }
