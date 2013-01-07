@@ -29,6 +29,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
@@ -57,8 +58,13 @@ public class ClientOffersPresenter
 
         SimplePager getOfferPager();
 
+        //ListBox
+        ListBox getActionBox();
+
         //Buttons
         Button getBackBtn();
+
+        Button getAcceptBtn();
 
         //Other
         SimplePanel getWrapperPanel();
@@ -103,6 +109,7 @@ public class ClientOffersPresenter
         addTextColumnFieldUpdaters();
         // Buttons Actions
         addBackButtonHandler();
+        addAcceptOfferButtonHandler();
         addActionChangeHandler();
     }
 
@@ -163,11 +170,11 @@ public class ClientOffersPresenter
         view.setDemandTableVisible(false);
         view.setOfferTableVisible(true);
         //
-        if (view.getOfferGrid().getPager().getPage() != childTablePage) {
+        if (view.getOfferPager().getPage() != childTablePage) {
             view.getOfferGrid().getGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
             eventBus.setHistoryStoredForNextOne(false);
         }
-        view.getOfferGrid().getPager().setPage(childTablePage);
+        view.getOfferPager().setPage(childTablePage);
         //if selection differs to the restoring one
         boolean wasEqual = false;
         MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getGrid().getSelectionModel();
@@ -314,7 +321,7 @@ public class ClientOffersPresenter
             @Override
             public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
 //                if (lastOpenedDemandOffer != object.getOfferId()) {
-//                    lastOpenedDemandOffer = object.getOfferId();
+                lastOpenedDemandOffer = object.getOfferId();
                 object.setRead(true);
 //                    view.getOfferGrid().getGrid().redraw();
 //                    view.setDemandTableVisible(false);
@@ -348,11 +355,20 @@ public class ClientOffersPresenter
         });
     }
 
+    private void addAcceptOfferButtonHandler() {
+        view.getAcceptBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestAcceptOffer(lastOpenedDemandOffer);
+            }
+        });
+    }
+
     private void addActionChangeHandler() {
-        view.getOfferGrid().getActionBox().addChangeHandler(new ChangeHandler() {
+        view.getActionBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                switch (view.getOfferGrid().getActionBox().getSelectedIndex()) {
+                switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
                         break;

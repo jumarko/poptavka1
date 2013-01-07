@@ -7,7 +7,7 @@
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-	<g:DockLayoutPanel unit="PX">
+<!--	<g:DockLayoutPanel unit="PX">
 		<g:north size="65">
 			<g:HorizontalPanel ui:field="demandHeader" styleName="{res.layout.toolbarItemsBlock}">
 				<g:Label ui:field="tableNameLabel" />
@@ -15,8 +15,8 @@
 				<s:UniversalPagerWidget ui:field='pager'/>
 			</g:HorizontalPanel>
 		</g:north>
-		<g:center>
+		<g:center>-->
 			<s:UniversalAsyncGrid ui:field="grid"/>
-		</g:center>
-	</g:DockLayoutPanel>
+		<!--</g:center>-->
+	<!--</g:DockLayoutPanel>-->
 </ui:UiBinder>

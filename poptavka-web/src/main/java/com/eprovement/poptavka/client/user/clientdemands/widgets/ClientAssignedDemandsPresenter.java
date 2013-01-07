@@ -20,8 +20,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
@@ -38,10 +40,12 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
     public interface ClientAssignedDemandsLayoutInterface extends LazyView, IsWidget {
 
-        //Table
         UniversalTableWidget getTableWidget();
 
-        //Other
+        SimplePager getPager();
+
+        ListBox getActionBox();
+
         SimplePanel getWrapperPanel();
 
         IsWidget getWidgetView();
@@ -97,12 +101,12 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         eventBus.selectClientDemandsMenu(Constants.CLIENT_ASSIGNED_DEMANDS);
         //
         //If current page differ to stored one, cancel events that would be fire automatically but with no need
-        if (view.getTableWidget().getPager().getPage() != parentTablePage) {
+        if (view.getPager().getPage() != parentTablePage) {
             //cancel range change event in asynch data provider
             view.getTableWidget().getGrid().cancelRangeChangedEvent();
             eventBus.setHistoryStoredForNextOne(false);
         }
-        view.getTableWidget().getPager().setPage(parentTablePage);
+        view.getPager().setPage(parentTablePage);
         //if selection differs to the restoring one
         boolean wasEqual = false;
         MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTableWidget()
@@ -191,7 +195,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         view.getTableWidget().getGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory3(view.getTableWidget().getPager().getPage(), lastOpenedAssignedDemand);
+                eventBus.createTokenForHistory3(view.getPager().getPage(), lastOpenedAssignedDemand);
             }
         });
     }
@@ -256,7 +260,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
                 eventBus.createTokenForHistory3(
-                        view.getTableWidget().getPager().getPage(),
+                        view.getPager().getPage(),
                         object.getOfferDetail().getDemandId());
 //                }
             }
@@ -269,10 +273,10 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     private void addActionChangeHandler() {
-        view.getTableWidget().getActionBox().addChangeHandler(new ChangeHandler() {
+        view.getActionBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                switch (view.getTableWidget().getActionBox().getSelectedIndex()) {
+                switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
                         eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;

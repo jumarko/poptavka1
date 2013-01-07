@@ -45,22 +45,19 @@ public class ClientDemandsView extends Composite
     /* DemandTable Attributes                                                 */
     /**************************************************************************/
     //table definition
-    @UiField(provided = true)
-    UniversalAsyncGrid<ClientDemandDetail> demandGrid;
+    @UiField(provided = true) UniversalAsyncGrid<ClientDemandDetail> demandGrid;
     //table column width constatnts
     private static final int TITLE_COL_WIDTH = 50;
     private static final int PRICE_COL_WIDTH = 30;
     private static final int FINNISH_DATE_COL_WIDTH = 30;
     private static final int VALID_TO_DATE_COL_WIDTH = 30;
     //pager definition
-    @UiField(provided = true)
-    UniversalPagerWidget demandPager;
+    @UiField(provided = true) UniversalPagerWidget demandPager;
     /**************************************************************************/
     /* DemandConversationTable Attrinbutes                                         */
     /**************************************************************************/
     //table definition
-    @UiField(provided = true)
-    UniversalAsyncGrid<ClientDemandConversationDetail> conversationGrid;
+    @UiField(provided = true) UniversalAsyncGrid<ClientDemandConversationDetail> conversationGrid;
     //table columns
     private Header checkHeader;
     private Column<ClientDemandConversationDetail, Boolean> checkColumn;
@@ -74,24 +71,18 @@ public class ClientDemandsView extends Composite
     private static final int BODY_PREVIEW_COL_WIDTH = 30;
     private static final int DATE_COL_WIDTH = 20;
     //pager definition
-    @UiField(provided = true)
-    UniversalPagerWidget conversationPager;
+    @UiField(provided = true) UniversalPagerWidget conversationPager;
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
     //TODO Martin - ako i18n format datumu?
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
     //detail WrapperPanel
-    @UiField
-    SimplePanel wrapperPanel;
-    @UiField
-    Label demandTitlelabel;
-    @UiField(provided = true)
-    ListBox actions;
-    @UiField
-    HorizontalPanel demandHeader, conversationHeader;
-    @UiField
-    Button backBtn;
+    @UiField SimplePanel wrapperPanel;
+    @UiField Label demandTitlelabel;
+    @UiField(provided = true) ListBox actions;
+    @UiField HorizontalPanel demandHeader, conversationHeader;
+    @UiField Button backBtn;
 
     /**************************************************************************/
     /* Initialization                                                         */

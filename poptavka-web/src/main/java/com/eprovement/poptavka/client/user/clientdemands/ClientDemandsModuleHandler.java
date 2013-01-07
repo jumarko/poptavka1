@@ -244,8 +244,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             @Override
             public void onSuccess(ArrayList<Void> result) {
                 GWT.log("onRequestAcceptOffer finished");
-                //Empty by default
-                // TODO martin - forward to assigned demands view
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
             }
         });
     }

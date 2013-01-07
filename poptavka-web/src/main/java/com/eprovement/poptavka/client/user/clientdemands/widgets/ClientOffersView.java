@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionModel;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class ClientOffersView extends Composite
         implements ClientOffersPresenter.ClientOffersLayoutInterface {
+
 
     private static ClientOffersLayoutViewUiBinder uiBinder = GWT.create(ClientOffersLayoutViewUiBinder.class);
 
@@ -43,33 +45,26 @@ public class ClientOffersView extends Composite
     private static final int PRICE_COL_WIDTH = 30;
     private static final int FINNISH_DATE_COL_WIDTH = 30;
     private static final int VALID_TO_DATE_COL_WIDTH = 30;
-    //pager definition
-    @UiField(provided = true)
-    UniversalPagerWidget demandPager;
-    /**************************************************************************/
-    /* DemandOfferTable Attrinbutes                                         */
-    /**************************************************************************/
-    //table definition
-    @UiField(provided = true)
-    UniversalTableWidget contestGrid;
-    /**************************************************************************/
-    /* Attrinbutes                                                            */
-    /**************************************************************************/
-    //TODO Martin - ako i18n format datumu?
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
-    //table handling buttons
-    @UiField
-    Button backBtn;
-    //detail WrapperPanel
-    @UiField
-    SimplePanel wrapperPanel;
-    @UiField
-    Label demandTitlelabel;
-    @UiField
-    HorizontalPanel demandHeader, contestHeader;
 
     /**************************************************************************/
-    /* Initialization                                                            */
+    /* DemandOfferTable Attrinbutes                                           */
+    /**************************************************************************/
+    @UiField(provided = true) UniversalTableWidget offerGrid;
+    /**************************************************************************/
+    /* Other Attrinbutes                                                      */
+    /**************************************************************************/
+    /** UiFieds. **/
+    @UiField(provided = true) UniversalPagerWidget demandPager, offerPager;
+    @UiField ListBox actionBox;
+    @UiField Button backBtn, acceptBtn;
+    @UiField SimplePanel wrapperPanel;
+    @UiField Label demandTableNameLabel, offerTableNameLabel;
+    @UiField HorizontalPanel demandHeader, offerHeader, offerToolBar;
+    /** Class Attributes. **/
+    private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
+
+    /**************************************************************************/
+    /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
@@ -80,6 +75,7 @@ public class ClientOffersView extends Composite
         initOfferTable();
         initWidget(uiBinder.createAndBindUi(this));
 
+        offerTableNameLabel.setText("Offered demands offers table.");
         setOfferTableVisible(false);
     }
 
@@ -115,8 +111,12 @@ public class ClientOffersView extends Composite
      * Initialize this example.
      */
     private void initOfferTable() {
+        // Create a Pager.
+        offerPager = new UniversalPagerWidget();
         // Create a CellTable.
-        contestGrid = new UniversalTableWidget(Constants.CLIENT_OFFERED_DEMANDS);
+        offerGrid = new UniversalTableWidget(Constants.CLIENT_OFFERED_DEMANDS, offerPager.getPageSize());
+        // bind pager to grid
+        offerPager.setDisplay(offerGrid.getGrid());
     }
 
     /**
@@ -190,7 +190,7 @@ public class ClientOffersView extends Composite
 
     @Override
     public UniversalTableWidget getOfferGrid() {
-        return contestGrid;
+        return offerGrid;
     }
 
     //Pager
@@ -201,7 +201,13 @@ public class ClientOffersView extends Composite
 
     @Override
     public SimplePager getOfferPager() {
-        return contestGrid.getPager();
+        return offerPager.getPager();
+    }
+
+    //Buttons
+    @Override
+    public ListBox getActionBox() {
+        return actionBox;
     }
 
     //Buttons
@@ -210,6 +216,12 @@ public class ClientOffersView extends Composite
         return backBtn;
     }
 
+    @Override
+    public Button getAcceptBtn() {
+        return acceptBtn;
+    }
+
+    //Others
     @Override
     public SimplePanel getWrapperPanel() {
         return wrapperPanel;
@@ -226,7 +238,6 @@ public class ClientOffersView extends Composite
     @Override
     public void setDemandTableVisible(boolean visible) {
         demandGrid.setVisible(visible);
-//        demandGrid.redraw();
         if (!visible) {
             SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
             if (selectionModel.getSelectedObject() != null) {
@@ -238,14 +249,14 @@ public class ClientOffersView extends Composite
 
     @Override
     public void setOfferTableVisible(boolean visible) {
-        contestGrid.setVisible(visible);
-        contestGrid.setSize("600px", "800px");
-//        contestGrid.getGrid().redraw();
-        contestHeader.setVisible(visible);
+        offerGrid.setVisible(visible);
+        offerGrid.setSize("500px", "1000px");
+        offerHeader.setVisible(visible);
+        offerToolBar.setVisible(visible);
     }
 
     @Override
     public void setDemandTitleLabel(String text) {
-        demandTitlelabel.setText(text);
+        demandTableNameLabel.setText(text);
     }
 }

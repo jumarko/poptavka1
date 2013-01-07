@@ -2,58 +2,77 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ClientAssignedDemandsView extends Composite
         implements ClientAssignedDemandsPresenter.ClientAssignedDemandsLayoutInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static ClientAssignedDemandsLayoutViewUiBinder uiBinder =
             GWT.create(ClientAssignedDemandsLayoutViewUiBinder.class);
 
     interface ClientAssignedDemandsLayoutViewUiBinder extends UiBinder<Widget, ClientAssignedDemandsView> {
     }
     /**************************************************************************/
-    /* DemandOfferTable Attrinbutes                                         */
-    /**************************************************************************/
-    //table definition
-    @UiField(provided = true)
-    UniversalTableWidget tableWidget;
-    /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    //detail WrapperPanel
-    @UiField
-    SimplePanel wrapperPanel;
+    @UiField(provided = true) UniversalTableWidget tableWidget;
+    @UiField UniversalPagerWidget pager;
+    @UiField SimplePanel wrapperPanel;
+    @UiField HorizontalPanel toolBar;
+    @UiField ListBox actionBox;
+    @UiField Label tableNameLabel;
 
     /**************************************************************************/
-    /* Initialization                                                            */
+    /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
 
-        tableWidget = new UniversalTableWidget(Constants.CLIENT_ASSIGNED_DEMANDS);
-        //TODO Martin - premenovat tiez i18n - Project -> Demand
-        tableWidget.getTableNameLabel().setText(Storage.MSGS.clientAssignedProjectsTitle());
-
+        initTable();
         initWidget(uiBinder.createAndBindUi(this));
+
+        tableNameLabel.setText(Storage.MSGS.clientAssignedDemandsTitle());
+    }
+
+    private void initTable() {
+        pager = new UniversalPagerWidget();
+        tableWidget = new UniversalTableWidget(Constants.CLIENT_ASSIGNED_DEMANDS, pager.getPageSize());
+        pager.setDisplay(tableWidget.getGrid());
     }
 
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
-    //Table Widget
     @Override
     public UniversalTableWidget getTableWidget() {
         return tableWidget;
+    }
+
+    @Override
+    public SimplePager getPager() {
+        return pager.getPager();
+    }
+
+    @Override
+    public ListBox getActionBox() {
+        return actionBox;
     }
 
     @Override

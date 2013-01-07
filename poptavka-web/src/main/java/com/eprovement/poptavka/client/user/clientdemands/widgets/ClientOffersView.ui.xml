@@ -6,7 +6,21 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-    <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
+    <ui:style>
+        .button {
+        background: url(images/new-offer-green.png) no-repeat;
+        padding: 0 0 1px 23px;
+        border: none;
+        color: #FFFFFF;
+        font-weight: bold;
+        height: 31px;
+        width: 119px;
+        float: left;
+        }
+
+    </ui:style>
+
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:east size="400">
             <g:SimplePanel ui:field="wrapperPanel">
                 <g:HTMLPanel>
@@ -27,25 +41,49 @@
                     <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
                         <g:HorizontalPanel ui:field="demandHeader">
                             <g:Label>
-                                <ui:msg key="clientContestsTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
+                                <ui:msg key="clientOfferedDemandTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
                             </g:Label>
                             <s:UniversalPagerWidget ui:field='demandPager' />
                         </g:HorizontalPanel>
-                        <g:HorizontalPanel ui:field="contestHeader">
+                        <g:HorizontalPanel ui:field="offerHeader">
                             <g:Button ui:field="backBtn">
-                                <ui:msg key="backToClientContests">Spat na vsetky poptavky s ponukami</ui:msg>
+                                <ui:msg key="backToClientOfferedDemand">Spat na vsetky poptavky s ponukami</ui:msg>
                             </g:Button>
-                            <g:Label ui:field="demandTitlelabel"/>
+                            <g:Label ui:field="demandTableNameLabel"/>
+                        </g:HorizontalPanel>
+                        <g:HorizontalPanel ui:field="offerToolBar">
+                            <g:Button ui:field="acceptBtn" styleName='{style.button}'>
+                                <ui:msg key="accept">Accept</ui:msg>
+                            </g:Button>
+                            <g:Label ui:field="offerTableNameLabel" />
+                            <g:ListBox ui:field="actionBox" selectedIndex="0">
+                                <g:item>
+                                    <ui:msg key="actoin">action</ui:msg>
+                                </g:item>
+                                <g:item>
+                                    <ui:msg key="read">read</ui:msg>
+                                </g:item>
+                                <g:item>
+                                    <ui:msg key="unread">unread</ui:msg>
+                                </g:item>
+                                <g:item>
+                                    <ui:msg key="star">star</ui:msg>
+                                </g:item>
+                                <g:item>
+                                    <ui:msg key="unstar">unstar</ui:msg>
+                                </g:item>
+                            </g:ListBox>
+                            <s:UniversalPagerWidget ui:field='offerPager'/>
                         </g:HorizontalPanel>
                     </g:HorizontalPanel>
                 </g:north>
                 <g:center>
                     <g:VerticalPanel>
                         <s:UniversalAsyncGrid ui:field="demandGrid" />
-                        <s:UniversalTableWidget ui:field="contestGrid" />
+                        <s:UniversalTableWidget ui:field="offerGrid" />
                     </g:VerticalPanel>
                 </g:center>
             </g:DockLayoutPanel>
         </g:center>
-    </g:DockLayoutPanel>
+    </g:SplitLayoutPanel>
 </ui:UiBinder>

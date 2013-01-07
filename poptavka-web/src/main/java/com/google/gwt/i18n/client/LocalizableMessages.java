@@ -219,12 +219,12 @@ public interface LocalizableMessages extends Messages {
     String notEntered();
 
     //client demands
-    String clientProjectsTitle();
-    String clientContestsTitle();
-    String clientAssignedProjectsTitle();
+    String clientDemandsTitle();
+    String clientOfferedDemandsTitle();
+    String clientAssignedDemandsTitle();
 
-    String backToClientProjects();
-    String backToClientContests();
+    String backToClientDemands();
+    String backToClientOfferedDemands();
 
     //supplier demands
     String supplierPotentialDemandsTableTitle();

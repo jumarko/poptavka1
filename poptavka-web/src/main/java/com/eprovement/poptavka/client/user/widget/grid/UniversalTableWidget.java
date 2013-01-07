@@ -12,11 +12,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -103,12 +100,12 @@ public class UniversalTableWidget extends Composite {
     private static final String FINNISHED_IMAGE_COLUMN = "finnished";
     private List<String> gridColumns = new ArrayList<String>();
     //others
-    @UiField(provided = true)
-    UniversalPagerWidget pager;
-    @UiField(provided = true)
-    ListBox actionBox;
-    @UiField
-    Label tableNameLabel;
+//    @UiField(provided = true)
+//    UniversalPagerWidget pager;
+//    @UiField(provided = true)
+//    ListBox actionBox;
+//    @UiField
+//    Label tableNameLabel;
     //Other
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
@@ -132,7 +129,7 @@ public class UniversalTableWidget extends Composite {
      * @param loadedView - define Constant in Constants class which define widget
      * for which table schema is generated.
      */
-    public UniversalTableWidget(int loadedView) {
+    public UniversalTableWidget(int loadedView, int pageSize) {
         switch (loadedView) {
             case Constants.CLIENT_OFFERED_DEMANDS:
                 initClientOffers();
@@ -152,8 +149,8 @@ public class UniversalTableWidget extends Composite {
             default:
                 break;
         }
-        initTableAndPager();
-        initActionBox();
+        initTable(pageSize);
+//        initActionBox();
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -161,12 +158,12 @@ public class UniversalTableWidget extends Composite {
     /**
      * Initialize table: universalAsyncGrid.
      */
-    private void initTableAndPager() {
-        // Create a Pager.
-        pager = new UniversalPagerWidget();
+    private void initTable(int pageSize) {
+//        // Create a Pager.
+//        pager = new UniversalPagerWidget();
         // Create a CellTable.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        grid = new UniversalAsyncGrid<IUniversalDetail>(gridColumns, pager.getPageSize(), resource);
+        grid = new UniversalAsyncGrid<IUniversalDetail>(gridColumns, pageSize, resource);
         grid.setHeight("500px");
 
 
@@ -177,21 +174,21 @@ public class UniversalTableWidget extends Composite {
         grid.setSelectionModel(
                 selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
 
-        // bind pager to grid
-        pager.setDisplay(grid);
+//        // bind pager to grid
+//        pager.setDisplay(grid);
 
         initTableColumns();
     }
 
-    private void initActionBox() {
-        actionBox = new ListBox();
-        actionBox.addItem(Storage.MSGS.action());
-        actionBox.addItem(Storage.MSGS.read());
-        actionBox.addItem(Storage.MSGS.unread());
-        actionBox.addItem(Storage.MSGS.star());
-        actionBox.addItem(Storage.MSGS.unstar());
-        actionBox.setSelectedIndex(0);
-    }
+//    private void initActionBox() {
+//        actionBox = new ListBox();
+//        actionBox.addItem(Storage.MSGS.action());
+//        actionBox.addItem(Storage.MSGS.read());
+//        actionBox.addItem(Storage.MSGS.unread());
+//        actionBox.addItem(Storage.MSGS.star());
+//        actionBox.addItem(Storage.MSGS.unstar());
+//        actionBox.setSelectedIndex(0);
+//    }
 
     /**
      * Generate table schema for ClientAcceptedOffers widget.
@@ -446,10 +443,10 @@ public class UniversalTableWidget extends Composite {
         return grid;
     }
 
-    //Pager
-    public SimplePager getPager() {
-        return pager.getPager();
-    }
+//    //Pager
+//    public SimplePager getPager() {
+//        return pager.getPager();
+//    }
 
     //Columns
     public Column<IUniversalDetail, Boolean> getCheckColumn() {
@@ -529,15 +526,15 @@ public class UniversalTableWidget extends Composite {
         return checkHeader;
     }
 
-    //Label
-    public Label getTableNameLabel() {
-        return tableNameLabel;
-    }
-
-    //ListBox
-    public ListBox getActionBox() {
-        return actionBox;
-    }
+//    //Label
+//    public Label getTableNameLabel() {
+//        return tableNameLabel;
+//    }
+//
+//    //ListBox
+//    public ListBox getActionBox() {
+//        return actionBox;
+//    }
 
     /**
      * Get selected objects.
