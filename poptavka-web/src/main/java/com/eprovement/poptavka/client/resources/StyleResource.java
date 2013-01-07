@@ -53,6 +53,10 @@ public interface StyleResource extends ClientBundle {
     CreateTabPanel createTabPanel();
 
     @NotStrict
+    @Source("detailTabPanel.css")
+    DetailTabPanel detailTabPanel();
+
+    @NotStrict
     @Source("standartStyles.css")
     StandartStyles standartStyles();
 

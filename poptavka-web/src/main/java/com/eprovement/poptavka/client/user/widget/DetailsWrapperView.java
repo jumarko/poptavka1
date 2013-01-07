@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget;
 
+import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
@@ -47,6 +48,7 @@ public class DetailsWrapperView extends Composite
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        StyleResource.INSTANCE.detailTabPanel().ensureInjected();
     }
 
     /**************************************************************************/
