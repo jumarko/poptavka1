@@ -39,7 +39,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     private long clientId;
     private String clientName;
     private String title;
-
     //Keyprovider
     public static final ProvidesKey<ClientOfferedDemandOffersDetail> KEY_PROVIDER =
             new ProvidesKey<ClientOfferedDemandOffersDetail>() {
@@ -303,21 +302,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
         return this.title;
     }
 
-    @Override
-    public String displayHtml(String trustedHtml, boolean isRead) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String toString() {
-        return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
-                + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
-                + supplierUserId + ", isRead=" + isRead + ", isStarred=" + isStarred + ", supplierName="
-                + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
-                + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
-                + unreadMessageCount + '}';
-    }
-
     /**
      * @param clientId the clientId to set
      */
@@ -339,5 +323,33 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
         this.title = title;
     }
 
+    @Override
+    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
+        StringBuilder str = new StringBuilder();
+        switch (displayWhat) {
+            case IUniversalDetail.CLIENT_NAME:
+                str.append(getClientName());
+                break;
+            case IUniversalDetail.SUPPLIER_NAME:
+                str.append(getSupplierName());
+                break;
+            default:
+                break;
+        }
+        str.append(" ");
+        str.append(getUnreadMessageCount());
+        str.append("/");
+        str.append(getMessageCount());
+        return str.toString();
+    }
 
+    @Override
+    public String toString() {
+        return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
+                + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
+                + supplierUserId + ", isRead=" + isRead + ", isStarred=" + isStarred + ", supplierName="
+                + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
+                + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
+                + unreadMessageCount + '}';
+    }
 }

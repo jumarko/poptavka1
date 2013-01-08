@@ -415,15 +415,15 @@ public class ClientDemandsPresenter
         });
     }
 
+    /** RowStyles. **/
     private void addDemandGridRowStyles() {
         view.getDemandGrid().setRowStyles(new RowStyles<ClientDemandDetail>() {
             @Override
             public String getStyleNames(ClientDemandDetail row, int rowIndex) {
-                if (row.getUnreadSubmessages() > 0) {
-                    return "font-weight:bold !important";
-                } else {
-                    return "";
+                if (row.getUnreadMessageCount() > 0) {
+                    return Storage.RSCS.grid().unread();
                 }
+                return "";
             }
         });
     }
@@ -433,10 +433,9 @@ public class ClientDemandsPresenter
             @Override
             public String getStyleNames(ClientDemandConversationDetail row, int rowIndex) {
                 if (row.getUnreadSubmessages() > 0) {
-                    return "font-weight:bold !important";
-                } else {
-                    return "";
+                    return Storage.RSCS.grid().unread();
                 }
+                return "";
             }
         });
     }

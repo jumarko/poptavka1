@@ -13,11 +13,6 @@ public class BaseDemandDetail implements Serializable {
      *
      */
     private static final long serialVersionUID = 7279268325707740135L;
-    /**
-     * Constants for html display of demands in view tables.
-     */
-    private static final String HTML_UNREAD_START = "<strong>";
-    private static final String HTML_UNREAD_END = "</strong>";
     private DemandDetailType detailType = DemandDetailType.BASE;
 
     private long demandId;
@@ -127,20 +122,6 @@ public class BaseDemandDetail implements Serializable {
                 + read + "\n     isStarred="
                 + starred + "\n  detailType="
                 + detailType + "\n";
-    }
-
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this nethod due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    public static String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
-        }
     }
 
     public void setType(DemandDetailType detailType) {

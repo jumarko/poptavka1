@@ -19,4 +19,6 @@ public interface GridTableResources extends CssResource {
     @ClassName("cell-table-hand-cursor")
     String cellTableHandCursor();
 
+    @ClassName("unread")
+    String unread();
 }

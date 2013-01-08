@@ -71,18 +71,19 @@ public interface IUniversalDetail {
 
     String getPrice();
 
-    // Display
-    //--------------------------------------------------------------------------
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this method due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    String displayHtml(String trustedHtml, boolean isRead);
-
     // Offer part
     //--------------------------------------------------------------------------
     long getOfferId();
 
+    // Display
+    //--------------------------------------------------------------------------
+    int CLIENT_NAME = 0;
+    int SUPPLIER_NAME = 1;
+    /**
+     * Return CLIENT or SUPPLIER name with count of sub.
+     *
+     * @param displayWhat - constants: IUniversalDetail.CLIENT_NAME, IUniversalDetail.SUPPLIER_NAME
+     * @return
+     */
+    String displayUserNameWithUnreadMessageCounts(int displayWhat);
 }

@@ -46,8 +46,6 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     private int minRating;
     private String demandType;
     private DemandStatus demandStatus;
-    private static final String HTML_UNREAD_START = "<strong>";
-    private static final String HTML_UNREAD_END = "</strong>";
     private DemandDetailType detailType = DemandDetailType.BASE;
     private long demandId;
     // messageId = threadRoot
@@ -346,14 +344,6 @@ public class FullDemandDetail implements Serializable, TableDisplay {
 
     public void setExcludedSuppliers(List<FullSupplierDetail> excludedSuppliers) {
         this.excludedSuppliers = excludedSuppliers;
-    }
-
-    public static String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
-        }
     }
 
     @Override

@@ -299,10 +299,25 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public String displayHtml(String trustedHtml, boolean isRead) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
+        StringBuilder str = new StringBuilder();
+        switch (displayWhat) {
+            case IUniversalDetail.CLIENT_NAME:
+                str.append(getClientName());
+                break;
+            case IUniversalDetail.SUPPLIER_NAME:
+                str.append(getSupplierName());
+                break;
+            default:
+                break;
+        }
+        str.append(" ");
+        str.append(getUnreadMessageCount());
+        str.append("/");
+        str.append(getMessageCount());
+        return str.toString();
     }
+
 
     @Override
     public String toString() {
@@ -313,6 +328,4 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
                 + unreadMessageCount + '}';
     }
-
-
 }

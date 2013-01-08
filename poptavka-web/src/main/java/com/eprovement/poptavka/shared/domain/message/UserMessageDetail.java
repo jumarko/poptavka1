@@ -116,25 +116,7 @@ public class UserMessageDetail implements Serializable, MessageTableDisplay {
                 + "starred: " + isStarred
                 + "messageDetail" + messageDetail.toString();
     }
-    //    public MessageType getMessageType() {
-    //        return MessageType.CONVERSATION;
-    //    }
-    private static final String HTML_UNREAD_START = "<strong>";
-    private static final String HTML_UNREAD_END = "</strong>";
 
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this nethod due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    public static String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
-        }
-    }
     public static final ProvidesKey<UserMessageDetail> KEY_PROVIDER = new ProvidesKey<UserMessageDetail>() {
 
         @Override

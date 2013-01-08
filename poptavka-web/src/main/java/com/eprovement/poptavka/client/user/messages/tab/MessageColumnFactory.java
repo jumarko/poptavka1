@@ -16,7 +16,6 @@ import com.google.gwt.view.client.SelectionModel;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
-import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 
 /**
  * Factory class for creating DataGrid columns including optional sorting ability.
@@ -127,7 +126,7 @@ public class MessageColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
-                return BaseDemandDetail.displayHtml(obj.getSenderEmail(), obj.isRead());
+                return obj.getSenderEmail();
             }
         });
         if (sortHandler != null) {
@@ -165,10 +164,9 @@ public class MessageColumnFactory<T> {
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
                 if (displayMessages) {
-                    return BaseDemandDetail.displayHtml(
-                            obj.getMessageDetail().getSubject() + " " + obj.getFormattedMessageCount(), obj.isRead());
+                    return obj.getMessageDetail().getSubject() + " " + obj.getFormattedMessageCount();
                 } else {
-                    return BaseDemandDetail.displayHtml(obj.getMessageDetail().getSubject(), obj.isRead());
+                    return obj.getMessageDetail().getSubject();
                 }
             }
         };
@@ -204,10 +202,8 @@ public class MessageColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
-                return BaseDemandDetail.displayHtml(
-                        DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(
-                        obj.getMessageDetail().getCreated()),
-                        obj.isRead());
+                return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(
+                        obj.getMessageDetail().getCreated());
             }
         };
         if (sortHandler != null) {

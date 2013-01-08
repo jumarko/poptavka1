@@ -24,6 +24,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -108,6 +109,8 @@ public class ClientOffersPresenter
         addBackButtonHandler();
         addAcceptOfferButtonHandler();
         addActionChangeHandler();
+        // Row styles
+        addDemandGridRowStyles();
     }
 
     /**************************************************************************/
@@ -345,6 +348,7 @@ public class ClientOffersPresenter
         view.getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
                 detailSection.clear();
                 view.getDemandPager().startLoading();
                 view.setOfferTableVisible(false);
@@ -363,6 +367,21 @@ public class ClientOffersPresenter
         });
     }
 
+    /** Row Styles. **/
+    private void addDemandGridRowStyles() {
+        view.getDemandGrid().setRowStyles(new RowStyles<ClientDemandDetail>() {
+            @Override
+            public String getStyleNames(ClientDemandDetail row, int rowIndex) {
+                if (row.getUnreadMessageCount() > 0) {
+                    return Storage.RSCS.grid().unread();
+                } else {
+                    return "";
+                }
+            }
+        });
+    }
+
+    /** Action box handers. **/
     private void addActionChangeHandler() {
         view.getActionBox().addChangeHandler(new ChangeHandler() {
             @Override

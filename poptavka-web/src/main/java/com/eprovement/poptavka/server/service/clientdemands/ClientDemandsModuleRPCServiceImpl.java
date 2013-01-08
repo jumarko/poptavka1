@@ -242,7 +242,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             Long messageId = (Long) pairs.getKey();
             for (ClientDemandDetail cdd : cdds) {
                 if (cdd.getDemandId() == messageId) {
-                    cdd.setUnreadSubmessages(((Integer) pairs.getValue()).intValue());
+                    cdd.setUnreadMessageCount(((Integer) pairs.getValue()).intValue());
                     break;
                 }
             }
@@ -370,7 +370,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             Long messageId = (Long) pairs.getKey();
             for (ClientDemandDetail cdd : cdds) {
                 if (cdd.getDemandId() == messageId) {
-                    cdd.setUnreadSubmessages(((Integer) pairs.getValue()).intValue());
+                    cdd.setUnreadMessageCount(((Integer) pairs.getValue()).intValue());
                     break;
                 }
             }

@@ -91,7 +91,6 @@ public class ClientDemandsView extends Composite
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
-        Storage.RSCS.common().ensureInjected();
 
         actions = new ListBox();
         actions.addItem(Storage.MSGS.action());
@@ -187,10 +186,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(
-                                clientDetail.getPrice(),
-                                clientDetail.getUnreadSubmessages());
+                        return ((ClientDemandDetail) object).getPrice();
                     }
                 });
 
@@ -200,10 +196,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(
-                                formatter.format(clientDetail.getEndDate()),
-                                clientDetail.getUnreadSubmessages());
+                        return formatter.format(((ClientDemandDetail) object).getEndDate());
                     }
                 });
 
@@ -213,10 +206,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(
-                                formatter.format(clientDetail.getValidToDate()),
-                                clientDetail.getUnreadSubmessages());
+                        return formatter.format(((ClientDemandDetail) object).getValidToDate());
                     }
                 });
     }
@@ -246,7 +236,7 @@ public class ClientDemandsView extends Composite
                     @Override
                     public String getValue(Object object) {
                         ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
-                        return ClientDemandConversationDetail.displaySupplierNameHtml(detail);
+                        return ClientDemandConversationDetail.displaySupplierNameWithMessagesCounts(detail);
                     }
                 });
 
@@ -256,12 +246,10 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
                         StringBuilder str = new StringBuilder();
                         str.append(((ClientDemandConversationDetail) object).getMessageDetail().getBody());
                         str.append("...");
-                        return ClientDemandConversationDetail.displayHtml(
-                                str.toString(), detail.getUnreadSubmessages());
+                        return str.toString();
                     }
                 });
 
@@ -271,10 +259,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
-                        return ClientDemandConversationDetail.displayHtml(
-                                formatter.format(detail.getDate()),
-                                detail.getUnreadSubmessages());
+                        return formatter.format(((ClientDemandConversationDetail) object).getDate());
                     }
                 });
     }

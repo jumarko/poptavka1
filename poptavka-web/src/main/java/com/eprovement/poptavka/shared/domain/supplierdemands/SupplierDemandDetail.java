@@ -155,20 +155,6 @@ public class SupplierDemandDetail implements Serializable, TableDisplay {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this nethod due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    public static String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return "<strong>" + trustedHtml + "</strong>";
-        }
-    }
-
     @Override
     public Date getEndDate() {
         return endDate;

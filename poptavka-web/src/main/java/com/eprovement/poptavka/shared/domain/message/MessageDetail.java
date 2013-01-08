@@ -14,8 +14,6 @@ import java.util.Date;
  */
 public class MessageDetail implements Serializable {
 
-    private static final String HTML_UNREAD_START = "<strong>";
-    private static final String HTML_UNREAD_END = "</strong>";
     /**
      * Generated serialVersionUID.
      */
@@ -246,14 +244,6 @@ public class MessageDetail implements Serializable {
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
-    }
-
-    public static String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
-        }
     }
 
     @Override

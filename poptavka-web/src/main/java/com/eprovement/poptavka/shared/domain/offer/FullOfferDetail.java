@@ -76,21 +76,6 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
         this.demandDetail = demandDetail;
     }
 
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this nethod due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    @Override
-    public String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return "<strong>" + trustedHtml + "</strong>";
-        }
-    }
-
     @Override
     public boolean isRead() {
         return this.messageDetail.isRead();
@@ -228,4 +213,24 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     public long getOfferId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
+        StringBuilder str = new StringBuilder();
+        switch (displayWhat) {
+            case IUniversalDetail.CLIENT_NAME:
+                str.append(getClientName());
+                break;
+            case IUniversalDetail.SUPPLIER_NAME:
+                str.append(getSupplierName());
+                break;
+            default:
+                break;
+        }
+        str.append(" ");
+        str.append(getUnreadMessageCount());
+        str.append("/");
+        str.append(getMessageCount());
+        return str.toString();
+    }
+
 }

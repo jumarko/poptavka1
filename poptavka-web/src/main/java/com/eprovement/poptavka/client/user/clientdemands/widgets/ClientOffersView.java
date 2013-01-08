@@ -116,6 +116,8 @@ public class ClientOffersView extends Composite
         // Create a DataGrid.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         offerGrid = new UniversalTableGrid(Constants.CLIENT_OFFERED_DEMANDS, offerPager.getPageSize(), resource);
+        offerGrid.setWidth("100%");
+        offerGrid.setHeight("100%");
         // bind pager to grid
         offerPager.setDisplay(offerGrid);
     }
@@ -130,10 +132,7 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(
-                                clientDetail.getDemandTitle(),
-                                clientDetail.getUnreadSubmessages());
+                        return ClientDemandDetail.displayTitleHtml((ClientDemandDetail) object);
                     }
                 });
 
@@ -143,10 +142,7 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(
-                                clientDetail.getPrice(),
-                                clientDetail.getUnreadSubmessages());
+                        return ((ClientDemandDetail) object).getPrice();
                     }
                 });
 
@@ -156,10 +152,7 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(
-                                formatter.format(clientDetail.getEndDate()),
-                                clientDetail.getUnreadSubmessages());
+                        return formatter.format(((ClientDemandDetail) object).getEndDate());
                     }
                 });
 
@@ -169,10 +162,7 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayHtml(
-                                formatter.format(clientDetail.getValidToDate()),
-                                clientDetail.getUnreadSubmessages());
+                        return formatter.format(((ClientDemandDetail) object).getValidToDate());
                     }
                 });
     }
@@ -253,7 +243,6 @@ public class ClientOffersView extends Composite
     public void setOfferTableVisible(boolean visible) {
         offerGrid.setVisible(visible);
         offerGrid.redraw();
-//        offerGrid.setSize("100%", "100%");
         offerHeader.setVisible(visible);
         offerToolBar.setVisible(visible);
     }

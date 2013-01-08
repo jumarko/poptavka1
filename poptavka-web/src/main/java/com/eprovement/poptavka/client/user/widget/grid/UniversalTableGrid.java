@@ -7,6 +7,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -81,7 +82,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private List<String> gridColumns = new ArrayList<String>();
     //Other
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
-
     //Keyprovider
     //--------------------------------------------------------------------------
     private static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
@@ -122,6 +122,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                 break;
         }
         initTable();
+        setDataGridRowStyles();
     }
 
     /**
@@ -135,6 +136,21 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         setSelectionModel(selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
 
         initTableColumns();
+    }
+
+    /**
+     * Set custom row style according to condition.
+     */
+    private void setDataGridRowStyles() {
+        setRowStyles(new RowStyles<IUniversalDetail>() {
+            @Override
+            public String getStyleNames(IUniversalDetail row, int rowIndex) {
+                if (row.getUnreadMessageCount() > 0) {
+                    return Storage.RSCS.grid().unread();
+                }
+                return "";
+            }
+        });
     }
 
     /**
@@ -291,8 +307,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.getClientName();
+                            return ((IUniversalDetail) object).displayUserNameWithUnreadMessageCounts(
+                                    IUniversalDetail.CLIENT_NAME);
                         }
                     });
         }
@@ -305,8 +321,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.getSupplierName();
+                            return ((IUniversalDetail) object).displayUserNameWithUnreadMessageCounts(
+                                    IUniversalDetail.SUPPLIER_NAME);
                         }
                     });
         }
@@ -319,8 +335,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.getTitle();
+                            return ((IUniversalDetail) object).getTitle();
                         }
                     });
         }
@@ -333,8 +348,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            return Integer.toString(detail.getRating());
+                            return Integer.toString(((IUniversalDetail) object).getRating());
                         }
                     });
         }
@@ -347,8 +361,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            return detail.getPrice();
+                            return ((IUniversalDetail) object).getPrice();
                         }
                     });
         }
@@ -361,8 +374,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            return formatter.format(detail.getReceivedDate());
+                            return formatter.format(((IUniversalDetail) object).getReceivedDate());
                         }
                     });
         }
@@ -375,8 +387,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            return formatter.format(detail.getDeliveryDate());
+                            return formatter.format(((IUniversalDetail) object).getDeliveryDate());
                         }
                     });
         }

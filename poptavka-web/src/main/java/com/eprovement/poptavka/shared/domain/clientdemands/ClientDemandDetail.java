@@ -32,7 +32,7 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
     private boolean read = false;
     private boolean starred = false;
     private int messageCount = -1;
-    private int unreadSubmessages = -1;
+    private int unreadMessageCount = -1;
     public static final ProvidesKey<ClientDemandDetail> KEY_PROVIDER =
             new ProvidesKey<ClientDemandDetail>() {
                 @Override
@@ -134,16 +134,16 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.messageCount = messageCount;
     }
 
-    public int getUnreadSubmessages() {
-        return unreadSubmessages;
+    public int getUnreadMessageCount() {
+        return unreadMessageCount;
     }
 
-    public void setUnreadSubmessages(int unreadSubmessages) {
-        this.unreadSubmessages = unreadSubmessages;
+    public void setUnreadMessageCount(int unreadMessageCount) {
+        this.unreadMessageCount = unreadMessageCount;
     }
 
     public String getFormattedMessageCount() {
-        return "(" + getMessageCount() + "/" + getUnreadSubmessages() + ")";
+        return "(" + getUnreadMessageCount() + "/" + getMessageCount() + ")";
     }
 
     public String getSender() {
@@ -170,27 +170,13 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this nethod due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    public static String displayHtml(String trustedHtml, int unreadSubNessages) {
-//        if (unreadSubNessages > 0) {
-//            return "<strong>" + trustedHtml + "</strong>";
-//        } else {
-        return trustedHtml;
-//        }
-    }
-
     public static String displayTitleHtml(ClientDemandDetail clientDemandDetail) {
-        if (clientDemandDetail.getUnreadSubmessages() > 0) {
+        if (clientDemandDetail.getUnreadMessageCount() > 0) {
             StringBuilder str = new StringBuilder();
             str.append("<strong>");
             str.append(clientDemandDetail.getDemandTitle());
             str.append(" (");
-            str.append(clientDemandDetail.getUnreadSubmessages());
+            str.append(clientDemandDetail.getUnreadMessageCount());
             str.append(")");
             str.append("<strong>");
             return str.toString();

@@ -340,26 +340,31 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-
-    // Display
-    //--------------------------------------------------------------------------
-    /**
-     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
-     * User CANNOT call this nethod due to security issues.
-     * @param trustedHtml
-     * @return string in html tags
-     */
-    @Override
-    public String displayHtml(String trustedHtml, boolean isRead) {
-        if (isRead) {
-            return trustedHtml;
-        } else {
-            return "<strong>" + trustedHtml + "</strong>";
-        }
-    }
-
     @Override
     public long getOfferId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    // Display
+    //--------------------------------------------------------------------------
+    @Override
+    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
+        StringBuilder str = new StringBuilder();
+        switch (displayWhat) {
+            case IUniversalDetail.CLIENT_NAME:
+                str.append(getClientName());
+                break;
+            case IUniversalDetail.SUPPLIER_NAME:
+                str.append(getSupplierName());
+                break;
+            default:
+                break;
+        }
+        str.append(" ");
+        str.append(getUnreadMessageCount());
+        str.append("/");
+        str.append(getMessageCount());
+        return str.toString();
+    }
+
 }

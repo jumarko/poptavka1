@@ -18,7 +18,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 
 import java.math.BigDecimal;
@@ -152,7 +151,7 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
         return (new Column<PotentialDemandMessage, String>(tableTextCell) {
             @Override
             public String getValue(PotentialDemandMessage object) {
-                return BaseDemandDetail.displayHtml(dateFormat.format(object.getValidToDate()), object.isRead());
+                return dateFormat.format(object.getValidToDate());
             }
         });
     }
@@ -162,7 +161,7 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
         return (new Column<PotentialDemandMessage, String>(tableTextCell) {
             @Override
             public String getValue(PotentialDemandMessage object) {
-                return BaseDemandDetail.displayHtml(dateFormat.format(object.getEndDate()), object.isRead());
+                return dateFormat.format(object.getEndDate());
             }
         });
     }
@@ -173,9 +172,9 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
             @Override
             public String getValue(PotentialDemandMessage object) {
                 if (object.getDemandPrice().equals(BigDecimal.ZERO)) {
-                    return BaseDemandDetail.displayHtml(msgs.notEntered(), object.isRead());
+                    return msgs.notEntered();
                 }
-                return BaseDemandDetail.displayHtml(object.getDemandPrice().toString(), object.isRead());
+                return object.getDemandPrice().toString();
             }
         });
     }
@@ -184,7 +183,7 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
         return (new Column<PotentialDemandMessage, String>(tableTextCell) {
             @Override
             public String getValue(PotentialDemandMessage object) {
-                return BaseDemandDetail.displayHtml(object.getSubject(), object.isRead());
+                return object.getSubject();
             }
         });
     }
