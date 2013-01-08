@@ -22,18 +22,13 @@ import java.util.Set;
  * This widget was created mainly for ClientAssignedProjects, SupplierPotentialProjects,
  * SupplierContests, SupplierAssignedProjects widgets. Those listed widgets use similar
  * tables, therefore this widget was design to cover all common functionality as:
- Page * UniversalAsyncGrid - see UniversalAsyncGrid class
+ * UniversalAsyncGrid - see UniversalAsyncGrid class
  * MultiSelectionModel
- * SimplePager
- * PageSize list box selection for selecting different number of visible items.
  *
  * As for this widget has no presenter, action handlers for column field updater
  * must be defined in widget's presenter that is using this one.
  *
- * Commented code temporary disabled. If there will be enought place in tables,
- * some might be included.
- *
- * @author Martin
+ * @author Martin Slavkovsky
  */
 public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
 

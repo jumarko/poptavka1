@@ -5,19 +5,14 @@ import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
-import com.eprovement.poptavka.client.user.widget.messaging.SimpleMessageWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.List;
 
 /**
  * TODOS:
@@ -28,23 +23,29 @@ import java.util.List;
 public class DetailsWrapperView extends Composite
         implements DetailsWrapperPresenter.IDetailWrapper {
 
-    private static DetailsWrapperViewUiBinder uiBinder = GWT.create(DetailsWrapperViewUiBinder.class);
-
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     interface DetailsWrapperViewUiBinder extends UiBinder<Widget, DetailsWrapperView> {
     }
-    @UiField
-    TabLayoutPanel container;
-    @UiField
-    EditableDemandDetailView editableDemandDetail;
-    @UiField
-    DemandDetailView demandDetail;
-    @UiField
-    SupplierDetailView supplierDetail;
-    @UiField
-    UserConversationPanel conversationPanel;
-    @UiField
-    DevelOfferQuestionWindow replyHolder;
+    private static DetailsWrapperViewUiBinder uiBinder = GWT.create(DetailsWrapperViewUiBinder.class);
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attribute. **/
+    @UiField TabLayoutPanel container;
+    @UiField EditableDemandDetailView editableDemandDetail;
+    @UiField DemandDetailView demandDetail;
+    @UiField SupplierDetailView supplierDetail;
+    @UiField UserConversationPanel conversationPanel;
+    @UiField DevelOfferQuestionWindow replyHolder;
+    @UiField VerticalPanel conversationHolder;
+    /** Class attribute. **/
+    private LoadingDiv loadingDiv = new LoadingDiv();
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -55,54 +56,20 @@ public class DetailsWrapperView extends Composite
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override
-    public void setMessageReadHandler(ChangeHandler click) {
-        for (int i = 0; i < conversationPanel.getMessagePanel().getWidgetCount(); i++) {
-            ((SimpleMessageWindow) conversationPanel.getMessagePanel().getWidget(i))
-                    .getUpdateRead().addChangeHandler(click);
+    public void loadingDivShow(Widget holderWidget) {
+        GWT.log("  - loading div created");
+        if (loadingDiv == null) {
+            loadingDiv = new LoadingDiv();
         }
+        holderWidget.getElement().appendChild(loadingDiv.getElement());
     }
 
     @Override
-    public void setDemandDetail(FullDemandDetail demand) {
-        if (editableDemandDetail.isVisible()) {
-            editableDemandDetail.setDemanDetail(demand);
+    public void loadingDivHide(Widget holderWidget) {
+        GWT.log("  - loading div removed");
+        if (holderWidget.getElement().isOrHasChild(loadingDiv.getElement())) {
+            holderWidget.getElement().removeChild(loadingDiv.getElement());
         }
-        if (demandDetail.isVisible()) {
-            demandDetail.setDemanDetail(demand);
-        }
-    }
-
-    @Override
-    public void setSupplierDetail(FullSupplierDetail supplier) {
-        supplierDetail.setSupplierDetail(supplier);
-        //supplierHeader.toggleLoading();
-    }
-
-    @Override
-    public void setChat(List<MessageDetail> chatMessages, boolean collapsed) {
-        conversationPanel.setMessageList(chatMessages, true);
-        //conversationHeader.toggleLoading();
-    }
-
-    @Override
-    public void toggleDemandLoading() {
-        //toggle actual visible state
-        //Implement loading indicator
-        //demandHeader.toggleLoading();
-    }
-
-    @Override
-    public void toggleSupplierLoading() {
-        //toggle actual visible state
-        //Implement loading indicator
-        //supplierHeader.toggleLoading();
-    }
-
-    @Override
-    public void toggleConversationLoading() {
-        //toggle actual visible state
-        //Implement loading indicator
-        //conversationHeader.toggleLoading();
     }
 
     /**************************************************************************/
@@ -136,6 +103,11 @@ public class DetailsWrapperView extends Composite
     @Override
     public DevelOfferQuestionWindow getReplyHolder() {
         return replyHolder;
+    }
+
+    @Override
+    public VerticalPanel getConversationHolder() {
+        return conversationHolder;
     }
 
     @Override

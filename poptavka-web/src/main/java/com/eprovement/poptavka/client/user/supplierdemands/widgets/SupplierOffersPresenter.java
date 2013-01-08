@@ -10,10 +10,7 @@ import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
-//import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -55,8 +52,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    //viewType
-    private ViewType type = ViewType.OFFER;
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
@@ -147,7 +142,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel(), type);
+            this.detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
             this.detailSection.setTabVisibility(DetailsWrapperPresenter.SUPPLIER, false);
         }
     }
@@ -180,15 +175,8 @@ public class SupplierOffersPresenter extends LazyPresenter<
      * @param userMessageId ID for demand related contest
      */
     public void displayDetailContent(SupplierOffersDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId(), type);
+        detailSection.requestDemandDetail(detail.getDemandId());
         detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
-    }
-
-    public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
-        //neccessary check for method to be executed only in appropriate presenter
-        if (type.equals(handlingType)) {
-//            detailSection.addConversationMessage(sentMessage);
-        }
     }
 
     /**************************************************************************/

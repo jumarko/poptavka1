@@ -38,7 +38,7 @@
 			<g:header>
 				<ui:msg key="conversationDetail">Conversation detail</ui:msg>
 			</g:header>
-			<g:VerticalPanel>
+			<g:VerticalPanel ui:field="conversationHolder">
 				<d:UserConversationPanel ui:field="conversationPanel"
 					styleName="{style.relative}" />
 				<d:DevelOfferQuestionWindow ui:field="replyHolder" />

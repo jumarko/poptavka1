@@ -35,14 +35,6 @@ public class ClientDemandsModuleView extends Composite
     }
 
     /**************************************************************************/
-    /* Setters                                                                */
-    /**************************************************************************/
-    @Override
-    public void setContent(IsWidget contentWidget) {
-        contentPanel.setWidget(contentWidget);
-    }
-
-    /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
     @Override
@@ -78,6 +70,11 @@ public class ClientDemandsModuleView extends Composite
     @Override
     public Button getAllSuppliers() {
         return allSuppliers;
+    }
+
+    @Override
+    public SimplePanel getContentPanel() {
+        return contentPanel;
     }
 
     @Override

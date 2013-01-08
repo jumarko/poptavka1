@@ -9,12 +9,15 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
+import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
@@ -42,14 +45,14 @@ public class ClientDemandsModulePresenter
 
         Button getAllSuppliers();
 
-        void setContent(IsWidget contentWidget);
+        SimplePanel getContentPanel();
 
         IsWidget getWidgetView();
     }
-
     private ClientDemandsPresenter clientDemands = null;
     private ClientOffersPresenter clientOffers = null;
     private ClientAssignedDemandsPresenter clientAssigendDemands = null;
+    private LoadingDiv loadingDiv = new LoadingDiv();
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -71,6 +74,22 @@ public class ClientDemandsModulePresenter
     public void confirm(NavigationEventCommand event) {
         Window.confirm("Client Demand confirm method.");
         // nothing
+    }
+
+    public void onLoadingDivShow(String loadingMessage) {
+        GWT.log("  - loading div created");
+        if (loadingDiv == null) {
+            loadingDiv = new LoadingDiv();
+        }
+        view.getContentPanel().clear();
+        view.getContentPanel().getElement().appendChild(loadingDiv.getElement());
+    }
+
+    public void onLoadingDivHide() {
+        GWT.log("  - loading div removed");
+        if (view.getContentPanel().getElement().isOrHasChild(loadingDiv.getElement())) {
+            view.getContentPanel().getElement().removeChild(loadingDiv.getElement());
+        }
     }
 
     /**************************************************************************/
@@ -127,6 +146,7 @@ public class ClientDemandsModulePresenter
     /**************************************************************************/
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
 //        eventBus.setNavigationConfirmation(this);
+        eventBus.loadingDivShow(Storage.MSGS.loading());
         switch (loadWidget) {
             case Constants.CLIENT_DEMANDS:
                 if (clientDemands != null) {
@@ -165,7 +185,7 @@ public class ClientDemandsModulePresenter
     /* Business events handled by presenter */
     /**************************************************************************/
     public void onDisplayView(IsWidget content) {
-        view.setContent(content);
+        view.getContentPanel().setWidget(content);
     }
 
     /**************************************************************************/

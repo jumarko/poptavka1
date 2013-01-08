@@ -11,7 +11,6 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -97,7 +96,6 @@ public class ClientDemandsPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     //viewType
-    private ViewType type = ViewType.EDITABLE;
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
@@ -144,11 +142,10 @@ public class ClientDemandsPresenter
         eventBus.createTokenForHistory1(0);
 
         eventBus.displayView(view.getWidgetView());
+        eventBus.loadingDivHide();
         //init wrapper widget
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         eventBus.requestDetailWrapperPresenter();
-
-        eventBus.loadingHide();
     }
 
     public void onInitClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
@@ -232,7 +229,7 @@ public class ClientDemandsPresenter
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel(), type);
+            this.detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
         }
     }
 
@@ -282,9 +279,9 @@ public class ClientDemandsPresenter
      * @param userMessageId ID for demand related conversation
      */
     public void displayDetailContent(ClientDemandConversationDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
         detailSection.requestConversation(detail.getThreadMessageId(), Storage.getUser().getUserId());
+        detailSection.requestDemandDetail(detail.getDemandId());
+        detailSection.requestSupplierDetail(detail.getSupplierId());
     }
 
     /**************************************************************************/
@@ -333,13 +330,14 @@ public class ClientDemandsPresenter
         textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
             @Override
             public void update(int index, ClientDemandConversationDetail object, String value) {
+                displayDetailContent(object);
 //                if (lastOpenedDemandConversation != object.getUserMessageId()) {
 //                    lastOpenedDemandConversation = object.getUserMessageId();
                 object.setRead(true);
 //                    view.getConversationGrid().redraw();
                 view.setDemandTableVisible(false);
                 view.setConversationTableVisible(true);
-                displayDetailContent(object);
+//                displayDetailContent(object);
                 MultiSelectionModel selectionModel = (MultiSelectionModel) view.getConversationGrid()
                         .getSelectionModel();
                 selectionModel.clear();
@@ -394,6 +392,7 @@ public class ClientDemandsPresenter
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.setDemandTableVisible(false);
                     view.setConversationTableVisible(true);
+                    view.getConversationPager().startLoading();
                     view.getConversationGrid().getDataCount(eventBus, null);
                     eventBus.createTokenForHistory2(selected.getDemandId(), view.getConversationPager().getPage(), -1);
                 }
@@ -408,6 +407,7 @@ public class ClientDemandsPresenter
             public void onClick(ClickEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
                 detailSection.clear();
+                view.getDemandPager().startLoading();
                 view.setConversationTableVisible(false);
                 view.setDemandTableVisible(true);
                 view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));

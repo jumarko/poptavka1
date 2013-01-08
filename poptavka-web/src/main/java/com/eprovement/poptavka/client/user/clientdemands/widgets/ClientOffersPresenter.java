@@ -14,7 +14,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -81,8 +80,6 @@ public class ClientOffersPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    //viewType
-    private ViewType type = ViewType.OFFER;
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
@@ -124,6 +121,7 @@ public class ClientOffersPresenter
         eventBus.createTokenForHistory1(0);
 
         eventBus.displayView(view.getWidgetView());
+        eventBus.loadingDivHide();
         //init wrapper widget
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         eventBus.requestDetailWrapperPresenter();
@@ -208,7 +206,7 @@ public class ClientOffersPresenter
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getDemandGrid(), view.getWrapperPanel(), type);
+            this.detailSection.initDetailWrapper(view.getDemandGrid(), view.getWrapperPanel());
         }
     }
 
@@ -258,8 +256,8 @@ public class ClientOffersPresenter
      * @param userMessageId ID for demand related contest
      */
     public void displayDetailContent(ClientOfferedDemandOffersDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
+        detailSection.requestDemandDetail(detail.getDemandId());
+        detailSection.requestSupplierDetail(detail.getSupplierId());
         detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
     }
 
@@ -348,8 +346,10 @@ public class ClientOffersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 detailSection.clear();
+                view.getDemandPager().startLoading();
                 view.setOfferTableVisible(false);
                 view.setDemandTableVisible(true);
+                view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
             }
         });
     }
@@ -402,6 +402,7 @@ public class ClientOffersPresenter
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.setDemandTableVisible(false);
                     view.setOfferTableVisible(true);
+                    view.getOfferPager().startLoading();
                     view.getOfferGrid().getDataCount(eventBus, null);
                     eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
                 }

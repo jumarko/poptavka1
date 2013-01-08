@@ -43,7 +43,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -419,16 +418,16 @@ public interface RootEventBus extends EventBusWithLookup {
      * @param type
      */
     @Event(handlers = RootHandler.class)
-    void requestDemandDetail(Long demandId, ViewType type);
+    void requestDemandDetail(Long demandId);
 
     @Event(handlers = DetailsWrapperPresenter.class, passive = true)
-    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
+    void responseDemandDetail(FullDemandDetail demandDetail);
 
     @Event(handlers = RootHandler.class)
-    void requestSupplierDetail(Long supplierId, ViewType type);
+    void requestSupplierDetail(Long supplierId);
 
     @Event(handlers = DetailsWrapperPresenter.class, passive = true)
-    void responseSupplierDetail(FullSupplierDetail supplierDetail, ViewType type);
+    void responseSupplierDetail(FullSupplierDetail supplierDetail);
 
     /*
      * Request/Response method pair
@@ -441,7 +440,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void requestConversation(Long threadId, Long userId);
 
     @Event(handlers = DetailsWrapperPresenter.class)
-    void responseConversation(List<MessageDetail> chatMessages, ViewType supplierListType);
+    void responseConversation(List<MessageDetail> chatMessages);
 
     /**************************************************************************/
     /* Messages                                                               */
@@ -455,13 +454,13 @@ public interface RootEventBus extends EventBusWithLookup {
      * @param type type of handling view
      */
     @Event(handlers = RootHandler.class)
-    void sendQuestionMessage(MessageDetail messageToSend, ViewType type);
+    void sendQuestionMessage(MessageDetail messageToSend);
 
     @Event(handlers = RootHandler.class)
-    void sendOfferMessage(OfferMessageDetail offerMessageToSend, ViewType type);
+    void sendOfferMessage(OfferMessageDetail offerMessageToSend);
 
     @Event(handlers = DetailsWrapperPresenter.class, passive = true)
-    void addConversationMessage(MessageDetail sentMessage, ViewType handlingType);
+    void addConversationMessage(MessageDetail sentMessage);
 
     /**************************************************************************/
     /* User Activatoin                                                        */

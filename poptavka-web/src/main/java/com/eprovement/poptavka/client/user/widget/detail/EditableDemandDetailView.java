@@ -27,10 +27,12 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class EditableDemandDetailView extends Composite {
 
-    private static DemandDetailViewUiBinder uiBinder = GWT.create(DemandDetailViewUiBinder.class);
-
     interface DemandDetailViewUiBinder extends UiBinder<Widget, EditableDemandDetailView> {
     }
+
+    private static DemandDetailViewUiBinder uiBinder = GWT.create(DemandDetailViewUiBinder.class);
+    private static final String EMPTY = "";
+    //
     @UiField(provided = true) CellList categories, localities, excludedSuppliers;
     @UiField TextBox demandName, price, endDate, validTo, maxNumberOfSuppliers, minSupplierRating;
     @UiField TextArea description;
@@ -96,8 +98,21 @@ public class EditableDemandDetailView extends Composite {
         minSupplierRating.setText(Integer.toString(demandDetail.getMinRating()) + "%");
         excludedSuppliers.setRowData(demandDetail.getExcludedSuppliers());
         description.setText(demandDetail.getDescription());
-//        detail.getElement().getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
     }
+
+    public void clear() {
+        demandName.setText(EMPTY);
+        price.setText(EMPTY);
+        endDate.setText(EMPTY);
+        validTo.setText(EMPTY);
+        categories.setRowCount(0);
+        localities.setRowCount(0);
+        maxNumberOfSuppliers.setText(EMPTY);
+        minSupplierRating.setText(EMPTY);
+        excludedSuppliers.setRowCount(0);
+        description.setText(EMPTY);
+    }
+
 
     private void setEnables(boolean enable) {
         demandName.setEnabled(enable);

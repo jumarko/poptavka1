@@ -16,7 +16,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
@@ -95,20 +94,20 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /*
      * DevelDetailWrapper widget methods
      */
-    public void onRequestDemandDetail(Long demandId, final ViewType type) {
+    public void onRequestDemandDetail(Long demandId) {
         rootService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
             @Override
             public void onSuccess(FullDemandDetail result) {
-                eventBus.responseDemandDetail(result, type);
+                eventBus.responseDemandDetail(result);
             }
         });
     }
 
-    public void onRequestSupplierDetail(Long supplierId, final ViewType type) {
+    public void onRequestSupplierDetail(Long supplierId) {
         rootService.getFullSupplierDetail(supplierId, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
             @Override
             public void onSuccess(FullSupplierDetail result) {
-                eventBus.responseSupplierDetail(result, type);
+                eventBus.responseSupplierDetail(result);
             }
         });
     }
@@ -125,7 +124,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<MessageDetail> result) {
-                        eventBus.responseConversation(result, ViewType.POTENTIAL);
+                        eventBus.responseConversation(result);
                     }
                 });
     }
@@ -154,21 +153,21 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * @param messageToSend
      * @param type
      */
-    public void onSendQuestionMessage(MessageDetail messageToSend, final ViewType type) {
+    public void onSendQuestionMessage(MessageDetail messageToSend) {
         rootService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
-                eventBus.addConversationMessage(sentMessage, type);
+                eventBus.addConversationMessage(sentMessage);
             }
         });
     }
 
-    public void onSendOfferMessage(OfferMessageDetail offerMessageToSend, final ViewType type) {
+    public void onSendOfferMessage(OfferMessageDetail offerMessageToSend) {
         rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_OFFERED_DEMANDS);
-//                eventBus.addConversationMessage(sentMessage, type);
+//                eventBus.addConversationMessage(sentMessage);
                 GWT.log("Offer message [messageId=" + sentMessage.getMessageId()
                         + "]  has been successfully sent to client");
             }

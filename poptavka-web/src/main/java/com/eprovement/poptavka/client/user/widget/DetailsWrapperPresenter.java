@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
@@ -7,12 +8,12 @@ import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailVie
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
+import com.eprovement.poptavka.client.user.widget.messaging.SimpleMessageWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,6 +21,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -40,7 +42,6 @@ public class DetailsWrapperPresenter
     public static final int SUPPLIER = 2;
     public static final int CHAT = 3;
     /** Class Attributes. **/
-    private ViewType type;
     private UniversalAsyncGrid table = null;
 
     /**************************************************************************/
@@ -49,12 +50,6 @@ public class DetailsWrapperPresenter
     public interface IDetailWrapper extends LazyView {
 
         Widget getWidgetView();
-
-        void setMessageReadHandler(ChangeHandler click);
-
-        void setDemandDetail(FullDemandDetail demandDetail);
-
-        void setSupplierDetail(FullSupplierDetail supplierDetail);
 
         TabLayoutPanel getContainer();
 
@@ -68,13 +63,11 @@ public class DetailsWrapperPresenter
 
         DevelOfferQuestionWindow getReplyHolder();
 
-        void toggleDemandLoading();
+        VerticalPanel getConversationHolder();
 
-        void toggleSupplierLoading();
+        void loadingDivShow(Widget holderWidget);
 
-        void toggleConversationLoading();
-
-        void setChat(List<MessageDetail> chatMessages, boolean collapsed);
+        void loadingDivHide(Widget holderWidget);
     }
 
     /**************************************************************************/
@@ -98,14 +91,14 @@ public class DetailsWrapperPresenter
                                     view.getConversationPanel().updateSendingMessage(
                                     view.getReplyHolder().getCreatedMessage());
                             questionMessageToSend.setSenderId(Storage.getUser().getUserId());
-                            eventBus.sendQuestionMessage(questionMessageToSend, type);
+                            eventBus.sendQuestionMessage(questionMessageToSend);
                             break;
                         case DevelOfferQuestionWindow.RESPONSE_OFFER:
                             OfferMessageDetail offerMessageToSend =
                                     view.getConversationPanel().updateSendingOfferMessage(
                                     view.getReplyHolder().getCreatedOfferMessage());
                             offerMessageToSend.setSenderId(Storage.getUser().getUserId());
-                            eventBus.sendOfferMessage(offerMessageToSend, type);
+                            eventBus.sendOfferMessage(offerMessageToSend);
                             break;
                         default:
                             break;
@@ -126,11 +119,9 @@ public class DetailsWrapperPresenter
      * @param type
      *            type of view, where is this widget loaded
      */
-    public void initDetailWrapper(UniversalAsyncGrid table,
-            SimplePanel detailSection, ViewType viewType) {
+    public void initDetailWrapper(UniversalAsyncGrid grid, SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
-        this.type = viewType;
-        if (viewType == ViewType.EDITABLE) {
+        if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS) {
             setTabVisibility(EDITABLE_DEMAND, true);
             setTabVisibility(DEMAND, false);
         } else {
@@ -138,7 +129,7 @@ public class DetailsWrapperPresenter
             setTabVisibility(DEMAND, true);
         }
         view.getContainer().selectTab(CHAT);
-        this.table = table;
+        this.table = grid;
     }
 
     /**************************************************************************/
@@ -149,29 +140,11 @@ public class DetailsWrapperPresenter
      *
      * @param sentMessage
      */
-    public void onAddConversationMessage(MessageDetail sentMessage, ViewType handlingType) {
-//        if (type.equals(handlingType)) {
+    public void onAddConversationMessage(MessageDetail sentMessage) {
         view.getConversationPanel().addMessage(sentMessage);
-        //TODO
-        //if switched to one common interface, this should be replaced.
         view.getReplyHolder().setNormalStyle();
-//        }
     }
 
-    /**
-     * CLIENT ONLY Display offer message from presenter. Client can react to it.
-     *
-     * @param offerDetail
-     *            offer detail
-     */
-//    public void onSetOfferMessage(OfferDetail offerDetail) {
-//
-//        OfferWindowPresenter presenter = eventBus
-//                .addHandler(OfferWindowPresenter.class);
-//        presenter.setOfferDetail(offerDetail);
-//        GWT.log("OFFER ID: " + offerDetail.getOfferId());
-//        view.getConversationPanel().addOfferMessagePresenter(presenter);
-//    }
     /**************************************************************************/
     /* This methods                                                           */
     /**************************************************************************/
@@ -189,14 +162,19 @@ public class DetailsWrapperPresenter
      * @param demandId
      * @param type
      */
-    public void requestDemandDetail(Long demandId, ViewType type) {
-        showLoading(DetailsWrapperPresenter.DEMAND);
-        eventBus.requestDemandDetail(demandId, type);
+    public void requestDemandDetail(Long demandId) {
+        if (view.getContainer().getWidget(DEMAND).getParent().isVisible()) {
+            view.loadingDivShow(view.getDemandDetail());
+        }
+        if (view.getContainer().getWidget(DEMAND).getParent().isVisible()) {
+            view.loadingDivShow(view.getEditableDemandDetail());
+        }
+        eventBus.requestDemandDetail(demandId);
     }
 
-    public void requestSupplierDetail(Long supplierId, ViewType type) {
-        showLoading(DetailsWrapperPresenter.SUPPLIER);
-        eventBus.requestSupplierDetail(supplierId, type);
+    public void requestSupplierDetail(Long supplierId) {
+        view.loadingDivShow(view.getSupplierDetail());
+        eventBus.requestSupplierDetail(supplierId);
     }
 
     /**
@@ -208,7 +186,7 @@ public class DetailsWrapperPresenter
      * @param userId - user who's chatting messages we are going to retrieve
      */
     public void requestConversation(long threadRootId, long userId) {
-        showLoading(DetailsWrapperPresenter.CHAT);
+        view.loadingDivShow(view.getConversationHolder());
         eventBus.requestConversation(threadRootId, userId);
     }
 
@@ -220,11 +198,15 @@ public class DetailsWrapperPresenter
      *
      * @param demandDetail detail to be displayed
      */
-    public void onResponseDemandDetail(FullDemandDetail demandDetail, ViewType wrapperType) {
-        //neccessary check for method to be executed only in appropriate presenter
-//        if (type.equals(wrapperType)) {
-        view.setDemandDetail(demandDetail);
-//        }
+    public void onResponseDemandDetail(FullDemandDetail demandDetail) {
+        if (view.getContainer().getWidget(DEMAND).getParent().isVisible()) {
+            view.getDemandDetail().setDemanDetail(demandDetail);
+            view.loadingDivHide(view.getDemandDetail());
+        }
+        if (view.getContainer().getWidget(EDITABLE_DEMAND).getParent().isVisible()) {
+            view.getEditableDemandDetail().setDemanDetail(demandDetail);
+            view.loadingDivHide(view.getEditableDemandDetail());
+        }
     }
 
     /**
@@ -232,11 +214,9 @@ public class DetailsWrapperPresenter
      *
      * @param demandDetail detail to be displayed
      */
-    public void onResponseSupplierDetail(FullSupplierDetail supplierDetail, ViewType wrapperType) {
-        //neccessary check for method to be executed only in appropriate presenter
-//        if (type.equals(wrapperType)) {
-        view.setSupplierDetail(supplierDetail);
-//        }
+    public void onResponseSupplierDetail(FullSupplierDetail supplierDetail) {
+        view.getSupplierDetail().setSupplierDetail(supplierDetail);
+        view.loadingDivHide(view.getSupplierDetail());
     }
 
     /**
@@ -246,48 +226,38 @@ public class DetailsWrapperPresenter
      * @param chatMessages - demand-related conversation
      * @param supplierListType
      */
-    public void onResponseConversation(List<MessageDetail> chatMessages, ViewType wrapperType) {
-        view.setChat(chatMessages, true);
+    public void onResponseConversation(List<MessageDetail> chatMessages) {
+        view.getConversationPanel().setMessageList(chatMessages, true);
         //bind messages to handler that updates read status
-        view.setMessageReadHandler(new ChangeHandler() {
+        setMessageReadHandler();
+        view.loadingDivHide(view.getConversationHolder());
+    }
+
+    /**************************************************************************/
+    /* HELPER methods                                                         */
+    /**************************************************************************/
+    private void setMessageReadHandler() {
+        final ChangeHandler click = new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
                 String messagId = ((TextBox) event.getSource()).getText();
                 eventBus.requestReadStatusUpdate(Arrays.asList(Long.valueOf(messagId)), true);
                 table.refresh();
             }
-        });
-    }
+        };
+        for (int i = 0; i < view.getConversationPanel().getMessagePanel().getWidgetCount(); i++) {
+            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
+                    .getUpdateRead().addChangeHandler(click);
+        }
 
+    }
     /**************************************************************************/
     /* HELPER methods                                                         */
     /**************************************************************************/
-    /**
-     * *GUI* Toggle loading icon when getting clicking on some demand Depending on its argument,
-     * chosen element is toggled.
-     *
-     * @param value value of component do toggle loading image.
-     */
-    private void showLoading(int value) {
-        switch (value) {
-            case DEMAND:
-                view.toggleDemandLoading();
-                break;
-            case SUPPLIER:
-                view.toggleSupplierLoading();
-                break;
-            case CHAT:
-                view.toggleConversationLoading();
-                break;
-            default:
-                break;
-        }
-    }
-
     public void clear() {
-//        view.getEditableDemandDetail().clear();
-//        view.getDemandDetail().clear();
-//        view.getSupplierDetail().clear();
+        view.getEditableDemandDetail().clear();
+        view.getDemandDetail().clear();
+        view.getSupplierDetail().clear();
         view.getConversationPanel().clear();
     }
 }

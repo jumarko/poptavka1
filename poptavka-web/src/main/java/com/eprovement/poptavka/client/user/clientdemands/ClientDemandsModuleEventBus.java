@@ -55,6 +55,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(forwardToParent = true)
     void loadingHide();
 
+    @Event(handlers = ClientDemandsModulePresenter.class)
+    void loadingDivShow(String loadingMessage);
+
+    @Event(handlers = ClientDemandsModulePresenter.class)
+    void loadingDivHide();
+
     @Event(forwardToParent = true)
     void requestDetailWrapperPresenter();
 

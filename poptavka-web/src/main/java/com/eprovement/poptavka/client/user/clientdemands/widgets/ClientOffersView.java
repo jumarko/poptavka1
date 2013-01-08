@@ -239,6 +239,7 @@ public class ClientOffersView extends Composite
     @Override
     public void setDemandTableVisible(boolean visible) {
         demandGrid.setVisible(visible);
+        demandGrid.redraw();
         if (!visible) {
             SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
             if (selectionModel.getSelectedObject() != null) {
@@ -251,7 +252,8 @@ public class ClientOffersView extends Composite
     @Override
     public void setOfferTableVisible(boolean visible) {
         offerGrid.setVisible(visible);
-        offerGrid.setSize("100%", "100%");
+        offerGrid.redraw();
+//        offerGrid.setSize("100%", "100%");
         offerHeader.setVisible(visible);
         offerToolBar.setVisible(visible);
     }

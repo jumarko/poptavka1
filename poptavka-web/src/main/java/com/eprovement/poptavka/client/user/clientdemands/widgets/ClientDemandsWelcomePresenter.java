@@ -45,5 +45,6 @@ public class ClientDemandsWelcomePresenter extends LazyPresenter<
     public void onInitClientDemandsWelcome() {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS_WELCOME);
         eventBus.displayView(view.getWidgetView());
+        eventBus.loadingDivHide();
     }
 }

@@ -17,6 +17,10 @@ public class LoadingDiv extends UIObject {
 
     @UiField DivElement loading;
 
+    public LoadingDiv() {
+        setElement(uiBinder.createAndBindUi(this));
+    }
+
     public LoadingDiv(Widget holderWidget) {
         setElement(uiBinder.createAndBindUi(this));
         holderWidget.getElement().appendChild(this.getElement());

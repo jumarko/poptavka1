@@ -11,7 +11,6 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -53,8 +52,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    //viewType
-    private ViewType type = ViewType.OFFER;
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
@@ -89,6 +86,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         eventBus.createTokenForHistory1(0);
 
         eventBus.displayView(view.getWidgetView());
+        eventBus.loadingDivHide();
         //init wrapper widget
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         eventBus.requestDetailWrapperPresenter();
@@ -140,7 +138,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getDataGrid(), view.getWrapperPanel(), type);
+            this.detailSection.initDetailWrapper(view.getDataGrid(), view.getWrapperPanel());
         }
     }
 
@@ -176,8 +174,8 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
      * @param userMessageId ID for demand related contest
      */
     public void displayDetailContent(FullOfferDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId(), type);
-        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
+        detailSection.requestDemandDetail(detail.getDemandId());
+        detailSection.requestSupplierDetail(detail.getSupplierId());
         detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
     }
 

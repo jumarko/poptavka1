@@ -23,6 +23,7 @@ public class SupplierDetailView extends Composite {
     interface SupplierDetailViewUiBinder extends
             UiBinder<Widget, SupplierDetailView> {
     }
+    private static final String EMPTY = "";
     @UiField(provided = true)
     CellList categories, localities;
     @UiField
@@ -82,6 +83,23 @@ public class SupplierDetailView extends Composite {
         zipCode.setText(detail.getAddresses().get(0).getZipCode());
         websiteContactPerson.setText(detail.getWebsite());
         taxId.setText(detail.getTaxId());
+    }
 
+    public void clear() {
+        description.setText(EMPTY);
+        localities.setRowCount(0);
+        categories.setRowCount(0);
+        email.setText(EMPTY);
+        companyName.setText(EMPTY);
+        identificationNumber.setText(EMPTY);
+        firstName.setText(EMPTY);
+        lastName.setText(EMPTY);
+        phone.setText(EMPTY);
+        website.setText(EMPTY);
+        street.setText(EMPTY);
+        city.setText(EMPTY);
+        zipCode.setText(EMPTY);
+        websiteContactPerson.setText(EMPTY);
+        taxId.setText(EMPTY);
     }
 }

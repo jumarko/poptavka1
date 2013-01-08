@@ -59,4 +59,14 @@ public class DemandDetailView extends Composite {
         localities.setRowData(demandDetail.getLocalities());
         description.setText(demandDetail.getDescription());
     }
+
+    public void clear() {
+        demandName.setText(EMPTY);
+        price.setText(EMPTY);
+        endDate.setText(EMPTY);
+        validTo.setText(EMPTY);
+        categories.setRowCount(0);
+        localities.setRowCount(0);
+        description.setText(EMPTY);
+    }
 }

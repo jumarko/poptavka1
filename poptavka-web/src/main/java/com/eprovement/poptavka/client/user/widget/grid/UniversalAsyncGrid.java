@@ -24,7 +24,6 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -158,21 +157,18 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     public UniversalAsyncGrid(int pageSize, Resources resources) {
         super(pageSize, resources);
-        this.setCustomEmptyTableNotification();
         setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
 
     public UniversalAsyncGrid(List<String> gridColumns, int pageSize, Resources resources) {
         super(pageSize, resources);
         this.gridColumns = gridColumns;
-        this.setCustomEmptyTableNotification();
         setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
 
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
         this.gridColumns = gridColumns;
-        this.setCustomEmptyTableNotification();
         setEmptyTableWidget(new Label(Storage.MSGS.noData()));
     }
 
@@ -196,9 +192,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         if (searchDefinition != null) {
             this.searchDataHolder = searchDefinition.getFilter();
         }
-        //remove data to force loading indicator to show up
-//        this.setRowCount(0);
-//        this.setRowData(new ArrayList<T>());
         eventBus.getDataCount(this, searchDefinition);
     }
 
@@ -450,16 +443,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public AsyncHandler getSortHandler() {
         return sortHandler;
-    }
-
-    /**
-     * Displays message when no data are available for displaying. Customize
-     * method content for user delight. Calls when instance of this class is
-     * created.
-     */
-    public void setCustomEmptyTableNotification() {
-        this.setEmptyTableWidget(new HTML("<div style=\"text-align: center;\">"
-                + Storage.MSGS.emptyTable() + "</div>"));
     }
 
     /**

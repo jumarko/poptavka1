@@ -385,7 +385,7 @@ public class ClientDemandsView extends Composite
     @Override
     public void setDemandTableVisible(boolean visible) {
         demandGrid.setVisible(visible);
-//        demandGrid.redraw();
+        demandGrid.redraw();
         //Potrebne??? - ano - ak dam spat, musim deselectovat
         if (!visible) {
             SingleSelectionModel selectionModel = (SingleSelectionModel) demandGrid.getSelectionModel();
@@ -399,7 +399,7 @@ public class ClientDemandsView extends Composite
     @Override
     public void setConversationTableVisible(boolean visible) {
         conversationGrid.setVisible(visible);
-//        conversationGrid.redraw();
+        conversationGrid.redraw();
         conversationHeader.setVisible(visible);
     }
 
