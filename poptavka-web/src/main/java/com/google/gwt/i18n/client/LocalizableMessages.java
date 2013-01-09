@@ -252,9 +252,6 @@ public interface LocalizableMessages extends Messages {
     String maxOffers();
     String excludedSuppliers();
 
-    String client();
-    String emptyTable();
-
     //Admin module
     String getDemandsData();
     String getClientsData();
@@ -292,6 +289,10 @@ public interface LocalizableMessages extends Messages {
 
     //Explanation texts to table image columns
 
+    //TODO release - urobit poriadne i18n - teraz je tu dost bordel
+    //Table column names
+    String client();
+
     //Table buttons
     String replyExplanationText();
     String acceptOfferExplanationText();
@@ -301,6 +302,9 @@ public interface LocalizableMessages extends Messages {
     String editOfferExplanationText();
     String downloadOfferExplanationText();
     String finnishedExplanationText();
+
+    //Table related
+    String emptyTable();
 
     //Explanation texts for DemandStatus icon column
     String demandStatusActive();
@@ -327,18 +331,15 @@ public interface LocalizableMessages extends Messages {
     String wrongLoginMessage();
     String loginUnknownError();
 
-    //Menu - home
+    //Menu buttons
     String menuHome();
-    String menuHomeDemands();
-    String menuHomeSuppliers();
-    String menuCreateSupplier();
+    String menuClient();
+    String menuSupplier();
+    String menuDemands();
+    String menuSuppliers();
     String menuCreateDemand();
-
-    //Menu - user
-    String menuClientDemands();
-    String menuSupplierDemands();
+    String menuCreateSupplier();
     String menuMessages();
-    String menuSettings();
     String menuAdministration();
 
     // Error messages and their descriptions

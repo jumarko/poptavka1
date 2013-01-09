@@ -37,14 +37,6 @@ public class ClientDemandsModulePresenter
 
         Button getClientAssignedDemandsButton();
 
-        Button getClientCreateDemand();
-
-        Button getClientCreateSupplier();
-
-        Button getAllDemands();
-
-        Button getAllSuppliers();
-
         SimplePanel getContentPanel();
 
         IsWidget getWidgetView();
@@ -115,37 +107,12 @@ public class ClientDemandsModulePresenter
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
             }
         });
-        view.getClientCreateDemand().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemandModule();
-            }
-        });
-        view.getClientCreateSupplier().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplierModule();
-            }
-        });
-        view.getAllDemands().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToHomeDemandsModule(null);
-            }
-        });
-        view.getAllSuppliers().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliersModule(null);
-            }
-        });
     }
 
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
-//        eventBus.setNavigationConfirmation(this);
         eventBus.loadingDivShow(Storage.MSGS.loading());
         switch (loadWidget) {
             case Constants.CLIENT_DEMANDS:
@@ -168,12 +135,6 @@ public class ClientDemandsModulePresenter
                 }
                 clientAssigendDemands = eventBus.addHandler(ClientAssignedDemandsPresenter.class);
                 clientAssigendDemands.onInitClientAssignedDemands(filter);
-                break;
-            case Constants.CREATE_DEMAND:
-                eventBus.goToCreateDemandModule();
-                break;
-            case Constants.CREATE_SUPPLIER:
-                eventBus.goToCreateSupplierModule();
                 break;
             default:
                 eventBus.initClientDemandsWelcome();
@@ -198,25 +159,13 @@ public class ClientDemandsModulePresenter
         //TODO Martin null replace with CSS style - e.g. Storage.RSCS.clientDemandsButtonSelected()
         switch (loadedWidget) {
             case Constants.CLIENT_DEMANDS:
-                view.getClientCreateDemand().setStyleName("");
+                view.getClientNewDemandsButton().setStyleName("");
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:
                 view.getClientOffersButton().setStyleName("");
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:
                 view.getClientAssignedDemandsButton().setStyleName("");
-                break;
-            case Constants.CREATE_DEMAND:
-                view.getClientCreateDemand().setStyleName("");
-                break;
-            case Constants.CREATE_SUPPLIER:
-                view.getClientCreateSupplier().setStyleName("");
-                break;
-            case Constants.HOME_DEMANDS_MODULE:
-                view.getAllDemands().setStyleName("");
-                break;
-            case Constants.HOME_SUPPLIERS_MODULE:
-                view.getAllSuppliers().setStyleName("");
                 break;
             default:
                 break;

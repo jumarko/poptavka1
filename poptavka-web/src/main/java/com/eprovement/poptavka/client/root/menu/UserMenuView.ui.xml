@@ -29,32 +29,42 @@
 		<div ui:field="homeMenu">
 			<ul ui:field="menuList">
 				<li>
-					<g:Button ui:field="client" styleName='{style.button6}'>
-						<ui:msg key="menuClientDemands">Client</ui:msg><br /><br />
+					<g:Button ui:field="client" styleName='{style.button1}'>
+						<ui:msg key="menuClient">Client</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
-					<g:Button ui:field="supplier" styleName='{style.button4}'>
-						<ui:msg key="menuSupplierDemands">Supplier</ui:msg><br /><br />
+					<g:Button ui:field="supplier" styleName='{style.button2}'>
+						<ui:msg key="menuSupplier">Supplier</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
-					<g:Button ui:field="inbox" styleName='{style.button8}'>
+					<g:Button ui:field="inbox" styleName='{style.button3}'>
 						<ui:msg key='menuMessages'>Messages</ui:msg><br /><br />
 					</g:Button>
 				</li>
 				<li>
-					<g:Button styleName='{style.button2}'>
-						<ui:msg key="menuHomeDemands">Demands</ui:msg><br /><br />
+					<g:Button ui:field="demands" styleName='{style.button4}'>
+						<ui:msg key="menuDemands">Demands</ui:msg><br /><br />
+					</g:Button>
+				</li>
+                                <li>
+					<g:Button ui:field="createDemand"  styleName='{style.button5}'>
+						<ui:msg key="createDemand">Create Demand</ui:msg>
 					</g:Button>
 				</li>
 				<li>
-					<g:Button styleName='{style.button4}'>
-						<ui:msg key="menuHomeSuppliers">Suppliers</ui:msg><br /><br />
+					<g:Button ui:field="suppliers" styleName='{style.button6}'>
+						<ui:msg key="menuSuppliers">Suppliers</ui:msg><br /><br />
+					</g:Button>
+				</li>
+                                <li>
+					<g:Button ui:field="createSupplier"  styleName='{style.button7}'>
+						<ui:msg key="createSupplier">Create supplier</ui:msg>
 					</g:Button>
 				</li>
 				<li>
-					<g:Button ui:field="administration">
+					<g:Button ui:field="administration"  styleName='{style.button8}'>
 						<ui:msg key='menuAdministration'>Admistration</ui:msg><br /><br />
 					</g:Button>
 				</li>

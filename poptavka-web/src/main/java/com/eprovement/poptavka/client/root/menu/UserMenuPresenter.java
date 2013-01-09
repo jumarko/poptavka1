@@ -26,19 +26,40 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
         //this method is called each time user is logging in
         /* ADMIN TAB */
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
+            view.setTabVisibility(Constants.USER_CLIENT_MODULE, false);
+            view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, false);
+            view.setTabVisibility(Constants.USER_MESSAGES_MODULE, true);
+            view.setTabVisibility(Constants.HOME_DEMANDS_MODULE, false);
+            view.setTabVisibility(Constants.CREATE_DEMAND, false);
+            view.setTabVisibility(Constants.HOME_SUPPLIERS_MODULE, false);
+            view.setTabVisibility(Constants.CREATE_SUPPLIER, false);
             view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, true);
+            view.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
         } else {
-            view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
             /* SUPPLIER TAB */
             if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.SUPPLIER)) {
                 view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
                 view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, true);
+                view.setTabVisibility(Constants.USER_MESSAGES_MODULE, true);
+                view.setTabVisibility(Constants.HOME_DEMANDS_MODULE, true);
+                view.setTabVisibility(Constants.CREATE_DEMAND, true);
+                view.setTabVisibility(Constants.HOME_SUPPLIERS_MODULE, true);
+                view.setTabVisibility(Constants.CREATE_SUPPLIER, false);
+                view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
+                view.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
                 /* CLIENT TAB */
             } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.CLIENT)) {
                 view.setTabVisibility(Constants.USER_CLIENT_MODULE, true);
                 view.setTabVisibility(Constants.USER_SUPPLIER_MODULE, false);
+                view.setTabVisibility(Constants.USER_MESSAGES_MODULE, true);
+                view.setTabVisibility(Constants.HOME_DEMANDS_MODULE, true);
+                view.setTabVisibility(Constants.CREATE_DEMAND, true);
+                view.setTabVisibility(Constants.HOME_SUPPLIERS_MODULE, true);
+                view.setTabVisibility(Constants.CREATE_SUPPLIER, true);
+                view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
+                view.userMenuStyleChange(Constants.USER_CLIENT_MODULE);
             }
         }
         eventBus.setMenu(view);
@@ -48,8 +69,13 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     /* Navigation methods.                                                    */
     /**************************************************************************/
     @Override
-    public void goToAdministration() {
-        eventBus.goToAdminModule(null, Constants.NONE);
+    public void goToClient() {
+        eventBus.goToClientDemandsModule(null, Constants.NONE);
+    }
+
+    @Override
+    public void goToSupplier() {
+        eventBus.goToSupplierDemandsModule(null, Constants.NONE);
     }
 
     @Override
@@ -58,13 +84,28 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     }
 
     @Override
-    public void goToClient() {
-        eventBus.goToClientDemandsModule(null, Constants.NONE);
+    public void goToDemands() {
+        eventBus.goToHomeDemandsModule(null);
     }
 
     @Override
-    public void goToSupplier() {
-        eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+    public void goToCreateDemands() {
+        eventBus.goToCreateDemandModule();
+    }
+
+    @Override
+    public void goToSuppliers() {
+        eventBus.goToHomeSuppliersModule(null);
+    }
+
+    @Override
+    public void goToCreateSupplier() {
+        eventBus.goToCreateSupplierModule();
+    }
+
+    @Override
+    public void goToAdministration() {
+        eventBus.goToAdminModule(null, Constants.NONE);
     }
 
     /**************************************************************************/

@@ -24,7 +24,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @UiField
     UListElement menuList;
     @UiField
-    Button client, supplier, inbox, administration;
+    Button client, supplier, demands, createDemand, suppliers, createSupplier, inbox, administration;
 
     public UserMenuView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -49,6 +49,26 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     public void onClickMessages(ClickEvent e) {
         presenter.goToMessages();
         messagesUserMenuStyleChange();
+    }
+
+    @UiHandler("demands")
+    public void onClickDemands(ClickEvent e) {
+        presenter.goToDemands();
+    }
+
+    @UiHandler("createDemand")
+    public void onClickCreateDemand(ClickEvent e) {
+        presenter.goToCreateDemands();
+    }
+
+    @UiHandler("suppliers")
+    public void onClickSuppliers(ClickEvent e) {
+        presenter.goToSuppliers();
+    }
+
+    @UiHandler("createSupplier")
+    public void onClickCreateSupplier(ClickEvent e) {
+        presenter.goToCreateSupplier();
     }
 
     @UiHandler("administration")
@@ -77,8 +97,17 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
             case Constants.USER_MESSAGES_MODULE:
                 messagesUserMenuStyleChange();
                 break;
-            case Constants.USER_SETTINGS_MODULE:
-                settingsUserMenuStyleChange();
+            case Constants.HOME_DEMANDS_MODULE:
+                demandsUserMenuStyleChange();
+                break;
+            case Constants.CREATE_DEMAND:
+                createDemandUserMenuStyleChange();
+                break;
+            case Constants.HOME_SUPPLIERS_MODULE:
+                suppliersUserMenuStyleChange();
+                break;
+            case Constants.CREATE_SUPPLIER:
+                createSupplierUserMenuStyleChange();
                 break;
             case Constants.USER_ADMININSTRATION_MODULE:
                 administrationUserMenuStyleChange();
@@ -94,6 +123,10 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void clientUserMenuStyleChange() {
         client.addStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
@@ -101,6 +134,10 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void supplierUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.addStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
@@ -108,13 +145,54 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void messagesUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.addStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    private void settingsUserMenuStyleChange() {
+    private void demandsUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.addStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+    }
+
+    private void createDemandUserMenuStyleChange() {
+        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.addStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+    }
+
+    private void suppliersUserMenuStyleChange() {
+        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.addStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+    }
+
+    private void createSupplierUserMenuStyleChange() {
+        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.addStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
@@ -122,6 +200,10 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     private void administrationUserMenuStyleChange() {
         client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.addStyleName(StyleResource.INSTANCE.layout().selected());
     }
@@ -140,15 +222,24 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         switch (module) {
             case Constants.USER_CLIENT_MODULE:
                 client.setVisible(visible);
-                if (visible) {
-                    client.addStyleName(StyleResource.INSTANCE.layout().selected());
-                }
                 break;
             case Constants.USER_SUPPLIER_MODULE:
                 supplier.setVisible(visible);
-                if (visible) {
-                    supplier.addStyleName(StyleResource.INSTANCE.layout().selected());
-                }
+                break;
+            case Constants.USER_MESSAGES_MODULE:
+                inbox.setVisible(visible);
+                break;
+            case Constants.HOME_DEMANDS_MODULE:
+                demands.setVisible(visible);
+                break;
+            case Constants.CREATE_DEMAND:
+                createDemand.setVisible(visible);
+                break;
+            case Constants.HOME_SUPPLIERS_MODULE:
+                suppliers.setVisible(visible);
+                break;
+            case Constants.CREATE_SUPPLIER:
+                createSupplier.setVisible(visible);
                 break;
             case Constants.USER_ADMININSTRATION_MODULE:
                 administration.setVisible(visible);

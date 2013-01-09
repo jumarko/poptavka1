@@ -35,26 +35,6 @@
 										<ui:msg key="assignedDemands">Assigned demands</ui:msg>
 									</g:Button>
 								</li>
-								<li>
-									<g:Button ui:field="clientCreateDemand">
-										<ui:msg key="createDemandLink">Create Demand</ui:msg>
-									</g:Button>
-								</li>
-								<li>
-									<g:Button ui:field="clientCreateSupplier">
-										<ui:msg key="createSupplierLink">Create supplier</ui:msg>
-									</g:Button>
-								</li>
-								<li>
-									<g:Button ui:field="allDemands">
-										<ui:msg key="allDemandsLink">All Demands</ui:msg>
-									</g:Button>
-								</li>
-								<li>
-									<g:Button ui:field="allSuppliers">
-										<ui:msg key="allSuppliersLink">All Suppliers</ui:msg>
-									</g:Button>
-								</li>
 							</ul>
 						</div>
 					</g:HTMLPanel>

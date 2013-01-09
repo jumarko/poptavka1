@@ -6,13 +6,21 @@ public interface IUserMenuView extends IsWidget {
 
     public interface IUserMenuPresenter {
 
-        void goToAdministration();
-
-        void goToMessages();
-
         void goToClient();
 
         void goToSupplier();
+
+        void goToMessages();
+
+        void goToDemands();
+
+        void goToCreateDemands();
+
+        void goToSuppliers();
+
+        void goToCreateSupplier();
+
+        void goToAdministration();
     }
 
     void userMenuStyleChange(int loadedModule);

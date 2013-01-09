@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.login;
 
+import com.eprovement.poptavka.client.common.CommonAccessRoles;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -191,9 +192,10 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         //Set account layout
         eventBus.atAccount();
 
+        GWT.log("BUSSINESS ROLES ++++ " + Storage.getBusinessUserDetail().getBusinessRoles().toString());
+        GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
         //forward user to welcome view of appropriate module according to his roles
-        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.ADMIN)) {
+        if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             eventBus.goToAdminModule(null, widgetToLoad);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER)) {

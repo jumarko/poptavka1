@@ -3,15 +3,15 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with field='res'
              type='com.eprovement.poptavka.client.resources.StyleResource' />
-             
+
 	<ui:style>
 		.button1 { background: url(images/menu-icons.png) no-repeat 0 0; }
 		.button2 { background: url(images/menu-icons.png) no-repeat 0 -73px; }
 		.button3 { background: url(images/menu-icons.png) no-repeat 0 -146px; }
 		.button4 { background: url(images/menu-icons.png) no-repeat 0 -219px; }
 		.button5 { background: url(images/menu-icons.png) no-repeat 0 -292px; }
-		
-		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }			
+
+		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }
 		.button2:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
 		.button3:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
 		.button4:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
@@ -28,7 +28,7 @@
                 </li>
                 <li>
                     <g:Button ui:field="demands" styleName='{style.button2}'>
-                        <ui:msg key="menuHomeDemands">Demands</ui:msg><br /><br />
+                        <ui:msg key="menuDemands">Demands</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
@@ -38,14 +38,14 @@
                 </li>
                 <li>
                     <g:Button ui:field="suppliers" styleName='{style.button4}'>
-                        <ui:msg key="menuHomeSuppliers">Suppliers</ui:msg><br /><br />
+                        <ui:msg key="menuSuppliers">Suppliers</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
                     <g:Button ui:field="createSupplier" styleName='{style.button5}'>
                         <ui:msg key="menuCreateSupplier">create Supplier</ui:msg>
                     </g:Button>
-                </li>               
+                </li>
             </ul>
         </div>
     </g:HTMLPanel>

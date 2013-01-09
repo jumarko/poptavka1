@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.CommonAccessRoles;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -232,9 +233,10 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         //Set account layout
         eventBus.atAccount();
 
+        GWT.log("BUSSINESS ROLES ++++ " + Storage.getBusinessUserDetail().getBusinessRoles().toString());
+        GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
         //forward user to welcome view of appropriate module according to his roles
-        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.ADMIN)) {
+        if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             eventBus.goToAdminModule(null, Constants.NONE);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER)) {

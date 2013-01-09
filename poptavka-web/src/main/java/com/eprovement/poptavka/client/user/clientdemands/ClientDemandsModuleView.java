@@ -23,8 +23,7 @@ public class ClientDemandsModuleView extends Composite
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Button clientNewDemands, clientOffers, clientAssignedDemands, clientCreateDemand,
-    allDemands, allSuppliers, clientCreateSupplier;
+    Button clientNewDemands, clientOffers, clientAssignedDemands;
 
     /**************************************************************************/
     /* Initialization                                                            */
@@ -50,26 +49,6 @@ public class ClientDemandsModuleView extends Composite
     @Override
     public Button getClientAssignedDemandsButton() {
         return clientAssignedDemands;
-    }
-
-    @Override
-    public Button getClientCreateDemand() {
-        return clientCreateDemand;
-    }
-
-    @Override
-    public Button getClientCreateSupplier() {
-        return clientCreateSupplier;
-    }
-
-    @Override
-    public Button getAllDemands() {
-        return allDemands;
-    }
-
-    @Override
-    public Button getAllSuppliers() {
-        return allSuppliers;
     }
 
     @Override
