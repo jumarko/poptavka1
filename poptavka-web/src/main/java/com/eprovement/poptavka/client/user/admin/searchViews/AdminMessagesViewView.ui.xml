@@ -13,15 +13,15 @@
             margin-left:10px;
         }
         .margin {
-            
+
         }
         .searchMainContent {
             width: 200px;
-        } 
+        }
     </ui:style>
     <ui:with field='res'
         type='com.eprovement.poptavka.client.resources.StyleResource' />
-        
+
     <g:HTMLPanel>
         <div>
             <ul>
@@ -110,27 +110,6 @@
                     </table>
                 </li>
                 <li>
-                    <g:Label>Receiver ID</g:Label>
-                </li>
-                <li>
-                    <table>
-                        <tr>
-                            <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="receiverIdFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="receiverIdTo"/>
-                                </g:HorizontalPanel>
-                            </td>
-                        </tr>
-                    </table>
-                </li>
-                <li>
                     <g:Label>Subject</g:Label>
                 </li>
                 <li>
@@ -198,7 +177,7 @@
                 </li>
                 <li>
                     <g:Button ui:field="clearBtn">Clear</g:Button>
-                </li>                
+                </li>
             </ul>
         </div>
     </g:HTMLPanel>

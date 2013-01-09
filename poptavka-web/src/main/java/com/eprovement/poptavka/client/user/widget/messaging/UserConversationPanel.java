@@ -113,8 +113,6 @@ public class UserConversationPanel extends Composite {
      */
     public OfferMessageDetail updateSendingOfferMessage(OfferMessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
-        //v domain entite nenachadza receiverID, ani sa nikde nepouziva, preco setuje
-//        messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
         messageDetail.setSupplierId(Storage.getBusinessUserDetail().getSupplierId());
         return messageDetail;
@@ -128,8 +126,6 @@ public class UserConversationPanel extends Composite {
      */
     public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
-        //v domain entite nenachadza receiverID, ani sa nikde nepouziva, preco setuje
-//        messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
         return messageDetail;
     }

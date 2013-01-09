@@ -80,7 +80,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     private Column<MessageDetail, Date> sentColumn;
     private List<String> gridColumns = Arrays.asList(
             new String[]{
-                "id", "demand.id", "parent.id", "sender.id", "receiver.id",
+                "id", "demand.id", "parent.id", "sender.id",
                 "subject", "messageState", "", "sent", "body"
             });
     // The key provider that provides the unique ID of a MessageDetail.
@@ -144,7 +144,6 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         addDemandIdColumn();
         addParentIdColumn();
         addSenderIdColumn();
-//        addReceiverIdColumn();
         addMessageTitleColumn();
         addMessageStateColumn();
         addMessageTypeColumn();
@@ -229,18 +228,6 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                     }
                 });
     }
-
-//    private void addReceiverIdColumn() {
-//        dataGrid.addColumn(new TextCell(), Storage.MSGS.rid(), true, RID_COL_WIDTH,
-//                new GetValue<String>() {
-//
-//                    @Override
-//                    public String getValue(Object object) {
-//                        //v domain entite nenachadza receiverID
-//                        return String.valueOf(((MessageDetail) object).getReceiverId());
-//                    }
-//                });
-//    }
 
     private void addSenderIdColumn() {
         dataGrid.addColumn(new TextCell(), Storage.MSGS.sid(), true, SID_COL_WIDTH,

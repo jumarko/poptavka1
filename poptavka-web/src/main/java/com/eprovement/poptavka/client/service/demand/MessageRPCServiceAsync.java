@@ -9,7 +9,6 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
@@ -28,8 +27,6 @@ public interface MessageRPCServiceAsync {
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
     void sendInternalMessage(MessageDetail messageDetailImpl, AsyncCallback<MessageDetail> callback);
-
-    void sendOffer(OfferMessageDetail demandOffer, AsyncCallback<OfferMessageDetail> callback);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 

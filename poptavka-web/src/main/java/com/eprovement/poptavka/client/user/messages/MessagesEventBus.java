@@ -165,7 +165,7 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
     void deleteMessages(List<Long> messagesIds);
 
     @Event(handlers = MessagesHandler.class)
-    void requestUserInfo(Long receiverId);
+    void requestUserInfo(Long senderId);
 
     /*
      * Request/Response Method pair

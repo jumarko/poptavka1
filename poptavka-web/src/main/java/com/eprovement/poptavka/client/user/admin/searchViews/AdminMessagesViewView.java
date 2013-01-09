@@ -28,7 +28,7 @@ public class AdminMessagesViewView extends Composite implements
     }
     @UiField
     TextBox messageIdFrom, messageIdTo, demandIdFrom, demandIdTo, parentIdFrom,
-    parentIdTo, senderIdFrom, senderIdTo, receiverIdFrom, receiverIdTo, subject, body;
+    parentIdTo, senderIdFrom, senderIdTo, subject, body;
     @UiField
     DateBox createdFrom, createdTo, sentFrom, sentTo;
     @UiField
@@ -75,12 +75,6 @@ public class AdminMessagesViewView extends Composite implements
         if (!senderIdTo.getText().equals("")) {
             filters.add(new FilterItem("sender.id", FilterItem.OPERATION_TO, senderIdTo.getText()));
         }
-//        if (!receiverIdFrom.getText().equals("")) {
-//            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, receiverIdFrom.getText()));
-//        }
-//        if (!receiverIdTo.getText().equals("")) {
-//            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, receiverIdTo.getText()));
-//        }
         if (!subject.getText().equals("")) {
             filters.add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
         }
@@ -166,20 +160,6 @@ public class AdminMessagesViewView extends Composite implements
         }
     }
 
-    @UiHandler("receiverIdFrom")
-    void validateReceiverIdFrom(ChangeEvent event) {
-        if (!receiverIdFrom.getText().matches("[0-9]+")) {
-            receiverIdFrom.setText("");
-        }
-    }
-
-    @UiHandler("receiverIdTo")
-    void validateReceiverIdTo(ChangeEvent event) {
-        if (!receiverIdTo.getText().matches("[0-9]+")) {
-            receiverIdTo.setText("");
-        }
-    }
-
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
         messageIdFrom.setText("");
@@ -190,8 +170,6 @@ public class AdminMessagesViewView extends Composite implements
         parentIdTo.setText("");
         senderIdFrom.setText("");
         senderIdTo.setText("");
-        receiverIdFrom.setText("");
-        receiverIdTo.setText("");
         subject.setText("");
         body.setText("");
         createdFrom.setValue(null);

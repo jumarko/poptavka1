@@ -27,7 +27,6 @@ public class MessageDetail implements Serializable {
     private long threadRootId = -1;
     private long parentId = -1;
     private long senderId = -1;
-//    private long receiverId = -1;
     private String subject = null;
     private String body = null;
     private String messageState = null;
@@ -200,20 +199,6 @@ public class MessageDetail implements Serializable {
     public long getSenderId() {
         return senderId;
     }
-
-//    /**
-//     * @return the receiverId
-//     */
-//    public long getReceiverId() {
-//        return receiverId;
-//    }
-//
-//    /**
-//     * @param receiverId the receiverId to set
-//     */
-//    public void setReceiverId(long receiverId) {
-//        this.receiverId = receiverId;
-//    }
 
     /**
      * @param senderId the senderId to set

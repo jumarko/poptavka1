@@ -23,7 +23,6 @@ public final class OfferDemandMessageConverter extends AbstractConverter<UserMes
 //        m.setNexSiblingId(serialVersionUID);
         detail.setParentId(userMessage.getMessage().getParent() == null ? detail.getThreadRootId()
                 : userMessage.getMessage().getParent().getId());
-//        m.setReceiverId();
         detail.setSenderId(userMessage.getMessage().getSender().getId());
         detail.setSent(convertDate(userMessage.getMessage().getSent()));
         detail.setSubject(userMessage.getMessage().getSubject());

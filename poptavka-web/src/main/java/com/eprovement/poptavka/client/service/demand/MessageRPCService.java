@@ -14,7 +14,6 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -48,8 +47,6 @@ public interface MessageRPCService extends RemoteService {
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws RPCException;
 
     MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException;
-
-    OfferMessageDetail sendOffer(OfferMessageDetail demandOffer) throws RPCException;
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
 

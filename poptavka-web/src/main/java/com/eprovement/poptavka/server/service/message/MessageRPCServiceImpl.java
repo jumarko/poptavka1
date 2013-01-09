@@ -31,7 +31,6 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -270,76 +269,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             Logger.getLogger(MessageRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-    }
-
-    /**
-     * Offer sent by supplier to potential demand.
-     * TODO replace this into OfferRPCServiceImpl
-     * @param offer
-     * @return message
-     */
-    public OfferMessageDetail sendOffer(OfferMessageDetail offer) throws RPCException {
-//        Offer o = new Offer();
-//        o.setCreated(new Date());
-//        o.setDemand(this.generalService.find(Demand.class, offer.getDemandId()));
-//        o.setFinishDate(offer.getEndDate());
-//        o.setPrice(offer.getPrice());
-//        // TODO ivlcek - load DB object by code and not by id
-//        o.setState(this.generalService.find(OfferState.class, 2L));
-//        o.setSupplier(this.generalService.find(Supplier.class, offer.getSupplierId()));
-//        o = this.generalService.save(o);
-//
-//        Message m = new Message();
-//        m.setBody(offer.getBody());
-//        m.setCreated(new Date());
-//        m.setLastModified(new Date());
-//        m.setMessageState(MessageState.SENT);
-//        // TODO ivlcek - how to set this next sibling?
-////        m.setNextSibling(null);
-//        Message parentMessage = this.messageService.getById(offer.getThreadRootId());
-//        m.setParent(parentMessage);
-//        BusinessUser supplier = this.generalService.find(BusinessUser.class, offer.getSenderId());
-//        m.setSender(supplier);
-//        m.setSent(new Date());
-//        m.setSubject(supplier.getBusinessUserData().getCompanyName());
-//        // TODO ivlcek - threadRoot is loaded two times. See above
-//        m.setThreadRoot(this.messageService.getById(offer.getThreadRootId()));
-//        // set message roles
-//        List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
-//        // messageToUserRole
-//        MessageUserRole messageToUserRole = new MessageUserRole();
-//        messageToUserRole.setMessage(m);
-//        User receiver = this.generalService.find(User.class, offer.getReceiverId());
-//        messageToUserRole.setUser(receiver);
-//        messageToUserRole.setType(MessageUserRoleType.TO);
-//        messageToUserRole.setMessageContext(MessageContext.POTENTIAL_CLIENTS_OFFER);
-//        messageUserRoles.add(messageToUserRole);
-//        // messageFromUserRole
-//        MessageUserRole messageFromUserRole = new MessageUserRole();
-//        messageFromUserRole.setMessage(m);
-//        messageFromUserRole.setType(MessageUserRoleType.SENDER);
-//        messageFromUserRole.setMessageContext(MessageContext.POTENTIAL_OFFER_FROM_SUPPLIER);
-//        messageFromUserRole.setUser(supplier);
-//        messageUserRoles.add(messageFromUserRole);
-//        m.setRoles(messageUserRoles);
-//        // set the offer to message
-//        m.setOffer(o);
-//        m = this.messageService.create(m);
-//        OfferDetail offerDetailPersisted = OfferDetail.generateOfferDetail(m);
-//        // create UserMessage for Client receiving this message
-//        UserMessage userMessage = new UserMessage();
-//        userMessage.setRead(false);
-//        userMessage.setStarred(false);
-//        userMessage.setMessage(m);
-//        userMessage.setUser(receiver);
-//        generalService.save(userMessage);
-//        // TODO set children for parent message - check if it is correct
-//        parentMessage.getChildren().add(m);
-//        parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
-//        parentMessage = this.messageService.update(parentMessage);
-//
-//        return offerDetailPersisted;
-        return new OfferMessageDetail();
     }
 
     @Override

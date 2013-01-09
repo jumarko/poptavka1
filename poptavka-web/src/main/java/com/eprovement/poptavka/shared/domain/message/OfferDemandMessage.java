@@ -33,7 +33,6 @@ public class OfferDemandMessage implements Serializable {
     private Date created;
     private Date sent;
     private long senderId;
-    private long receiverId;
 
 
     public void setOfferCount(int offerCount) {
@@ -193,14 +192,6 @@ public class OfferDemandMessage implements Serializable {
 
     public void setSenderId(long senderId) {
         this.senderId = senderId;
-    }
-
-    public long getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(long receiverId) {
-        this.receiverId = receiverId;
     }
 
     public static long getSerialversionuid() {

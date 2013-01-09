@@ -68,7 +68,6 @@ public final class DemandMessageConverter extends AbstractConverter<UserMessage,
 //        }
 //        detail.setMessageType(MessageType.CONVERSATION.name());
 ////        m.setNexSiblingId(serialVersionUID);
-////        m.setReceiverId();
 //
 //        detail.setSent(message.getSent());
 //        detail.setSubject(message.getSubject());
