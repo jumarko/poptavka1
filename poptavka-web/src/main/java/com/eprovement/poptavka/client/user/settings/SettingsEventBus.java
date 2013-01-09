@@ -14,6 +14,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
@@ -39,6 +40,8 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(handlers = SettingsPresenter.class)
     void forward();
 
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

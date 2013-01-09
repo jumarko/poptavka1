@@ -80,6 +80,7 @@ public class SupplierCreationPresenter
 
     public void onForward() {
         LOGGER.info("SupplierCreationPresenter loaded");
+        eventBus.setBody(view.getWidgetView());
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
         maxSelectedTab = -1;
         eventBus.setUpSearchBar(null);

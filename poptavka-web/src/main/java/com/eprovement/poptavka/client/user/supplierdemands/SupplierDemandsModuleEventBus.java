@@ -46,6 +46,8 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierDemandsModulePresenter.class)
     void forward();
 
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/

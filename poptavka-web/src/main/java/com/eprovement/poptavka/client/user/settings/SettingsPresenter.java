@@ -85,6 +85,7 @@ public class SettingsPresenter
      * particular access role can't access it and loginPopupView will be displayed.
      */
     public void onForward() {
+        eventBus.setBody(view.getWidgetView());
         view.initWidgetDefaults();
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
@@ -111,19 +112,9 @@ public class SettingsPresenter
             //Window shouldn't be used inside a presenter
             //this is just to give a simple example
             if (Window.confirm(Storage.MSGS.notificationLeavingPage())) {
-                updateProfile();
-
+                event.fireEvent();
             }
         }
-        /* fireEvent() - Musim volat vzdy. Malo by to fungovat tak, ze ak nezavolam toto,
-         * mal by som ostat na danom module/widgete, ale nefunguje mi to a stane sa to,
-         * ze naloaduje sa mi novy module/widget, ale token ostane stary - settings -
-         * a preto sa mi aj confirm vola 2x - pri vstupe aj pri vystupe (pretoze je to zavisle od tokenu)
-         * Zeby to malo nieco s autodisplay ?
-         * - workaround - pri odchadzani nevyhodim okno stylu chcete naozaj odist zo stranky? ale
-         * chcete ulozit zmeny? Po potvrdeni ulozit zmeny, zavolam updateProfile()
-         */
-        event.fireEvent();
     }
 
     /**************************************************************************/

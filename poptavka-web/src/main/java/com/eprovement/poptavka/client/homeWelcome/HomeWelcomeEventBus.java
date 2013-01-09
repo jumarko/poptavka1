@@ -47,7 +47,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
      */
     @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class
             , navigationEvent = true)
-    String goToHomeWelcomeModule(SearchModuleDataHolder filter);
+    String goToHomeWelcomeModule();
 
     /**************************************************************************/
     /* Parent events                                                          */

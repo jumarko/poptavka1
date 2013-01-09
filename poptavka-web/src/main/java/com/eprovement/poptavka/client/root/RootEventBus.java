@@ -69,16 +69,16 @@ import java.util.List;
 @ChildModules({
     @ChildModule(moduleClass = HomeWelcomeModule.class, async = false, autoDisplay = true),
     @ChildModule(moduleClass = SearchModule.class, async = false, autoDisplay = true),
-    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = ClientDemandsModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = SupplierDemandsModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = ClientDemandsModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = SupplierDemandsModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = ErrorModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = true) })
+    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false) })
 public interface RootEventBus extends EventBusWithLookup {
 
     /**
@@ -114,16 +114,7 @@ public interface RootEventBus extends EventBusWithLookup {
      */
     @DisplayChildModuleView({
         HomeWelcomeModule.class,
-        HomeDemandsModule.class,
-        HomeSuppliersModule.class,
-        SupplierCreationModule.class,
-        DemandCreationModule.class,
-        ClientDemandsModule.class,
-        SupplierDemandsModule.class,
-        MessagesModule.class,
-        SettingsModule.class,
-        ErrorModule.class,
-        AdminModule.class })
+        ErrorModule.class })
     @Event(handlers = RootPresenter.class)
     void setBody(IsWidget body);
 
@@ -136,11 +127,8 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /* Navigation events - Home menu control section                          */
     /**************************************************************************/
-    // TODO praso - nechyba tu nahodou historyConverter?
-    // Martin - este neviem, skusal som, ale boli problemy s tym
-    @Event(forwardToModules = HomeWelcomeModule.class)//, historyConverter = RootHistoryConverter.class)
-    void goToHomeWelcomeModule(SearchModuleDataHolder filter);
-//    String goToHomeWelcomeModule(SearchModuleDataHolder filter);
+    @Event(forwardToModules = HomeWelcomeModule.class)
+    void goToHomeWelcomeModule();
 
     @Event(forwardToModules = HomeDemandsModule.class)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);

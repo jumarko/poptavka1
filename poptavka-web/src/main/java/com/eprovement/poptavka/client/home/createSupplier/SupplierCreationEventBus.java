@@ -46,6 +46,8 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     @Event(handlers = SupplierCreationPresenter.class)
     void forward();
 
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

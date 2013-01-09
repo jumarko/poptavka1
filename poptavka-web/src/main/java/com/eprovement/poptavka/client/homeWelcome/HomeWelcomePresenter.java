@@ -53,7 +53,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
+    public void onGoToHomeWelcomeModule() {
     }
 
     @Override

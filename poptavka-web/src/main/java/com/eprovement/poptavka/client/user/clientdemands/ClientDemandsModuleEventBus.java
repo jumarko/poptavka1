@@ -46,6 +46,8 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModulePresenter.class)
     void forward();
 
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/

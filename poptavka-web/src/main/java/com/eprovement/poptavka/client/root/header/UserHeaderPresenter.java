@@ -138,7 +138,7 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
                 eventBus.goToCreateDemandModule();
                 break;
             default:
-                eventBus.goToHomeWelcomeModule(null);
+                eventBus.goToHomeWelcomeModule();
                 break;
         }
     }

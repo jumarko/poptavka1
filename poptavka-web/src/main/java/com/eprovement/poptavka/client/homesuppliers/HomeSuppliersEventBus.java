@@ -48,6 +48,8 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     @Event(handlers = HomeSuppliersPresenter.class)
     void forward();
 
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

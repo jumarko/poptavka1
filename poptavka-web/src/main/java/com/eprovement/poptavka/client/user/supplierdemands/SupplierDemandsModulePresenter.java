@@ -58,6 +58,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     }
 
     public void onForward() {
+        eventBus.setBody(view.getWidgetView());
         //Must be set before any widget start initialize because of autoDisplay feature
         Storage.setCurrentlyLoadedView(Constants.USER_SUPPLIER_MODULE);
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
@@ -94,30 +95,6 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
         });
-//        view.getSupplierCreateDemand().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                eventBus.goToCreateDemandModule();
-//            }
-//        });
-//        view.getSupplierCreateSupplier().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                eventBus.goToCreateSupplierModule();
-//            }
-//        });
-//        view.getAllDemands().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                eventBus.goToHomeDemandsModule(null);
-//            }
-//        });
-//        view.getAllSuppliers().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                eventBus.goToHomeSuppliersModule(null);
-//            }
-//        });
     }
 
     /**************************************************************************/

@@ -137,6 +137,7 @@ public class HomeDemandsPresenter
     }
 
     public void onForward() {
+        eventBus.setBody(view.getWidgetView());
         //This sets content of tab: current view attribute selector in popup.
         //However demands attribute selector is already loaded by default in first tab,
         //another setting in fourth tab is not needed

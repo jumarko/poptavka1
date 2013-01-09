@@ -20,6 +20,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 @Debug(logLevel = LogLevel.DETAILED)
@@ -42,6 +43,9 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Forward
     @Event(handlers = MessagesPresenter.class)
     void forward();
+
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
 
     /**************************************************************************/
     /* Navigation events.                                                     */

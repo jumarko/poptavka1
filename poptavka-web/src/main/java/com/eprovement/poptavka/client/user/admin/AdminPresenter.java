@@ -146,6 +146,7 @@ public class AdminPresenter
      * particular access role can't access it and loginPopupView will be displayed.
      */
     public void onForward() {
+        eventBus.setBody(view.getWidgetView());
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }

@@ -234,6 +234,7 @@ public class DemandCreationPresenter
     }
 
     public void onForward() {
+        eventBus.setBody(view.getWidgetView());
         LOGGER.info("DemandCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         maxSelectedTab = -1;

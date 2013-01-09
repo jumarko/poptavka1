@@ -48,6 +48,9 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     @Event(handlers = HomeDemandsPresenter.class)
     void forward();
 
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

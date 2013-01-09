@@ -48,6 +48,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(handlers = DemandCreationPresenter.class)
     void forward();
 
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

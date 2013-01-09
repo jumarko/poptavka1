@@ -30,7 +30,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
     /**************************************************************************/
     @Override
     public void goToHomeWelcome() {
-        eventBus.goToHomeWelcomeModule(null);
+        eventBus.goToHomeWelcomeModule();
     }
 
     @Override
