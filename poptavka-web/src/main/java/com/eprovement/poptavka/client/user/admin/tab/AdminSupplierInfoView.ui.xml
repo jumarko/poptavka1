@@ -1,8 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-        xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
-        xmlns:lsv="com.eprovement.poptavka.client.common.locality"
+    xmlns:lsv='urn:import:com.eprovement.poptavka.client.common.locality'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateLocales='default'>
 

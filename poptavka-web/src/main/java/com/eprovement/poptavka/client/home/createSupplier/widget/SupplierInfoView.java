@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.validation.client.Validation;
+import com.google.gwt.validation.client.impl.Validation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
