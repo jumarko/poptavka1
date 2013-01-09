@@ -75,14 +75,6 @@ public class SupplierDemandDetail implements Serializable, TableDisplay {
         this.clientName = clientName;
     }
 
-    public boolean isRead() {
-        return read;
-    }
-
-    public void setRead(boolean read) {
-        this.read = read;
-    }
-
     public boolean isStarred() {
         return starred;
     }

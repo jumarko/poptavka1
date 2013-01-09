@@ -25,7 +25,6 @@ public final class ClientDemandUserMessageConverter extends AbstractConverter<Us
             detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
             detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
         }
-        detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
         return detail;
 

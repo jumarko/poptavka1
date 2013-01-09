@@ -27,7 +27,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     private long threadRootId;
     private long supplierId;
     private long supplierUserId;
-    private boolean isRead;
     private boolean isStarred;
     private String supplierName;
     private String price;
@@ -228,16 +227,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     }
 
     @Override
-    public boolean isRead() {
-        return isRead;
-    }
-
-    @Override
-    public void setRead(boolean value) {
-        this.isRead = value;
-    }
-
-    @Override
     public boolean isStarred() {
         return isStarred;
     }
@@ -347,7 +336,7 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     public String toString() {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
                 + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
-                + supplierUserId + ", isRead=" + isRead + ", isStarred=" + isStarred + ", supplierName="
+                + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
                 + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
                 + unreadMessageCount + '}';

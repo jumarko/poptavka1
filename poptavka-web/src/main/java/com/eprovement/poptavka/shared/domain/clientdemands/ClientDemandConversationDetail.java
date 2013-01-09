@@ -73,14 +73,6 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         this.messageId = messageId;
     }
 
-    public boolean isRead() {
-        return read;
-    }
-
-    public void setRead(boolean read) {
-        this.read = read;
-    }
-
     public boolean isStarred() {
         return starred;
     }

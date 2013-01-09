@@ -30,7 +30,6 @@ public final class OfferDemandMessageConverter extends AbstractConverter<UserMes
         detail.setUserMessageId(userMessage.getId());
         detail.setDemandId(userMessage.getMessage().getDemand().getId());
         detail.setPrice(userMessage.getMessage().getDemand().getPrice());
-        detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
         detail.setEndDate(convertDate(userMessage.getMessage().getDemand().getEndDate()));
         detail.setValidToDate(convertDate(userMessage.getMessage().getDemand().getValidTo()));

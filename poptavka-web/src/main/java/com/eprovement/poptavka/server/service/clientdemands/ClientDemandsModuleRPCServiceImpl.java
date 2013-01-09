@@ -310,8 +310,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setUnreadSubmessages(messageService.getUnreadDescendantsCount(messageKey, user));
             cdcd.setMessageDetail(messageConverter.convertToTarget(messageKey));
             cdcd.setMessageId(messageKey.getId());
-            cdcd.setRead(userMessage.isRead());
-            cdcd.setStarred(userMessage.isStarred());
             Supplier supplier = findSupplier(messageKey.getSender().getId());
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
@@ -772,7 +770,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         //Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
         if (clientDemandConversationID == 1L) {
             ClientDemandConversationDetail a1 = new ClientDemandConversationDetail();
-            a1.setRead(false);
             a1.setUserMessageId(1L);
             a1.setSupplierId(1L);
             a1.setSupplierName("Good Data");
@@ -783,7 +780,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             return a1;
         } else if (clientDemandConversationID == 2L) {
             ClientDemandConversationDetail a2 = new ClientDemandConversationDetail();
-            a2.setRead(false);
             a2.setUserMessageId(2L);
             a2.setSupplierId(2L);
             a2.setSupplierName("Eprovement");
@@ -794,7 +790,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             return a2;
         } else if (clientDemandConversationID == 3L) {
             ClientDemandConversationDetail a3 = new ClientDemandConversationDetail();
-            a3.setRead(false);
             a3.setUserMessageId(3L);
             a3.setSupplierId(3L);
             a3.setSupplierName("CoraGeo");

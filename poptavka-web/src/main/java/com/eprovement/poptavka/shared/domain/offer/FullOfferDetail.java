@@ -77,16 +77,6 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     }
 
     @Override
-    public boolean isRead() {
-        return this.messageDetail.isRead();
-    }
-
-    @Override
-    public void setRead(boolean value) {
-        this.messageDetail.setRead(value);
-    }
-
-    @Override
     public boolean isStarred() {
         return this.messageDetail.isStarred();
     }

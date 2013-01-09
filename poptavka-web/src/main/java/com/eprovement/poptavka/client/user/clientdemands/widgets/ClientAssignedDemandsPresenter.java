@@ -249,7 +249,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
 //                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
 //                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
-                object.setRead(true);
 //                    view.getDataGrid().redraw();
                 displayDetailContent(object);
                 MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid()

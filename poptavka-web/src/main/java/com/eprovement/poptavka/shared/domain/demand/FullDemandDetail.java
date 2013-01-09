@@ -192,7 +192,6 @@ public class FullDemandDetail implements Serializable, TableDisplay {
                 + "\n     Price=" + price
                 + "\n     endDate=" + endDate
                 + "\n     validToDate=" + validToDate
-                + "\n     isRead=" + read
                 + "\n     isStarred=" + starred
                 + "\n     detailType=" + detailType
                 + "\n"
@@ -245,16 +244,6 @@ public class FullDemandDetail implements Serializable, TableDisplay {
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
-    }
-
-    @Override
-    public boolean isRead() {
-        return read;
-    }
-
-    @Override
-    public void setRead(boolean read) {
-        this.read = read;
     }
 
     @Override

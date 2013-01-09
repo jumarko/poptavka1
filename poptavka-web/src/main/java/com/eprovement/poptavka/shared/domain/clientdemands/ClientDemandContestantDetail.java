@@ -101,14 +101,6 @@ public class ClientDemandContestantDetail implements Serializable, TableDisplay 
         this.messageId = messageId;
     }
 
-    public boolean isRead() {
-        return read;
-    }
-
-    public void setRead(boolean read) {
-        this.read = read;
-    }
-
     public boolean isStarred() {
         return starred;
     }

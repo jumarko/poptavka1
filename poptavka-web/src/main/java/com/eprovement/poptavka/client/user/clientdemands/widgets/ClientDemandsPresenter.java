@@ -182,7 +182,6 @@ public class ClientDemandsPresenter
         //Select Menu - my demands - selected
         eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
         //
-        clientDemandDetail.setRead(true);
         Storage.setDemandId(clientDemandDetail.getDemandId());
         Storage.setThreadRootId(clientDemandDetail.getThreadRootId());
         view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
@@ -333,7 +332,6 @@ public class ClientDemandsPresenter
                 displayDetailContent(object);
 //                if (lastOpenedDemandConversation != object.getUserMessageId()) {
 //                    lastOpenedDemandConversation = object.getUserMessageId();
-                object.setRead(true);
 //                    view.getConversationGrid().redraw();
                 view.setDemandTableVisible(false);
                 view.setConversationTableVisible(true);
@@ -386,7 +384,6 @@ public class ClientDemandsPresenter
                 ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
                         .getSelectionModel()).getSelectedObject();
                 if (selected != null) {
-                    selected.setRead(true);
                     Storage.setDemandId(selected.getDemandId());
                     Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());

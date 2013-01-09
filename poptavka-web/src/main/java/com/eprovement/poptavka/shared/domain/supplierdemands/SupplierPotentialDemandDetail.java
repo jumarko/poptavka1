@@ -29,7 +29,6 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
     private Date messageSent; // column 5
     // UserMessage part
     private long userMessageId;
-    private boolean isRead;
     private boolean isStarred; // column 1
     private int messageCount; // all messages between Supplier and Client regarding this potential demand
     private int unreadMessageCount; // number of Supplier's unread messages regarding this potential demand
@@ -176,22 +175,6 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
      */
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
-    }
-
-    /**
-     * @return the isRead
-     */
-    @Override
-    public boolean isRead() {
-        return isRead;
-    }
-
-    /**
-     * @param isRead the isRead to set
-     */
-    @Override
-    public void setRead(boolean isRead) {
-        this.isRead = isRead;
     }
 
     /**

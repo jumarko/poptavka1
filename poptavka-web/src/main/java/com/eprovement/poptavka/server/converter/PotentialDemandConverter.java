@@ -23,7 +23,6 @@ public final class PotentialDemandConverter extends AbstractConverter<UserMessag
     public PotentialDemandDetail convertToTarget(UserMessage userMessage) {
         final PotentialDemandDetail detail = new PotentialDemandDetail();
         detail.setUserMessageId(userMessage.getId());
-        detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
         if (userMessage.getMessage() != null) {
             detail.setMessageId(userMessage.getMessage().getId());

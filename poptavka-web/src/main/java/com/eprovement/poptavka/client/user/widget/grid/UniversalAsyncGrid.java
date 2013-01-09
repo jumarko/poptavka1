@@ -399,8 +399,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     }
 
     /**
-     * Creates star-column depending on messages' isRead value. By clicking this cell, STAR attribute is immediately
-     * updated in database.
+     * Creates star-column depending on messages' isStared value.
+     * By clicking this cell, STAR attribute is immediately updated in database.
      *
      * NOTE:
      * Sorting is not implemented now.

@@ -164,7 +164,6 @@ public class ClientOffersPresenter
         //Select Menu - my demands - selected
         eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
         //
-        clientDemandDetail.setRead(true);
         Storage.setDemandId(clientDemandDetail.getDemandId());
         Storage.setThreadRootId(clientDemandDetail.getThreadRootId());
         view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
@@ -323,7 +322,6 @@ public class ClientOffersPresenter
             public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
 //                if (lastOpenedDemandOffer != object.getOfferId()) {
                 lastOpenedDemandOffer = object.getOfferId();
-                object.setRead(true);
 //                    view.getOfferGrid().redraw();
 //                    view.setDemandTableVisible(false);
 //                    view.setOfferTableVisible(true);
@@ -415,7 +413,6 @@ public class ClientOffersPresenter
                 ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
                         .getSelectionModel()).getSelectedObject();
                 if (selected != null) {
-                    selected.setRead(true);
                     Storage.setDemandId(selected.getDemandId());
                     Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());

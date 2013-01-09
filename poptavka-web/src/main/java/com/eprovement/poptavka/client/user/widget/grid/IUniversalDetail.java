@@ -43,10 +43,6 @@ public interface IUniversalDetail {
     //--------------------------------------------------------------------------
     long getUserMessageId();
 
-    boolean isRead();
-
-    void setRead(boolean isRead);
-
     boolean isStarred();
 
     void setStarred(boolean isStarred);

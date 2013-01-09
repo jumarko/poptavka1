@@ -16,9 +16,6 @@ public interface DemandDetail {
     long getUserMessageId();
     void setUserMessageId(long userMessageId);
 
-    boolean isRead();
-    void setRead(boolean read);
-
     boolean isStarred();
     void setStarred(boolean starred);
 

@@ -164,8 +164,6 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
             Date createdDate = auditService.getRevisionDate(revisions.get(0));
 
             fullOfferDetail.getOfferDetail().setCreatedDate(createdDate);
-            // TODO ivlcek what is this?
-            fullOfferDetail.setRead(userMessage.isRead());
 
             offerDetails.add(fullOfferDetail);
 

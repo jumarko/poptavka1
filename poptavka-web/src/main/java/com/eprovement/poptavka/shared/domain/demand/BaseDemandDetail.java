@@ -53,12 +53,6 @@ public class BaseDemandDetail implements Serializable {
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
     }
-    public boolean isRead() {
-        return read;
-    }
-    public void setRead(boolean read) {
-        this.read = read;
-    }
     public boolean isStarred() {
         return starred;
     }

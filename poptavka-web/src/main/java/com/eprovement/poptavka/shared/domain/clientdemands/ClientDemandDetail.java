@@ -90,14 +90,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.validToDate = validToDate;
     }
 
-    public boolean isRead() {
-        return read;
-    }
-
-    public void setRead(boolean read) {
-        this.read = read;
-    }
-
     public boolean isStarred() {
         return starred;
     }

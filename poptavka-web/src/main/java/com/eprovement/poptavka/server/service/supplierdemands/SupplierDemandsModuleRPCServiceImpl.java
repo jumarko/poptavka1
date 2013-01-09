@@ -187,7 +187,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             detail.setMessageSent(um.getMessage().getSent());
             // UserMessage part
             detail.setUserMessageId(um.getId());
-            detail.setRead(um.isRead());
             detail.setStarred(um.isStarred());
             detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
             detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));

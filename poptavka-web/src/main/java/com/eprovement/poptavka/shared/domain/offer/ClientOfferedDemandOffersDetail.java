@@ -27,7 +27,6 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     private long threadRootId;
     private long supplierId;
     private long supplierUserId;
-    private boolean isRead;
     private boolean isStarred;
     private String supplierName;
     private String price;
@@ -225,16 +224,6 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     }
 
     @Override
-    public boolean isRead() {
-        return isRead;
-    }
-
-    @Override
-    public void setRead(boolean value) {
-        this.isRead = value;
-    }
-
-    @Override
     public boolean isStarred() {
         return isStarred;
     }
@@ -323,7 +312,7 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     public String toString() {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
                 + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
-                + supplierUserId + ", isRead=" + isRead + ", isStarred=" + isStarred + ", supplierName="
+                + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
                 + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
                 + unreadMessageCount + '}';

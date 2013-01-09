@@ -7,10 +7,6 @@ import java.util.Date;
 
 public interface TableDisplay {
 
-    boolean isRead();
-
-    void setRead(boolean value);
-
     boolean isStarred();
 
     void setStarred(boolean value);

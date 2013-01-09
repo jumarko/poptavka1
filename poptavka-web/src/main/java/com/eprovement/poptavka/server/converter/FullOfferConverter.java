@@ -56,8 +56,6 @@ public final class FullOfferConverter extends AbstractConverter<UserMessage, Ful
         detail.setOfferDetail(offerConverter.convertToTarget(userMessage.getMessage().getOffer()));
         detail.setDemandDetail(demandConverter.convertToTarget(userMessage.getMessage().getDemand()));
 
-        detail.setRead(true);
-
         LOGGER.info("OFFER ID: " + userMessage.getMessage().getId() + ", OFFER DETAIL ID: "
                 + userMessage.getMessage().getOffer().getId());
         return detail;

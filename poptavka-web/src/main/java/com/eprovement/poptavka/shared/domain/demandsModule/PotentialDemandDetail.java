@@ -106,10 +106,6 @@ public class PotentialDemandDetail implements Serializable {
         }
     }
 
-    public boolean isRead() {
-        return read;
-    }
-
     public void setRead(boolean read) {
         this.read = read;
     }
