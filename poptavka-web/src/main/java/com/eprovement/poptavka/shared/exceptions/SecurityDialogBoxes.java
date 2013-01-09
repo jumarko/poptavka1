@@ -12,8 +12,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.Date;
@@ -26,7 +26,7 @@ public abstract class SecurityDialogBoxes {
     private SecurityDialogBoxes() {
     }
 
-    public static class AlertBox extends DialogBox {
+    public static class AlertBox extends PopupPanel {
 
         private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
         private static final String TITLE = MSGS.alert();
@@ -40,8 +40,8 @@ public abstract class SecurityDialogBoxes {
             this.center();
 
             this.setTitle(TITLE);
-            this.setText(TITLE);
             VerticalPanel vp = new VerticalPanel();
+            vp.add(new HTML("<strong>Alert</strong><hr/>"));
             vp.add(new HTML(message));
             vp.add(SecurityDialogBoxes.getReportButton(eventBusWithLookup));
 
@@ -49,7 +49,7 @@ public abstract class SecurityDialogBoxes {
         }
     }
 
-    public static class AccessDeniedBox extends DialogBox {
+    public static class AccessDeniedBox extends PopupPanel {
 
         private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
         private static final String TITLE = MSGS.securityError();
@@ -63,9 +63,9 @@ public abstract class SecurityDialogBoxes {
             this.center();
 
             this.setTitle(TITLE);
-            this.setText(TITLE);
 
             VerticalPanel vp = new VerticalPanel();
+            vp.add(new HTML("<strong>Alert</strong><hr/>"));
             vp.add(new HTML(MSGS.accessDenied()));
             vp.add(SecurityDialogBoxes.getReportButton(eventBusWithLookup));
 
