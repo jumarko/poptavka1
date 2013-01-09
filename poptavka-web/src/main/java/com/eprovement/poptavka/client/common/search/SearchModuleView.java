@@ -4,19 +4,18 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,13 +37,17 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @UiField
     TextBox searchContent;
     @UiField
-    ListBox searchWhat;
+    MenuBar searchWhatList;
+    @UiField
+    MenuItem searchWhatItem, demand, supplier;
+    MenuItem custom;
     @UiField
     PopupPanel popupPanel;
     @UiField
     AdvanceSearchContentView advanceSearchContentView;
     //Holds data
     private SearchModuleDataHolder filters = new SearchModuleDataHolder();
+    int menuItemsCount = 2;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -53,11 +56,32 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        searchWhat.addItem(Storage.MSGS.searchInDemands());
-        searchWhat.addItem(Storage.MSGS.searchInSuppliers());
-        searchWhat.setSelectedIndex(0);
-        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), searchWhat);
+        demand.setCommand(new Command() {
 
+            @Override
+            public void execute() {
+                setAdvanceContentTabsVisibility(true, false, false);
+                searchWhatItem.setText(demand.getText());
+            }
+        });
+        supplier.setCommand(new Command() {
+
+            @Override
+            public void execute() {
+                setAdvanceContentTabsVisibility(false, true, false);
+                searchWhatItem.setText(supplier.getText());
+            }
+        });
+        custom = new MenuItem("", new Command() {
+
+            @Override
+            public void execute() {
+                setAdvanceContentTabsVisibility(false, false, true);
+                searchWhatItem.setText(custom.getText());
+            }
+        });
+
+        setAdvanceContentTabsVisibility(true, false, false);
         popupPanel.setAutoHideEnabled(true);
         popupPanel.setAnimationEnabled(true);
         //Aby sa nam nezobrazoval taky ramcek (popup bez widgetu) pri starte modulu
@@ -78,7 +102,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         if (attributeSearchViewWidget == null) {
             addCustomItemToSearchWhatBox(false);
         } else {
-            if (searchWhat.getItemCount() == 3) {
+            if (menuItemsCount == 3) {
                 addCustomItemToSearchWhatBox(false);
             }
             addCustomItemToSearchWhatBox(true);
@@ -108,8 +132,14 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     @Override
-    public ListBox getSearchWhat() {
-        return searchWhat;
+    public int getSearchWhat() {
+        if (searchWhatItem.getText().equals(demand.getText())) {
+            return 0;
+        } else if (searchWhatItem.getText().equals(supplier.getText())) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     @Override
@@ -141,24 +171,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
-    @UiHandler("searchWhat")
-    public void searchWhatChangeHandler(ChangeEvent event) {
-        int selectedWidgetIdx = searchWhat.getSelectedIndex();
-        switch (selectedWidgetIdx) {
-            case AdvanceSearchContentView.DEMANDS_SELECTOR_WIDGET:
-                setAdvanceContentTabsVisibility(true, false, false);
-                break;
-            case AdvanceSearchContentView.SUPPLIER_SELECTOR_WIDGET:
-                setAdvanceContentTabsVisibility(false, true, false);
-                break;
-            case AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET:
-                setAdvanceContentTabsVisibility(false, false, true);
-                break;
-            default:
-                break;
-        }
-        advanceSearchContentView.getTabLayoutPanel().selectTab(selectedWidgetIdx);
-    }
     /*
      * CLICK HANDLERS
      *
@@ -199,18 +211,21 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /**************************************************************************/
     private void addCustomItemToSearchWhatBox(boolean addOrRemove) {
         if (addOrRemove) {
-            searchWhat.addItem(getCurrentViewNameString());
-            searchWhat.setSelectedIndex(2);
+            custom.setText(getCurrentViewNameString());
+            searchWhatList.addItem(custom);
+            searchWhatItem.setText(getCurrentViewNameString());
             //Nechat to tu, alebo to dat do onForward v prezenteri?
             //Ja myslim, ze moze ostat tu
+            setAdvanceContentTabsVisibility(false, false, true);
             advanceSearchContentView.setCurrentViewTabName();
+            advanceSearchContentView.getTabLayoutPanel().selectTab(1);
         } else {
-            if (searchWhat.getItemCount() == 3) {
-                searchWhat.removeItem(2);
+            if (menuItemsCount == 3) {
+                searchWhatList.removeItem(custom);
             }
-            searchWhat.setSelectedIndex(0);
+            searchWhatItem.setText(demand.getText());
+            advanceSearchContentView.getTabLayoutPanel().selectTab(0);
         }
-        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), searchWhat);
     }
 
     /**

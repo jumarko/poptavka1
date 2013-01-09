@@ -139,6 +139,7 @@ public class ActivationCodePopupPresenter
 
     private void reportActivationSuccessAndLoginUser() {
         view.getStatusLabel().setMessage(MSGS.activationPassed());
+        view.getStatusLabel().setState(StatusIconLabel.State.ACCEPT_24);
         //close activation popup
         ((PopupPanel) view.getWidgetView()).hide();
         //login user automatically
@@ -151,6 +152,7 @@ public class ActivationCodePopupPresenter
 
     private void reportActivationFailure(String errorMessage) {
         view.getStatusLabel().setMessage(errorMessage);
+        view.getStatusLabel().setState(StatusIconLabel.State.ERROR_24);
         view.getReportButton().setVisible(true);
     }
 

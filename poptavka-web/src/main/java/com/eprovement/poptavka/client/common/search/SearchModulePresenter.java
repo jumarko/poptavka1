@@ -44,7 +44,7 @@ public class SearchModulePresenter
         //GETTERS - search bar items
         TextBox getSearchContent();
 
-        ListBox getSearchWhat();
+        int getSearchWhat();
 
         Button getSearchBtn();
 
@@ -160,7 +160,7 @@ public class SearchModulePresenter
                     return;
                 }
                 view.setFilterSearchContent();
-                switch (view.getSearchWhat().getSelectedIndex()) {
+                switch (view.getSearchWhat()) {
                     case 0:
                         eventBus.goToHomeDemandsModule(filter);
                         break;
