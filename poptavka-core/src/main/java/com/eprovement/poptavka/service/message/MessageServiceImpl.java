@@ -194,6 +194,13 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
+    public Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemnd(User user, Message threadRoot) {
+        return getDao().getLatestSupplierUserMessagesWithoutOfferForDemnd(user, threadRoot);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
     public Map<Long, Integer> getListOfClientDemandMessagesWithOfferUnreadSub(User user) {
         return getDao().getListOfClientDemandMessagesWithOfferUnreadSub(user);
     }

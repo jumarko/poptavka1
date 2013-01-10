@@ -112,6 +112,22 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
+    public Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemnd(User user, Message threadRoot) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("threadRoot", threadRoot);
+        queryParams.put("user", user);
+
+        List<Object[]> unread = runNamedQuery(
+                "getLatestSupplierUserMessagesWithoutOfferForDemnd",
+                queryParams);
+        Map<Long, Integer> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+        }
+        return unreadMap;
+    }
+
+    @Override
     public Map<Long, Integer> getListOfClientDemandMessagesUnread(User user) {
         return getUnreadSubMessagesForDemandMessageHelper(user, "getListOfClientDemandMessagesUnreadSub");
 

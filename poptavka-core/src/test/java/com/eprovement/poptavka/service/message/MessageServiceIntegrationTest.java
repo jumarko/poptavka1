@@ -155,6 +155,23 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     }
 
     @Test
+    public void testGetLatestSupplierUserMessagesWithoutOfferForDemnd() {
+        final Message threadRoot = this.messageService.getById(1L);
+        final User clientUser = this.generalService.find(User.class, 111111112L);
+        final Map<Long, Integer> latestSupplierUserMessages =
+                this.messageService.getLatestSupplierUserMessagesWithoutOfferForDemnd(clientUser, threadRoot);
+
+        Assert.assertEquals(1, latestSupplierUserMessages.size());
+        for (Long key : latestSupplierUserMessages.keySet()) {
+            Assert.assertEquals("UserMessage [id=" + key + "] expected to be in map ["
+                    + latestSupplierUserMessages + "] is not there.", Long.valueOf(5), key);
+            Assert.assertEquals("Unread UserMessage count [count=" + latestSupplierUserMessages.get(key) + "] "
+                    + "expected to be in map [" + latestSupplierUserMessages + "] is not there.",
+                    Integer.valueOf(1), latestSupplierUserMessages.get(key));
+        }
+    }
+
+    @Test
     public void testGetListOfClientDemandMessagesAll() {
         final Message threadRoot1 = this.messageService.getById(1L);
         final Message threadRoot200 = this.messageService.getById(200L);
