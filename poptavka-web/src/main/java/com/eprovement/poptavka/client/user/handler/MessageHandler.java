@@ -36,7 +36,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 //        });
     }
 
-    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
+    // TODO Praso - this method can be removed from here. It is not used anywhere in the frontend
     public void onGetClientDemandWithConversations(Long userId, Long clientId) {
 //        messageService.getListOfClientDemandMessages(userId, clientId,
 //                new SecuredAsyncCallback<ArrayList<ClientDemandMessageDetail>>() {

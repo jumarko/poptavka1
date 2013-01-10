@@ -236,6 +236,14 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
     }
 
+    /**
+     * Gets all messages from conversation between client and supplier.
+     *
+     * @param threadId is root demand message id
+     * @param userId can be either supplier or client
+     * @return
+     * @throws RPCException
+     */
     @Override
     // TODO call setMessageReadStatus in body
     public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {

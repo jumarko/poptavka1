@@ -114,10 +114,9 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     /**
-     * Load demand/related conversation from DB.
+     * Load conversation between client and supplier related to particular demand / threadRoot
      *
-     * @param messageId
-     * @param threadId
+     * @param threadRootId
      * @param userId
      */
     public void onRequestConversation(Long threadId, Long userId) {

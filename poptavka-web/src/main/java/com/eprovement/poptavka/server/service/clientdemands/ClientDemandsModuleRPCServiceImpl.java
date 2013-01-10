@@ -293,26 +293,29 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         User user = generalService.find(User.class, userId);
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
-        for (Message messageKey : root.getChildren()) {
 
-            final Search userMessageSearch = new Search(UserMessage.class);
-            userMessageSearch.addFilterEqual("user", user);
-            userMessageSearch.addFilterEqual("message", messageKey);
-            UserMessage userMessage = (UserMessage) generalService.searchUnique(userMessageSearch);
+        // TODO ivlcek - replace with new method that return a map of UserMessages and count of unread submessages.
+        Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
+                messageService.getLatestSupplierUserMessagesWithoutOfferForDemnd(user, root);
+
+        for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
+
+            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
 
             ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
-            cdcd.setDate(messageKey.getSent());
+            cdcd.setDate(userMessage.getMessage().getSent());
             cdcd.setDemandId(demandID);
-            cdcd.setThreadMessageId(messageKey.getThreadRoot().getId());
+            cdcd.setThreadMessageId(userMessage.getMessage().getThreadRoot().getId());
             // TODO make converter
             // TODO ivlcek - messageCount and UnreadMessage are not necessary for first version
-            cdcd.setMessageCount(messageService.getAllDescendantsCount(messageKey, user));
-            cdcd.setUnreadSubmessages(messageService.getUnreadDescendantsCount(messageKey, user));
-            cdcd.setMessageDetail(messageConverter.convertToTarget(messageKey));
-            cdcd.setMessageId(messageKey.getId());
-            Supplier supplier = findSupplier(messageKey.getSender().getId());
+//            cdcd.setMessageCount(messageService.getAllDescendantsCount(messageKey, user));
+            cdcd.setUnreadSubmessages(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+            cdcd.setMessageDetail(messageConverter.convertToTarget(userMessage.getMessage()));
+            cdcd.setMessageId(userMessage.getMessage().getId());
+            Supplier supplier = findSupplier(userMessage.getMessage().getSender().getId());
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
+            // set latest UserMessage id
             cdcd.setUserMessageId(userMessage.getId());
 
             list.add(cdcd);
