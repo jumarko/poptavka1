@@ -256,4 +256,13 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @return
      */
     Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemnd(User user, Message threadRoot);
+
+    /**
+     * Gets all latest userMessages from all suppliers who sent some offer response to demand.
+     *
+     * @param user
+     * @param threadRoot
+     * @return
+     */
+    Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemnd(User user, Message threadRoot);
 }
