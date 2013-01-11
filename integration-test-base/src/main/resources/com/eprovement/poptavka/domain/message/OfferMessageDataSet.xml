@@ -23,7 +23,7 @@
              THREADROOT_ID="1"
              DEMAND_ID="2"
              OFFER_ID="11" />
-             
+
     <MESSAGE ID="8" BODY="Levna slivovice domaci, 6l barel, vznikajici kvalita!"
              CREATED="2011-05-11"
              PARENT_ID="1"
@@ -33,7 +33,7 @@
              THREADROOT_ID="1"
              DEMAND_ID="2"
              OFFER_ID="12" />
-             
+
 
     <!-- Reply to the reply of original (thread root) message -->
     <MESSAGE ID="2"
@@ -120,7 +120,7 @@
              FIRSTBORN_ID="[NULL]"
              THREADROOT_ID="200"
              SUBJECT="Dnes nepridem - zajtra"
-             DEMAND_ID="2" />
+             DEMAND_ID="9" />
 
     <MESSAGEUSERROLE ID="202" MESSAGE_ID="200" USER_ID="111111111" TYPE="TO"/>
 
