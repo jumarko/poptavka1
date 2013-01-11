@@ -294,12 +294,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
 
-        // TODO ivlcek - replace with new method that return a map of UserMessages and count of unread submessages.
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
                 messageService.getLatestSupplierUserMessagesWithoutOfferForDemnd(user, root);
 
         for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
-
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
 
             ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
@@ -307,9 +305,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setDemandId(demandID);
             cdcd.setThreadMessageId(userMessage.getMessage().getThreadRoot().getId());
             // TODO make converter
-            // TODO ivlcek - messageCount and UnreadMessage are not necessary for first version
-//            cdcd.setMessageCount(messageService.getAllDescendantsCount(messageKey, user));
-            cdcd.setUnreadSubmessages(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+            cdcd.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+//            cdcd.setUnreadSubmessages(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
             cdcd.setMessageDetail(messageConverter.convertToTarget(userMessage.getMessage()));
             cdcd.setMessageId(userMessage.getMessage().getId());
             Supplier supplier = findSupplier(userMessage.getMessage().getSender().getId());
@@ -411,15 +408,18 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientOfferedDemandOffersDetail> getClientOfferedDemandOffers(long userId, long demandID,
             long threadRootId, SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-
-        // load offers for demand
         User user = generalService.find(User.class, userId);
-        Demand demand = generalService.find(Demand.class, demandID);
+        Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
-        List<Offer> offers = demand.getOffers();
-        for (Offer offer : offers) {
-            ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
 
+        Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
+                messageService.getLatestSupplierUserMessagesWithOfferForDemnd(user, root);
+
+        for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
+            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
+            Offer offer = userMessage.getMessage().getOffer();
+
+            ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // TODO ivlcek - refactor and create converter, set Rating
             codod.setSupplierId(offer.getSupplier().getId());
             codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
@@ -429,17 +429,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setOfferId(offer.getId());
             codod.setReceivedDate(offer.getCreated());
             codod.setRating(offer.getSupplier().getOveralRating());
-
-            Search conversationMessagesSearch = new Search(Message.class);
-            conversationMessagesSearch.addFilterEqual("demand.id", demandID);
-            conversationMessagesSearch.addFilterEqual("sender.id", offer.getSupplier().getBusinessUser().getId());
-            conversationMessagesSearch.addSortAsc("id", false);
-            List<Message> conversationMessages = (generalService.search(conversationMessagesSearch));
-            Message firstSupplierResponse = conversationMessages.get(0);
-
-            codod.setMessageCount(messageService.getAllDescendantsCount(firstSupplierResponse, user));
-            codod.setUnreadMessageCount(messageService.getUnreadDescendantsCount(firstSupplierResponse, user));
-            codod.setThreadRootId(firstSupplierResponse.getThreadRoot().getId());
+            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+//            codod.setUnreadMessageCount(messageService.getUnreadDescendantsCount(firstSupplierResponse, user));
+            codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
 
             listCodod.add(codod);
