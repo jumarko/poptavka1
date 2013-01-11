@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -115,7 +116,11 @@ public class ClientOffersView extends Composite
         offerPager = new UniversalPagerWidget();
         // Create a DataGrid.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        offerGrid = new UniversalTableGrid(Constants.CLIENT_OFFERED_DEMANDS, offerPager.getPageSize(), resource);
+        offerGrid = new UniversalTableGrid(
+                ClientOfferedDemandOffersDetail.KEY_PROVIDER,
+                Constants.CLIENT_OFFERED_DEMANDS,
+                offerPager.getPageSize(),
+                resource);
         offerGrid.setWidth("100%");
         offerGrid.setHeight("100%");
         // bind pager to grid

@@ -29,11 +29,11 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     private OfferDetail offerDetail = new OfferDetail();
     private FullDemandDetail demandDetail = new FullDemandDetail();
     //Keyprovider
-    public static final ProvidesKey<FullOfferDetail> KEY_PROVIDER =
-            new ProvidesKey<FullOfferDetail>() {
+    public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
+            new ProvidesKey<IUniversalDetail>() {
                 @Override
-                public Object getKey(FullOfferDetail item) {
-                    return item == null ? null : item.getOfferDetail().getDemandId();
+                public Object getKey(IUniversalDetail item) {
+                    return item == null ? null : item.getDemandId();
                 }
             };
 

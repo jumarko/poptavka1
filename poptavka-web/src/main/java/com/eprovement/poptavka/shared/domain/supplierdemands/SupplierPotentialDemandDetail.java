@@ -41,10 +41,10 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
 
     // Keyprovider
     //--------------------------------------------------------------------------
-    public static final ProvidesKey<SupplierPotentialDemandDetail> KEY_PROVIDER =
-            new ProvidesKey<SupplierPotentialDemandDetail>() {
+    public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
+            new ProvidesKey<IUniversalDetail>() {
                 @Override
-                public Object getKey(SupplierPotentialDemandDetail item) {
+                public Object getKey(IUniversalDetail item) {
                     return item == null ? null : item.getDemandId();
                 }
             };

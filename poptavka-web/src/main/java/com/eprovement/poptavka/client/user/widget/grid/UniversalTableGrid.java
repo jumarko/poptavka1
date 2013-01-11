@@ -82,15 +82,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private List<String> gridColumns = new ArrayList<String>();
     //Other
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
-    //Keyprovider
-    //--------------------------------------------------------------------------
-    private static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
-            new ProvidesKey<IUniversalDetail>() {
-                @Override
-                public Object getKey(IUniversalDetail item) {
-                    return item == null ? null : item.getDemandId();
-                }
-            };
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -100,7 +91,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      * @param loadedView - define Constant in Constants class which define widget
      * for which table schema is generated.
      */
-    public UniversalTableGrid(int loadedView, int pageSize, Resources resources) {
+    public UniversalTableGrid(ProvidesKey<IUniversalDetail> keyProvider,
+            int loadedView, int pageSize, Resources resources) {
         super(pageSize, resources);
         switch (loadedView) {
             case Constants.CLIENT_OFFERED_DEMANDS:
@@ -121,18 +113,18 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
             default:
                 break;
         }
-        initTable();
+        initTable(keyProvider);
         setDataGridRowStyles();
     }
 
     /**
      * Initialize table: universalAsyncGrid.
      */
-    private void initTable() {
+    private void initTable(ProvidesKey<IUniversalDetail> keyProvider) {
         setGridColumns(gridColumns);
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        SelectionModel<IUniversalDetail> selectionModel = new MultiSelectionModel<IUniversalDetail>(KEY_PROVIDER);
+        SelectionModel<IUniversalDetail> selectionModel = new MultiSelectionModel<IUniversalDetail>(keyProvider);
         setSelectionModel(selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
 
         initTableColumns();

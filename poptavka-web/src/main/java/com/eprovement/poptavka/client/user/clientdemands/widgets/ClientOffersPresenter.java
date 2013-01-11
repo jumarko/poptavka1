@@ -320,12 +320,15 @@ public class ClientOffersPresenter
         textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
             @Override
             public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
+                displayDetailContent(object);
 //                if (lastOpenedDemandOffer != object.getOfferId()) {
                 lastOpenedDemandOffer = object.getOfferId();
 //                    view.getOfferGrid().redraw();
 //                    view.setDemandTableVisible(false);
 //                    view.setOfferTableVisible(true);
-                displayDetailContent(object);
+                view.setDemandTableVisible(false);
+                view.setOfferTableVisible(true);
+
                 MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);

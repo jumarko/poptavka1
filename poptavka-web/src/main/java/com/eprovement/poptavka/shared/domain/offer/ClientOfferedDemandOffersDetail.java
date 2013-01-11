@@ -36,10 +36,10 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     private int messageCount;
     private int unreadMessageCount;
     //Keyprovider
-    public static final ProvidesKey<ClientOfferedDemandOffersDetail> KEY_PROVIDER =
-            new ProvidesKey<ClientOfferedDemandOffersDetail>() {
+    public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
+            new ProvidesKey<IUniversalDetail>() {
                 @Override
-                public Object getKey(ClientOfferedDemandOffersDetail item) {
+                public Object getKey(IUniversalDetail item) {
                     return item == null ? null : item.getOfferId();
                 }
             };
