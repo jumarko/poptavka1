@@ -105,8 +105,6 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         createBusinessUserIfNotExist(businessUserRole);
         final BUR createdBusinessUserRole = super.create(businessUserRole);
 
-        userVerificationService.sendNewActivationCodeAsync(businessUserRole.getBusinessUser());
-
         LOGGER.info("action=create_new_business_user_role status=finish businuessUser={}",
                 businessUserRole.getBusinessUser());
         return createdBusinessUserRole;
@@ -166,6 +164,9 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         if (isNewBusinessUser(businessUserRole)) {
             final BusinessUser savedBusinessUserEntity = generalService.save(businessUserRole.getBusinessUser());
             businessUserRole.setBusinessUser(savedBusinessUserEntity);
+
+            // TODO: move out of this class to the SupplierRPCService and ClientRPCService ??
+            userVerificationService.sendNewActivationCodeAsync(savedBusinessUserEntity);
         }
     }
 
