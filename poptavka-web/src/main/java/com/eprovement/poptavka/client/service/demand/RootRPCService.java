@@ -39,7 +39,7 @@ public interface RootRPCService extends RemoteService {
     /**
      * Returns locality list.
      *
-     * @param locCode
+     * @param locId id of parent locality
      * @return list locality children list
      */
     List<LocalityDetail> getLocalities(Long locId) throws RPCException;
@@ -77,7 +77,7 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
-    UserActivationResult activateClient(String activationCode) throws RPCException;
+    UserActivationResult activateClient(BusinessUserDetail user, String activationCode) throws RPCException;
 
     boolean sendActivationCodeAgain(BusinessUserDetail client) throws RPCException;
 

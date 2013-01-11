@@ -71,7 +71,7 @@ public class ActivationCodePopupPresenter
         view.getActivateButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.activateUser(view.getActivationCodeBox().getText());
+                eventBus.activateUser(user, view.getActivationCodeBox().getText());
             }
         });
         view.getSendAgainButton().addClickHandler(new ClickHandler() {

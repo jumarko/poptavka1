@@ -6,12 +6,9 @@ package com.eprovement.poptavka.service.user;
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.user.BusinessUser;
-import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.service.GeneralService;
-import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
-import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,31 +28,33 @@ public class BusinessUserVerificationServiceIntegrationTest extends DBUnitIntegr
 
     private String activationCode;
 
+    private BusinessUser user;
+
     @Before
     public void generateNewActivationCode() {
         final BusinessUser userToBeActivated = generalService.find(BusinessUser.class, 111111111L);
         activationCode = userVerificationService.generateActivationCode(userToBeActivated);
+        this.user = userToBeActivated;
     }
 
     @Test
     public void generateActivationCode() {
         Assert.assertFalse(activationCode.isEmpty());
-        Assert.assertTrue("Suspicious activation code since it is too short: actual length=" + activationCode.length(),
-                activationCode.length() > 32);
+        Assert.assertTrue("Suspicious activation code of unexpected length. Expected 6 alphanumeric characters but "
+                + " actual length=" + activationCode.length(), activationCode.length() == 6);
     }
 
 
     @Test
     public void verifyActivationCode() {
-        final User activatedUser = userVerificationService.verifyActivationCode(activationCode);
-        Assert.assertNotNull(activatedUser);
-        assertThat(activatedUser.getId(), is(111111111L));
+        userVerificationService.verifyActivationCode(user, activationCode);
+        // no exception - everything ok
     }
 
     @Test(expected = IncorrectActivationCodeException.class)
     public void verifyActivationLinkForIncorrectLinkInPlaintext() {
         userVerificationService.verifyActivationCode(
-                "user/activation?link={\"userEmail\":\"moj@supplier.cz\", \"validity\":100000000");
+                user, "abc");
     }
 
 

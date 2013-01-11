@@ -116,7 +116,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /**
      * Load conversation between client and supplier related to particular demand / threadRoot
      *
-     * @param threadRootId
+     * @param threadId
      * @param userId
      */
     public void onRequestConversation(Long threadId, Long userId) {
@@ -151,7 +151,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * chat related stuff
      *
      * @param messageToSend
-     * @param type
      */
     public void onSendQuestionMessage(MessageDetail messageToSend) {
         rootService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
@@ -201,9 +200,9 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
-    public void onActivateUser(String activationCode) {
+    public void onActivateUser(BusinessUserDetail user, String activationCode) {
         // TODO martin review: whole (new) activation related logic and also "SentActivationCodeAgain" process
-        rootService.activateClient(activationCode, new SecuredAsyncCallback<UserActivationResult>(eventBus) {
+        rootService.activateClient(user, activationCode, new SecuredAsyncCallback<UserActivationResult>(eventBus) {
             @Override
             public void onSuccess(UserActivationResult result) {
                 eventBus.responseActivateUser(result);
@@ -212,8 +211,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
 
-    public void onSendActivationCodeAgain(BusinessUserDetail client) {
-        rootService.sendActivationCodeAgain(client, new SecuredAsyncCallback<Boolean>(eventBus) {
+    public void onSendActivationCodeAgain(BusinessUserDetail user) {
+        rootService.sendActivationCodeAgain(user, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
             public void onSuccess(Boolean activationResult) {
                 eventBus.responseSendActivationCodeAgain(activationResult);

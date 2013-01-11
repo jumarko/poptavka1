@@ -329,9 +329,9 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     /* Activation methods                                                     */
     /**************************************************************************/
     @Override
-    public UserActivationResult activateClient(String activationCode) throws RPCException {
+    public UserActivationResult activateClient(BusinessUserDetail user, String activationCode) throws RPCException {
         try {
-            userVerificationService.activateUser(StringUtils.trimToEmpty(activationCode));
+            userVerificationService.activateUser(findUserByEmail(user), StringUtils.trimToEmpty(activationCode));
         } catch (UserNotExistException unee) {
             return UserActivationResult.ERROR_UNKNOWN_USER;
         } catch (IncorrectActivationCodeException iace) {
@@ -344,15 +344,18 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public boolean sendActivationCodeAgain(BusinessUserDetail client) throws RPCException {
+    public boolean sendActivationCodeAgain(BusinessUserDetail user) throws RPCException {
         // we must search business user by email because detail object doesn't have to proper ID already assigned.
         // TODO: move this to the common place
-        final Search search = new Search(BusinessUser.class);
-        search.addFilterEqual("email", client.getEmail());
-        final BusinessUser businessUser = (BusinessUser) generalService.searchUnique(search);
-        userVerificationService.sendNewActivationCode(businessUser);
+        userVerificationService.sendNewActivationCode(findUserByEmail(user));
         // since activation mail has been sent in synchronous fashion everything should be ok
         return true;
+    }
+
+    private BusinessUser findUserByEmail(BusinessUserDetail client) {
+        final Search search = new Search(BusinessUser.class);
+        search.addFilterEqual("email", client.getEmail());
+        return (BusinessUser) generalService.searchUnique(search);
     }
 
     /**************************************************************************/

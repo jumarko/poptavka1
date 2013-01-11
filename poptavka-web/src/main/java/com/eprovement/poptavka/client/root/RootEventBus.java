@@ -439,7 +439,6 @@ public interface RootEventBus extends EventBusWithLookup {
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.
      * @param messageToSend
-     * @param type type of handling view
      */
     @Event(handlers = RootHandler.class)
     void sendQuestionMessage(MessageDetail messageToSend);
@@ -457,7 +456,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad);
 
     @Event(handlers = RootHandler.class)
-    void activateUser(String activationCode);
+    void activateUser(BusinessUserDetail user, String activationCode);
 
     @Event(handlers = RootHandler.class)
     void sendActivationCodeAgain(BusinessUserDetail client);

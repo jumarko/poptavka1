@@ -6,7 +6,8 @@ package com.eprovement.poptavka.shared.domain.root;
 /**
  * The result of user activation/verification process.
  * Corresponds directly to the signature of method
- * {@link com.eprovement.poptavka.service.user.UserVerificationService#activateUser(String)}.
+ * {@link com.eprovement.poptavka.service.user.UserVerificationService#activateUser(
+ * com.eprovement.poptavka.domain.user.BusinessUser, String)}.
  *
  */
 public enum UserActivationResult {

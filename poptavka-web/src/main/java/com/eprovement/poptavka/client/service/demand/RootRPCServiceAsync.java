@@ -60,7 +60,7 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
-    void activateClient(String activationCode, AsyncCallback<UserActivationResult> callback);
+    void activateClient(BusinessUserDetail user, String activationCode, AsyncCallback<UserActivationResult> callback);
 
     void sendActivationCodeAgain(BusinessUserDetail client, AsyncCallback<Boolean> callback);
 
