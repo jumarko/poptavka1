@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionModel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -81,6 +80,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private static final String FINNISHED_IMAGE_COLUMN = "finnished";
     private List<String> gridColumns = new ArrayList<String>();
     //Other
+    private MultiSelectionModel<IUniversalDetail> selectionModel;
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
     /**************************************************************************/
@@ -124,7 +124,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         setGridColumns(gridColumns);
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        SelectionModel<IUniversalDetail> selectionModel = new MultiSelectionModel<IUniversalDetail>(keyProvider);
+        selectionModel = new MultiSelectionModel<IUniversalDetail>(keyProvider);
         setSelectionModel(selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
 
         initTableColumns();
@@ -464,6 +464,12 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     //Header
     public Header getCheckHeader() {
         return checkHeader;
+    }
+
+    //Selection
+    @Override
+    public MultiSelectionModel getSelectionModel() {
+        return selectionModel;
     }
 
     /**

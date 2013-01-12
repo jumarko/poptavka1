@@ -8,8 +8,7 @@ import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailVie
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
-import com.eprovement.poptavka.client.user.widget.messaging.SimpleMessageWindow;
-import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
+import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel2;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -59,7 +58,7 @@ public class DetailsWrapperPresenter
 
         SupplierDetailView getSupplierDetail();
 
-        UserConversationPanel getConversationPanel();
+        UserConversationPanel2 getConversationPanel();
 
         DevelOfferQuestionWindow getReplyHolder();
 
@@ -245,10 +244,11 @@ public class DetailsWrapperPresenter
                 table.refresh();
             }
         };
-        for (int i = 0; i < view.getConversationPanel().getMessagePanel().getWidgetCount(); i++) {
-            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
-                    .getUpdateRead().addChangeHandler(click);
-        }
+        //TODO - correcet to UserConversationPanel2
+//        for (int i = 0; i < view.getConversationPanel().getMessagePanel().getWidgetCount(); i++) {
+//            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
+//                    .getUpdateRead().addChangeHandler(click);
+//        }
 
     }
     /**************************************************************************/

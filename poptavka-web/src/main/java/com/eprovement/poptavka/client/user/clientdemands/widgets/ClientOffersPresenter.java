@@ -99,6 +99,7 @@ public class ClientOffersPresenter
         offerGridRangeChangeHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
+        addOfferTableSelectionHandler();
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
@@ -424,6 +425,20 @@ public class ClientOffersPresenter
                     view.getOfferPager().startLoading();
                     view.getOfferGrid().getDataCount(eventBus, null);
                     eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
+                }
+            }
+        });
+    }
+
+    private void addOfferTableSelectionHandler() {
+        view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (view.getOfferGrid().getSelectedIdList().size() < 2) {
+                    view.getAcceptBtn().setVisible(true);
+                } else {
+                    view.getAcceptBtn().setVisible(false);
                 }
             }
         });

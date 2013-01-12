@@ -150,7 +150,7 @@
                                                     <ui:msg key='email'>Email:</ui:msg>
                                                 </td>
                                                 <td>
-                                                    <g:TextBox title="textBoxEmail" ui:field='email' />
+                                                    <g:TextBox title="textBoxEmail" ui:field='email' enabled='false'/>
                                                 </td>
                                             </tr>
                                             <tr>

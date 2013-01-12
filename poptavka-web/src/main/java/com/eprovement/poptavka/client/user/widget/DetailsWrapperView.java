@@ -5,7 +5,7 @@ import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
-import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
+import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel2;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -37,7 +37,7 @@ public class DetailsWrapperView extends Composite
     @UiField EditableDemandDetailView editableDemandDetail;
     @UiField DemandDetailView demandDetail;
     @UiField SupplierDetailView supplierDetail;
-    @UiField UserConversationPanel conversationPanel;
+    @UiField UserConversationPanel2 conversationPanel;
     @UiField DevelOfferQuestionWindow replyHolder;
     @UiField VerticalPanel conversationHolder;
     /** Class attribute. **/
@@ -96,7 +96,7 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public UserConversationPanel getConversationPanel() {
+    public UserConversationPanel2 getConversationPanel() {
         return conversationPanel;
     }
 

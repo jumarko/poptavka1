@@ -40,7 +40,7 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
             Storage.setAppCalledByURL(false);
             // login from session method
             eventBus.loginFromSession();
-//            return;
+            return;
         }
         eventBus.goToSettingsModule();
     }
