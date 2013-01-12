@@ -168,5 +168,5 @@ public interface MessageDao extends GenericDao<Message> {
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user, Message threadRoot);
+    Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user);
 }

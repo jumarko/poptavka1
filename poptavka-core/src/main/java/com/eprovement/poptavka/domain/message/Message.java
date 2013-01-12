@@ -87,10 +87,9 @@ import org.hibernate.annotations.CascadeType;
                         + " subUserMessage.message as subMessage"
                         + " right join subMessage.threadRoot as message\n"
                         + "where subUserMessage.user = :user"
-                        + " and message.threadRoot = :threadRoot"
                         + " and message.sender = :user"
-                        + " and subMessage.offer is not null"
-                        + " and subMessage.demand.status = 'ASSIGNED'"
+                        + " and subMessage.offer.state.id = 1"
+//                        + " and subMessage.demand.status = 'ASSIGNED'" // is the same as offer.state.id = 1 above
                         + " and subMessage.sender <> :user\n"
                         + "group by subMessage.sender.id"),
         @NamedQuery(name = "getListOfClientDemandMessagesUnreadSub",

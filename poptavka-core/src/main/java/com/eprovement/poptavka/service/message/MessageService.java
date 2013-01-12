@@ -273,5 +273,5 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user, Message threadRoot);
+    Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user);
 }

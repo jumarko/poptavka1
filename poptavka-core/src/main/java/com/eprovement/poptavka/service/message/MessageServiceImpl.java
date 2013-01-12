@@ -208,8 +208,8 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user, Message threadRoot) {
-        return getDao().getLatestSupplierUserMessagesForAssignedDemand(user, threadRoot);
+    public Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user) {
+        return getDao().getLatestSupplierUserMessagesForAssignedDemand(user);
     }
 
     /** {@inheritDoc} */

@@ -144,9 +144,8 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
-    public Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user, Message threadRoot) {
+    public Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
-        queryParams.put("threadRoot", threadRoot);
         queryParams.put("user", user);
 
         List<Object[]> unread = runNamedQuery(
