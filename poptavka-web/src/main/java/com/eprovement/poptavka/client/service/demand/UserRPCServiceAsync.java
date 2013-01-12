@@ -1,10 +1,8 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import org.springframework.security.access.annotation.Secured;
 
 public interface UserRPCServiceAsync {
 
@@ -18,6 +16,4 @@ public interface UserRPCServiceAsync {
 
     void getLoggedUser(AsyncCallback<UserDetail> callback);
 
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    void getBusinessUserByEmail(String email, AsyncCallback<BusinessUserDetail> async);
 }

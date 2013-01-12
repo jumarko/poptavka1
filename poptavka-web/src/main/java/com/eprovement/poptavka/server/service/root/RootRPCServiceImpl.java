@@ -38,6 +38,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
@@ -222,6 +223,13 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         //                         - SearchUnique - ak urcite ze existuje
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, userId));
     }
+
+
+    @Override
+    public BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException, ApplicationSecurityException {
+        return businessUserConverter.convertToTarget(findUserByEmail(email));
+    }
+
 
     /**************************************************************************/
     /* DevelDetailWrapper widget methods                                      */

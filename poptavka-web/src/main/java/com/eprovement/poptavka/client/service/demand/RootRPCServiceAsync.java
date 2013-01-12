@@ -68,4 +68,16 @@ public interface RootRPCServiceAsync {
     /* Supplier Services methods                                              */
     /**************************************************************************/
     void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
+
+    /**
+     * Finds user by specified email.
+     *
+     * @param email
+     * @return
+     * @throws com.eprovement.poptavka.shared.exceptions.RPCException
+     *
+     * @throws com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException
+     *
+     */
+    void getBusinessUserByEmail(String email, AsyncCallback<BusinessUserDetail> async);
 }

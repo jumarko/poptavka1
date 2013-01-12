@@ -26,6 +26,9 @@ public final class BusinessUserConverter extends AbstractConverter<BusinessUser,
 
     @Override
     public BusinessUserDetail convertToTarget(BusinessUser businessUser) {
+        if (businessUser == null) {
+            return null;
+        }
         final BusinessUserDetail detail = new BusinessUserDetail();
         detail.setUserId(businessUser.getId());
         detail.setAddresses(addressConverter.convertToTargetList(businessUser.getAddresses()));

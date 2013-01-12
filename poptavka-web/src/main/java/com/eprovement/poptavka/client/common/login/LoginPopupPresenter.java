@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.common.login;
 
 import com.eprovement.poptavka.client.common.CommonAccessRoles;
+import com.eprovement.poptavka.client.service.demand.RootRPCServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -62,6 +63,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private UserRPCServiceAsync userService;
 
     @Inject
+    private RootRPCServiceAsync rootService;
+
+    @Inject
     void setMailService(MailRPCServiceAsync service) {
         mailService = service;
     }
@@ -79,26 +83,41 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private void verifyUser() {
         // TODO release: check if user is VERIFIED
         // if not then display activation popup
-        userService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+        rootService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(BusinessUserDetail user) {
+                if (user == null) {
+                    LOGGER.info("User entered invalid email=" + getUserEmail());
+                    view.setLoginError();
+                    return;
+                }
+
                 if (user.isVerified()) {
                     // user has already been verified - it is ready for login
                     loginUser();
                 } else {
+                    // we need to set plaintext password for activation code popup
+                    // the current password from DB is encrypted and will not be useful
+                    user.setPassword(getUserPassword());
+
                     hideView();
+
                     // user has not been verified yet - prompt user for activation code
                     eventBus.initActivationCodePopup(user, widgetToLoad);
                     // ActivationCodePopupPresenter performs autologin once user is activated properly
                 }
             }
+
+
+            @Override
+            protected void onServiceFailure(Throwable caught, int errorResponse, String errorId) {
+                super.onServiceFailure(caught, errorResponse, errorId);
+                hideView();
+            }
         });
 
     }
 
-    private String getUserEmail() {
-        return view.getLogin().getText().trim();
-    }
 
     private void loginUser() {
         view.setLoadingStatus(MSGS.verifyAccount());
@@ -109,7 +128,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         sbParams.append("j_username=");
         sbParams.append(URL.encode(getUserEmail()));
         sbParams.append("&j_password=");
-        sbParams.append(URL.encode(view.getPassword().getText()));
+        sbParams.append(URL.encode(getUserPassword()));
 
         try {
             rb.sendRequest(sbParams.toString(), new RequestCallback() {
@@ -235,6 +254,17 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             eventBus.goToClientDemandsModule(null, widgetToLoad);
         }
     }
+
+    private String getUserEmail() {
+        return view.getLogin().getText().trim();
+    }
+
+
+    private String getUserPassword() {
+        return view.getPassword().getText();
+    }
+
+
 
     public void loadWidget(int widgetId) {
         this.widgetToLoad = widgetId;
