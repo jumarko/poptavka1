@@ -81,6 +81,18 @@ import org.hibernate.annotations.CascadeType;
                         + " and subMessage.offer is not null"
                         + " and subMessage.sender <> :user\n"
                         + "group by subMessage.sender.id"),
+        @NamedQuery(name = "getLatestSupplierUserMessagesForAssignedDemand",
+                query = "select max(subUserMessage.id), count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join"
+                        + " subUserMessage.message as subMessage"
+                        + " right join subMessage.threadRoot as message\n"
+                        + "where subUserMessage.user = :user"
+                        + " and message.threadRoot = :threadRoot"
+                        + " and message.sender = :user"
+                        + " and subMessage.offer is not null"
+                        + " and subMessage.demand.status = 'ASSIGNED'"
+                        + " and subMessage.sender <> :user\n"
+                        + "group by subMessage.sender.id"),
         @NamedQuery(name = "getListOfClientDemandMessagesUnreadSub",
                 query = "select message.id, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join"
