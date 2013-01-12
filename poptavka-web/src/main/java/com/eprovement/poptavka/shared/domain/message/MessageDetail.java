@@ -33,6 +33,7 @@ public class MessageDetail implements Serializable {
     private String messageType = null;
     private Date created = null;
     private Date sent = null;
+    private String senderName;
 
     public static final ProvidesKey<MessageDetail> KEY_PROVIDER =
             new ProvidesKey<MessageDetail>() {
@@ -242,6 +243,7 @@ public class MessageDetail implements Serializable {
         sb.append(", threadRootId=" + threadRootId);
         sb.append(", parentId=" + parentId);
         sb.append(", senderId=" + senderId);
+        sb.append(", senderName=" + senderName);
         sb.append(", subject=" + subject);
         sb.append(", body=" + body);
         sb.append(", messageState=" + messageState);
@@ -250,5 +252,19 @@ public class MessageDetail implements Serializable {
         sb.append(", sent=" + (sent == null ? "null" : sent.toString()));
         sb.append('}');
         return sb.toString();
+    }
+
+    /**
+     * @return the senderName
+     */
+    public String getSenderName() {
+        return senderName;
+    }
+
+    /**
+     * @param senderName the senderName to set
+     */
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 }
