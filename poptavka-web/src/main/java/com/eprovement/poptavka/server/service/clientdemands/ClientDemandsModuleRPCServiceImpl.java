@@ -488,38 +488,39 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientDemandDetail> getClientAssignedDemands(long userId,
+    public List<ClientOfferedDemandOffersDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
+        User user = generalService.find(User.class, userId);
+        List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
-        final Client client = findClient(userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
-        ArrayList<DemandStatus> demandStatuses = new ArrayList<DemandStatus>();
-        demandStatuses.add(DemandStatus.ACTIVE);
-        demandStatuses.add(DemandStatus.NEW);
-        demandStatuses.add(DemandStatus.INVALID);
-        demandStatuses.add(DemandStatus.INACTIVE);
-        clientDemandsSearch.addFilterIn("status", demandStatuses);
-        final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
-        ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
+        Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
+                messageService.getLatestSupplierUserMessagesForAssignedDemand(user);
+        for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
+            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
+            Offer offer = userMessage.getMessage().getOffer();
+            // TODO ivlcek - refactor and create converter
+            ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
+            // set UserMessage attributes
+            codod.setIsRead(userMessage.isRead());
+            codod.setIsStarred(userMessage.isStarred());
+            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+            codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
+            // set Supplier attributes
+            codod.setSupplierId(offer.getSupplier().getId());
+            codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setRating(offer.getSupplier().getOveralRating());
+            codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            // set Offer attributes
+            codod.setOfferId(offer.getId());
+            codod.setDemandId(offer.getDemand().getId());
+            codod.setPrice(offer.getPrice().toPlainString());
+            codod.setDeliveryDate(offer.getFinishDate());
+            codod.setReceivedDate(offer.getCreated());
 
-        Iterator it = messageService.getListOfClientDemandMessagesUnread(generalService.find(
-                User.class, userId)).entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            // key is message and val is number
-            Long messageId = (Long) pairs.getKey();
-            for (ClientDemandDetail cdd : cdds) {
-                if (cdd.getDemandId() == messageId) {
-                    cdd.setUnreadMessageCount(((Integer) pairs.getValue()).intValue());
-                    break;
-                }
-            }
-            it.remove();
+            listCodod.add(codod);
         }
-        return cdds;
+        return listCodod;
     }
 
     /**
@@ -805,39 +806,40 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public FullOfferDetail getClientAssignedDemand(long assignedDemandID) throws
+    public ClientOfferedDemandOffersDetail getClientAssignedDemand(long assignedDemandID) throws
             RPCException, ApplicationSecurityException {
-        if (assignedDemandID == 1L) {
-            FullOfferDetail d1 = new FullOfferDetail();
-            d1.getOfferDetail().setDemandId(1L);
-            d1.getOfferDetail().setState(OfferStateType.ACCEPTED);
-            d1.getOfferDetail().setClientName("Martin Slavkovsky");
-            d1.getOfferDetail().setSupplierName("Good Data");
-            d1.getOfferDetail().setDemandTitle("Poptavka 1234");
-            d1.getOfferDetail().setRating(90);
-            d1.getOfferDetail().setPrice(10000);
-            d1.getOfferDetail().setFinishDate(new Date());
-            d1.getOfferDetail().setCreatedDate(new Date());
-            MessageDetail md1 = new MessageDetail();
-            md1.setUserMessageId(1L);
-            d1.setMessageDetail(md1);
-            return d1;
-        } else if (assignedDemandID == 2L) {
-            FullOfferDetail d2 = new FullOfferDetail();
-            d2.getOfferDetail().setDemandId(2L);
-            d2.getOfferDetail().setState(OfferStateType.ACCEPTED);
-            d2.getOfferDetail().setClientName("Ivan Vlcek");
-            d2.getOfferDetail().setSupplierName("CoraGeo");
-            d2.getOfferDetail().setDemandTitle("Poptavka na GIS");
-            d2.getOfferDetail().setRating(90);
-            d2.getOfferDetail().setPrice(10000);
-            d2.getOfferDetail().setFinishDate(new Date());
-            d2.getOfferDetail().setCreatedDate(new Date());
-            MessageDetail md2 = new MessageDetail();
-            md2.setUserMessageId(2L);
-            return d2;
-        } else {
-            return new FullOfferDetail();
-        }
+        return null;
+//        if (assignedDemandID == 1L) {
+//            FullOfferDetail d1 = new FullOfferDetail();
+//            d1.getOfferDetail().setDemandId(1L);
+//            d1.getOfferDetail().setState(OfferStateType.ACCEPTED);
+//            d1.getOfferDetail().setClientName("Martin Slavkovsky");
+//            d1.getOfferDetail().setSupplierName("Good Data");
+//            d1.getOfferDetail().setDemandTitle("Poptavka 1234");
+//            d1.getOfferDetail().setRating(90);
+//            d1.getOfferDetail().setPrice(10000);
+//            d1.getOfferDetail().setFinishDate(new Date());
+//            d1.getOfferDetail().setCreatedDate(new Date());
+//            MessageDetail md1 = new MessageDetail();
+//            md1.setUserMessageId(1L);
+//            d1.setMessageDetail(md1);
+//            return d1;
+//        } else if (assignedDemandID == 2L) {
+//            FullOfferDetail d2 = new FullOfferDetail();
+//            d2.getOfferDetail().setDemandId(2L);
+//            d2.getOfferDetail().setState(OfferStateType.ACCEPTED);
+//            d2.getOfferDetail().setClientName("Ivan Vlcek");
+//            d2.getOfferDetail().setSupplierName("CoraGeo");
+//            d2.getOfferDetail().setDemandTitle("Poptavka na GIS");
+//            d2.getOfferDetail().setRating(90);
+//            d2.getOfferDetail().setPrice(10000);
+//            d2.getOfferDetail().setFinishDate(new Date());
+//            d2.getOfferDetail().setCreatedDate(new Date());
+//            MessageDetail md2 = new MessageDetail();
+//            md2.setUserMessageId(2L);
+//            return d2;
+//        } else {
+//            return new FullOfferDetail();
+//        }
     }
 }

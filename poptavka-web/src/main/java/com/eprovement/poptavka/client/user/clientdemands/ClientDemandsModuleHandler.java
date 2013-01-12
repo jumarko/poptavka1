@@ -9,7 +9,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversat
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
@@ -187,9 +186,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     private void getClientAssignedDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<ClientOfferedDemandOffersDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<ClientDemandDetail> result) {
+                    public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
                         eventBus.displayClientAssignedDemands(result);
                     }
                 });
@@ -307,9 +306,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     public void onGetClientAssignedDemand(long demandID) {
         clientDemandsService.getClientAssignedDemand(demandID,
-                new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+                new SecuredAsyncCallback<ClientOfferedDemandOffersDetail>(eventBus) {
                     @Override
-                    public void onSuccess(FullOfferDetail result) {
+                    public void onSuccess(ClientOfferedDemandOffersDetail result) {
                         eventBus.selectClientAssignedDemand(result);
                     }
                 });

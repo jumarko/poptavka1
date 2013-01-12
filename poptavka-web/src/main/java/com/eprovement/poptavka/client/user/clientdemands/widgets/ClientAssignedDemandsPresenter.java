@@ -10,7 +10,7 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEven
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -108,9 +108,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         //if selection differs to the restoring one
         boolean wasEqual = false;
         MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid().getSelectionModel();
-        for (FullOfferDetail offer : (Set<
-                FullOfferDetail>) selectionModel.getSelectedSet()) {
-            if (offer.getOfferDetail().getDemandId() == parentId) {
+        for (ClientOfferedDemandOffersDetail offer : (Set<
+                ClientOfferedDemandOffersDetail>) selectionModel.getSelectedSet()) {
+            if (offer.getDemandId() == parentId) {
                 wasEqual = true;
             }
         }
@@ -157,7 +157,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         }
     }
 
-    public void onSelectClientAssignedDemand(FullOfferDetail detail) {
+    public void onSelectClientAssignedDemand(ClientOfferedDemandOffersDetail detail) {
 //        view.getDataGrid().getSelectionModel().setSelected(detail, true);
         eventBus.setHistoryStoredForNextOne(false); //don't create token
         //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
@@ -173,7 +173,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
      * @param messageId ID for demand related contest
      * @param userMessageId ID for demand related contest
      */
-    public void displayDetailContent(FullOfferDetail detail) {
+    public void displayDetailContent(ClientOfferedDemandOffersDetail detail) {
         detailSection.requestDemandDetail(detail.getDemandId());
         detailSection.requestSupplierDetail(detail.getSupplierId());
         detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
@@ -243,9 +243,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     public void addTextColumnFieldUpdaters() {
-        textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
+        textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
             @Override
-            public void update(int index, FullOfferDetail object, String value) {
+            public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
 //                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
 //                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
@@ -257,7 +257,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 selectionModel.setSelected(object, true);
                 eventBus.createTokenForHistory3(
                         view.getPager().getPage(),
-                        object.getOfferDetail().getDemandId());
+                        object.getDemandId());
 //                }
             }
         };

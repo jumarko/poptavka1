@@ -2,11 +2,9 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -53,13 +51,13 @@ public interface ClientDemandsModuleRPCServiceAsync {
             AsyncCallback<Long> callback);
 
     void getClientAssignedDemands(long userID, SearchDefinition searchDefinition,
-            AsyncCallback<List<ClientDemandDetail>> callback);
+            AsyncCallback<List<ClientOfferedDemandOffersDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/
     void getFullDemandDetail(long demandId,
-            AsyncCallback<FullDemandDetail> callback);
+            AsyncCallback<ClientOfferedDemandOffersDetail> callback);
 
     void getFullSupplierDetail(long supplierId,
             AsyncCallback<FullSupplierDetail> callback);
@@ -101,5 +99,5 @@ public interface ClientDemandsModuleRPCServiceAsync {
 
     void getClientOfferedDemandOffer(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
 
-    void getClientAssignedDemand(long id, AsyncCallback<FullOfferDetail> calback);
+    void getClientAssignedDemand(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
 }

@@ -15,7 +15,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -201,10 +200,10 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Business events handled by ClientAssignedDemandsPresenter.             */
     /**************************************************************************/
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void displayClientAssignedDemands(List<ClientDemandDetail> result);
+    void displayClientAssignedDemands(List<ClientOfferedDemandOffersDetail> result);
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void selectClientAssignedDemand(FullOfferDetail detail);
+    void selectClientAssignedDemand(ClientOfferedDemandOffersDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
