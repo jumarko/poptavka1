@@ -244,7 +244,7 @@ public class DetailsWrapperPresenter
                 table.refresh();
             }
         };
-        //TODO - correcet to UserConversationPanel2
+        //migth not be needed because all messages are set to read when displaying conversation
 //        for (int i = 0; i < view.getConversationPanel().getMessagePanel().getWidgetCount(); i++) {
 //            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
 //                    .getUpdateRead().addChangeHandler(click);

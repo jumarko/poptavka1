@@ -12,7 +12,7 @@
         <span>
             <ui:text from='{sender}'/>
         </span>
-        <span>
+        <span ui:field='bodySpan'>
             <ui:text from='{body}'/>
         </span>
         <span>
