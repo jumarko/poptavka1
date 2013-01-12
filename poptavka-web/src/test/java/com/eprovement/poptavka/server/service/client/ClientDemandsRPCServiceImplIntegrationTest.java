@@ -21,7 +21,7 @@ import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDeta
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-//import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.googlecode.genericdao.search.Search;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
@@ -143,18 +143,18 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         long count = clientDemandsRPCService.getClientOfferedDemandOffersCount(111111112L, 2L, searchDefinition);
         Assert.assertEquals("getClientOfferedDemandOffersCount [count=" + count + "] was not correct",
                 Long.valueOf(2L), Long.valueOf(count));
-//        List<ClientOfferedDemandOffersDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
-//                111111112L, 2L, 1L, searchDefinition);
-//        assertThat(offers.size(), is(2));
-//        Assert.assertEquals("getClientOfferedDemandOffers size [size=" + offers.size() + "] was not correct",
-//                2, offers.size());
-//
-//        checkClientOfferedDemandOffersDetailExists(offers, 11, 5);
-//        checkClientOfferedDemandOffersDetailExists(offers, 12, 9);
-//        searchDefinition.setFilter(new SearchModuleDataHolder());
-//        searchDefinition.getFilter().setSearchText("Fourth");
-//        offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, 1L, searchDefinition);
-//        assertThat(offers.size(), is(2));
+        List<ClientOfferedDemandOffersDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
+                111111112L, 2L, 1L, searchDefinition);
+        assertThat(offers.size(), is(2));
+        Assert.assertEquals("getClientOfferedDemandOffers size [size=" + offers.size() + "] was not correct",
+                2, offers.size());
+
+        checkClientOfferedDemandOffersDetailExists(offers, 11, 5);
+        checkClientOfferedDemandOffersDetailExists(offers, 12, 9);
+        searchDefinition.setFilter(new SearchModuleDataHolder());
+        searchDefinition.getFilter().setSearchText("Fourth");
+        offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, 1L, searchDefinition);
+        assertThat(offers.size(), is(2));
     }
 
     private void checkFullOfferDetailExists(List<FullOfferDetail> offers,
