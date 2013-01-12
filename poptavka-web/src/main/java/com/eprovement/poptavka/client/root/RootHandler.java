@@ -188,6 +188,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                     @Override
                     public void onSuccess(BusinessUserDetail businessUserDetail) {
                         Storage.setBusinessUserDetail(businessUserDetail);
+                        Storage.loadClientAndSupplierIDs();
                         GWT.log("login from session,  user id " + businessUserDetail.getUserId());
                         forwardUser();
                     }

@@ -220,6 +220,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     public void onSuccess(BusinessUserDetail loggedUser) {
                         GWT.log("user id " + loggedUser.getUserId());
                         Storage.setBusinessUserDetail(loggedUser);
+                        Storage.loadClientAndSupplierIDs();
                         // TODO ivlcek - fix the session model on the base of SpringSecurity rememberMe
                         final String sessionId = "id=" + loggedUser.getUserId();
                         forwardUser();

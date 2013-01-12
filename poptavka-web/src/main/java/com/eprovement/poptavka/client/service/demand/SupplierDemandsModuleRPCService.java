@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.service.demand;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
@@ -101,7 +100,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<FullOfferDetail> getSupplierAssignedDemands(long supplierID,
+    List<SupplierOffersDetail> getSupplierAssignedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
     /**************************************************************************/
@@ -133,5 +132,5 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
 
     SupplierOffersDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
 
-    FullOfferDetail getSupplierAssignedDemand(long demandID) throws RPCException, ApplicationSecurityException;
+    SupplierOffersDetail getSupplierAssignedDemand(long demandID) throws RPCException, ApplicationSecurityException;
 }

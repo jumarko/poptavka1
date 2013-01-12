@@ -13,7 +13,6 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -163,10 +162,10 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* Business events handled by SupplierAssignedDemandsPresenter.           */
     /**************************************************************************/
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
-    void displaySupplierAssignedDemands(List<FullOfferDetail> result);
+    void displaySupplierAssignedDemands(List<SupplierOffersDetail> result);
 
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
-    void selectSupplierAssignedDemand(FullOfferDetail detail);
+    void selectSupplierAssignedDemand(SupplierOffersDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

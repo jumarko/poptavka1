@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCSer
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -117,9 +116,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     private void getSupplierAssignedDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<FullOfferDetail> result) {
+                    public void onSuccess(List<SupplierOffersDetail> result) {
                         eventBus.displaySupplierAssignedDemands(result);
                     }
                 });
@@ -218,9 +217,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     public void onGetSupplierAssignedDemand(long demandID) {
         supplierDemandsService.getSupplierAssignedDemand(demandID,
-                new SecuredAsyncCallback<FullOfferDetail>(eventBus) {
+                new SecuredAsyncCallback<SupplierOffersDetail>(eventBus) {
                     @Override
-                    public void onSuccess(FullOfferDetail result) {
+                    public void onSuccess(SupplierOffersDetail result) {
                         eventBus.selectSupplierAssignedDemand(result);
                     }
                 });

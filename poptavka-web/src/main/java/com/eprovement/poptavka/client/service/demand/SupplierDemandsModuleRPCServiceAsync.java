@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.service.demand;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
@@ -37,7 +36,7 @@ public interface SupplierDemandsModuleRPCServiceAsync {
             AsyncCallback<Long> callback);
 
     void getSupplierAssignedDemands(long supplierID, SearchDefinition searchDefinition,
-            AsyncCallback<List<FullOfferDetail>> callback);
+            AsyncCallback<List<SupplierOffersDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */
@@ -67,5 +66,5 @@ public interface SupplierDemandsModuleRPCServiceAsync {
 
     void getSupplierOffer(long id, AsyncCallback<SupplierOffersDetail> calback);
 
-    void getSupplierAssignedDemand(long id, AsyncCallback<FullOfferDetail> calback);
+    void getSupplierAssignedDemand(long id, AsyncCallback<SupplierOffersDetail> calback);
 }

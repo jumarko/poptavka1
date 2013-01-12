@@ -5,7 +5,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
+import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -58,7 +58,7 @@ public class SupplierAssignedDemandsView extends Composite
         pager = new UniversalPagerWidget();
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         dataGrid = new UniversalTableGrid(
-                FullOfferDetail.KEY_PROVIDER,
+                SupplierOffersDetail.KEY_PROVIDER,
                 Constants.SUPPLIER_ASSIGNED_DEMANDS,
                 pager.getPageSize(),
                 resource);

@@ -4,10 +4,10 @@
  */
 package com.eprovement.poptavka.server.service.supplierdemands;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
@@ -25,8 +25,6 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
@@ -36,7 +34,6 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -242,11 +239,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<SupplierOffersDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        LOGGER.debug("getSupplierOffers() params: supplierId=" + supplierID);
         //TODO Martin - implement when implemented on backend
         Supplier supplier = generalService.find(Supplier.class, supplierID);
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
+        // TODO ivlcek - load offerState by CODE value
+        supplierOffersSearch.addFilterEqual("state.id", 2);
         List<Offer> offers = generalService.search(supplierOffersSearch);
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
@@ -264,20 +262,22 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setReceivedDate(offer.getCreated());
             sod.setRating(offer.getSupplier().getOveralRating());
 
-            Search conversationMessagesSearch = new Search(Message.class);
-            conversationMessagesSearch.addFilterEqual("demand.id", offer.getDemand().getId());
-            conversationMessagesSearch.addFilterEqual("sender.id", offer.getSupplier().getBusinessUser().getId());
-            conversationMessagesSearch.addSortAsc("id", false);
-            List<Message> conversationMessages = (generalService.search(conversationMessagesSearch));
-            Message firstSupplierResponse = conversationMessages.get(0);
+            // load latest userMessage in conversation
+            Search conversationMessagesSearch = new Search(UserMessage.class);
+            conversationMessagesSearch.addFilterEqual("message.demand.id", offer.getDemand().getId());
+            conversationMessagesSearch.addFilterEqual("user.id", offer.getSupplier().getBusinessUser().getId());
+            conversationMessagesSearch.addSortDesc("id", false);
+            List<UserMessage> conversationMessages = (generalService.search(conversationMessagesSearch));
+            UserMessage latestUserMessage = conversationMessages.get(0);
+            sod.setMessageCount(conversationMessages.size());
+            sod.setIsRead(latestUserMessage.isRead());
 
-            sod.setMessageCount(messageService.getAllDescendantsCount(
-                    firstSupplierResponse, offer.getSupplier().getBusinessUser()));
-            sod.setUnreadMessageCount(messageService.getUnreadDescendantsCount(
-                    firstSupplierResponse, offer.getSupplier().getBusinessUser()));
-            sod.setThreadRootId(firstSupplierResponse.getThreadRoot().getId());
+//            sod.setMessageCount(messageService.getAllDescendantsCount(
+//                    latestUserMessage.getMessage(), offer.getSupplier().getBusinessUser()));
+            // TODO ivlcek - remove unread message count. We will get this attribute value from latestUserMessage object
+            sod.setUnreadMessageCount(-1);
+            sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
-            LOGGER.trace("SupplierOfferDetail=" + sod.toString());
             listSod.add(sod);
         }
         LOGGER.debug("getSupplierOffers() result:" + listSod.size());
@@ -316,10 +316,52 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getSupplierAssignedDemands(long supplierID,
+    public List<SupplierOffersDetail> getSupplierAssignedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        return getFakeData();
+        Supplier supplier = generalService.find(Supplier.class, supplierID);
+        Search supplierOffersSearch = new Search(Offer.class);
+        supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
+        // TODO ivlcek - load offerState by CODE value
+        supplierOffersSearch.addFilterEqual("state.id", 1);
+        List<Offer> offers = generalService.search(supplierOffersSearch);
+        List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
+
+        for (Offer offer : offers) {
+            SupplierOffersDetail sod = new SupplierOffersDetail();
+
+            // TODO ivlcek - refactor and create converter, set Rating
+            sod.setSupplierId(offer.getSupplier().getId());
+            sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            sod.setClientId(offer.getDemand().getClient().getId());
+            sod.setDemandId(offer.getDemand().getId());
+            sod.setPrice(offer.getPrice().toPlainString());
+            sod.setDeliveryDate(offer.getFinishDate());
+            sod.setOfferId(offer.getId());
+            sod.setReceivedDate(offer.getCreated());
+            sod.setRating(offer.getSupplier().getOveralRating());
+
+            // load latest userMessage in conversation
+            Search conversationMessagesSearch = new Search(UserMessage.class);
+            conversationMessagesSearch.addFilterEqual("message.demand.id", offer.getDemand().getId());
+            conversationMessagesSearch.addFilterEqual("user.id", offer.getSupplier().getBusinessUser().getId());
+            conversationMessagesSearch.addSortDesc("id", false);
+            List<UserMessage> conversationMessages = (generalService.search(conversationMessagesSearch));
+            UserMessage latestUserMessage = conversationMessages.get(0);
+            sod.setMessageCount(conversationMessages.size());
+            sod.setIsRead(latestUserMessage.isRead());
+
+//            sod.setMessageCount(messageService.getAllDescendantsCount(
+//                    latestUserMessage.getMessage(), offer.getSupplier().getBusinessUser()));
+            // TODO ivlcek - remove unread message count. We will get this attribute value from latestUserMessage object
+            sod.setUnreadMessageCount(-1);
+            sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
+            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            LOGGER.trace("SupplierOfferDetail=" + sod.toString());
+            listSod.add(sod);
+        }
+        LOGGER.debug("getSupplierOffers() result:" + listSod.size());
+        return listSod;
     }
 
     /**************************************************************************/
@@ -440,80 +482,47 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public FullOfferDetail getSupplierAssignedDemand(long assignedDemandID)
-        throws RPCException, ApplicationSecurityException {
-        return getFakeItemById(assignedDemandID);
-    }
+    public SupplierOffersDetail getSupplierAssignedDemand(long assignedDemandID) throws RPCException,
+        ApplicationSecurityException {
+        //TODO Martin - implement when implemented on backend
+        long supplierID = Storage.getSupplierId();
+        Supplier supplier = generalService.find(Supplier.class, supplierID);
+        Search supplierOffersSearch = new Search(Offer.class);
+        supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
+        // TODO ivlcek - load offerState by CODE value
+        supplierOffersSearch.addFilterEqual("state.id", 1);
+        supplierOffersSearch.addFilterEqual("demand.id", assignedDemandID);
+        Offer offer = (Offer) generalService.searchUnique(supplierOffersSearch);
 
-    /**************************************************************************/
-    /* Fake data                                                              */
-    /**************************************************************************/
-    private List<FullOfferDetail> getFakeData() throws RPCException {
-        FullOfferDetail detail = new FullOfferDetail();
-        detail.getOfferDetail().setSupplierId(1L);
-        detail.getOfferDetail().setDemandId(1L);
-        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
-        detail.getOfferDetail().setClientName("Martin Slavkovsky");
-        detail.getOfferDetail().setSupplierName("Good Data");
-        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
-        detail.getOfferDetail().setRating(90);
-        detail.getOfferDetail().setPrice(10000);
-        detail.getOfferDetail().setFinishDate(new Date());
-        detail.getOfferDetail().setCreatedDate(new Date());
+        SupplierOffersDetail sod = new SupplierOffersDetail();
 
-        FullDemandDetail demand = new FullDemandDetail();
-        demand.setClientId(1L);
-        demand.setDemandId(1L);
-        demand.setTitle("Poptavka 1234");
-        demand.setPrice("21342");
-        demand.setValidToDate(new Date());
-        demand.setCreated(new Date());
-        demand.setEndDate(new Date());
-        detail.setDemandDetail(demand);
+        // TODO ivlcek - refactor and create converter, set Rating
+        sod.setSupplierId(offer.getSupplier().getId());
+        sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+        sod.setClientId(offer.getDemand().getClient().getId());
+        sod.setDemandId(offer.getDemand().getId());
+        sod.setPrice(offer.getPrice().toPlainString());
+        sod.setDeliveryDate(offer.getFinishDate());
+        sod.setOfferId(offer.getId());
+        sod.setReceivedDate(offer.getCreated());
+        sod.setRating(offer.getSupplier().getOveralRating());
 
-        MessageDetail md = new MessageDetail();
-        md.setMessageId(1L);
-        md.setThreadRootId(1L);
-        md.setSenderId(1L);
-        md.setSent(new Date());
-        detail.setMessageDetail(md);
+        // load latest userMessage in conversation
+        Search conversationMessagesSearch = new Search(UserMessage.class);
+        conversationMessagesSearch.addFilterEqual("message.demand.id", offer.getDemand().getId());
+        conversationMessagesSearch.addFilterEqual("user.id", offer.getSupplier().getBusinessUser().getId());
+        conversationMessagesSearch.addSortDesc("id", false);
+        List<UserMessage> conversationMessages = (generalService.search(conversationMessagesSearch));
+        UserMessage latestUserMessage = conversationMessages.get(0);
+        sod.setMessageCount(conversationMessages.size());
+        sod.setIsRead(latestUserMessage.isRead());
 
-        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
-        list.add(detail);
-        return list;
-    }
-
-    private FullOfferDetail getFakeItemById(long itemId) {
-        FullOfferDetail detail = new FullOfferDetail();
-        detail.getOfferDetail().setSupplierId(1L);
-        detail.getOfferDetail().setDemandId(1L);
-        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
-        detail.getOfferDetail().setClientName("Martin Slavkovsky");
-        detail.getOfferDetail().setSupplierName("Good Data");
-        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
-        detail.getOfferDetail().setRating(90);
-        detail.getOfferDetail().setPrice(10000);
-        detail.getOfferDetail().setFinishDate(new Date());
-        detail.getOfferDetail().setCreatedDate(new Date());
-
-        FullDemandDetail demand = new FullDemandDetail();
-        demand.setClientId(1L);
-        demand.setDemandId(1L);
-        demand.setTitle("Poptavka 1234");
-        demand.setPrice("21342");
-        demand.setValidToDate(new Date());
-        demand.setCreated(new Date());
-        demand.setEndDate(new Date());
-        detail.setDemandDetail(demand);
-
-        UserMessageDetail umd = new UserMessageDetail();
-        MessageDetail md = new MessageDetail();
-        md.setMessageId(1L);
-        md.setThreadRootId(1L);
-        md.setSenderId(1L);
-        md.setSent(new Date());
-        detail.setMessageDetail(md);
-
-        return detail;
+//            sod.setMessageCount(messageService.getAllDescendantsCount(
+//                    latestUserMessage.getMessage(), offer.getSupplier().getBusinessUser()));
+        // TODO ivlcek - remove unread message count. We will get this attribute value from latestUserMessage object
+        sod.setUnreadMessageCount(-1);
+        sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
+        sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+        return sod;
     }
 }

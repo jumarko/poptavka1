@@ -48,6 +48,8 @@ public final class Storage {
     //client projects - selected demand
     private static long demandId = -1L;
     private static long threadRootId = -1L;
+    private static long clientId;
+    private static long supplierId;
 
     /**************************************************************************/
     /* History methods                                                        */
@@ -111,6 +113,34 @@ public final class Storage {
      */
     public static void setThreadRootId(long aThreadRootId) {
         threadRootId = aThreadRootId;
+    }
+
+    /**
+     * @return the clientId
+     */
+    public static long getClientId() {
+        return clientId;
+    }
+
+    /**
+     * @param aClientId the clientId to set
+     */
+    public static void setClientId(long aClientId) {
+        clientId = aClientId;
+    }
+
+    /**
+     * @return the supplierId
+     */
+    public static long getSupplierId() {
+        return supplierId;
+    }
+
+    /**
+     * @param aSupplierId the supplierId to set
+     */
+    public static void setSupplierId(long aSupplierId) {
+        supplierId = aSupplierId;
     }
 
     //getters for global final classes
@@ -184,5 +214,23 @@ public final class Storage {
 
     public static void setTree(CellTree tree) {
         Storage.tree = tree;
+    }
+
+    /**
+     * Loads clientId and supplierId into Storage object. Loadin should be carried out when user is logged in
+     * by normal loginPopup or by method loginFromSession that is used by SpringSecurity.
+     */
+    public static void loadClientAndSupplierIDs() {
+        if (userDetail != null || businessUserDetail != null) {
+
+            if (businessUserDetail.getBusinessRoles().contains(BusinessUserDetail.BusinessRole.CLIENT)) {
+                setClientId(businessUserDetail.getClientId());
+            }
+            if (businessUserDetail.getBusinessRoles().contains(BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                setSupplierId(businessUserDetail.getSupplierId());
+            }
+        } else {
+            throw new NullPointerException("userDetail or businessUserDetail in Storage were not initialized.");
+        }
     }
 }
