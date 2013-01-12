@@ -9,7 +9,7 @@ public interface TableDisplay {
 
     boolean isStarred();
 
-    void setStarred(boolean value);
+    void setIsStarred(boolean value);
 
     Date getEndDate();
 

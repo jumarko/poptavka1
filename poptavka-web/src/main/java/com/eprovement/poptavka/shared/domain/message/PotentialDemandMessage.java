@@ -53,4 +53,9 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void setIsStarred(boolean value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

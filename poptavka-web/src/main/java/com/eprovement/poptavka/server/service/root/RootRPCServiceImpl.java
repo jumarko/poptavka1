@@ -38,7 +38,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
@@ -226,7 +225,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
 
 
     @Override
-    public BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException, ApplicationSecurityException {
+    public BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException {
         return businessUserConverter.convertToTarget(findUserByEmail(email));
     }
 
@@ -254,6 +253,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     // TODO call setMessageReadStatus in body
+    // TODO ivlcek - secure this method and other methods in rootRPCService
     public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {
         Message threadRoot = messageService.getById(threadId);
 

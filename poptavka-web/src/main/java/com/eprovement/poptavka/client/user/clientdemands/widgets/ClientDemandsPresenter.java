@@ -278,7 +278,7 @@ public class ClientDemandsPresenter
      * @param userMessageId ID for demand related conversation
      */
     public void displayDetailContent(ClientDemandConversationDetail detail) {
-        detailSection.requestConversation(detail.getThreadMessageId(), Storage.getUser().getUserId());
+        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
         detailSection.requestDemandDetail(detail.getDemandId());
         detailSection.requestSupplierDetail(detail.getSupplierId());
     }
@@ -307,7 +307,7 @@ public class ClientDemandsPresenter
                 new FieldUpdater<ClientDemandConversationDetail, Boolean>() {
                     @Override
                     public void update(int index, ClientDemandConversationDetail object, Boolean value) {
-                        object.setStarred(!value);
+                        object.setIsStarred(!value);
                         view.getConversationGrid().redraw();
                         Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
@@ -429,7 +429,8 @@ public class ClientDemandsPresenter
         view.getConversationGrid().setRowStyles(new RowStyles<ClientDemandConversationDetail>() {
             @Override
             public String getStyleNames(ClientDemandConversationDetail row, int rowIndex) {
-                if (row.getUnreadSubmessages() > 0) {
+                // TODO martin - change once isRead attribute will be populated in RPC layer
+                if (row.getUnreadMessageCount() > 0) {
                     return Storage.RSCS.grid().unread();
                 }
                 return "";

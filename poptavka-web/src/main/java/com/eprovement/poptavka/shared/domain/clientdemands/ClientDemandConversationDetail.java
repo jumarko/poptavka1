@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientDemandConversationDetail implements Serializable, TableDisplay {
+public class ClientDemandConversationDetail implements Serializable, TableDisplay, IUniversalDetail {
 
     /**
      * Generated serialVersionUID.
@@ -25,22 +25,26 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     private long threadMessageId;
     private long userMessageId;
     private long supplierId;
+    private long supplierUserId;
+    private Date messageSent;
     private String supplierName;
-    private MessageDetail messageDetail;
-    private Date date;
-    private boolean read = false;
-    private boolean starred = false;
-    private int messageCount = -1;
+    private String messageBody;
+    private boolean isRead;
+    private boolean isStarred;
+    private int messageCount;
+    // TODO ivlcek - remove unreadSubmessages
     private int unreadSubmessages = -1;
     public static final ProvidesKey<ClientDemandConversationDetail> KEY_PROVIDER =
             new ProvidesKey<ClientDemandConversationDetail>() {
+
                 @Override
                 public Object getKey(ClientDemandConversationDetail item) {
-                    return item == null ? null : item.getUserMessageId();
+                    return item == null ? null : item.getSupplierId();
                 }
             };
 
     //---------------------------- GETTERS AND SETTERS --------------------
+    @Override
     public long getDemandId() {
         return demandId;
     }
@@ -49,22 +53,16 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         this.demandId = demandId;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public int getMessageCount() {
-        return messageCount;
-    }
-
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
     }
 
+    @Override
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    @Override
     public long getMessageId() {
         return messageId;
     }
@@ -74,11 +72,11 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     }
 
     public boolean isStarred() {
-        return starred;
+        return isStarred;
     }
 
-    public void setStarred(boolean starred) {
-        this.starred = starred;
+    public void setIsStarred(boolean isStarred) {
+        this.isStarred = isStarred;
     }
 
     public long getSupplierId() {
@@ -97,14 +95,6 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         this.supplierName = supplierName;
     }
 
-    public int getUnreadSubmessages() {
-        return unreadSubmessages;
-    }
-
-    public void setUnreadSubmessages(int unreadSubmessages) {
-        this.unreadSubmessages = unreadSubmessages;
-    }
-
     public long getUserMessageId() {
         return userMessageId;
     }
@@ -113,12 +103,12 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         this.userMessageId = userMessageId;
     }
 
-    public MessageDetail getMessageDetail() {
-        return messageDetail;
+    public String getMessageBody() {
+        return messageBody;
     }
 
-    public void setMessageDetail(MessageDetail messageDetail) {
-        this.messageDetail = messageDetail;
+    public void setMessageBody(String messageBody) {
+        this.messageBody = messageBody;
     }
 
     @Override
@@ -137,16 +127,9 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     }
 
     /**
-     * @return the threadMessageId
-     */
-    public long getThreadMessageId() {
-        return threadMessageId;
-    }
-
-    /**
      * @param threadMessageId the threadMessageId to set
      */
-    public void setThreadMessageId(long threadMessageId) {
+    public void setThreadRootId(long threadMessageId) {
         this.threadMessageId = threadMessageId;
     }
 
@@ -154,9 +137,96 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         StringBuilder str = new StringBuilder();
         str.append(detail.getSupplierName());
         str.append(" ");
-        str.append(detail.getUnreadSubmessages());
+        str.append(detail.getUnreadMessageCount());
         str.append("/");
         str.append(detail.getMessageCount());
         return str.toString();
+    }
+
+    @Override
+    public long getClientId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getClientName() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getRating() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getThreadRootId() {
+        return threadMessageId;
+    }
+
+    @Override
+    public long getSenderId() {
+        return supplierUserId;
+    }
+
+    public void setSenderId(long supplierUserId) {
+        this.supplierUserId = supplierUserId;
+    }
+
+    @Override
+    public Date getMessageSent() {
+        return messageSent;
+    }
+
+    public void setMessageSent(Date messageSent) {
+        this.messageSent = messageSent;
+    }
+
+    @Override
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    @Override
+    public int getUnreadMessageCount() {
+        return messageCount;
+    }
+
+    @Override
+    public Date getDeliveryDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Date getValidTo() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Date getReceivedDate() {
+        return messageSent;
+    }
+
+    @Override
+    public String getTitle() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getPrice() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getOfferId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

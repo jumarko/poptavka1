@@ -247,7 +247,7 @@ public class ClientDemandsView extends Composite
                     @Override
                     public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();
-                        str.append(((ClientDemandConversationDetail) object).getMessageDetail().getBody());
+                        str.append(((ClientDemandConversationDetail) object).getMessageBody());
                         str.append("...");
                         return str.toString();
                     }
@@ -259,7 +259,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return formatter.format(((ClientDemandConversationDetail) object).getDate());
+                        return formatter.format(((ClientDemandConversationDetail) object).getMessageSent());
                     }
                 });
     }

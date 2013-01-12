@@ -105,7 +105,7 @@ public class ClientDemandContestantDetail implements Serializable, TableDisplay 
         return starred;
     }
 
-    public void setStarred(boolean starred) {
+    public void setIsStarred(boolean starred) {
         this.starred = starred;
     }
 

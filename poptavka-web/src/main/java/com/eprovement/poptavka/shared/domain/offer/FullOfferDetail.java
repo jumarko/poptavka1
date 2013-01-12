@@ -36,6 +36,7 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
                     return item == null ? null : item.getDemandId();
                 }
             };
+    private boolean isRead;
 
     public FullOfferDetail() {
     }
@@ -82,7 +83,7 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     }
 
     @Override
-    public void setStarred(boolean value) {
+    public void setIsStarred(boolean value) {
         this.messageDetail.setStarred(value);
     }
 
@@ -221,6 +222,17 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
         str.append("/");
         str.append(getMessageCount());
         return str.toString();
+    }
+
+
+    @Override
+    public boolean isRead() {
+        return isRead;
+    }
+
+    @Override
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
 }

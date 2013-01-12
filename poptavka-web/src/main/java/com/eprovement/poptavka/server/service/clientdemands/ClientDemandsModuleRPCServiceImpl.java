@@ -272,24 +272,17 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * When supplier asks something about a demand of some client. The conversation has more messages of course but I
-     * want count of threads. As Client: "Questions made by suppliers to demands made by me." "How many suppliers are
-     * asing something about a certain demand."
+     * Get a list of latest user messages from suppliers who sent a question response to given demand.
      *
-     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
-     * some different user than client, exception will be thrown
-     * @param demandID - demand's
-     * @param start
-     * @param maxResult
-     * @param filter
-     * @param orderColumns
-     * @return
+     * @param userId logged client user Id
+     * @param demandID demand with question responses from suppliers
+     * @param searchDefinition defines a search criteria for pager etc.
+     * @return list of latest user messages from suppliers with total count of submessages
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientDemandConversationDetail> getClientDemandConversations(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
         User user = generalService.find(User.class, userId);
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
@@ -299,21 +292,26 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
-
+            // TODO ivlcek - make detail object converter
+            // TODO ivlcek - implement searchDefinition
             ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
-            cdcd.setDate(userMessage.getMessage().getSent());
-            cdcd.setDemandId(demandID);
-            cdcd.setThreadMessageId(userMessage.getMessage().getThreadRoot().getId());
-            // TODO make converter
+            // set UserMessage attributes
+            cdcd.setUserMessageId(userMessage.getId());
+            cdcd.setIsStarred(userMessage.isStarred());
+            cdcd.setIsRead(userMessage.isRead());
             cdcd.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
-//            cdcd.setUnreadSubmessages(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
-            cdcd.setMessageDetail(messageConverter.convertToTarget(userMessage.getMessage()));
+            // set Message attributes
             cdcd.setMessageId(userMessage.getMessage().getId());
+            cdcd.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
+            cdcd.setMessageBody(userMessage.getMessage().getBody());
+            cdcd.setMessageSent(userMessage.getMessage().getSent());
+            // set Demand attributes
+            cdcd.setDemandId(demandID);
+            // set Supplier attributes
             Supplier supplier = findSupplier(userMessage.getMessage().getSender().getId());
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
-            // set latest UserMessage id
-            cdcd.setUserMessageId(userMessage.getId());
+            cdcd.setSenderId(supplier.getBusinessUser().getId());
 
             list.add(cdcd);
         }
@@ -395,14 +393,13 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * Get all offers of given demand. When supplier place an offer to client's demand, the offer will be involved here.
-     * As Client: "How many suppliers placed an offers to a certain demand."
+     * Get a list of latest user messages from suppliers who sent a offer response to given demand.
      *
-     * @param userId id of user represented by client. Note that userId and userId are different If userId represents
-     * some different user than client, exception will be thrown
-     * @param demandID
-     * @param searchDefinition search filter, ordering, ...
-     * @return
+     * @param userId logged client user Id
+     * @param demandID demand with offer responses from suppliers
+     * @param threadRootId thread root message that represents demand message made by client
+     * @param searchDefinition defines a search criteria for pager etc.
+     * @return list of latest user messages from suppliers with total count of submessages
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
@@ -414,25 +411,27 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
                 messageService.getLatestSupplierUserMessagesWithOfferForDemnd(user, root);
-
         for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
             Offer offer = userMessage.getMessage().getOffer();
-
+            // TODO ivlcek - refactor and create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
-            // TODO ivlcek - refactor and create converter, set Rating
+            // set UserMessage attributes
+            codod.setIsRead(userMessage.isRead());
+            codod.setIsStarred(userMessage.isStarred());
+            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+            codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
+            // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
             codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setRating(offer.getSupplier().getOveralRating());
+            codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            // set Offer attributes
+            codod.setOfferId(offer.getId());
             codod.setDemandId(offer.getDemand().getId());
             codod.setPrice(offer.getPrice().toPlainString());
             codod.setDeliveryDate(offer.getFinishDate());
-            codod.setOfferId(offer.getId());
             codod.setReceivedDate(offer.getCreated());
-            codod.setRating(offer.getSupplier().getOveralRating());
-            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
-//            codod.setUnreadMessageCount(messageService.getUnreadDescendantsCount(firstSupplierResponse, user));
-            codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
-            codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
 
             listCodod.add(codod);
         }
@@ -768,30 +767,24 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             a1.setUserMessageId(1L);
             a1.setSupplierId(1L);
             a1.setSupplierName("Good Data");
-            MessageDetail md1 = new MessageDetail();
-            md1.setBody("Tak ak date cenu o 10% dole ta to beriem.");
-            a1.setMessageDetail(md1);
-            a1.setDate(new Date());
+            a1.setMessageBody("Tak ak date cenu o 10% dole ta to beriem.");
+            a1.setMessageSent(new Date());
             return a1;
         } else if (clientDemandConversationID == 2L) {
             ClientDemandConversationDetail a2 = new ClientDemandConversationDetail();
             a2.setUserMessageId(2L);
             a2.setSupplierId(2L);
             a2.setSupplierName("Eprovement");
-            MessageDetail md2 = new MessageDetail();
-            md2.setBody("Chcem chcem chcem!!!");
-            a2.setMessageDetail(md2);
-            a2.setDate(new Date());
+            a2.setMessageBody("Chcem chcem chcem!!!");
+            a2.setMessageSent(new Date());
             return a2;
         } else if (clientDemandConversationID == 3L) {
             ClientDemandConversationDetail a3 = new ClientDemandConversationDetail();
             a3.setUserMessageId(3L);
             a3.setSupplierId(3L);
             a3.setSupplierName("CoraGeo");
-            MessageDetail md3 = new MessageDetail();
-            md3.setBody("To nic lepsie nemate?");
-            a3.setMessageDetail(md3);
-            a3.setDate(new Date());
+            a3.setMessageBody("To nic lepsie nemate?");
+            a3.setMessageSent(new Date());
             return a3;
         } else {
             return new ClientDemandConversationDetail();

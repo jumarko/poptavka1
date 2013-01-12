@@ -45,7 +45,11 @@ public interface IUniversalDetail {
 
     boolean isStarred();
 
-    void setStarred(boolean isStarred);
+    boolean isRead();
+
+    void setIsStarred(boolean isStarred);
+
+    void setIsRead(boolean isStarred);
 
     int getMessageCount();
 

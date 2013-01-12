@@ -31,7 +31,10 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
     private long userMessageId;
     private boolean isStarred; // column 1
     private int messageCount; // all messages between Supplier and Client regarding this potential demand
+    // TODO ivlcek - we can remove unreadMessageCount if isRead works. All RPC must be changes to retrieve latest
+    // UserMessage object from conversation between CLient and supplier
     private int unreadMessageCount; // number of Supplier's unread messages regarding this potential demand
+    private boolean isRead;
     // Demand part
     private long demandId;
     private Date validTo;
@@ -189,7 +192,7 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
      * @param isStarred the isStarred to set
      */
     @Override
-    public void setStarred(boolean isStarred) {
+    public void setIsStarred(boolean isStarred) {
         this.isStarred = isStarred;
     }
 
@@ -348,6 +351,16 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
         str.append("/");
         str.append(getMessageCount());
         return str.toString();
+    }
+
+    @Override
+    public boolean isRead() {
+        return isRead;
+    }
+
+    @Override
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
 }

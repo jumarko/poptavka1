@@ -22,7 +22,7 @@ public final class ClientDemandConverter extends AbstractConverter<Demand, Clien
         detail.setPrice(demand.getPrice());
         detail.setEndDate(convertDate(demand.getEndDate()));
         detail.setValidToDate(convertDate(demand.getValidTo()));
-        detail.setStarred(false);
+        detail.setIsStarred(false);
         return detail;
     }
 

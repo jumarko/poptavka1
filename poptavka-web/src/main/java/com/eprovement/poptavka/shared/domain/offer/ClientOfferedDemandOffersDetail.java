@@ -28,6 +28,7 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     private long supplierId;
     private long supplierUserId;
     private boolean isStarred;
+    private boolean isRead;
     private String supplierName;
     private String price;
     private Integer rating;
@@ -229,7 +230,7 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     }
 
     @Override
-    public void setStarred(boolean value) {
+    public void setIsStarred(boolean value) {
         this.isStarred = value;
     }
 
@@ -316,5 +317,15 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
                 + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
                 + unreadMessageCount + '}';
+    }
+
+    @Override
+    public boolean isRead() {
+        return isRead;
+    }
+
+    @Override
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 }

@@ -213,7 +213,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                 new FieldUpdater<IUniversalDetail, Boolean>() {
                     @Override
                     public void update(int index, IUniversalDetail object, Boolean value) {
-                        object.setStarred(!value);
+                        object.setIsStarred(!value);
                         view.getDataGrid().redraw();
                         Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);

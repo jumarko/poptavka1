@@ -10,7 +10,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -65,7 +64,7 @@ public interface RootRPCService extends RemoteService {
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
-    BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException, ApplicationSecurityException;
+    BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException;
 
 
     /**************************************************************************/

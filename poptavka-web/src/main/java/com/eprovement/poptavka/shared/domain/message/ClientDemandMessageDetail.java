@@ -65,4 +65,9 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
     public OfferStateType getOfferState() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public void setIsStarred(boolean value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -252,7 +252,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     }
 
     @Override
-    public void setStarred(boolean starred) {
+    public void setIsStarred(boolean starred) {
         this.starred = starred;
     }
 

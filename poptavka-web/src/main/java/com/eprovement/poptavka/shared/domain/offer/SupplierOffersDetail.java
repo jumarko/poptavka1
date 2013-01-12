@@ -46,6 +46,7 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
                     return item == null ? null : item.getOfferId();
                 }
             };
+    private boolean isRead;
 
     /**
      * @return the demandId
@@ -232,7 +233,7 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     }
 
     @Override
-    public void setStarred(boolean value) {
+    public void setIsStarred(boolean value) {
         this.isStarred = value;
     }
 
@@ -340,5 +341,16 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
                 + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
                 + unreadMessageCount + '}';
+    }
+
+
+    @Override
+    public boolean isRead() {
+        return isRead;
+    }
+
+    @Override
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 }
