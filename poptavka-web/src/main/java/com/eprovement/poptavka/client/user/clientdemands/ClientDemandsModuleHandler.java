@@ -187,9 +187,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     private void getClientAssignedDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<FullOfferDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<FullOfferDetail> result) {
+                    public void onSuccess(List<ClientDemandDetail> result) {
                         eventBus.displayClientAssignedDemands(result);
                     }
                 });

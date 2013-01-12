@@ -201,7 +201,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Business events handled by ClientAssignedDemandsPresenter.             */
     /**************************************************************************/
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void displayClientAssignedDemands(List<FullOfferDetail> result);
+    void displayClientAssignedDemands(List<ClientDemandDetail> result);
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void selectClientAssignedDemand(FullOfferDetail detail);

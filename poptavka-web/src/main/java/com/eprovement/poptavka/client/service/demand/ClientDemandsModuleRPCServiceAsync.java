@@ -53,7 +53,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
             AsyncCallback<Long> callback);
 
     void getClientAssignedDemands(long userID, SearchDefinition searchDefinition,
-            AsyncCallback<List<FullOfferDetail>> callback);
+            AsyncCallback<List<ClientDemandDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */

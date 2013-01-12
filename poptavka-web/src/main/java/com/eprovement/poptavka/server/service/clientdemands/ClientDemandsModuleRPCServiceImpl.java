@@ -488,41 +488,38 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<FullOfferDetail> getClientAssignedDemands(long userId,
+    public List<ClientDemandDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
-        FullOfferDetail detail = new FullOfferDetail();
-        detail.getOfferDetail().setSupplierId(1L);
-        detail.getOfferDetail().setDemandId(1L);
-        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
-        detail.getOfferDetail().setClientName("Martin Slavkovsky");
-        detail.getOfferDetail().setSupplierName("Good Data");
-        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
-        detail.getOfferDetail().setRating(90);
-        detail.getOfferDetail().setPrice(10000);
-        detail.getOfferDetail().setFinishDate(new Date());
-        detail.getOfferDetail().setCreatedDate(new Date());
 
-        FullDemandDetail demand = new FullDemandDetail();
-        demand.setClientId(1L);
-        demand.setDemandId(1L);
-        demand.setTitle("Poptavka 1234");
-        demand.setPrice("21342");
-        demand.setValidToDate(new Date());
-        demand.setCreated(new Date());
-        demand.setEndDate(new Date());
-        detail.setDemandDetail(demand);
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        ArrayList<DemandStatus> demandStatuses = new ArrayList<DemandStatus>();
+        demandStatuses.add(DemandStatus.ACTIVE);
+        demandStatuses.add(DemandStatus.NEW);
+        demandStatuses.add(DemandStatus.INVALID);
+        demandStatuses.add(DemandStatus.INACTIVE);
+        clientDemandsSearch.addFilterIn("status", demandStatuses);
+        final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
+        ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
-        MessageDetail md = new MessageDetail();
-        md.setMessageId(1L);
-        md.setThreadRootId(1L);
-        md.setSenderId(1L);
-        md.setSent(new Date());
-        detail.setMessageDetail(md);
+        Iterator it = messageService.getListOfClientDemandMessagesUnread(generalService.find(
+                User.class, userId)).entrySet().iterator();
 
-        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
-        list.add(detail);
-        return list;
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            // key is message and val is number
+            Long messageId = (Long) pairs.getKey();
+            for (ClientDemandDetail cdd : cdds) {
+                if (cdd.getDemandId() == messageId) {
+                    cdd.setUnreadMessageCount(((Integer) pairs.getValue()).intValue());
+                    break;
+                }
+            }
+            it.remove();
+        }
+        return cdds;
     }
 
     /**
