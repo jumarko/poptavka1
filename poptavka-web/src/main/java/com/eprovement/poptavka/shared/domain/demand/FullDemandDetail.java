@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -42,6 +43,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     private ArrayList<LocalityDetail> localities;
     private ArrayList<CategoryDetail> categories;
     private long clientId;
+    @Min(value = 0, message = "{demandMinPrice}")
     private int maxOffers;
     private int minRating;
     private String demandType;
@@ -61,6 +63,8 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     @NotBlank(message = "{demandNotBlankPrice}")
     @Pattern(regexp = "\\d+(\\.\\d{2})*", message = "{demandPatternPrice}")
     private String priceString;
+//    @DecimalMin(value = "0", message = "{demandMinPrice}")
+    @Min(value = 0, message = "{demandMinPrice}")
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")
     @Future(message = "{demandFutureEndDate}")

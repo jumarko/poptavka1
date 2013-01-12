@@ -18,7 +18,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -68,8 +67,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
-        addReplyColumnFieldUpdater();
-        addCloseDemandColumnFieldUpdater();
         addTextColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
@@ -147,7 +144,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
      * @param data
      */
     public void onDisplayClientAssignedDemands(List<IUniversalDetail> data) {
-        GWT.log("++ onResponseClientsOfferedDemands");
+        GWT.log("++ onResponseClientsAssignedDemands");
 
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), data);
@@ -220,26 +217,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
             }
         });
-    }
-
-    public void addReplyColumnFieldUpdater() {
-        view.getDataGrid().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        detailSection.getView().getReplyHolder().addQuestionReply();
-                    }
-                });
-    }
-
-    public void addCloseDemandColumnFieldUpdater() {
-        view.getDataGrid().getCloseDemandImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        eventBus.requestCloseDemand(object.getDemandId());
-                    }
-                });
     }
 
     public void addTextColumnFieldUpdaters() {

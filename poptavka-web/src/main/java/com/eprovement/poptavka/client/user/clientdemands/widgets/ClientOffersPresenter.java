@@ -23,7 +23,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
@@ -103,8 +102,6 @@ public class ClientOffersPresenter
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
-        addReplyColumnFieldUpdater();
-        addAcceptOfferColumnFieldUpdater();
         addTextColumnFieldUpdaters();
         // Buttons Actions
         addBackButtonHandler();
@@ -297,26 +294,6 @@ public class ClientOffersPresenter
                 });
     }
 
-    public void addReplyColumnFieldUpdater() {
-        view.getOfferGrid().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        detailSection.getView().getReplyHolder().addQuestionReply();
-                    }
-                });
-    }
-
-    public void addAcceptOfferColumnFieldUpdater() {
-        view.getOfferGrid().getAcceptOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        eventBus.requestAcceptOffer(object.getOfferId()); //good attribute ??? IV: no, wront attribute
-                    }
-                });
-    }
-
     public void addTextColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
             @Override
@@ -432,13 +409,15 @@ public class ClientOffersPresenter
 
     private void addOfferTableSelectionHandler() {
         view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 if (view.getOfferGrid().getSelectedIdList().size() < 2) {
                     view.getAcceptBtn().setVisible(true);
                 } else {
                     view.getAcceptBtn().setVisible(false);
+                    if (detailSection != null) {
+                        detailSection.clear();
+                    }
                 }
             }
         });

@@ -78,6 +78,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("demand.notBlank.price")
     String demandNotBlankPrice();
 
+    @Key("demand.min.price")
+    String demandMinPrice();
+
     @Key("demand.pattern.price")
     String demandPatternPrice();
 

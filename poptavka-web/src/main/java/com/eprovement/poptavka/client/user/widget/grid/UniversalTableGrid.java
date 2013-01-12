@@ -99,16 +99,16 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                 initClientOffers();
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:
-                initClientAcceptedOffers();
+                initClientAssignedDemands();
                 break;
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
-                initSupplierPotentialProjects();
+                initSupplierPotentialDemands();
                 break;
             case Constants.SUPPLIER_OFFERS:
-                initSupplierContests();
+                initSupplierOffers();
                 break;
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
-                initSupplierAssignedProjects();
+                initSupplierAssignedDemands();
                 break;
             default:
                 break;
@@ -155,29 +155,24 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
-        gridColumns.add(ACCEPT_OFFER_IMAGE_COLUMN);
-        gridColumns.add(DECLINE_OFFER_IMAGE_COLUMN);
-        gridColumns.add(REPLY_IMAGE_COLUMN);
     }
 
     /**
-     * Generate table schema for ClientAcceptedOffers widget.
+     * Generate table schema for ClientAssignedDemands widget.
      */
-    private void initClientAcceptedOffers() {
+    private void initClientAssignedDemands() {
         gridColumns.clear();
         gridColumns.add(SUPPLIER_NAME_COLUMN);
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
-        gridColumns.add(CLOSE_DEMAND_IMAGE_COLUMN);
-        gridColumns.add(REPLY_IMAGE_COLUMN);
     }
 
     /**
-     * Generate table schema for SupplierPotentialProjects widget.
+     * Generate table schema for SupplierPotentialDemands widget.
      */
-    private void initSupplierPotentialProjects() {
+    private void initSupplierPotentialDemands() {
         gridColumns.clear();
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(DEMAND_TITLE_COLUMN);
@@ -185,14 +180,12 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(URGENCY_COLUMN);
 //        gridColumns.add(RECEIVED_DATE_COLUMN);
-        gridColumns.add(REPLY_IMAGE_COLUMN);
-        gridColumns.add(SEND_OFFER_IMAGE_COLUMN);
     }
 
     /**
-     * Generate table schema for SupplierContests widget.
+     * Generate table schema for SupplierOffers widget.
      */
-    private void initSupplierContests() {
+    private void initSupplierOffers() {
         gridColumns.clear();
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(RATING_COLUMN);
@@ -205,9 +198,9 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     }
 
     /**
-     * Generate table schema for SupplierAssignedProjects widget.
+     * Generate table schema for SupplierAssignedDemands widget.
      */
-    private void initSupplierAssignedProjects() {
+    private void initSupplierAssignedDemands() {
         gridColumns.clear();
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(RATING_COLUMN);

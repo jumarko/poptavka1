@@ -20,7 +20,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.RowStyles;
@@ -53,8 +52,6 @@ public class ClientDemandsPresenter
         Column<ClientDemandConversationDetail, Boolean> getCheckColumn();
 
         Column<ClientDemandConversationDetail, Boolean> getStarColumn();
-
-        Column<ClientDemandConversationDetail, ImageResource> getReplyColumn();
 
         Column<ClientDemandConversationDetail, String> getSupplierNameColumn();
 
@@ -120,7 +117,6 @@ public class ClientDemandsPresenter
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
-        addReplyColumnFieldUpdater();
         // Listbox actions
         addActionChangeHandler();
         // RowStyles
@@ -311,16 +307,6 @@ public class ClientDemandsPresenter
                         view.getConversationGrid().redraw();
                         Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
-                    }
-                });
-    }
-
-    public void addReplyColumnFieldUpdater() {
-        view.getReplyColumn().setFieldUpdater(
-                new FieldUpdater<ClientDemandConversationDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, ClientDemandConversationDetail object, ImageResource value) {
-                        detailSection.getView().getReplyHolder().addQuestionReply();
                     }
                 });
     }

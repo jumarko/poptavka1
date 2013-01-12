@@ -9,7 +9,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -62,7 +61,6 @@ public class ClientDemandsView extends Composite
     private Header checkHeader;
     private Column<ClientDemandConversationDetail, Boolean> checkColumn;
     private Column<ClientDemandConversationDetail, Boolean> starColumn;
-    private Column<ClientDemandConversationDetail, ImageResource> replyColumn;
     private Column<ClientDemandConversationDetail, String> supplierNameColumn;
     private Column<ClientDemandConversationDetail, String> bodyPreviewColumn;
     private Column<ClientDemandConversationDetail, String> dateColumn;
@@ -225,10 +223,6 @@ public class ClientDemandsView extends Composite
         checkColumn = conversationGrid.addCheckboxColumn(checkHeader);
         // Star Column
         starColumn = conversationGrid.addStarColumn();
-        // Reply Column
-        replyColumn = conversationGrid.addIconColumn(
-                Storage.RSCS.images().replyImage(),
-                Storage.MSGS.replyExplanationText());
         // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
@@ -281,10 +275,6 @@ public class ClientDemandsView extends Composite
     @Override
     public Column<ClientDemandConversationDetail, Boolean> getStarColumn() {
         return starColumn;
-    }
-
-    public Column<ClientDemandConversationDetail, ImageResource> getReplyColumn() {
-        return replyColumn;
     }
 
     @Override
