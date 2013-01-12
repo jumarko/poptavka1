@@ -15,6 +15,7 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.googlecode.genericdao.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -77,6 +78,14 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public BusinessUserDetail getBusinessUserById(Long userId) throws RPCException, ApplicationSecurityException {
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, userId));
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException, ApplicationSecurityException {
+        final Search search = new Search(BusinessUser.class);
+        search.addFilterEqual("email", email);
+        return businessUserConverter.convertToTarget((BusinessUser) generalService.searchUnique(search));
     }
 
     @Override

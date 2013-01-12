@@ -331,7 +331,8 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public UserActivationResult activateClient(BusinessUserDetail user, String activationCode) throws RPCException {
         try {
-            userVerificationService.activateUser(findUserByEmail(user), StringUtils.trimToEmpty(activationCode));
+            userVerificationService.activateUser(findUserByEmail(user.getEmail()),
+                    StringUtils.trimToEmpty(activationCode));
         } catch (UserNotExistException unee) {
             return UserActivationResult.ERROR_UNKNOWN_USER;
         } catch (IncorrectActivationCodeException iace) {
@@ -347,14 +348,14 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     public boolean sendActivationCodeAgain(BusinessUserDetail user) throws RPCException {
         // we must search business user by email because detail object doesn't have to proper ID already assigned.
         // TODO: move this to the common place
-        userVerificationService.sendNewActivationCode(findUserByEmail(user));
+        userVerificationService.sendNewActivationCode(findUserByEmail(user.getEmail()));
         // since activation mail has been sent in synchronous fashion everything should be ok
         return true;
     }
 
-    private BusinessUser findUserByEmail(BusinessUserDetail client) {
+    private BusinessUser findUserByEmail(String email) {
         final Search search = new Search(BusinessUser.class);
-        search.addFilterEqual("email", client.getEmail());
+        search.addFilterEqual("email", email);
         return (BusinessUser) generalService.searchUnique(search);
     }
 

@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
@@ -28,7 +29,11 @@ public final class BusinessUserConverter extends AbstractConverter<BusinessUser,
         final BusinessUserDetail detail = new BusinessUserDetail();
         detail.setUserId(businessUser.getId());
         detail.setAddresses(addressConverter.convertToTargetList(businessUser.getAddresses()));
+        detail.setVerified(true);
         for (BusinessUserRole role : businessUser.getBusinessUserRoles()) {
+            if (role.getVerification() == Verification.UNVERIFIED) {
+                detail.setVerified(false);
+            }
             if (role instanceof Client) {
                 detail.setClientId(role.getId());
                 detail.getBusinessRoles().add(BusinessUserDetail.BusinessRole.CLIENT);

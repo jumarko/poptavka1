@@ -72,50 +72,80 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     public void doLogin() {
         if (view.isValid()) { // both email and password fields are not empty
             view.setLoadingStatus(MSGS.verifyAccount());
-            final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getSpringLoginUrl());
-            rb.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            final StringBuilder sbParams = new StringBuilder(100);
-            sbParams.append("j_username=");
-            sbParams.append(URL.encode(view.getLogin().getText()));
-            sbParams.append("&j_password=");
-            sbParams.append(URL.encode(view.getPassword().getText()));
+            verifyUser();
+        }
+    }
 
-            try {
-                rb.sendRequest(sbParams.toString(), new RequestCallback() {
-                    @Override
-                    public void onError(final Request request, final Throwable exception) {
-                        // Couldn't connect to server (could be timeout, SOP violation, etc.)
-                        LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging, exception="
-                                + exception.getMessage());
-                        view.setUnknownError();
-                        // TODO jumarko - Shall we send email notifications when this happens?
-                    }
-
-                    @Override
-                    public void onResponseReceived(final Request request, final Response response) {
-                        int status = response.getStatusCode();
-                        LOGGER.fine("Response status code = " + status);
-                        if (status == Response.SC_OK) { // 200: everything's ok
-                            LOGGER.info("User=" + view.getLogin() + " has logged in!");
-                            view.setLoadingStatus(MSGS.loggingIn());
-                            // notify all interested components that uses has succesfully logged in
-                            fireAfterLoginEvent();
-                        } else if (status == Response.SC_UNAUTHORIZED) { // 401: wrong credentials...
-                            LOGGER.fine("User entered wrong credentials !");
-                            view.setLoginError();
-                        } else { // something else ?
-                            // other status codes can be processed here
-                            LOGGER.severe("Unexptected response status code while logging in, code=" + status);
-                            view.setUnknownError();
-                        }
-                    }
-                });
-
-            } catch (RequestException exception) {
-                LOGGER.severe("RequestException thrown during user logging, exception=" + exception.getMessage());
-                view.setUnknownError();
-                // TODO jumarko - Shall we send email notifications when this happens?
+    private void verifyUser() {
+        // TODO release: check if user is VERIFIED
+        // if not then display activation popup
+        userService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+            @Override
+            public void onSuccess(BusinessUserDetail user) {
+                if (user.isVerified()) {
+                    // user has already been verified - it is ready for login
+                    loginUser();
+                } else {
+                    hideView();
+                    // user has not been verified yet - prompt user for activation code
+                    eventBus.initActivationCodePopup(user, widgetToLoad);
+                    // ActivationCodePopupPresenter performs autologin once user is activated properly
+                }
             }
+        });
+
+    }
+
+    private String getUserEmail() {
+        return view.getLogin().getText().trim();
+    }
+
+    private void loginUser() {
+        view.setLoadingStatus(MSGS.verifyAccount());
+
+        final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getSpringLoginUrl());
+        rb.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        final StringBuilder sbParams = new StringBuilder(100);
+        sbParams.append("j_username=");
+        sbParams.append(URL.encode(getUserEmail()));
+        sbParams.append("&j_password=");
+        sbParams.append(URL.encode(view.getPassword().getText()));
+
+        try {
+            rb.sendRequest(sbParams.toString(), new RequestCallback() {
+                @Override
+                public void onError(final Request request, final Throwable exception) {
+                    // Couldn't connect to server (could be timeout, SOP violation, etc.)
+                    LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging, exception="
+                            + exception.getMessage());
+                    view.setUnknownError();
+                    // TODO jumarko - Shall we send email notifications when this happens?
+                }
+
+                @Override
+                public void onResponseReceived(final Request request, final Response response) {
+                    int status = response.getStatusCode();
+                    LOGGER.fine("Response status code = " + status);
+                    if (status == Response.SC_OK) {
+                        LOGGER.info("User=" + view.getLogin() + " has logged in!");
+                        view.setLoadingStatus(MSGS.loggingIn());
+                        // notify all interested components that user has succesfully logged in
+                        fireAfterLoginEvent();
+                    } else if (status == Response.SC_UNAUTHORIZED) {
+                        LOGGER.fine("User entered wrong credentials !");
+                        view.setLoginError();
+                    } else {
+                        // other status codes can be processed here
+                        LOGGER.severe("Unexptected response status code while logging in, code=" + status);
+                        view.setUnknownError();
+                    }
+                }
+            });
+
+        } catch (RequestException exception) {
+            LOGGER.severe("RequestException thrown during user logging, exception=" + exception.getMessage());
+            view.setUnknownError();
+            // TODO jumarko - Shall we send email notifications when this happens?
         }
     }
 
