@@ -78,6 +78,7 @@ import org.hibernate.annotations.CascadeType;
                         + "where subUserMessage.user = :user"
                         + " and message.threadRoot = :threadRoot"
                         + " and message.sender = :user"
+                        + " and subMessage.offer.state.id = 2"
                         + " and subMessage.offer is not null"
                         + " and subMessage.sender <> :user\n"
                         + "group by subMessage.sender.id"),
