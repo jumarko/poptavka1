@@ -46,7 +46,7 @@ public final class UserMessageConverter extends AbstractConverter<UserMessage, M
         if (source.getMessage().getSender() != null) {
             detail.setSenderId(source.getMessage().getSender().getId());
             detail.setSenderName(generalService.find(BusinessUser.class,
-                    source.getMessage().getSender()).getBusinessUserData().getDisplayName());
+                    source.getMessage().getSender().getId()).getBusinessUserData().getDisplayName());
         }
 
         detail.setSubject(source.getMessage().getSubject());
