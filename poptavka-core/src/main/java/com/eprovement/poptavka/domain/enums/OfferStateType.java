@@ -8,7 +8,10 @@ public enum OfferStateType {
     ACCEPTED("ACCEPTED"),
     /** Special demand at top positions. */
     PENDING("PENDING"),
-    DECLINED("DECLINED");
+    DECLINED("DECLINED"),
+    /** Offer was delivered and Demand was successfuly closed. **/
+    DELIVERED("DELIVERED");
+
     private final String value;
 
     OfferStateType(String value) {
