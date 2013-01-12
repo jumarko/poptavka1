@@ -11,7 +11,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -39,7 +39,7 @@ public class DetailsWrapperView extends Composite
     @UiField SupplierDetailView supplierDetail;
     @UiField UserConversationPanel2 conversationPanel;
     @UiField DevelOfferQuestionWindow replyHolder;
-    @UiField VerticalPanel conversationHolder;
+    @UiField HTMLPanel conversationHolder;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
 
@@ -106,7 +106,7 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public VerticalPanel getConversationHolder() {
+    public HTMLPanel getConversationHolder() {
         return conversationHolder;
     }
 

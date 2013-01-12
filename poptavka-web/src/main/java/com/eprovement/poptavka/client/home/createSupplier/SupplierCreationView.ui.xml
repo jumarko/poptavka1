@@ -25,7 +25,7 @@
                           styleName='{res.createTabPanel.createTabPanel}' barUnit='PX' barHeight='50'>
             <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex5}">
+                    <g:HTML stylePrimaryName="{style.tabIndex5}">
                         1.
                         <ui:msg key="supplierRegistrationInfo">Supplier Registration</ui:msg>
                     </g:HTML>
@@ -48,7 +48,7 @@
             </g:tab>
             <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex4}">
+                    <g:HTML stylePrimaryName="{style.tabIndex4}">
                         2.
                         <ui:msg key="catsSelection">Category selection</ui:msg>
                     </g:HTML>
@@ -76,7 +76,7 @@
             </g:tab>
             <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex3}">
+                    <g:HTML stylePrimaryName="{style.tabIndex3}">
                         3.
                         <ui:msg key="locsSelection">Locality selection</ui:msg>
                     </g:HTML>
@@ -104,7 +104,7 @@
             </g:tab>
             <g:tab>
                 <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{res.layout.createTabLayoutHeader} {style.tabIndex2}">
+                    <g:HTML stylePrimaryName="{style.tabIndex2}">
                         4.
                         <ui:msg key="serviceSelection">Service Selection</ui:msg>
                     </g:HTML>

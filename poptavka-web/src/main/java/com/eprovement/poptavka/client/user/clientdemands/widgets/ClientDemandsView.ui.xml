@@ -25,7 +25,7 @@
                 </g:HorizontalPanel>
             </g:HorizontalPanel>
         </g:north>
-        <g:east size="400">
+        <g:east size="420">
             <g:SimplePanel ui:field="wrapperPanel">
                 <g:HTMLPanel>
                     <div>

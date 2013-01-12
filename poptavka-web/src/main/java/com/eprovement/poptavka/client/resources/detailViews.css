@@ -33,7 +33,7 @@
 }
 
 .demand-detail-content {
-	background: rgba(255, 255, 255, 0.8);
+	background: url(images/transparent_bg.png) repeat;
 	float: left;
 	padding: 12px;
 	width: 376px;
@@ -107,9 +107,58 @@
 	color: #f06300;
 	float: left;
 	line-height: 20px;
-	padding: 0 0 0 18px;	
+	padding: 0 0 0 18px;
 }
 
+
+/*  conversation DETAIL SECTION  */
+.conversation-detail {
+	border-bottom: 1px solid #D4D4D4;
+	padding: 10px 10px 10px 30px;
+}
+
+.conversation-detail-green {
+	background: url(images/detail-block-green-circle.png) no-repeat 11px
+		14px;
+}
+
+.conversation-detail-red {
+	background: url(images/detail-block-red-circle.png) no-repeat 11px 14px;
+}
+
+.conversation-detail:hover {
+	background-color: #effaff;
+	box-shadow: 0 0 4px #999999;
+}
+
+.conversation-detail-header {
+	float: left;
+	font-weight: bold;
+}
+
+.conversation-detail-header-green {
+	color: #2ca500;
+}
+
+.conversation-detail-header-red {
+	color: #e50000;
+}
+
+.conversation-detail-time {
+	color: #006b9f;
+	float: right;
+}
+
+.conversation-detail-content {
+	color: #6a707a;
+}
+
+.conversation-left-block {
+	float: left;
+	width: 100%;
+}
+
+/* the rest will be deleted ... */
 .demandDetailTable {
 	border: 1px solid black;
 	border-collapse: collapse;

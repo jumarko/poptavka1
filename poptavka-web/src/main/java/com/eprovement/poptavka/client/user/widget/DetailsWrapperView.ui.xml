@@ -13,6 +13,16 @@
 		.relative {
 		position: relative;
 		}
+		.my-class {
+		padding: 12px;
+		background: url(images/transparent_bg.png)
+		repeat;
+		}
+		.my-div2 {
+		background: #ffffff;
+		border: 1px solid #009de5;
+		border-radius: 4px;
+		}
 	</ui:style>
 	<g:TabLayoutPanel stylePrimaryName='{res.detailTabPanel.detailTabPanel}'
 		ui:field="container" barUnit="PX" barHeight="40" animationDuration="1000">
@@ -20,29 +30,39 @@
 			<g:header>
 				<ui:msg key="demandDetail">Demand detail</ui:msg>
 			</g:header>
-			<w:EditableDemandDetailView ui:field="editableDemandDetail" />
+			<g:ScrollPanel>
+				<w:EditableDemandDetailView ui:field="editableDemandDetail" />
+			</g:ScrollPanel>
 		</g:tab>
 		<g:tab>
 			<g:header>
 				<ui:msg key="demandDetail">Demand detail</ui:msg>
 			</g:header>
-			<w:DemandDetailView ui:field="demandDetail" />
+			<g:ScrollPanel>
+				<w:DemandDetailView ui:field="demandDetail" />
+			</g:ScrollPanel>
 		</g:tab>
 		<g:tab>
 			<g:header>
 				<ui:msg key="supplierDetail">Supplier detail</ui:msg>
 			</g:header>
-			<w:SupplierDetailView ui:field="supplierDetail" />
+			<g:ScrollPanel>
+				<w:SupplierDetailView ui:field="supplierDetail" />
+			</g:ScrollPanel>
 		</g:tab>
 		<g:tab>
 			<g:header>
-				<ui:msg key="conversationDetail">Conversation detail</ui:msg>
+				<ui:msg key="conversationDetail">Conversation</ui:msg>
 			</g:header>
-			<g:VerticalPanel ui:field="conversationHolder">
-				<d:UserConversationPanel2 ui:field="conversationPanel"
-					styleName="{style.relative}" />
-				<d:DevelOfferQuestionWindow ui:field="replyHolder" />
-			</g:VerticalPanel>
+			<g:ScrollPanel>
+				<g:HTMLPanel ui:field="conversationHolder" styleName='{style.my-class}'>
+					<g:HTMLPanel styleName='{style.my-div2}'>
+						<d:UserConversationPanel2 ui:field="conversationPanel"
+							styleName="{style.relative}" />
+						<d:DevelOfferQuestionWindow ui:field="replyHolder" />
+					</g:HTMLPanel>
+				</g:HTMLPanel>
+			</g:ScrollPanel>
 		</g:tab>
 	</g:TabLayoutPanel>
 </ui:UiBinder>

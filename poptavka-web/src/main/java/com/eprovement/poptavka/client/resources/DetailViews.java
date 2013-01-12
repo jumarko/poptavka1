@@ -11,7 +11,7 @@ import com.google.gwt.resources.client.CssResource;
  * @author slavkovsky.martin, Jaro
  */
 public interface DetailViews extends CssResource {
-
+    /* DEMANDS DETAIL SECTION */
     @ClassName("demandDetailTable")
     String demandDetailTable();
 
@@ -39,6 +39,35 @@ public interface DetailViews extends CssResource {
     @ClassName("demandDetailSectionHeader")
     String demandDetailSectionHeader();
 
+    /* CONVERSATION DETAIL SECTION */
+    @ClassName("conversation-detail")
+    String conversationDetail();
+
+    @ClassName("conversation-detail-green")
+    String conversationDetailGreen();
+
+    @ClassName("conversation-detail-red")
+    String conversationDetailRed();
+
+    @ClassName("conversation-detail-header")
+    String conversationDetailHeader();
+
+    @ClassName("conversation-detail-header-green")
+    String conversationDetailHeaderGreen();
+
+    @ClassName("conversation-detail-header-red")
+    String conversationDetailHeaderRed();
+
+    @ClassName("conversation-detail-time")
+    String conversationDetailTime();
+
+    @ClassName("conversation-detail-content")
+    String conversationDetailContent();
+
+    @ClassName("conversation-left-block")
+    String conversationLeftBlock();
+
+    /* SUPPPLIER DETAIL SECTION */
     @ClassName("supplierDetailTable")
     String supplierDetailTable();
 

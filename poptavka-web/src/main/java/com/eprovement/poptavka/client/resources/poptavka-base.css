@@ -26,13 +26,9 @@ input,textarea,select {
 
 .body-container {
 	position: relative;
-	margin: 0 auto;
-	padding: 0px 50px;
+	margin: 0 0 0 340px;	
 	width: 975px;
 	height: 100%;
-	background: #ffffff;
-	margin: 0 auto;
-	box-shadow: 0 0 5px 2px #aaaaaa;
 }
 
 .body-full-container {
@@ -359,28 +355,6 @@ input,textarea,select {
 	background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px
 		-1464px;
 	background: url(images/stack-layout-panel-header-hover.gif) repeat-x;
-}
-
-.create-tab-layout {
-	height: 100%;
-}
-
-.create-tab-layout-header {
-	position: relative;
-	color: #554107;
-	background: url(images/create-tab.png) no-repeat top right;
-	height: 39px;
-	line-height: 39px;
-	text-shadow: 0 2px 2px #ffe397;
-	font-weight: bold;
-	margin-right: -30px;
-	padding: 0 35px 0 50px;
-	border-left: 1px solid #bda45d;
-}
-
-.create-tab-layout-selected,.create-tab-layout-header:hover {
-	background: url(images/create-tab-hover.png) no-repeat top right;
-	cursor: pointer;
 }
 
 /*

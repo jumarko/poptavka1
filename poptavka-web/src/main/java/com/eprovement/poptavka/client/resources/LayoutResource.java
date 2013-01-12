@@ -115,15 +115,6 @@ public interface LayoutResource extends CssResource {
     @ClassName("stack-layout-panel-header")
     String stackLayoutPanelHeader();
 
-    @ClassName("create-tab-layout")
-    String createTabLayout();
-
-    @ClassName("create-tab-layout-header")
-    String createTabLayoutHeader();
-
-    @ClassName("create-tab-layout-selected")
-    String createTabLayoutSelected();
-
     /** DELETE AFTER THIS LINE **/
 
 }

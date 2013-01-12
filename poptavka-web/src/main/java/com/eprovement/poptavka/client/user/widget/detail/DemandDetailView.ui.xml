@@ -9,8 +9,8 @@
 		<h4 class="{res.detailViews.demandDetailSectionHeader}">
 			<ui:msg key="demandInfo">Demand information</ui:msg>
 		</h4>
-		<g:ScrollPanel>
-			<g:HTMLPanel styleName="{res.detailViews.demandDetailContent}">
+		<g:ScrollPanel styleName="{res.detailViews.demandDetailContent}">
+			<g:HTMLPanel >
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
 						<ui:msg key="commonInfo">Common info</ui:msg>

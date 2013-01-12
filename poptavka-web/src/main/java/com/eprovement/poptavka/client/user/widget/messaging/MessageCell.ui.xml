@@ -1,22 +1,71 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
-             <!--xmlns:g="urn:import:com.google.gwt.user.client.ui">-->
+	<!--xmlns:g="urn:import:com.google.gwt.user.client.ui"> -->
 
-    <ui:with field="res" type="com.eprovement.poptavka.client.resources.StyleResource"/>
+	<ui:with field="res"
+		type="com.eprovement.poptavka.client.resources.StyleResource" />
 
-    <ui:with field="sender" type="java.lang.String"/>
-    <ui:with field="sent" type="java.lang.String"/>
-    <ui:with field="body" type="java.lang.String"/>
+	<ui:with field="sender" type="java.lang.String" />
+	<ui:with field="sent" type="java.lang.String" />
+	<ui:with field="body" type="java.lang.String" />
 
-    <div>
-        <span>
-            <ui:text from='{sender}'/>
-        </span>
-        <span ui:field='bodySpan'>
-            <ui:text from='{body}'/>
-        </span>
-        <span>
-            <ui:date from='{sent}'/>
-        </span>
-    </div>
+	<ui:style>
+		.conversation-detail {
+		border-bottom: 1px solid #D4D4D4;
+		padding: 10px 10px 10px 30px;
+		}
+		
+		.conversation-detail-green {
+		background: url(images/detail-block-green-circle.png) no-repeat 11px 14px;
+		}
+		
+		.conversation-detail-red {
+		background: url(images/detail-block-red-circle.png) no-repeat 11px 14px;
+		}
+		
+		.conversation-detail:hover {
+		background-color: #effaff;
+		box-shadow: 0 0 4px #999999;
+		}
+
+		.conversation-detail-header {		
+		float: left;
+		font-weight: bold;
+		}
+		.conversation-detail-header-green {
+		color: #2ca500;
+		}
+		.conversation-detail-header-red {
+		color: #e50000;
+		}
+
+		.conversation-detail-time {
+		color: #006b9f;
+		float: right;
+		}
+
+		.conversation-detail-content {
+		color: #6a707a;
+		}
+		
+		.left-block {
+		float: left;
+		width: 100%;
+		}
+	</ui:style>
+
+	<div class='{res.detailViews.conversationDetail}'>
+		<div class='{res.detailViews.conversationLeftBlock}'>
+			<span class='{res.detailViews.conversationDetailHeader}'>
+				<ui:text from='{sender}' />
+			</span>
+			<span class='{res.detailViews.conversationDetailTime}'>
+				<ui:date from='{sent}' />
+				2012-12-12 16:40
+			</span>
+		</div>
+		<div ui:field='bodySpan' class='{res.detailViews.conversationDetailContent}'>
+			<ui:text from='{body}' />
+		</div>
+	</div>
 </ui:UiBinder>
