@@ -39,7 +39,7 @@ public class AdditionalInfoFiller implements JobTask {
 
 
 
-    @Scheduled(cron = AFTER_ARRIVING_IN_THE_PUB)
+    @Scheduled(cron = EVERY_MIDNIGHT)
     @Transactional
     public void execute() {
         LOGGER.info("Localities additional info filling status=start");
