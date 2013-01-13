@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     private UserMessageService userMessageService;
     @Autowired
     private SupplierService supplierService;
+    @Autowired
+    private OfferService offerService;
 
     private User user;
 
@@ -413,6 +416,23 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertEquals("Expected thread root message for demnand [id=" + demand2.getId() + "]"
                 + message2.getId().longValue(), 502L, message2.getId().longValue());
     }
+
+    @Test
+    public void testGetPendingOffersCountForSupplier() {
+        long supplierId = 1111111111L;
+        long count = offerService.getPendingOffersCountForSupplier(supplierId);
+
+        Assert.assertEquals("Expected count of pending offers [count=" + count
+                + "]for supplier was different", 1L, count);
+
+        long supplierId2 = 1111111114L;
+        long count2 = offerService.getPendingOffersCountForSupplier(supplierId2);
+
+        Assert.assertEquals("Expected count of pending offers [count=" + count2
+                + "]for supplier was different", 1L, count2);
+
+    }
+
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**

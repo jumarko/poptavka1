@@ -19,4 +19,18 @@ public interface OfferService extends GenericService<Offer, OfferDao> {
     List<OfferState> getOfferStates();
 
     OfferState getOfferState(String code);
+
+    /**
+     * Gets count of supplier's offers in state PENDING.
+     * @param supplierId
+     * @return count of PENDING offers
+     */
+    long getPendingOffersCountForSupplier(long supplierId);
+
+    /**
+     * Gets count of supplier's offers in state ACCEPTED.
+     * @param supplierId
+     * @return count of ACCEPTED offers
+     */
+    long getAcceptedOffersCountForSupplier(long supplierId);
 }

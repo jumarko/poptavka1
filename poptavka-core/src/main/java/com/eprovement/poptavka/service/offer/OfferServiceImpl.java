@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.service.offer;
 
 import com.eprovement.poptavka.dao.offer.OfferDao;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.service.GenericServiceImpl;
@@ -31,7 +32,7 @@ public class OfferServiceImpl extends GenericServiceImpl<Offer, OfferDao> implem
         this.registerService = registerService;
     }
 
-    //----------------------------------  Methods for DemandType-s -----------------------------------------------------
+    //----------------------------------  Methods for OfferState-s -----------------------------------------------------
     @Override
     @Transactional(readOnly = true)
     public List<OfferState> getOfferStates() {
@@ -43,5 +44,23 @@ public class OfferServiceImpl extends GenericServiceImpl<Offer, OfferDao> implem
     public OfferState getOfferState(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for offer state is empty!");
         return this.registerService.getValue(code, OfferState.class);
+    }
+
+    //----------------------------------  Methods for count-s -----------------------------------------------------
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public long getPendingOffersCountForSupplier(long supplierId) {
+        return this.getDao().getOffersCountForSupplier(
+                supplierId, this.getOfferState(OfferStateType.PENDING.getValue()));
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public long getAcceptedOffersCountForSupplier(long supplierId) {
+        return this.getDao().getOffersCountForSupplier(
+                supplierId, this.getOfferState(OfferStateType.ACCEPTED.getValue()));
     }
 }

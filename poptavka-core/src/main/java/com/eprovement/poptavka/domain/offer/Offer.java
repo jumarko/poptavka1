@@ -17,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
@@ -26,6 +28,13 @@ import java.util.Date;
  * Response to a demand by a supplier
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "getOffersCountForSupplier",
+    query = "select count(*) from Offer offer\n"
+        + "where offer.state = :state"
+        + " and offer.supplier.id = :supplier\n")
+})
+
 public class Offer extends DomainObject {
     private BigDecimal price;
     @Temporal(value = TemporalType.TIMESTAMP)
