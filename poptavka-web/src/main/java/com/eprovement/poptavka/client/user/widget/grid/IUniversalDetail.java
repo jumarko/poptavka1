@@ -43,6 +43,8 @@ public interface IUniversalDetail {
     //--------------------------------------------------------------------------
     long getUserMessageId();
 
+    void setUserMessageId(long userMessageId);
+
     boolean isStarred();
 
     boolean isRead();
@@ -52,6 +54,8 @@ public interface IUniversalDetail {
     void setIsRead(boolean isStarred);
 
     int getMessageCount();
+
+    void setMessageCount(int messageCount);
 
     int getUnreadMessageCount();
 
@@ -74,11 +78,11 @@ public interface IUniversalDetail {
     // Offer part
     //--------------------------------------------------------------------------
     long getOfferId();
-
     // Display
     //--------------------------------------------------------------------------
     int CLIENT_NAME = 0;
     int SUPPLIER_NAME = 1;
+
     /**
      * Return CLIENT or SUPPLIER name with count of sub.
      *

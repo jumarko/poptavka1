@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.google.common.base.Preconditions;
@@ -31,6 +32,8 @@ public final class MessageConverter extends AbstractConverter<Message, MessageDe
         }
         if (source.getSender() != null) {
             detail.setSenderId(source.getSender().getId());
+            detail.setSenderName(((BusinessUser) source.getSender())
+                    .getBusinessUserData().getDisplayName());
         }
 
         detail.setSubject(source.getSubject());

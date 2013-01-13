@@ -206,7 +206,7 @@ public class ClientOffersPresenter
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getDemandGrid(), view.getWrapperPanel());
+            this.detailSection.initDetailWrapper(view.getOfferGrid(), view.getWrapperPanel());
         }
     }
 

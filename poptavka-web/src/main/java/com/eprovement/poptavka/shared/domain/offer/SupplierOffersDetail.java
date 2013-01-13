@@ -27,6 +27,7 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     private long threadRootId;
     private long supplierId;
     private long supplierUserId;
+    private long userMessageId;
     private boolean isStarred;
     private String supplierName;
     private String price;
@@ -208,6 +209,7 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     /**
      * @param messageCount the messageCount to set
      */
+    @Override
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
     }
@@ -279,7 +281,12 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
 
     @Override
     public long getUserMessageId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return userMessageId;
+    }
+
+    @Override
+    public void setUserMessageId(long userMessageId) {
+        this.userMessageId = userMessageId;
     }
 
     @Override
@@ -342,7 +349,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
                 + unreadMessageCount + '}';
     }
-
 
     @Override
     public boolean isRead() {

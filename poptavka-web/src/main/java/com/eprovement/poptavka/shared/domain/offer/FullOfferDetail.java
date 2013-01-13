@@ -153,6 +153,11 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     }
 
     @Override
+    public void setUserMessageId(long userMessageId) {
+        this.messageDetail.setUserMessageId(userMessageId);
+    }
+
+    @Override
     public int getMessageCount() {
         return messageCount;
     }
@@ -192,6 +197,7 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
         return demandDetail.getPrice().toString();
     }
 
+    @Override
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
     }
@@ -224,7 +230,6 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
         return str.toString();
     }
 
-
     @Override
     public boolean isRead() {
         return isRead;
@@ -234,5 +239,4 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
     }
-
 }

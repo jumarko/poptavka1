@@ -27,6 +27,7 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     private long threadRootId;
     private long supplierId;
     private long supplierUserId;
+    private long userMessageId;
     private boolean isStarred;
     private boolean isRead;
     private String supplierName;
@@ -205,6 +206,7 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     /**
      * @param messageCount the messageCount to set
      */
+    @Override
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
     }
@@ -276,7 +278,12 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
 
     @Override
     public long getUserMessageId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return userMessageId;
+    }
+
+    @Override
+    public void setUserMessageId(long userMessageId) {
+        this.userMessageId = userMessageId;
     }
 
     @Override
@@ -307,7 +314,6 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
         str.append(getMessageCount());
         return str.toString();
     }
-
 
     @Override
     public String toString() {

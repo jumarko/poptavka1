@@ -34,11 +34,11 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     private int messageCount;
     // TODO ivlcek - remove unreadSubmessages
     private int unreadSubmessages = -1;
-    public static final ProvidesKey<ClientDemandConversationDetail> KEY_PROVIDER =
-            new ProvidesKey<ClientDemandConversationDetail>() {
+    public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
+            new ProvidesKey<IUniversalDetail>() {
 
                 @Override
-                public Object getKey(ClientDemandConversationDetail item) {
+                public Object getKey(IUniversalDetail item) {
                     return item == null ? null : item.getSupplierId();
                 }
             };

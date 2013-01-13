@@ -8,20 +8,20 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
@@ -36,7 +36,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -47,17 +46,11 @@ public class ClientDemandsPresenter
     public interface ClientDemandsLayoutInterface extends LazyView, IsWidget {
 
         // Columns
-        Header getCheckHeader();
+        Column<IUniversalDetail, String> getSupplierNameColumn();
 
-        Column<ClientDemandConversationDetail, Boolean> getCheckColumn();
+        Column<IUniversalDetail, String> getBodyPreviewColumn();
 
-        Column<ClientDemandConversationDetail, Boolean> getStarColumn();
-
-        Column<ClientDemandConversationDetail, String> getSupplierNameColumn();
-
-        Column<ClientDemandConversationDetail, String> getBodyPreviewColumn();
-
-        Column<ClientDemandConversationDetail, String> getDateColumn();
+        Column<IUniversalDetail, String> getDateColumn();
 
         //Pagers
         SimplePager getDemandPager();
@@ -69,7 +62,7 @@ public class ClientDemandsPresenter
 
         UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
 
-        UniversalAsyncGrid<ClientDemandConversationDetail> getConversationGrid();
+        UniversalTableGrid getConversationGrid();
 
         List<Long> getSelectedIdList();
 
@@ -114,8 +107,6 @@ public class ClientDemandsPresenter
         // Selection Handlers
         addDemandTableSelectionHandler();
         // Field Updaters
-        addCheckHeaderUpdater();
-        addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
@@ -243,7 +234,7 @@ public class ClientDemandsPresenter
         }
     }
 
-    public void onDisplayClientDemandConversations(List<ClientDemandConversationDetail> data) {
+    public void onDisplayClientDemandConversations(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsDemandConversation");
 
         view.getConversationGrid().getDataProvider().updateRowData(
@@ -286,31 +277,6 @@ public class ClientDemandsPresenter
     /* Bind View helper methods                                               */
     /**************************************************************************/
     // Field Updaters
-    public void addCheckHeaderUpdater() {
-        view.getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
-            @Override
-            public void update(Boolean value) {
-                List<ClientDemandConversationDetail> rows = view.getConversationGrid().getVisibleItems();
-                for (ClientDemandConversationDetail row : rows) {
-                    ((MultiSelectionModel) view.getConversationGrid().getSelectionModel()).setSelected(row, value);
-                }
-            }
-        });
-    }
-
-    public void addStarColumnFieldUpdater() {
-        view.getStarColumn().setFieldUpdater(
-                new FieldUpdater<ClientDemandConversationDetail, Boolean>() {
-                    @Override
-                    public void update(int index, ClientDemandConversationDetail object, Boolean value) {
-                        object.setIsStarred(!value);
-                        view.getConversationGrid().redraw();
-                        Long[] item = new Long[]{object.getUserMessageId()};
-                        eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
-                    }
-                });
-    }
-
     public void addTextColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
             @Override
@@ -412,9 +378,9 @@ public class ClientDemandsPresenter
     }
 
     private void addConversationGridRowStyles() {
-        view.getConversationGrid().setRowStyles(new RowStyles<ClientDemandConversationDetail>() {
+        view.getConversationGrid().setRowStyles(new RowStyles<IUniversalDetail>() {
             @Override
-            public String getStyleNames(ClientDemandConversationDetail row, int rowIndex) {
+            public String getStyleNames(IUniversalDetail row, int rowIndex) {
                 // TODO martin - change once isRead attribute will be populated in RPC layer
                 if (row.getUnreadMessageCount() > 0) {
                     return Storage.RSCS.grid().unread();

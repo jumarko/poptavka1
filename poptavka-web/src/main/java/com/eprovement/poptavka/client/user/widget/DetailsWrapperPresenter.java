@@ -6,7 +6,8 @@ import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel2;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -27,6 +28,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Presenter(view = DetailsWrapperView.class, multiple = true)
 public class DetailsWrapperPresenter
@@ -41,7 +43,7 @@ public class DetailsWrapperPresenter
     public static final int SUPPLIER = 2;
     public static final int CHAT = 3;
     /** Class Attributes. **/
-    private UniversalAsyncGrid table = null;
+    private UniversalTableGrid table = null;
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
@@ -118,7 +120,7 @@ public class DetailsWrapperPresenter
      * @param type
      *            type of view, where is this widget loaded
      */
-    public void initDetailWrapper(UniversalAsyncGrid grid, SimplePanel detailSection) {
+    public void initDetailWrapper(UniversalTableGrid grid, SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
         if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS) {
             setTabVisibility(EDITABLE_DEMAND, true);
@@ -142,6 +144,12 @@ public class DetailsWrapperPresenter
     public void onAddConversationMessage(MessageDetail sentMessage) {
         view.getConversationPanel().addMessage(sentMessage);
         view.getReplyHolder().setNormalStyle();
+        //Always will be only one item.
+        for (IUniversalDetail detail : (Set<IUniversalDetail>) table.getSelectionModel().getSelectedSet()) {
+            detail.setUserMessageId(sentMessage.getUserMessageId());
+            detail.setMessageCount(detail.getMessageCount() + 1);
+        }
+        table.redraw();
     }
 
     /**************************************************************************/
@@ -203,7 +211,6 @@ public class DetailsWrapperPresenter
             view.loadingDivHide(view.getDemandDetail());
         }
         if (view.getContainer().getWidget(EDITABLE_DEMAND).getParent().isVisible()) {
-            view.getEditableDemandDetail().setDemanDetail(demandDetail);
             view.loadingDivHide(view.getEditableDemandDetail());
         }
     }
@@ -244,7 +251,7 @@ public class DetailsWrapperPresenter
                 table.refresh();
             }
         };
-        //migth not be needed because all messages are set to read when displaying conversation
+        //TODO RELEASE: refactor migth not be needed because all messages are set to read when displaying conversation
 //        for (int i = 0; i < view.getConversationPanel().getMessagePanel().getWidgetCount(); i++) {
 //            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
 //                    .getUpdateRead().addChangeHandler(click);

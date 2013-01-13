@@ -18,7 +18,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -70,8 +69,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
-        addReplyColumnFieldUpdater();
-        addSendOfferColumnFieldUpdater();
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
@@ -217,26 +214,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                         view.getDataGrid().redraw();
                         Long[] item = new Long[]{object.getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
-                    }
-                });
-    }
-
-    public void addReplyColumnFieldUpdater() {
-        view.getDataGrid().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        detailSection.getView().getReplyHolder().addQuestionReply();
-                    }
-                });
-    }
-
-    public void addSendOfferColumnFieldUpdater() {
-        view.getDataGrid().getSendOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        detailSection.getView().getReplyHolder().addOfferReply();
                     }
                 });
     }

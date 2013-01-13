@@ -1,19 +1,20 @@
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -23,7 +24,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -56,14 +56,14 @@ public class ClientDemandsView extends Composite
     /* DemandConversationTable Attrinbutes                                         */
     /**************************************************************************/
     //table definition
-    @UiField(provided = true) UniversalAsyncGrid<ClientDemandConversationDetail> conversationGrid;
+    @UiField(provided = true) UniversalTableGrid conversationGrid;
     //table columns
-    private Header checkHeader;
-    private Column<ClientDemandConversationDetail, Boolean> checkColumn;
-    private Column<ClientDemandConversationDetail, Boolean> starColumn;
-    private Column<ClientDemandConversationDetail, String> supplierNameColumn;
-    private Column<ClientDemandConversationDetail, String> bodyPreviewColumn;
-    private Column<ClientDemandConversationDetail, String> dateColumn;
+//    private Header checkHeader;
+//    private Column<ClientDemandConversationDetail, Boolean> checkColumn;
+//    private Column<ClientDemandConversationDetail, Boolean> starColumn;
+    private Column<IUniversalDetail, String> supplierNameColumn;
+    private Column<IUniversalDetail, String> bodyPreviewColumn;
+    private Column<IUniversalDetail, String> dateColumn;
     //table column width constatnts
     private static final int SUPPLIER_NAME_COL_WIDTH = 20;
     private static final int BODY_PREVIEW_COL_WIDTH = 30;
@@ -137,24 +137,17 @@ public class ClientDemandsView extends Composite
      * Initialize this example.
      */
     private void initConversationTableAndPager() {
-        List<String> gridColumns = Arrays.asList(new String[]{"supplierName", "body", "date"});
-
         // Create a Pager.
         conversationPager = new UniversalPagerWidget();
         // Create a Table.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        conversationGrid = new UniversalAsyncGrid<ClientDemandConversationDetail>(
-                gridColumns, demandPager.getPageSize(), resource);
+        conversationGrid = new UniversalTableGrid(
+                ClientDemandConversationDetail.KEY_PROVIDER,
+                Constants.CLIENT_DEMAND_DISCUSSIONS,
+                demandPager.getPageSize(),
+                resource);
         conversationGrid.setWidth("100%");
         conversationGrid.setHeight("100%");
-
-        // Selection Model - must define different from default which is used in UniversalAsyncGrid
-        // Add a selection model so we can select cells.
-        final SelectionModel<ClientDemandConversationDetail> selectionModel =
-                new MultiSelectionModel<ClientDemandConversationDetail>(ClientDemandConversationDetail.KEY_PROVIDER);
-        conversationGrid.setSelectionModel(
-                selectionModel, DefaultSelectionEventManager.<ClientDemandConversationDetail>createCheckboxManager());
-
         // Bind pager to Table
         conversationPager.setDisplay(conversationGrid);
 
@@ -214,16 +207,16 @@ public class ClientDemandsView extends Composite
      */
     public void initConversationTableColumns() {
         // CheckBox column
-        checkHeader = new Header<Boolean>(new CheckboxCell()) {
-            @Override
-            public Boolean getValue() {
-                return false;
-            }
-        };
-        checkColumn = conversationGrid.addCheckboxColumn(checkHeader);
-        // Star Column
-        starColumn = conversationGrid.addStarColumn();
-        // Supplier name column
+//        checkHeader = new Header<Boolean>(new CheckboxCell()) {
+//            @Override
+//            public Boolean getValue() {
+//                return false;
+//            }
+//        };
+//        checkColumn = conversationGrid.addCheckboxColumn(checkHeader);
+//        // Star Column
+//        starColumn = conversationGrid.addStarColumn();
+//        // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
@@ -263,32 +256,17 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     // Columns
     @Override
-    public Header getCheckHeader() {
-        return checkHeader;
-    }
-
-    @Override
-    public Column<ClientDemandConversationDetail, Boolean> getCheckColumn() {
-        return checkColumn;
-    }
-
-    @Override
-    public Column<ClientDemandConversationDetail, Boolean> getStarColumn() {
-        return starColumn;
-    }
-
-    @Override
-    public Column<ClientDemandConversationDetail, String> getSupplierNameColumn() {
+    public Column<IUniversalDetail, String> getSupplierNameColumn() {
         return supplierNameColumn;
     }
 
     @Override
-    public Column<ClientDemandConversationDetail, String> getBodyPreviewColumn() {
+    public Column<IUniversalDetail, String> getBodyPreviewColumn() {
         return bodyPreviewColumn;
     }
 
     @Override
-    public Column<ClientDemandConversationDetail, String> getDateColumn() {
+    public Column<IUniversalDetail, String> getDateColumn() {
         return dateColumn;
     }
 
@@ -320,7 +298,7 @@ public class ClientDemandsView extends Composite
     }
 
     @Override
-    public UniversalAsyncGrid<ClientDemandConversationDetail> getConversationGrid() {
+    public UniversalTableGrid getConversationGrid() {
         return conversationGrid;
     }
 
