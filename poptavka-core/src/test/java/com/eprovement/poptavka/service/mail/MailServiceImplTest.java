@@ -27,6 +27,7 @@ import org.springframework.mail.SimpleMailMessage;
  * If you need to reuse "log checking" logic, please, consider creation of general junit rule
  * as described in http://tux2323.blogspot.sk/2011/06/test-logging-via-junit-rule.html.
  */
+// Only for manual testing
 @Ignore
 public class MailServiceImplTest extends BasicIntegrationTest {
 
@@ -65,15 +66,15 @@ public class MailServiceImplTest extends BasicIntegrationTest {
     }
 
     private SimpleMailMessage createTestMailMessage(String userMail) {
-        final SimpleMailMessage activationMessage = new SimpleMailMessage();
+        final SimpleMailMessage testMessage = new SimpleMailMessage();
 
-        activationMessage.setFrom("poptavka1@gmail.com");
-        activationMessage.setTo(userMail);
+        testMessage.setFrom("poptavka1@gmail.com");
+        testMessage.setTo(userMail);
 
-        activationMessage.setSubject("Poptavka MailService Test");
+        testMessage.setSubject("Poptavka MailService Test");
 
-        activationMessage.setText("Test of mail service via amazon SES");
-        return activationMessage;
+        testMessage.setText("Test of mail service via amazon SES");
+        return testMessage;
 
     }
 
