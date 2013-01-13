@@ -39,16 +39,16 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
     public Boolean sendMail(EmailDialogDetail emailDialogDetail) throws RPCException {
         LOGGER.info("Sending mail message to: " + emailDialogDetail.getRecipient());
 
-        final SimpleMailMessage exceptionNotificationMessage = new SimpleMailMessage();
-        exceptionNotificationMessage.setFrom(NOTIFICATION_MAIL_FROM);
-        exceptionNotificationMessage.setTo(emailDialogDetail.getRecipient());
+        final SimpleMailMessage notificationMessage = new SimpleMailMessage();
+        notificationMessage.setFrom(NOTIFICATION_MAIL_FROM);
+        notificationMessage.setTo(emailDialogDetail.getRecipient());
 
-        exceptionNotificationMessage.setSubject(emailDialogDetail.getSubject());
-        exceptionNotificationMessage.setText(emailDialogDetail.getMessage());
+        notificationMessage.setSubject(emailDialogDetail.getSubject());
+        notificationMessage.setText(emailDialogDetail.getMessage());
 
         try {
             // send asynchronously to avoid blocking of normal execution
-            this.mailService.sendAsync(exceptionNotificationMessage);
+            this.mailService.sendAsync(notificationMessage);
         } catch (MailException me) {
             LOGGER.warn(
                     "An error occured while sending exception notification mail: ",
