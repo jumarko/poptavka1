@@ -14,7 +14,6 @@ import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.enums.MessageContext;
-import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
@@ -261,16 +260,12 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
         // Napriklad message.body moze byt prazdne = demand.description
         // message subject moze byt prazdne = demand.title
-        Message message = new Message();
-        // TODO Vojto there should be some intro message for the user
-        message.setMessageState(MessageState.COMPOSED);
+        Message message = messageService.newThreadRoot(demand.getClient()
+                .getBusinessUser());
         message.setBody(demand.getDescription() + " Description might be empty");
-        message.setCreated(new Date());
         message.setDemand(demand);
         message.setLastModified(new Date());
-        message.setSender(demand.getClient().getBusinessUser());
         message.setSubject(demand.getTitle());
-        message.setThreadRoot(message);
 
         // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
         // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
@@ -286,8 +281,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         }
 
         message.setRoles(messageUserRoles);
-
-        message.setMessageState(MessageState.COMPOSED);
 
         LOGGER.debug("Action=demand_send_to_suppliers status=finish demand={} message={} roles={}",
                 new Object[] {demand, message, message.getRoles()});
