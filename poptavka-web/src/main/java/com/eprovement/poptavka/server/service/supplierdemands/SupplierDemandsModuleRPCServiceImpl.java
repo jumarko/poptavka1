@@ -8,18 +8,21 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.RatingService;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -35,6 +38,7 @@ import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +64,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     private UserMessageService userMessageService;
     private MessageService messageService;
     private RatingService ratingService;
+    private OfferService offerService;
     //Converters
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
@@ -89,6 +94,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Autowired
     public void setMessageService(MessageService messageService) {
         this.messageService = messageService;
+    }
+
+    @Autowired
+    public void setOfferService(OfferService offerService) {
+        this.offerService = offerService;
     }
 
     //Converters
@@ -168,7 +178,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         final Search potentialDemandsSearch = searchConverter.convertToSource(searchDefinition);
         final List<UserMessage> userMessages = userMessageService.getPotentialDemands(
                 businessUser, potentialDemandsSearch);
-        // TODO ivlcek - refactor with detail converter
+        // TODO RELEASE ivlcek - refactor with detail converter
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
         for (UserMessage um : userMessages) {
@@ -197,9 +207,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             supplierPotentialDemands.add(detail);
         }
 
-        // TODO Martin - return supplierPotentialDemands instead of FakeData
         return supplierPotentialDemands;
-//        return getFakeData();
     }
 
     //************************ SUPPLIER - My Offers ***************************/
@@ -239,11 +247,10 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<SupplierOffersDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
         Supplier supplier = generalService.find(Supplier.class, supplierID);
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
-        // TODO ivlcek - load offerState by CODE value
+        // TODO RELEASE ivlcek - load offerState by CODE value
         supplierOffersSearch.addFilterEqual("state.id", 2);
         List<Offer> offers = generalService.search(supplierOffersSearch);
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
@@ -251,7 +258,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         for (Offer offer : offers) {
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO ivlcek - refactor and create converter, set Rating
+            // TODO RELASE ivlcek - refactor and create converter, set Rating
             sod.setSupplierId(offer.getSupplier().getId());
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -271,10 +278,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             UserMessage latestUserMessage = conversationMessages.get(0);
             sod.setMessageCount(conversationMessages.size());
             sod.setIsRead(latestUserMessage.isRead());
+            sod.setUserMessageId(latestUserMessage.getId());
 
 //            sod.setMessageCount(messageService.getAllDescendantsCount(
 //                    latestUserMessage.getMessage(), offer.getSupplier().getBusinessUser()));
-            // TODO ivlcek - remove unread message count. We will get this attribute value from latestUserMessage object
+            // TODO RELEASE ivlcek - remove unread message count. We will get this attribute value
+            // from latestUserMessage object
             sod.setUnreadMessageCount(-1);
             sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
@@ -318,19 +327,19 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<SupplierOffersDetail> getSupplierAssignedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
         Supplier supplier = generalService.find(Supplier.class, supplierID);
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
-        // TODO ivlcek - load offerState by CODE value
+        // TODO RELEASE ivlcek - load offerState by CODE value or ake a select
         supplierOffersSearch.addFilterEqual("state.id", 1);
+        supplierOffersSearch.addFilterEqual("state.id", 4);
         List<Offer> offers = generalService.search(supplierOffersSearch);
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
         for (Offer offer : offers) {
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO ivlcek - refactor and create converter, set Rating
+            // TODO RELEASE ivlcek - refactor and create converter, set Rating
             sod.setSupplierId(offer.getSupplier().getId());
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -350,10 +359,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             UserMessage latestUserMessage = conversationMessages.get(0);
             sod.setMessageCount(conversationMessages.size());
             sod.setIsRead(latestUserMessage.isRead());
+            sod.setUserMessageId(latestUserMessage.getId());
 
 //            sod.setMessageCount(messageService.getAllDescendantsCount(
 //                    latestUserMessage.getMessage(), offer.getSupplier().getBusinessUser()));
-            // TODO ivlcek - remove unread message count. We will get this attribute value from latestUserMessage object
+            // TODO RELEASE ivlcek - remove unread message count. We will get this attribute value from
+            // latestUserMessage object
             sod.setUnreadMessageCount(-1);
             sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
@@ -434,10 +445,28 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public void finishOffer(long id) throws RPCException, ApplicationSecurityException {
-        //TODO Juraj - finish offer
-        //set OfferState to finished
-        //send message to client that offer was finished
+    public MessageDetail finishOffer(long offerId, long userMessageId, long userId) throws
+            RPCException, ApplicationSecurityException {
+        Offer offer = (Offer) generalService.find(Offer.class, offerId);
+        offer.setState(offerService.getOfferState(OfferStateType.DELIVERED.getValue()));
+        generalService.merge(offer);
+
+        // TODO RELEASE ivlcek - update the onAddResponseMessage in DetailsWrapperPresenter
+        // so that we can retrieve latest userMessageId as parameter.
+
+        try {
+            UserMessage latestUserMessage = userMessageService.getById(userMessageId);
+            Message message = messageService.newReply(latestUserMessage.getMessage(),
+                    this.generalService.find(User.class, userId));
+            // TODO RELEASE ivlcek - load text from resources
+            message.setBody("Demand has been delivered by supplier. Supplier asked for official acceptance.");
+            messageService.send(message);
+            return messageConverter.convertToTarget(message);
+        } catch (MessageException ex) {
+            java.util.logging.Logger.getLogger(SupplierDemandsModuleRPCServiceImpl.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     /**
@@ -489,14 +518,14 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         Supplier supplier = generalService.find(Supplier.class, supplierID);
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
-        // TODO ivlcek - load offerState by CODE value
+        // TODO RELEASE ivlcek - load offerState by CODE value
         supplierOffersSearch.addFilterEqual("state.id", 1);
         supplierOffersSearch.addFilterEqual("demand.id", assignedDemandID);
         Offer offer = (Offer) generalService.searchUnique(supplierOffersSearch);
 
         SupplierOffersDetail sod = new SupplierOffersDetail();
 
-        // TODO ivlcek - refactor and create converter, set Rating
+        // TODO RELEASE ivlcek - refactor and create converter, set Rating
         sod.setSupplierId(offer.getSupplier().getId());
         sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         sod.setClientId(offer.getDemand().getClient().getId());
@@ -516,10 +545,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         UserMessage latestUserMessage = conversationMessages.get(0);
         sod.setMessageCount(conversationMessages.size());
         sod.setIsRead(latestUserMessage.isRead());
+        sod.setUserMessageId(latestUserMessage.getId());
 
 //            sod.setMessageCount(messageService.getAllDescendantsCount(
 //                    latestUserMessage.getMessage(), offer.getSupplier().getBusinessUser()));
-        // TODO ivlcek - remove unread message count. We will get this attribute value from latestUserMessage object
+        // TODO RELEASE ivlcek - remove unread message count. We will get this attribute value from
+        // latestUserMessage object
         sod.setUnreadMessageCount(-1);
         sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
         sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());

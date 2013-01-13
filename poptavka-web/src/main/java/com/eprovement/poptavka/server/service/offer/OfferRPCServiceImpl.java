@@ -39,7 +39,7 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.Date;
 
 /**
- *
+ * TODO RELEASE - remove
  * @author ivan.vlcek
  */
 @Configurable
@@ -123,15 +123,12 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         List<Demand> demands = client.getDemands();
         for (Demand demand : demands) {
             OfferDemandDetail offerDemandDetail = new OfferDemandDetail();
-            // TODO - set to bold if new
-            // TODO load userMessage
             offerDemandDetail.setDemandId(demand.getId());
             offerDemandDetail.setEndDate(demand.getEndDate());
             offerDemandDetail.setValidToDate(demand.getValidTo());
             offerDemandDetail.setMaxOffers(demand.getMaxSuppliers());
             offerDemandDetail.setPrice(demand.getPrice());
             offerDemandDetail.setTitle(demand.getTitle());
-            // TODO ivlcek - ked si pytam len size tak nacitavaju HIbernaty vsekty Offers? dufam, ze nie
             // inak to musime prekopat do servisy, ktora vrati len pocet
             offerDemandDetail.setNumberOfOffers(demand.getOffers().size());
             offerDemandDetail.setMessageId(this.messageService.getThreadRootMessage(demand).getId());

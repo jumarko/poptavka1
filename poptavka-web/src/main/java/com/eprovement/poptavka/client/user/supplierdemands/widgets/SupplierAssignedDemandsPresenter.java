@@ -241,7 +241,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
                 new FieldUpdater<IUniversalDetail, ImageResource>() {
                     @Override
                     public void update(int index, IUniversalDetail object, ImageResource value) {
-                        eventBus.requestFinishOffer(object.getUserMessageId()); //good attribute ???
+                        eventBus.requestFinishOffer(object.getOfferId(), object.getUserMessageId());
                     }
                 });
     }

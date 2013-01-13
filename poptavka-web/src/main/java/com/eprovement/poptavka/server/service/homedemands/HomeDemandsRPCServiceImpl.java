@@ -622,10 +622,10 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     // ***********************************************************************
     //TODO Martin - musim stale zistovat createdDate z auditServicy, alebo sa to pridani
     //atributu createDate do Domain objektu vyplna samo?
-    //TODO Martin - da sa tu pouzit converter?
     private List<FullDemandDetail> createDemandDetailListCat(Collection<DemandCategory> demands) {
         List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (DemandCategory demand : demands) {
+            //TODO RELEASE remove - createdDate is present in Demand domain object.
             List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
             Date createdDate = auditService.getRevisionDate(revisions.get(0));
             FullDemandDetail demandDetail = demandConverter.convertToTarget(demand.getDemand());

@@ -93,28 +93,4 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         return new ArrayList<CategoryDetail>();
     }
 
-    /** Inner method for transforming domain Entity to front-end representation. **/
-//    private List<CategoryDetail> createCategoryDetailList(List<Category> categories) {
-//        final List<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
-//
-//        for (Category cat : categories) {
-//            categoryDetails.add(createCategoryDetail(cat));
-//        }
-//
-//        return categoryDetails;
-//    }
-
-//    private CategoryDetail createCategoryDetail(Category category) {
-//        long suppliersCount = supplierService.getSuppliersCountQuick(category);
-//        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, suppliersCount);
-        // TODO uncomment, when implemented
-//        CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(),
-//              cat.getAdditionalInfo().getDemandsCount(), cat.getAdditionalInfo().getSuppliersCount());
-//        if (category.getChildren().size() != 0) {
-//            detail.setParent(true);
-//        } else {
-//            detail.setParent(false);
-//        }
-//        return detail;
-//    }
 }

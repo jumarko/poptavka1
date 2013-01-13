@@ -200,7 +200,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         demandStatuses.add(DemandStatus.INVALID);
         demandStatuses.add(DemandStatus.INACTIVE);
         clientDemandsSearch.addFilterIn("status", demandStatuses);
-        clientDemandsSearch.addFilterEqual("status", DemandStatus.ACTIVE);
         return Searcher.searchCollection(client.getDemands(), clientDemandsSearch).size();
     }
 
@@ -233,6 +232,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
+        // TODO RELEASE ivlcek - replace by new SQL that will load demandIds,
+        // latest userMessageId and number of total submessages
         Iterator it = messageService.getListOfClientDemandMessagesUnread(generalService.find(
                 User.class, userId)).entrySet().iterator();
 
@@ -266,7 +267,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientDemandConversationsCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin/Ivlcek - change long return type to int
+        //TODO RELEASE Martin/Ivlcek - change long return type to int
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         return root.getChildren().size();
     }
@@ -292,8 +293,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
-            // TODO ivlcek - make detail object converter
-            // TODO ivlcek - implement searchDefinition
+            // TODO RELEASE ivlcek - make detail object converter and create search definition
             ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
             // set UserMessage attributes
             cdcd.setUserMessageId(userMessage.getId());
@@ -387,7 +387,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        // TODO ivlcek - incorporate searchDefinition for this method
+        // TODO RELEASE ivlcek - incorporate searchDefinition for this method and refactor with new sql
         Demand demand = generalService.find(Demand.class, demandID);
         return demand.getOffers().size();
     }

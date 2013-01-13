@@ -6,6 +6,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
@@ -63,6 +64,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     private void getSupplierPotentialDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
+
+                    @Override
                     public void onSuccess(Long result) {
                         grid.getDataProvider().updateRowCount(result.intValue(), true);
                     }
@@ -159,13 +162,16 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    public void onRequestFinishOffer(long id) {
-        supplierDemandsService.finishOffer(id, new SecuredAsyncCallback<Void>(eventBus) {
-            @Override
-            public void onSuccess(Void result) {
-                //Empty by default
-            }
-        });
+    public void onRequestFinishOffer(long offerId, long userMessageId) {
+        supplierDemandsService.finishOffer(offerId, userMessageId, Storage.getUser().getUserId(),
+                new SecuredAsyncCallback<MessageDetail>(eventBus) {
+
+                    @Override
+                    public void onSuccess(MessageDetail result) {
+                        // TODO RELEASE ivlcek - call feedback popup
+                        eventBus.addConversationMessage(result);
+                    }
+                });
     }
     //request? better would be update
 
@@ -174,7 +180,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     }
 
     public void onRequestCancelOffer(long id) {
-        //TODO RPC
+        //TODO RELEASE - remove
     }
 
     public void onUpdateUnreadMessagesCount() {

@@ -252,8 +252,8 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     @Override
-    // TODO call setMessageReadStatus in body
-    // TODO ivlcek - secure this method and other methods in rootRPCService
+    // TODO RELEASE call setMessageReadStatus in body
+    // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService
     public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {
         Message threadRoot = messageService.getById(threadId);
 
@@ -313,9 +313,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
                     offerMessageToSend.getParentId()),
                     this.generalService.find(User.class, offerMessageToSend.getSenderId()));
             message.setBody(offerMessageToSend.getBody());
-            // TODO - no need to set up a subject since it will not be displayed in coverstaion? Discuss with Martin
-            message.setSubject("Offer for demand");
-            // TODO ivlcek - create converter for offer
+            // TODO RELEASE ivlcek - create converter for offer
             Offer offer = new Offer();
             offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
             offer.setFinishDate(offerMessageToSend.getOfferFinishDate());
@@ -355,7 +353,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public boolean sendActivationCodeAgain(BusinessUserDetail user) throws RPCException {
         // we must search business user by email because detail object doesn't have to proper ID already assigned.
-        // TODO: move this to the common place
+        // TODO LATER : move this to the common place
         userVerificationService.sendNewActivationCode(findUserByEmail(user.getEmail()));
         // since activation mail has been sent in synchronous fashion everything should be ok
         return true;

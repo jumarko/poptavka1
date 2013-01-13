@@ -144,7 +144,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     @Override
     public long getSuppliersCount(SearchDefinition definition) throws RPCException {
-        //TODO Martin implement fulltext search
+        //TODO LATER Martin implement fulltext search
         if (definition == null || definition.getFilter() == null) {
             return supplierService.getCount();
         } else {
@@ -172,7 +172,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     @Override
     public List<FullSupplierDetail> getSuppliers(SearchDefinition definition) throws RPCException {
-        //TODO Martin implement fulltext search
+        //TODO LATER Martin implement fulltext search
         if (definition.getFilter() == null) {
             Search search = new Search(Supplier.class);
             search.setFirstResult(definition.getFirstResult());

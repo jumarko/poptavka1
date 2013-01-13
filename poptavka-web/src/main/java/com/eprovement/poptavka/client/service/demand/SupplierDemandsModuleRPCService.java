@@ -74,7 +74,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    //TODO Martin premenovat FullOfferDetail na ContestDetail alebo nieco podobne
     List<SupplierOffersDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
@@ -120,7 +119,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
 
-    void finishOffer(long id) throws RPCException;
+    MessageDetail finishOffer(long offerId, long userMessageId, long userId) throws RPCException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 

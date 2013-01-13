@@ -149,7 +149,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /* Client Demands MENU                                                    */
     /**************************************************************************/
     public void onSelectSupplierDemandsMenu(int loadedWidget) {
-        //TODO Martin null replace with CSS style - e.g. Storage.RSCS.clientDemandsButtonSelected()
+        //TODO RELEASE Martin/Jaro null replace with CSS style - e.g. Storage.RSCS.clientDemandsButtonSelected()
         switch (loadedWidget) {
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
                 view.getSupplierNewDemandsButton().setStyleName("");

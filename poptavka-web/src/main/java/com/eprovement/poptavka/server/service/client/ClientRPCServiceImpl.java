@@ -160,7 +160,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         client.setVerification(Verification.valueOf(detail.getVerification()));
 
-        //TODO Martin - how to update addresses???
+        //TODO REMOVE Martin - how to update addresses???
         List<Address> newAddresses = new ArrayList<Address>();
         for (AddressDetail addr : detail.getUserDetail().getAddresses()) {
 //            Address address = new Address();

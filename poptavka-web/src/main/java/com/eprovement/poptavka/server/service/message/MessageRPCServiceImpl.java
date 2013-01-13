@@ -58,7 +58,7 @@ import java.util.logging.Logger;
 @Configurable
 public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements MessageRPCService {
 
-    // TODO ivlcek - konstanty nacitat cez lokalizovane rozhranie
+    // TODO RELEASE ivlcek - konstanty nacitat cez lokalizovane rozhranie
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
     public static final String OFFER_TO_POTENTIAL_DEMAND_SUBJECT = "Ponuka na vasu poptavku/nazov dodavatela";
     public static final String INTERNAL_MESSAGE = "Interna sprava";
@@ -144,8 +144,9 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         this.userMessageConverter = userMessageConverter;
     }
 
-// TODO verify
     /**
+     *
+     * TODO RELEASE - ODSTRANIT
      * if used somewhere. In the past (before 14.7.) used for MyDemands list of clients
      * demands. Now it is maybe unused. MAYBE I'm wrong
      * -- USED in MessageHandler#onGetClientDemands
@@ -240,7 +241,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                     this.generalService.find(User.class, messageDetailImpl.getSenderId()));
             m.setBody(messageDetailImpl.getBody());
             m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
-            // TODO set the id correctly, check it
+            // TODO RELEASE - REMOVE
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
@@ -262,7 +263,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                     this.generalService.find(User.class, messageDetailImpl.getSenderId()));
             m.setBody(messageDetailImpl.getBody());
             m.setSubject(INTERNAL_MESSAGE);
-            // TODO set the id correctly, check it
+            // TODO LATER - set the id correctly, check it
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
@@ -345,7 +346,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 withMessageUserRoleType(MessageUserRoleType.TO).
                 withMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND).
                 withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
-        // TODO ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
+        // TODO RELEASE remove ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
         // parameter pre dalsi dotaz do DB na ziskanie userMessages
         final List<UserMessage> userMessages =
                 userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
@@ -361,12 +362,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return potentailDemands;
     }
 
+    // TODO RELEASE - REMOVE
     //Martin - temporary, to try if it works this way too, if yes && fast too -> this one will be better
     // Works fine - if more data in DB available - perform speed test
     @Override
     public ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(
             long userId, SearchModuleDataHolder searchDataHolder) throws RPCException {
-        // TODO userID vs businessUserID ??
         User user = generalService.find(User.class, userId);
 
         Search messageSearch = null;
@@ -422,7 +423,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      *
      * Vrati zoznam ponukovych sprav.
      *
-     * TODO: nacitat zoznam ponukovych sprav tak, aby pri kazdej sprave bolo jasne,
+     * TODO RELEASE - odstranit:
+     * nacitat zoznam ponukovych sprav tak, aby pri kazdej sprave bolo jasne,
      * ci je oznacena ako precitana alebo
      * nie.
      */
@@ -437,7 +439,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 withMessageContext(MessageContext.POTENTIAL_CLIENTS_OFFER).
                 withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
 
-        // TODO ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
+        // TODO RELEASE remove ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
         // parameter pre dalsi dotaz do DB na ziskanie userMessages
         final List<UserMessage> userMessages =
                 userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);

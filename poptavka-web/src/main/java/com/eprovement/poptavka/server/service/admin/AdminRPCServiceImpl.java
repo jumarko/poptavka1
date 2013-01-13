@@ -67,7 +67,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /*
- * TODO Martin Vsetky count zrobit inak, ked sa bude riesit tento modul. Vsetky
+ * TODO LATER Martin Vsetky count zrobit inak, ked sa bude riesit tento modul. Vsetky
  * updaty dorobit.
  */
 /**

@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -52,6 +53,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /**************************************************************************/
     @Event(forwardToParent = true)
     void requestDetailWrapperPresenter();
+
+    @Event(forwardToParent = true)
+    void addConversationMessage(MessageDetail sentMessage);
 
     //Pozor, staci prezenter zavolat raz a uz je aktivny
     @Event(handlers = {SupplierDemandsPresenter.class, SupplierOffersPresenter.class,
@@ -179,7 +183,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestFinishOffer(long id);
+    void requestFinishOffer(long offerId, long userMessageId);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
     void requestEditOffer(long id);

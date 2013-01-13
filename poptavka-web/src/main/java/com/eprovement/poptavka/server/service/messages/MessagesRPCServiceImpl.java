@@ -101,7 +101,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
                     this.generalService.find(User.class, messageDetailImpl.getSenderId()));
             m.setBody(messageDetailImpl.getBody());
             m.setSubject(INTERNAL_MESSAGE);
-            // TODO set the id correctly, check it
+            // TODO LATER - for message module
             MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
@@ -311,7 +311,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         return deletedMessagesDetail;
     }
 
-    // TODO - check this method
+    // TODO RELEASE - check this method
     private void todoDeleteOrRefactor() {
         //        Search recipientMessagesSearch = new Search(MessageUserRole.class);
 //        recipientMessagesSearch.addFilterEqual("user", sender);
