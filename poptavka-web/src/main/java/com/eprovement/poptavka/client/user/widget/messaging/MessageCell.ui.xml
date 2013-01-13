@@ -5,6 +5,8 @@
 	<ui:with field="res"
 		type="com.eprovement.poptavka.client.resources.StyleResource" />
 
+        <ui:with field="cssBall" type="java.lang.String" />
+        <ui:with field="cssColor" type="java.lang.String" />
 	<ui:with field="sender" type="java.lang.String" />
 	<ui:with field="sent" type="java.lang.String" />
 	<ui:with field="body" type="java.lang.String" />
@@ -54,9 +56,9 @@
 		}
 	</ui:style>
 
-	<div class='{res.detailViews.conversationDetail}'>
+	<div class='{res.detailViews.conversationDetail} {cssBall}'>
 		<div class='{res.detailViews.conversationLeftBlock}'>
-			<span class='{res.detailViews.conversationDetailHeader}'>
+			<span ui:field='senderSpan' class='{res.detailViews.conversationDetailHeader} {cssColor}'>
 				<ui:text from='{sender}' />
 			</span>
 			<span class='{res.detailViews.conversationDetailTime}'>

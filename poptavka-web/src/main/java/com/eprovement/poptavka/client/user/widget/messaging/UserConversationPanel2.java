@@ -62,10 +62,12 @@ public class UserConversationPanel2 extends Composite {
      */
     public void setMessageList(List<MessageDetail> messages, boolean collapsed) {
         messageProvider.setList(messages);
+        replyToMessage = messages.get(messages.size() - 1);
     }
 
     public void addMessage(MessageDetail lastMessage) {
         messageProvider.getList().add(lastMessage);
+        replyToMessage = lastMessage;
     }
 
     /**

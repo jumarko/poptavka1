@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public final class UserMessageConverter extends AbstractConverter<UserMessage, MessageDetail> {
 
     private GeneralService generalService;
+
     private UserMessageConverter() {
         // Spring instantiates converters - see converters.xml
     }
@@ -22,7 +23,6 @@ public final class UserMessageConverter extends AbstractConverter<UserMessage, M
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
     }
-
 
     @Override
     public MessageDetail convertToTarget(UserMessage source) {
@@ -45,11 +45,8 @@ public final class UserMessageConverter extends AbstractConverter<UserMessage, M
         }
         if (source.getMessage().getSender() != null) {
             detail.setSenderId(source.getMessage().getSender().getId());
-//            BusinessUser businessUser = (BusinessUser) generalService.find(BusinessUser.class,
-//                    source.getMessage().getSender().getId());
-//            detail.setSenderName(businessUser.getBusinessUserData().getCompanyName());
-            detail.setSenderName((
-                    (BusinessUser) source.getMessage().getSender()).getBusinessUserData().getCompanyName());
+            detail.setSenderName(((BusinessUser) source.getMessage().getSender())
+                    .getBusinessUserData().getDisplayName());
         }
 
         detail.setSubject(source.getMessage().getSubject());

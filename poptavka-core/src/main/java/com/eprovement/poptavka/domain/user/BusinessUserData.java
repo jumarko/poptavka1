@@ -24,32 +24,24 @@ import org.hibernate.validator.constraints.NotBlank;
 public class BusinessUserData extends DomainObject {
 
     private String companyName;
-
     @Column(length = 64)
     @NotBlank
     private String personFirstName;
-
     @Column(length = 64)
     @NotBlank
     private String personLastName;
-
     @NotAudited
     private String description;
-
     @Column(length = 20)
     private String phone;
-
     /** aka "ic" in czech republic. */
     @Column(length = 16)
     private String identificationNumber;
-
     /** aka "dic* in czech republic */
     @Column(length = 16)
     private String taxId;
-
     /** user's web site. */
     private String website;
-
 
     public BusinessUserData() {
     }
@@ -58,8 +50,6 @@ public class BusinessUserData extends DomainObject {
         this.companyName = companyName;
     }
 
-
-
     public String getCompanyName() {
         return companyName;
     }
@@ -67,7 +57,6 @@ public class BusinessUserData extends DomainObject {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-
 
     public String getPersonFirstName() {
         return personFirstName;
@@ -125,21 +114,25 @@ public class BusinessUserData extends DomainObject {
         this.website = website;
     }
 
+    /**
+     * Display company name if available, if not, display person's name as
+     * concatenated string of first and last name.
+     * @return display string
+     */
     public String getDisplayName() {
-        String result = "";
-        if (!getPersonLastName().isEmpty()) {
-            result = getPersonLastName();
-        }
-        if (!getPersonFirstName().isEmpty()) {
-            result += ", " + getPersonLastName();
-        }
-        if (!getCompanyName().isEmpty() && !getPersonLastName().isEmpty()) {
-            result = " (" + result + ")";
-        }
         if (!getCompanyName().isEmpty()) {
-            result = getCompanyName() + result;
+            return getCompanyName();
+        } else {
+            String result = "";
+
+            if (!getPersonFirstName().isEmpty()) {
+                result = getPersonFirstName();
+            }
+            if (!getPersonLastName().isEmpty()) {
+                result += ", " + getPersonLastName();
+            }
+            return result;
         }
-        return result;
     }
 
     @Override
@@ -157,8 +150,8 @@ public class BusinessUserData extends DomainObject {
         return sb.toString();
     }
 
-
     public static class Builder {
+
         private String companyName;
         private String personFirstName;
         private String personLastName;
@@ -220,5 +213,4 @@ public class BusinessUserData extends DomainObject {
         this.taxId = builder.taxId;
         this.website = builder.website;
     }
-
 }
