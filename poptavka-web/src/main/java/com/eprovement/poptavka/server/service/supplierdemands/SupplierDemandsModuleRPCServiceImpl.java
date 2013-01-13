@@ -34,6 +34,7 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDe
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,7 +151,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public long getSupplierPotentialDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement search definition when implemented on backend
+        //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
         return userMessageService.getPotentialDemandsCount(businessUser, potentialDemandsCountSearch);
@@ -224,11 +225,14 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public long getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        Supplier supplier = generalService.find(Supplier.class, supplierID);
-        Search supplierOffersSearch = new Search(Offer.class);
-        supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
-        return generalService.search(supplierOffersSearch).size();
+//        //TODO Martin - implement when implemented on backend
+//        Supplier supplier = (Supplier) generalService.find(Supplier.class, supplierID);
+//        Search supplierOffersSearch = new Search(Offer.class);
+//        supplierOffersSearch.addFilterEqual("supplier", supplier);
+//        int count = generalService.search(supplierOffersSearch).size();
+//        return count;
+        long count = offerService.getPendingOffersCountForSupplier(supplierID);
+        return count;
     }
 
     /**
@@ -247,11 +251,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<SupplierOffersDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        Supplier supplier = generalService.find(Supplier.class, supplierID);
+        Supplier supplier = (Supplier) generalService.find(Supplier.class, supplierID);
         Search supplierOffersSearch = new Search(Offer.class);
-        supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
+        supplierOffersSearch.addFilterEqual("supplier", supplier);
         // TODO RELEASE ivlcek - load offerState by CODE value
-        supplierOffersSearch.addFilterEqual("state.id", 2);
+//        supplierOffersSearch.addFilterEqual("state.id", 2);
         List<Offer> offers = generalService.search(supplierOffersSearch);
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
@@ -331,8 +335,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
         // TODO RELEASE ivlcek - load offerState by CODE value or ake a select
-        supplierOffersSearch.addFilterEqual("state.id", 1);
-        supplierOffersSearch.addFilterEqual("state.id", 4);
+        supplierOffersSearch.addFilterAnd(
+                Filter.equal("state.id", 1),
+                Filter.equal("state.id", 4));
         List<Offer> offers = generalService.search(supplierOffersSearch);
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 

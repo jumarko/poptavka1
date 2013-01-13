@@ -323,6 +323,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
             offer.setCreated(new Date());
             Offer offerFromDB = generalService.save(offer);
             message.setOffer(offerFromDB);
+            // TODO RELEASE ivlcek - shall I save message here or shall I let send() method do it?
             messageService.send(message);
             return messageConverter.convertToTarget(message);
         } catch (MessageException ex) {
