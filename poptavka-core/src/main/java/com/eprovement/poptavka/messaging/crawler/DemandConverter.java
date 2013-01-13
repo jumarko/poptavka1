@@ -29,8 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO: extract logic related to particular domain object into the separated converters - good example
- * is Client or Supplier.
+ * TODO RELEASE: extract logic related to particular domain object into the separated converters - good example
+ * is Client or Supplier. Is even used this converter???
  *
  * Converter for convert crawled demands objects of type {@link Demand}
  * to domain object {@link com.eprovement.poptavka.domain.demand.Demand}.
@@ -71,13 +71,13 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
         domainDemand.setDescription(sourceDemand.getDescription());
         domainDemand.setForeignLink(sourceDemand.getLink());
         setDemandType(sourceDemand, domainDemand);
-        // TODO: Crawler must set origin by itself
+        // TODO LATER: Crawler must set origin by itself
 //        domainDemand.setOrigin(this.demandService.getDemandOrigin("epoptavka.cz"));
         domainDemand.setForeignCategory(sourceDemand.getCategory());
         setLocalities(sourceDemand, domainDemand);
 
-        // TODO: test edge cases - such as January or December
-        // TODO: make contract with crawler about stable date format
+        // TODO REALESE: test edge cases - such as January or December
+        // TODO LATER: make contract with crawler about stable date format
         // set demand validTo
         setValidTo(sourceDemand, domainDemand);
 
@@ -103,26 +103,6 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
 
         return domainDemand;
 
-        //----------------------------------  Attributes that are not filled (converted) -------------------------------
-
-        // TODO:  www is not used at this moment
-        //  sourceDemand.getWww()
-
-
-        // clientDescription is not used at this moment
-        // sourceDemand.getClientDescription()
-
-        // originalHtml is not interesting for us -> WON'T BE SAVED
-//        sourceDemand.getOriginalHtml()
-
-        // demand dateOfCreation is not stored at this time
-//        sourceDemand.getDateOfCreation()
-
-        // linkToCommercialRegister is not stored at this time - It is not set by crawler (at least now), either.
-//        sourceDemand.getLinkToCommercialRegister()
-
-        // demand endDate is not stored -> it should be ended by supplier
-//        sourceDemand.getEndDate()
     }
 
 
@@ -139,7 +119,7 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
 
         if (userByEmail != null) {
             // existing business user
-            // TODO: make different decisions based on user's role (client or supplier) ?
+            // TODO RELEASE : make different decisions based on user's role (client or supplier) ?
 
             for (BusinessUserRole businessUserRole : userByEmail.getBusinessUserRoles()) {
                 if (businessUserRole.getClass() == Client.class) {
@@ -202,7 +182,7 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
     private void setClientAddress(Demand sourceDemand, com.eprovement.poptavka.domain.demand.Demand domainDemand) {
         if (CollectionUtils.isEmpty(domainDemand.getClient().getBusinessUser().getAddresses())) {
             final Address newClientAddress = new Address();
-            // TODO: at this moment, all address info from crawler is stored in Address#street field
+            // TODO LATER: at this moment, all address info from crawler is stored in Address#street field
             // --> extract address information into the more meaningful fields.
             newClientAddress.setStreet(sourceDemand.getStreet() + STREET_CITY_SEPARATOR + sourceDemand.getCity());
             newClientAddress.setAddressType(AddressType.FOREIGN);
@@ -229,7 +209,7 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
         if (StringUtils.isBlank(clientBusinessUserData.getPhone())) {
             clientBusinessUserData.setPhone(sourceDemand.getPhone());
         }
-        // TODO: parse contact person's names and store them into the separated fields
+        // TODO RELEASE: parse contact person's names and store them into the separated fields
         if (StringUtils.isBlank(clientBusinessUserData.getPersonLastName())) {
             // try to parse the contact name
             final String contactPerson = sourceDemand.getContactPerson();

@@ -142,7 +142,7 @@ public interface AuditService {
      * created and later executed. Shouldn't be used after the associated Session or EntityManager
      * is closed.
      */
-    // TODO: make up your mind
+    // TODO RELEASE: make up your mind
 //       AuditQueryCreator createQuery();
 
     /**

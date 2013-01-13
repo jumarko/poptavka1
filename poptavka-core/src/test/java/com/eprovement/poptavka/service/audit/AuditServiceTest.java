@@ -80,7 +80,7 @@ public class AuditServiceTest extends DBUnitIntegrationTest {
 
 
     @Test
-    // TODO: try to make this test run - strange error NonUniqueObjectException is caused by setting
+    // TODO RELEASE Juraj: try to make this test run - strange error NonUniqueObjectException is caused by setting
     // businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
     // in BusinessUserRoleServceImpl#create() - but this works fine in another enviroments, only this test is failing
     @Ignore

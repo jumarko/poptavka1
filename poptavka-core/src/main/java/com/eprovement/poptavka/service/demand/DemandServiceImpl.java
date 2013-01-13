@@ -256,7 +256,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         LOGGER.info("Action=demand_send_to_suppliers status=start demand=" + demand);
         fillDefaultValues(demand);
 
-        // TODO ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
+        // TODO RELEASE ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
         // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
         // Napriklad message.body moze byt prazdne = demand.description
         // message subject moze byt prazdne = demand.title
