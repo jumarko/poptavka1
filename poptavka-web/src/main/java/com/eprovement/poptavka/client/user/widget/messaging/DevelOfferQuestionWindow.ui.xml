@@ -1,74 +1,60 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
-    <ui:with type="com.eprovement.poptavka.client.resources.StyleResource"
-        field="css"></ui:with>
+	<ui:with type="com.eprovement.poptavka.client.resources.StyleResource"
+		field="css"></ui:with>
 
-    <g:HTMLPanel styleName="{css.message.wrapper}">
-        <div
-            class="{css.message.message} {css.message.messageFirst} {css.message.messageLast}">
-            <div ui:field="header" class="{css.message.messageHeader}">
-                <div style="display: inline-block">
-                    <span style="font-weight: bold; position: relative; left: 10%;">
-                        <g:Anchor ui:field="offerReplyBtn">Offer Response</g:Anchor>
-                    </span>
-                </div>
-                <div style="display: inline">
-                    <span style="font-weight: bold; margin-left: 30px;">
-                        <g:Anchor ui:field="questionReplyBtn">Question Response</g:Anchor>
-                    </span>
-                </div>
-            </div>
-            <div style="display: none;">
-                <!-- reply arrow -->
-<!--                 <div style="display: none;"> -->
-                    <div>
-                        <div class="{css.message.replyMessageArrowBorder}"></div>
-                        <div class="{css.message.replyMessageArrow}"></div>
-                    </div>
-                    <!-- Message composition content -->
-                    <div>
-                        <g:TextArea ui:field="replyTextArea" styleName="{css.message.replyTextArea}" />
-                        <div>
-                            <div style="display: inline;">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <ui:msg key="price">Price</ui:msg>
-                                            </td>
-                                            <td>
-                                                <g:TextBox ui:field="priceBox" />
-                                            </td>
-                                            <td>
-                                                <ui:msg key="finishDate">Finish Date</ui:msg>
-                                            </td>
-                                            <td>
-                                                <p1:DateBox ui:field="dateBox" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div style="margin: 5px; margin-bottom: 10px;">
-                                <div style="text-align: right;">
-                                    <g:Anchor ui:field="submitBtn">
-                                        <span style="cursor: pointer; cursor: hand;">
-                                            <ui:msg key="submit">Submit</ui:msg>
-                                        </span>
-                                    </g:Anchor>
-                                    <g:Anchor ui:field="cancelBtn">
-                                        <span style="cursor: pointer; cursor: hand;">
-                                            <ui:msg key="close">Close</ui:msg>
-                                        </span>
-                                    </g:Anchor>
-                                </div>
-                            </div>
-                        </div>
-    <!-- </div> -->
-                </div>
-            </div>
-        </div>
-    </g:HTMLPanel>
+	<g:HTMLPanel styleName="{css.message.wrapper}">
+		<div class="{css.message.message}">
+			<div ui:field="header" class="{css.message.messageHeader}">
+				<g:Anchor styleName='{css.message.replyButton}' ui:field="offerReplyBtn">
+					Offer Response</g:Anchor>
+				<g:Anchor styleName='{css.message.replyButton}' ui:field="questionReplyBtn">
+					Question Response</g:Anchor>
+			</div>
+			<div style="display: none;">
+				<!-- Message composition content -->
+				<div>
+					<g:TextArea ui:field="replyTextArea" styleName="{css.message.replyTextArea}" />
+					
+					<!-- TODO RELEASE: Jaro -->
+					<div>
+						<div style="display: none;">
+							<table>
+								<tbody>
+									<tr>
+										<td>
+											<ui:msg key="price">Price</ui:msg>
+										</td>
+										<td>
+											<g:TextBox ui:field="priceBox" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<ui:msg key="finishDate">Finish Date</ui:msg>
+										</td>
+										<td>
+											<p1:DateBox ui:field="dateBox" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<g:Anchor ui:field="submitBtn" styleName='{css.message.replyButton}'>
+							<span style="cursor: pointer; cursor: hand;">
+								<ui:msg key="submit">Submit</ui:msg>
+							</span>
+						</g:Anchor>
+						<g:Anchor ui:field="cancelBtn" styleName='{css.message.replyButton}'>
+							<span style="cursor: pointer; cursor: hand;">
+								<ui:msg key="close">Close</ui:msg>
+							</span>
+						</g:Anchor>
+					</div>
+				</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
 </ui:UiBinder>

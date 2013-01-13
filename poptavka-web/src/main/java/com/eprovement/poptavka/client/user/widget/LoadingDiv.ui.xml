@@ -18,7 +18,7 @@
             background: url(images/loader-transparent.gif) center center no-repeat;
         }
     </ui:style>
-    <div ui:field="loading" class="{style.border}">
+    <div ui:field="loading" class="{style.loader}">
         <div class="{style.border}"
             style="background-color: #000; opacity: 0.3; filter: alpha(opacity=30);">
         </div>

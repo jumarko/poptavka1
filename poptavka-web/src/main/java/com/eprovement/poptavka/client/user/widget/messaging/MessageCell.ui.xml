@@ -11,51 +11,6 @@
 	<ui:with field="sent" type="java.lang.String" />
 	<ui:with field="body" type="java.lang.String" />
 
-	<ui:style>
-		.conversation-detail {
-		border-bottom: 1px solid #D4D4D4;
-		padding: 10px 10px 10px 30px;
-		}
-		
-		.conversation-detail-green {
-		background: url(images/detail-block-green-circle.png) no-repeat 11px 14px;
-		}
-		
-		.conversation-detail-red {
-		background: url(images/detail-block-red-circle.png) no-repeat 11px 14px;
-		}
-		
-		.conversation-detail:hover {
-		background-color: #effaff;
-		box-shadow: 0 0 4px #999999;
-		}
-
-		.conversation-detail-header {		
-		float: left;
-		font-weight: bold;
-		}
-		.conversation-detail-header-green {
-		color: #2ca500;
-		}
-		.conversation-detail-header-red {
-		color: #e50000;
-		}
-
-		.conversation-detail-time {
-		color: #006b9f;
-		float: right;
-		}
-
-		.conversation-detail-content {
-		color: #6a707a;
-		}
-		
-		.left-block {
-		float: left;
-		width: 100%;
-		}
-	</ui:style>
-
 	<div class='{res.detailViews.conversationDetail} {cssBall}'>
 		<div class='{res.detailViews.conversationLeftBlock}'>
 			<span ui:field='senderSpan' class='{res.detailViews.conversationDetailHeader} {cssColor}'>

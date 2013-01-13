@@ -8,12 +8,6 @@ public interface UserMessageStyle extends CssResource {
     @ClassName("message")
     String message();
 
-    @ClassName("message-first")
-    String messageFirst();
-
-    @ClassName("message-last")
-    String messageLast();
-
     @ClassName("message-opened")
     String messageOpened();
 
@@ -29,14 +23,11 @@ public interface UserMessageStyle extends CssResource {
     @ClassName("wrapper")
     String wrapper();
 
-    @ClassName("reply-message-arrow-border")
-    String replyMessageArrowBorder();
-
-    @ClassName("reply-message-arrow")
-    String replyMessageArrow();
-
     @ClassName("reply-text-area")
     String replyTextArea();
+
+    @ClassName("reply-button")
+    String replyButton();
 
     @ClassName("messages-mine")
     String messagesMine();

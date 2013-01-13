@@ -11,6 +11,10 @@ import com.google.gwt.resources.client.CssResource;
  * @author slavkovsky.martin, Jaro
  */
 public interface DetailViews extends CssResource {
+    /* COMMON DETAIL STYLES */
+    @ClassName("common-detail-container")
+    String commonDetailContainer();
+
     /* DEMANDS DETAIL SECTION */
     @ClassName("demandDetailTable")
     String demandDetailTable();
@@ -40,6 +44,9 @@ public interface DetailViews extends CssResource {
     String demandDetailSectionHeader();
 
     /* CONVERSATION DETAIL SECTION */
+    @ClassName("conversation-container")
+    String conversationContainer();
+
     @ClassName("conversation-detail")
     String conversationDetail();
 

@@ -11,6 +11,12 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
+.common-detail-container {
+	background: url(images/transparent_bg.png) repeat;
+	float: left;	
+	width: 100%;
+}
+
 /*  DEMAND DETAIL SECTION  */
 .demandDetailSectionHeader {
 	border-bottom: 1px solid #fea100;
@@ -110,8 +116,14 @@
 	padding: 0 0 0 18px;
 }
 
-
 /*  conversation DETAIL SECTION  */
+.conversation-container {
+	background: #ffffff;
+	border: 1px solid #009de5;
+	border-radius: 4px;
+	margin: 12px;
+}
+
 .conversation-detail {
 	border-bottom: 1px solid #D4D4D4;
 	padding: 10px 10px 10px 30px;

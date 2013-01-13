@@ -90,17 +90,18 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
 
 
     public void setMessageStyle(MessageDisplayType type) {
+        /* TODO RELEASE: Martin S. */
         switch (type) {
             case FIRST:
-                header.getParentElement().addClassName(CSS.message().messageFirst());
+                // header.getParentElement().addClassName(CSS.message().messageFirst());
                 break;
             case BOTH:
-                header.getParentElement().addClassName(CSS.message().messageFirst());
+                // header.getParentElement().addClassName(CSS.message().messageFirst());
             case LAST:
-                header.getParentElement().addClassName(CSS.message().messageLast());
+                // header.getParentElement().addClassName(CSS.message().messageLast());
                 break;
             case NORMAL:
-                header.getParentElement().removeClassName(CSS.message().messageLast());
+                // header.getParentElement().removeClassName(CSS.message().messageLast());
                 break;
             default:
                 break;
