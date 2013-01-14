@@ -213,26 +213,16 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     //************************ SUPPLIER - My Offers ***************************/
     /**
-     * Get offers sent by supplier.
-     * When supplier sends an offer, it will be involved here.
-     * As Supplier: "Offers I sent"
-     *
-     * @param supplierID
-     * @param filter
-     * @return
+     * Gets count of supplier's offers in state PENDING.
+     * @param supplierId
+     * @return count of PENDING offers
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public long getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-//        //TODO Martin - implement when implemented on backend
-//        Supplier supplier = (Supplier) generalService.find(Supplier.class, supplierID);
-//        Search supplierOffersSearch = new Search(Offer.class);
-//        supplierOffersSearch.addFilterEqual("supplier", supplier);
-//        int count = generalService.search(supplierOffersSearch).size();
-//        return count;
-        long count = offerService.getPendingOffersCountForSupplier(supplierID);
-        return count;
+        //TODO RELEASE Vojto/Ivan- implement SearchDefinition
+        return offerService.getPendingOffersCountForSupplier(supplierID);
     }
 
     /**
@@ -299,20 +289,16 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     //******************* SUPPLIER - My Assigned Demands **********************/
     /**
-     * Get supplier's offers that have been accepted.
-     * When client accept an supplier's offer, the offer will be implemented here.
-     * As Supplier: "Offers that I 'won'."
-     *
-     * @param supplierID
-     * @param filter
-     * @return
+     * Gets count of supplier's offers in state ACCEPTED.
+     * @param supplierId
+     * @return count of ACCEPTED offers
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public long getSupplierAssignedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        return 1L;
+        //TODO RELEASE Vojto/Ivan- implement SearchDefinition
+        return offerService.getAcceptedOffersCountForSupplier(supplierID);
     }
 
     /**
