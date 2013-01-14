@@ -9,8 +9,8 @@ import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailVie
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
-import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel2;
+import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
+import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -58,9 +58,9 @@ public class DetailsWrapperPresenter
 
         SupplierDetailView getSupplierDetail();
 
-        UserConversationPanel2 getConversationPanel();
+        ConversationPanel getConversationPanel();
 
-        DevelOfferQuestionWindow getReplyHolder();
+        OfferQuestionWindow getReplyHolder();
 
         HTMLPanel getConversationHolder();
 
@@ -85,14 +85,14 @@ public class DetailsWrapperPresenter
                     //Potom samotne poslanie sa vykona kliknutim na tlacidlo Submit, teda musime zistit co
                     //za akciu ma ten submit vykonat, teda ci poslat spravu alebo ponuku, podla skor zvolenej akcie.
                     switch (view.getReplyHolder().getSelectedResponse()) {
-                        case DevelOfferQuestionWindow.RESPONSE_QUESTION:
+                        case OfferQuestionWindow.RESPONSE_QUESTION:
                             MessageDetail questionMessageToSend =
                                     view.getConversationPanel().updateSendingMessage(
                                     view.getReplyHolder().getCreatedMessage());
                             questionMessageToSend.setSenderId(Storage.getUser().getUserId());
                             eventBus.sendQuestionMessage(questionMessageToSend);
                             break;
-                        case DevelOfferQuestionWindow.RESPONSE_OFFER:
+                        case OfferQuestionWindow.RESPONSE_OFFER:
                             OfferMessageDetail offerMessageToSend =
                                     view.getConversationPanel().updateSendingOfferMessage(
                                     view.getReplyHolder().getCreatedOfferMessage());

@@ -48,9 +48,9 @@
 				<g:HTMLPanel ui:field="conversationHolder"
 					styleName='{res.detailViews.commonDetailContainer}'>
 					<g:HTMLPanel styleName='{res.detailViews.conversationContainer}'>
-						<d:UserConversationPanel2 ui:field="conversationPanel"
+						<d:ConversationPanel ui:field="conversationPanel"
 							styleName="{style.relative}" />
-						<d:DevelOfferQuestionWindow ui:field="replyHolder" />
+						<d:OfferQuestionWindow ui:field="replyHolder" />
 					</g:HTMLPanel>
 				</g:HTMLPanel>
 			</g:ScrollPanel>

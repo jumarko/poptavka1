@@ -3,8 +3,8 @@ package com.eprovement.poptavka.client.user.widget;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
-import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
-import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel2;
+import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
+import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -37,8 +37,8 @@ public class DetailsWrapperView extends Composite
     @UiField SimplePanel editableDemandDetail;
     @UiField DemandDetailView demandDetail;
     @UiField SupplierDetailView supplierDetail;
-    @UiField UserConversationPanel2 conversationPanel;
-    @UiField DevelOfferQuestionWindow replyHolder;
+    @UiField ConversationPanel conversationPanel;
+    @UiField OfferQuestionWindow replyHolder;
     @UiField HTMLPanel conversationHolder;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
@@ -96,12 +96,12 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public UserConversationPanel2 getConversationPanel() {
+    public ConversationPanel getConversationPanel() {
         return conversationPanel;
     }
 
     @Override
-    public DevelOfferQuestionWindow getReplyHolder() {
+    public OfferQuestionWindow getReplyHolder() {
         return replyHolder;
     }
 

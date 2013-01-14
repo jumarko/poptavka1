@@ -26,14 +26,14 @@ import java.math.BigDecimal;
  * @author Beho
  * @author Martin Slavkovsky
  */
-public class DevelOfferQuestionWindow extends Composite {
+public class OfferQuestionWindow extends Composite {
 
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     private static ReplyWindowUiBinder uiBinder = GWT.create(ReplyWindowUiBinder.class);
 
-    interface ReplyWindowUiBinder extends UiBinder<Widget, DevelOfferQuestionWindow> {
+    interface ReplyWindowUiBinder extends UiBinder<Widget, OfferQuestionWindow> {
     }
     private static final StyleResource CSS = GWT.create(StyleResource.class);
     //Constants
@@ -59,7 +59,7 @@ public class DevelOfferQuestionWindow extends Composite {
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
-    public DevelOfferQuestionWindow() {
+    public OfferQuestionWindow() {
         CSS.message().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         offerReplyBtn.setVisible(false);

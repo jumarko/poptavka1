@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
+import com.eprovement.poptavka.client.user.widget.grid.cell.MessageCell;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -18,14 +19,14 @@ import java.util.List;
  * @author Martin Slavkovsky
  *
  */
-public class UserConversationPanel2 extends Composite {
+public class ConversationPanel extends Composite {
 
     /**************************************************************************/
     /* UiBinder                                                               */
     /**************************************************************************/
     private static UserConversationPanelUiBinder uiBinder = GWT.create(UserConversationPanelUiBinder.class);
 
-    interface UserConversationPanelUiBinder extends UiBinder<Widget, UserConversationPanel2> {
+    interface UserConversationPanelUiBinder extends UiBinder<Widget, ConversationPanel> {
     }
 
     /**************************************************************************/
@@ -40,7 +41,7 @@ public class UserConversationPanel2 extends Composite {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
-    public UserConversationPanel2() {
+    public ConversationPanel() {
         messageList = new CellList<MessageDetail>(new MessageCell());
         messageProvider.addDataDisplay(messageList);
         initWidget(uiBinder.createAndBindUi(this));
