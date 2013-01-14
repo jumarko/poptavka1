@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.messages;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -13,12 +12,10 @@ import com.mvp4g.client.annotation.Start;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.messages.tab.ComposeMessagePresenter;
-import com.eprovement.poptavka.client.user.messages.tab.ConversationWrapperPresenter;
 import com.eprovement.poptavka.client.user.messages.tab.MessageListPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.event.EventBusWithLookup;
@@ -120,22 +117,6 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
 
     @Event(handlers = ComposeMessagePresenter.class)
     void responseUserInfo(BusinessUserDetail userDetail);
-
-    /**************************************************************************/
-    /* Business events handled by ConversationWrapperPresenter.               */
-    /**************************************************************************/
-    /*
-     * Request/Response method pair
-     * Fetch and display chat(conversation) for supplier new demands list
-     * @param messageId
-     * @param userMessageId
-     * @param userId
-     */
-    @Event(handlers = ConversationWrapperPresenter.class)
-    void displayConversation(Long threadRootId, Long messageId);
-
-    @Event(handlers = ConversationWrapperPresenter.class)
-    void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
 
     /**************************************************************************/
     /* Business events handled by MessagesModuleMessageHandler                      */

@@ -63,7 +63,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> result) {
-                        eventBus.setSingleDemandConversation(result);
+//                        eventBus.setSingleDemandConversation(result);
                     }
                 });
     }
@@ -75,7 +75,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> messageList) {
                         GWT.log("Conversation size: " + messageList.size());
-                        eventBus.setPotentialDemandConversation(messageList, ViewType.POTENTIAL);
+//                        eventBus.setPotentialDemandConversation(messageList, ViewType.POTENTIAL);
                         // TODO delete
                         /** DEBUG INFO **/
                         for (MessageDetail m : messageList) {
@@ -90,7 +90,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
         messageService.sendQueryToPotentialDemand(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail result) {
-                eventBus.addMessageToPotentailDemandConversation(result, viewType);
+//                eventBus.addMessageToPotentailDemandConversation(result, viewType);
             }
         });
     }

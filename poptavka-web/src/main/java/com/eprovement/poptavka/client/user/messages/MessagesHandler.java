@@ -15,7 +15,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 
 import java.util.List;
 
@@ -50,8 +49,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                 } else if (action.equals("composeReply")) {
                     //TODO forward to inbox && display relevant conversation with new reply
                     eventBus.initInbox(null);
-                    eventBus.displayConversation(
-                        sentMessage.getThreadRootId(), sentMessage.getMessageId());
+//                    eventBus.displayConversation(
+//                        sentMessage.getThreadRootId(), sentMessage.getMessageId());
                 }
 //                eventBus.sendMessageResponse(sentMessage, type);
             }
@@ -93,7 +92,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                 new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> result) {
-                        eventBus.responseConversation(result, ViewType.EDITABLE);
+//                        eventBus.responseConversation(result, ViewType.EDITABLE);
                     }
                 });
     }

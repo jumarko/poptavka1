@@ -15,16 +15,13 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.handler.MessageHandler;
 import com.eprovement.poptavka.client.user.handler.UserHandler;
 import com.eprovement.poptavka.client.user.problems.MyProblemsPresenter;
-import com.eprovement.poptavka.client.user.widget.unused.OldDetailWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import java.util.List;
 
@@ -113,29 +110,12 @@ public interface UserEventBus extends EventBusWithLookup, BaseChildEventBus {
     // serves for visual sing, that content is loading
     // TODO Praso - tato metoda sa zrejme pouziva v demandModule. Musime ju presunut do
     // demandsEventbus. A skontrolovat ci sa pouziva v tom spravnom presenteri
-    @Event(handlers = { UserHandler.class, OldDetailWrapperPresenter.class })
-    void getDemandDetail(Long demandId, ViewType typeOfDetail);
-
-    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
-    void setFullDemandDetail(FullDemandDetail detail);
-
-    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
-    void setBaseDemandDetail(BaseDemandDetail detail);
 
     /** method for displaying conversation to selected demand. **/
-    @Event(handlers = { UserPresenter.class, OldDetailWrapperPresenter.class })
-    void requestPotentialDemandConversation(long messageId, long userMessageId);
 
     @Event(handlers = MessageHandler.class)
     void getPotentialDemandConversation(long messageId, long userId,
             long userMessageId);
-
-    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
-    void setPotentialDemandConversation(ArrayList<MessageDetail> messageList,
-            ViewType wrapperhandlerType);
-
-    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
-    void setSingleDemandConversation(ArrayList<MessageDetail> messageList);
 
     /**
      * Bubbling message to send to UserPresenter to get the user ID.
@@ -149,14 +129,6 @@ public interface UserEventBus extends EventBusWithLookup, BaseChildEventBus {
     @Event(handlers = MessageHandler.class)
     void sendMessageToPotentialDemand(MessageDetail messageToSend,
             ViewType viewType);
-
-    @Event(handlers = OldDetailWrapperPresenter.class)
-    void addMessageToPotentailDemandConversation(MessageDetail result,
-            ViewType wrapperhandlerType);
-
-    /** Offers message display & state change. **/
-    @Event(handlers = OldDetailWrapperPresenter.class)
-    void setOfferMessage(FullOfferDetail offerDetail);
 
     @Event(handlers = MessageHandler.class)
     void getOfferStatusChange(OfferDetail offerDetail);
@@ -303,7 +275,7 @@ public interface UserEventBus extends EventBusWithLookup, BaseChildEventBus {
     @Event(handlers = MessageHandler.class)
     void requestDemandConversations(long messageId);
 
-    @Event(handlers = { MessageHandler.class, OldDetailWrapperPresenter.class })
+    @Event(handlers = MessageHandler.class)
     void requestSingleConversation(long threadRootId, long messageId);
 
     // END

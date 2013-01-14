@@ -58,9 +58,7 @@ public class EditableDemandDetailView extends Composite implements
     @UiField HTMLPanel detail, choiceButtonsPanel, editButtonsPanel;
     @UiField Button editDemandButton, deleteDemandButton, submitButton, cancelButton, editCatBtn, editLocBtn;
     /** Class attributes. **/
-    private List<ChangeMonitor> monitors = Arrays.asList(
-            titleMonitor, categoriesMonitor, localitiesMonitor, excludedSuppliersMonitor, priceMonitor,
-            endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
+    private List<ChangeMonitor> monitors;
     private long demandId;
     private PopupPanel selectorWidgetPopup;
     /** Constants. **/
@@ -98,6 +96,10 @@ public class EditableDemandDetailView extends Composite implements
                 FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING));
         descriptionMonitor = new ChangeMonitor<FullDemandDetail>(
                 FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION));
+
+        monitors = Arrays.asList(
+            titleMonitor, categoriesMonitor, localitiesMonitor, excludedSuppliersMonitor, priceMonitor,
+            endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
 
         initWidget(uiBinder.createAndBindUi(this));
 

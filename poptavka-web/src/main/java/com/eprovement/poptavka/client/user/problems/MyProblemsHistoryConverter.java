@@ -24,7 +24,6 @@ public class MyProblemsHistoryConverter implements HistoryConverter<UserEventBus
 
             if (historyName.equals(PROBLEMS_MY)) {
                 if (myProblemsPresenter != null) {
-                    myProblemsPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(myProblemsPresenter);
                 }
                 myProblemsPresenter = eventBus.addHandler(MyProblemsPresenter.class);

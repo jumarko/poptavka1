@@ -106,8 +106,8 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
                 object.setRead(true);
                 eventBus.requestReadStatusUpdate(Arrays.asList(object.getId()), true);
                 view.getGrid().redraw();
-                eventBus.displayConversation(
-                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
+//                eventBus.displayConversation(
+//                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
             }
         });
         view.getSubjectCol().setFieldUpdater(new FieldUpdater<UserMessageDetail, String>() {
@@ -116,8 +116,8 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
             public void update(int index, UserMessageDetail object, String value) {
                 object.setRead(true);
                 eventBus.requestReadStatusUpdate(Arrays.asList(object.getId()), true);
-                eventBus.displayConversation(
-                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
+//                eventBus.displayConversation(
+//                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
             }
         });
         view.getCreationCol().setFieldUpdater(new FieldUpdater<UserMessageDetail, String>() {
@@ -127,8 +127,8 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
                     String value) {
                 object.setRead(true);
                 eventBus.requestReadStatusUpdate(Arrays.asList(object.getId()), true);
-                eventBus.displayConversation(
-                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
+//                eventBus.displayConversation(
+//                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
             }
         });
 

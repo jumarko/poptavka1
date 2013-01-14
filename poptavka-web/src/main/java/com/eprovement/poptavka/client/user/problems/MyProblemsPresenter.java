@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.user.problems;
 
 import com.eprovement.poptavka.client.user.UserEventBus;
-import com.eprovement.poptavka.client.user.widget.unused.OldDetailWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
@@ -50,8 +49,6 @@ public class MyProblemsPresenter
 
         SimplePanel getDetailSection();
     }
-
-    private OldDetailWrapperPresenter detailPresenter = null;
 
     public void bind() {
         view.getCellTable().getSelectionModel()
@@ -158,10 +155,4 @@ public class MyProblemsPresenter
         return contacts;
     }
 
-    // TODO delete, just devel tool
-    public void cleanDetailWrapperPresenterForDevelopment() {
-        if (detailPresenter != null) {
-            eventBus.removeHandler(detailPresenter);
-        }
-    }
 }
