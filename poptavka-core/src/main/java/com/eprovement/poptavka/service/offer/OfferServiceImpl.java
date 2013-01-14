@@ -60,7 +60,8 @@ public class OfferServiceImpl extends GenericServiceImpl<Offer, OfferDao> implem
     @Override
     @Transactional(readOnly = true)
     public long getAcceptedOffersCountForSupplier(long supplierId) {
-        return this.getDao().getOffersCountForSupplier(
-                supplierId, this.getOfferState(OfferStateType.ACCEPTED.getValue()));
+        return this.getDao().getOffersCountForSupplier(supplierId,
+                this.getOfferState(OfferStateType.ACCEPTED.getValue()),
+                this.getOfferState(OfferStateType.DELIVERED.getValue()));
     }
 }

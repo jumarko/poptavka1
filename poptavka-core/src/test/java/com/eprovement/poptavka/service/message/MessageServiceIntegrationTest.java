@@ -418,18 +418,24 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     }
 
     @Test
-    public void testGetPendingOffersCountForSupplier() {
+    public void testGetOffersCountForSupplier() {
         long supplierId = 1111111111L;
         long count = offerService.getPendingOffersCountForSupplier(supplierId);
-
         Assert.assertEquals("Expected count of pending offers [count=" + count
                 + "]for supplier was different", 1L, count);
 
         long supplierId2 = 1111111114L;
         long count2 = offerService.getPendingOffersCountForSupplier(supplierId2);
-
         Assert.assertEquals("Expected count of pending offers [count=" + count2
                 + "]for supplier was different", 1L, count2);
+
+        long count3 = offerService.getAcceptedOffersCountForSupplier(supplierId);
+        Assert.assertEquals("Expected count of accepted offers [count=" + count3
+                + "]for supplier was different", 0L, count3);
+
+        long count4 = offerService.getAcceptedOffersCountForSupplier(supplierId2);
+        Assert.assertEquals("Expected count of accepted offers [count=" + count4
+                + "]for supplier was different", 0L, count4);
 
     }
 

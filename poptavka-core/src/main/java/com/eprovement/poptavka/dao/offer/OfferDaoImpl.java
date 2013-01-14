@@ -23,4 +23,13 @@ public class OfferDaoImpl extends GenericHibernateDao<Offer> implements OfferDao
         params.put("state", offerState);
         return (Long) runNamedQueryForSingleResult("getOffersCountForSupplier", params);
     }
+
+    @Override
+    public long getOffersCountForSupplier(long supplierId, OfferState offerState1, OfferState offerState2) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("supplier", supplierId);
+        params.put("state1", offerState1);
+        params.put("state2", offerState2);
+        return (Long) runNamedQueryForSingleResult("getOffersCountForSupplierByStates", params);
+    }
 }
