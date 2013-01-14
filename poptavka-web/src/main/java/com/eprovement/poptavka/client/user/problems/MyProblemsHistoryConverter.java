@@ -1,22 +1,22 @@
 package com.eprovement.poptavka.client.user.problems;
 
+import com.eprovement.poptavka.client.root.RootEventBus;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Cookies;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
-import com.eprovement.poptavka.client.user.UserEventBus;
 
 @History(type = HistoryConverterType.NONE)
-public class MyProblemsHistoryConverter implements HistoryConverter<UserEventBus> {
+public class MyProblemsHistoryConverter implements HistoryConverter<RootEventBus> {
 
     private static final String PROBLEMS_MY = "invokeMyProblems";
     private MyProblemsPresenter myProblemsPresenter = null;
 
     @Override
     public void convertFromToken(String historyName, String param,
-            UserEventBus eventBus) {
+            RootEventBus eventBus) {
         String cookie = Cookies.getCookie("user-presenter");
         if (cookie.equals("loaded")) {
 
@@ -31,7 +31,7 @@ public class MyProblemsHistoryConverter implements HistoryConverter<UserEventBus
             }
         } else {
             eventBus.atAccount();
-            eventBus.markEventToLoad(historyName);
+//            eventBus.markEventToLoad(historyName);
         }
     }
 

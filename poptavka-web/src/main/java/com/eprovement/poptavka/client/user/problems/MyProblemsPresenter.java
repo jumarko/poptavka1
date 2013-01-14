@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.user.problems;
 
-import com.eprovement.poptavka.client.user.UserEventBus;
+import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Presenter(view = MyProblemsView.class, multiple = true)
 public class MyProblemsPresenter
         extends
-        BasePresenter<MyProblemsPresenter.MyProblemsViewInterface, UserEventBus> {
+        BasePresenter<MyProblemsPresenter.MyProblemsViewInterface, RootEventBus> {
 
     private static final Logger LOGGER = Logger
             .getLogger(MyProblemsPresenter.class.getName());
@@ -68,7 +68,7 @@ public class MyProblemsPresenter
     public void onInvokeMyProblems() {
         //eventBus.displayContent(view.getWidgetView());
 
-        eventBus.requestMyProblems();
+//        eventBus.requestMyProblems();
     }
 
     public void onRequestMyProblems() {

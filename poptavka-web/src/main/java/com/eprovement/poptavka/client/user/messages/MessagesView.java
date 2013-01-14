@@ -12,11 +12,9 @@ import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.user.StyleInterface;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
 public class MessagesView extends Composite
-        implements MessagesPresenter.MessagesLayoutInterface, StyleInterface {
+        implements MessagesPresenter.MessagesLayoutInterface {
 
     private static MessagesModuleViewUiBinder uiBinder = GWT.create(MessagesModuleViewUiBinder.class);
 
@@ -79,22 +77,5 @@ public class MessagesView extends Composite
     @Override
     public SplitLayoutPanel getSplitPanel() {
         return splitPanelSouth;
-    }
-
-    /** toggle visible actions/buttons for current user decided by his role. **/
-    @Override
-    public void setRoleInterface(BusinessRole role) {
-        LOGGER.fine("Set User style for role " + role.toString());
-        switch (role) {
-            case SUPPLIER:
-            //cascade, include client below, because supplier is always client too
-//                supMenu.getStyle().setDisplay(Display.BLOCK);
-            case CLIENT:
-//                administration.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
-//                myDemandsOperatorLink.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
-                break;
-            default:
-                break;
-        }
     }
 }

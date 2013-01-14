@@ -11,10 +11,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.user.StyleInterface;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
-public class AdminView extends OverflowComposite implements AdminPresenter.AdminModuleInterface, StyleInterface {
+public class AdminView extends OverflowComposite implements AdminPresenter.AdminModuleInterface {
 
     private static AdminModuleViewUiBinder uiBinder = GWT.create(AdminModuleViewUiBinder.class);
 
@@ -107,22 +105,6 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     @Override
     public Button getProblemButton() {
         return problemsButton;
-    }
-
-    /** toggle visible actions/buttons for current user decided by his role. **/
-    @Override
-    public void setRoleInterface(BusinessRole role) {
-        LOGGER.fine("Set User style for role " + role.toString());
-        switch (role) {
-            case SUPPLIER:
-            //cascade, include client below, because supplier is always client too
-            case CLIENT:
-//                administration.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
-//                myDemandsOperatorButton.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
