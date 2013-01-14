@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.user.client.ui.RootPanel;
+import java.math.BigDecimal;
 
 /**
  * IntegerBox created according to GWT TextBox to be used with integers. Better for validation.
@@ -100,5 +101,9 @@ public class BigDecimalBox extends BigDecimalBoxBase {
 
     private InputElement getInputElement() {
         return getElement().cast();
+    }
+
+    public BigDecimal getValue() {
+        return super.getValue();
     }
 }

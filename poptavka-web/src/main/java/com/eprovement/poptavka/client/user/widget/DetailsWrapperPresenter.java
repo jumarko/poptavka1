@@ -4,6 +4,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
@@ -14,19 +15,15 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +41,7 @@ public class DetailsWrapperPresenter
     public static final int CHAT = 3;
     /** Class Attributes. **/
     private UniversalTableGrid table = null;
+    private EditableDemandDetailPresenter editDemandPresenter = null;
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
@@ -56,7 +54,7 @@ public class DetailsWrapperPresenter
 
         DemandDetailView getDemandDetail();
 
-        EditableDemandDetailView getEditableDemandDetail();
+        SimplePanel getEditableDemandDetail();
 
         SupplierDetailView getSupplierDetail();
 
@@ -211,6 +209,12 @@ public class DetailsWrapperPresenter
             view.loadingDivHide(view.getDemandDetail());
         }
         if (view.getContainer().getWidget(EDITABLE_DEMAND).getParent().isVisible()) {
+            if (editDemandPresenter != null) {
+                eventBus.removeHandler(editDemandPresenter);
+            }
+            editDemandPresenter = eventBus.addHandler(EditableDemandDetailPresenter.class);
+            view.getEditableDemandDetail().setWidget(editDemandPresenter.getView());
+            ((EditableDemandDetailView) editDemandPresenter.getView()).setDemanDetail(demandDetail);
             view.loadingDivHide(view.getEditableDemandDetail());
         }
     }
@@ -243,21 +247,22 @@ public class DetailsWrapperPresenter
     /* HELPER methods                                                         */
     /**************************************************************************/
     private void setMessageReadHandler() {
-        final ChangeHandler click = new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                String messagId = ((TextBox) event.getSource()).getText();
-                eventBus.requestReadStatusUpdate(Arrays.asList(Long.valueOf(messagId)), true);
-                table.refresh();
-            }
-        };
         //TODO RELEASE: refactor migth not be needed because all messages are set to read when displaying conversation
+//        final ChangeHandler click = new ChangeHandler() {
+//            @Override
+//            public void onChange(ChangeEvent event) {
+//                String messagId = ((TextBox) event.getSource()).getText();
+//                eventBus.requestReadStatusUpdate(Arrays.asList(Long.valueOf(messagId)), true);
+//                table.refresh();
+//            }
+//        };
 //        for (int i = 0; i < view.getConversationPanel().getMessagePanel().getWidgetCount(); i++) {
 //            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
 //                    .getUpdateRead().addChangeHandler(click);
 //        }
 
     }
+
     /**************************************************************************/
     /* HELPER methods                                                         */
     /**************************************************************************/

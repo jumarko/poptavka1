@@ -4,10 +4,18 @@
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+    <ui:style>
+        .error {
+        font-size:10px;
+        color: red;
+        }
+    </ui:style>
 
-    <g:HorizontalPanel>
-        <g:SimplePanel ui:field="holder"/>
-        <!--<g:Widget ui:field="widget"/>-->
-        <g:Anchor ui:field="revert">Revert</g:Anchor>
-    </g:HorizontalPanel>
+    <g:VerticalPanel>
+        <g:HorizontalPanel>
+            <g:SimplePanel ui:field="holder"/>
+            <g:Anchor ui:field="revert">Revert</g:Anchor>
+        </g:HorizontalPanel>
+        <g:Label ui:field="errorLabel" styleName="{style.error}" />
+    </g:VerticalPanel>
 </ui:UiBinder>

@@ -3,14 +3,9 @@
         xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
         xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
-        xmlns:i="urn:import:com.eprovement.poptavka.client.common">
+        xmlns:i="urn:import:com.eprovement.poptavka.client.common"
+        xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
-    <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
-        }
-    </ui:style>
 	<ui:with field='res'
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
@@ -29,30 +24,35 @@
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="demandName">Demand name: </ui:msg>
 						</g:Label>
-						<g:TextBox ui:field="title" />
-                                                <g:Label styleName="{style.error}" ui:field="errorLabelTitle"/>
+                                                <cm:ChangeMonitor ui:field='titleMonitor'>
+                                                        <g:TextBox ui:field="title" title="title"/>
+                                                </cm:ChangeMonitor>
 					</g:HTMLPanel>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="price">Price:</ui:msg>
 						</g:Label>
-						<i:BigDecimalBox ui:field="price" />$
-                                                <g:Label styleName="{style.error}" ui:field="errorLabelPrice"/>
+                                                <cm:ChangeMonitor ui:field='priceMonitor'>
+                                                        <i:BigDecimalBox ui:field="price" title="price" />
+                                                        <!--<g:TextBox ui:field="price" title="price" />-->
+                                                </cm:ChangeMonitor>$
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="endDate">End date:</ui:msg>
 						</g:Label>
-						<d:DateBox ui:field="endDate" />
-                                                <g:Label styleName="{style.error}" ui:field="errorLabelEndDate"/>
+                                                <cm:ChangeMonitor ui:field='endDateMonitor'>
+                                                        <d:DateBox ui:field="endDate"  title="endDate"/>
+                                                </cm:ChangeMonitor>
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="validTo">Valid to: </ui:msg>
 						</g:Label>
-						<d:DateBox ui:field="validToDate" />
-                                                <g:Label styleName="{style.error}" ui:field="errorLabelValidToDate"/>
+                                                <cm:ChangeMonitor ui:field='validToDateMonitor'>
+                                                        <d:DateBox ui:field="validToDate"  title="validToDate"/>
+                                                </cm:ChangeMonitor>
 					</g:HTMLPanel>
 				</g:HTMLPanel>
 
@@ -60,19 +60,20 @@
 					<g:Label styleName='{res.detailViews.detailHeader}'>
 						<ui:msg key="categories">Category info</ui:msg>
 					</g:Label>
-                                        <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}'/>
-                                        <g:Label styleName="{style.error}" ui:field="errorLabelCategories"/>
-<!--                                        <g:Button ui:field='editCatBtn'>
-                                            <ui:msg key='edit'>Edit</ui:msg>
-                                        </g:Button>-->
+                                        <cm:ChangeMonitor ui:field='categoriesMonitor'>
+                                                <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' title="categories"/>
+                                        </cm:ChangeMonitor>
+                                        <g:Button ui:field="editCatBtn">Edit</g:Button>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
 						<ui:msg key="localities">Locality info</ui:msg>
 					</g:Label>
-                                        <c:CellList ui:field="localities" styleName='{res.detailViews.detailLocalityLabel}'/>
-                                        <g:Label styleName="{style.error}" ui:field="errorLabelLocalities"/>
+                                        <cm:ChangeMonitor ui:field='localitiesMonitor'>
+                                                <c:CellList ui:field="localities" styleName='{res.detailViews.detailLocalityLabel}' title="localities"/>
+                                        </cm:ChangeMonitor>
+                                        <g:Button ui:field="editLocBtn">Edit</g:Button>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
@@ -84,24 +85,27 @@
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="maxNumberOfSuppliers">Maximal number of suppliers:</ui:msg>
 						</g:Label>
-						<i:IntegerBox ui:field="maxOffers" />
-                                                <g:Label styleName="{style.error}" ui:field="errorLabelMaxOffers"/>
+                                                <cm:ChangeMonitor ui:field='maxOffersMonitor'>
+                                                        <i:IntegerBox ui:field="maxOffers" title="maxOffers" />
+                                                </cm:ChangeMonitor>
 					</g:HTMLPanel>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="minSupplierRating">Minimal supplier rating: </ui:msg>
 						</g:Label>
-						<i:IntegerBox ui:field="minRating" />%
-                                                <g:Label styleName="{style.error}" ui:field="errorLabelMinRating"/>
+                                                <cm:ChangeMonitor ui:field='minRatingMonitor'>
+                                                        <i:IntegerBox ui:field="minRating" title="minRating" />
+                                                </cm:ChangeMonitor>%
 					</g:HTMLPanel>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 							<ui:msg key="excludedSuppliers">Excluded suppliers: </ui:msg>
 						</g:Label>
-						<c:CellList ui:field="excludedSuppliers" />
-                                                <g:Label styleName="{style.error}" ui:field="errorLabelExclidedSuppliers"/>
+                                                <cm:ChangeMonitor ui:field='excludedSuppliersMonitor'>
+                                                        <c:CellList ui:field="excludedSuppliers" title="excludedSuppliers" />
+                                                </cm:ChangeMonitor>
 					</g:HTMLPanel>
 				</g:HTMLPanel>
 
@@ -109,8 +113,9 @@
 					<g:Label styleName='{res.detailViews.detailHeader}'>
 						<ui:msg key="description">Description: </ui:msg>
 					</g:Label>
-					<g:TextArea ui:field="description" />
-                                        <g:Label styleName="{style.error}" ui:field="errorLabelDescription"/>
+                                        <cm:ChangeMonitor ui:field='descriptionMonitor'>
+                                                <g:TextArea ui:field="description" title="description" />
+                                        </cm:ChangeMonitor>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel ui:field="choiceButtonsPanel">
@@ -120,7 +125,7 @@
 
 				<g:HTMLPanel ui:field="editButtonsPanel">
 					<g:Button ui:field="submitButton">Submit</g:Button>
-					<g:Button ui:field="cancelButton">Cancel</g:Button>
+					<g:Button ui:field="cancelButton">Stop editing</g:Button>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:ScrollPanel>

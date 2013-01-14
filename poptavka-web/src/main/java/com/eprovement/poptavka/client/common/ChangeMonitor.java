@@ -25,21 +25,28 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
 
 /**
  *
  * @author Martin Slavkovsky
  */
-public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers, HasChangeHandlers {
+public class ChangeMonitor<T> extends Composite implements HasWidgets, HasHandlers, HasChangeHandlers {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -51,21 +58,24 @@ public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers,
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField
-    SimplePanel holder;
-    @UiField
-    Anchor revert;
+    @UiField SimplePanel holder;
+    @UiField Anchor revert;
+    @UiField Label errorLabel;
     /** Class attributes. **/
+    private Validator validator = null;
     private ChangeDetail changeDetail;
     private boolean firstSet = true;
+    private Class<T> beanType;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
-    public ChangeMonitor(ChangeDetail changeDetail) {
+    public ChangeMonitor(Class<T> beanType, ChangeDetail changeDetail) {
+        this.beanType = beanType;
+        this.changeDetail = changeDetail;
+        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
         initWidget(uiBinder.createAndBindUi(this));
         revert.setVisible(false);
-        this.changeDetail = changeDetail;
     }
 
     /**************************************************************************/
@@ -75,6 +85,26 @@ public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers,
     public void revertClickHandler(ClickEvent e) {
         revert();
         DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getChangeMonitorWidget());
+    }
+
+    /**************************************************************************/
+    /* Validation                                                             */
+    /**************************************************************************/
+    public void validate() {
+        //reset for new validation
+        holder.getWidget().removeStyleName(Storage.RSCS.common().errorField());
+        errorLabel.setText("");
+        //perform new validation
+        Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
+                holder.getWidget().getTitle(), getValue(), Default.class);
+        for (ConstraintViolation<T> violation : violations) {
+            holder.getWidget().addStyleName(Storage.RSCS.common().errorField());
+            errorLabel.setText(violation.getMessage());
+        }
+    }
+
+    public boolean isValid() {
+        return errorLabel.getText().isEmpty();
     }
 
     /**************************************************************************/
@@ -143,7 +173,7 @@ public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers,
         firstSet = true;
         changeDetail = detail;
         revert.setVisible(true);
-        holder.getWidget().setStyleName(Storage.RSCS.common().changed());
+        holder.getWidget().addStyleName(Storage.RSCS.common().changed());
 
         setInputWidgetText(detail.getValue());
     }
@@ -176,16 +206,18 @@ public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers,
     }
 
     public void revert() {
-        changeDetail.revert();
-        reset();
-        setInputWidgetText(changeDetail.getOriginalValue());
-        //fire some event to update updatedFields attribute
-        //zisti ci zavola changeevent a ci zrobi changesCount --
+        if (isModified()) {
+            changeDetail.revert();
+            reset();
+            setInputWidgetText(changeDetail.getOriginalValue());
+        }
     }
 
     public void reset() {
         firstSet = true;
         revert.setVisible(false);
+        errorLabel.setText("");
+        holder.getWidget().removeStyleName(Storage.RSCS.common().errorField());
         holder.getWidget().removeStyleName(Storage.RSCS.common().changed());
     }
 
@@ -193,25 +225,43 @@ public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers,
     /* Helper methods                                                         */
     /**************************************************************************/
     private void addChangeHandler(Widget w) {
-        if (w instanceof CellList || w instanceof DateBox) {
+        if (w instanceof CellList) {
             w.addHandler(new ValueChangeHandler<IListDetailObject>() {
                 @Override
                 public void onValueChange(ValueChangeEvent<IListDetailObject> event) {
+                    validate();
                     //workarount - how to deny firing event when setting list for first time?
                     if (!firstSet) {
                         revert.setVisible(true);
-                        holder.getWidget().setStyleName(Storage.RSCS.common().changed());
+                        if (isValid()) {
+                            holder.getWidget().addStyleName(Storage.RSCS.common().changed());
+                        }
                         DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getChangeMonitorWidget());
                     }
                     firstSet = false;
+                }
+            }, ValueChangeEvent.getType());
+        } else if (w instanceof DateBox) {
+            w.addHandler(new ValueChangeHandler<IListDetailObject>() {
+                @Override
+                public void onValueChange(ValueChangeEvent<IListDetailObject> event) {
+                    validate();
+                    revert.setVisible(true);
+                    if (isValid()) {
+                        holder.getWidget().addStyleName(Storage.RSCS.common().changed());
+                    }
+                    DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getChangeMonitorWidget());
                 }
             }, ValueChangeEvent.getType());
         } else {
             w.addDomHandler(new ChangeHandler() {
                 @Override
                 public void onChange(ChangeEvent event) {
+                    validate();
                     revert.setVisible(true);
-                    holder.getWidget().setStyleName(Storage.RSCS.common().changed());
+                    if (isValid()) {
+                        holder.getWidget().addStyleName(Storage.RSCS.common().changed());
+                    }
                 }
             }, ChangeEvent.getType());
         }
@@ -220,13 +270,16 @@ public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers,
     private Object getInputWidgetText() {
         if (holder.getWidget() instanceof TextBox) {
             return ((TextBox) holder.getWidget()).getText();
+        } else if (holder.getWidget() instanceof IntegerBox) {
+            return ((IntegerBox) holder.getWidget()).getValue();
+        } else if (holder.getWidget() instanceof BigDecimalBox) {
+            return ((BigDecimalBox) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof TextArea) {
             return ((TextArea) holder.getWidget()).getText();
         } else if (holder.getWidget() instanceof DateBox) {
             return ((DateBox) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof ListBox) {
-            return //((ListBox) holder.getWidget()).getItemText(
-                    ((ListBox) holder.getWidget()).getSelectedIndex();
+            return ((ListBox) holder.getWidget()).getSelectedIndex();
         } else if (holder.getWidget() instanceof CellList) {
             return changeDetail.getValue();
         } else {
@@ -236,9 +289,13 @@ public class ChangeMonitor extends Composite implements HasWidgets, HasHandlers,
 
     private void setInputWidgetText(Object value) {
         if (holder.getWidget() instanceof TextBox) {
-            ((TextBox) holder.getWidget()).setText(String.valueOf(value));
+            ((TextBox) holder.getWidget()).setText((String) value);
+        } else if (holder.getWidget() instanceof IntegerBox) {
+            ((IntegerBox) holder.getWidget()).setValue((Integer) value);
+        } else if (holder.getWidget() instanceof BigDecimalBox) {
+            ((BigDecimalBox) holder.getWidget()).setValue((BigDecimal) value);
         } else if (holder.getWidget() instanceof TextArea) {
-            ((TextArea) holder.getWidget()).setText(String.valueOf(value));
+            ((TextArea) holder.getWidget()).setText((String) value);
         } else if (holder.getWidget() instanceof DateBox) {
             ((DateBox) holder.getWidget()).setValue((Date) value);
         } else if (holder.getWidget() instanceof ListBox) {

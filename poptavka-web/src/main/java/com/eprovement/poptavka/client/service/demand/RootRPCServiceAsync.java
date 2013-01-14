@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.service.demand;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -80,4 +81,6 @@ public interface RootRPCServiceAsync {
      *
      */
     void getBusinessUserByEmail(String email, AsyncCallback<BusinessUserDetail> async);
+
+    void updateDemands(long demandId, ArrayList<ChangeDetail> changes, AsyncCallback<Boolean> callback);
 }

@@ -33,9 +33,11 @@ import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -466,4 +468,14 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(handlers = ActivationCodePopupPresenter.class)
     void responseSendActivationCodeAgain(boolean sent);
+
+    /**************************************************************************/
+    /* Business events handled by EditableDemandDetailPresenter.              */
+    /**************************************************************************/
+    @Event(handlers = EditableDemandDetailPresenter.class)
+    void responseUpdateDemand(boolean result);
+
+    @Event(handlers = RootHandler.class)
+    void requestUpdateDemand(long demandId, ArrayList<ChangeDetail> changes);
+
 }

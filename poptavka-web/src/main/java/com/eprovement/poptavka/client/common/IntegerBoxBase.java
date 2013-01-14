@@ -5,11 +5,11 @@
 package com.eprovement.poptavka.client.common;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.text.shared.AbstractRenderer;
 import com.google.gwt.text.shared.Parser;
 import com.google.gwt.text.shared.Renderer;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.SourcesChangeEvents;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 import java.text.ParseException;
 
@@ -17,8 +17,8 @@ import java.text.ParseException;
  *
  * @author mato
  */
-public class IntegerBoxBase extends ValueBoxBase<Integer> implements
-        SourcesChangeEvents {
+public class IntegerBoxBase extends ValueBoxBase<Integer> implements HasHandlers, HasChangeHandlers {
+//        SourcesChangeEvents {
 
     /**
      * Legacy wrapper for {@link ValueBoxBase.TextAlignment}, soon to be deprecated.
@@ -71,10 +71,10 @@ public class IntegerBoxBase extends ValueBoxBase<Integer> implements
     /**
      * @deprecated Use {@link #addChangeHandler} instead
      */
-    @Deprecated
-    public void addChangeListener(ChangeListener listener) {
+//    @Deprecated
+//    public void addChangeListener(ChangeListener listener) {
 //    addChangeHandler(new ListenerWrapper.WrappedChangeListener(listener));
-    }
+//    }
 
     /**
      * Overridden to return "" from an empty text box.

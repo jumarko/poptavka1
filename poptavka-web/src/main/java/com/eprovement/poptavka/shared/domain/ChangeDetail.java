@@ -24,12 +24,12 @@ public class ChangeDetail implements Serializable {
     private DemandField exposerDemandFieldType = null;
     //Original values
     private Date originalExposeDateType = null;
-    private Integer originalEposeIntegerType = null;
+    private Number originalEposeIntegerType = null;
     private String originalExposeStringType = null;
     private ArrayList<IListDetailObject> originalExposeListType = null;
     //Changed values
     private Date exposeDateType = null;
-    private Integer exposeIntegerType = null;
+    private Number exposeIntegerType = null;
     private String exposeStringType = null;
     private ArrayList<IListDetailObject> exposeListType = null;
 
@@ -53,8 +53,8 @@ public class ChangeDetail implements Serializable {
             this.originalExposeStringType = (String) value;
         } else if (value instanceof Date) {
             this.originalExposeDateType = (Date) value;
-        } else if (value instanceof Integer) {
-            this.originalEposeIntegerType = (Integer) value;
+        } else if (value instanceof Number) {
+            this.originalEposeIntegerType = (Number) value;
         } else if (value instanceof List) {
             this.originalExposeListType = new ArrayList<IListDetailObject>(
                     (List<IListDetailObject>) value); //make a copy
@@ -83,8 +83,8 @@ public class ChangeDetail implements Serializable {
             this.exposeStringType = (String) value;
         } else if (value instanceof Date) {
             this.exposeDateType = (Date) value;
-        } else if (value instanceof Integer) {
-            this.exposeIntegerType = (Integer) value;
+        } else if (value instanceof Number) {
+            this.exposeIntegerType = (Number) value;
         } else if (value instanceof List) {
             this.exposeListType = new ArrayList<IListDetailObject>(
                     (List<IListDetailObject>) value); //make a copy

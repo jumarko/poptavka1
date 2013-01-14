@@ -104,6 +104,7 @@ public class FormDemandBasicView extends Composite
             }
         }, CloseEvent.getType());
 
+        //TODO RELEASE remove helping prefilled fakedata
         title.setText("poptavka");
         priceString.setText("1234");
         endDate.setValue(endDate.getDatePicker().getLastDate());

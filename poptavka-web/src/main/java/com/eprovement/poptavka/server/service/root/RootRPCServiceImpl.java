@@ -8,6 +8,8 @@ import com.eprovement.poptavka.client.service.demand.RootRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -31,6 +33,7 @@ import com.eprovement.poptavka.service.user.UserVerificationService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -38,6 +41,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +50,12 @@ import java.util.logging.Logger;
 import java.util.Date;
 
 import com.googlecode.genericdao.search.Search;
+import java.math.BigDecimal;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -378,5 +384,65 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
             System.out.println("NNULLLLLLLL");
         }
         return serviceConverter.convertToTargetList(services);
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public Boolean updateDemands(long demandId, ArrayList<ChangeDetail> changes) throws
+            RPCException, ApplicationSecurityException {
+        Demand demand = generalService.find(Demand.class, demandId);
+        updateDemandFields(demand, changes);
+        generalService.merge(demand);
+
+        return true;
+    }
+
+    private Demand updateDemandFields(Demand demand, ArrayList<ChangeDetail> changes) {
+        for (ChangeDetail change : changes) {
+            switch ((FullDemandDetail.DemandField) change.getField()) {
+                case TITLE:
+                    demand.setTitle((String) change.getValue());
+                    break;
+                case DESCRIPTION:
+                    demand.setDescription((String) change.getValue());
+                    break;
+                case PRICE:
+                    demand.setPrice(BigDecimal.valueOf(Long.valueOf((String) change.getValue())));
+                    break;
+                case END_DATE:
+                    demand.setEndDate((Date) change.getValue());
+                    break;
+                case VALID_TO_DATE:
+                    demand.setValidTo((Date) change.getValue());
+                    break;
+                case MAX_OFFERS:
+                    demand.setMaxSuppliers((Integer) change.getValue());
+                    break;
+                case MIN_RATING:
+                    demand.setMinRating(Integer.parseInt((String) change.getValue()));
+                    break;
+                case DEMAND_STATUS:
+                    demand.setStatus(DemandStatus.valueOf((String) change.getValue()));
+                    break;
+                case CREATED:
+                    demand.setCreatedDate((Date) change.getValue());
+                    break;
+                case CATEGORIES:
+                    demand.setCategories(categoryConverter.convertToSourceList(
+                            (ArrayList<CategoryDetail>) change.getValue()));
+                    break;
+                case LOCALITIES:
+                    demand.setLocalities(localityConverter.convertToSourceList(
+                            (ArrayList<LocalityDetail>) change.getValue()));
+                    break;
+                case EXCLUDE_SUPPLIER:
+                    demand.setExcludedSuppliers(supplierConverter.convertToSourceList(
+                            (ArrayList<FullSupplierDetail>) change.getValue()));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return demand;
     }
 }

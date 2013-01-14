@@ -388,7 +388,8 @@ public class DemandCreationPresenter
             return true;
         } else {
             ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
-            LOGGER.fine(widget.getClass().getName());
+            //TODO release Marti - sem tam vyhodi nullpointer - zistit preco, alebo odstranit
+//            LOGGER.fine(widget.getClass().getName());
             return widget.isValid();
         }
     }

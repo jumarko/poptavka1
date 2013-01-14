@@ -49,15 +49,12 @@ public class AdminDemandInfoView extends Composite {
             UiBinder<Widget, AdminDemandInfoView> {
     }
     // demand detail input fields
-    @UiField(provided = true)
-    ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox,
-    maxOffers, minRating, demandStatus, demandType, categoryList, localityList, excludedSupplierList;
-    @UiField(provided = true)
-    CellList categoryCellList, localityCellList, excludedSupplierCellList;
-    @UiField
-    TextBox clientID;
-    @UiField
-    Button editCatBtn, editLocBtn, editExcludedSupplierBtn, createButton, updateButton;
+    @UiField(provided = true) ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox;
+    @UiField(provided = true) ChangeMonitor maxOffers, minRating, demandStatus, demandType, categoryList;
+    @UiField(provided = true) ChangeMonitor localityList, excludedSupplierList;
+    @UiField(provided = true) CellList categoryCellList, localityCellList, excludedSupplierCellList;
+    @UiField TextBox clientID;
+    @UiField Button editCatBtn, editLocBtn, editExcludedSupplierBtn, createButton, updateButton;
     private FullDemandDetail demandInfo;
     private PopupPanel selectorWidgetPopup;
 
@@ -98,21 +95,33 @@ public class AdminDemandInfoView extends Composite {
     }
 
     public AdminDemandInfoView() {
-        titleBox = new ChangeMonitor(new ChangeDetail(DemandField.TITLE));
-        descriptionBox = new ChangeMonitor(new ChangeDetail(DemandField.DESCRIPTION));
-        endDateBox = new ChangeMonitor(new ChangeDetail(DemandField.END_DATE));
-        expirationBox = new ChangeMonitor(new ChangeDetail(DemandField.VALID_TO_DATE));
-        priceBox = new ChangeMonitor(new ChangeDetail(DemandField.PRICE));
-        maxOffers = new ChangeMonitor(new ChangeDetail(DemandField.MAX_OFFERS));
-        minRating = new ChangeMonitor(new ChangeDetail(DemandField.MIN_RATING));
+        titleBox = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.TITLE));
+        descriptionBox = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION));
+        endDateBox = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.END_DATE));
+        expirationBox = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO_DATE));
+        priceBox = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.PRICE));
+        maxOffers = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.MAX_OFFERS));
+        minRating = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING));
         excludedSupplierCellList = new CellList<FullSupplierDetail>(new SupplierCell());
-        excludedSupplierList = new ChangeMonitor(new ChangeDetail(DemandField.EXCLUDE_SUPPLIER));
-        demandStatus = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_STATUS));
-        demandType = new ChangeMonitor(new ChangeDetail(DemandField.DEMAND_TYPE));
+        excludedSupplierList = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.EXCLUDE_SUPPLIER));
+        demandStatus = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_STATUS));
+        demandType = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_TYPE));
         categoryCellList = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
-        categoryList = new ChangeMonitor(new ChangeDetail(DemandField.CATEGORIES));
+        categoryList = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.CATEGORIES));
         localityCellList = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
-        localityList = new ChangeMonitor(new ChangeDetail(DemandField.LOCALITIES));
+        localityList = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.LOCALITIES));
         //
         initWidget(uiBinder.createAndBindUi(this));
         //
@@ -174,7 +183,6 @@ public class AdminDemandInfoView extends Composite {
 //
 //        return demandInfo;
 //    }
-
     public ArrayList<CategoryDetail> getCategories() {
         return (ArrayList<CategoryDetail>) categoryList.getValue();
     }

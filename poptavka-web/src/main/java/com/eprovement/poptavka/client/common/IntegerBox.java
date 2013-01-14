@@ -101,4 +101,8 @@ public class IntegerBox extends IntegerBoxBase {
     private InputElement getInputElement() {
         return getElement().cast();
     }
+
+    public Integer getValue() {
+        return super.getValue();
+    }
 }

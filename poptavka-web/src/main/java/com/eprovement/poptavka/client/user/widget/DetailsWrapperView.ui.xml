@@ -21,7 +21,7 @@
 				<ui:msg key="demandDetail">Demand detail</ui:msg>
 			</g:header>
 			<g:ScrollPanel>
-				<w:EditableDemandDetailView ui:field="editableDemandDetail" />
+                                <g:SimplePanel ui:field="editableDemandDetail" />
 			</g:ScrollPanel>
 		</g:tab>
 		<g:tab>

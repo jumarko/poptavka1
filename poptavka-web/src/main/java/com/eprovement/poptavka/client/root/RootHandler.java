@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -251,6 +252,15 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             @Override
             public void onSuccess(ArrayList<ServiceDetail> data) {
                 eventBus.setServices(data);
+            }
+        });
+    }
+
+    public void onRequestUpdateDemand(long demandId, ArrayList<ChangeDetail> changes) {
+        rootService.updateDemands(demandId, changes, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean result) {
+                eventBus.responseUpdateDemand(result);
             }
         });
     }

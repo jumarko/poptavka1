@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.common.BigDecimalBox;
+import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.IntegerBox;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
@@ -8,17 +9,14 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -26,102 +24,103 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import java.util.HashSet;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-//import org.springframework.util.ReflectionUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class EditableDemandDetailView extends Composite implements ProvidesValidate, Editor<FullDemandDetail> {
+public class EditableDemandDetailView extends Composite implements
+        EditableDemandDetailPresenter.IEditableDemandDetailView, ProvidesValidate {
 
-    @Override
-    public boolean isValid() {
-        return valid.isEmpty();
-    }
-
-    interface Driver extends SimpleBeanEditorDriver<FullDemandDetail, EditableDemandDetailView> {
-    }
-    private EditableDemandDetailView.Driver driver = GWT.create(EditableDemandDetailView.Driver.class);
-    private Validator validator = null;
-    private FullDemandDetail fullDemandDetail = new FullDemandDetail();
-    private Set<String> valid = new HashSet<String>();
-    //Constants
-    private final static String NORMAL_STYLE = StyleResource.INSTANCE.common().emptyStyle();
-    private final static String ERROR_STYLE = StyleResource.INSTANCE.common().errorField();
-
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     interface DemandDetailViewUiBinder extends UiBinder<Widget, EditableDemandDetailView> {
     }
     private static DemandDetailViewUiBinder uiBinder = GWT.create(DemandDetailViewUiBinder.class);
+    /**************************************************************************/
+    /* Attributes                                                               */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField(provided = true) ChangeMonitor titleMonitor, categoriesMonitor, localitiesMonitor, priceMonitor;
+    @UiField(provided = true) ChangeMonitor excludedSuppliersMonitor, endDateMonitor, validToDateMonitor;
+    @UiField(provided = true) ChangeMonitor maxOffersMonitor, minRatingMonitor, descriptionMonitor;
+    @UiField(provided = true) CellList categories, localities, excludedSuppliers;
+    @UiField TextBox title;
+    @UiField BigDecimalBox price;
+    @UiField DateBox endDate, validToDate;
+    @UiField IntegerBox maxOffers, minRating;
+    @UiField TextArea description;
+    @UiField HTMLPanel detail, choiceButtonsPanel, editButtonsPanel;
+    @UiField Button editDemandButton, deleteDemandButton, submitButton, cancelButton, editCatBtn, editLocBtn;
+    /** Class attributes. **/
+    private List<ChangeMonitor> monitors = Arrays.asList(
+            titleMonitor, categoriesMonitor, localitiesMonitor, excludedSuppliersMonitor, priceMonitor,
+            endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
+    private long demandId;
+    private PopupPanel selectorWidgetPopup;
+    /** Constants. **/
     private static final String EMPTY = "";
-    private static final String CATEGORY = "categories";
-    private static final String LOCALITY = "localities";
-    private static final String EXCLUDED_SUPPLIERS = "excludedSuppliers";
-    private static final String TITLE = "title";
-    private static final String PRICE = "price";
-    private static final String END_DATE = "endDate";
-    private static final String VALID_TO_DATE = "validToDate";
-    private static final String MAX_OFFERS = "maxOffers";
-    private static final String MIN_RATING = "minRating";
-    private static final String DESCRIPTION = "description";
-    //
-    @UiField(provided = true)
-    CellList categories, localities, excludedSuppliers;
-    @UiField
-    TextBox title;
-    @UiField
-    BigDecimalBox price;
-    @UiField
-    DateBox endDate, validToDate;
-    @UiField
-    IntegerBox maxOffers, minRating;
-    @UiField
-    TextArea description;
-    @UiField
-    HTMLPanel detail, choiceButtonsPanel, editButtonsPanel;
-    @UiField
-    Button editDemandButton, deleteDemandButton;
-    //
-    @Ignore
-    @UiField
-    Label errorLabelTitle, errorLabelPrice, errorLabelEndDate, errorLabelValidToDate,
-    errorLabelCategories, errorLabelLocalities, errorLabelMaxOffers, errorLabelMinRating,
-    errorLabelExclidedSuppliers, errorLabelDescription;
-    //i18n
-    private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
-    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
     /**************************************************************************/
     /* INITIALIZATON                                                          */
     /**************************************************************************/
-    //Constructors
-    public EditableDemandDetailView() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    //Constructor
+    @Override
+    public void createView() {
+        createSelectorWidgetPopup();
+        //
         categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         excludedSuppliers = new CellList<FullSupplierDetail>(new SupplierCell());
-        initWidget(uiBinder.createAndBindUi(this));
+        //
+        titleMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.TITLE));
+        categoriesMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.CATEGORIES));
+        localitiesMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.LOCALITIES));
+        excludedSuppliersMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.EXCLUDE_SUPPLIER));
+        priceMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.PRICE));
+        endDateMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.END_DATE));
+        validToDateMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO_DATE));
+        maxOffersMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.MAX_OFFERS));
+        minRatingMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING));
+        descriptionMonitor = new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION));
 
-        driver.initialize(this);
-        driver.edit(fullDemandDetail);
+        initWidget(uiBinder.createAndBindUi(this));
 
         detail.setVisible(true);
         editButtonsPanel.setVisible(false);
         setEnables(false);
         StyleResource.INSTANCE.detailViews().ensureInjected();
+        StyleResource.INSTANCE.common().ensureInjected();
+    }
+
+    //Popup
+    private void createSelectorWidgetPopup() {
+        selectorWidgetPopup = new PopupPanel(true);
+        selectorWidgetPopup.setSize("300px", "300px");
+        selectorWidgetPopup.setGlassEnabled(true);
+        selectorWidgetPopup.hide();
     }
 
     /**************************************************************************/
     /* UI BINDER HANDLERS                                                     */
+    /* This handlers only hanlde graphic changes. They don't handle the logic.*/
+    /* Logis is handled by presenter                                          */
     /**************************************************************************/
-    //This handler only hanlde graphic changes. They don't handle the logic.
     @UiHandler("editDemandButton")
     public void editDemandButtonClickHandler(ClickEvent e) {
         choiceButtonsPanel.setVisible(false);
@@ -131,17 +130,19 @@ public class EditableDemandDetailView extends Composite implements ProvidesValid
 
     @UiHandler("submitButton")
     public void submitButtonClickHandler(ClickEvent e) {
-        validate();
-        if (isValid()) {
-            //edit
-            choiceButtonsPanel.setVisible(true);
-            editButtonsPanel.setVisible(false);
-            setEnables(false);
+        for (ChangeMonitor monitor : monitors) {
+            monitor.reset();
         }
+        choiceButtonsPanel.setVisible(true);
+        editButtonsPanel.setVisible(false);
+        setEnables(false);
     }
 
     @UiHandler("cancelButton")
     public void cancelButtonClickHandler(ClickEvent e) {
+        for (ChangeMonitor monitor : monitors) {
+            monitor.revert();
+        }
         choiceButtonsPanel.setVisible(true);
         editButtonsPanel.setVisible(false);
         setEnables(false);
@@ -152,16 +153,17 @@ public class EditableDemandDetailView extends Composite implements ProvidesValid
     /**************************************************************************/
     public void setDemanDetail(FullDemandDetail demandDetail) {
         GWT.log("detail detail" + demandDetail.toString());
-        title.setText(demandDetail.getTitle());
-        price.setValue(demandDetail.getPrice());
-        endDate.setValue(demandDetail.getEndDate());
-        validToDate.setValue(demandDetail.getValidToDate());
-        categories.setRowData(demandDetail.getCategories());
-        localities.setRowData(demandDetail.getLocalities());
-        maxOffers.setValue(demandDetail.getMaxOffers());
-        minRating.setValue(demandDetail.getMinRating());
-        excludedSuppliers.setRowData(demandDetail.getExcludedSuppliers());
-        description.setText(demandDetail.getDescription());
+        demandId = demandDetail.getDemandId();
+        titleMonitor.setBothValues(demandDetail.getTitle());
+        priceMonitor.setBothValues(demandDetail.getPrice());
+        endDateMonitor.setBothValues(demandDetail.getEndDate());
+        validToDateMonitor.setBothValues(demandDetail.getValidToDate());
+        categoriesMonitor.setBothValues(demandDetail.getCategories());
+        localitiesMonitor.setBothValues(demandDetail.getLocalities());
+        maxOffersMonitor.setBothValues(demandDetail.getMaxOffers());
+        minRatingMonitor.setBothValues(demandDetail.getMinRating());
+        excludedSuppliersMonitor.setBothValues(demandDetail.getExcludedSuppliers());
+        descriptionMonitor.setBothValues(demandDetail.getDescription());
     }
 
     public void clear() {
@@ -177,7 +179,8 @@ public class EditableDemandDetailView extends Composite implements ProvidesValid
         description.setText(EMPTY);
     }
 
-    private void setEnables(boolean enable) {
+    @Override
+    public void setEnables(boolean enable) {
         title.setEnabled(enable);
         price.setEnabled(enable);
         endDate.setEnabled(enable);
@@ -185,20 +188,39 @@ public class EditableDemandDetailView extends Composite implements ProvidesValid
         maxOffers.setEnabled(enable);
         minRating.setEnabled(enable);
         description.setEnabled(enable);
+        editCatBtn.setEnabled(enable);
+        editLocBtn.setEnabled(enable);
     }
 
-    public void toggleVisible() {
-        if (detail.isVisible()) {
-            detail.getElement().getStyle().setDisplay(Display.NONE);
-        } else {
-            detail.getElement().getStyle().setDisplay(Display.BLOCK);
+    @Override
+    public void setChangeHandler(ChangeHandler handler) {
+        for (ChangeMonitor monitor : monitors) {
+            monitor.addChangeHandler(handler);
         }
+    }
+
+    /**
+     * Need for CategorySelector when closing to set newly chosen categories.
+     * @param categories
+     */
+    @Override
+    public void setCategories(List<CategoryDetail> categories) {
+        categoriesMonitor.setValue(categories);
+    }
+
+    /**
+     * Need for LocalitySelector when closing to set newly chosen localities.
+     * @param loclaities
+     */
+    @Override
+    public void setLocalities(List<LocalityDetail> localities) {
+        localitiesMonitor.setValue(localities);
     }
 
     /**************************************************************************/
     /* GETTER                                                                 */
     /**************************************************************************/
-    //Buttons
+    /** Buttons. **/
     public Button getDeleteDemandButton() {
         return deleteDemandButton;
     }
@@ -207,80 +229,80 @@ public class EditableDemandDetailView extends Composite implements ProvidesValid
         return editDemandButton;
     }
 
-    //
+    @Override
+    public Button getSubmitButton() {
+        return submitButton;
+    }
+
+    @Override
+    public Button getCancelButton() {
+        return cancelButton;
+    }
+
+    @Override
+    public Button getEditCatBtn() {
+        return editCatBtn;
+    }
+
+    @Override
+    public Button getEditLocBtn() {
+        return editLocBtn;
+    }
+
+    /** Panels. **/
     public HTMLPanel getDetail() {
         return detail;
     }
 
+    @Override
     public HTMLPanel getChoiceButtonsPanel() {
         return choiceButtonsPanel;
     }
 
+    @Override
     public HTMLPanel getEditButtonsPanel() {
         return editButtonsPanel;
     }
 
-    /**************************************************************************/
-    /* Helper methods                                                         */
-    /**************************************************************************/
-    private void validate() {
-        //reset
-        for (String item : valid) {
-            setError(item, NORMAL_STYLE, EMPTY);
-        }
-        valid.clear();
-        //validate
-        FullDemandDetail demandDetail = driver.flush();
-        Set<ConstraintViolation<FullDemandDetail>> violations = validator.validate(demandDetail, Default.class);
-        displayErrors(violations);
+    @Override
+    public PopupPanel getSelectorWidgetPopup() {
+        return selectorWidgetPopup;
     }
 
-    private void displayErrors(Set<ConstraintViolation<FullDemandDetail>> violations) {
-        for (ConstraintViolation<FullDemandDetail> violation : violations) {
-            setError(violation.getPropertyPath().toString(), ERROR_STYLE, violation.getMessage());
-            valid.add(violation.getPropertyPath().toString());
-            return;
-        }
+    /** Data. **/
+    @Override
+    public long getDemandId() {
+        return demandId;
     }
 
-    /**
-     * Set style and error message to given item.
-     *
-     * @param item - use class constant CITY, STATE, STREET, ZIP
-     * @param style - user class constant NORMAL_STYLE, ERROR_STYLE
-     * @param errorMessage - message of item's ErrorLabel
-     */
-    private void setError(String item, String style, String errorMessage) {
-        if (item.equals(TITLE)) {
-            this.title.setStyleName(style);
-            this.errorLabelTitle.setText(errorMessage);
-        } else if (item.equals(PRICE)) {
-            this.price.setStyleName(style);
-            this.errorLabelPrice.setText(errorMessage);
-        } else if (item.equals(END_DATE)) {
-            this.endDate.setStyleName(style);
-            this.errorLabelEndDate.setText(errorMessage);
-        } else if (item.equals(DESCRIPTION)) {
-            this.description.setStyleName(style);
-            this.errorLabelDescription.setText(errorMessage);
-        } else if (item.equals(CATEGORY)) {
-            this.categories.setStyleName(style);
-            this.errorLabelCategories.setText(errorMessage);
-        } else if (item.equals(LOCALITY)) {
-            this.localities.setStyleName(style);
-            this.errorLabelLocalities.setText(errorMessage);
-        } else if (item.equals(EXCLUDED_SUPPLIERS)) {
-            this.excludedSuppliers.setStyleName(style);
-            this.errorLabelExclidedSuppliers.setText(errorMessage);
-        } else if (item.equals(VALID_TO_DATE)) {
-            this.validToDate.setStyleName(style);
-            this.errorLabelValidToDate.setText(errorMessage);
-        } else if (item.equals(MAX_OFFERS)) {
-            this.maxOffers.setStyleName(style);
-            this.errorLabelMaxOffers.setText(errorMessage);
-        } else if (item.equals(MIN_RATING)) {
-            this.minRating.setStyleName(style);
-            this.errorLabelMinRating.setText(errorMessage);
-        }
+    @Override
+    public ArrayList<CategoryDetail> getCategories() {
+        return (ArrayList<CategoryDetail>) categoriesMonitor.getValue();
+    }
+
+    @Override
+    public ArrayList<LocalityDetail> getLocalities() {
+        return (ArrayList<LocalityDetail>) localitiesMonitor.getValue();
+    }
+
+    /** Validation. **/
+    @Override
+    public boolean isValid() {
+        return titleMonitor.isValid()
+                && categoriesMonitor.isValid()
+                && localitiesMonitor.isValid()
+                && excludedSuppliersMonitor.isValid()
+                && priceMonitor.isValid()
+                && endDateMonitor.isValid()
+                && validToDateMonitor.isValid()
+                && maxOffersMonitor.isValid()
+                && minRatingMonitor.isValid()
+                && descriptionMonitor.isValid();
+    }
+
+    /** Widget view. **/
+    @Override
+    public Widget asWidget() {
+        return this;
     }
 }
