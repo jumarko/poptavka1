@@ -211,25 +211,6 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
-        StringBuilder str = new StringBuilder();
-        switch (displayWhat) {
-            case IUniversalDetail.CLIENT_NAME:
-                str.append(getClientName());
-                break;
-            case IUniversalDetail.SUPPLIER_NAME:
-                str.append(getSupplierName());
-                break;
-            default:
-                break;
-        }
-        str.append(" ");
-        str.append(getUnreadMessageCount());
-        str.append("/");
-        str.append(getMessageCount());
-        return str.toString();
-    }
-
     @Override
     public boolean isRead() {
         return isRead;

@@ -18,8 +18,11 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -45,6 +48,8 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
 
         ListBox getActionBox();
 
+        Button getFinnishBtn();
+
         SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
@@ -56,6 +61,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
+    private SupplierOffersDetail lastOpenedDetail = null;
     private long lastOpenedAssignedDemand = -1;
     private long selectedSupplierAssignedDemandId = -1;
 
@@ -69,11 +75,13 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
-        addReplyColumnFieldUpdater();
-        addFinnishedOfferColumnFieldUpdater();
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
+        // Buttons handlers
+        addFinnishButtonHandler();
+        // Row styles
+        addGridRowStyles();
     }
 
     /**************************************************************************/
@@ -226,26 +234,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
                 });
     }
 
-    public void addReplyColumnFieldUpdater() {
-        view.getDataGrid().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        detailSection.getView().getReplyHolder().addQuestionReply();
-                    }
-                });
-    }
-
-    public void addFinnishedOfferColumnFieldUpdater() {
-        view.getDataGrid().getFinnishedImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        eventBus.requestFinishOffer(object.getOfferId(), object.getUserMessageId());
-                    }
-                });
-    }
-
     public void addColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<SupplierOffersDetail, String>() {
             @Override
@@ -253,6 +241,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
 //                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
 //                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
+                lastOpenedDetail = object;
                 object.setIsRead(true);
 //                    view.getDataGrid().redraw();
                 displayDetailContent(object);
@@ -273,26 +262,52 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         view.getDataGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
+    /** RowStyles. **/
+    private void addGridRowStyles() {
+        view.getDataGrid().setRowStyles(new RowStyles<IUniversalDetail>() {
+            @Override
+            public String getStyleNames(IUniversalDetail row, int rowIndex) {
+                if (row.getUnreadMessageCount() > 0) {
+                    return Storage.RSCS.grid().unread();
+                }
+                return "";
+            }
+        });
+    }
+
     private void addActionChangeHandler() {
         view.getActionBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     default:
                         break;
                 }
+            }
+        });
+    }
+
+    private void addFinnishButtonHandler() {
+        view.getFinnishBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                //Finnish button is always awaylable of single selections, threfore can use 'get(0)'.
+                eventBus.requestFinishOffer(
+                        view.getDataGrid().getSelectedObjects().get(0).getOfferId(),
+                        view.getDataGrid().getSelectedObjects().get(0).getUserMessageId());
             }
         });
     }

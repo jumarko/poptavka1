@@ -162,21 +162,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public static String displayTitleHtml(ClientDemandDetail clientDemandDetail) {
-        if (clientDemandDetail.getUnreadMessageCount() > 0) {
-            StringBuilder str = new StringBuilder();
-            str.append("<strong>");
-            str.append(clientDemandDetail.getDemandTitle());
-            str.append(" (");
-            str.append(clientDemandDetail.getUnreadMessageCount());
-            str.append(")");
-            str.append("<strong>");
-            return str.toString();
-        } else {
-            return clientDemandDetail.getDemandTitle();
-        }
-    }
-
     /**
      * @return the threadRootId
      */

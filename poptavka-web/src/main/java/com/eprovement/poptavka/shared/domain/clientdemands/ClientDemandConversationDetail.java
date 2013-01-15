@@ -133,16 +133,6 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         this.threadMessageId = threadMessageId;
     }
 
-    public static String displaySupplierNameWithMessagesCounts(ClientDemandConversationDetail detail) {
-        StringBuilder str = new StringBuilder();
-        str.append(detail.getSupplierName());
-        str.append(" ");
-        str.append(detail.getUnreadMessageCount());
-        str.append("/");
-        str.append(detail.getMessageCount());
-        return str.toString();
-    }
-
     @Override
     public long getClientId() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -222,11 +212,6 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
 
     @Override
     public long getOfferId() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

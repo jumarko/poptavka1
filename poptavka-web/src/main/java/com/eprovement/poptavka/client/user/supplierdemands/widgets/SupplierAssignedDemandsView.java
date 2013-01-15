@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -39,6 +40,7 @@ public class SupplierAssignedDemandsView extends Composite
     @UiField SimplePanel detailPanel;
     @UiField HorizontalPanel toolBar;
     @UiField Label tableNameLabel;
+    @UiField Button finnishBtn;
 
     /**************************************************************************/
     /* Initialization                                                            */
@@ -81,6 +83,11 @@ public class SupplierAssignedDemandsView extends Composite
     @Override
     public ListBox getActionBox() {
         return actionBox;
+    }
+
+    @Override
+    public Button getFinnishBtn() {
+        return finnishBtn;
     }
 
     @Override

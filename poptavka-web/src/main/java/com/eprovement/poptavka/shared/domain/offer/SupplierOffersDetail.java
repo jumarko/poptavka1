@@ -321,26 +321,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     }
 
     @Override
-    public String displayUserNameWithUnreadMessageCounts(int displayWhat) {
-        StringBuilder str = new StringBuilder();
-        switch (displayWhat) {
-            case IUniversalDetail.CLIENT_NAME:
-                str.append(getClientName());
-                break;
-            case IUniversalDetail.SUPPLIER_NAME:
-                str.append(getSupplierName());
-                break;
-            default:
-                break;
-        }
-        str.append(" ");
-        str.append(getUnreadMessageCount());
-        str.append("/");
-        str.append(getMessageCount());
-        return str.toString();
-    }
-
-    @Override
     public String toString() {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
                 + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="

@@ -137,7 +137,15 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return ClientDemandDetail.displayTitleHtml((ClientDemandDetail) object);
+                        StringBuilder str = new StringBuilder();
+                        ClientDemandDetail detail = (ClientDemandDetail) object;
+                        str.append(detail.getDemandTitle());
+                        if (detail.getMessageCount() > 0) {
+                            str.append(" (");
+                            str.append(detail.getMessageCount());
+                            str.append(")");
+                        }
+                        return str.toString();
                     }
                 });
 

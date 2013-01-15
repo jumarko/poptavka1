@@ -367,16 +367,16 @@ public class ClientOffersPresenter
             public void onChange(ChangeEvent event) {
                 switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
                         break;
                     case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
                         break;
                     default:
                         break;
@@ -411,7 +411,7 @@ public class ClientOffersPresenter
         view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (view.getOfferGrid().getSelectedIdList().size() < 2) {
+                if (view.getOfferGrid().getSelectedUserMessageIds().size() < 2) {
                     view.getAcceptBtn().setVisible(true);
                 } else {
                     view.getAcceptBtn().setVisible(false);

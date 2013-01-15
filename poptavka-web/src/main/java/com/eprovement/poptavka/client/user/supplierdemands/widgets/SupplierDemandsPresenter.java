@@ -18,6 +18,7 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -72,6 +73,8 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
+        // Row styles
+        addGridRowStyles();
     }
 
     /**************************************************************************/
@@ -245,6 +248,19 @@ public class SupplierDemandsPresenter extends LazyPresenter<
 //        view.getDataGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
+    /** RowStyles. **/
+    private void addGridRowStyles() {
+        view.getDataGrid().setRowStyles(new RowStyles<IUniversalDetail>() {
+            @Override
+            public String getStyleNames(IUniversalDetail row, int rowIndex) {
+                if (row.getUnreadMessageCount() > 0) {
+                    return Storage.RSCS.grid().unread();
+                }
+                return "";
+            }
+        });
+    }
+
     // Widget action handlers
     private void addActionChangeHandler() {
         view.getActionBox().addChangeHandler(new ChangeHandler() {
@@ -252,16 +268,16 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             public void onChange(ChangeEvent event) {
                 switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     default:
                         break;

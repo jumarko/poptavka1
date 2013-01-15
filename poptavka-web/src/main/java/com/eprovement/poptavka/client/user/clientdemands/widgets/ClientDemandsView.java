@@ -58,9 +58,6 @@ public class ClientDemandsView extends Composite
     //table definition
     @UiField(provided = true) UniversalTableGrid conversationGrid;
     //table columns
-//    private Header checkHeader;
-//    private Column<ClientDemandConversationDetail, Boolean> checkColumn;
-//    private Column<ClientDemandConversationDetail, Boolean> starColumn;
     private Column<IUniversalDetail, String> supplierNameColumn;
     private Column<IUniversalDetail, String> bodyPreviewColumn;
     private Column<IUniversalDetail, String> dateColumn;
@@ -166,8 +163,15 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        ClientDemandDetail clientDetail = (ClientDemandDetail) object;
-                        return ClientDemandDetail.displayTitleHtml(clientDetail);
+                        StringBuilder str = new StringBuilder();
+                        ClientDemandDetail detail = (ClientDemandDetail) object;
+                        str.append(detail.getDemandTitle());
+                        if (detail.getMessageCount() > 0) {
+                            str.append(" (");
+                            str.append(detail.getMessageCount());
+                            str.append(")");
+                        }
+                        return str.toString();
                     }
                 });
 
@@ -206,16 +210,6 @@ public class ClientDemandsView extends Composite
      * Create all columns to the grid.
      */
     public void initConversationTableColumns() {
-        // CheckBox column
-//        checkHeader = new Header<Boolean>(new CheckboxCell()) {
-//            @Override
-//            public Boolean getValue() {
-//                return false;
-//            }
-//        };
-//        checkColumn = conversationGrid.addCheckboxColumn(checkHeader);
-//        // Star Column
-//        starColumn = conversationGrid.addStarColumn();
 //        // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
@@ -223,7 +217,14 @@ public class ClientDemandsView extends Composite
                     @Override
                     public String getValue(Object object) {
                         ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
-                        return ClientDemandConversationDetail.displaySupplierNameWithMessagesCounts(detail);
+                        StringBuilder str = new StringBuilder();
+                        str.append(detail.getSupplierName());
+                        if (detail.getMessageCount() > 0) {
+                            str.append(" (");
+                            str.append(detail.getMessageCount());
+                            str.append(")");
+                        }
+                        return str.toString();
                     }
                 });
 

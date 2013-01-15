@@ -18,7 +18,10 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -43,6 +46,8 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         SimplePager getPager();
 
         ListBox getActionBox();
+
+        Button getCloseBtn();
 
         SimplePanel getWrapperPanel();
 
@@ -70,6 +75,8 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         addTextColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
+        // buttons handlers
+        addCloseButtonHandler();
     }
 
     /**************************************************************************/
@@ -225,8 +232,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
                 //getUserMessageDetail() -> getOfferDetail() due to fake data
 //                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
-//                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
-//                    view.getDataGrid().redraw();
+                lastOpenedAssignedDemand = object.getDemandId();
                 displayDetailContent(object);
                 MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid()
                         .getSelectionModel();
@@ -251,20 +257,30 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             public void onChange(ChangeEvent event) {
                 switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     default:
                         break;
                 }
+            }
+        });
+    }
+
+    private void addCloseButtonHandler() {
+        view.getCloseBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestCloseDemand(lastOpenedAssignedDemand);
             }
         });
     }

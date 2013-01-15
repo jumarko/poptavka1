@@ -4,7 +4,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.RowStyles;
@@ -14,9 +13,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This widget was created mainly for ClientAssignedProjects, SupplierPotentialProjects,
@@ -47,14 +44,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private Column<IUniversalDetail, Date> urgencyColumn;
     private Column<IUniversalDetail, String> receiveDateColumn;
     private Column<IUniversalDetail, String> finnishDateColumn;
-    private Column<IUniversalDetail, ImageResource> replyImageColumn;
-    private Column<IUniversalDetail, ImageResource> acceptOfferImageColumn;
-    private Column<IUniversalDetail, ImageResource> declineOfferImageColumn;
-    private Column<IUniversalDetail, ImageResource> closeDemandImageColumn;
-    private Column<IUniversalDetail, ImageResource> sendOfferImageColumn;
-    private Column<IUniversalDetail, ImageResource> editOfferImageColumn;
-    private Column<IUniversalDetail, ImageResource> downloadOfferImageColumns;
-    private Column<IUniversalDetail, ImageResource> finnishedImageColumn;
     //table column width constatnts
     private static final int NAME_COL_WIDTH = 50;
     private static final int DEMAND_TITLE_COL_WIDTH = 50;
@@ -70,14 +59,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private static final String URGENCY_COLUMN = "endDate";
     private static final String RECEIVED_DATE_COLUMN = "receivedDate"; //Prijate
     private static final String FINNISH_DATE_COLUMN = "finnishDate"; //Dodanie/dorucenie
-    private static final String REPLY_IMAGE_COLUMN = "reply";
-    private static final String ACCEPT_OFFER_IMAGE_COLUMN = "acceptOffer";
-    private static final String DECLINE_OFFER_IMAGE_COLUMN = "declineOffer";
-    private static final String CLOSE_DEMAND_IMAGE_COLUMN = "closeDemand";
-    private static final String SEND_OFFER_IMAGE_COLUMN = "sendOffer";
-    private static final String EDIT_OFFER_IMAGE_COLUMN = "editOffer";
-    private static final String DOWNLOAD_OFFER_IMAGE_COLUMN = "downloadOffer";
-    private static final String FINNISHED_IMAGE_COLUMN = "finnished";
     private List<String> gridColumns = new ArrayList<String>();
     //Other
     private MultiSelectionModel<IUniversalDetail> selectionModel;
@@ -137,7 +118,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         setRowStyles(new RowStyles<IUniversalDetail>() {
             @Override
             public String getStyleNames(IUniversalDetail row, int rowIndex) {
-                if (row.getUnreadMessageCount() > 0) {
+                if (!row.isRead()) {
                     return Storage.RSCS.grid().unread();
                 }
                 return "";
@@ -192,9 +173,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
-        gridColumns.add(REPLY_IMAGE_COLUMN);
-        gridColumns.add(EDIT_OFFER_IMAGE_COLUMN);
-        gridColumns.add(DOWNLOAD_OFFER_IMAGE_COLUMN);
     }
 
     /**
@@ -207,8 +185,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RECEIVED_DATE_COLUMN);
-        gridColumns.add(FINNISHED_IMAGE_COLUMN);
-        gridColumns.add(REPLY_IMAGE_COLUMN);
     }
 
     /**
@@ -227,7 +203,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         // Star Column - always create this column
         starColumn = addStarColumn();
 
-        addImageColumns();
         addClientNameColumn();
         addSupplierNameColumn();
         addDemandTitleColumn();
@@ -242,49 +217,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         addFinnishDateColumn();
     }
 
-    private void addImageColumns() {
-        if (gridColumns.contains(REPLY_IMAGE_COLUMN)) {
-            replyImageColumn = addIconColumn(
-                    Storage.RSCS.images().replyImage(),
-                    Storage.MSGS.replyExplanationText());
-        }
-        if (gridColumns.contains(ACCEPT_OFFER_IMAGE_COLUMN)) {
-            acceptOfferImageColumn = addIconColumn(
-                    Storage.RSCS.images().acceptOfferImage(),
-                    Storage.MSGS.acceptOfferExplanationText());
-        }
-        if (gridColumns.contains(DECLINE_OFFER_IMAGE_COLUMN)) {
-            declineOfferImageColumn = addIconColumn(
-                    Storage.RSCS.images().declineOfferImage(),
-                    Storage.MSGS.declineOfferExplanationText());
-        }
-        if (gridColumns.contains(CLOSE_DEMAND_IMAGE_COLUMN)) {
-            closeDemandImageColumn = addIconColumn(
-                    Storage.RSCS.images().closeDemandImage(),
-                    Storage.MSGS.closeDemandExplanationText());
-        }
-        if (gridColumns.contains(SEND_OFFER_IMAGE_COLUMN)) {
-            sendOfferImageColumn = addIconColumn(
-                    Storage.RSCS.images().sendOfferImage(),
-                    Storage.MSGS.sendOfferExplanationText());
-        }
-        if (gridColumns.contains(EDIT_OFFER_IMAGE_COLUMN)) {
-            editOfferImageColumn = addIconColumn(
-                    Storage.RSCS.images().editOfferImage(),
-                    Storage.MSGS.editOfferExplanationText());
-        }
-        if (gridColumns.contains(DOWNLOAD_OFFER_IMAGE_COLUMN)) {
-            downloadOfferImageColumns = addIconColumn(
-                    Storage.RSCS.images().downloadOfferImage(),
-                    Storage.MSGS.downloadOfferExplanationText());
-        }
-        if (gridColumns.contains(FINNISHED_IMAGE_COLUMN)) {
-            finnishedImageColumn = addIconColumn(
-                    Storage.RSCS.images().finnishedImage(),
-                    Storage.MSGS.finnishedExplanationText());
-        }
-    }
-
     private void addClientNameColumn() {
         if (gridColumns.contains(CLIENT_NAME_COLUMN)) {
             clientNameColumn = addColumn(
@@ -292,8 +224,15 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return ((IUniversalDetail) object).displayUserNameWithUnreadMessageCounts(
-                                    IUniversalDetail.CLIENT_NAME);
+                            StringBuilder str = new StringBuilder();
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            str.append(detail.getClientName());
+                            if (detail.getMessageCount() > 0) {
+                                str.append(" (");
+                                str.append(detail.getMessageCount());
+                                str.append(")");
+                            }
+                            return str.toString();
                         }
                     });
         }
@@ -306,8 +245,15 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return ((IUniversalDetail) object).displayUserNameWithUnreadMessageCounts(
-                                    IUniversalDetail.SUPPLIER_NAME);
+                            StringBuilder str = new StringBuilder();
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            str.append(detail.getSupplierName());
+                            if (detail.getMessageCount() > 0) {
+                                str.append(" (");
+                                str.append(detail.getMessageCount());
+                                str.append(")");
+                            }
+                            return str.toString();
                         }
                     });
         }
@@ -422,38 +368,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         return urgencyColumn;
     }
 
-    public Column<IUniversalDetail, ImageResource> getReplyImageColumn() {
-        return replyImageColumn;
-    }
-
-    public Column<IUniversalDetail, ImageResource> getAcceptOfferImageColumn() {
-        return acceptOfferImageColumn;
-    }
-
-    public Column<IUniversalDetail, ImageResource> getDeclineOfferImageColumn() {
-        return declineOfferImageColumn;
-    }
-
-    public Column<IUniversalDetail, ImageResource> getCloseDemandImageColumn() {
-        return closeDemandImageColumn;
-    }
-
-    public Column<IUniversalDetail, ImageResource> getSendOfferImageColumn() {
-        return sendOfferImageColumn;
-    }
-
-    public Column<IUniversalDetail, ImageResource> getEditOfferImageColumn() {
-        return editOfferImageColumn;
-    }
-
-    public Column<IUniversalDetail, ImageResource> getDownloadOfferImageColumns() {
-        return downloadOfferImageColumns;
-    }
-
-    public Column<IUniversalDetail, ImageResource> getFinnishedImageColumn() {
-        return finnishedImageColumn;
-    }
-
     //Header
     public Header getCheckHeader() {
         return checkHeader;
@@ -470,22 +384,18 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Set<IUniversalDetail> getSelectedMessageList() {
-        MultiSelectionModel<IUniversalDetail> model =
-                (MultiSelectionModel<IUniversalDetail>) getSelectionModel();
-        return model.getSelectedSet();
+    public ArrayList<IUniversalDetail> getSelectedObjects() {
+        return new ArrayList<IUniversalDetail>(getSelectionModel().getSelectedSet());
     }
 
     /**
      * Get IDs of selected objects.
      * @return
      */
-    public List<Long> getSelectedIdList() {
+    public List<Long> getSelectedUserMessageIds() {
         List<Long> idList = new ArrayList<Long>();
-        Set<IUniversalDetail> set = getSelectedMessageList();
-        Iterator<IUniversalDetail> it = set.iterator();
-        while (it.hasNext()) {
-            idList.add(it.next().getUserMessageId());
+        for (IUniversalDetail detail : getSelectedObjects()) {
+            idList.add(detail.getUserMessageId());
         }
         return idList;
     }

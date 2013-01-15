@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -39,6 +40,7 @@ public class ClientAssignedDemandsView extends Composite
     @UiField HorizontalPanel toolBar;
     @UiField ListBox actionBox;
     @UiField Label tableNameLabel;
+    @UiField Button closeBtn;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -86,6 +88,11 @@ public class ClientAssignedDemandsView extends Composite
     @Override
     public SimplePanel getWrapperPanel() {
         return wrapperPanel;
+    }
+
+    @Override
+    public Button getCloseBtn() {
+        return closeBtn;
     }
 
     @Override

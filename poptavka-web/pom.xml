@@ -299,7 +299,7 @@
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>i18n</goal>
+                                    <!--<goal>i18n</goal>-->
                                     <goal>compile</goal>
                                     <goal>test</goal>
                                 </goals>
@@ -307,9 +307,8 @@
 
                         </executions>
                         <configuration>
-                            <i18nConstantsBundles>
-                                <i18nConstantsBundle>com.eprovement.poptavka.client.i18n.PoptavkaConstants</i18nConstantsBundle>
-                            </i18nConstantsBundles>
+                            <!--<i18nMessagesBundle>com.google.gwt.i18n.client.LocalizableResource</i18nMessagesBundle>-->
+                            <!--<i18nConstantsWithLookupBundle>com.google.gwt.i18n.client.ValidationMessages</i18nConstantsWithLookupBundle>-->
 
                             <extraJvmArgs>-noverify -javaagent:${REBEL_HOME}/jrebel.jar -Xmx1576m -Xms512m -XX:MaxPermSize=1024m</extraJvmArgs>
                             <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
@@ -345,16 +344,16 @@
                     <execution>
                         <goals>
                             <!-- <goal>generateAsync</goal> -->
-                            <goal>i18n</goal>
+                            <!--<goal>i18n</goal>-->
                             <goal>compile</goal>
                             <!--  <goal>test</goal> -->
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <i18nConstantsBundles>
-                        <i18nConstantsBundle>com.eprovement.poptavka.client.i18n.PoptavkaConstants</i18nConstantsBundle>
-                    </i18nConstantsBundles>
+                    <!--<i18nMessagesBundle>com.google.gwt.i18n.client.LocalizableResource</i18nMessagesBundle>-->
+                    <!--<i18nConstantsWithLookupBundle>com.google.gwt.i18n.client.ValidationMessages</i18nConstantsWithLookupBundle>-->
+
                     <!--                    <servicePattern>cz/poptavka/sample/client/service/*RPCService.java</servicePattern>-->
                     <extraJvmArgs>-Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m</extraJvmArgs>
                     <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>

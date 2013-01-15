@@ -15,6 +15,9 @@
     <inherits name="com.google.web.bindery.requestfactory.RequestFactory" />
     <inherits name="com.google.gwt.json.JSON"/>
     
+    <extend-property name="locale" values="en"/>
+    <extend-property name="locale" values="cs"/>
+    
 
     <!-- GWT validation BEGIN -->
     <inherits name='com.google.gwt.editor.Editor' />
@@ -61,6 +64,7 @@
     <set-property name="gwt.logging.popupHandler" value="DISABLED" />
     <set-property name="gwt.logging.systemHandler" value="ENABLED" />
     <set-property name="gwt.logging.firebugHandler" value="ENABLED" />
+    <set-property-fallback name="locale" value="en"/>
 
     <!-- Do not define servlets here, use web.xml -->
 </module>

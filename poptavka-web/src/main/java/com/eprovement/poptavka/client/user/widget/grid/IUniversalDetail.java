@@ -78,16 +78,4 @@ public interface IUniversalDetail {
     // Offer part
     //--------------------------------------------------------------------------
     long getOfferId();
-    // Display
-    //--------------------------------------------------------------------------
-    int CLIENT_NAME = 0;
-    int SUPPLIER_NAME = 1;
-
-    /**
-     * Return CLIENT or SUPPLIER name with count of sub.
-     *
-     * @param displayWhat - constants: IUniversalDetail.CLIENT_NAME, IUniversalDetail.SUPPLIER_NAME
-     * @return
-     */
-    String displayUserNameWithUnreadMessageCounts(int displayWhat);
 }

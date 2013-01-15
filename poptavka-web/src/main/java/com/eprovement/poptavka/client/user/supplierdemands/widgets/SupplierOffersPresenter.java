@@ -18,7 +18,7 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -69,12 +69,11 @@ public class SupplierOffersPresenter extends LazyPresenter<
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
-        addReplyColumnFieldUpdater();
-        addEditOfferColumnFieldUpdater();
-        addDownloadOfferColumnFieldUpdater();
         addColumnFieldUpdaters();
         // Listbox actions
         addActionChangeHandler();
+        // Row Style
+        addGridRowStyles();
     }
 
     /**************************************************************************/
@@ -221,36 +220,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
                 });
     }
 
-    public void addReplyColumnFieldUpdater() {
-        view.getDataGrid().getReplyImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        detailSection.getView().getReplyHolder().addQuestionReply();
-                    }
-                });
-    }
-
-    public void addEditOfferColumnFieldUpdater() {
-        view.getDataGrid().getEditOfferImageColumn().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        //TODO how to edit offer
-                    }
-                });
-    }
-
-    public void addDownloadOfferColumnFieldUpdater() {
-        view.getDataGrid().getDownloadOfferImageColumns().setFieldUpdater(
-                new FieldUpdater<IUniversalDetail, ImageResource>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, ImageResource value) {
-                        //TODO how to download offer
-                    }
-                });
-    }
-
     public void addColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<SupplierOffersDetail, String>() {
             @Override
@@ -275,22 +244,35 @@ public class SupplierOffersPresenter extends LazyPresenter<
         view.getDataGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
+    /** RowStyles. **/
+    private void addGridRowStyles() {
+        view.getDataGrid().setRowStyles(new RowStyles<IUniversalDetail>() {
+            @Override
+            public String getStyleNames(IUniversalDetail row, int rowIndex) {
+                if (row.getUnreadMessageCount() > 0) {
+                    return Storage.RSCS.grid().unread();
+                }
+                return "";
+            }
+        });
+    }
+
     private void addActionChangeHandler() {
         view.getActionBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getActionBox().getSelectedIndex()) {
                     case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
                         break;
                     case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
                         break;
                     default:
                         break;

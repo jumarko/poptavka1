@@ -4,11 +4,28 @@
              xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+    
+    <ui:style>
+		.button {
+		background: url(images/new-offer-green.png) no-repeat;
+		padding: 0 0 1px 23px;
+		border: none;
+		color: #FFFFFF;
+		font-weight: bold;
+		height: 31px;
+		width: 119px;
+		float: left;
+		}
+
+    </ui:style>
 
     <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
         <g:north size="65">
             <g:HorizontalPanel ui:field="toolBar" styleName="{res.layout.toolbarItemsBlock}">
                 <g:Label ui:field="tableNameLabel" />
+                <g:Button ui:field="closeBtn" styleName="{style.button}">
+                    <ui:msg key="close">Close</ui:msg>
+                </g:Button>
                 <g:ListBox ui:field="actionBox" selectedIndex="0">
                     <g:item>
                         <ui:msg key="actoin">action</ui:msg>
