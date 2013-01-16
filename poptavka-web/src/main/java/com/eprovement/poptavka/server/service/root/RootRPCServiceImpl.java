@@ -250,24 +250,27 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     /**
-     * Gets all messages from conversation between client and supplier.
+     * Gets all inbox and sent user messages UsereMessage of given user and thread root.
+     * Once loaded, all user messages are set as read, see isRead attribute of UserMessage.
      *
-     * @param threadId is root demand message id
-     * @param userId can be either supplier or client
-     * @return
+     * @param threadId is root message id
+     * @param userId can be either supplier's or client's user Id
+     * @return list of all messages in this thread
      * @throws RPCException
      */
     @Override
-    // TODO RELEASE call setMessageReadStatus in body
     // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService
     public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {
         Message threadRoot = messageService.getById(threadId);
 
-//        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
-
         User user = this.generalService.find(User.class, userId);
         List<UserMessage> userMessages = this.messageService
                 .getConversationUserMessages(threadRoot, user);
+        // set all user messages as read
+        for (UserMessage userMessage : userMessages) {
+            userMessage.setRead(true);
+            userMessageService.update(userMessage);
+        }
         return userMessageConverter.convertToTargetList(userMessages);
     }
 

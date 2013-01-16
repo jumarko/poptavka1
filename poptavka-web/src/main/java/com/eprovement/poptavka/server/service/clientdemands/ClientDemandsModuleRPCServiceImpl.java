@@ -499,7 +499,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
             Offer offer = userMessage.getMessage().getOffer();
-            // TODO ivlcek - refactor and create converter
+            // TODO RELEASE ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
