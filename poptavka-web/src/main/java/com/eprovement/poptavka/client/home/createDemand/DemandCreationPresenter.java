@@ -116,7 +116,7 @@ public class DemandCreationPresenter
                     //if previous step is valid, continue
                     if (canContinue(eventItem - 1)) {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(true);
-                        view.getStatusLabel(eventItem - 1).setMessage(MSGS.ok());
+                        view.getStatusLabel(eventItem - 1).setMessage(MSGS.commonOK());
                     } else {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(false);
                         view.getStatusLabel(eventItem - 1).setMessage(getErrorInfoLabel(eventItem - 1));
@@ -208,7 +208,7 @@ public class DemandCreationPresenter
             public void onClick(ClickEvent event) {
                 view.getLoginBtn().setVisible(false);
                 view.getRegisterBtn().setVisible(false);
-                view.getStatusLabel(FIRST_TAB_LOGIN).setMessage(MSGS.registerInfoLabel());
+                view.getStatusLabel(FIRST_TAB_LOGIN).setMessage(MSGS.demandCreationRegisterInfoLabel());
 //                eventBus.toggleLoginRegistration();
                 eventBus.initRegistrationForm(view.getHolderPanel(FIRST_TAB_LOGIN));
             }
@@ -371,13 +371,13 @@ public class DemandCreationPresenter
     private String getErrorInfoLabel(int step) {
         switch (step) {
             case SECOND_TAB_FORM:
-                return MSGS.validationErrorInfoLabel();
+                return MSGS.demandCreationSecondTabErrorInfo();
             case THIRD_TAB_CATEGORY:
-                return MSGS.categorySelectorInfoLabel();
+                return MSGS.demandCreationThirdTabErrorInfo();
             case FOURTH_TAB_LOCALITY:
-                return MSGS.localitySelectorInfoLabel();
+                return MSGS.demandCreationFourthTabErrorInfo();
             case FIFTH_TAB_ADVANCE:
-                return MSGS.validationErrorInfoLabel();
+                return MSGS.demandCreationFifthTabErrorInfo();
             default:
                 return "";
         }

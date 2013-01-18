@@ -34,7 +34,7 @@
                     <table>
                         <tr>
                             <td>
-                                <ui:msg key="title">Title</ui:msg>
+                                <ui:msg key="formTitle">Title</ui:msg>
                             </td>
                             <td>
                                 <g:TextBox ui:field="title" />
@@ -45,7 +45,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <ui:msg key="price">Price</ui:msg>
+                                <ui:msg key="formPrice">Price</ui:msg>
                             </td>
                             <td>
                                 <g:TextBox ui:field="priceString" />
@@ -56,7 +56,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <ui:msg key="endDate">End Date</ui:msg>
+                                <ui:msg key="formEndDate">End Date</ui:msg>
                             </td>
                             <td>
                                 <p1:DateBox ui:field="endDate" />
@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <ui:msg key="expireDate">Expire Date</ui:msg>
+                                <ui:msg key="formExpireDate">Expire Date</ui:msg>
                             </td>
                             <td>
                                 <p1:DateBox ui:field="validToDate" />
@@ -81,7 +81,7 @@
 <!--                    <table>
                         <tr>
                             <td>
-                                <ui:msg key="attachment">Attachment</ui:msg>
+                                <ui:msg key="formAttachment">Attachment</ui:msg>
                             </td>
                             <td styleName="{style.width}">
                                 <g:FileUpload />
@@ -94,7 +94,7 @@
                         <tr>
                             <td>
                                 <strong>
-                                    <ui:msg key="description">Description</ui:msg>
+                                    <ui:msg key="formDescription">Description</ui:msg>
                                 </strong>
                                 <br />
                                 <g:TextArea ui:field="description"/>

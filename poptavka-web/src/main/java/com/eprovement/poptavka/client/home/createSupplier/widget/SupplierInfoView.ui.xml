@@ -22,14 +22,14 @@
                             <thead>
                                 <tr>
                                     <th colspan="3">
-                                        <ui:msg key="accInfo">Account Info</ui:msg>
+                                        <ui:msg key="formAccountInfo">Account Info</ui:msg>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr height="32px">
                                     <td>
-                                        <ui:msg key="emailLogin">E-mail</ui:msg>
+                                        <ui:msg key="formEmail">E-mail</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="email"/>
@@ -42,7 +42,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ui:msg key="pass">Password</ui:msg>
+                                        <ui:msg key="formPassword">Password</ui:msg>
                                     </td>
                                     <td>
                                         <g:PasswordTextBox ui:field="password"/>
@@ -55,7 +55,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ui:msg key="passRepeat">Password Again</ui:msg>
+                                        <ui:msg key="formPasswordConfirm">Password Again</ui:msg>
                                     </td>
                                     <td>
                                         <g:PasswordTextBox ui:field="passwordConfirm"/>
@@ -74,7 +74,7 @@
                                 <thead>
                                     <tr>
                                         <th colspan="3">
-                                            <ui:msg key="address">Address</ui:msg>
+                                            <ui:msg key="formAddress">Address</ui:msg>
                                         </th>
                                     </tr>
                                 </thead>
@@ -91,14 +91,14 @@
                             <thead>
                                 <tr>
                                     <th colspan="3">
-                                        <ui:msg key="companyInfo">Company Info</ui:msg>
+                                        <ui:msg key="formCompanyInfo">Company Info</ui:msg>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <ui:msg key="companyName">Company Name</ui:msg>
+                                        <ui:msg key="formCompanyName">Company Name</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="companyName"/>
@@ -107,7 +107,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ui:msg key="idNumber">Identification Number</ui:msg>
+                                        <ui:msg key="formIdentificationNumber">Identification Number</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="identificationNumber"/>
@@ -116,7 +116,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ui:msg key="taxNumber">Tax Number</ui:msg>
+                                        <ui:msg key="formTaxNumber">Tax Number</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="taxId"/>
@@ -125,7 +125,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ui:msg key="website">Your Website</ui:msg>
+                                        <ui:msg key="formWebsite">Your Website</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="website"/>
@@ -136,14 +136,14 @@
                             <thead>
                                 <tr>
                                     <th colspan="3">
-                                        <ui:msg key="contactPerson">Contact Person</ui:msg>
+                                        <ui:msg key="regSupFormContactPerson">Contact Person</ui:msg>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <ui:msg key="name">Name</ui:msg>
+                                        <ui:msg key="formFirstName">Name</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="firstName"/>
@@ -152,7 +152,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ui:msg key="lastName">Last Name</ui:msg>
+                                        <ui:msg key="formLastName">Last Name</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="lastName"/>
@@ -161,7 +161,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ui:msg key="phone">Phone</ui:msg>
+                                        <ui:msg key="formPhone">Phone</ui:msg>
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="phone"/>
@@ -175,7 +175,7 @@
                         <table>
                             <tr>
                                 <th>
-                                    <ui:msg key="companyDescription">Company Description</ui:msg>
+                                    <ui:msg key="formDescription">Company Description</ui:msg>
                                 </th>
                             </tr>
                             <tr>

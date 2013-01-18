@@ -31,8 +31,8 @@ public class DemandDetailView extends Composite {
     Label demandName, price, endDate, validTo, description;
     //i18n
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
-    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(Storage.MSGS.dateFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.formatCurrency());
+    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* INITIALIZATON                                                          */

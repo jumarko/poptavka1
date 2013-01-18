@@ -60,10 +60,10 @@ public class SupplierInfoPresenter
         view.getMailStatus().setVisible(true);
         if (isAvailable) {
             view.getMailStatus().setState(State.ACCEPT_16);
-            view.getMailStatus().setDescription(MSGS.mailAvailable());
+            view.getMailStatus().setDescription(MSGS.formUserRegMailAvailable());
         } else {
             view.getMailStatus().setState(State.ERROR_16);
-            view.getMailStatus().setDescription(MSGS.mailNotAvailable());
+            view.getMailStatus().setDescription(MSGS.formUserRegMailNotAvailable());
         }
     }
 }

@@ -14,7 +14,9 @@
     <g:VerticalPanel>
         <g:HorizontalPanel>
             <g:SimplePanel ui:field="holder"/>
-            <g:Anchor ui:field="revert">Revert</g:Anchor>
+            <g:Anchor ui:field="revert">
+                <ui:msg key="commonBtnRevert">Revert</ui:msg>
+            </g:Anchor>
         </g:HorizontalPanel>
         <g:Label ui:field="errorLabel" styleName="{style.error}" />
     </g:VerticalPanel>

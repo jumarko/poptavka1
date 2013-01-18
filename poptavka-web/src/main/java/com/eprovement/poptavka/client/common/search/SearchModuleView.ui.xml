@@ -93,7 +93,7 @@
 					<ui:msg key="searchContent">Search...</ui:msg>
 				</g:TextBox>
 				<g:Button ui:field="searchBtn" styleName='{style.search-button}'>
-					<!-- <ui:msg key="search">Search</ui:msg> -->
+					<!-- <ui:msg key="searchBtnSearch">Search</ui:msg> -->
 				</g:Button>
 			</g:HorizontalPanel>
 			<g:PopupPanel ui:field="popupPanel">
@@ -101,17 +101,19 @@
 			</g:PopupPanel>
 		</div>
 
-		<g:Button ui:field="advSearchBtn" styleName='{style.advanced-search}'>Advanced</g:Button>
+		<g:Button ui:field="advSearchBtn" styleName='{style.advanced-search}'>
+                    <ui:msg key="searchBtnAdvance">Advanced</ui:msg>
+                </g:Button>
 		<g:MenuBar vertical="false" styleName='{style.search-list}'>
 			<g:MenuItem ui:field="searchWhatItem" styleName='{style.search-list-item}'>
-				<ui:msg key="menuSearchDemand">Demand</ui:msg>
+				<ui:msg key="searchMenuDemand">Demand</ui:msg>
 				<g:MenuBar vertical="true" ui:field="searchWhatList"
 					styleName='{style.search-list-dropdown}'>
 					<g:MenuItem ui:field="demand">
-						<ui:msg key="menuSearchDemand">Demand</ui:msg>
+						<ui:msg key="searchMenuDemand">Demand</ui:msg>
 					</g:MenuItem>
 					<g:MenuItem ui:field="supplier">
-						<ui:msg key="menuSearchSupplier">Supplier</ui:msg>
+						<ui:msg key="searchMenuSupplier">Supplier</ui:msg>
 					</g:MenuItem>
 				</g:MenuBar>
 			</g:MenuItem>

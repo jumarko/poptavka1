@@ -54,7 +54,7 @@
                 <table style="width: 100%;">
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='supplierRating'>Supplier rating:</ui:msg>
+                            <ui:msg key='formRating'>Rating:</ui:msg>
                         </td>
                         <td>
                             <g:TextBox ui:field='supplierRating' />
@@ -64,7 +64,7 @@
                         <td class='{style.label}' colspan='2'>
                             <g:DisclosurePanel ui:field="categories">
                                 <g:header>
-                                    <ui:msg key='categories'>Categories(only suppliers):</ui:msg>
+                                    <ui:msg key='supplierSettingsCategories'>Categories(only suppliers):</ui:msg>
                                 </g:header>
                                 <g:PopupPanel ui:field="categorySelectorPopup"/>
                             </g:DisclosurePanel>
@@ -74,7 +74,7 @@
                         <td class='{style.label}' colspan='2'>
                             <g:DisclosurePanel ui:field="localities">
                                 <g:header>
-                                    <ui:msg key='localities'>Localities(only suppliers):</ui:msg>
+                                    <ui:msg key='supplierSettingsLocalities'>Localities(only suppliers):</ui:msg>
                                 </g:header>
                                 <g:PopupPanel ui:field="localitySelectorPopup"/>
                             </g:DisclosurePanel>
@@ -84,7 +84,7 @@
                         <td class='{style.label}' colspan='2'>
                             <g:DisclosurePanel ui:field="services">
                                 <g:header>
-                                    <ui:msg key='services'>Services:</ui:msg>
+                                    <ui:msg key='supplierServices'>Services:</ui:msg>
                                 </g:header>
                                 <g:SimplePanel />
                             </g:DisclosurePanel>

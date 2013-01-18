@@ -56,20 +56,16 @@
                         <tr>
                             <td colspan='2'>
                                 <g:DecoratorPanel>
-                                    <!--                                <g:DisclosurePanel ui:field="disclosureCommon">
-                                    <g:header>
-                                        <ui:msg key='commonInfo'>Common info:</ui:msg>
-                                    </g:header>-->
                                     <g:HTMLPanel>
                                         <table style="width: 100%;">
                                             <tr>
                                                 <td colspan='2'>
-                                                    <ui:msg key='commonInfo'>Common info:</ui:msg>
+                                                    <ui:msg key='formCommonInfo'>Common info:</ui:msg>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='companyName'>Company Name:</ui:msg>
+                                                    <ui:msg key='formCompanyName'>Company Name:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxCompanyName" ui:field='companyName' />
@@ -78,44 +74,29 @@
 
                                             <tr>
                                                 <td class='{style.label}' colspan='2'>
-                                                    <ui:msg key='description'>Description:</ui:msg>
+                                                    <ui:msg key='formDescription'>Description:</ui:msg>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan='2'>
-                                                    <!--                                                    <g:DisclosurePanel ui:field="disclosureDescription">
-                                                    <g:customHeader>
-                                                        <g:HTML />
-                                                        <ui:msg key='description'>Description:</ui:msg>
-                                                    </g:customHeader>-->
                                                     <g:TextArea title="textAreaDescription" ui:field='descriptionBox'
                                                                 width="450px" height="100px"/>
-                                                    <!--</g:DisclosurePanel>-->
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}' colspan='2'>
-                                                    <ui:msg key='address'>Address:</ui:msg>
+                                                    <ui:msg key='formAddress'>Address:</ui:msg>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan='2'>
                                                     <g:SimplePanel ui:field="addressHolder"/>
                                                     <g:TextBox ui:field="status" visible="false" />
-<!--                                                    <g:DisclosurePanel ui:field="disclosureAddress">
-                                                        <g:customHeader>
-                                                            <g:Label styleName='{style.label}'>
-                                                                <ui:msg key='address'>Address:</ui:msg>
-                                                            </g:Label>
-                                                        </g:customHeader>
-                                                        <g:SimplePanel />
-                                                    </g:DisclosurePanel>-->
                                                 </td>
                                             </tr>
                                         </table>
                                     </g:HTMLPanel>
                                 </g:DecoratorPanel>
-                                <!--</g:DisclosurePanel>-->
                             </td>
                         </tr>
                     </table>
@@ -125,21 +106,17 @@
                     <table>
                         <tr>
                             <td class='{style.label}'>
-                                <!--                                <g:DisclosurePanel ui:field="disclosureContact">
-                                <g:header>
-                                    <ui:msg key='contactPerson'>Contact person:</ui:msg>
-                                </g:header>-->
                                 <g:DecoratorPanel>
                                     <g:HTMLPanel>
                                         <table style="width: 100%;">
                                             <tr>
                                                 <td colspan='2'>
-                                                    <ui:msg key='contactPerson'>Contact person:</ui:msg>
+                                                    <ui:msg key='formContactInfo'>Contact person:</ui:msg>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='web'>Web site:</ui:msg>
+                                                    <ui:msg key='formWebsite'>Web site:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxWebsite" ui:field='web' />
@@ -147,7 +124,7 @@
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='email'>Email:</ui:msg>
+                                                    <ui:msg key='formEmail'>Email:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxEmail" ui:field='email' enabled='false'/>
@@ -155,7 +132,7 @@
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='phone'>Phone:</ui:msg>
+                                                    <ui:msg key='formPhone'>Phone:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxPhone" ui:field='phone' />
@@ -163,7 +140,7 @@
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='firstName'>First name:</ui:msg>
+                                                    <ui:msg key='formFirstName'>First name:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxFirstName" ui:field='firstName' />
@@ -171,7 +148,7 @@
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='lastName'>Last name:</ui:msg>
+                                                    <ui:msg key='formLastName'>Last name:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxLastName" ui:field='lastName' />
@@ -180,26 +157,21 @@
                                         </table>
                                     </g:HTMLPanel>
                                 </g:DecoratorPanel>
-                                <!--</g:DisclosurePanel>-->
                             </td>
                         </tr>
                         <tr>
                             <td class='{style.label}'>
                                 <g:DecoratorPanel>
-                                    <!--                                <g:DisclosurePanel ui:field="disclosurePayment">
-                                    <g:header>
-                                        <ui:msg key='billingDetails'>Billing details:</ui:msg>
-                                    </g:header>-->
                                     <g:HTMLPanel>
                                         <table style="width: 100%;">
                                             <tr>
                                                 <td colspan='2'>
-                                                    <ui:msg key='billingDetails'>Billing details:</ui:msg>
+                                                    <ui:msg key='userSettingsBillingDetails'>Billing details:</ui:msg>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='identificationNumber'>Identification number:</ui:msg>
+                                                    <ui:msg key='formIdentificationNumber'>Identification number:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxIdentificationNumber" ui:field='identificationNumber' />
@@ -207,7 +179,7 @@
                                             </tr>
                                             <tr>
                                                 <td class='{style.label}'>
-                                                    <ui:msg key='taxNumber'>Tax number:</ui:msg>
+                                                    <ui:msg key='formTaxNumber'>Tax number:</ui:msg>
                                                 </td>
                                                 <td>
                                                     <g:TextBox title="textBoxTaxNumber" ui:field='taxNumber' />
@@ -216,7 +188,6 @@
                                         </table>
                                     </g:HTMLPanel>
                                 </g:DecoratorPanel>
-                                <!--</g:DisclosurePanel>-->
                             </td>
                         </tr>
                     </table>
@@ -227,16 +198,11 @@
                         <tr>
                             <td class='{style.label}'>
                                 <g:DecoratorPanel>
-
-                                    <!--                                <g:DisclosurePanel ui:field="disclosureNotification">
-                                    <g:header>
-                                        <ui:msg key='notifications'>Notifications:</ui:msg>
-                                    </g:header>-->
                                     <g:HTMLPanel>
                                         <table style="width: 100%;">
                                             <tr>
                                                 <td>
-                                                    <ui:msg key='notifications'>Notifications:</ui:msg>
+                                                    <ui:msg key='userSettingsNotifications'>Notifications:</ui:msg>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -244,120 +210,11 @@
                                                     <g:VerticalPanel ui:field="notifications" />
                                                 </td>
                                             </tr>
-                                            <!--<tr>
-                                                <td class='{style.label}'>
-                                                    <ui:msg key='newMessage'>New messages:</ui:msg>
-                                                </td>
-                                                <td>
-                                                    <g:CheckBox ui:field='newMessageButton' />
-                                                    <g:ListBox ui:field="newMessageOptions" visibleItemCount='1' >
-                                                        <g:item>
-                                                            <ui:msg key='notifyImmediately'>Immediately</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyDaily'>Daily</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyWeekly'>Weekly</ui:msg>
-                                                        </g:item>
-                                                    </g:ListBox>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class='{style.label}'>
-                                                    <ui:msg key='newDemand'>New demand:</ui:msg>
-                                                </td>
-                                                <td>
-                                                    <g:CheckBox ui:field='newDemandButton' />
-                                                    <g:ListBox ui:field="newDemandOptions" visibleItemCount='1' >
-                                                        <g:item>
-                                                            <ui:msg key='notifyImmediately'>Immediately</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyDaily'>Daily</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyWeekly'>Weekly</ui:msg>
-                                                        </g:item>
-                                                    </g:ListBox>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class='{style.label}'>
-                                                    <ui:msg key='newSystemMessage'>New messages from system:</ui:msg>
-                                                </td>
-                                                <td>
-                                                    <g:CheckBox ui:field='newSystemMessageButton' />
-                                                    <g:ListBox ui:field="newSystemMessageOptions" visibleItemCount='1' >
-                                                        <g:item>
-                                                            <ui:msg key='notifyImmediately'>Immediately</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyDaily'>Daily</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyWeekly'>Weekly</ui:msg>
-                                                        </g:item>
-                                                    </g:ListBox>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class='{style.label}'>
-                                                    <ui:msg key='newOperatorMessage'>New messages from operator:</ui:msg>
-                                                </td>
-                                                <td>
-                                                    <g:CheckBox ui:field='newOperatorMessageButton' />
-                                                    <g:ListBox ui:field="newOperatorMessageOptions" visibleItemCount='1' >
-                                                        <g:item>
-                                                            <ui:msg key='notifyImmediately'>Immediately</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyDaily'>Daily</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyWeekly'>Weekly</ui:msg>
-                                                        </g:item>
-                                                    </g:ListBox>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class='{style.label}'>
-                                                    <ui:msg key='demandStateChange'>Demand state change:</ui:msg>
-                                                </td>
-                                                <td>
-                                                    <g:CheckBox ui:field='demandStateChangeButton' />
-                                                    <g:ListBox ui:field="demandStateChangeOptions" visibleItemCount='1' >
-                                                        <g:item>
-                                                            <ui:msg key='notifyImmediately'>Immediately</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyDaily'>Daily</ui:msg>
-                                                        </g:item>
-                                                        <g:item>
-                                                            <ui:msg key='notifyWeekly'>Weekly</ui:msg>
-                                                        </g:item>
-                                                    </g:ListBox>
-                                                </td>
-                                            </tr> -->
                                         </table>
                                     </g:HTMLPanel>
                                 </g:DecoratorPanel>
-                                <!--</g:DisclosurePanel>-->
                             </td>
                         </tr>
-                        <!--                        <tr>
-                            <td class='{style.label}'>
-                                <g:DisclosurePanel ui:field="disclosureAddress">
-                                    <g:customHeader>
-                                        <g:HTML/>
-                                        <ui:msg key='address'>Address:</ui:msg>
-                                    </g:customHeader>
-                                    <g:SimplePanel />
-                                </g:DisclosurePanel>
-                            </td>
-                        </tr>-->
-
-
                     </table>
                 </g:HTMLPanel>
             </g:HorizontalPanel>

@@ -79,7 +79,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
             });
     // i18n
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
     // The key provider that provides the unique ID of a DemandDetail.
     private static final ProvidesKey<OfferDetail> KEY_PROVIDER = new ProvidesKey<OfferDetail>() {
 
@@ -138,7 +138,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
      */
     private void initGridColumns() {
         // Offer ID
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.oid(), true, OID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnOfferID(), true, OID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -147,7 +147,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                     }
                 });
         // Demand ID.
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.did(), true, DID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDID(), true, DID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -156,7 +156,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                     }
                 });
         // Supplier ID
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.sid(), true, SID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnSenderID(), true, SID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -164,7 +164,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                         return Long.toString(((OfferDetail) object).getSupplierId());
                     }
                 });
-        priceColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.price(), true, PRICE_COL_WIDTH,
+        priceColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnPrice(), true, PRICE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -179,7 +179,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
             stateList.add(offerStatusDetail.getValue());
         }
         offerStatusColumn = dataGrid.addColumn(
-                new SelectionCell(stateList), Storage.MSGS.state(), true, STATE_COL_WIDTH,
+                new SelectionCell(stateList), Storage.MSGS.columnState(), true, STATE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -190,7 +190,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
 
         // Creation date
         offerCreationDateColumn = dataGrid.addColumn(
-                new DateCell(), Storage.MSGS.createdDate(), false, CREATED_COL_WIDTH,
+                new DateCell(), Storage.MSGS.columnCreatedDate(), false, CREATED_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override
@@ -202,7 +202,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
 
         // Demand end date.
         offerFinishDateColumn = dataGrid.addColumn(
-                new DateCell(), Storage.MSGS.finnishDate(), true, FINNISTH_COL_WIDTH,
+                new DateCell(), Storage.MSGS.columnFinnishDate(), true, FINNISTH_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override

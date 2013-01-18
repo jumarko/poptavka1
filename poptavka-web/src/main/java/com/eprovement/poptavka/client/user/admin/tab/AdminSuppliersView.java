@@ -133,7 +133,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private void initGridColumns() {
         // Supplier ID.
         idColumn = dataGrid.addColumn(
-                new ClickableTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+                new ClickableTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -144,7 +144,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
         // Company name.
         supplierNameColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.companyName(), true, COMPANY_NAME_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columCompanyName(), true, COMPANY_NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -159,7 +159,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
             types.add(type.getValue());
         }
         supplierTypeColumn = dataGrid.addColumn(
-                new SelectionCell(types), Storage.MSGS.businessType(), true, BUSINESS_TYPE_COL_WIDTH,
+                new SelectionCell(types), Storage.MSGS.columBusinessType(), true, BUSINESS_TYPE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -170,7 +170,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
         // Certified.
         certifiedColumn = dataGrid.addColumn(
-                new CheckboxCell(), Storage.MSGS.certified(), true, CERTIFIED_COL_WIDTH,
+                new CheckboxCell(), Storage.MSGS.columCertified(), true, CERTIFIED_COL_WIDTH,
                 new GetValue<Boolean>() {
 
                     @Override
@@ -185,7 +185,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
             verTypes.add(type.name());
         }
         verificationColumn = dataGrid.addColumn(
-                new SelectionCell(verTypes), Storage.MSGS.verified(), true, VERIFICATION_COL_WIDTH,
+                new SelectionCell(verTypes), Storage.MSGS.columVerified(), true, VERIFICATION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

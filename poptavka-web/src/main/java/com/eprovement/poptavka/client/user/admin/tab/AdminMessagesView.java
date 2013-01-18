@@ -207,7 +207,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
             msgTypes.add(msgState.name());
         }
         typeColumn = dataGrid.addColumn(
-                new SelectionCell(msgTypes), Storage.MSGS.type(), true, TYPE_COL_WIDTH,
+                new SelectionCell(msgTypes), Storage.MSGS.columnType(), true, TYPE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -219,7 +219,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
 
     private void addMessageTitleColumn() {
         subjectColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.subject(), true, SUBJECT_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columnSubject(), true, SUBJECT_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -230,7 +230,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addSenderIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.sid(), true, SID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnSenderID(), true, SID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -241,7 +241,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addParentIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.pid(), true, PID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnPID(), true, PID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -252,7 +252,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addDemandIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.did(), true, DID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDID(), true, DID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -263,7 +263,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

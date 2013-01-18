@@ -128,7 +128,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private void initTableColumns() {
 
         // ID
-        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -138,7 +138,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // company
-        companyColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.company(), true, COMPANY_COL_WIDTH,
+        companyColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnCompany(), true, COMPANY_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -148,7 +148,8 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // firstName
-        firstNameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.firstName(), true, FIRST_NAME_COL_WIDTH,
+        firstNameColumn = dataGrid.addColumn(new EditTextCell(),
+                Storage.MSGS.columnFirstName(), true, FIRST_NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -158,7 +159,8 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // lastName
-        lastNameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.lastName(), true, LAST_NAME_COL_WIDTH,
+        lastNameColumn = dataGrid.addColumn(new EditTextCell(),
+                Storage.MSGS.columnLastName(), true, LAST_NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -168,7 +170,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // rating
-        ratingColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.rating(), true, RATING_COL_WIDTH,
+        ratingColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnRating(), true, RATING_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

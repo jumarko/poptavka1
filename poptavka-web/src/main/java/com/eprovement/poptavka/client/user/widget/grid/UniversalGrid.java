@@ -39,7 +39,7 @@ public class UniversalGrid<T> extends DataGrid<T> {
 
     public void displayEmptyTable() {
         this.setEmptyTableWidget(new HTML("<div style=\"text-align: center;\">"
-                + Storage.MSGS.emptyTable() + "</div>"));
+                + Storage.MSGS.commonEmptyTable() + "</div>"));
     }
 
 }

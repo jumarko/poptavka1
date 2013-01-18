@@ -77,7 +77,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
             });
     // i18n
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
     // The key provider that provides the unique ID of a InvoiceDetail.
     private static final ProvidesKey<InvoiceDetail> KEY_PROVIDER = new ProvidesKey<InvoiceDetail>() {
 
@@ -137,7 +137,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     private void initTableColumns() {
         // ID
         idColumn = dataGrid.addColumn(
-                new ClickableTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+                new ClickableTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -148,7 +148,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
 
         // Invoice number
         invoiceNumberColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.invoiceNumber(), true, INVOICE_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columnInvoiceNumber(), true, INVOICE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -159,7 +159,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
 
         // variable symbol
         varSymbolColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.varSymb(), true, VAR_SYMB_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columnVarSymb(), true, VAR_SYMB_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -170,7 +170,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
 
         // total price
         priceColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.totalPrice(), true, TOTAL_PRICE_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columnTotalPrice(), true, TOTAL_PRICE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -181,7 +181,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
 
         // DemandStatus.
         payMethodColumn = dataGrid.addColumn(
-                new TextCell(), Storage.MSGS.payMethod(), false, PAY_METHOD_COL_WIDTH,
+                new TextCell(), Storage.MSGS.columnPayMethod(), false, PAY_METHOD_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

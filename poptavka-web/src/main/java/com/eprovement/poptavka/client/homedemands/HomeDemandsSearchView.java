@@ -39,15 +39,15 @@ public class HomeDemandsSearchView extends Composite implements
     public HomeDemandsSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        demandTypes.addItem(Storage.MSGS.select());
+        demandTypes.addItem(Storage.MSGS.commonListDefault());
         for (DemandTypeType type : DemandTypeType.values()) {
             demandTypes.addItem(type.name());
         }
-        creationDate.addItem(Storage.MSGS.today());
-        creationDate.addItem(Storage.MSGS.yesterday());
-        creationDate.addItem(Storage.MSGS.lastWeek());
-        creationDate.addItem(Storage.MSGS.lastMonth());
-        creationDate.addItem(Storage.MSGS.noLimits());
+        creationDate.addItem(Storage.MSGS.creationDateToday());
+        creationDate.addItem(Storage.MSGS.creationDateYesterday());
+        creationDate.addItem(Storage.MSGS.creationDateLastWeek());
+        creationDate.addItem(Storage.MSGS.creationDateLastMonth());
+        creationDate.addItem(Storage.MSGS.creationDateNoLimits());
         creationDate.setSelectedIndex(4);
     }
 

@@ -184,7 +184,7 @@ public class HomeSuppliersView extends OverflowComposite
         //set column style
         logoCol.setSortable(false);
         logoCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
-        dataGrid.addColumn(logoCol, Storage.MSGS.logo());
+        dataGrid.addColumn(logoCol, Storage.MSGS.columnLogo());
         dataGrid.setColumnWidth(logoCol, LOGO_COL_WIDTH, Unit.PX);
 
         // Company name.
@@ -192,7 +192,7 @@ public class HomeSuppliersView extends OverflowComposite
         //IdentityColumn - A passthrough column, useful for giving cells access to the entire row object.
         Column<FullSupplierDetail, SupplierCell> companyNameCol = new IdentityColumn(new SupplierCell());
         companyNameCol.setSortable(true);
-        dataGrid.addColumn(companyNameCol, Storage.MSGS.supplierName());
+        dataGrid.addColumn(companyNameCol, Storage.MSGS.columnSupplierName());
         dataGrid.setColumnWidth(companyNameCol, SUPPLIER_NAME_COL_WIDTH, Unit.PX);
 
         // SupplierRating.
@@ -201,12 +201,12 @@ public class HomeSuppliersView extends OverflowComposite
         //set column style
         ratingCol.setSortable(true);
         ratingCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
-        dataGrid.addColumn(ratingCol, Storage.MSGS.rating());
+        dataGrid.addColumn(ratingCol, Storage.MSGS.columnRating());
         dataGrid.setColumnWidth(ratingCol, RATING_COL_WIDTH, Unit.PX);
 
         // Address.
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.address(), false, ADDRESS_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnAddress(), false, ADDRESS_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue() {
                     @Override
                     public String getValue(Object object) {

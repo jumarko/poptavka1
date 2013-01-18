@@ -126,7 +126,7 @@ public class AdminEmailActivationsView extends Composite
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -137,7 +137,7 @@ public class AdminEmailActivationsView extends Composite
 
         // Activation link
         activationColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.activationCode(), true, ACTIVATION_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columnActivationCode(), true, ACTIVATION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -149,7 +149,7 @@ public class AdminEmailActivationsView extends Composite
         // timeout
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         timeoutColumn = dataGrid.addColumn(
-                new DatePickerCell(dateFormat), Storage.MSGS.timeout(), true, TIMEOUT_COL_WIDTH,
+                new DatePickerCell(dateFormat), Storage.MSGS.columnTimeout(), true, TIMEOUT_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override

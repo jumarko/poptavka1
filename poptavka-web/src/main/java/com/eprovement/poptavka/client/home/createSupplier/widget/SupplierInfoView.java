@@ -266,15 +266,20 @@ public class SupplierInfoView extends Composite
         if (validateItem(password)) {
             passwordStatus.setVisible(true);
             if (password.getText().length() <= SHORT_PASSWORD) {
-                passwordStatus.setStateWithDescription(StatusIconLabel.State.ERROR_16, Storage.MSGS.shortPassword());
+                passwordStatus.setStateWithDescription(
+                        StatusIconLabel.State.ERROR_16,
+                        Storage.MSGS.formUserRegShortPassword());
                 return;
             }
             if ((password.getText().length() <= LONG_PASSWORD) && (password.getText().length() > SHORT_PASSWORD)) {
-                passwordStatus.setStateWithDescription(StatusIconLabel.State.INFO_16,
-                        Storage.MSGS.semiStrongPassword());
+                passwordStatus.setStateWithDescription(
+                        StatusIconLabel.State.INFO_16,
+                        Storage.MSGS.formUserRegSemiStrongPassword());
             }
             if (password.getText().length() > LONG_PASSWORD) {
-                passwordStatus.setStateWithDescription(StatusIconLabel.State.ACCEPT_16, Storage.MSGS.strongPassword());
+                passwordStatus.setStateWithDescription(
+                        StatusIconLabel.State.ACCEPT_16,
+                        Storage.MSGS.formUserRegStrongPassword());
             }
         } else {
             passwordStatus.setVisible(false);
@@ -286,9 +291,13 @@ public class SupplierInfoView extends Composite
         if (validateItem(passwordConfirm)) {
             passwordCheckStatus.setVisible(true);
             if (!password.getText().equals(passwordConfirm.getText())) {
-                passwordCheckStatus.setStateWithDescription(State.ERROR_16, Storage.MSGS.passwordsUnmatch());
+                passwordCheckStatus.setStateWithDescription(
+                        State.ERROR_16,
+                        Storage.MSGS.formUserRegPasswordsUnmatch());
             } else {
-                passwordCheckStatus.setStateWithDescription(State.ACCEPT_16, Storage.MSGS.passwordsMatch());
+                passwordCheckStatus.setStateWithDescription(
+                        State.ACCEPT_16,
+                        Storage.MSGS.formUserRegPasswordsMatch());
             }
         } else {
             passwordCheckStatus.setVisible(false);

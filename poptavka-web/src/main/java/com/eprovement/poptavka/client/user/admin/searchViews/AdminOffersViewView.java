@@ -38,7 +38,7 @@ public class AdminOffersViewView extends Composite implements
 
     public AdminOffersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
-        state.addItem(Storage.MSGS.select());
+        state.addItem(Storage.MSGS.commonListDefault());
         for (OfferStateType type : OfferStateType.values()) {
             state.addItem(type.name());
         }

@@ -51,7 +51,7 @@ public class AdminInvoicesPresenter
     //detail related, TODO Martin implement Detail if needed
     private Boolean detailDisplayed = false;
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
 
     /**
      * Interface for widget AdminInvoicesView.
@@ -291,7 +291,7 @@ public class AdminInvoicesPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow(Storage.MSGS.commit());
+                    eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateInvoice(dataToUpdate.get(idx));
                     }

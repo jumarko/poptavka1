@@ -115,13 +115,13 @@ public class LoginPopupView extends PopupPanel
 
     /** binding real form to create login popup. **/
     private void initRealLoginForm(FlowPanel panel) {
-        emailLabel = new Label(MSGS.email());
-        passwordLabel = new Label(MSGS.pass());
+        emailLabel = new Label(MSGS.loginPopupEmail());
+        passwordLabel = new Label(MSGS.loginPopupPass());
 
         emailTextBox = new TextBox();
         passwordTextBox = new PasswordTextBox();
 
-        closeButton = new Button(MSGS.close());
+        closeButton = new Button(MSGS.commonBtnClose());
         closeButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -137,7 +137,7 @@ public class LoginPopupView extends PopupPanel
             }
         });
         closeButton.setEnabled(true);
-        submitButton = new Button(MSGS.submit());
+        submitButton = new Button(MSGS.commonBtnSubmit());
         submitButton.setEnabled(true);
         submitButton.addClickHandler(new ClickHandler() {
 
@@ -192,7 +192,7 @@ public class LoginPopupView extends PopupPanel
         // TODO ivlcek - are values somehow checked against some sort sql attacks?
         if ((getLogin().getText().length() == 0) || (getPassword().getText().length() == 0)) {
             clearStatusLabel();
-            statusLabel = new SimpleIconLabel(MSGS.emptyCredentials(), true);
+            statusLabel = new SimpleIconLabel(MSGS.commonEmptyCredentials(), true);
             statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
             statusLabel.setPopupEnabled(false);
             vp.add(statusLabel);

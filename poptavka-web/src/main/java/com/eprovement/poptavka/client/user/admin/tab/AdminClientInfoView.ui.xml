@@ -41,12 +41,12 @@
             <table style="width: 100%;">
                 <tr>
                     <td colspan='2' align='center' class='{style.header}'>
-                        <ui:msg key='contactInfoFormTitle'>Client Info</ui:msg>
+                        <ui:msg key='formClientInfo'>Client Info</ui:msg>
                     </td>
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='companyName'>Company name:</ui:msg>
+                        <ui:msg key='formCompanyName'>Company name:</ui:msg>
                     </td>
                 </tr>
                 <tr>
@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='description'>Description:</ui:msg>
+                        <ui:msg key='formDescription'>Description:</ui:msg>
                     </td>
                 </tr>
                 <tr>
@@ -66,7 +66,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='overalRating'>Overal rating:</ui:msg>
+                        <ui:msg key='formRating'>Overal rating:</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='overalRating' styleName='{style.priceBox}' />
@@ -74,13 +74,13 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='contact'>Contact</ui:msg>
+                        <ui:msg key='formContactInfo'>Contact</ui:msg>
                     </td>
                     <td/>
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='firstName'>First name:</ui:msg>
+                        <ui:msg key='formFirstName'>First name:</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='firstName' styleName='{style.endDateBox}' />
@@ -88,7 +88,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='lastName'>Last name:</ui:msg>
+                        <ui:msg key='formLastName'>Last name:</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='lastName' styleName='{style.expirationBox}' />
@@ -96,7 +96,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='email'>Email: </ui:msg>
+                        <ui:msg key='formEmail'>Email: </ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='email' styleName='{style.clientID}' />
@@ -104,7 +104,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='phone'>Phone:</ui:msg>
+                        <ui:msg key='formPhone'>Phone:</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='phone' styleName='{style.maxOffers}' />
@@ -112,7 +112,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='identifNumber'>Identification number:</ui:msg>
+                        <ui:msg key='formIdentificationNumber'>Identification number:</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='identifNumber' styleName='{style.demandStatus}' />
@@ -120,7 +120,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='supplierID'>clinet ID:</ui:msg>
+                        <ui:msg key='adminFormSupplierID'>clinet ID:</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='id' styleName='{style.demandStatus}' />
@@ -128,7 +128,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='verification'>Verification:</ui:msg>
+                        <ui:msg key='formVerified'>Verification:</ui:msg>
                     </td>
                     <td>
                         <g:ListBox ui:field='verification' styleName='{style.demandStatus}' />
@@ -138,11 +138,11 @@
                 <tr>
                     <td colspan='2' align='center'>
                         <g:Button ui:field='updateButton'>
-                            <ui:msg key='demandDetailFormUpdateButton'>Update Client</ui:msg>
+                            <ui:msg key='adminCommonUpdateBtn'>Update</ui:msg>
                         </g:Button>
 						&nbsp;
                         <g:Button ui:field='createButton'>
-                            <ui:msg key='demandDetailFormCreateButton'>Create Client</ui:msg>
+                            <ui:msg key='adminCommonCreateBtn'>Create</ui:msg>
                         </g:Button>
                     </td>
                 </tr>

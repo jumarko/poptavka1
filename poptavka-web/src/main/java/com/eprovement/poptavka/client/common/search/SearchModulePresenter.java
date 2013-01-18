@@ -240,7 +240,7 @@ public class SearchModulePresenter
         int left = view.getSearchContent().getElement().getAbsoluteLeft();
         int top = view.getSearchContent().getElement().getAbsoluteTop() + 30;
         PopupPanel popup = new PopupPanel(true);
-        popup.setWidget(new Label(Storage.MSGS.noSearchingCriteria()));
+        popup.setWidget(new Label(Storage.MSGS.searchNoSearchingCriteria()));
         popup.setPopupPosition(left, top);
         popup.show();
     }

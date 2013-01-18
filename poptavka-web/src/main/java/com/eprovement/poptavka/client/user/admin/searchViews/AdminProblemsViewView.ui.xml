@@ -26,34 +26,34 @@
         <div>
             <ul>
                 <li>
-                    <g:Label>ID</g:Label>
+                    <ui:msg key="adminformId">Id</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">
+                                        from
                                     <g:TextBox styleName="{style.rangeBox}" ui:field="idFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
+                                    to
                                     <g:TextBox styleName="{style.rangeBox}" ui:field="idTo"/>
-                                </g:HorizontalPanel>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Label>Text</g:Label>
+                    <ui:msg key="adminformText">Text</ui:msg>
                 </li>
                 <li>
                     <g:TextBox ui:field="text"/>
                 </li>
                 <li>
-                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                    <g:Button ui:field="clearBtn">
+                        <ui:msg key="commonBtnClear">Clear</ui:msg>
+                    </g:Button>
                 </li>
             </ul>
         </div>

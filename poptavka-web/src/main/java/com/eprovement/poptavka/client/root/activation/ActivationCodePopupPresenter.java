@@ -130,9 +130,9 @@ public class ActivationCodePopupPresenter
         //inform user
         if (sent) {
             view.getStatusLabel().setMessage(
-                    MSGS.newActivationCodeSent() + " " + user.getEmail());
+                    MSGS.activationNewCodeSent() + " " + user.getEmail());
         } else {
-            reportActivationFailure(MSGS.newActivationCodeSentFailed());
+            reportActivationFailure(MSGS.activationFailedSentNewCode());
         }
     }
 

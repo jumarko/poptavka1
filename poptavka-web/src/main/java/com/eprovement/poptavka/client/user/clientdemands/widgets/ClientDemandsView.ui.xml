@@ -11,13 +11,13 @@
             <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
                 <g:HorizontalPanel ui:field="demandHeader">
                     <g:Label>
-                        <ui:msg key="clientDemandsTitle">Vypis klientovych poptaviek</ui:msg>
+                        <ui:msg key="clientDemandsTableTitle">Vypis klientovych poptaviek</ui:msg>
                     </g:Label>
                     <s:UniversalPagerWidget ui:field='demandPager' />
                 </g:HorizontalPanel>
                 <g:HorizontalPanel ui:field="conversationHeader">
                     <g:Button ui:field="backBtn">
-                        <ui:msg key="backToClientDemands">Spat na vsetky nove poptavky</ui:msg>
+                        <ui:msg key="clientDemandsBackBtn">Spat na vsetky nove poptavky</ui:msg>
                     </g:Button>
                     <g:Label ui:field="demandTitlelabel"/>
                     <g:ListBox ui:field="actions"/>

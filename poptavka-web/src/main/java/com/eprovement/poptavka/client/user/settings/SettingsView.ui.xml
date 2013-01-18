@@ -31,7 +31,9 @@
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65" class='{res.layout.toolbarHeader}'>
 					<g:HTMLPanel>
-						<h2 class='{res.layout.toolbarHeader}'>My Profile</h2>
+						<h2 class='{res.layout.toolbarHeader}'>
+                                                    <ui:msg key="settingsMyProfile">My Profile</ui:msg>
+                                                </h2>
 					</g:HTMLPanel>
 				</g:north>
 				<g:center>
@@ -41,7 +43,7 @@
 		</g:west>
 		<g:north size="65" class='{res.layout.toolbarHeader}'>
 			<g:Button ui:field='updateButton' styleName='{style.button}'>
-				<ui:msg key='demandDetailFormUpdateButton'>Update Profile</ui:msg>
+				<ui:msg key='settingsUpdateButton'>Update Profile</ui:msg>
 			</g:Button>
 		</g:north>
 		<g:center>
@@ -51,7 +53,9 @@
 					<g:stack>
 						<g:customHeader size='30'>
 							<g:HTMLPanel>
-								<g:Label styleName='{style.left}'>User information   </g:Label>
+                                                            <g:Label styleName='{style.left}'>
+                                                                <ui:msg key="settingsUserInformation">User information</ui:msg>
+                                                            </g:Label>
 								<cm:StatusIconLabel styleName='{style.left} {style.header-image}'
 									ui:field='userInfoStatus' />
 							</g:HTMLPanel>
@@ -61,7 +65,9 @@
 					<g:stack>
 						<g:customHeader size='30'>
 							<g:HTMLPanel>
-								<g:Label styleName='{style.left}'>Client information   </g:Label>
+                                                            <g:Label styleName='{style.left}'>
+                                                                <ui:msg key="settingsClientInformation">Client information</ui:msg>
+                                                            </g:Label>
 								<cm:StatusIconLabel styleName='{style.left} {style.header-image}'
 									ui:field='clientInfoStatus' />
 							</g:HTMLPanel>
@@ -71,7 +77,9 @@
 					<g:stack>
 						<g:customHeader size='30'>
 							<g:HTMLPanel>
-								<g:Label styleName='{style.left}'>Supplier information   </g:Label>
+								<g:Label styleName='{style.left}'>
+                                                                    <ui:msg key="settingsSupplierInformation">Supplier information</ui:msg>
+                                                                </g:Label>
 								<cm:StatusIconLabel styleName='{style.left} {style.header-image}'
 									ui:field='supplierInfoStatus' />
 							</g:HTMLPanel>

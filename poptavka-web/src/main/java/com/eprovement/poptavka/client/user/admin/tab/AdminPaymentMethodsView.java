@@ -122,7 +122,7 @@ public class AdminPaymentMethodsView extends Composite
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -132,7 +132,7 @@ public class AdminPaymentMethodsView extends Composite
                 });
 
         // Name
-        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.name(), true, NAME_COL_WIDTH,
+        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnName(), true, NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -143,7 +143,7 @@ public class AdminPaymentMethodsView extends Composite
 
         // Description
         descriptionColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.description(), true, DESCRIPTION_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columDescription(), true, DESCRIPTION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

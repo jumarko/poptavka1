@@ -26,22 +26,22 @@
                 <g:customHeader size="30">
                     <g:HTML ui:field="firstTabHeader" stylePrimaryName="{style.tabIndex5}">
                         1.
-                        <ui:msg key="contactInfo">Contact Info</ui:msg>
+                        <ui:msg key="demandCreationTab1">Contact Info</ui:msg>
                     </g:HTML>
                 </g:customHeader>
                 <g:DockLayoutPanel unit="EM" ui:field='userFormPanel'>
                     <g:center>
                         <g:VerticalPanel>
                             <g:Label>
-                                <ui:msg key="loginOrRegisterToContinueLabel">Login or Register to continue</ui:msg>
+                                <ui:msg key="demandCreationLoginOrRegister">Login or Register to continue</ui:msg>
                             </g:Label>
                             <g:SimplePanel ui:field="userFormHolder" />
                             <g:HorizontalPanel>
                                 <g:Button ui:field="loginBtn">
-                                    <ui:msg key="loginBtn">Login</ui:msg>
+                                    <ui:msg key="commonLoginBtn">Login</ui:msg>
                                 </g:Button>
                                 <g:Button ui:field="registerBtn">
-                                    <ui:msg key="registerBtn">Register for FREE</ui:msg>
+                                    <ui:msg key="demandCreationRegisterBtn">Register for FREE</ui:msg>
                                 </g:Button>
                             </g:HorizontalPanel>
 
@@ -49,8 +49,9 @@
                     </g:center>
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='userStatus'
-                                            style='{res.common.infoMessage}' message='{text.loginOrRegisterToContinueLabel}'
-                                            description='{text.loginDescription}' />
+                                            style='{res.common.infoMessage}'
+                                            message='{text.demandCreationLoginOrRegisterToContinueLabel}'
+                                            description='{text.demandCreationLoginDescription}' />
                     </g:south>
                 </g:DockLayoutPanel>
             </g:tab>
@@ -58,21 +59,22 @@
                 <g:customHeader size="30">
                     <g:HTML stylePrimaryName="{style.tabIndex4}">
                         2.
-                        <ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
+                        <ui:msg key="demandCreationTab2">Demand Creation</ui:msg>
                     </g:HTML>
                 </g:customHeader>
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='basicStatus'
-                                            style='{res.common.infoMessage}' message='{text.formDemandBasicInfoLabel}'
-                                            description='{text.basicDescription}' />
+                                            style='{res.common.infoMessage}'
+                                            message='{text.demandCreationFormDemandBasicInfoLabel}'
+                                            description='{text.demandCreationBasicDescription}' />
                     </g:south>
                     <g:center>
                         <g:VerticalPanel>
                             <g:SimplePanel ui:field="basicInfoHolder" />
                             <g:HorizontalPanel>
                                 <g:Button ui:field="nextButtonTab2" >
-                                    <ui:msg key="nextButton">Next</ui:msg>
+                                    <ui:msg key="commonBtnNext">Next</ui:msg>
                                 </g:Button>
                             </g:HorizontalPanel>
                         </g:VerticalPanel>
@@ -83,24 +85,25 @@
                 <g:customHeader size="30">
                     <g:HTML stylePrimaryName="{style.tabIndex3}">
                         3.
-                        <ui:msg key="catsSelection">Category selection</ui:msg>
+                        <ui:msg key="demandCreationTab3">Category selection</ui:msg>
                     </g:HTML>
                 </g:customHeader>
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='categoryStatus'
-                                            style='{res.common.infoMessage}' message='{text.categorySelectorInfoLabel}'
-                                            description='{text.catDescription}' />
+                                            style='{res.common.infoMessage}'
+                                            message='{text.demandCreationCategorySelectorInfoLabel}'
+                                            description='{text.demandCreationCatDescription}' />
                     </g:south>
                     <g:center>
                         <g:VerticalPanel>
                             <g:SimplePanel ui:field="categoryHolder" styleName='{style.selectorLayout}'/>
                             <g:HorizontalPanel>
                                 <g:Button ui:field="backButtonTab3">
-                                    <ui:msg key='backButton'>Back</ui:msg>
+                                    <ui:msg key='commonBtnBack'>Back</ui:msg>
                                 </g:Button>
                                 <g:Button ui:field="nextButtonTab3">
-                                    <ui:msg key="nextButton">Next</ui:msg>
+                                    <ui:msg key="commonBtnNext">Next</ui:msg>
                                 </g:Button>
                             </g:HorizontalPanel>
                         </g:VerticalPanel>
@@ -111,24 +114,25 @@
                 <g:customHeader size="30">
                     <g:HTML stylePrimaryName="{style.tabIndex2}">
                         4.
-                        <ui:msg key="locsSelection">Locality selection</ui:msg>
+                        <ui:msg key="demandCreationTab4">Locality selection</ui:msg>
                     </g:HTML>
                 </g:customHeader>
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='localityStatus'
-                                            style='{res.common.infoMessage}' message='{text.localitySelectorInfoLabel}'
-                                            description='{text.locDescription}' />
+                                            style='{res.common.infoMessage}'
+                                            message='{text.demandCreationLocalitySelectorInfoLabel}'
+                                            description='{text.demandCreationLocDescription}' />
                     </g:south>
                     <g:center>
                         <g:VerticalPanel>
                             <g:SimplePanel ui:field="localityHolder" />
                             <g:HorizontalPanel>
                                 <g:Button ui:field="backButtonTab4">
-                                    <ui:msg key='backButton'>Back</ui:msg>
+                                    <ui:msg key='commonBtnBack'>Back</ui:msg>
                                 </g:Button>
                                 <g:Button ui:field="nextButtonTab4">
-                                    <ui:msg key="nextButton">Next</ui:msg>
+                                    <ui:msg key="commonBtnNext">Next</ui:msg>
                                 </g:Button>
                             </g:HorizontalPanel>
                         </g:VerticalPanel>
@@ -139,7 +143,7 @@
                 <g:customHeader size="30">
                     <g:HTML stylePrimaryName="{style.tabIndex1}">
                         5.
-                        <ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
+                        <ui:msg key="demandCreationTab5">Demand Advanced Info</ui:msg>
                     </g:HTML>
                 </g:customHeader>
                 <g:DockLayoutPanel unit="EM" height="100%">
@@ -149,17 +153,18 @@
                     <g:center>
                         <g:HorizontalPanel>
                             <g:Button ui:field="backButtonTab5">
-                                <ui:msg key='backButton'>Back</ui:msg>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
                             </g:Button>
                             <g:Button ui:field="createDemandBtn">
-                                <ui:msg key='createDemandButton'>Create demand</ui:msg>
+                                <ui:msg key='demandCreationCreateDemandBtn'>Create demand</ui:msg>
                             </g:Button>
                         </g:HorizontalPanel>
                     </g:center>
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='advStatus'
-                                            style='{res.common.infoMessage}' message='{text.formDemandAdvInfoLabel}'
-                                            description='{text.advDescription}' />
+                                            style='{res.common.infoMessage}'
+                                            message='{text.demandCreationFormDemandAdvInfoLabel}'
+                                            description='{text.demandCreationAdvDescription}' />
                     </g:south>
 
 

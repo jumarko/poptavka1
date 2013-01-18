@@ -1,92 +1,88 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
     <ui:style>
         .important {
-            font-weight: bold;
-            font-style: italic;
+        font-weight: bold;
+        font-style: italic;
         }
         .rangeBox {
-            width: 30px;
-            margin-right:10px;
-            margin-left:10px;
+        width: 30px;
+        margin-right:10px;
+        margin-left:10px;
         }
         .margin {
             
         }
         .searchMainContent {
-            width: 200px;
+        width: 200px;
         } 
     </ui:style>
     <ui:with field='res'
-        type='com.eprovement.poptavka.client.resources.StyleResource' />
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
         
     <g:HTMLPanel>
         <div>
             <ul>
                 <li>
-                    <g:Label>ID</g:Label>
+                    <ui:msg key="adminformId">ID</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="idFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="idTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">from
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="idFrom"/>
+                                        to
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="idTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Label>Company name</g:Label>
+                    <ui:msg key="formCompanyName">Company name</ui:msg>
                 </li>
                 <li>
                     <g:TextBox ui:field="companyName"/>
                 </li>
                 <li>
-                    <g:Label>First name</g:Label>
+                    <ui:msg key="formFistName">First name</ui:msg>
                 </li>
                 <li>
                     <g:TextBox ui:field="firstName"/>
                 </li>
                 <li>
-                    <g:Label>Last name</g:Label>
+                    <ui:msg key="formLastName">Last name</ui:msg>
                 </li>
                 <li>
                     <g:TextBox ui:field="lastName"/>
                 </li>
                 <li>
-                    <g:Label>Rating</g:Label>
+                    <ui:msg key="formRating">Rating</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="fromFromTo">from
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="ratingFrom"/>
+                                        to
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="ratingTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                    <g:Button ui:field="clearBtn">
+                        <ui:msg key="commonBtnClear">Clear</ui:msg>
+                    </g:Button>
                 </li>
             </ul>
         </div>

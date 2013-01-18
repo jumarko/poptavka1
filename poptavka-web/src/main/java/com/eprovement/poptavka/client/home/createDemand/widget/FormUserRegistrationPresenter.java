@@ -165,7 +165,7 @@ public class FormUserRegistrationPresenter
 
             // TODO change to global status changer eventBus call
             view.getMailStatus().setState(State.ACCEPT_16);
-            view.getMailStatus().setDescription(MSGS.mailAvailable());
+            view.getMailStatus().setDescription(MSGS.formUserRegMailAvailable());
         } else {
             view.setMailFlag(false);
 
@@ -186,7 +186,7 @@ public class FormUserRegistrationPresenter
             eventBus.checkFreeEmail(value);
         } else {
             // TODO change to global status changer eventBus call
-            view.getMailStatus().setStateWithDescription(State.ERROR_16, MSGS.malformedEmail());
+            view.getMailStatus().setStateWithDescription(State.ERROR_16, MSGS.formUserRegMalformedEmail());
         }
     }
 
@@ -195,7 +195,7 @@ public class FormUserRegistrationPresenter
         if (value.length() <= SHORT) {
 
             // TODO change to global status changer eventBus call
-            view.getPwdStatus().setStateWithDescription(State.ERROR_16, MSGS.shortPassword());
+            view.getPwdStatus().setStateWithDescription(State.ERROR_16, MSGS.formUserRegShortPassword());
             view.setPasswordLengthFlag(false);
             return;
         }
@@ -204,13 +204,13 @@ public class FormUserRegistrationPresenter
             view.setPasswordFlag(true);
 
             // TODO change to global status changer eventBus call
-            view.getPwdStatus().setStateWithDescription(State.INFO_16, MSGS.semiStrongPassword());
+            view.getPwdStatus().setStateWithDescription(State.INFO_16, MSGS.formUserRegSemiStrongPassword());
         }
         if (value.length() > LONG) {
             view.setPasswordFlag(true);
 
             // TODO change to global status changer eventBus call
-            view.getPwdStatus().setStateWithDescription(State.ACCEPT_16, MSGS.strongPassword());
+            view.getPwdStatus().setStateWithDescription(State.ACCEPT_16, MSGS.formUserRegStrongPassword());
         }
     }
 
@@ -220,12 +220,12 @@ public class FormUserRegistrationPresenter
             view.setMailFlag(false);
 
             // TODO change to global status changer eventBus call
-            view.getPwdConfirmStatus().setStateWithDescription(State.ERROR_16, MSGS.passwordsUnmatch());
+            view.getPwdConfirmStatus().setStateWithDescription(State.ERROR_16, MSGS.formUserRegPasswordsUnmatch());
         } else {
             view.setMailFlag(true);
 
             // TODO change to global status changer eventBus call
-            view.getPwdConfirmStatus().setStateWithDescription(State.ACCEPT_16, MSGS.passwordsMatch());
+            view.getPwdConfirmStatus().setStateWithDescription(State.ACCEPT_16, MSGS.formUserRegPasswordsMatch());
         }
     }
 }

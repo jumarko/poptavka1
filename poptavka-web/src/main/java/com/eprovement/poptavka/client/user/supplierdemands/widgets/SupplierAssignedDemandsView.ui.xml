@@ -24,23 +24,23 @@
             <g:HorizontalPanel ui:field="toolBar" styleName='{res.layout.toolbarItemsBlock}'>
                 <g:Label ui:field="tableNameLabel" />
                 <g:Button ui:field="finnishBtn" styleName="{style.button}">
-                    <ui:msg key="finnish">Finnish</ui:msg>
+                    <ui:msg key="supplierAssignedDemandsFinnishBtn">Finnish</ui:msg>
                 </g:Button>
                 <g:ListBox ui:field="actionBox" selectedIndex="0">
                     <g:item>
-                        <ui:msg key="actoin">action</ui:msg>
+                        <ui:msg key="commonListDefault">action</ui:msg>
                     </g:item>
                     <g:item>
-                        <ui:msg key="read">read</ui:msg>
+                        <ui:msg key="commonListRead">read</ui:msg>
                     </g:item>
                     <g:item>
-                        <ui:msg key="unread">unread</ui:msg>
+                        <ui:msg key="commonListUnread">unread</ui:msg>
                     </g:item>
                     <g:item>
-                        <ui:msg key="star">star</ui:msg>
+                        <ui:msg key="commonListStarred">star</ui:msg>
                     </g:item>
                     <g:item>
-                        <ui:msg key="unstar">unstar</ui:msg>
+                        <ui:msg key="listUnstarred">unstar</ui:msg>
                     </g:item>
                 </g:ListBox>
                 <s:UniversalPagerWidget ui:field='pager'/>

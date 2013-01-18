@@ -1,55 +1,51 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:with field='res'
+                 type='com.eprovement.poptavka.client.resources.StyleResource' />
 
-	<g:DockLayoutPanel unit="PX"
-		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
-		<g:west size="180">
-			<g:DockLayoutPanel unit="PX">
-				<g:north size="65">
-					<g:HTMLPanel>
-						<h2 class='{res.layout.toolbarHeader}'>Menu Supplier</h2>
-					</g:HTMLPanel>
-				</g:north>
-				<g:center>
-					<g:HTMLPanel>
-						<!-- Supplier submenu -->
-						<div ui:field="supplierMenu" style="display: block;">
-							<ul class='{res.layout.submenuList}'>
-								<li>
-									<g:Button ui:field="supplierNewDemands">
-										<ui:msg key="potentialDemands">Potential demands</ui:msg>
-									</g:Button>
-								</li>
-								<li>
-									<g:Button ui:field="supplierOffers">
-										<ui:msg key="offers">My offers</ui:msg>
-									</g:Button>
-								</li>
-								<li>
-									<g:Button ui:field="supplierAssignedDemands">
-										<ui:msg key="assignedDemands">Assigned demands</ui:msg>
-									</g:Button>
-								</li>
-								<!-- <li> <g:Button ui:field="supplierCreateDemand"> <ui:msg key="createDemandLink">Create 
-									Demand</ui:msg> </g:Button> </li> <li> <g:Button ui:field="supplierCreateSupplier"> 
-									<ui:msg key="createSupplierLink">Create supplier</ui:msg> </g:Button> </li> 
-									<li> <g:Button ui:field="allDemands"> <ui:msg key="allDemandsLink">All Demands</ui:msg> 
-									</g:Button> </li> <li> <g:Button ui:field="allSuppliers"> <ui:msg key="allSuppliersLink">All 
-									Suppliers</ui:msg> </g:Button> </li> -->
-							</ul>
-						</div>
-					</g:HTMLPanel>
-				</g:center>
-			</g:DockLayoutPanel>
-		</g:west>
-		<g:center>
-			<g:ScrollPanel>
-				<g:SimplePanel ui:field="contentPanel" />
-			</g:ScrollPanel>
-		</g:center>
-	</g:DockLayoutPanel>
+    <g:DockLayoutPanel unit="PX"
+                           styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+        <g:west size="180">
+            <g:DockLayoutPanel unit="PX">
+                <g:north size="65">
+                    <g:HTMLPanel>
+                        <h2 class='{res.layout.toolbarHeader}'>
+                            <ui:msg key="supplierDemandsToobarLabel">Menu Supplier</ui:msg>
+                        </h2>
+                    </g:HTMLPanel>
+                </g:north>
+                <g:center>
+                    <g:HTMLPanel>
+                        <!-- Supplier submenu -->
+                        <div ui:field="supplierMenu" style="display: block;">
+                            <ul class='{res.layout.submenuList}'>
+                                <li>
+                                    <g:Button ui:field="supplierNewDemands">
+                                        <ui:msg key="menuSupplierDemands">Potential demands</ui:msg>
+                                    </g:Button>
+                                </li>
+                                <li>
+                                    <g:Button ui:field="supplierOffers">
+                                        <ui:msg key="menuSupplierOffers">My offers</ui:msg>
+                                    </g:Button>
+                                </li>
+                                <li>
+                                    <g:Button ui:field="supplierAssignedDemands">
+                                        <ui:msg key="menuSupplierAssignedDemands">Assigned demands</ui:msg>
+                                    </g:Button>
+                                </li>
+                            </ul>
+                        </div>
+                    </g:HTMLPanel>
+                </g:center>
+            </g:DockLayoutPanel>
+        </g:west>
+        <g:center>
+            <g:ScrollPanel>
+                <g:SimplePanel ui:field="contentPanel" />
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

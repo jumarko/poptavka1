@@ -9,9 +9,11 @@
 		<div class="{css.message.message}">
 			<div ui:field="header" class="{css.message.messageHeader}">
 				<g:Anchor styleName='{css.message.replyButton}' ui:field="offerReplyBtn">
-					Offer Response</g:Anchor>
+                                    <ui:msg key="offerResponse">Offer Response</ui:msg>
+                                </g:Anchor>
 				<g:Anchor styleName='{css.message.replyButton}' ui:field="questionReplyBtn">
-					Question Response</g:Anchor>
+                                    <ui:msg key="questionResponse">Question Response</ui:msg>
+                                </g:Anchor>
 			</div>
 			<div style="display: none;">
 				<!-- Message composition content -->
@@ -25,7 +27,7 @@
 								<tbody>
 									<tr>
 										<td>
-											<ui:msg key="price">Price</ui:msg>
+											<ui:msg key="formPrice">Price</ui:msg>
 										</td>
 										<td>
 											<g:TextBox ui:field="priceBox" />
@@ -33,7 +35,7 @@
 									</tr>
 									<tr>
 										<td>
-											<ui:msg key="finishDate">Finish Date</ui:msg>
+											<ui:msg key="formFinishDate">Finish Date</ui:msg>
 										</td>
 										<td>
 											<p1:DateBox ui:field="dateBox" />
@@ -44,12 +46,12 @@
 						</div>
 						<g:Anchor ui:field="submitBtn" styleName='{css.message.replyButton}'>
 							<span style="cursor: pointer; cursor: hand;">
-								<ui:msg key="submit">Submit</ui:msg>
+								<ui:msg key="commonBtnSubmit">Submit</ui:msg>
 							</span>
 						</g:Anchor>
 						<g:Anchor ui:field="cancelBtn" styleName='{css.message.replyButton}'>
 							<span style="cursor: pointer; cursor: hand;">
-								<ui:msg key="close">Close</ui:msg>
+								<ui:msg key="commonBtnClose">Close</ui:msg>
 							</span>
 						</g:Anchor>
 					</div>

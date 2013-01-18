@@ -1,182 +1,173 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
     <ui:style>
         .important {
-            font-weight: bold;
-            font-style: italic;
+        font-weight: bold;
+        font-style: italic;
         }
         .rangeBox {
-            width: 30px;
-            margin-right:10px;
-            margin-left:10px;
+        width: 30px;
+        margin-right:10px;
+        margin-left:10px;
         }
         .margin {
 
         }
         .searchMainContent {
-            width: 200px;
+        width: 200px;
         }
     </ui:style>
     <ui:with field='res'
-        type='com.eprovement.poptavka.client.resources.StyleResource' />
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
 
     <g:HTMLPanel>
         <div>
             <ul>
                 <li>
-                    <g:Label>Message ID</g:Label>
+                    <ui:msg key="adminformMID">Message Id</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="messageIdFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="messageIdTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">
+                                        from
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="messageIdFrom"/>
+                                        to
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="messageIdTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Label>Demand ID</g:Label>
+                    <ui:msg key="adminformDID">Demand Id</ui:msg>
+
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="demandIdFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="demandIdTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">
+                                        from
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="demandIdFrom"/>
+                                        to
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="demandIdTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Label>Parent ID</g:Label>
+                    <ui:msg key="adminformPID">Parent Id</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="parentIdFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="parentIdTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">
+                                        from
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="parentIdFrom"/>
+                                        to
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="parentIdTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Label>Sender ID</g:Label>
+                    <ui:msg key="adminFormSenderID">Sender Id</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="senderIdFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="senderIdTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">
+                                        from
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="senderIdFrom"/>
+                                        to
+                                        <g:TextBox styleName="{style.rangeBox}" ui:field="senderIdTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Label>Subject</g:Label>
+                    <ui:msg key="adminformSubject">Subject</ui:msg>
                 </li>
                 <li>
                     <g:TextBox ui:field="subject"/>
                 </li>
                 <li>
-                    <g:Label>Body</g:Label>
+                    <ui:msg key="adminformBody">Body</ui:msg>
                 </li>
                 <li>
                     <g:TextBox ui:field="body"/>
                 </li>
                 <li>
-                    <g:Label>State</g:Label>
+                    <ui:msg key="adminformState">State</ui:msg>
                 </li>
                 <li>
                     <g:ListBox ui:field="state"/>
                 </li>
                 <li>
-                    <g:Label>Type</g:Label>
+                    <ui:msg key="adminformType">Type</ui:msg>
                 </li>
                 <li>
                     <g:ListBox ui:field="type"/>
                 </li>
                 <li>
-                    <g:Label>Created</g:Label>
+                    <ui:msg key="formCreationDate">Created</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <p1:DateBox ui:field="createdFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <p1:DateBox ui:field="createdTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">
+                                        from
+                                        <p1:DateBox ui:field="createdFrom"/>
+                                        to
+                                        <p1:DateBox ui:field="createdTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Label>Sent</g:Label>
+                    <ui:msg key="adminformSent">Sent</ui:msg>
                 </li>
                 <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <p1:DateBox ui:field="sentFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <p1:DateBox ui:field="sentTo"/>
-                                </g:HorizontalPanel>
+                                <g:HTMLPanel>
+                                    <ui:msg key="formFromTo">
+                                        from
+                                        <p1:DateBox ui:field="sentFrom"/>
+                                        to
+                                        <p1:DateBox ui:field="sentTo"/>
+                                    </ui:msg>
+                                </g:HTMLPanel>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li>
-                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                    <g:Button ui:field="clearBtn">
+                        <ui:msg key="commonBtnClear">Clear</ui:msg>
+                    </g:Button>
                 </li>
             </ul>
         </div>

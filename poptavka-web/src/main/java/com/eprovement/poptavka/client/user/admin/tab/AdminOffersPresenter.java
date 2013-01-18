@@ -43,7 +43,7 @@ public class AdminOffersPresenter
     private SearchModuleDataHolder searchDataHolder;
     // i18n
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
 
     /**
      * Interface for widget AdminOffersView.
@@ -231,7 +231,7 @@ public class AdminOffersPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow(Storage.MSGS.commit());
+                    eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateOffer(dataToUpdate.get(idx));
                     }

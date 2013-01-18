@@ -116,11 +116,11 @@ public class EmailDialogPopupView extends PopupPanel
         }
         // set values for subjectListBox
         subject = new ListBox();
-        subject.insertItem(MSGS.subjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
-        subject.insertItem(MSGS.subjectHelp(), Constants.SUBJECT_HELP);
-        subject.insertItem(MSGS.subjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
-        subject.insertItem(MSGS.subjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
-        subject.insertItem(MSGS.subjectReportUser(), Constants.SUBJECT_REPORT_USER);
+        subject.insertItem(MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
+        subject.insertItem(MSGS.emailDialogSubjectHelp(), Constants.SUBJECT_HELP);
+        subject.insertItem(MSGS.emailDialogSubjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
+        subject.insertItem(MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
+        subject.insertItem(MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
 
         //create widget
         setWidget(uiBinder.createAndBindUi(this));

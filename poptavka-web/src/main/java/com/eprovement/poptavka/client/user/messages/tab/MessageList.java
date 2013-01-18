@@ -161,7 +161,7 @@ public class MessageList extends Composite implements MessageListPresenter.IList
 
 // **** creationDate column
         creationCol = factory.createDateColumn(messageGrid.getSortHandler(), MessageColumnFactory.DATE_CREATED);
-        messageGrid.addColumn(creationCol, Storage.MSGS.createdDate());
+        messageGrid.addColumn(creationCol, Storage.MSGS.columnCreatedDate());
 
     }
 

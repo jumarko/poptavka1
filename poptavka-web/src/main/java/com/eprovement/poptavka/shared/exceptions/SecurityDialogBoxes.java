@@ -29,7 +29,7 @@ public abstract class SecurityDialogBoxes {
     public static class AlertBox extends PopupPanel {
 
         private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-        private static final String TITLE = MSGS.alert();
+        private static final String TITLE = MSGS.errorMsgAlert();
 
         public AlertBox(EventBusWithLookup eventBusWithLookup, String message) {
             super();
@@ -52,7 +52,7 @@ public abstract class SecurityDialogBoxes {
     public static class AccessDeniedBox extends PopupPanel {
 
         private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-        private static final String TITLE = MSGS.securityError();
+        private static final String TITLE = MSGS.errorMsgSecurityError();
 
         public AccessDeniedBox(EventBusWithLookup eventBusWithLookup) {
             super();
@@ -66,7 +66,7 @@ public abstract class SecurityDialogBoxes {
 
             VerticalPanel vp = new VerticalPanel();
             vp.add(new HTML("<strong>Alert</strong><hr/>"));
-            vp.add(new HTML(MSGS.accessDenied()));
+            vp.add(new HTML(MSGS.errorMsgAccessDenied()));
             vp.add(SecurityDialogBoxes.getReportButton(eventBusWithLookup));
 
             this.setWidget(vp);
@@ -74,7 +74,7 @@ public abstract class SecurityDialogBoxes {
     }
 
     protected static Anchor getReportButton(final EventBusWithLookup eventBus) {
-        Anchor reportButton = new Anchor(Storage.MSGS.report());
+        Anchor reportButton = new Anchor(Storage.MSGS.commonBtnReport());
         reportButton.setStyleName("font-size:1.0em");
         if (eventBus instanceof BaseChildEventBus) {
             reportButton.addClickHandler(new ClickHandler() {

@@ -133,19 +133,19 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     @Override
     public void setCategoriesHeader(String headerText) {
         ((HasText) categories.getHeader().asWidget()).setText(
-                Storage.MSGS.categories() + ": " + headerText);
+                Storage.MSGS.commonCategoriesLabel() + ": " + headerText);
     }
 
     @Override
     public void setLocalitiesHeader(String headerText) {
         ((HasText) localities.getHeader().asWidget()).setText(
-                Storage.MSGS.localities() + ": " + headerText);
+                Storage.MSGS.commonLocalitiesLabel() + ": " + headerText);
     }
 
     @Override
     public void setServicesHeader(String headerText) {
         ((HasText) services.getHeader().asWidget()).setText(
-                Storage.MSGS.services() + ": " + headerText);
+                Storage.MSGS.commonServicesLabel() + ": " + headerText);
     }
 
     @Override

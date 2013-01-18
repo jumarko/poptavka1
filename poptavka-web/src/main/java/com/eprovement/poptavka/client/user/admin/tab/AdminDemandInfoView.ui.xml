@@ -44,12 +44,12 @@
                 <table style="width: 100%;">
                     <tr>
                         <td colspan='2' align='center' class='{style.header}'>
-                            <ui:msg key='contactInfoFormTitle'>Demand Info</ui:msg>
+                            <ui:msg key='formDemandInfo'>Demand Info</ui:msg>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class='{style.label}'>
-                            <ui:msg key='title'>Title:</ui:msg>
+                            <ui:msg key='formTitle'>Title:</ui:msg>
                             <cm:ChangeMonitor ui:field='titleBox'>
                                 <g:TextBox  styleName='{style.titleBox}'/>
                             </cm:ChangeMonitor>
@@ -57,7 +57,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" class='{style.label}'>
-                            <ui:msg key='description'>Description:</ui:msg>
+                            <ui:msg key='formDescription'>Description:</ui:msg>
                             <cm:ChangeMonitor ui:field='descriptionBox' >
                                 <g:TextArea styleName='{style.descriptionBox}' />
                             </cm:ChangeMonitor>
@@ -65,7 +65,7 @@
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='price'>Price:</ui:msg>
+                            <ui:msg key='formPrice'>Price:</ui:msg>
                         </td>
                         <td>
                             <cm:ChangeMonitor ui:field='priceBox'>
@@ -75,7 +75,7 @@
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='endDate'>End Date:</ui:msg>
+                            <ui:msg key='formEndDate'>End Date:</ui:msg>
                         </td>
                         <td>
                             <cm:ChangeMonitor ui:field='endDateBox'>
@@ -85,7 +85,7 @@
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='expiration'>Expiration:</ui:msg>
+                            <ui:msg key='formExpirationDate'>Expiration:</ui:msg>
                         </td>
                         <td>
                             <cm:ChangeMonitor ui:field='expirationBox'>
@@ -95,7 +95,7 @@
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='clientID'>ClientID:</ui:msg>
+                            <ui:msg key='adminFormCID'>ClientID:</ui:msg>
                         </td>
                         <td>
                             <g:TextBox ui:field='clientID' styleName='{style.clientID}' />
@@ -103,7 +103,7 @@
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='maxOffers'>Max Offers:</ui:msg>
+                            <ui:msg key='formMaxOffers'>Max Offers:</ui:msg>
                         </td>
                         <td>
                             <cm:ChangeMonitor ui:field='maxOffers' >
@@ -113,7 +113,7 @@
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='minRating'>MinRating:</ui:msg>
+                            <ui:msg key='formRating'>MinRating:</ui:msg>
                         </td>
                         <td>
                             <cm:ChangeMonitor ui:field='minRating'>
@@ -123,7 +123,9 @@
                     </tr>
                     <tr>
                         <td  colspan="2" class='{style.label}'>
-                            <g:Label>Excluded supplier list</g:Label>
+                            <g:Label>
+                                <ui:msg key="formExcludedSuppliers">Excluded supplier list</ui:msg>
+                            </g:Label>
                         </td>
                     </tr>
                     <tr>
@@ -133,14 +135,14 @@
                                     <c:CellList ui:field="excludedSupplierCellList" />
                                 </cm:ChangeMonitor>
                                 <g:Button ui:field='editExcludedSupplierBtn'>
-                                    <ui:msg key='edit'>Edit</ui:msg>
+                                    <ui:msg key='commonBtnEdit'>Edit</ui:msg>
                                 </g:Button>
                             </g:VerticalPanel>
                         </td>
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='demandType'>Demand Type:</ui:msg>
+                            <ui:msg key='formDemandType'>Demand Type:</ui:msg>
                         </td>
                         <td>
                             <cm:ChangeMonitor ui:field='demandType'>
@@ -150,7 +152,7 @@
                     </tr>
                     <tr>
                         <td class='{style.label}'>
-                            <ui:msg key='demandStatus'>Demand Status:</ui:msg>
+                            <ui:msg key='formDemandStatus'>Demand Status:</ui:msg>
                         </td>
                         <td>
                             <cm:ChangeMonitor ui:field='demandStatus'>
@@ -160,9 +162,7 @@
                     </tr>
                     <tr>
                         <td  colspan="2" class='{style.label}'>
-<!--                        <ui:msg key='demandCategoryList'>Category List</ui:msg>-->
-                            <g:Label>Category List</g:Label>
-
+                            <ui:msg key='formCategories'>Category List</ui:msg>
                         </td>
                     </tr>
                     <tr>
@@ -172,15 +172,14 @@
                                     <c:CellList ui:field="categoryCellList" />
                                 </cm:ChangeMonitor>
                                 <g:Button ui:field='editCatBtn'>
-                                    <ui:msg key='edit'>Edit</ui:msg>
+                                    <ui:msg key='commonBtnEdit'>Edit</ui:msg>
                                 </g:Button>
                             </g:VerticalPanel>
                         </td>
                     </tr>
                     <tr>
                         <td  colspan="2" class='{style.label}'>
-<!--                        <ui:msg key='demandLocalityList'>Locality List</ui:msg>-->
-                            <g:Label>Locality List</g:Label>
+                            <ui:msg key='formLocalities'>Locality List</ui:msg>
                         </td>
                     </tr>
                     <tr>
@@ -190,7 +189,7 @@
                                     <c:CellList ui:field="localityCellList" />
                                 </cm:ChangeMonitor>
                                 <g:Button ui:field='editLocBtn'>
-                                    <ui:msg key='edit'>Edit</ui:msg>
+                                    <ui:msg key='commonBtnEdit'>Edit</ui:msg>
                                 </g:Button>
                             </g:VerticalPanel>
                         </td>
@@ -198,11 +197,11 @@
                     <tr>
                         <td colspan='2' align='center'>
                             <g:Button ui:field='updateButton'>
-                                <ui:msg key='demandDetailFormUpdateButton'>Update Demand</ui:msg>
+                                <ui:msg key='adminCommonUpdateBtn'>Update</ui:msg>
                             </g:Button>
 						&nbsp;
                             <g:Button ui:field='createButton'>
-                                <ui:msg key='demandDetailFormCreateButton'>Create Demand</ui:msg>
+                                <ui:msg key='adminCommonCreateBtn'>Create</ui:msg>
                             </g:Button>
                         </td>
                     </tr>

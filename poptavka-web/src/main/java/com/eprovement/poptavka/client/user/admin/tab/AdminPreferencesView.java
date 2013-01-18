@@ -121,7 +121,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
      */
     private void initTableColumns() {
         // ID
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -131,7 +131,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
                 });
 
         // key
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.key(), true, KEY_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnKey(), true, KEY_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -141,7 +141,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
                 });
 
         // Value
-        valueColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.value(), true, VALUE_COL_WIDTH,
+        valueColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnValue(), true, VALUE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -152,7 +152,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
 
         // description
         descriptionColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.description(), true, DESCRIPTION_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columDescription(), true, DESCRIPTION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

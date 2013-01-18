@@ -15,50 +15,68 @@
                     <ul class='{res.layout.submenuList}'>
                         <li>
                             <g:Button ui:field="demandsButton">
-                                <ui:msg key="demands">Demands</ui:msg>
+                                <ui:msg key="adminTableDemand">Demands</ui:msg>
                             </g:Button>
                         </li>
                         <li>
                             <g:Button ui:field="clientsButton">
-                                <ui:msg key="users">Clients</ui:msg>
+                                <ui:msg key="adminTableUser">Clients</ui:msg>
                             </g:Button>
                         </li>
                         <li>
                             <g:Button ui:field="suppliersButton">
-                                <ui:msg key="suppliers">Suppliers</ui:msg>
+                                <ui:msg key="adminTableSupplier">Suppliers</ui:msg>
                             </g:Button>
                         </li>
                         <li>
                             <g:Button ui:field="offersButton">
-                                <ui:msg key="offers">Offers</ui:msg>
+                                <ui:msg key="adminTableOffer">Offers</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="accessRolesButton">AccessRole</g:Button>
+                            <g:Button ui:field="accessRolesButton">
+                                <ui:msg key="adminTableAccessRole">AccessRole</ui:msg>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="emailActivationsButton">EmailActivation</g:Button>
+                            <g:Button ui:field="emailActivationsButton">
+                                <ui:msg key="adminTableEmailActivation">EmailActivation</ui:msg>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="invoicesButton">Invoice</g:Button>
+                            <g:Button ui:field="invoicesButton">
+                                <ui:msg key="adminTableInvoice">Invoice</ui:msg>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="messagesButton">Message</g:Button>
+                            <g:Button ui:field="messagesButton">
+                                <ui:msg key="adminTableMessage">Message</ui:msg>
+                            </g:Button>
                         </li>
-                        <!--					<li>
-                                  						<g:Button ui:field="ourPaymentDetailsButton">OurPaymentDetails</g:Button>
-                   					</li>-->
+                        <!--<li>
+                            <g:Button ui:field="ourPaymentDetailsButton">
+                                <ui:msg key="adminTableOurPaymentDetail">OurPaymentDetails</ui:msg>
+                            </g:Button>
+                   	</li>-->
                         <li>
-                            <g:Button ui:field="paymentMethodsButton">PaymentMethod</g:Button>
+                            <g:Button ui:field="paymentMethodsButton">
+                                <ui:msg key="adminTablePaymentMethod">PaymentMethod</ui:msg>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="permissionsButton">Permission</g:Button>
+                            <g:Button ui:field="permissionsButton">
+                                <ui:msg key="adminTablePermission">Permission</ui:msg>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="preferencesButton">Preference</g:Button>
+                            <g:Button ui:field="preferencesButton">
+                                <ui:msg key="adminTablePreference">Preference</ui:msg>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="problemsButton">Problem</g:Button>
+                            <g:Button ui:field="problemsButton">
+                                <ui:msg key="adminTableProblem">Problem</ui:msg>
+                            </g:Button>
                         </li>
                     </ul>
                 </div>

@@ -70,7 +70,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                     @Override
                     public void onSuccess(FullDemandDetail result) {
                         eventBus.loadingHide();
-                        eventBus.loadingShow(Storage.MSGS.demandCreatedAndForwarding());
+                        eventBus.loadingShow(Storage.MSGS.demandCreationSuccessfullyCreated());
                         eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
                     }
                 });

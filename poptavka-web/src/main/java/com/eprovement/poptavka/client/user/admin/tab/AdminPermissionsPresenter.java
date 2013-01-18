@@ -202,7 +202,7 @@ public class AdminPermissionsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow(Storage.MSGS.commit());
+                    eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updatePermission(dataToUpdate.get(idx));
                     }

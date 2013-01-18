@@ -51,7 +51,7 @@ public class SupplierOffersView extends Composite
         initTable();
         initWidget(uiBinder.createAndBindUi(this));
 
-        tableNameLabel.setText(Storage.MSGS.supplierContestsTableTitle());
+        tableNameLabel.setText(Storage.MSGS.supplierOffersTableTitle());
     }
 
     private void initTable() {

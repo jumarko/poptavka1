@@ -132,7 +132,7 @@ public class SupplierCreationPresenter
                     //if previous step is valid, continue
                     if (canContinue(eventItem - 1)) {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(true);
-                        view.getStatusLabel(eventItem - 1).setMessage(MSGS.ok());
+                        view.getStatusLabel(eventItem - 1).setMessage(MSGS.commonOK());
                     } else {
                         view.getStatusLabel(eventItem - 1).setPassedSmall(false);
                         view.getStatusLabel(eventItem - 1).setMessage(getErrorInfoLabel(eventItem - 1));
@@ -263,11 +263,11 @@ public class SupplierCreationPresenter
     private String getErrorInfoLabel(int step) {
         switch (step) {
             case SECOND_TAB_CATEGORY:
-                return MSGS.categorySelectorInfoLabel();
+                return MSGS.supplierCreationSecondTabErrorInfo();
             case THIRD_TAB_LOCALITY:
-                return MSGS.localitySelectorInfoLabel();
+                return MSGS.supplierCreationThirdTabErrorInfo();
             case FOURTH_TAB_SERVICE:
-                return MSGS.serviceSelectorInfoLabel();
+                return MSGS.supplierCreationFourthTabErrorInfo();
             default:
                 return "";
         }

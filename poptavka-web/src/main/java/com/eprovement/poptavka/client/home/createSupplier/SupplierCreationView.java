@@ -169,7 +169,7 @@ public class SupplierCreationView extends OverflowComposite
                 new HTMLPanel("<div id='text' style='overflow: auto; height: 500px;'>"
                 + "</div><hr /><div style='text-align: center' id='button'></div>");
         HTML content = new HTML(StyleResource.INSTANCE.conditions().getText());
-        Button closeButton = new Button(MSGS.close());
+        Button closeButton = new Button(MSGS.commonBtnClose());
         contentPanel.add(content, "text");
         contentPanel.add(closeButton, "button");
         panel.setWidget(contentPanel);
@@ -227,10 +227,10 @@ class AggreementDialogBox extends PopupPanel {
         VerticalPanel vp = new VerticalPanel();
 
         // Add some text to the top of the dialog
-        vp.add(new Label(MSGS.agreementMessage()));
+        vp.add(new Label(MSGS.supplierCreationAgreementMessage()));
 
         // Add a close button at the bottom of the dialog
-        Button closeButton = new Button(MSGS.close(), new ClickHandler() {
+        Button closeButton = new Button(MSGS.commonBtnClose(), new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 hide();

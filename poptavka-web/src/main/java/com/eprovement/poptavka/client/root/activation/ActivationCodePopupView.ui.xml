@@ -10,21 +10,21 @@
     <g:VerticalPanel>
         <cm:StatusIconLabel ui:field='statusLabel' style='{res.common.infoMessage}'/>
         <g:Label>
-            <ui:msg key="enterActivationCode">Please enter the activation code below:</ui:msg>
+            <ui:msg key="activationEnterActivationCode">Please enter the activation code below:</ui:msg>
         </g:Label>
         <g:TextBox ui:field="activationCodeBox" />
         <g:HorizontalPanel>
             <g:Button ui:field="activateButton">
-                <ui:msg key="activateButton">Activate</ui:msg>
+                <ui:msg key="activationBtnActivate">Activate</ui:msg>
             </g:Button>
             <g:Button ui:field="sendAgainButton">
-                <ui:msg key="sendAgainButton">Send again</ui:msg>
+                <ui:msg key="activationBtnSendAgain">Send again</ui:msg>
             </g:Button>
             <g:Button ui:field="reportButton" visible="false">
-                <ui:msg key="report">Report problem</ui:msg>
+                <ui:msg key="commonBtnReport">Report problem</ui:msg>
             </g:Button>
             <g:Button ui:field="closeButton">
-                <ui:msg key="close">Close</ui:msg>
+                <ui:msg key="commonBtnClose">Close</ui:msg>
             </g:Button>
         </g:HorizontalPanel>
     </g:VerticalPanel>

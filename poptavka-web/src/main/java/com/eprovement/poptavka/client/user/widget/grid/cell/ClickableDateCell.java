@@ -27,10 +27,10 @@ public class ClickableDateCell extends AbstractCell<Date> {
             long actualDate = new Date().getTime();
             //conditions
             if ((actualDate - creationDate) < Storage.DAY_LENGTH) {
-                return SafeHtmlUtils.fromTrustedString(Storage.MSGS.today());
+                return SafeHtmlUtils.fromTrustedString(Storage.MSGS.creationDateToday());
             }
             if ((actualDate - creationDate) < (Storage.DAY_LENGTH * 2)) {
-                return SafeHtmlUtils.fromTrustedString(Storage.MSGS.yesterday());
+                return SafeHtmlUtils.fromTrustedString(Storage.MSGS.creationDateYesterday());
             }
             return SafeHtmlUtils.fromTrustedString(DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT)
                     .format(demandCreation));

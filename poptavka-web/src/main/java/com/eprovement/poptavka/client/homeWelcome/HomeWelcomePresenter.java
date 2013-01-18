@@ -138,7 +138,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
             public void onClick(ClickEvent event) {
                 //TODO uncomment and remove second row if ivan will accept changes.
 //                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, "");
-                new SecurityDialogBoxes.AlertBox(eventBus, Storage.MSGS.tryWaiting()).center();
+                new SecurityDialogBoxes.AlertBox(eventBus, Storage.MSGS.errorTipTryWaiting()).center();
             }
         });
 

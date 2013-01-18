@@ -36,11 +36,11 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
 
     public AdminDemandsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
-        demandType.addItem(Storage.MSGS.select());
+        demandType.addItem(Storage.MSGS.commonListDefault());
         for (DemandTypeType type : DemandTypeType.values()) {
             demandType.addItem(type.name());
         }
-        demandStatus.addItem(Storage.MSGS.select());
+        demandStatus.addItem(Storage.MSGS.commonListDefault());
         for (DemandStatus status : DemandStatus.values()) {
             demandStatus.addItem(status.name());
         }

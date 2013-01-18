@@ -116,7 +116,7 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new EditTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -126,7 +126,7 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
                 });
         // DemandName
         textColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.text(), true, TEXT_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columnText(), true, TEXT_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

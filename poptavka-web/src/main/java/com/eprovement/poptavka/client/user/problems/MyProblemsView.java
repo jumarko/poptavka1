@@ -43,7 +43,7 @@ public class MyProblemsView extends Composite implements
 
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
 
-    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
 
     private AsyncDataProvider dataProvider = new AsyncDataProvider() {
 

@@ -122,7 +122,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -132,7 +132,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
                 });
 
         // Code
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.code(), true, CODE_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnCode(), true, CODE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -142,7 +142,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
                 });
 
         // name
-        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.name(), true, NAME_COL_WIDTH,
+        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnName(), true, NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -153,7 +153,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
 
         // description
         descriptionColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.description(), true, DESCRIPTION_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columDescription(), true, DESCRIPTION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

@@ -8,39 +8,39 @@
 
 	<g:HTMLPanel>
 		<h4 class="{res.detailViews.demandDetailSectionHeader}">
-			<ui:msg key="supplierInfo">Supplier information</ui:msg>
+			<ui:msg key="formSupplierInfo">Supplier information</ui:msg>
 		</h4>
 		<g:HTMLPanel styleName="{res.detailViews.demandDetailContent}">
 			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 				<!-- Common info -->
 				<g:Label styleName='{res.detailViews.detailHeader}'>
-					<ui:msg key="commonInfo">Common info: </ui:msg>
+					<ui:msg key="formCommonInfo">Common info: </ui:msg>
 				</g:Label>
 
 				<g:HTMLPanel>
 					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-						<ui:msg key="comapanyName">Company name: </ui:msg>
+						<ui:msg key="formComapanyName">Company name: </ui:msg>
 					</g:Label>
 					<g:Label ui:field="companyName" />
 				</g:HTMLPanel>
 
 				<g:HTMLPanel>
 					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-						<ui:msg key="ranking">Overall rating:</ui:msg>
+						<ui:msg key="formRanking">Overall rating:</ui:msg>
 					</g:Label>
 					<g:Label ui:field="overallRating" />
 				</g:HTMLPanel>
 
 				<g:HTMLPanel>
 					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-						<ui:msg key="certified">Certified:</ui:msg>
+						<ui:msg key="formCertified">Certified:</ui:msg>
 					</g:Label>
 					<g:Label ui:field="certified" />
 				</g:HTMLPanel>
 
 				<g:HTMLPanel>
 					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-						<ui:msg key="website">Website:</ui:msg>
+						<ui:msg key="formWebsite">Website:</ui:msg>
 					</g:Label>
 					<g:Label ui:field="website" />
 				</g:HTMLPanel>
@@ -49,28 +49,28 @@
 			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 				<!-- Address info -->
 				<g:Label styleName='{res.detailViews.detailHeader}'>
-					<ui:msg key="address">Address: </ui:msg>
+					<ui:msg key="formAddress">Address: </ui:msg>
 				</g:Label>
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="street">Street: </ui:msg>
+					<ui:msg key="formStreet">Street: </ui:msg>
 				</g:Label>
 				<g:Label ui:field="street" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="city">City: </ui:msg>
+					<ui:msg key="formCity">City: </ui:msg>
 				</g:Label>
 				<g:Label ui:field="city" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="zipCode">Zip code: </ui:msg>
+					<ui:msg key="formZipCode">Zip code: </ui:msg>
 				</g:Label>
 				<g:Label ui:field="zipCode" />
 			</g:HTMLPanel>
 
 			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 				<g:Label styleName='{res.detailViews.detailHeader}'>
-					<ui:msg key="categories">Category info</ui:msg>
+					<ui:msg key="formCategories">Categories</ui:msg>
 				</g:Label>
 
                                 <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}'/>
@@ -78,7 +78,7 @@
 
 			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 				<g:Label styleName='{res.detailViews.detailHeader}'>
-					<ui:msg key="localities">Locality info</ui:msg>
+					<ui:msg key="formLocalities">Localities</ui:msg>
 				</g:Label>
 				<c:CellList ui:field="localities" styleName='{res.detailViews.detailLocalityLabel}'/>
 			</g:HTMLPanel>
@@ -86,45 +86,45 @@
 			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 				<!-- Detail info -->
 				<g:Label styleName='{res.detailViews.detailHeader}'>
-					<ui:msg key="detailInfo">Detail info: </ui:msg>
+					<ui:msg key="formDetailInfo">Detail info: </ui:msg>
 				</g:Label>
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="firstName">First name:</ui:msg>
+					<ui:msg key="formFirstName">First name:</ui:msg>
 				</g:Label>
 				<g:Label ui:field="firstName" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="lastName">Last name: </ui:msg>
+					<ui:msg key="formLastName">Last name: </ui:msg>
 				</g:Label>
 				<g:Label ui:field="lastName" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="phone">Phone: </ui:msg>
+					<ui:msg key="formPhone">Phone: </ui:msg>
 				</g:Label>
 				<g:Label ui:field="phone" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="email">Email: </ui:msg>
+					<ui:msg key="formEmail">Email: </ui:msg>
 				</g:Label>
 				<g:Label ui:field="email" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="website">Website:</ui:msg>
+					<ui:msg key="formWebsite">Website:</ui:msg>
 				</g:Label>
 				<g:Label ui:field="websiteContactPerson" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="invoiceDetail">Invoice detail: </ui:msg>
+					<ui:msg key="formInvoiceInfo">Invoice info</ui:msg>
 				</g:Label>
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="taxId">Tax number:</ui:msg>
+					<ui:msg key="formTaxNumber">Tax number:</ui:msg>
 				</g:Label>
 				<g:Label ui:field="taxId" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="identification">Identification number:</ui:msg>
+					<ui:msg key="formIdentificationNumber">Identification number:</ui:msg>
 				</g:Label>
 				<g:Label ui:field="identificationNumber" />
 			</g:HTMLPanel>
@@ -132,7 +132,7 @@
 			<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 				<!-- Description: info -->
 				<g:Label styleName='{res.detailViews.detailHeader}'>
-					<ui:msg key="description">Description: </ui:msg>
+					<ui:msg key="formDescription">Description: </ui:msg>
 				</g:Label>
 
 				<g:Label ui:field="description" />

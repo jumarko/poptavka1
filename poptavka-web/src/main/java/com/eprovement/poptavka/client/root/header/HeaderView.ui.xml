@@ -23,7 +23,7 @@
 		<div class='{res.layout.login}'>
 			<div class='{res.layout.loginButton}'>
 				<g:Anchor ui:field="loginButton">
-					<ui:msg key="logIn">Log In</ui:msg>
+					<ui:msg key="headerLogIn">Log In</ui:msg>
 				</g:Anchor>
 			</div>
 			<div id="loginAnchor"

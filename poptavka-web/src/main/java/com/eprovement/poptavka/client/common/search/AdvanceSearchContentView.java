@@ -67,31 +67,31 @@ public class AdvanceSearchContentView extends Composite
     public void setCurrentViewTabName() {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.CLIENT_DEMANDS:
-                currentViewAttributesLabel.setText(Storage.MSGS.clientDemandsTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchClientDemandsTab());
                 break;
             case Constants.CLIENT_DEMAND_DISCUSSIONS:
-                currentViewAttributesLabel.setText(Storage.MSGS.clientDemandsDiscussionsTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchClientDemandsDiscussionsTab());
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:
-                currentViewAttributesLabel.setText(Storage.MSGS.clientOfferedDemandsTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchClientOfferedDemandsTab());
                 break;
             case Constants.CLIENT_OFFERED_DEMAND_OFFERS:
-                currentViewAttributesLabel.setText(Storage.MSGS.clientOfferedDemandOffersTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchClientOfferedDemandOffersTab());
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:
-                currentViewAttributesLabel.setText(Storage.MSGS.clientAssignedDemandsTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchClientAssignedDemandsTab());
                 break;
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
-                currentViewAttributesLabel.setText(Storage.MSGS.suppliersPotentialDemandsTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchSuppliersPotentialDemandsTab());
                 break;
             case Constants.SUPPLIER_OFFERS:
-                currentViewAttributesLabel.setText(Storage.MSGS.suppliersOffersTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchSuppliersOffersTab());
                 break;
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
-                currentViewAttributesLabel.setText(Storage.MSGS.suppliersAssignedDemandsTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchSuppliersAssignedDemandsTab());
                 break;
             default:
-                currentViewAttributesLabel.setText(Storage.MSGS.currentViewTabName());
+                currentViewAttributesLabel.setText(Storage.MSGS.searchCurrentViewTab());
                 break;
         }
     }

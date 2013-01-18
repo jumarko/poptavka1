@@ -11,42 +11,36 @@
         <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='25' animationDuration="1000">
             <g:tab>
                 <g:header>
-                    <ui:msg key="demandsTabName">Demand's table attributes</ui:msg>
+                    <ui:msg key="advSearchDemandsTab">Demand's table attributes</ui:msg>
                 </g:header>
                 <homeDemands:HomeDemandsSearchView ui:field="demandsAttributeSelectorWidget" />
             </g:tab>
             <g:tab>
                 <g:header>
-                    <ui:msg key="suppliersTabName">Supplier's table attributes</ui:msg>
+                    <ui:msg key="advSearchSuppliersTab">Supplier's table attributes</ui:msg>
                 </g:header>
                 <homeSuppliers:HomeSuppliersSearchView ui:field="suppliersAttributeSelectorWidget" />
             </g:tab>
             <g:tab>
                 <g:customHeader size="10">
-                    <g:Label ui:field="currentViewAttributesLabel">Current's table attributes</g:Label>
+                    <g:Label ui:field="currentViewAttributesLabel">
+                        <ui:msg key="advSearchCurrentViewTab">Current's table attributes</ui:msg>
+                    </g:Label>
                 </g:customHeader>
                 <g:SimplePanel ui:field="attributeSelectorWidgetPanel" />
             </g:tab>
             <g:tab>
                 <g:header>
-                    <ui:msg key="categories">Categories</ui:msg>
+                    <ui:msg key="advSearchCategoriesTab">Categories</ui:msg>
                 </g:header>
                 <g:SimplePanel ui:field="categorySelectorWidgetPanel" />
             </g:tab>
             <g:tab>
                 <g:header>
-                    <ui:msg key="localities">Localities</ui:msg>
+                    <ui:msg key="advSearchLocalitiesTab">Localities</ui:msg>
                 </g:header>
                 <g:SimplePanel ui:field="localitySelectorWidgetPanel" />
             </g:tab>
         </g:TabLayoutPanel>
-        <!--        <g:HorizontalPanel>
-            <g:Button ui:field="resetBtn">
-                <ui:msg key="reset">Reset</ui:msg>
-            </g:Button>
-            <g:Button ui:field="searchBtn">
-                <ui:msg key="search">Search</ui:msg>
-            </g:Button>
-        </g:HorizontalPanel>-->
     </g:VerticalPanel>
 </ui:UiBinder>

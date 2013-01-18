@@ -49,16 +49,16 @@
 			<h:MyMenuItem styleName='{res.layout.logoutButton}'>
 				<g:MenuBar vertical="true" styleName='{res.layout.logoutMenuBar}'>
 					<g:MenuItem ui:field="menuLogOut">
-						<ui:msg key="logOut">Log Out</ui:msg>
+						<ui:msg key="userHeaderLogOut">Log Out</ui:msg>
 					</g:MenuItem>
 					<g:MenuItem ui:field="menuMyProfile">
-						<ui:msg key="myProfile">My profile</ui:msg>
+						<ui:msg key="userHeaderMyProfile">My profile</ui:msg>
 					</g:MenuItem>
 					<g:MenuItem ui:field="menuHelp">
-						<ui:msg key="subjectHelp">Help</ui:msg>
+						<ui:msg key="userHeaderHelp">Help</ui:msg>
 					</g:MenuItem>
 					<g:MenuItem ui:field="menuCustomerService">
-						<ui:msg key="customerService">Customer Service</ui:msg>
+						<ui:msg key="userHeaderCustomerService">Customer Service</ui:msg>
 					</g:MenuItem>
 				</g:MenuBar>
 			</h:MyMenuItem>

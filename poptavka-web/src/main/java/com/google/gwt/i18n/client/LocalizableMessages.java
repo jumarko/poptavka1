@@ -1,337 +1,130 @@
 package com.google.gwt.i18n.client;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
+import java.util.Date;
 
 public interface LocalizableMessages extends Messages {
 
-    String logIn();
-    String logOut();
-    String myProfile();
-    String customerService();
-    String endDate();
-    String expireDate();
-    String emptyField();
-    String footerDisplay();
-    String footerHide();
-    String status();
-    //home - searchPanel
-    String allCategories();
-    String allLocalities();
-    String search();
-    String advancedSearch();
-    String searchContent();
-    String noSearchingCriteria();
-    String today();
-    String yesterday();
-    String lastWeek();
-    String lastMonth();
-    String noLimits();
-    String searchIn();
-    String priceFrom();
-    String priceTo();
-    String ratingFrom();
-    String ratingTo();
-    String demandType();
-    String finnishDate();
-    String creationDate();
-    String currency();
-    String supplierDescription();
-    String demandText();
-    String supplierName();
-    String select();
-    //home - searchPanel - search what
-    String searchInDemands();
-    String searchInSuppliers();
-    String searchInCurrentView();
-    String searchInClientDemands();
-    String searchInClientDemandsDiscussions();
-    String searchInClientOfferedDemands();
-    String searchInClientOfferedDemandOffers();
-    String searchInClientAssignedDemands();
-    String searchInSuppliersPotentialDemands();
-    String searchInSuppliersOffers();
-    String searchInSuppliersAssignedDemands();
-    //home - searchPanel - popup current view tab name
-    String demandsTabName();
-    String suppliersTabName();
-    String currentViewTabName();
-    String clientDemandsTabName();
-    String clientDemandsDiscussionsTabName();
-    String clientOfferedDemandsTabName();
-    String clientOfferedDemandOffersTabName();
-    String clientAssignedDemandsTabName();
-    String suppliersPotentialDemandsTabName();
-    String suppliersPotentialDemandDiscussionsTabName();
-    String suppliersOffersTabName();
-    String suppliersAssignedDemandsTabName();
+    /**************************************************************************/
+    /*  0 - Root module view                                                  */
+    /*  1 - Home Welcome module view                                          */
+    /*  2 - Home Demands module view                                          */
+    /*  3 - Home Suppliers module view                                        */
+    /*  4 - Create Demand module view                                         */
+    /*  6 - Search module view                                                */
+    /*  7 - Settings module view                                              */
+    /*  8 - Client Demands module view                                        */
+    /*  9 - Supplier Demands module view                                      */
+    /*  10 - Admin module view                                                */
+    /*                                                                        */
+    /*** 0 - Root module view ******************************************* 0 ***/
+    /*** ATTRIBUTES ***********************************************************/
+    /** Formats i18n. **/
+    String formatDate();
+    String formatCurrency();
+    String formatCurrencySign();
 
-    //offers view - buttons
-    String answer();
-    String refuse();
-    String accept();
-    //offer table
-    String price();
-    String demand();
-    //demand creation
-    String mailAvailable();
-    String mailNotAvailable();
-    String malformedEmail();
-    String shortPassword();
-    String strongPassword();
-    String semiStrongPassword();
-    String passwordsMatch();
-    String passwordsUnmatch();
-    String formDemandBasicInfoLabel();
-    String formDemandAdvInfoLabel();
-    String categorySelectorInfoLabel();
-    String localitySelectorInfoLabel();
-    String serviceSelectorInfoLabel();
-    String providePersonalInfoLabel();
-    String loginOrRegisterToContinueLabel();
-    String registerInfoLabel();
-    String validationErrorInfoLabel();
-    String ok();
-    String contactInfo();
-    String demandCreatedAndForwarding();
-    String loggedSuccessfully();
-    String registerSuccessfully();
-    String createDemandButton();
-    String createAnotherDemandButton();
-    String seeMyDemandsButton();
-    String seeAllDemandsButton();
-    String activateButton();
-    String sendAgainButton();
-    String enterActivationCode();
-    String activationCodeSent();
-    String newActivationCodeSent();
-    String activationPassed();
-    String activationFailedUnknownError();
-    String activationFailedUnknownUser();
-    String activationFailedIncorrectActivationCode();
-    String activationFailedExpiredActivationCode();
-    String newActivationCodeSentFailed();
+    /** Common button names. **/
+    String commonBtnBack();
+    String commonBtnCancel();
+    String commonBtnClear();
+    String commonBtnClose();
+    String commonBtnDelete();
+    String commonBtnEdit();
+    String commonBtnLogin();
+    String commonBtnNext();
+    String commonBtnRefresh();
+    String commonBtnReport();
+    String commonBtnRevert();
+    String commonBtnSend();
+    String commonBtnSubmit();
 
-    //supplier registration
-    String agreementMessage();
-    //service definitions
-    String serviceOne();
-    String serviceOneDescription();
-    String serviceTwo();
-    String serviceTwoDescription();
-    String serviceThree();
-    String serviceThreeDescription();
+    /** Common labels. **/
+    String commonCategoriesLabel();
+    String commonEmptyCredentials();
+    String commonEmptyTable();
+    String commonLocalitiesLabel();
+    String commonNoData();
+    String commonNotDefined();
+    String commonOK();
+    String commonSelected();
+    String commonServicesLabel();
 
-    //status messages, description
-    String basicMessage();
-    String basicDescription();
-    String locMessage();
-    String locDescription();
-    String catMessage();
-    String catDescription();
-    String advMessage();
-    String advDescription();
-    String loginMessage();
-    String loginDescription();
-    String regMessage();
-    String regDescription();
+    /** Messages actions list box. **/
+    String commonListDefault();
+    String commonListRead();
+    String commonListUnread();
+    String commonListStarred();
+    String commonListUnstarred();
 
-    //global loading popup
-    String progressRegisterClient();
-    String progressRegisterSupplier();
-    String progressGettingDemandData();
-    String progressCreatingDemand();
-    String progressLogingUser();
-    String wrongLoginDescription();
+    /** Form section info labels . **/
+    String formAccountInfo();
+    String formAddressInfo();
+    String formBankInfo();
+    String formCommonInfo();
+    String formCompanyInfo();
+    String formDatesInfo();
+    String formDemandInfo();
+    String formDetailInfo();
+    String formInvoiceInfo();
+    String formPriceInfo();
+    String formSupplierInfo();
 
-    String close();
+    /** Form labels. **/
+    String formAdddress();
+    String formAttachment();
+    String formBankAccNum();
+    String formBankCode();
+    String formBusinessType();
+    String formCategories();
+    String formCertified();
+    String formCity();
+    String formCompanyName();
+    String formConstSymbol();
+    String formCreationDate();
+    String formDemandStatus();
+    String formDemandTitle();
+    String formDemandType();
+    String formDescription();
+    String formEmail();
+    String formExcludedSuppliers();
+    String formExpirationDate();
+    String formFinnishDate();
+    String formFirstName();
+    String formFromTo(int from, int to);
+    String formFromToDate(Date from, Date to);
+    String formFromToPrice(int from, int to, String currencySign);
+    String formFromToPercentage(int from, int to);
+    String formIdentificationNumber();
+    String formInvoiceNumber();
+    String formIssueDate();
+    String formLastName();
+    String formLocalities();
+    String formMaxOffers();
+    String formMaxSuppliers();
+    String formMinSupplierRating();
+    String formPassword();
+    String formPasswordConfirm();
+    String formPaymentMethod();
+    String formPhone();
+    String formPrice();
+    String formRating();
+    String formServices();
+    String formShipmentDate();
+    String formStreet();
+    String formTaxBasis();
+    String formTaxNumber();
+    String formTitle();
+    String formTotalPrice();
+    String formValidTo();
+    String formVarSymbol();
+    String formVat();
+    String formVatRate();
+    String formVerified();
+    String formWebsite();
+    String formZipCode();
 
-    //common
-    String logo();
-    String categories();
-    String localities();
-    String demands();
-    String suppliers();
-    String id();
-    String cid();
-    String rid();
-    String did();
-    String pid();
-    String sid();
-    String oid();
-    String code();
-    String name();
-    String title();
-    String permissions();
-    String company();
-    String firstName();
-    String lastName();
-    String expiration();
-    String activationCode();
-    String timeout();
-    String invoiceNumber();
-    String varSymb();
-    String totalPrice();
-    String payMethod();
-    String subject();
-    String state();
-    String key();
-    String value();
-    String text();
-    String companyName();
-    String businessType();
-    String certified();
-    String verified();
-    String description();
-    String duration();
-    String from();
-    String to();
-    String noData();
-    String rating();
-    String address();
-    String action();
-    String read();
-    String unread();
-    String star();
-    String unstar();
-    String notDefined();
-    String deliveryDate();
-    String demandDetail();
-    String supplierDetail();
-    String conversationDetail();
-    String services();
-
-    String month();
-    String fewMonths();
-    String months();
-    String submit();
-    SafeHtml rememberMe();
-    String pass();
-    String email();
-    String loading();
-    String loadingRootCategories();
-    String loadingCategories();
-    String loadingLocalities();
-    String progressGetUserDetail();
-    String progressCreatingUserInterface();
-    String progressDemandsLayoutInit();
-    String progressMessagesLayoutInit();
-    String progressAdminLayoutInit();
-    String notEntered();
-
-    //client demands
-    String clientDemandsTitle();
-    String clientOfferedDemandsTitle();
-    String clientAssignedDemandsTitle();
-
-    String backToClientDemands();
-    String backToClientOfferedDemands();
-
-    //supplier demands
-    String supplierPotentialDemandsTableTitle();
-    String supplierContestsTableTitle();
-    String supplierAssignedDemandsTableTitle();
-
-
-    //used in displying demands
-    String date();
-    String validTo();
-    String type();
-    String category();
-    String locality();
-    String offers();
-    String attachment();
-    String createdDate();
-    String sentDate();
-    String createdTime();
-    String urgency();
-    String urgentHigh();
-    String urgentLess();
-    String urgentNormal();
-    String commonInfo();
-    String minRating();
-    String maxOffers();
-    String excludedSuppliers();
-
-    //Admin module
-    String getDemandsData();
-    String getClientsData();
-    String getOffersData();
-    String getSuppliersData();
-    String getAccessRoleData();
-    String getEmailActivationData();
-    String getInvoiceData();
-    String getMessageData();
-    String getPaymentMethodData();
-    String getPermissionData();
-    String getPreferenceData();
-    String getProblemData();
-    String commit();
-
-    //Demand module
-    String received();
-    String accepted();
-
-    //General
-    String currencyFormat();
-
-    //Buttons
-    String replyButton();
-    String sendOfferButton();
-    String editOfferButton();
-    String cancelOfferButton();
-    String finnishedButton();
-    String acceptOfferButton();
-    String denyOfferButton();
-    String answerButton();
-    String closeDemandButton();
-    String nextButton();
-    String backButton();
-
-    //Explanation texts to table image columns
-
-    //TODO release - urobit poriadne i18n - teraz je tu dost bordel
-    //Table column names
-    String client();
-
-    //Table buttons
-    String replyExplanationText();
-    String acceptOfferExplanationText();
-    String declineOfferExplanationText();
-    String closeDemandExplanationText();
-    String sendOfferExplanationText();
-    String editOfferExplanationText();
-    String downloadOfferExplanationText();
-    String finnishedExplanationText();
-
-    //Table related
-    String emptyTable();
-
-    //Explanation texts for DemandStatus icon column
-    String demandStatusActive();
-    String demandStatusAssigned();
-    String demandStatusCanceled();
-    String demandStatusClosed();
-    String demandStatusFinnished();
-    String demandStatusInactive();
-    String demandStatusInvalid();
-    String demandStatusNew();
-    String demandStatusCrawled();
-    String demandStatusToBeChecked();
-
-    //Explanation texts for Offer state icon column
-    String offerStateAccepted();
-    String offerStatePending();
-    String offerStateDeclined();
-
-    // Messages for LoginPopupPresenter & LoginPopupView
-    String loggingOut();
-    String emptyCredentials();
-    String verifyAccount();
-    String loggingIn();
-    String wrongLoginMessage();
-    String loginUnknownError();
-
-    //Menu buttons
+    /** Horizontal Menu. **/
     String menuHome();
     String menuClient();
     String menuSupplier();
@@ -342,74 +135,456 @@ public interface LocalizableMessages extends Messages {
     String menuMessages();
     String menuAdministration();
 
-    // Error messages and their descriptions
-    String pageNotFound();
-    String pageNotFoundDesc();
-    String badRequest();
-    String badRequestDesc();
-    String internalError();
-    String internalErrorDesc();
-    String serviceUnavailable();
-    String serviceUnavailableDesc();
-    String serverError();
-    String serverErrorDesc();
-    String accessDenied();
-    String accessDeniedDesc();
-    String notAuthorized();
-    String notAuthorizedDesc();
-    String securityError();
-    String alert();
-    // Error tips for users
-    String pleaseTryFollowing();
-    String checkWebAddress();
-    String tryFromHome();
-    String trySearchBox();
-    String reportIssue();
-    String checkAccount();
-    String tryRegistration();
-    String tryWaiting();
-    String tryOtherBrowser();
-    String report();
-    // Send us an email
-    String sendUsEmail();
-    String customerSupport();
-    String enverYourEmail();
-    String subjectGeneralQuestion();
-    String subjectHelp();
-    String subjectPartnership();
-    String subjectReportIssue();
-    String subjectReportUser();
-    String thanksForMessage();
-    String questionOrConcern();
-    String reEnterYourEmail();
-    String maximumChars();
-    String sendButton();
+    /** Vertical Menu. **/
+    String menuClientDemands();
+    String menuClientOffers();
+    String menuClientAssignedDemands();
+    String menuSupplierDemands();
+    String menuSupplierOffers();
+    String menuSupplierAssignedDemands();
 
-    //Address Selector
-    String addressCountry();
-    String addressRegion();
-    String addressState();
+    /*** ATTRIBUTES ***********************************************************/
+    /** HeaderView.ui. **/
+    String headerLogIn();
+
+    /** UserHeaderView.ui. **/
+    String userHeaderCustomerService();
+    String userHeaderHelp();
+    String userHeaderLogOut();
+    String userHeaderMyProfile();
+
+    /** FooterView.ui. **/
+    String footerAboutUs();
+    String footerCompanyName();
+    String footerContactUs();
+    String footerTermsConditions();
+
+    /** EmailDialogPopupView.ui. **/
+    String emailDialogCustomerSupport();
+    String emailDialogEnterYourEmail();
+    String emailDialogMaximumChars();
+    String emailDialogQuestionOrConcern();
+    String emailDialogReEnterYourEmail();
+    String emailDialogSendUsEmail();
+    String emailDialogSubject();
+    String emailDialogSubjectGeneralQuestion();
+    String emailDialogSubjectHelp();
+    String emailDialogSubjectPartnership();
+    String emailDialogSubjectReportIssue();
+    String emailDialogSubjectReportUser();
+    String emailDialogThanksForMessage();
+    String emailDialogTo();
+
+    /** ActivationCodePopupView.ui. **/
+    String activationBtnActivate();
+    String activationBtnSendAgain();
+    String activationCodeSent();
+    String activationEnterActivationCode();
+    String activationFailedExpiredActivationCode();
+    String activationFailedIncorrectActivationCode();
+    String activationFailedSentNewCode();
+    String activationFailedUnknownError();
+    String activationFailedUnknownUser();
+    String activationNewCodeSent();
+    String activationPassed();
+
+    /** DetailsWrapperView.ui. **/
+    String detailsWrapperTabDemandDetail();
+    String detailsWrapperTabSupplierDetail();
+    String detailsWrapperTabConversationDetail();
+    /** OfferQuestionWindow.ui. **/
+    String offerResponse();
+    String questionResponse();
+
+    /** List creationDate. **/
+    String creationDateToday();
+    String creationDateYesterday();
+    String creationDateLastWeek();
+    String creationDateLastMonth();
+    String creationDateNoLimits();
+
+    /** Service definitions. **/
+    String serviceOne();
+    String serviceOneDescription();
+    String serviceTwo();
+    String serviceTwoDescription();
+    String serviceThree();
+    String serviceThreeDescription();
+
+    /** Global loading popup. **/
+    String progressCommiting();
+    String progressCreatingDemand();
+    String progressGettingDemandData();
+    String progressLogingUser();
+    String progressRegisterClient();
+    String progressRegisterSupplier();
+    String progressUpdatingProfile();
+
+    String wrongLoginDescription();
+
+    /** Table columns. **/
+    String columBusinessType();
+    String columCertified();
+    String columCompanyName();
+    String columDescription();
+    String columnActivationCode();
+    String columnAddress();
+    String columnCID();
+    String columnClient();
+    String columnCode();
+    String columnCompany();
+    String columnCreatedDate();
+    String columnDate();
+    String columnDeliveryDate();
+    String columnDemandTitle();
+    String columnDID();
+    String columnDuration();
+    String columnEndDate();
+    String columnExpiration();
+    String columnFinnishDate();
+    String columnFirstName();
+    String columnID();
+    String columnInvoiceNumber();
+    String columnKey();
+    String columnLastName();
+    String columnLocality();
+    String columnLogo();
+    String columnName();
+    String columnOfferID();
+    String columnPayMethod();
+    String columnPermissions();
+    String columnPID();
+    String columnPrice();
+    String columnRating();
+    String columnReceived();
+    String columnSenderID();
+    String columnState();
+    String columnStatus();
+    String columnSubject();
+    String columnSupplierName();
+    String columnText();
+    String columnTimeout();
+    String columnTitle();
+    String columnTotalPrice();
+    String columnType();
+    String columnUrgency();
+    String columnValidTo();
+    String columnValue();
+    String columnVarSymb();
+    String columVerified();
+
+    String month();
+    String fewMonths();
+    String months();
+
+    SafeHtml rememberMe();
+
+    /** Login. **/
+    String loginPopupPass();
+    String loginPopupEmail();
+
+    /** Loading. **/
+    String loading();
+    String loadingRootCategories();
+    String loadingCategories();
+    String loadingLocalities();
+
+    /** Progress. **/
+    String progressAdminLayoutInit();
+    String progressCreatingUserInterface();
+    String progressDemandsLayoutInit();
+    String progressGetUserDetail();
+    String progressMessagesLayoutInit();
+
+    /** UrgentImageCell.java. **/
+    String urgentHigh();
+    String urgentLess();
+    String urgentNormal();
+
+    /** Explanation texts for DemandStatus icon column. **/
+    String demandStatusActive();
+    String demandStatusAssigned();
+    String demandStatusCanceled();
+    String demandStatusClosed();
+    String demandStatusCrawled();
+    String demandStatusFinnished();
+    String demandStatusInactive();
+    String demandStatusInvalid();
+    String demandStatusNew();
+    String demandStatusToBeChecked();
+
+    /** Explanation texts for Offer state icon column. **/
+    String offerStateAccepted();
+    String offerStatePending();
+    String offerStateDeclined();
+
+    // Messages for LoginPopupPresenter & LoginPopupView
+    String verifyAccount();
+    String loggingIn();
+    String wrongLoginMessage();
+    String loginUnknownError();
+
+    /** ErrorView.java. Error messages and their descriptions **/
+    String errorMsgAccessDenied();
+    String errorMsgAccessDeniedDesc();
+    String errorMsgAlert();
+    String errorMsgBadRequest();
+    String errorMsgBadRequestDesc();
+    String errorMsgCodelistsNotDisplaying();
+    String errorMsgInternalError();
+    String errorMsgInternalErrorDesc();
+    String errorMsgNotAuthorized();
+    String errorMsgNotAuthorizedDesc();
+    String errorMsgPageNotFound();
+    String errorMsgPageNotFoundDesc();
+    String errorMsgSecurityError();
+    String errorMsgServerError();
+    String errorMsgServerErrorDesc();
+    String errorMsgServiceUnavailable();
+    String errorMsgServiceUnavailableDesc();
+
+    /** Error tips for users. **/
+    String errorTipCheckAccount();
+    String errorTipCheckWebAddress();
+    String errorTipPleaseTryFollowing();
+    String errorTipReportIssue();
+    String errorTipTryFromHome();
+    String errorTipTryOtherBrowser();
+    String errorTipTryRegistration();
+    String errorTipTrySearchBox();
+    String errorTipTryWaiting();
+
+    /** AddressSelectorView.ui. **/
     String addressCity();
+    String addressCountry();
     String addressDistrict();
-    String addressZipCode();
-    String addressStreet();
     String addressLoadingInfoLabel(int minCharsCity);
     String addressMyCityIsLessInfoLabel(int minCharsCity);
     String addressNoCityFound();
+    String addressRegion();
+    String addressState();
+    String addressStreet();
+    String addressZipCode();
 
-    //Setting
+    /*** 1 - Home Welcome module view *********************************** 1 ***/
+
+    /*** 2 - Home Demands module view *********************************** 2 ***/
+    /** HomeDemandsView.ui. **/
+    String homeDemandsToolbarLabel();
+    String homeDemandsOfferBtn();
+
+    /*** 3 - Home Suppliers module view ********************************* 3 ***/
+    /** HomeSuppliersView.ui. **/
+    String homeSuppliersToolbarLabel();
+    String homeSuppliersContactBtn();
+
+    /*** 4 - Create Demand module view ********************************** 4 ***/
+    /** DemandCreationModuleView.ui. **/
+    String demandCreationTab1();
+    String demandCreationTab2();
+    String demandCreationTab3();
+    String demandCreationTab4();
+    String demandCreationTab5();
+    String demandCreationAdvDescription();
+    String demandCreationBasicDescription();
+    String demandCreationCatDescription();
+    String demandCreationCategorySelectorInfoLabel();
+    String demandCreationCreateDemandBtn();
+    String demandCreationFormDemandAdvInfoLabel();
+    String demandCreationFormDemandBasicInfoLabel();
+    String demandCreationLocalitySelectorInfoLabel();
+    String demandCreationLocDescription();
+    String demandCreationLoginDescription();
+    String demandCreationLoginOrRegister();
+    String demandCreationLoginOrRegisterToContinueLabel();
+    String demandCreationRegisterBtn();
+    String demandCreationRegisterInfoLabel();
+    String demandCreationSuccessfullyCreated();
+    String demandCreationSecondTabErrorInfo();
+    String demandCreationThirdTabErrorInfo();
+    String demandCreationFourthTabErrorInfo();
+    String demandCreationFifthTabErrorInfo();
+
+    /** FormDemandAdvView.ui. **/
+    String formDemandAdvDemandAttractive();
+    String formDemandAdvDemandClassic();
+    String formDemandAdvExcludeBtn();
+    String formDemandAdvExcludedList();
+    String formDemandAdvMinRating();
+
+    /*** 5 - Create Supplier module view ******************************** 5 ***/
+    /** SupplierCreationModuleView.ui. **/
+    String supplierCreationTab1();
+    String supplierCreationTab2();
+    String supplierCreationTab3();
+    String supplierCreationTab4();
+    String supplierCreationAdvDescription();
+    String supplierCreationAgreementConditions();
+    String supplierCreationAgreementMessage();
+    String supplierCreationBasicDescription();
+    String supplierCreationCatDescription();
+    String supplierCreationCategorySelectorInfoLabel();
+    String supplierCreationLocalitySelectorInfoLabel();
+    String supplierCreationLocDescription();
+    String supplierCreationProvidePersonalInfoLabel();
+    String supplierCreationRegisterBtn();
+    String supplierCreationServiceSelectorInfoLabel();
+    String supplierCreationSecondTabErrorInfo();
+    String supplierCreationThirdTabErrorInfo();;
+    String supplierCreationFourthTabErrorInfo();
+
+    /** FormUserRegistrationView.ui. **/
+    String formUserRegMailAvailable();
+    String formUserRegMailNotAvailable();
+    String formUserRegMalformedEmail();
+    String formUserRegPasswordsMatch();
+    String formUserRegPasswordsUnmatch();
+    String formUserRegPrivatePerson();
+    String formUserRegSemiStrongPassword();
+    String formUserRegShortPassword();
+    String formUserRegStrongPassword();
+
+    /*** 6 - Search module view ***************************************** 6 ***/
+    /** SearchModuleView.ui. **/
+    String searchBtnAdvance();
+    String searchBtnSearch();
+    String searchContent();
+    String searchMenuDemand();
+    String searchMenuSupplier();
+    String searchNoSearchingCriteria();
+
+    /** Search in possible labels. **/
+    String searchInClientAssignedDemands();
+    String searchInClientDemands();
+    String searchInClientDemandsDiscussions();
+    String searchInClientOfferedDemandOffers();
+    String searchInClientOfferedDemands();
+    String searchInCurrentView();
+    String searchInDemands();
+    String searchInSuppliers();
+    String searchInSuppliersAssignedDemands();
+    String searchInSuppliersOffers();
+    String searchInSuppliersPotentialDemands();
+
+    /** Search popup possible tab names. **/
+    String searchClientAssignedDemandsTab();
+    String searchClientDemandsDiscussionsTab();
+    String searchClientDemandsTab();
+    String searchClientOfferedDemandOffersTab();
+    String searchClientOfferedDemandsTab();
+    String searchCurrentViewTab();
+    String searchDemandsTab();
+    String searchSuppliersAssignedDemandsTab();
+    String searchSuppliersOffersTab();
+    String searchSuppliersPotentialDemandDiscussionsTab();
+    String searchSuppliersPotentialDemandsTab();
+    String searchSuppliersTab();
+
+    /** AdvanceSearchContentView.ui. **/
+    String advSearchCategoriesTab();
+    String advSearchCurrentViewTab();
+    String advSearchDemandsTab();
+    String advSearchLocalitiesTab();
+    String advSearchSuppliersTab();
+
+    /*** 7 - Settings module view *************************************** 7 ***/
+    /** SettingsView.ui. **/
+    String settingsClientInformation();
+    String settingsNothingToUpdate();
+    String settingsNotificationLeavingPage();
+    String settingsSupplierInformation();
+    String settingsToolbarLabel();
+    String settingsUpdateButton();
+    String settingsUserInformation();
+    String settingsUpdatedOK();
+    String settingsUpdatedNotOK();
+
+    /** Notifications. **/
     String notifyImmediately();
     String notifyDaily();
     String notifyWeekly();
-    String updatedOK();
-    String updatedNotOK();
-    String updatingProfile();
-    String nothingToUpdate();
-    String notificationLeavingPage();
 
-    //Error messages
-    String codelistsNotDisplaying();
+    /** UserSettingsView.ui. **/
+    String userSettingsBillingDetails();
+    String userSettingsNotifications();
 
-    //
-    String dateFormat();
+    /** ClientSettingsView.ui. **/
+
+    /** SupplierSettingsView.ui. **/
+    String supplierSettingsCategories();
+    String supplierSettingsLocalities();
+    String supplierServices();
+
+
+    /*** 8 - Client Demands module view ********************************* 8 ***/
+    String clientDemandsToolbarLabel();
+    /** ClientDemandsView.ui. **/
+    String clientDemandsTableTitle();
+    String clientDemandsBackBtn();
+
+    /** ClientOffersView.ui. **/
+    String clientOffersTableTitle();
+    String clientOffersBackBtn();
+    String clientOffersAcceptBtn();
+
+    /** ClientAssignedDemandsView.ui. **/
+    String clientAssignedDemandsTitle();
+    String clientAssignedDemandsCloseBtn();
+
+    /*** 9 - Supplier Demands module view ******************************* 9 ***/
+    String supplierDemandsToolbarLabel();
+    /** SupplierDemandsView.ui. **/
+    String supplierPotentialDemandsTableTitle();
+
+    /** SupplierOffersView.ui. **/
+    String supplierOffersTableTitle();
+
+    /** SupplierAssignedDemandsView.ui. **/
+    String supplierAssignedDemandsFinnishBtn();
+    String supplierAssignedDemandsTableTitle();
+
+    /*** 10 - Admin module view ***************************************** 10 ***/
+    /** AdminView.ui. **/
+    String adminTableAccessRole();
+    String adminTableDemand();
+    String adminTableEmailActivation();
+    String adminTableInvoice();
+    String adminTableMessage();
+    String adminTableOffer();
+    String adminTableOurPaymentDetail();
+    String adminTablePaymentMethod();
+    String adminTablePermission();
+    String adminTablePreference();
+    String adminTableProblem();
+    String adminTableSupplier();
+    String adminTableUser();
+
+    /** Admin commons. **/
+    String adminCommonChangesLabel();
+    String adminCommonBtnCommit();
+    String adminCommonBtnCreate();
+    String adminCommonBtnRefresh();
+    String adminCommonBtnRollback();
+    String adminCommonBtnUpdate();
+
+    /** Admin form labels. **/
+    String adminFormActivationLink();
+    String adminFormBody();
+    String adminFormCID();
+    String adminFormCode();
+    String adminFormDID();
+    String adminFormId();
+    String adminFormKey();
+    String adminFormMID();
+    String adminFormName();
+    String adminFormPermissions();
+    String adminFormPID();
+    String adminFormSenderID();
+    String adminFormState();
+    String adminFormSubject();
+    String adminFormSupplierID();
+    String adminFormTimeout();
+    String adminFormType();
+    String adminFormValue();
+
 }

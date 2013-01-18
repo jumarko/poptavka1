@@ -58,7 +58,9 @@
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65">
 					<g:HTMLPanel>
-						<h2 class='{res.layout.toolbarHeader}'>Category</h2>
+						<h2 class='{res.layout.toolbarHeader}'>
+                                                    <ui:msg key="homeSuppliersToolbarLabel">Category</ui:msg>
+                                                </h2>
 					</g:HTMLPanel>
 				</g:north>
 				<g:center>
@@ -78,7 +80,9 @@
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-						<g:Button ui:field="contactBtn" styleName='{style.button}'>Contact</g:Button>
+						<g:Button ui:field="contactBtn" styleName='{style.button}'>
+                                                    <ui:msg key="homeSuppliersContactBtn">Contact</ui:msg>
+                                                </g:Button>
 						<s:UniversalPagerWidget ui:field="pager"
 							styleName='{style.paginator}' />
 					</g:HTMLPanel>

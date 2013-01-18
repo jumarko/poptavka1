@@ -38,18 +38,18 @@ public class AdminSuppliersViewView extends Composite implements
         ratingFrom.setText("0");
         ratingTo.setText("100");
         //BusinessType
-        type.addItem(Storage.MSGS.select());
+        type.addItem(Storage.MSGS.commonListDefault());
         for (BusinessType bType : BusinessType.values()) {
             type.addItem(bType.getValue());
         }
         type.setSelectedIndex(0);
         //Certified
-        certified.addItem(Storage.MSGS.select());
+        certified.addItem(Storage.MSGS.commonListDefault());
         certified.addItem("true");
         certified.addItem("false");
         certified.setSelectedIndex(0);
         //Vertified
-        verified.addItem(Storage.MSGS.select());
+        verified.addItem(Storage.MSGS.commonListDefault());
         for (Verification type : Verification.values()) {
             verified.addItem(type.name());
         }

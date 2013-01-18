@@ -43,7 +43,7 @@ public class AdminDemandInfoView extends Composite {
 
     private static AdminDemandInfoViewUiBinder uiBinder = GWT.create(AdminDemandInfoViewUiBinder.class);
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
 
     interface AdminDemandInfoViewUiBinder extends
             UiBinder<Widget, AdminDemandInfoView> {

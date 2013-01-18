@@ -26,20 +26,21 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex5}">
 						1.
-						<ui:msg key="supplierRegistrationInfo">Supplier Registration</ui:msg>
+						<ui:msg key="supplierCreationTab1">Supplier Registration</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="EM" height="100%">
 					<g:south size="4">
 						<cm:StatusIconLabel ui:field='basicStatus'
-							style='{res.common.infoMessage}' message='{text.providePersonalInfoLabel}'
-							description='{text.basicDescription}' />
+							style='{res.common.infoMessage}'
+                                                        message='{text.supplierCreationProvidePersonalInfoLabel}'
+							description='{text.supplierCreationBasicDescription}' />
 					</g:south>
 					<g:center>
 						<g:VerticalPanel>
 							<g:SimplePanel ui:field="supplierInfoHolder" />
 							<g:Button ui:field="nextButtonTab1">
-								<ui:msg key="nextButton">Next</ui:msg>
+								<ui:msg key="commonBtnNext">Next</ui:msg>
 							</g:Button>
 						</g:VerticalPanel>
 					</g:center>
@@ -49,24 +50,25 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex4}">
 						2.
-						<ui:msg key="catsSelection">Category selection</ui:msg>
+						<ui:msg key="supplierCreationTab2">Category selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="EM" height="100%">
 					<g:south size="4">
 						<cm:StatusIconLabel ui:field='categoryStatus'
-							style='{res.common.infoMessage}' message='{text.categorySelectorInfoLabel}'
-							description='{text.catDescription}' />
+							style='{res.common.infoMessage}'
+                                                        message='{text.supplierCreationCategorySelectorInfoLabel}'
+							description='{text.supplierCreationCatDescription}' />
 					</g:south>
 					<g:center>
 						<g:VerticalPanel>
 							<g:SimplePanel ui:field="categoryHolder" />
 							<g:HorizontalPanel>
 								<g:Button ui:field="backButtonTab2">
-									<ui:msg key="backButton">Back</ui:msg>
+									<ui:msg key="commonBtnBack">Back</ui:msg>
 								</g:Button>
 								<g:Button ui:field="nextButtonTab2">
-									<ui:msg key="nextButton">Next</ui:msg>
+									<ui:msg key="commonBtnNext">Next</ui:msg>
 								</g:Button>
 							</g:HorizontalPanel>
 						</g:VerticalPanel>
@@ -77,24 +79,25 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex3}">
 						3.
-						<ui:msg key="locsSelection">Locality selection</ui:msg>
+						<ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="EM" height="100%">
 					<g:south size="4">
 						<cm:StatusIconLabel ui:field='localityStatus'
-							style='{res.common.infoMessage}' message='{text.localitySelectorInfoLabel}'
-							description='{text.locDescription}' />
+							style='{res.common.infoMessage}'
+                                                        message='{text.supplierCreationLocalitySelectorInfoLabel}'
+							description='{text.supplierCreationLocDescription}' />
 					</g:south>
 					<g:center>
 						<g:VerticalPanel>
 							<g:SimplePanel ui:field="localityHolder" />
 							<g:HorizontalPanel>
 								<g:Button ui:field="backButtonTab3">
-									<ui:msg key="backButton">Back</ui:msg>
+									<ui:msg key="commonBtnBack">Back</ui:msg>
 								</g:Button>
 								<g:Button ui:field="nextButtonTab3">
-									<ui:msg key="nextButton">Next</ui:msg>
+									<ui:msg key="commonBtnNext">Next</ui:msg>
 								</g:Button>
 							</g:HorizontalPanel>
 						</g:VerticalPanel>
@@ -105,34 +108,32 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex2}">
 						4.
-						<ui:msg key="serviceSelection">Service Selection</ui:msg>
+						<ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="EM" height="100%">
 					<g:south size="4">
 						<cm:StatusIconLabel ui:field='serviceStatus'
-							style='{res.common.infoMessage}' message='{text.serviceSelectorInfoLabel}'
-							description='{text.advDescription}' />
+							style='{res.common.infoMessage}'
+                                                        message='{text.supplierCreationServiceSelectorInfoLabel}'
+							description='{text.supplierCreationAdvDescription}' />
 					</g:south>
 					<g:center>
 						<g:HTMLPanel>
 							<g:SimplePanel ui:field="serviceHolder" />
 							<g:HorizontalPanel ui:field="agreementPanel">
 								<g:CheckBox ui:field="agreedCheck" />
-								<g:Label>
-									<ui:msg key="agreement">Agreement</ui:msg>
-								</g:Label>
 								<g:Anchor ui:field="conditionLink">
-									<ui:msg key="conditions">Conditions</ui:msg>
+									<ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
 								</g:Anchor>
 							</g:HorizontalPanel>
 							<br />
 							<g:HorizontalPanel>
 								<g:Button ui:field="backButtonTab4">
-									<ui:msg key="backButton">Back</ui:msg>
+									<ui:msg key="commonBtnBack">Back</ui:msg>
 								</g:Button>
 								<g:Button ui:field="registerBtn">
-									<ui:msg key="registerSupplier">Register Supplier</ui:msg>
+									<ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
 								</g:Button>
 							</g:HorizontalPanel>
 							<hr />

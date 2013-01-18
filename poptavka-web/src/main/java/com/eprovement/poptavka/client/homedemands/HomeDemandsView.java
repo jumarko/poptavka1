@@ -167,13 +167,13 @@ public class HomeDemandsView extends OverflowComposite
 
         // Date of creation
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.createdDate(), true, CREATED_DATE_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), bundle.columnCreatedDate(), true, CREATED_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
                         FullDemandDetail demandDetail = (FullDemandDetail) object;
                         if (demandDetail.getCreated() == null) {
-                            return Storage.MSGS.notDefined();
+                            return Storage.MSGS.commonNotDefined();
                         } else {
                             Date now = new Date();
                             long millis = now.getTime() - demandDetail.getCreated().getTime();
@@ -181,7 +181,7 @@ public class HomeDemandsView extends OverflowComposite
                                 return DateTimeFormat.getFormat(
                                         DateTimeFormat.PredefinedFormat.TIME_SHORT).format(demandDetail.getCreated());
                             } else if (Storage.DAY_LENGTH <= millis && millis < 2 * Storage.DAY_LENGTH) {
-                                return Storage.MSGS.yesterday();
+                                return Storage.MSGS.creationDateYesterday();
                             } else {
                                 return DateTimeFormat.getFormat(
                                         DateTimeFormat.PredefinedFormat.DATE_SHORT).format(demandDetail.getCreated());
@@ -192,7 +192,7 @@ public class HomeDemandsView extends OverflowComposite
 
         // Demand Info
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.demand(), true, TITLE_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), bundle.columnDemandTitle(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -202,7 +202,7 @@ public class HomeDemandsView extends OverflowComposite
 
         // Locality
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.locality(), false, LOCALITY_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), bundle.columnLocality(), false, LOCALITY_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -230,7 +230,7 @@ public class HomeDemandsView extends OverflowComposite
 
         // Urgence
         /**************************************************************************/
-        dataGrid.addUrgentColumn(Storage.MSGS.urgency());
+        dataGrid.addUrgentColumn(Storage.MSGS.columnUrgency());
     }
 
     /**************************************************************************/

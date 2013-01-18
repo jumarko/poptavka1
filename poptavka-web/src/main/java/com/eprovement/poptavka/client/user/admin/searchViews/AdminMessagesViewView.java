@@ -38,11 +38,11 @@ public class AdminMessagesViewView extends Composite implements
 
     public AdminMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
-        type.addItem(Storage.MSGS.select());
+        type.addItem(Storage.MSGS.commonListDefault());
         for (MessageType msgtype : MessageType.values()) {
             type.addItem(msgtype.name());
         }
-        state.addItem(Storage.MSGS.select());
+        state.addItem(Storage.MSGS.commonListDefault());
         for (MessageState msgState : MessageState.values()) {
             state.addItem(msgState.name());
         }

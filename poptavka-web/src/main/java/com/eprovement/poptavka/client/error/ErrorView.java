@@ -92,57 +92,57 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
     }
 
     private void setForbiddenMessage() { // also called Access Denied
-        errorTitle.setText(MSGS.accessDenied());
-        errorDescription.setText(MSGS.accessDeniedDesc());
-        messagesList.add(new Label(MSGS.pleaseTryFollowing()));
-        messagesList.add(new Label(MSGS.checkAccount()));
-        messagesList.add(new Label(MSGS.tryRegistration()));
-        messagesList.add(new Label(MSGS.reportIssue()));
+        errorTitle.setText(MSGS.errorMsgAccessDenied());
+        errorDescription.setText(MSGS.errorMsgAccessDeniedDesc());
+        messagesList.add(new Label(MSGS.errorTipPleaseTryFollowing()));
+        messagesList.add(new Label(MSGS.errorTipCheckAccount()));
+        messagesList.add(new Label(MSGS.errorTipTryRegistration()));
+        messagesList.add(new Label(MSGS.errorTipReportIssue()));
     }
     private void setUnauthorizedMessage() {
-        errorTitle.setText(MSGS.notAuthorized());
-        errorDescription.setText(MSGS.notAuthorizedDesc());
-        messagesList.add(new Label(MSGS.pleaseTryFollowing()));
-        messagesList.add(new Label(MSGS.checkAccount()));
-        messagesList.add(new Label(MSGS.tryRegistration()));
-        messagesList.add(new Label(MSGS.reportIssue()));
+        errorTitle.setText(MSGS.errorMsgNotAuthorized());
+        errorDescription.setText(MSGS.errorMsgNotAuthorizedDesc());
+        messagesList.add(new Label(MSGS.errorTipPleaseTryFollowing()));
+        messagesList.add(new Label(MSGS.errorTipCheckAccount()));
+        messagesList.add(new Label(MSGS.errorTipTryRegistration()));
+        messagesList.add(new Label(MSGS.errorTipReportIssue()));
     }
 
     private void setBadRequestMessage() {
-        errorTitle.setText(MSGS.badRequest());
-        errorDescription.setText(MSGS.badRequestDesc());
-        messagesList.add(new Label(MSGS.pleaseTryFollowing()));
-        messagesList.add(new Label(MSGS.checkWebAddress()));
-        messagesList.add(new Label(MSGS.tryFromHome()));
-        messagesList.add(new Label(MSGS.trySearchBox()));
-        messagesList.add(new Label(MSGS.reportIssue()));
+        errorTitle.setText(MSGS.errorMsgBadRequest());
+        errorDescription.setText(MSGS.errorMsgBadRequestDesc());
+        messagesList.add(new Label(MSGS.errorTipPleaseTryFollowing()));
+        messagesList.add(new Label(MSGS.errorTipCheckWebAddress()));
+        messagesList.add(new Label(MSGS.errorTipTryFromHome()));
+        messagesList.add(new Label(MSGS.errorTipTrySearchBox()));
+        messagesList.add(new Label(MSGS.errorTipReportIssue()));
     }
 
     private void setNotFoundMessage() {
-        errorTitle.setText(MSGS.pageNotFound());
-        errorDescription.setText(MSGS.pageNotFoundDesc());
-        messagesList.add(new Label(MSGS.pleaseTryFollowing()));
-        messagesList.add(new Label(MSGS.checkWebAddress()));
-        messagesList.add(new Label(MSGS.tryFromHome()));
-        messagesList.add(new Label(MSGS.trySearchBox()));
-        messagesList.add(new Label(MSGS.reportIssue()));
+        errorTitle.setText(MSGS.errorMsgPageNotFound());
+        errorDescription.setText(MSGS.errorMsgPageNotFoundDesc());
+        messagesList.add(new Label(MSGS.errorTipPleaseTryFollowing()));
+        messagesList.add(new Label(MSGS.errorTipCheckWebAddress()));
+        messagesList.add(new Label(MSGS.errorTipTryFromHome()));
+        messagesList.add(new Label(MSGS.errorTipTrySearchBox()));
+        messagesList.add(new Label(MSGS.errorTipReportIssue()));
     }
 
     private void setInternalServerErrorMessage() { // all other errors
-        errorTitle.setText(MSGS.internalError());
-        errorDescription.setText(MSGS.internalErrorDesc());
-        messagesList.add(new Label(MSGS.pleaseTryFollowing()));
-        messagesList.add(new Label(MSGS.tryWaiting()));
-        messagesList.add(new Label(MSGS.tryOtherBrowser()));
-        messagesList.add(new Label(MSGS.reportIssue()));
+        errorTitle.setText(MSGS.errorMsgInternalError());
+        errorDescription.setText(MSGS.errorMsgInternalErrorDesc());
+        messagesList.add(new Label(MSGS.errorTipPleaseTryFollowing()));
+        messagesList.add(new Label(MSGS.errorTipTryWaiting()));
+        messagesList.add(new Label(MSGS.errorTipTryOtherBrowser()));
+        messagesList.add(new Label(MSGS.errorTipReportIssue()));
     }
 
     private void setServiceUnavailableMessage() {
-        errorTitle.setText(MSGS.serviceUnavailable());
-        errorDescription.setText(MSGS.serviceUnavailableDesc());
-        messagesList.add(new Label(MSGS.pleaseTryFollowing()));
-        messagesList.add(new Label(MSGS.tryWaiting()));
-        messagesList.add(new Label(MSGS.reportIssue()));
+        errorTitle.setText(MSGS.errorMsgServiceUnavailable());
+        errorDescription.setText(MSGS.errorMsgServiceUnavailableDesc());
+        messagesList.add(new Label(MSGS.errorTipPleaseTryFollowing()));
+        messagesList.add(new Label(MSGS.errorTipTryWaiting()));
+        messagesList.add(new Label(MSGS.errorTipReportIssue()));
     }
 
     /**************************************************************************/

@@ -11,18 +11,18 @@
 
 	<g:HTMLPanel ui:field="detail">
 		<h4 class="{res.detailViews.demandDetailSectionHeader}">
-			<ui:msg key="demandInfo">Demand information</ui:msg>
+			<ui:msg key="formDemandInfo">Demand information</ui:msg>
 		</h4>
 		<g:ScrollPanel>
 			<g:HTMLPanel styleName="{res.detailViews.demandDetailContent}">
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="commonInfo">Common info</ui:msg>
+						<ui:msg key="formCommonInfo">Common info</ui:msg>
 					</g:Label>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="demandName">Demand name: </ui:msg>
+							<ui:msg key="formDemandTitle">Demand title</ui:msg>
 						</g:Label>
                                                 <cm:ChangeMonitor ui:field='titleMonitor'>
                                                         <g:TextBox ui:field="title" title="title"/>
@@ -31,7 +31,7 @@
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="price">Price:</ui:msg>
+							<ui:msg key="formPrice">Price:</ui:msg>
 						</g:Label>
                                                 <cm:ChangeMonitor ui:field='priceMonitor'>
                                                         <i:BigDecimalBox ui:field="price" title="price" />
@@ -40,7 +40,7 @@
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="endDate">End date:</ui:msg>
+							<ui:msg key="formEndDate">End date:</ui:msg>
 						</g:Label>
                                                 <cm:ChangeMonitor ui:field='endDateMonitor'>
                                                         <d:DateBox ui:field="endDate"  title="endDate"/>
@@ -48,7 +48,7 @@
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="validTo">Valid to: </ui:msg>
+							<ui:msg key="formValidTo">Valid to: </ui:msg>
 						</g:Label>
                                                 <cm:ChangeMonitor ui:field='validToDateMonitor'>
                                                         <d:DateBox ui:field="validToDate"  title="validToDate"/>
@@ -58,32 +58,36 @@
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="categories">Category info</ui:msg>
+						<ui:msg key="formCategories">Category info</ui:msg>
 					</g:Label>
                                         <cm:ChangeMonitor ui:field='categoriesMonitor'>
                                                 <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' title="categories"/>
                                         </cm:ChangeMonitor>
-                                        <g:Button ui:field="editCatBtn">Edit</g:Button>
+                                        <g:Button ui:field="editCatBtn">
+                                            <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                                        </g:Button>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="localities">Locality info</ui:msg>
+						<ui:msg key="formLocalities">Locality info</ui:msg>
 					</g:Label>
                                         <cm:ChangeMonitor ui:field='localitiesMonitor'>
                                                 <c:CellList ui:field="localities" styleName='{res.detailViews.detailLocalityLabel}' title="localities"/>
                                         </cm:ChangeMonitor>
-                                        <g:Button ui:field="editLocBtn">Edit</g:Button>
+                                        <g:Button ui:field="editLocBtn">
+                                            <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                                        </g:Button>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="detailInfo">Detail info: </ui:msg>
+						<ui:msg key="formDetailInfo">Detail info: </ui:msg>
 					</g:Label>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="maxNumberOfSuppliers">Maximal number of suppliers:</ui:msg>
+							<ui:msg key="formMaxSuppliers">Maximal number of suppliers:</ui:msg>
 						</g:Label>
                                                 <cm:ChangeMonitor ui:field='maxOffersMonitor'>
                                                         <i:IntegerBox ui:field="maxOffers" title="maxOffers" />
@@ -92,7 +96,7 @@
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="minSupplierRating">Minimal supplier rating: </ui:msg>
+							<ui:msg key="formMinSupplierRating">Minimal supplier rating: </ui:msg>
 						</g:Label>
                                                 <cm:ChangeMonitor ui:field='minRatingMonitor'>
                                                         <i:IntegerBox ui:field="minRating" title="minRating" />
@@ -101,7 +105,7 @@
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="excludedSuppliers">Excluded suppliers: </ui:msg>
+							<ui:msg key="formExcludedSuppliers">Excluded suppliers: </ui:msg>
 						</g:Label>
                                                 <cm:ChangeMonitor ui:field='excludedSuppliersMonitor'>
                                                         <c:CellList ui:field="excludedSuppliers" title="excludedSuppliers" />
@@ -111,7 +115,7 @@
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="description">Description: </ui:msg>
+						<ui:msg key="formDescription">Description: </ui:msg>
 					</g:Label>
                                         <cm:ChangeMonitor ui:field='descriptionMonitor'>
                                                 <g:TextArea ui:field="description" title="description" />
@@ -119,13 +123,21 @@
 				</g:HTMLPanel>
 
 				<g:HTMLPanel ui:field="choiceButtonsPanel">
-					<g:Button ui:field="editDemandButton">Edit demand</g:Button>
-					<g:Button ui:field="deleteDemandButton">Delete demand</g:Button>
+					<g:Button ui:field="editDemandButton">
+                                            <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                                        </g:Button>
+					<g:Button ui:field="deleteDemandButton">
+                                            <ui:msg key="commonBtnDelete">Delete</ui:msg>
+                                        </g:Button>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel ui:field="editButtonsPanel">
-					<g:Button ui:field="submitButton">Submit</g:Button>
-					<g:Button ui:field="cancelButton">Stop editing</g:Button>
+					<g:Button ui:field="submitButton">
+                                            <ui:msg key="commonBtnSubmit">submit</ui:msg>
+                                        </g:Button>
+					<g:Button ui:field="cancelButton">
+                                            <ui:msg key="commonBtnCancel">Cancel</ui:msg>
+                                        </g:Button>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:ScrollPanel>

@@ -133,7 +133,7 @@ public class ClientOffersView extends Composite
     public void initDemandTableColumns() {
         // Demand title column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -151,7 +151,7 @@ public class ClientOffersView extends Composite
 
         // Demand price column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), true, PRICE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(), true, PRICE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -161,7 +161,7 @@ public class ClientOffersView extends Composite
 
         // Finnish date column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.finnishDate(), true, FINNISH_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnFinnishDate(), true, FINNISH_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -171,7 +171,7 @@ public class ClientOffersView extends Composite
 
         // Valid-to date column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnValidTo(), true, VALID_TO_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {

@@ -32,7 +32,7 @@ public class AdminInvoiceInfoView extends Composite implements
 
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
 
-    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
 
     interface AdminInvoiceInfoViewUiBinder extends
             UiBinder<Widget, AdminInvoiceInfoView> {

@@ -7,38 +7,38 @@
 
 	<g:HTMLPanel>
 		<h4 class="{res.detailViews.demandDetailSectionHeader}">
-			<ui:msg key="demandInfo">Demand information</ui:msg>
+			<ui:msg key="formDemandInfo">Demand information</ui:msg>
 		</h4>
 		<g:ScrollPanel styleName="{res.detailViews.demandDetailContent}">
 			<g:HTMLPanel >
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="commonInfo">Common info</ui:msg>
+						<ui:msg key="formCommonInfo">Common info</ui:msg>
 					</g:Label>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="demandName">Demand name: </ui:msg>
+							<ui:msg key="formDemandTitle">Demand title: </ui:msg>
 						</g:Label>
 						<g:Label ui:field="demandName" />
 					</g:HTMLPanel>
 
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="price">Price:</ui:msg>
+							<ui:msg key="formPrice">Price:</ui:msg>
 						</g:Label>
 						<g:Label ui:field="price" />
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="endDate">End date:</ui:msg>
+							<ui:msg key="formEndDate">End date:</ui:msg>
 						</g:Label>
 						<g:Label styleName='{res.detailViews.detailDateLabel}'
 							ui:field="endDate" />
 					</g:HTMLPanel>
 					<g:HTMLPanel>
 						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-							<ui:msg key="validTo">Valid to: </ui:msg>
+							<ui:msg key="formValidTo">Valid to: </ui:msg>
 						</g:Label>
 						<g:Label styleName='{res.detailViews.detailDateLabel}'
 							ui:field="validTo" />
@@ -47,7 +47,7 @@
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="categories">Category info</ui:msg>
+						<ui:msg key="formCategories">Category info</ui:msg>
 					</g:Label>
 					<c:CellList ui:field="categories"
 						styleName='{res.detailViews.detailCategoryLabel}' />
@@ -55,7 +55,7 @@
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="localities">Locality info</ui:msg>
+						<ui:msg key="formLocalities">Locality info</ui:msg>
 					</g:Label>
 					<c:CellList ui:field="localities"
 						styleName='{res.detailViews.detailLocalityLabel}' />
@@ -63,7 +63,7 @@
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
 					<g:Label styleName='{res.detailViews.detailHeader}'>
-						<ui:msg key="description">Description: </ui:msg>
+						<ui:msg key="formDescription">Description: </ui:msg>
 					</g:Label>
 					<g:Label ui:field="description" />
 				</g:HTMLPanel>

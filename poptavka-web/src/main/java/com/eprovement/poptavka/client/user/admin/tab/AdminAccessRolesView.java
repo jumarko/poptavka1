@@ -124,7 +124,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
     private void initTableColumns() {
 
         // AccessRole ID.
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -134,7 +134,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
                 });
 
         // Code
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.code(), true, CODE_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnCode(), true, CODE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -144,7 +144,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
                 });
 
         // Name
-        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.name(), true, NAME_COL_WIDTH,
+        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.columnName(), true, NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -155,7 +155,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
 
         // Description
         descriptionColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.description(), true, DESCRIPTION_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columDescription(), true, DESCRIPTION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -166,7 +166,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
 
         // Preferences
         permissionsColumn = dataGrid.addColumn(
-                new TextCell(), Storage.MSGS.permissions(), false, PREFERENCES_COL_WIDTH,
+                new TextCell(), Storage.MSGS.columnPermissions(), false, PREFERENCES_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

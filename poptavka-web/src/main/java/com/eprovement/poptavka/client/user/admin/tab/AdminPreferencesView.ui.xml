@@ -15,11 +15,19 @@
             <tr>
                 <td  align='left'>
                     <g:HorizontalPanel>
-                        <g:Button ui:field="refresh">Refresh</g:Button>
-                        <g:Button ui:field="commit">Commit changes</g:Button>
-                        <g:Button ui:field="rollback">Rollback changes</g:Button>
-                        <g:Label>Demands changed: </g:Label>
-                        <g:Label ui:field="changesLabel"></g:Label>
+                        <g:Button ui:field="refresh">
+                            <ui:msg key="admincommonBtnRefresh">Refresh</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field="commit">
+                            <ui:msg key="adminCommonCommitBtn">Commit changes</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field="rollback">
+                            <ui:msg key="adminCommonRollbackBtn">Rollback changes</ui:msg>
+                        </g:Button>
+                        <g:Label>
+                            <ui:msg key="adminCommonChangesLabel">Demands changed: </ui:msg>
+                        </g:Label>
+                        <g:Label ui:field="changesLabel"/>
                     </g:HorizontalPanel>
                 </td>
             </tr>

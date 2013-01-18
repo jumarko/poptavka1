@@ -111,7 +111,7 @@ public class SettingsPresenter
         if (isUserChange || isClientChange || isSupplierChange) {
             //Window shouldn't be used inside a presenter
             //this is just to give a simple example
-            if (Window.confirm(Storage.MSGS.notificationLeavingPage())) {
+            if (Window.confirm(Storage.MSGS.settingsNotificationLeavingPage())) {
                 event.fireEvent();
             }
         }
@@ -184,9 +184,9 @@ public class SettingsPresenter
     public void onResponseUpdateSettings(Boolean updated) {
         eventBus.loadingHide();
         if (updated) {
-            view.showNofity(Storage.MSGS.updatedOK(), updated);
+            view.showNofity(Storage.MSGS.settingsUpdatedOK(), updated);
         } else {
-            view.showNofity(Storage.MSGS.updatedNotOK(), updated);
+            view.showNofity(Storage.MSGS.settingsUpdatedNotOK(), updated);
         }
     }
 
@@ -277,7 +277,7 @@ public class SettingsPresenter
     }
 
     private void updateProfile() {
-        eventBus.loadingShow(Storage.MSGS.updatingProfile());
+        eventBus.loadingShow(Storage.MSGS.progressUpdatingProfile());
         boolean update = updateUserSettings();
         update = update || updateClientSettings();
         update = update || updateSupplierSettings();
@@ -285,7 +285,7 @@ public class SettingsPresenter
             eventBus.requestUpdateSettings(settingsDetail);
         } else {
             eventBus.loadingHide();
-            view.showNofity(Storage.MSGS.nothingToUpdate(), true);
+            view.showNofity(Storage.MSGS.settingsNothingToUpdate(), true);
         }
     }
 }

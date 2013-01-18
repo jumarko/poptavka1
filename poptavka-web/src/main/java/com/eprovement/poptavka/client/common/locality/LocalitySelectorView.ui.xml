@@ -14,7 +14,7 @@
         <g:HorizontalPanel>
             <g:VerticalPanel>
                 <g:Label>
-                    <ui:msg key="selectedLocs">Selected</ui:msg>:
+                    <ui:msg key="commonSelected">Selected</ui:msg>:
                 </g:Label>
                 <c:CellList ui:field="cellList"/>
             </g:VerticalPanel>

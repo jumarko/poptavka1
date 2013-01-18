@@ -8,7 +8,7 @@
         <g:VerticalPanel>
             <g:Label ui:field='loadingMessage'></g:Label>
             <g:Anchor ui:field="reportAnchor" styleName="font-size:1.0em">
-                <ui:msg key="report">report problem</ui:msg>
+                <ui:msg key="commonBtnReport">report problem</ui:msg>
             </g:Anchor>
         </g:VerticalPanel>
     </g:HorizontalPanel>

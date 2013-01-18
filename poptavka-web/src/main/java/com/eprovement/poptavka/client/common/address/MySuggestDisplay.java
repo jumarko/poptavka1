@@ -67,7 +67,7 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
     public void showNoCitiesFound() {
         VerticalPanel vp = new VerticalPanel();
         vp.add(new Label(Storage.MSGS.addressNoCityFound()));
-        Anchor anchor = new Anchor(Storage.MSGS.report());
+        Anchor anchor = new Anchor(Storage.MSGS.commonBtnReport());
         anchor.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

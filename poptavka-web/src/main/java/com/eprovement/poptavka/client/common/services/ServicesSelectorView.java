@@ -27,10 +27,10 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
     /**************************************************************************/
     /** CONSTANTS. **/
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private static final String HEADER_TITLE = MSGS.title();
-    private static final String HEADER_DESCRIPTION = MSGS.description();
-    private static final String HEADER_PRICE = MSGS.price();
-    private static final String HEADER_MONTHS = MSGS.duration();
+    private static final String HEADER_TITLE = MSGS.columnTitle();
+    private static final String HEADER_DESCRIPTION = MSGS.columDescription();
+    private static final String HEADER_PRICE = MSGS.columnPrice();
+    private static final String HEADER_MONTHS = MSGS.columnDuration();
     private static final int FEW_MONTHS = 4;
     /** Attributes. **/
     private ArrayList<ServiceDetail> serviceList;

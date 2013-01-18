@@ -142,7 +142,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private void initTableColumns() {
 
         // Demand ID.
-        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
+        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -152,7 +152,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 });
 
         // Client ID.
-        cidColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.cid(), true, CID_COL_WIDTH,
+        cidColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnCID(), true, CID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -163,7 +163,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
         // DemandTitle
         demandTitleColumn = dataGrid.addColumn(
-                new EditTextCell(), Storage.MSGS.title(), true, TITLE_COL_WIDTH,
+                new EditTextCell(), Storage.MSGS.columnTitle(), true, TITLE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -179,7 +179,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
             demandTypeNames.add(clientDemandType.getValue());
         }
         demandTypeColumn = dataGrid.addColumn(
-                new SelectionCell(demandTypeNames), Storage.MSGS.type(), true, TYPE_COL_WIDTH,
+                new SelectionCell(demandTypeNames), Storage.MSGS.columnType(), true, TYPE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -194,7 +194,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
             demandStatusNames.add(demandStatusType.getValue());
         }
         statusColumn = dataGrid.addColumn(
-                new SelectionCell(demandStatusNames), Storage.MSGS.status(), true, STATUS_COL_WIDTH,
+                new SelectionCell(demandStatusNames), Storage.MSGS.columnStatus(), true, STATUS_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -206,7 +206,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         // Demand expiration date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         demandExpirationColumn = dataGrid.addColumn(
-                new DatePickerCell(dateFormat), Storage.MSGS.expiration(), true, EXPIRATION_COL_WIDTH,
+                new DatePickerCell(dateFormat), Storage.MSGS.columnExpiration(), true, EXPIRATION_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override
@@ -217,7 +217,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
         // Demand end date.
         demandEndColumn = dataGrid.addColumn(
-                new DatePickerCell(dateFormat), Storage.MSGS.endDate(), true, END_COL_WIDTH,
+                new DatePickerCell(dateFormat), Storage.MSGS.columnEndDate(), true, END_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override

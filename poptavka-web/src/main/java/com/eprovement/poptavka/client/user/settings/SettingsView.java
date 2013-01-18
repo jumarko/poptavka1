@@ -78,7 +78,7 @@ public class SettingsView extends Composite implements
         notifyInfoMessage = new StatusIconLabel();
         vp.add(notifyInfoMessage);
         //Button
-        Button closeBtn = new Button(Storage.MSGS.close());
+        Button closeBtn = new Button(Storage.MSGS.commonBtnClose());
         closeBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

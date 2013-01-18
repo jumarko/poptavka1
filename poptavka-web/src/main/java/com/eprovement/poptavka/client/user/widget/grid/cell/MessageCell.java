@@ -40,7 +40,7 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(Storage.MSGS.dateFormat());
+    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
     private static final int HEADER_TEXT_LIMIT = 30;
     private boolean open = false;
 

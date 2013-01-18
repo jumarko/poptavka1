@@ -62,7 +62,7 @@
 				</li>
                 <li>
 					<g:Button ui:field="createSupplier"  styleName='{style.button5}'>
-						<ui:msg key="createSupplier">Create supplier</ui:msg>
+						<ui:msg key="menucreateSupplier">Create supplier</ui:msg>
 					</g:Button>
 				</li>
 				<li>

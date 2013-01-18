@@ -88,11 +88,11 @@ public class ClientDemandsView extends Composite
         Storage.RSCS.grid().ensureInjected();
 
         actions = new ListBox();
-        actions.addItem(Storage.MSGS.action());
-        actions.addItem(Storage.MSGS.read());
-        actions.addItem(Storage.MSGS.unread());
-        actions.addItem(Storage.MSGS.star());
-        actions.addItem(Storage.MSGS.unstar());
+        actions.addItem(Storage.MSGS.commonListDefault());
+        actions.addItem(Storage.MSGS.commonListRead());
+        actions.addItem(Storage.MSGS.commonListUnread());
+        actions.addItem(Storage.MSGS.commonListStarred());
+        actions.addItem(Storage.MSGS.commonListUnstarred());
         actions.setSelectedIndex(0);
 
         initDemandTableAndPager();
@@ -156,10 +156,10 @@ public class ClientDemandsView extends Composite
      */
     public void initDemandTableColumns() {
         // Demand Status column
-        demandGrid.addDemandStatusColumn(Storage.MSGS.status());
+        demandGrid.addDemandStatusColumn(Storage.MSGS.columnStatus());
         // Demand title column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -177,7 +177,7 @@ public class ClientDemandsView extends Composite
 
         // Demand price column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), true, PRICE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(), true, PRICE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -187,7 +187,7 @@ public class ClientDemandsView extends Composite
 
         // Finnish date column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.finnishDate(), true, FINNISH_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnFinnishDate(), true, FINNISH_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -197,7 +197,7 @@ public class ClientDemandsView extends Composite
 
         // Valid-to date column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.validTo(), true, VALID_TO_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnValidTo(), true, VALID_TO_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -210,9 +210,10 @@ public class ClientDemandsView extends Composite
      * Create all columns to the grid.
      */
     public void initConversationTableColumns() {
-//        // Supplier name column
+        // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
+                conversationGrid.TABLE_CLICKABLE_TEXT_CELL,
+                Storage.MSGS.columnSupplierName(), true, SUPPLIER_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -230,7 +231,7 @@ public class ClientDemandsView extends Composite
 
         // Demand price column
         bodyPreviewColumn = conversationGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.text(), false, BODY_PREVIEW_COL_WIDTH,
+                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnText(), false, BODY_PREVIEW_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -243,7 +244,7 @@ public class ClientDemandsView extends Composite
 
         // Date column
         dateColumn = conversationGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.date(), true, DATE_COL_WIDTH,
+                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnDate(), true, DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
