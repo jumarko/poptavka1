@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
@@ -368,7 +369,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         // load list of client demands with offer
         // TODO RELEASE ivlcek - check if this method works correctly, otherwise use a search with new
         // demandstatus offered
-        List<Demand> clientDemands = demandService.getClientDemandsWithOffer(findClient(userId));
+//        List<Demand> clientDemands = demandService.getClientDemandsWithOffer(findClient(userId));
+
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        clientDemandsSearch.addFilterIn("status", DemandStatus.OFFERED);
+        clientDemandsSearch.addFilterEqual("client", client);
+        List<Demand> clientDemands = generalService.search(clientDemandsSearch);
+
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
         // load a map of unread messages for all client demands with offer, then iterate this map and
@@ -652,10 +661,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void acceptOffer(long offerId) throws RPCException, ApplicationSecurityException {
-        Offer offer = this.generalService.find(Offer.class, offerId);
+        Offer offer = (Offer) this.generalService.find(Offer.class, offerId);
 
         // set offer as accepted
-        offer.setState(offerService.getOfferState(OfferStateType.ACCEPTED.getValue()));
+        offer.setState((OfferState) offerService.getOfferState(
+                OfferStateType.ACCEPTED.getValue()));
         generalService.merge(offer);
 
         // load other offers and set them as declined

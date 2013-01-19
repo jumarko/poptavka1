@@ -85,7 +85,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffersCount(
-                Storage.getUser().getUserId(), searchDefinition,
+                Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
@@ -96,7 +96,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierOffers(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffers(
-                Storage.getUser().getUserId(), searchDefinition,
+                Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<SupplierOffersDetail> result) {
@@ -107,7 +107,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemandsCount(
-                Storage.getUser().getUserId(), searchDefinition,
+                Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<Long>(eventBus) {
                     @Override
                     public void onSuccess(Long result) {
@@ -118,7 +118,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierAssignedDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemands(
-                Storage.getUser().getUserId(), searchDefinition,
+                Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<SupplierOffersDetail> result) {

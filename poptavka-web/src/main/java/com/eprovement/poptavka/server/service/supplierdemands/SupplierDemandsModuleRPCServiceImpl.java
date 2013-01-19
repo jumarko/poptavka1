@@ -149,10 +149,10 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierPotentialDemandsCount(long supplierID,
+    public long getSupplierPotentialDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
-        final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
         return userMessageService.getPotentialDemandsCount(businessUser, potentialDemandsCountSearch);
     }
@@ -173,9 +173,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long supplierID,
+    public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        final BusinessUser businessUser = generalService.find(BusinessUser.class, supplierID);
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsSearch = searchConverter.convertToSource(searchDefinition);
         final List<UserMessage> userMessages = userMessageService.getPotentialDemands(
                 businessUser, potentialDemandsSearch);
@@ -222,7 +222,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public long getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE Vojto/Ivan- implement SearchDefinition
-        return offerService.getPendingOffersCountForSupplier(supplierID);
+        long count = offerService.getPendingOffersCountForSupplier(supplierID);
+        return count;
     }
 
     /**
@@ -245,7 +246,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier", supplier);
         // TODO RELEASE ivlcek - load offerState by CODE value
-//        supplierOffersSearch.addFilterEqual("state.id", 2);
+        supplierOffersSearch.addFilterEqual("state", offerService.getOfferState(OfferStateType.PENDING.getValue()));
         List<Offer> offers = generalService.search(supplierOffersSearch);
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
