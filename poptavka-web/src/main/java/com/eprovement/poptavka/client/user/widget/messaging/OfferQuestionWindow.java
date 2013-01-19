@@ -64,12 +64,14 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     @UiHandler("offerReplyBtn")
     public void offerReplyBtnHandler(ClickEvent event) {
+        resetValidationStyles();
         setSendingOfferStyle();
         selectedResponse = RESPONSE_OFFER;
     }
 
     @UiHandler("questionReplyBtn")
     public void questionReplyBtnHandler(ClickEvent event) {
+        resetValidationStyles();
         setSendingQuestionStyle();
         selectedResponse = RESPONSE_QUESTION;
     }
@@ -107,6 +109,10 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         errorLabelPrice.setText(EMPTY);
         dateBox.removeStyleName(Storage.RSCS.common().errorField());
         errorLabelDate.setText(EMPTY);
+    }
+
+    public void allowSendingOffer() {
+        offerReplyBtn.setVisible(true);
     }
 
     /**************************************************************************/

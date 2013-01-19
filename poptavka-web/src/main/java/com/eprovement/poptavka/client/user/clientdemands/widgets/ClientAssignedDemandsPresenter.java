@@ -16,6 +16,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,6 +29,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -59,8 +61,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
-    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedAssignedDemand = -1;
+    private IUniversalDetail selectedObject = null;
     private long selectedClientAssignedDemandId = -1;
 
     /**************************************************************************/
@@ -68,7 +69,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     @Override
     public void bindView() {
-        dataGridRangeChangeHandler();
+        // Table handlers
+        addTableRangeChangeHandler();
+        addTableSelectionModelClickHandler();
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
@@ -93,7 +96,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         eventBus.loadingDivHide();
         //init wrapper widget
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitClientAssignedDemandsByHistory(
@@ -121,7 +123,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         this.selectedClientAssignedDemandId = parentId;
         if (parentId != -1 && !wasEqual) {
             selectionModel.clear();
-            lastOpenedAssignedDemand = -1;
+            selectedObject = null;
             eventBus.getClientAssignedDemand(parentId);
         }
 
@@ -143,6 +145,12 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDataGrid(), view.getWrapperPanel());
+            if (selectedObject != null) {
+                this.detailSection.initDetails(
+                        selectedObject.getDemandId(),
+                        selectedObject.getSupplierId(),
+                        selectedObject.getThreadRootId());
+            }
         }
     }
 
@@ -170,19 +178,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         textFieldUpdater.update(-1, detail, null);
     }
 
-    /**
-     * New data are fetched from db.
-     *
-     * @param demandId ID for demand detail
-     * @param messageId ID for demand related contest
-     * @param userMessageId ID for demand related contest
-     */
-    public void displayDetailContent(ClientOfferedDemandOffersDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId());
-        detailSection.requestSupplierDetail(detail.getSupplierId());
-        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
-    }
-
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
@@ -192,11 +187,11 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**
      * Handle table range change by creating token for new range/page.
      */
-    private void dataGridRangeChangeHandler() {
+    private void addTableRangeChangeHandler() {
         view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory3(view.getPager().getPage(), lastOpenedAssignedDemand);
+                eventBus.createTokenForHistory3(view.getPager().getPage(), selectedObject.getDemandId());
             }
         });
     }
@@ -226,22 +221,43 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         });
     }
 
+    public void addTableSelectionModelClickHandler() {
+        view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (view.getDataGrid().getSelectedUserMessageIds().size() > 1) {
+                    view.getCloseBtn().setVisible(false);
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    view.getCloseBtn().setVisible(true);
+                    IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
+                    if (detailSection == null) {
+                        selectedObject = selected;
+                        eventBus.requestDetailWrapperPresenter();
+                    } else {
+                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                        selectedObject = null;
+                        detailSection.initDetails(
+                                selected.getDemandId(),
+                                selected.getSenderId(),
+                                selected.getThreadRootId());
+                    }
+                }
+            }
+        });
+    }
+
     public void addTextColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
             @Override
             public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
-                //getUserMessageDetail() -> getOfferDetail() due to fake data
-//                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
-                lastOpenedAssignedDemand = object.getDemandId();
-                displayDetailContent(object);
-                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid()
-                        .getSelectionModel();
+                object.setIsRead(true);
+                MultiSelectionModel selectionModel = view.getDataGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-                eventBus.createTokenForHistory3(
-                        view.getPager().getPage(),
-                        object.getDemandId());
-//                }
+//                eventBus.createTokenForHistory3(
+//                        view.getPager().getPage(),
+//                        object.getDemandId());
             }
         };
         view.getDataGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
@@ -277,10 +293,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
     private void addCloseButtonHandler() {
         view.getCloseBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestCloseDemand(lastOpenedAssignedDemand);
+                eventBus.requestCloseDemand(selectedObject.getDemandId());
             }
         });
     }

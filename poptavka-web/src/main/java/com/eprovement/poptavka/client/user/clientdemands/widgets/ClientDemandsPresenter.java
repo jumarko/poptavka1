@@ -17,6 +17,7 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -88,8 +89,7 @@ public class ClientDemandsPresenter
     //viewType
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
-    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedDemandConversation = -1;
+    private IUniversalDetail selectedObject = null;
     private long selectedClientDemandId = -1;
     private long selectedClientDemandConversationId = -1;
     //
@@ -102,8 +102,9 @@ public class ClientDemandsPresenter
     public void bindView() {
         addBackBtnClickHandler();
         // Range Change Handlers
-        demandGridRangeChangeHandler();
-        conversationGridRangeChangeHandler();
+        addDemandGridRangeChangeHandler();
+        addConversationGridRangeChangeHandler();
+        addConversationGridSelectionModelHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         // Field Updaters
@@ -132,7 +133,6 @@ public class ClientDemandsPresenter
         eventBus.loadingDivHide();
         //init wrapper widget
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
@@ -194,7 +194,7 @@ public class ClientDemandsPresenter
         this.selectedClientDemandConversationId = childId;
         if (childId != -1 && !wasEqual) {
             selectionModel.clear();
-            lastOpenedDemandConversation = -1;
+            selectedObject = null;
             eventBus.getClientDemandConversation(childId);
         }
 
@@ -216,6 +216,12 @@ public class ClientDemandsPresenter
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
+            if (selectedObject != null) {
+                this.detailSection.initDetails(
+                        selectedObject.getDemandId(),
+                        selectedObject.getSupplierId(),
+                        selectedObject.getThreadRootId());
+            }
         }
     }
 
@@ -257,44 +263,49 @@ public class ClientDemandsPresenter
         textFieldUpdater.update(-1, detail, null);
     }
 
-    /**
-     * New data are fetched from db.
-     *
-     * @param demandId ID for demand detail
-     * @param messageId ID for demand related conversation
-     * @param userMessageId ID for demand related conversation
-     */
-    public void displayDetailContent(ClientDemandConversationDetail detail) {
-        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
-        detailSection.requestDemandDetail(detail.getDemandId());
-        detailSection.requestSupplierDetail(detail.getSupplierId());
-    }
-
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    public void addConversationGridSelectionModelHandler() {
+        view.getConversationGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 1) {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    IUniversalDetail selected = view.getConversationGrid().getSelectedObjects().get(0);
+                    if (detailSection == null) {
+                        selectedObject = selected;
+                        eventBus.requestDetailWrapperPresenter();
+                    } else {
+                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                        selectedObject = null;
+                        detailSection.initDetails(
+                                selected.getDemandId(),
+                                selected.getSenderId(),
+                                selected.getThreadRootId());
+                    }
+                }
+            }
+        });
+    }
     // Field Updaters
+
     public void addTextColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
             @Override
             public void update(int index, ClientDemandConversationDetail object, String value) {
-                displayDetailContent(object);
-//                if (lastOpenedDemandConversation != object.getUserMessageId()) {
-//                    lastOpenedDemandConversation = object.getUserMessageId();
-//                    view.getConversationGrid().redraw();
+                object.setIsRead(true);
                 view.setDemandTableVisible(false);
                 view.setConversationTableVisible(true);
-//                displayDetailContent(object);
-                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getConversationGrid()
-                        .getSelectionModel();
+                MultiSelectionModel selectionModel = view.getConversationGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-                eventBus.createTokenForHistory2(Storage.getDemandId(),
-                        view.getConversationPager().getPage(), object.getSupplierId());
-//                }
+//                eventBus.createTokenForHistory2(Storage.getDemandId(),
+//                        view.getConversationPager().getPage(), object.getSupplierId());
             }
         };
         view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
@@ -394,7 +405,7 @@ public class ClientDemandsPresenter
     /**
      * If demand table range change (page changed), create token for new data (different page).
      */
-    private void demandGridRangeChangeHandler() {
+    private void addDemandGridRangeChangeHandler() {
         view.getDemandGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
@@ -406,7 +417,7 @@ public class ClientDemandsPresenter
     /**
      * If conversation table range change (page changed), create token for new data (different page).
      */
-    private void conversationGridRangeChangeHandler() {
+    private void addConversationGridRangeChangeHandler() {
         view.getConversationGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {

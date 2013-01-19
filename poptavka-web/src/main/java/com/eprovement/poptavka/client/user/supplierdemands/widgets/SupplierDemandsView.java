@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
+import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
@@ -33,12 +34,21 @@ public class SupplierDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField(provided = true) UniversalTableGrid dataGrid;
-    @UiField ListBox actionBox;
-    @UiField UniversalPagerWidget pager;
-    @UiField SimplePanel detailPanel;
-    @UiField HorizontalPanel toolBar;
-    @UiField Label tableNameLabel;
+    /** UiBinder attribute. **/
+    @UiField(provided = true)
+    UniversalTableGrid dataGrid;
+    @UiField
+    ListBox actionBox;
+    @UiField
+    UniversalPagerWidget pager;
+    @UiField
+    SimplePanel detailPanel;
+    @UiField
+    HorizontalPanel toolBar;
+    @UiField
+    Label tableNameLabel;
+    /** Class attribute. **/
+    private LoadingDiv loadingDiv = new LoadingDiv();
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -63,6 +73,26 @@ public class SupplierDemandsView extends Composite
                 pager.getPageSize(),
                 resource);
         pager.setDisplay(dataGrid);
+    }
+
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public void loadingDivShow(Widget holderWidget) {
+        GWT.log("  - loading div created");
+        if (loadingDiv == null) {
+            loadingDiv = new LoadingDiv();
+        }
+        holderWidget.getElement().appendChild(loadingDiv.getElement());
+    }
+
+    @Override
+    public void loadingDivHide(Widget holderWidget) {
+        GWT.log("  - loading div removed");
+        if (holderWidget.getElement().isOrHasChild(loadingDiv.getElement())) {
+            holderWidget.getElement().removeChild(loadingDiv.getElement());
+        }
     }
 
     /**************************************************************************/

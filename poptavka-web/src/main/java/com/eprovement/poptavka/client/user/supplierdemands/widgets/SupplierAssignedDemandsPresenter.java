@@ -16,6 +16,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -29,6 +30,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -60,8 +62,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
-    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private SupplierOffersDetail lastOpenedDetail = null;
+    private IUniversalDetail selectedObject = null;
     private long lastOpenedAssignedDemand = -1;
     private long selectedSupplierAssignedDemandId = -1;
 
@@ -70,8 +71,9 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     @Override
     public void bindView() {
-        // Range Change Handlers
-        dataGridRangeChangeHandler();
+        // Table Handlers
+        addTableRangeChangeHandler();
+        addTableSelectionModelClickHandler();
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
@@ -96,7 +98,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitSupplierAssignedDemandsByHistory(
@@ -151,6 +152,12 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
             this.detailSection.setTabVisibility(DetailsWrapperPresenter.SUPPLIER, false);
+            if (selectedObject != null) {
+                this.detailSection.initDetails(
+                        selectedObject.getDemandId(),
+                        selectedObject.getSupplierId(),
+                        selectedObject.getThreadRootId());
+            }
         }
     }
 
@@ -178,18 +185,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         textFieldUpdater.update(-1, detail, null);
     }
 
-    /**
-     * New data are fetched from db.
-     *
-     * @param demandId ID for demand detail
-     * @param messageId ID for demand related contest
-     * @param userMessageId ID for demand related contest
-     */
-    public void displayDetailContent(SupplierOffersDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId());
-        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
-    }
-
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
@@ -199,7 +194,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     /**
      * Handle table range change by creating token for new range/page.
      */
-    private void dataGridRangeChangeHandler() {
+    private void addTableRangeChangeHandler() {
         view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
@@ -234,25 +229,43 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
                 });
     }
 
+    public void addTableSelectionModelClickHandler() {
+        view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (view.getDataGrid().getSelectedUserMessageIds().size() > 1) {
+                    view.getFinnishBtn().setVisible(false);
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    view.getFinnishBtn().setVisible(true);
+                    IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
+                    if (detailSection == null) {
+                        selectedObject = selected;
+                        eventBus.requestDetailWrapperPresenter();
+                    } else {
+                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                        selectedObject = null;
+                        detailSection.initDetails(
+                                selected.getDemandId(),
+                                selected.getSenderId(),
+                                selected.getThreadRootId());
+                    }
+                }
+            }
+        });
+    }
+
     public void addColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<SupplierOffersDetail, String>() {
             @Override
             public void update(int index, SupplierOffersDetail object, String value) {
-                //getUserMessageDetail() -> getOfferDetail() due to fake data
-//                if (lastOpenedAssignedDemand != object.getOfferDetail().getDemandId()) {
-//                    lastOpenedAssignedDemand = object.getOfferDetail().getDemandId();
-                lastOpenedDetail = object;
                 object.setIsRead(true);
-//                    view.getDataGrid().redraw();
-                displayDetailContent(object);
-                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid()
-                        .getSelectionModel();
+                MultiSelectionModel selectionModel = view.getDataGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-                eventBus.createTokenForHistory(
-                        view.getPager().getPage(),
-                        object.getDemandId());
-//                }
+//                eventBus.createTokenForHistory(
+//                        view.getPager().getPage(),
+//                        object.getDemandId());
             }
         };
         view.getDataGrid().getClientNameColumn().setFieldUpdater(textFieldUpdater);
@@ -301,7 +314,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
 
     private void addFinnishButtonHandler() {
         view.getFinnishBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 //Finnish button is always awaylable of single selections, threfore can use 'get(0)'.

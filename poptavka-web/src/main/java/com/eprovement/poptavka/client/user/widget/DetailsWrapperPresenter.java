@@ -17,6 +17,8 @@ import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -42,6 +44,9 @@ public class DetailsWrapperPresenter
     /** Class Attributes. **/
     private UniversalTableGrid table = null;
     private EditableDemandDetailPresenter editDemandPresenter = null;
+    private long demandId = -1;
+    private long supplierId = -1;
+    private long threadRootId = -1;
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
@@ -105,6 +110,12 @@ public class DetailsWrapperPresenter
                 }
             }
         });
+        view.getContainer().addSelectionHandler(new SelectionHandler<Integer>() {
+            @Override
+            public void onSelection(SelectionEvent<Integer> event) {
+                requestActualTabData();
+            }
+        });
     }
 
     /**************************************************************************/
@@ -127,8 +138,41 @@ public class DetailsWrapperPresenter
             setTabVisibility(EDITABLE_DEMAND, false);
             setTabVisibility(DEMAND, true);
         }
-        view.getContainer().selectTab(CHAT);
+        view.getContainer().selectTab(CHAT, false);
         this.table = grid;
+    }
+
+    /**
+     * Store needed ids for later data retrieving. Data are not retrieved immediately,
+     * but only for selected tab, therefore we need to remember them in case, user,
+     * changes tab.
+     *
+     * @param demandId
+     * @param supplierId
+     * @param threadRootId
+     */
+    public void initDetails(long demandId, long supplierId, long threadRootId) {
+        clear();
+        this.demandId = demandId;
+        this.supplierId = supplierId;
+        this.threadRootId = threadRootId;
+        requestActualTabData();
+    }
+
+    public void requestActualTabData() {
+        switch (view.getContainer().getSelectedIndex()) {
+            case DEMAND:
+                requestDemandDetail(demandId);
+                break;
+            case SUPPLIER:
+                requestSupplierDetail(supplierId);
+                break;
+            case CHAT:
+                requestConversation(threadRootId, Storage.getUser().getUserId());
+                break;
+            default:
+                break;
+        }
     }
 
     /**************************************************************************/
@@ -187,7 +231,6 @@ public class DetailsWrapperPresenter
      * passed here as a parameter.
      *
      * @param threadRootId - root message i.e. first demand message in the conversation always created by client
-     * @param userMessageId - userMessageId
      * @param userId - user who's chatting messages we are going to retrieve
      */
     public void requestConversation(long threadRootId, long userId) {
@@ -260,7 +303,6 @@ public class DetailsWrapperPresenter
 //            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
 //                    .getUpdateRead().addChangeHandler(click);
 //        }
-
     }
 
     /**************************************************************************/

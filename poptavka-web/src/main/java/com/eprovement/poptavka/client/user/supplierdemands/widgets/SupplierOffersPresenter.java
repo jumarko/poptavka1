@@ -16,6 +16,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.cellview.client.RowStyles;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -55,7 +57,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
-    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
+    private IUniversalDetail selectedObject = null;
     private long lastOpenedOffer = -1;
     private long selectedSupplierOfferId = -1;
 
@@ -64,8 +66,9 @@ public class SupplierOffersPresenter extends LazyPresenter<
     /**************************************************************************/
     @Override
     public void bindView() {
-        // Range Change Handlers
+        // Table Handlers
         addTableRangeChangeHandler();
+        addTableSelectionModelClickHandler();
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
@@ -88,7 +91,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitSupplierOffersByHistory(int tablePage, long selectedId, SearchModuleDataHolder filterHolder) {
@@ -143,6 +145,12 @@ public class SupplierOffersPresenter extends LazyPresenter<
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
             this.detailSection.setTabVisibility(DetailsWrapperPresenter.SUPPLIER, false);
+            if (selectedObject != null) {
+                this.detailSection.initDetails(
+                        selectedObject.getDemandId(),
+                        selectedObject.getSupplierId(),
+                        selectedObject.getThreadRootId());
+            }
         }
     }
 
@@ -164,18 +172,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
     public void onSelectSupplierOffer(SupplierOffersDetail detail) {
         eventBus.setHistoryStoredForNextOne(false);
         textFieldUpdater.update(-1, detail, null);
-    }
-
-    /**
-     * New data are fetched from db.
-     *
-     * @param demandId ID for demand detail
-     * @param messageId ID for demand related contest
-     * @param userMessageId ID for demand related contest
-     */
-    public void displayDetailContent(SupplierOffersDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId());
-        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
     }
 
     /**************************************************************************/
@@ -220,21 +216,39 @@ public class SupplierOffersPresenter extends LazyPresenter<
                 });
     }
 
+    public void addTableSelectionModelClickHandler() {
+        view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (view.getDataGrid().getSelectedUserMessageIds().size() > 1) {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
+                    if (detailSection == null) {
+                        selectedObject = selected;
+                        eventBus.requestDetailWrapperPresenter();
+                    } else {
+                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                        selectedObject = null;
+                        detailSection.initDetails(
+                                selected.getDemandId(),
+                                selected.getSupplierId(),
+                                selected.getThreadRootId());
+                    }
+                }
+            }
+        });
+    }
+
     public void addColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<SupplierOffersDetail, String>() {
             @Override
             public void update(int index, SupplierOffersDetail object, String value) {
-                //getUserMessageDetail() -> getOfferDetail() due to fake data
-//                if (lastOpenedOffer != object.getOfferDetail().getDemandId()) {
-//                    lastOpenedOffer = object.getOfferDetail().getDemandId();
-//                    view.getDataGrid().redraw();
-                displayDetailContent(object);
-
-                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid().getSelectionModel();
+                object.setIsRead(true);
+                MultiSelectionModel selectionModel = view.getDataGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-                eventBus.createTokenForHistory(view.getPager().getPage(), object.getDemandId());
-//                }
+//                eventBus.createTokenForHistory(view.getPager().getPage(), object.getDemandId());
             }
         };
         view.getDataGrid().getClientNameColumn().setFieldUpdater(textFieldUpdater);

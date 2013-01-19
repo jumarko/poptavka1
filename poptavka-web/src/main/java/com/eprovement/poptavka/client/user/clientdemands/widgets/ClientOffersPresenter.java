@@ -19,6 +19,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -82,8 +83,7 @@ public class ClientOffersPresenter
     /**************************************************************************/
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
-    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedDemandOffer = -1;
+    private IUniversalDetail selectedObject = null;
     private long selectedClientOfferedDemandId = -1;
     private long selectedClientOfferedDemandOfferId = -1;
     private FieldUpdater textFieldUpdater = null;
@@ -94,8 +94,9 @@ public class ClientOffersPresenter
     @Override
     public void bindView() {
         // Range Change Handlers
-        demandGridRangeChangeHandler();
-        offerGridRangeChangeHandler();
+        addDemandGridRangeChangeHandler();
+        addOfferGridRangeChangeHandler();
+        addOfferGridSelectionModelHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         addOfferTableSelectionHandler();
@@ -125,7 +126,6 @@ public class ClientOffersPresenter
         eventBus.loadingDivHide();
         //init wrapper widget
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-        eventBus.requestDetailWrapperPresenter();
     }
 
     public void onInitClientOfferedDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
@@ -207,6 +207,12 @@ public class ClientOffersPresenter
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getOfferGrid(), view.getWrapperPanel());
+            if (selectedObject != null) {
+                this.detailSection.initDetails(
+                        selectedObject.getDemandId(),
+                        selectedObject.getSenderId(),
+                        selectedObject.getThreadRootId());
+            }
         }
     }
 
@@ -248,19 +254,6 @@ public class ClientOffersPresenter
         textFieldUpdater.update(-1, detail, null);
     }
 
-    /**
-     * New data are fetched from db.
-     *
-     * @param demandId ID for demand detail
-     * @param messageId ID for demand related contest
-     * @param userMessageId ID for demand related contest
-     */
-    public void displayDetailContent(ClientOfferedDemandOffersDetail detail) {
-        detailSection.requestDemandDetail(detail.getDemandId());
-        detailSection.requestSupplierDetail(detail.getSupplierId());
-        detailSection.requestConversation(detail.getThreadRootId(), Storage.getUser().getUserId());
-    }
-
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
@@ -294,25 +287,45 @@ public class ClientOffersPresenter
                 });
     }
 
+    public void addOfferGridSelectionModelHandler() {
+        view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 1) {
+                    view.getAcceptBtn().setVisible(false);
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    view.getAcceptBtn().setVisible(false);
+                    IUniversalDetail selected = view.getOfferGrid().getSelectedObjects().get(0);
+                    if (detailSection == null) {
+                        selectedObject = selected;
+                        eventBus.requestDetailWrapperPresenter();
+                    } else {
+                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                        selectedObject = null;
+                        detailSection.initDetails(
+                                selected.getDemandId(),
+                                selected.getSupplierId(),
+                                selected.getThreadRootId());
+                    }
+                }
+            }
+        });
+    }
+
     public void addTextColumnFieldUpdaters() {
         textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
             @Override
             public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
-                displayDetailContent(object);
-//                if (lastOpenedDemandOffer != object.getOfferId()) {
-                lastOpenedDemandOffer = object.getOfferId();
-//                    view.getOfferGrid().redraw();
-//                    view.setDemandTableVisible(false);
-//                    view.setOfferTableVisible(true);
+                object.setIsRead(true);
                 view.setDemandTableVisible(false);
                 view.setOfferTableVisible(true);
 
-                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getSelectionModel();
+                MultiSelectionModel selectionModel = view.getOfferGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-                eventBus.createTokenForHistory2(Storage.getDemandId(),
-                        view.getOfferPager().getPage(), object.getOfferId());
-//                }
+//                eventBus.createTokenForHistory2(Storage.getDemandId(),
+//                        view.getOfferPager().getPage(), object.getOfferId());
             }
         };
         view.getOfferGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
@@ -341,7 +354,7 @@ public class ClientOffersPresenter
         view.getAcceptBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestAcceptOffer(lastOpenedDemandOffer);
+                eventBus.requestAcceptOffer(selectedObject.getOfferId());
             }
         });
     }
@@ -427,7 +440,7 @@ public class ClientOffersPresenter
     /**
      * If demand table range change (page changed), create token for new data (different page).
      */
-    private void demandGridRangeChangeHandler() {
+    private void addDemandGridRangeChangeHandler() {
         view.getDemandGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
@@ -439,7 +452,7 @@ public class ClientOffersPresenter
     /**
      * If offer table range change (page changed), create token for new data (different page).
      */
-    private void offerGridRangeChangeHandler() {
+    private void addOfferGridRangeChangeHandler() {
         view.getOfferGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
             @Override
             public void onRangeChange(RangeChangeEvent event) {
