@@ -170,4 +170,19 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("email.dialog.size.message")
     String emailDialogSizeMessage();
+
+    /**************************************************************************/
+    /** Messaging - error messages.                                           */
+    /**************************************************************************/
+    @Key("message.not.empty.body")
+    String messageNotEmptyBody();
+
+    @Key("message.not.empty.price")
+    String messageNotEmptyPrice();
+
+    @Key("message.invalid.price")
+    String messageInvalidPrice();
+
+    @Key("message.not.empty.date")
+    String messageNotEmptyDate();
 }

@@ -5,6 +5,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.ValidationMessages;
 import com.google.gwt.user.cellview.client.CellTree;
 
 /**
@@ -39,6 +40,7 @@ public final class Storage {
     /**************************************************************************/
     //global constants
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    public static final ValidationMessages VMSGS = GWT.create(ValidationMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
     public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
     public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";

@@ -141,7 +141,7 @@ public class DetailsWrapperPresenter
      */
     public void onAddConversationMessage(MessageDetail sentMessage) {
         view.getConversationPanel().addMessage(sentMessage);
-        view.getReplyHolder().setNormalStyle();
+        view.getReplyHolder().setDefaultStyle();
         //Always will be only one item.
         for (IUniversalDetail detail : (Set<IUniversalDetail>) table.getSelectionModel().getSelectedSet()) {
             detail.setUserMessageId(sentMessage.getUserMessageId());

@@ -4,13 +4,13 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -32,22 +32,17 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField
-    Button searchBtn, advSearchBtn;
-    @UiField
-    TextBox searchContent;
-    @UiField
-    MenuBar searchWhatList;
-    @UiField
-    MenuItem searchWhatItem, demand, supplier;
-    MenuItem custom;
-    @UiField
-    PopupPanel popupPanel;
-    @UiField
-    AdvanceSearchContentView advanceSearchContentView;
-    //Holds data
+    /** UiBinder attributes. **/
+    @UiField Button searchBtn, advSearchBtn;
+    @UiField TextBox searchContent;
+    @UiField MenuBar searchWhatList;
+    @UiField MenuItem searchWhatItem, demand, supplier;
+    @UiField PopupPanel popupPanel;
+    @UiField AdvanceSearchContentView advanceSearchContentView;
+    /** Class attributes. **/
+    private MenuItem custom;
     private SearchModuleDataHolder filters = new SearchModuleDataHolder();
-    int menuItemsCount = 2;
+    private int menuItemsCount = 2;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -56,7 +51,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        demand.setCommand(new Command() {
+        demand.setScheduledCommand(new Scheduler.ScheduledCommand() {
 
             @Override
             public void execute() {
@@ -64,7 +59,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
                 searchWhatItem.setText(demand.getText());
             }
         });
-        supplier.setCommand(new Command() {
+        supplier.setScheduledCommand(new Scheduler.ScheduledCommand() {
 
             @Override
             public void execute() {
@@ -72,7 +67,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
                 searchWhatItem.setText(supplier.getText());
             }
         });
-        custom = new MenuItem("", new Command() {
+        custom = new MenuItem("", new Scheduler.ScheduledCommand() {
 
             @Override
             public void execute() {
