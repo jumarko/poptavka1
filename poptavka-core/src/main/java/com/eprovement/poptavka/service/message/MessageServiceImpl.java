@@ -76,6 +76,9 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         if (inReplyTo.getDemand() != null) {
             message.setDemand(inReplyTo.getDemand());
         }
+        if (inReplyTo.getOffer() != null) {
+            message.setOffer(inReplyTo.getOffer());
+        }
         if (inReplyTo.getSubject() == null) {
             message.setSubject("Re: ");
         } else {

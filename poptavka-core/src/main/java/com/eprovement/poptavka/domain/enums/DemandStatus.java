@@ -50,6 +50,11 @@ public enum DemandStatus {
     INACTIVE("INACTIVE"),
 
     /**
+     * This status means that at least one offer was submited for this particular demand
+     */
+    OFFERED("OFFERED"),
+
+    /**
      * A Supplier is assigned to this Demand and is working on it.
      */
     ASSIGNED("ASSIGNED"),

@@ -323,6 +323,10 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
                     this.generalService.find(User.class, offerMessageToSend.getSenderId()));
             message.setBody(offerMessageToSend.getBody());
             // TODO RELEASE ivlcek - create converter for offer
+            // update demand entity
+            Demand demand = message.getDemand();
+            demand.setStatus(DemandStatus.OFFERED);
+            generalService.save(demand);
             Offer offer = new Offer();
             offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
             offer.setFinishDate(offerMessageToSend.getOfferFinishDate());

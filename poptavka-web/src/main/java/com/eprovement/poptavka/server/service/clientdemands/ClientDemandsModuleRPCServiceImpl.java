@@ -40,6 +40,7 @@ import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.util.search.Searcher;
+import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
@@ -193,14 +194,17 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterEqual("status", DemandStatus.ACTIVE);
         ArrayList<DemandStatus> demandStatuses = new ArrayList<DemandStatus>();
         demandStatuses.add(DemandStatus.ACTIVE);
         demandStatuses.add(DemandStatus.NEW);
         demandStatuses.add(DemandStatus.INVALID);
         demandStatuses.add(DemandStatus.INACTIVE);
+        demandStatuses.add(DemandStatus.OFFERED);
         clientDemandsSearch.addFilterIn("status", demandStatuses);
-        return Searcher.searchCollection(client.getDemands(), clientDemandsSearch).size();
+        clientDemandsSearch.addFilterEqual("client", client);
+        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).longValue();
     }
 
     /**
@@ -228,6 +232,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         demandStatuses.add(DemandStatus.NEW);
         demandStatuses.add(DemandStatus.INVALID);
         demandStatuses.add(DemandStatus.INACTIVE);
+        demandStatuses.add(DemandStatus.OFFERED);
         clientDemandsSearch.addFilterIn("status", demandStatuses);
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
@@ -322,6 +327,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     /**
      * Get all demands where have been placed an offer by some supplier. When supplier place an offer to client's
      * demand, the demand will be involved here. As Client: "Demands that have already an offer."
+     * As soon as first offer has been submed by some supplier we change the state of this demand to OFFERED.
      *
      * @param userId id of user represented by client. Note that userId and userId are different If userId represents
      * some different user than client, exception will be thrown
@@ -332,7 +338,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientOfferedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        return demandService.getClientDemandsWithOfferCount(findClient(userId));
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        clientDemandsSearch.addFilterIn("status", DemandStatus.OFFERED);
+        clientDemandsSearch.addFilterEqual("client", client);
+        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).longValue();
     }
 
     /**
@@ -353,6 +366,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientDemandDetail> getClientOfferedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         // load list of client demands with offer
+        // TODO RELEASE ivlcek - check if this method works correctly, otherwise use a search with new
+        // demandstatus offered
         List<Demand> clientDemands = demandService.getClientDemandsWithOffer(findClient(userId));
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
@@ -473,8 +488,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public long getClientAssignedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
-        return 1L;
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        clientDemandsSearch.addFilterIn("status", DemandStatus.ASSIGNED);
+        clientDemandsSearch.addFilterEqual("client", client);
+        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).longValue();
     }
 
     /**
