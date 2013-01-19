@@ -3,18 +3,12 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
-    <ui:style>
-        .pageSize {
-        border-radius: 3px 3px 3px 3px;
-        float: left;
-        height: 31px;
-        margin: 0 8px;
-        padding: 6px;
-        }
-    </ui:style>
-
     <g:HorizontalPanel>
         <c:SimplePager ui:field='pager'/>
-        <g:ListBox ui:field='pageSize' styleName='{style.pageSize}'/>
+        <g:MenuBar vertical="false">
+            <g:MenuItem ui:field="pageSize">
+                <g:MenuBar vertical="true" ui:field="pageSizeList"/>
+            </g:MenuItem>
+        </g:MenuBar>
     </g:HorizontalPanel>
 </ui:UiBinder>

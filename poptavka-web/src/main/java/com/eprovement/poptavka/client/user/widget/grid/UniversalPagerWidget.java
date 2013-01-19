@@ -6,19 +6,21 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.resources.UniversalPager;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasRows;
 
 /**
+ * Holds SimplePager and Menu for choosing page size. Default page size choices are: 10,20,30.
+ * For different page size choices user appropriate constructor.
  *
- * @author Martin
+ * @author Martin Slavkovsky
  */
 public class UniversalPagerWidget extends Composite {
 
@@ -33,12 +35,12 @@ public class UniversalPagerWidget extends Composite {
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    //pager definition
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSize;
-    //Pager definition
+    /** UiBinder attributes. **/
+    @UiField(provided = true) SimplePager pager;
+    @UiField MenuItem pageSize;
+    @UiField MenuBar pageSizeList;
+    /** Class attributes. **/
+    /** Constants. **/
     //How many options in page size combo is generated.
     private static final int PAGE_SIZE_ITEMS_COUNT = 3;
     //Represent gab between page size options.
@@ -49,51 +51,60 @@ public class UniversalPagerWidget extends Composite {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
-    public UniversalPagerWidget() { //DataGrid grid) {
-        initPageSizeListBox();
+    public UniversalPagerWidget() {
         initPager();
         initWidget(uiBinder.createAndBindUi(this));
+        initPageSizeListBox(PAGE_SIZE_ITEMS_COUNT, PAGE_SIZE_MULTIPLICANT, PAGE_SIZE_ITEM_SELECTED);
+        pager.setPageSize(Integer.parseInt(pageSize.getText()));
     }
 
     /**
-     * Create page size list box and generate items according to constants
-     * PAGE_SIZE_ITEMS_COUNT and PAGE_SIZE_MULTIPLICANT. At the end select
-     * item according to PAGE_SIZE_ITEM_SELECTED constant.
+     * Constructor that generates page size options.
+     *
+     * @param count - define how many options in page size combo is generated.
+     * @param multiplicant - represent gab between page size options.
+     * @param selectIndex - default selected page size choice. order integer.
      */
-    private void initPageSizeListBox() {
-        pageSize = new ListBox();
-        for (int i = 1; i < PAGE_SIZE_ITEMS_COUNT; i++) {
-            pageSize.addItem(Integer.toString(i * PAGE_SIZE_MULTIPLICANT));
+    public UniversalPagerWidget(int count, int multiplicant, int selectIndex) {
+        initPager();
+        initWidget(uiBinder.createAndBindUi(this));
+        initPageSizeListBox(count, multiplicant, selectIndex);
+        pager.setPageSize(Integer.parseInt(pageSize.getText()));
+    }
+
+    /**
+     * Create page size menu options according to given attributes.
+     *
+     * @param count - define how many options in page size combo is generated.
+     * @param mutiplicant - represent gab between page size options.
+     * @param selectedIndex - default selected page size choice. order integer.
+     */
+    private void initPageSizeListBox(final int count, final int mutiplicant, final int selectedIndex) {
+        //if selected is asking to select item beyond items count, select last item
+        if (selectedIndex + 1 > count) {
+            pageSize.setText(Integer.toString(count * mutiplicant));
+        } else {
+            pageSize.setText(Integer.toString((selectedIndex + 1) * mutiplicant));
         }
-        pageSize.setSelectedIndex(PAGE_SIZE_ITEM_SELECTED);
+        //generate page size list
+        for (int i = 1; i <= count; i++) {
+            final int j = i;
+            pageSizeList.addItem(new MenuItem(Integer.toString(j * mutiplicant),
+                    new Scheduler.ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            pageSize.setText(Integer.toString(j * mutiplicant));
+                        }
+                    }));
+        }
     }
 
     /**
      * Initialize pager and page size list box.
      */
-    private void initPager() { //DataGrid grid) {
+    private void initPager() {
         SimplePager.Resources pagerResources = GWT.create(UniversalPager.class);
         pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
-
-        pager.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
-//        pager.setDisplay(grid);
-    }
-
-    /**************************************************************************/
-    /* UiHandlers                                                             */
-    /**************************************************************************/
-    @UiHandler("pageSize")
-    public void pageSizeChangeHandler(ChangeEvent event) {
-        /* Setting pager will fire RangeRangeEvent on bind display object (table), which
-         * should take care of data retrieving of new range */
-        /* Notice, that, setting pager won't display any loading indicator notifying
-         * user about processing request */
-
-        int page = pager.getPageStart() / pager.getPageSize();
-
-        //if selected page > 1 and page size changed, recalculate new page start.
-        pager.setPageStart(page * getPageSize());
-        pager.setPageSize(getPageSize());
     }
 
     /**************************************************************************/
@@ -103,12 +114,8 @@ public class UniversalPagerWidget extends Composite {
         return pager;
     }
 
-    public ListBox getPageSizeListBox() {
-        return pageSize;
-    }
-
     public int getPageSize() {
-        return Integer.parseInt(pageSize.getItemText(pageSize.getSelectedIndex()));
+        return Integer.parseInt(pageSize.getText());
     }
 
     /**************************************************************************/
