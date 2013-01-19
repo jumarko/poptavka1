@@ -86,7 +86,33 @@ import javax.persistence.NamedQuery;
                         + " and userMessage.message.demand is not NULL"
                         + " and userMessage.message.parent is NULL"
                         + " and userMessage.message.demand.status"
-                        + " = 'ACTIVE'")
+                        + " = 'ACTIVE'"),
+        @NamedQuery(name = "getSupplierConvesrsationsWithoutOffer",
+                query = "select latestUserMessage.id, count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join\n"
+                        + " subUserMessage.message.threadRoot as rootMessage,"
+                        + "UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.message.threadRoot = rootMessage"
+                        + " and latestUserMessage.user = :user"
+                        + " and subUserMessage.user = :user"
+                        + " and rootMessage.demand is not null"
+                        + " and latestUserMessage.message.firstBorn is null"
+                        + " and latestUserMessage.message.nextSibling is null"
+                        + " and latestUserMessage.message.offer is null\n"
+                        + "group by latestUserMessage.id"),
+        @NamedQuery(name = "getSupplierConvesrsationsWithOffer",
+                query = "select latestUserMessage.id, count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join\n"
+                        + " subUserMessage.message.threadRoot as rootMessage,"
+                        + "UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.message.threadRoot = rootMessage"
+                        + " and latestUserMessage.user = :user"
+                        + " and subUserMessage.user = :user"
+                        + " and rootMessage.demand is not null"
+                        + " and latestUserMessage.message.firstBorn is null"
+                        + " and latestUserMessage.message.nextSibling is null"
+                        + " and latestUserMessage.message.offer is not null\n"
+                        + "group by latestUserMessage.id")
 }
 )
 public class UserMessage extends DomainObject {

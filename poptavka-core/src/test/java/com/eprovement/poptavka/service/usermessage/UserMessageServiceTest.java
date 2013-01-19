@@ -11,6 +11,7 @@ import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
@@ -165,6 +166,24 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         this.generalService.save(unreadUserMessage);
     }
 
+    @Test
+    public void testGetSupplierConvesrsationsWithoutOffer() {
+        final Map<Long, Integer> supplierConversations = this.userMessageService
+                .getSupplierConvesrsationsWithoutOffer(this.user);
+        Assert.assertEquals(3, supplierConversations.size());
+        checkUserMessageIdAndCount(8L, 4, supplierConversations);
+        checkUserMessageIdAndCount(202L, 1, supplierConversations);
+        checkUserMessageIdAndCount(503L, 1, supplierConversations);
+    }
+
+    @Test
+    public void testGetSupplierConvesrsationsWithOffer() {
+        final Map<Long, Integer> supplierConversations = this.userMessageService
+                .getSupplierConvesrsationsWithOffer(this.user);
+
+        Assert.assertEquals(1, supplierConversations.size());
+        checkUserMessageIdAndCount(304L, 2, supplierConversations);
+    }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
@@ -240,6 +259,17 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
                 }));
     }
 
-
+    private void checkUserMessageIdAndCount(final long userMessageId,
+            final int count, Map<Long, Integer> allUserMessages) {
+        Assert.assertTrue(
+                "UserMessuage [id=" + userMessageId + "] not expected to be in"
+                + " collection [" + allUserMessages + "] is there.",
+                allUserMessages.containsKey(userMessageId));
+        int actualCount =  allUserMessages.get(userMessageId);
+        Assert.assertTrue(
+                "The count of [id=" + userMessageId + "]'s conversation"
+                + " should be " + count + ", not " + actualCount + ".",
+               actualCount == count);
+    }
 }
 

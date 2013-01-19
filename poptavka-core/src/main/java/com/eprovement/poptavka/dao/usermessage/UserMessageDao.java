@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -69,4 +70,27 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      */
     List<UserMessage> getPotentialDemands(BusinessUser supplier);
 
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where any offer has been made
+     *
+     * @param user the supplier whose conversations to get
+     * @param queryName
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<Long, Integer> getSupplierConvesrsationsWithoutOffer(User user);
+
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where an offer has been made
+     *
+     * @param user the supplier whose conversations to get
+     * @param queryName
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<Long, Integer> getSupplierConvesrsationsWithOffer(User user);
 }

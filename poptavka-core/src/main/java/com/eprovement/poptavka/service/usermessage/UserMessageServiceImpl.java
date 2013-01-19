@@ -20,6 +20,7 @@ import com.eprovement.poptavka.util.search.Searcher;
 import com.eprovement.poptavka.util.search.SearcherException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -199,4 +200,17 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         return Collections.EMPTY_LIST;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, Integer> getSupplierConvesrsationsWithoutOffer(User user) {
+        Preconditions.checkNotNull("Supplier specified must not be empty.", user);
+        return getDao().getSupplierConvesrsationsWithoutOffer(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, Integer> getSupplierConvesrsationsWithOffer(User user) {
+        Preconditions.checkNotNull("Supplier specified must not be empty.", user);
+        return getDao().getSupplierConvesrsationsWithOffer(user);
+    }
 }

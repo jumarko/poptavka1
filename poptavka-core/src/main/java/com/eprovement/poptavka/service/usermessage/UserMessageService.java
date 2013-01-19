@@ -13,6 +13,7 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GenericService;
 import com.googlecode.genericdao.search.Search;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -169,4 +170,27 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      */
     List<UserMessage> getSentItems(User user, Search search);
 
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier
+     *
+     * @param user the supplier whose conversations to get
+     * @param queryName
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<Long, Integer> getSupplierConvesrsationsWithoutOffer(User user);
+
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where an offer has been made
+     *
+     * @param user the supplier whose conversations to get
+     * @param queryName
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<Long, Integer> getSupplierConvesrsationsWithOffer(User user);
 }

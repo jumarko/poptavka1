@@ -16,6 +16,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -77,6 +78,34 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         return runNamedQuery("getPotentialDemands", queryParams);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, Integer> getSupplierConvesrsationsWithoutOffer(User user) {
+        return getSupplierConvesrsationsHelper(user,
+                "getSupplierConvesrsationsWithoutOffer");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, Integer> getSupplierConvesrsationsWithOffer(User user) {
+        return getSupplierConvesrsationsHelper(user,
+                "getSupplierConvesrsationsWithOffer");
+    }
+
+    private Map<Long, Integer> getSupplierConvesrsationsHelper(User user,
+            String queryName) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+
+        List<Object[]> unread = runNamedQuery(
+                queryName,
+                queryParams);
+        Map<Long, Integer> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+        }
+        return unreadMap;
+    }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
