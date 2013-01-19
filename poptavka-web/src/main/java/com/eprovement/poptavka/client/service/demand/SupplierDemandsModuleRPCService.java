@@ -74,7 +74,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<SupplierOffersDetail> getSupplierOffers(long supplierID,
+    List<SupplierOffersDetail> getSupplierOffers(long supplierID, long userId,
             SearchDefinition searchDefinition) throws RPCException;
 
     //******************* SUPPLIER - My Assigned Demands **********************/

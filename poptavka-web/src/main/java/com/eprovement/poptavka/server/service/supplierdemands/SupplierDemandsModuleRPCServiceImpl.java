@@ -39,6 +39,7 @@ import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -175,14 +176,15 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        final Search potentialDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        final List<UserMessage> userMessages = userMessageService.getPotentialDemands(
-                businessUser, potentialDemandsSearch);
+        final User user = (User) generalService.find(User.class, userId);
+        final Map<Long, Integer> latestUserMessagesWithCount =
+                userMessageService.getSupplierConvesrsationsWithoutOffer(user);
         // TODO RELEASE ivlcek - refactor with detail converter
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
-        for (UserMessage um : userMessages) {
+
+        for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
+            UserMessage um = (UserMessage) generalService.find(UserMessage.class, mapEntry.getKey());
             SupplierPotentialDemandDetail detail = new SupplierPotentialDemandDetail();
             // Client part
             detail.setClientId(um.getMessage().getDemand().getClient().getId());
@@ -196,8 +198,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // UserMessage part
             detail.setUserMessageId(um.getId());
             detail.setIsStarred(um.isStarred());
-            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
-            detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
+            detail.setMessageCount(mapEntry.getValue().intValue());
+            detail.setUnreadMessageCount(-1);
             // Demand part
             detail.setDemandId(um.getMessage().getDemand().getId());
             detail.setValidTo(um.getMessage().getDemand().getValidTo());
@@ -240,17 +242,20 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<SupplierOffersDetail> getSupplierOffers(long supplierID,
+    public List<SupplierOffersDetail> getSupplierOffers(long supplierID, long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        Supplier supplier = (Supplier) generalService.find(Supplier.class, supplierID);
-        Search supplierOffersSearch = new Search(Offer.class);
-        supplierOffersSearch.addFilterEqual("supplier", supplier);
-        // TODO RELEASE ivlcek - load offerState by CODE value
-        supplierOffersSearch.addFilterEqual("state", offerService.getOfferState(OfferStateType.PENDING.getValue()));
-        List<Offer> offers = generalService.search(supplierOffersSearch);
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
-        for (Offer offer : offers) {
+        final User user = (User) generalService.find(User.class, userId);
+        final Map<Long, Integer> latestUserMessagesWithCount =
+                userMessageService.getSupplierConvesrsationsWithOffer(user);
+        // TODO RELEASE ivlcek - refactor with detail converter
+        ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
+                new ArrayList<SupplierPotentialDemandDetail>();
+
+        for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
+            UserMessage latestUserMessage = (UserMessage) generalService.find(UserMessage.class, mapEntry.getKey());
+            Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
             // TODO RELASE ivlcek - refactor and create converter, set Rating
@@ -265,13 +270,13 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setRating(offer.getSupplier().getOveralRating());
 
             // load latest userMessage in conversation
-            Search conversationMessagesSearch = new Search(UserMessage.class);
-            conversationMessagesSearch.addFilterEqual("message.demand.id", offer.getDemand().getId());
-            conversationMessagesSearch.addFilterEqual("user.id", offer.getSupplier().getBusinessUser().getId());
-            conversationMessagesSearch.addSortDesc("id", false);
-            List<UserMessage> conversationMessages = (generalService.search(conversationMessagesSearch));
-            UserMessage latestUserMessage = conversationMessages.get(0);
-            sod.setMessageCount(conversationMessages.size());
+//            Search conversationMessagesSearch = new Search(UserMessage.class);
+//            conversationMessagesSearch.addFilterEqual("message.demand.id", offer.getDemand().getId());
+//            conversationMessagesSearch.addFilterEqual("user.id", offer.getSupplier().getBusinessUser().getId());
+//            conversationMessagesSearch.addSortDesc("id", false);
+//            List<UserMessage> conversationMessages = (generalService.search(conversationMessagesSearch));
+//            UserMessage latestUserMessage = conversationMessages.get(0);
+            sod.setMessageCount(mapEntry.getValue());
             sod.setIsRead(latestUserMessage.isRead());
             sod.setUserMessageId(latestUserMessage.getId());
 
@@ -284,7 +289,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             listSod.add(sod);
         }
-        LOGGER.debug("getSupplierOffers() result:" + listSod.size());
         return listSod;
     }
 
