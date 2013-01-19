@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersSearchView;
+import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -58,6 +59,7 @@ public class AdvanceSearchContentView extends Composite
         //searchWhat is default set to display demands attribute selector,
         //therefore hide suppliers attribute selector
         mainPanel.getTabWidget(SUPPLIER_SELECTOR_WIDGET).getParent().setVisible(false);
+        StyleResource.INSTANCE.advancedSearchTabPanel().ensureInjected();
     }
 
     /**************************************************************************/

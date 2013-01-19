@@ -5,31 +5,39 @@
 <!--        <meta name='gwt:module' content='com.eprovement.poptavka.Poptavka=com.eprovement.poptavka.Poptavka'> -->
 <!--        <meta name="gwt:property" content="locale=cs">-->
 <title>Poptavka</title>
+<!-- before your module(*.nocache.js) loading  -->
+<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+<!--[if IE 7]>
+ 		<link rel="stylesheet" href="{your module name}/css/font-awesome-ie7.css">
+		<![endif]-->
+<!-- your module(*.nocache.js) loading  -->
 <script type="text/javascript" src="poptavka/poptavka.nocache.js"></script>
 <script type="text/javascript">
-    function hideLoading() {
-        document.getElementById("appLoading").style.display = "none";
-    }
+	function hideLoading() {
+		document.getElementById("appLoading").style.display = "none";
+	}
 
-    function toggleDiv(ctrl, div) {
-        var divStyle = document.getElementById(div).style;
-        var img = document.getElementById(ctrl);
-        if (divStyle.display == "none") {
-            divStyle.display = "block";
-            img.src = "images/toggleOpen.png";
-        } else {
-            divStyle.display = "none";
-            img.src = "images/toggleClosed.png";
-        }
-    }
+	function toggleDiv(ctrl, div) {
+		var divStyle = document.getElementById(div).style;
+		var img = document.getElementById(ctrl);
+		if (divStyle.display == "none") {
+			divStyle.display = "block";
+			img.src = "images/toggleOpen.png";
+		} else {
+			divStyle.display = "none";
+			img.src = "images/toggleClosed.png";
+		}
+	}
 </script>
 </head>
 <body onload="hideLoading()">
-    <div id="appLoading"
-        style="position: absolute; background: url('images/loader.gif') center no-repeat; height: 100%; width: 100%; z-index: 100; top: 0px; left: 0px"></div>
-    <!-- In order for the browser auto-complete feature to work, -->
-    <!-- we must define the login form in the original HTML markup -->
-<!--    <div id="loginDiv" style="display: none">
+	<div id="appLoading"
+		style="position: absolute; background: url('images/loader.gif') center no-repeat; height: 100%; width: 100%; z-index: 100; top: 0px; left: 0px"></div>
+	<!-- In order for the browser auto-complete feature to work, -->
+	<!-- we must define the login form in the original HTML markup -->
+	<!--    <div id="loginDiv" style="display: none">
         <form action="login" id="loginForm">
             <table id="loginTable" valign="center">
                 <caption>Log In</caption>
@@ -54,7 +62,7 @@
         </form>
     </div>-->
 
-    <iframe src="javascript:''" id="__gwt_historyFrame"
-        style="width: 0; height: 0; border: 0"></iframe>
+	<iframe src="javascript:''" id="__gwt_historyFrame"
+		style="width: 0; height: 0; border: 0"></iframe>
 </body>
 </html>

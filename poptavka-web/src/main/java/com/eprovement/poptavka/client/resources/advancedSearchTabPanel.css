@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+.advancedSearchTabPanel {
+	height: 100%;	
+}
+
+.advancedSearchTabPanel .gwt-TabLayoutPanelTab {
+	padding: 0 24px;
+	margin-right: 5px;
+    background: none repeat scroll 0 0 #c8e7ff;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 6px 6px 0 0;
+    color: #004173;    
+    border: 1px solid #b3deff;
+	border-bottom: none;
+	cursor: pointer;
+}
+
+.advancedSearchTabPanel .gwt-TabLayoutPanelTabs {
+	background: url(images/search-panel-top-border.gif) repeat-x left bottom;
+	width: 1010px !important;
+	margin: 10px 10px 0;
+}
+
+.advancedSearchTabPanel .gwt-TabLayoutPanelTab-selected {
+	border: 1px solid #cbcecf;
+	border-bottom: 1px solid #ffffff;
+	background: #ffffff;
+}
+
+.advancedSearchTabPanel .gwt-TabLayoutPanelContentContainer {
+	border: none;
+	padding: 0;
+	margin: 0 10px 10px;
+	border: 1px solid #cbcecf;
+	border-top: none;
+}
+
+.advancedSearchTabPanel .gwt-TabLayoutPanelContent {
+	padding-right: 20px;
+}

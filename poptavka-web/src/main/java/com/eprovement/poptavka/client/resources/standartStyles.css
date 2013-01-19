@@ -404,7 +404,7 @@ a, a:visited, a:hover {
 }
 
 .gwt-PopupPanel {
-    border: 2px solid #999999;
+    border: 1px solid #006b9f;
     padding: 10px;
     background: white;
     box-shadow: 0 0 6px #000000;

@@ -74,14 +74,14 @@ input,textarea,select {
 }
 
 .toolbar-header {
-	background: url(images/left-header.png) no-repeat 24px 19px;
+	background: url(images/left-header.png) no-repeat 14px 19px;
 	color: #003153;
 	font-family: Arial, sans-serif;
 	font-size: 21px;
 	font-weight: normal;
 	line-height: 44px;
 	margin: 0;
-	padding-left: 42px;
+	padding-left: 29px;
 }
 
 .toolbar-items-block {

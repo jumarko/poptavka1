@@ -14,6 +14,8 @@
     <!-- RequestFactory and JSON module required by security pack-->
     <inherits name="com.google.web.bindery.requestfactory.RequestFactory" />
     <inherits name="com.google.gwt.json.JSON"/>
+    <!-- Bootstrap styles -->
+    <inherits name="com.github.gwtbootstrap.Bootstrap" />
     
     <!-- GWT validation BEGIN -->
     <inherits name='com.google.gwt.editor.Editor' />
