@@ -112,7 +112,36 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is not null\n"
-                        + "group by latestUserMessage.id")
+                        + "group by latestUserMessage.id"),
+        @NamedQuery(name = "getSupplierConvesrsationsWithOfferCount",
+                query = "select count(latestUserMessage.id)\n"
+                        + "from UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.user = :user"
+                        + " and latestUserMessage.message.demand is not null"
+                        + " and latestUserMessage.message.firstBorn is null"
+                        + " and latestUserMessage.message.nextSibling is null"
+                        + " and latestUserMessage.message.offer is not null\n"),
+        @NamedQuery(name = "getSupplierConvesrsationsWithoutOfferCount",
+                query = "select count(latestUserMessage.id)\n"
+                        + "from UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.user = :user"
+                        + " and latestUserMessage.message.demand is not null"
+                        + " and latestUserMessage.message.firstBorn is null"
+                        + " and latestUserMessage.message.nextSibling is null"
+                        + " and latestUserMessage.message.offer is null\n")
+        /*@NamedQuery(name = "getClientConvesrsationsWithOffer",
+                query = "select latestUsearMessage.id, count(subUserMessage.id) + 1\n"
+                        + "from UserMessage as subUserMessage right join\n"
+                        + " subUserMessage.message.threadRoot as rootMessage,"
+                        + "UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.message.threadRoot = rootMessage"
+                        + " and latestUserMessage.user = :user"
+                        + " and subUserMessage.user = :user"
+                        + " and rootMessage.demand is not null"
+                        + " and latestUserMessage.message.firstBorn is null"
+                        + " and latestUserMessage.message.nextSibling is null"
+                        + " and latestUserMessage.message.offer is not null\n"
+                        + "group by latestUserMessage.id")*/
 }
 )
 public class UserMessage extends DomainObject {

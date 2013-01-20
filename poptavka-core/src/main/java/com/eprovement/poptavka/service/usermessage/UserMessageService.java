@@ -176,7 +176,6 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * that are accessible to the supplier
      *
      * @param user the supplier whose conversations to get
-     * @param queryName
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
@@ -188,9 +187,24 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * that are accessible to the supplier where an offer has been made
      *
      * @param user the supplier whose conversations to get
-     * @param queryName
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
     Map<Long, Integer> getSupplierConvesrsationsWithOffer(User user);
+
+    /** Retrieves the count of supplier's conversations where an offer has been
+     * made
+     *
+     * @param user the supplier whose conversations to get
+     * @return number of supplier conversations where an offer has been made
+     */
+    int getSupplierConvesrsationsWithoutOfferCount(User user);
+
+    /** Retrieves the count of supplier's conversations where an offer has not
+     * been made
+     *
+     * @param user the supplier whose conversations to get
+     * @return number of supplier conversations where an offer has not been made
+     */
+    int getSupplierConvesrsationsWithOfferCount(User user);
 }

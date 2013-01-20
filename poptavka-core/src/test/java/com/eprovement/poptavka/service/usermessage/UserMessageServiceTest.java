@@ -185,6 +185,20 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageIdAndCount(304L, 2, supplierConversations);
     }
 
+    @Test
+    public void testGetSupplierConvesrsationsWithoutOfferCount() {
+        final int supplierConversationsCount = this.userMessageService
+                .getSupplierConvesrsationsWithoutOfferCount(this.user);
+        Assert.assertEquals(3, supplierConversationsCount);
+    }
+
+    @Test
+    public void testGetSupplierConvesrsationsWithOfferCount() {
+        final int supplierConversationsCount = this.userMessageService
+                .getSupplierConvesrsationsWithOfferCount(this.user);
+        Assert.assertEquals(1, supplierConversationsCount);
+    }
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.

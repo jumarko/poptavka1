@@ -213,4 +213,18 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConvesrsationsWithOffer(user);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getSupplierConvesrsationsWithoutOfferCount(User user) {
+        Preconditions.checkNotNull("Supplier specified must not be empty.", user);
+        return getDao().getSupplierConvesrsationsWithoutOfferCount(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getSupplierConvesrsationsWithOfferCount(User user) {
+        Preconditions.checkNotNull("Supplier specified must not be empty.", user);
+        return getDao().getSupplierConvesrsationsWithOfferCount(user);
+    }
 }

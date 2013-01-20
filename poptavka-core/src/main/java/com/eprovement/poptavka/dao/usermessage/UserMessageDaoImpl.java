@@ -92,6 +92,28 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
                 "getSupplierConvesrsationsWithOffer");
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public int getSupplierConvesrsationsWithOfferCount(User user) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+
+        return ((Long) runNamedQueryForSingleResult(
+                "getSupplierConvesrsationsWithOfferCount",
+                queryParams)).intValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getSupplierConvesrsationsWithoutOfferCount(User user) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+
+        return ((Long) runNamedQueryForSingleResult(
+                "getSupplierConvesrsationsWithoutOfferCount",
+                queryParams)).intValue();
+    }
+
     private Map<Long, Integer> getSupplierConvesrsationsHelper(User user,
             String queryName) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
