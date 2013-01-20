@@ -13,7 +13,7 @@ package com.eprovement.poptavka.service.jobs.base;
 public interface JobTask {
 
     String EVERY_MIDNIGHT = "0 59 23 * * ? ";
-    String AROUND_MIDDAY = "0 45 13 * * ? ";
+    String EVERY_HOUR = "0 0 * * * ? ";
     int HOUR = 3600000;
 
     void execute();
