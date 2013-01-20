@@ -11,9 +11,9 @@ body {
 	background: none;
 }
 
-input,textarea,select {
-	box-shadow: inset 0 0 5px #aaaaaa;
-	border: 1px solid #888888;
+input {
+	height: 30px;
+	line-height: 30px;
 }
 
 .body-background {
@@ -226,8 +226,8 @@ input,textarea,select {
 .login-button {
 	background: url(images/login_bg.png) no-repeat;
 	width: 51px;
-	height: 26px;
-	padding: 10px 5px 0 60px;
+	height: 28px;
+	padding: 8px 5px 0 60px;
 }
 
 .login-button a {

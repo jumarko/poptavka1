@@ -55,7 +55,7 @@ public class AdvanceSearchContentView extends Composite
     /**************************************************************************/
     public AdvanceSearchContentView() {
         initWidget(uiBinder.createAndBindUi(this));
-        mainPanel.setSize("700px", "500px");
+        mainPanel.setSize("1030px", "500px");
         //searchWhat is default set to display demands attribute selector,
         //therefore hide suppliers attribute selector
         mainPanel.getTabWidget(SUPPLIER_SELECTOR_WIDGET).getParent().setVisible(false);

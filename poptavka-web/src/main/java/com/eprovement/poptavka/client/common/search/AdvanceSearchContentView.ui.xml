@@ -7,7 +7,8 @@
 		type='com.eprovement.poptavka.client.resources.StyleResource' />
 
     <g:VerticalPanel>
-        <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='25' animationDuration="1000">
+        <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='42' animationDuration="1000"
+        styleName="{res.advancedSearchTabPanel.advancedSearchTabPanel}">
             <g:tab>
                 <g:header>
                     <ui:msg key="advSearchDemandsTab">Demand's table attributes</ui:msg>

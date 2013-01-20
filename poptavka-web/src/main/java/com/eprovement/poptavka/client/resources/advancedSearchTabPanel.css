@@ -7,7 +7,7 @@
 .advancedSearchTabPanel .gwt-TabLayoutPanelTab {
 	padding: 0 24px;
 	margin-right: 5px;
-    background: none repeat scroll 0 0 #c8e7ff;
+    background: #c8e7ff;
     height: 40px;
     line-height: 40px;
     text-align: center;
@@ -39,6 +39,15 @@
 	border-top: none;
 }
 
-.advancedSearchTabPanel .gwt-TabLayoutPanelContent {
-	padding-right: 20px;
+.advancedSearchTabPanel .row-fluid {
+	margin-bottom: 10px;
+}
+
+.advancedSearchTabPanel .gwt-Label {
+	font-weight: bold;
+	line-height: 30px;
+}
+
+.advancedSearchTabPanel .container-fluid {
+	margin-top: 20px;
 }

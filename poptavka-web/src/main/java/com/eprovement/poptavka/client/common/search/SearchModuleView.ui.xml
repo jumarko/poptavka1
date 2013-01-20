@@ -16,7 +16,7 @@
 		padding: 6px;
 		}
 
-		.search-textbox {
+		.search-textbox[type="text"] {
 		width: 267px;
 		height: 37px;
 		line-height: 37px;
@@ -26,6 +26,7 @@
 		border-radius: 3px 0 0 3px;
 		-moz-border-radius: 3px 0 0 3px;
 		-webkit-border-radius: 3px 0 0 3px;
+		margin: 0;
 		}
 
 		.search-button {
