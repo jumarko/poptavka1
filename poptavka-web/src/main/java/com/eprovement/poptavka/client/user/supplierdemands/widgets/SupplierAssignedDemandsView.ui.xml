@@ -23,7 +23,7 @@
         <g:north size="65">
             <g:HorizontalPanel ui:field="toolBar" styleName='{res.layout.toolbarItemsBlock}'>
                 <g:Label ui:field="tableNameLabel" />
-                <g:Button ui:field="finnishBtn" styleName="{style.button}">
+                <g:Button ui:field="finnishBtn" visible="false" styleName="{style.button}">
                     <ui:msg key="supplierAssignedDemandsFinnishBtn">Finnish</ui:msg>
                 </g:Button>
                 <g:ListBox ui:field="actionBox" selectedIndex="0">

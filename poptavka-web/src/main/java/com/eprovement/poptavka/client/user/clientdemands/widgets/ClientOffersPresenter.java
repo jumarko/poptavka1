@@ -83,7 +83,7 @@ public class ClientOffersPresenter
     /**************************************************************************/
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
-    private IUniversalDetail selectedObject = null;
+    private IUniversalDetail selectedOfferedDemandOffer = null;
     private long selectedClientOfferedDemandId = -1;
     private long selectedClientOfferedDemandOfferId = -1;
     private FieldUpdater textFieldUpdater = null;
@@ -207,11 +207,11 @@ public class ClientOffersPresenter
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getOfferGrid(), view.getWrapperPanel());
-            if (selectedObject != null) {
+            if (selectedOfferedDemandOffer != null) {
                 this.detailSection.initDetails(
-                        selectedObject.getDemandId(),
-                        selectedObject.getSenderId(),
-                        selectedObject.getThreadRootId());
+                        selectedOfferedDemandOffer.getDemandId(),
+                        selectedOfferedDemandOffer.getSupplierId(),
+                        selectedOfferedDemandOffer.getThreadRootId());
             }
         }
     }
@@ -297,12 +297,11 @@ public class ClientOffersPresenter
                 } else {
                     view.getAcceptBtn().setVisible(false);
                     IUniversalDetail selected = view.getOfferGrid().getSelectedObjects().get(0);
+                    selectedOfferedDemandOffer = selected;
                     if (detailSection == null) {
-                        selectedObject = selected;
                         eventBus.requestDetailWrapperPresenter();
                     } else {
                         detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        selectedObject = null;
                         detailSection.initDetails(
                                 selected.getDemandId(),
                                 selected.getSupplierId(),
@@ -341,7 +340,9 @@ public class ClientOffersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
-                detailSection.clear();
+                if (detailSection != null) {
+                    detailSection.clear();
+                }
                 view.getDemandPager().startLoading();
                 view.setOfferTableVisible(false);
                 view.setDemandTableVisible(true);
@@ -354,7 +355,7 @@ public class ClientOffersPresenter
         view.getAcceptBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestAcceptOffer(selectedObject.getOfferId());
+                eventBus.requestAcceptOffer(selectedOfferedDemandOffer.getOfferId());
             }
         });
     }

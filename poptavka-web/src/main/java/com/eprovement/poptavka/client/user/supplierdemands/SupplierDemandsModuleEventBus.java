@@ -171,6 +171,8 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void selectSupplierAssignedDemand(SupplierOffersDetail detail);
 
+    @Event(handlers = SupplierAssignedDemandsPresenter.class)
+    void responseFinnishOffer();
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
@@ -189,7 +191,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void requestEditOffer(long id);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestCancelOffer(long id);
+    void requestRateClient(int rating, String comment);
 
     //Updaters
     //--------------------------------------------------------------------------

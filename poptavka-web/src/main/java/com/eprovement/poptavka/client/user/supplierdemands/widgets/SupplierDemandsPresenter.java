@@ -153,7 +153,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             if (selectedObject != null) {
                 this.detailSection.initDetails(
                         selectedObject.getDemandId(),
-                        selectedObject.getSupplierId(),
+                        Storage.getSupplierId(),
                         selectedObject.getThreadRootId());
             }
         }
@@ -229,12 +229,11 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                     detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 } else {
                     IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
+                    selectedObject = selected;
                     if (detailSection == null) {
-                        selectedObject = selected;
                         eventBus.requestDetailWrapperPresenter();
                     } else {
                         detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        selectedObject = null;
                         detailSection.initDetails(
                                 selected.getDemandId(),
                                 selected.getSenderId(),

@@ -33,6 +33,7 @@ public interface LocalizableMessages extends Messages {
     String commonBtnEdit();
     String commonBtnLogin();
     String commonBtnNext();
+    String commonBtnRate();
     String commonBtnRefresh();
     String commonBtnReport();
     String commonBtnRevert();
@@ -61,6 +62,7 @@ public interface LocalizableMessages extends Messages {
     String formAccountInfo();
     String formAddressInfo();
     String formBankInfo();
+    String formClientInfo();
     String formCommonInfo();
     String formCompanyInfo();
     String formDatesInfo();
@@ -109,6 +111,7 @@ public interface LocalizableMessages extends Messages {
     String formPhone();
     String formPrice();
     String formRating();
+    String formRateComment();
     String formServices();
     String formShipmentDate();
     String formStreet();

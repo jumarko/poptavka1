@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
@@ -155,10 +156,22 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             if (selectedObject != null) {
                 this.detailSection.initDetails(
                         selectedObject.getDemandId(),
-                        selectedObject.getSupplierId(),
+                        Storage.getSupplierId(),
                         selectedObject.getThreadRootId());
             }
         }
+    }
+
+    public void onResponseFinnishOffer() {
+        final FeedbackPopupView ratePopup =
+                new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
+        ratePopup.setClientName(selectedObject.getClientName());
+        ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestRateClient(ratePopup.getRating(), ratePopup.getComment());
+            }
+        });
     }
 
     /**
@@ -239,12 +252,11 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
                 } else {
                     view.getFinnishBtn().setVisible(true);
                     IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
+                    selectedObject = selected;
                     if (detailSection == null) {
-                        selectedObject = selected;
                         eventBus.requestDetailWrapperPresenter();
                     } else {
                         detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        selectedObject = null;
                         detailSection.initDetails(
                                 selected.getDemandId(),
                                 selected.getSenderId(),

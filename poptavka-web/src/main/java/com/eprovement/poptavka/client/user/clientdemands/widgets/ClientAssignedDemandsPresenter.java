@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -154,6 +155,18 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         }
     }
 
+    public void onResponseCloseDemand() {
+        final FeedbackPopupView ratePopup =
+                new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
+        ratePopup.setSupplierName(selectedObject.getSupplierName());
+        ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestRateSupplier(ratePopup.getRating(), ratePopup.getComment());
+            }
+        });
+    }
+
     /**
      * Response method for onInitSupplierList()
      * @param data
@@ -231,12 +244,11 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 } else {
                     view.getCloseBtn().setVisible(true);
                     IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
+                    selectedObject = selected;
                     if (detailSection == null) {
-                        selectedObject = selected;
                         eventBus.requestDetailWrapperPresenter();
                     } else {
                         detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        selectedObject = null;
                         detailSection.initDetails(
                                 selected.getDemandId(),
                                 selected.getSenderId(),

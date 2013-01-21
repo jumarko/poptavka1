@@ -205,6 +205,9 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void selectClientAssignedDemand(ClientOfferedDemandOffersDetail detail);
 
+    @Event(handlers = ClientAssignedDemandsPresenter.class)
+    void responseCloseDemand();
+
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
@@ -245,6 +248,9 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModuleHandler.class)
     void getClientOfferedDemandAndInitClientOfferedDemandOffersByHistory(
             long parentId, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void requestRateSupplier(int rating, String comment);
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */

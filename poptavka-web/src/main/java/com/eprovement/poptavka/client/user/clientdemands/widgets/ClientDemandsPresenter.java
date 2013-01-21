@@ -277,12 +277,11 @@ public class ClientDemandsPresenter
                     detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 } else {
                     IUniversalDetail selected = view.getConversationGrid().getSelectedObjects().get(0);
+                    selectedObject = selected;
                     if (detailSection == null) {
-                        selectedObject = selected;
                         eventBus.requestDetailWrapperPresenter();
                     } else {
                         detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        selectedObject = null;
                         detailSection.initDetails(
                                 selected.getDemandId(),
                                 selected.getSenderId(),
@@ -366,7 +365,9 @@ public class ClientDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
-                detailSection.clear();
+                if (detailSection != null) {
+                    detailSection.clear();
+                }
                 view.getDemandPager().startLoading();
                 view.setConversationTableVisible(false);
                 view.setDemandTableVisible(true);

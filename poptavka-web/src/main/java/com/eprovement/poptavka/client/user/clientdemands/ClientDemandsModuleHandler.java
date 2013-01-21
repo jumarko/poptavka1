@@ -170,7 +170,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     }
 
     /**************************************************************************/
-    /* Retrieving methods - CLIENT PROJECTS                                   */
+    /* Retrieving methods - CLIENT ASSIGNED DEMANDS                           */
     /**************************************************************************/
     private void getClientAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedDemandsCount(
@@ -192,6 +192,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                         eventBus.displayClientAssignedDemands(result);
                     }
                 });
+    }
+
+    public void onRequestRateSupplier(int rating, String comment) {
+        //TODO RELEASE
     }
 
     /**************************************************************************/
@@ -232,7 +236,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         clientDemandsService.closeDemand(demandId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
-                //Empty by default
+//                eventBus.responseCloseDemand();
             }
         });
     }

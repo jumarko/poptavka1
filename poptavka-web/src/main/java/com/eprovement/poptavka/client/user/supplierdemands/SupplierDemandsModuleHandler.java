@@ -169,6 +169,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                     @Override
                     public void onSuccess(MessageDetail result) {
                         // TODO RELEASE ivlcek - call feedback popup
+                        //calling reponse finnish offer will call feedback popup
+//                        eventBus.responseFinnishOffer();
+                        //why is here called addConversationMessage? User can send
+                        //message when clicked finnish offer btn?
                         eventBus.addConversationMessage(result);
                     }
                 });
@@ -179,8 +183,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
         //TODO RPC
     }
 
-    public void onRequestCancelOffer(long id) {
-        //TODO RELEASE - remove
+    public void onRequestRateClient(int rating, String comment) {
+        //TODO RELEASE
     }
 
     public void onUpdateUnreadMessagesCount() {
