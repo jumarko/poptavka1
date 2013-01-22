@@ -16,6 +16,9 @@ import java.util.Date;
  */
 public class ClientDemandDetail implements Serializable, TableDisplay {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     /**
      * Generated serialVersionUID.
      */
@@ -41,7 +44,16 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
                 }
             };
 
-    //---------------------------- GETTERS AND SETTERS --------------------
+    /**************************************************************************/
+    /* Constructors                                                           */
+    /**************************************************************************/
+    public ClientDemandDetail() {
+        //for serialization
+    }
+
+    /**************************************************************************/
+    /* Getters & Setters                                                      */
+    /**************************************************************************/
     public long getDemandId() {
         return demandId;
     }

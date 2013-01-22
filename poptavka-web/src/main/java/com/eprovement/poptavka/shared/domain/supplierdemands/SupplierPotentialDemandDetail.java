@@ -18,6 +18,9 @@ import java.util.Date;
  */
 public class SupplierPotentialDemandDetail implements Serializable, TableDisplay, IUniversalDetail {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final long serialVersionUID = -6019479783491937543L;
     // Client part
     private long clientId;
@@ -52,6 +55,16 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
                 }
             };
 
+    /**************************************************************************/
+    /* Constructors                                                           */
+    /**************************************************************************/
+    public SupplierPotentialDemandDetail() {
+        //for serialization
+    }
+
+    /**************************************************************************/
+    /* Getters & Setters                                                      */
+    /**************************************************************************/
     // Client part
     //--------------------------------------------------------------------------
     /**

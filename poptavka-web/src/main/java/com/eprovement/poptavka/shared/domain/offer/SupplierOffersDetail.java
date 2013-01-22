@@ -18,6 +18,9 @@ import java.util.Date;
  */
 public class SupplierOffersDetail implements Serializable, TableDisplay, IUniversalDetail {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     /**
      * Generated serialVersionUID.
      */
@@ -49,6 +52,16 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
             };
     private boolean isRead;
 
+    /**************************************************************************/
+    /* Constructors                                                           */
+    /**************************************************************************/
+    public SupplierOffersDetail() {
+        //for serialization
+    }
+
+    /**************************************************************************/
+    /* Getters & Setters                                                      */
+    /**************************************************************************/
     /**
      * @return the demandId
      */

@@ -16,6 +16,9 @@ import java.util.Date;
  */
 public class ClientDemandConversationDetail implements Serializable, TableDisplay, IUniversalDetail {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     /**
      * Generated serialVersionUID.
      */
@@ -36,14 +39,22 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     private int unreadSubmessages = -1;
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
             new ProvidesKey<IUniversalDetail>() {
-
                 @Override
                 public Object getKey(IUniversalDetail item) {
                     return item == null ? null : item.getSupplierId();
                 }
             };
 
-    //---------------------------- GETTERS AND SETTERS --------------------
+    /**************************************************************************/
+    /* Constructors                                                           */
+    /**************************************************************************/
+    public ClientDemandConversationDetail() {
+        //for serialization
+    }
+
+    /**************************************************************************/
+    /* Getters & Setters                                                      */
+    /**************************************************************************/
     @Override
     public long getDemandId() {
         return demandId;
