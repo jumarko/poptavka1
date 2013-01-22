@@ -1,14 +1,30 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
-
-    <g:HorizontalPanel>
-        <c:SimplePager ui:field='pager'/>
-        <g:MenuBar vertical="false">
-            <g:MenuItem ui:field="pageSize">
-                <g:MenuBar vertical="true" ui:field="pageSizeList"/>
-            </g:MenuItem>
-        </g:MenuBar>
-    </g:HorizontalPanel>
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	
+	<ui:style>
+	.dropdown-select {
+		background: url(images/dropdown-icon.png) no-repeat top right;
+		width: 65px;
+		height: 32px;
+		margin-left: 10px;
+		cursor: pointer;
+	}
+	
+	.dropdown-item {
+		height: 32px;
+		line-heihgt: 32px;
+		width: 36px;
+		text-align: center;
+	}	
+	</ui:style>
+	
+	<g:HorizontalPanel>
+		<c:SimplePager ui:field='pager' />
+		<g:MenuBar vertical="false" styleName='{style.dropdown-select}'>
+			<g:MenuItem ui:field="pageSize" styleName='{style.dropdown-item}'>
+				<g:MenuBar vertical="true" ui:field="pageSizeList" />
+			</g:MenuItem>
+		</g:MenuBar>
+	</g:HorizontalPanel>
 </ui:UiBinder>
