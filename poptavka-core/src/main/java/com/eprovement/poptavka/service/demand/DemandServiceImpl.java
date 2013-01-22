@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author Excalibur
- * @author Juraj Martinka106
+ * @author Juraj Martinka
  */
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
