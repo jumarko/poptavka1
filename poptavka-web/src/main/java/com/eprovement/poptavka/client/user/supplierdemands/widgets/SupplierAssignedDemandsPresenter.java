@@ -14,12 +14,12 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.RowStyles;
@@ -27,7 +27,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
@@ -49,7 +48,16 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
 
         SimplePager getPager();
 
-        ListBox getActionBox();
+        //Action box actions
+        DropdownButton getActionBox();
+
+        NavLink getActionRead();
+
+        NavLink getActionUnread();
+
+        NavLink getActionStar();
+
+        NavLink getActionUnstar();
 
         Button getFinnishBtn();
 
@@ -80,7 +88,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         addStarColumnFieldUpdater();
         addColumnFieldUpdaters();
         // Listbox actions
-        addActionChangeHandler();
+        addActionBoxChoiceHandlers();
         // Buttons handlers
         addFinnishButtonHandler();
         // Row styles
@@ -246,6 +254,13 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                //set actionBox visibility
+                if (view.getDataGrid().getSelectedUserMessageIds().size() > 0) {
+                    view.getActionBox().setVisible(true);
+                } else {
+                    view.getActionBox().setVisible(false);
+                }
+                //init details
                 if (view.getDataGrid().getSelectedUserMessageIds().size() > 1) {
                     view.getFinnishBtn().setVisible(false);
                     detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
@@ -300,26 +315,30 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         });
     }
 
-    private void addActionChangeHandler() {
-        view.getActionBox().addChangeHandler(new ChangeHandler() {
+    // Widget action handlers
+    private void addActionBoxChoiceHandlers() {
+        view.getActionRead().addClickHandler(new ClickHandler() {
             @Override
-            public void onChange(ChangeEvent event) {
-                switch (view.getActionBox().getSelectedIndex()) {
-                    case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
-                        break;
-                    case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
-                        break;
-                    case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
-                        break;
-                    case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
-                        break;
-                    default:
-                        break;
-                }
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnread().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
+            }
+        });
+        view.getActionStar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnstar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
             }
         });
     }

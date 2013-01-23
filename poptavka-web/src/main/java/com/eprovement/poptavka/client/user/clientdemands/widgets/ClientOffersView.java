@@ -8,6 +8,8 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,7 +21,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionModel;
@@ -29,7 +30,6 @@ import java.util.List;
 
 public class ClientOffersView extends Composite
         implements ClientOffersPresenter.ClientOffersLayoutInterface {
-
 
     private static ClientOffersLayoutViewUiBinder uiBinder = GWT.create(ClientOffersLayoutViewUiBinder.class);
 
@@ -46,7 +46,6 @@ public class ClientOffersView extends Composite
     private static final int PRICE_COL_WIDTH = 30;
     private static final int FINNISH_DATE_COL_WIDTH = 30;
     private static final int VALID_TO_DATE_COL_WIDTH = 30;
-
     /**************************************************************************/
     /* DemandOfferTable Attrinbutes                                           */
     /**************************************************************************/
@@ -56,7 +55,8 @@ public class ClientOffersView extends Composite
     /**************************************************************************/
     /** UiFieds. **/
     @UiField(provided = true) UniversalPagerWidget demandPager, offerPager;
-    @UiField ListBox actionBox;
+    @UiField DropdownButton actionBox;
+    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField Button backBtn, acceptBtn;
     @UiField SimplePanel wrapperPanel;
     @UiField Label demandTableNameLabel, offerTableNameLabel;
@@ -208,10 +208,30 @@ public class ClientOffersView extends Composite
         return offerPager.getPager();
     }
 
-    //Buttons
+    //Action Box
     @Override
-    public ListBox getActionBox() {
+    public DropdownButton getActionBox() {
         return actionBox;
+    }
+
+    @Override
+    public NavLink getActionRead() {
+        return actionRead;
+    }
+
+    @Override
+    public NavLink getActionUnread() {
+        return actionUnread;
+    }
+
+    @Override
+    public NavLink getActionStar() {
+        return actionStar;
+    }
+
+    @Override
+    public NavLink getActionUnstar() {
+        return actionUnstar;
     }
 
     //Buttons

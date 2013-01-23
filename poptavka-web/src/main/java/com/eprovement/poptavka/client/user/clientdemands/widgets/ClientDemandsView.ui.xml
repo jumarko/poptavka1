@@ -1,52 +1,68 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
              xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
-    <ui:with field='res'
-                 type='com.eprovement.poptavka.client.resources.StyleResource' />
+        <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+        <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:north size="65">
-            <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
-                <g:HorizontalPanel ui:field="demandHeader">
-                    <g:Label>
-                        <ui:msg key="clientDemandsTableTitle">Vypis klientovych poptaviek</ui:msg>
-                    </g:Label>
-                    <s:UniversalPagerWidget ui:field='demandPager' />
-                </g:HorizontalPanel>
-                <g:HorizontalPanel ui:field="conversationHeader">
-                    <g:Button ui:field="backBtn">
-                        <ui:msg key="clientDemandsBackBtn">Spat na vsetky nove poptavky</ui:msg>
-                    </g:Button>
-                    <g:Label ui:field="demandTitlelabel"/>
-                    <g:ListBox ui:field="actions"/>
-                    <s:UniversalPagerWidget ui:field='conversationPager'/>
-                </g:HorizontalPanel>
-            </g:HorizontalPanel>
-        </g:north>
-        <g:east size="420">
-            <g:SimplePanel ui:field="wrapperPanel">
-                <g:HTMLPanel>
-                    <div>
-                        <strong>Defail detail panel</strong>
-                        <br />
-                        <br />
-                        <div>
-                            Default content....can contain some advertisements.
-                        </div>
-                    </div>
-                </g:HTMLPanel>
-            </g:SimplePanel>
-        </g:east>
-        <g:east size="25">
-        	<g:HTMLPanel></g:HTMLPanel>
-        </g:east>
-        <g:center>
-            <g:HTMLPanel>
-                <s:UniversalAsyncGrid ui:field="demandGrid" />
-                <s:UniversalAsyncGrid ui:field="conversationGrid" />
-            </g:HTMLPanel>
-        </g:center>
-    </g:DockLayoutPanel>
+        <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
+                <g:north size="65">
+                        <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
+                                <g:HorizontalPanel ui:field="demandHeader">
+                                        <g:Label>
+                                                <ui:msg key="clientDemandsTableTitle">Vypis klientovych poptaviek</ui:msg>
+                                        </g:Label>
+                                        <s:UniversalPagerWidget ui:field='demandPager' />
+                                </g:HorizontalPanel>
+                                <g:HorizontalPanel ui:field="conversationHeader">
+                                        <g:Button ui:field="backBtn">
+                                                <ui:msg key="clientDemandsBackBtn">Spat na vsetky nove poptavky</ui:msg>
+                                        </g:Button>
+                                        <g:Label ui:field="demandTitlelabel"/>
+                                        <b:DropdownButton ui:field="actionBox" visible="false"
+                                                          text="{msgs.commonListDefault}">
+                                                <b:NavLink ui:field="actionRead">
+                                                        <ui:msg key="commonListRead">read</ui:msg>
+                                                </b:NavLink>
+                                                <b:NavLink ui:field="actionUnread">
+                                                        <ui:msg key="commonListUnread">unread</ui:msg>
+                                                </b:NavLink>
+                                                <b:NavLink ui:field="actionStar">
+                                                        <ui:msg key="commonListStarred">star</ui:msg>
+                                                </b:NavLink>
+                                                <b:NavLink ui:field="actionUnstar">
+                                                        <ui:msg key="listUnstarred">unstar</ui:msg>
+                                                </b:NavLink>
+                                        </b:DropdownButton>
+                                        <s:UniversalPagerWidget ui:field='conversationPager'/>
+                                </g:HorizontalPanel>
+                        </g:HorizontalPanel>
+                </g:north>
+                <g:east size="420">
+                        <g:SimplePanel ui:field="wrapperPanel">
+                                <g:HTMLPanel>
+                                        <div>
+                                                <strong>Defail detail panel</strong>
+                                                <br />
+                                                <br />
+                                                <div>
+                                                        Default content....can contain some advertisements.
+                                                </div>
+                                        </div>
+                                </g:HTMLPanel>
+                        </g:SimplePanel>
+                </g:east>
+                <g:east size="25">
+                        <g:HTMLPanel></g:HTMLPanel>
+                </g:east>
+                <g:center>
+                        <g:HTMLPanel>
+                                <s:UniversalAsyncGrid ui:field="demandGrid" />
+                                <s:UniversalAsyncGrid ui:field="conversationGrid" />
+                        </g:HTMLPanel>
+                </g:center>
+        </g:DockLayoutPanel>
 </ui:UiBinder>

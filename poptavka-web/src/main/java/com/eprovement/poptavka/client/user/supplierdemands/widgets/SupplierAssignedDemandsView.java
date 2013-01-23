@@ -6,6 +6,8 @@ import com.eprovement.poptavka.client.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -16,7 +18,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -35,7 +36,8 @@ public class SupplierAssignedDemandsView extends Composite
     /* Attrinbutes                                                            */
     /**************************************************************************/
     @UiField(provided = true) UniversalTableGrid dataGrid;
-    @UiField ListBox actionBox;
+    @UiField DropdownButton actionBox;
+    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel;
     @UiField HorizontalPanel toolBar;
@@ -81,8 +83,34 @@ public class SupplierAssignedDemandsView extends Composite
     }
 
     @Override
-    public ListBox getActionBox() {
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
+    }
+
+    //Action box
+    @Override
+    public DropdownButton getActionBox() {
         return actionBox;
+    }
+
+    @Override
+    public NavLink getActionRead() {
+        return actionRead;
+    }
+
+    @Override
+    public NavLink getActionUnread() {
+        return actionUnread;
+    }
+
+    @Override
+    public NavLink getActionStar() {
+        return actionStar;
+    }
+
+    @Override
+    public NavLink getActionUnstar() {
+        return actionUnstar;
     }
 
     @Override
@@ -90,11 +118,7 @@ public class SupplierAssignedDemandsView extends Composite
         return finnishBtn;
     }
 
-    @Override
-    public SimplePanel getDetailPanel() {
-        return detailPanel;
-    }
-
+    //Widget view
     @Override
     public IsWidget getWidgetView() {
         return this;

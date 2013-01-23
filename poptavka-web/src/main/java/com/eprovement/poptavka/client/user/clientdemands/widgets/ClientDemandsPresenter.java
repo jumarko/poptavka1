@@ -15,11 +15,11 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversat
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
@@ -28,7 +28,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
@@ -69,8 +68,16 @@ public class ClientDemandsPresenter
 
         Set<ClientDemandConversationDetail> getSelectedMessageList();
 
-        //ListBox
-        ListBox getActions();
+        //Action box actions
+        DropdownButton getActionBox();
+
+        NavLink getActionRead();
+
+        NavLink getActionUnread();
+
+        NavLink getActionStar();
+
+        NavLink getActionUnstar();
 
         SimplePanel getWrapperPanel();
 
@@ -110,7 +117,7 @@ public class ClientDemandsPresenter
         // Field Updaters
         addTextColumnFieldUpdaters();
         // Listbox actions
-        addActionChangeHandler();
+        addActionBoxChoiceHandlers();
         // RowStyles
         addDemandGridRowStyles();
         addConversationGridRowStyles();
@@ -273,6 +280,13 @@ public class ClientDemandsPresenter
         view.getConversationGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                //set actionBox visibility
+                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 0) {
+                    view.getActionBox().setVisible(true);
+                } else {
+                    view.getActionBox().setVisible(false);
+                }
+                //init details
                 if (view.getConversationGrid().getSelectedUserMessageIds().size() > 1) {
                     detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 } else {
@@ -312,27 +326,31 @@ public class ClientDemandsPresenter
         view.getDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
+    /** Action box handers. **/
     // Widget action handlers
-    private void addActionChangeHandler() {
-        view.getActions().addChangeHandler(new ChangeHandler() {
+    private void addActionBoxChoiceHandlers() {
+        view.getActionRead().addClickHandler(new ClickHandler() {
             @Override
-            public void onChange(ChangeEvent event) {
-                switch (view.getActions().getSelectedIndex()) {
-                    case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), true);
-                        break;
-                    case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), false);
-                        break;
-                    case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
-                        break;
-                    case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
-                        break;
-                    default:
-                        break;
-                }
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnread().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), false);
+            }
+        });
+        view.getActionStar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnstar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), false);
             }
         });
     }

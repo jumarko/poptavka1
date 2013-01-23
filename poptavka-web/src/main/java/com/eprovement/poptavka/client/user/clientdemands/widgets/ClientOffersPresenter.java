@@ -16,12 +16,12 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.RowStyles;
@@ -29,7 +29,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.RangeChangeEvent;
@@ -58,8 +57,16 @@ public class ClientOffersPresenter
 
         SimplePager getOfferPager();
 
-        //ListBox
-        ListBox getActionBox();
+        //Action box actions
+        DropdownButton getActionBox();
+
+        NavLink getActionRead();
+
+        NavLink getActionUnread();
+
+        NavLink getActionStar();
+
+        NavLink getActionUnstar();
 
         //Buttons
         Button getBackBtn();
@@ -107,7 +114,7 @@ public class ClientOffersPresenter
         // Buttons Actions
         addBackButtonHandler();
         addAcceptOfferButtonHandler();
-        addActionChangeHandler();
+        addActionBoxChoiceHandlers();
         // Row styles
         addDemandGridRowStyles();
     }
@@ -291,6 +298,13 @@ public class ClientOffersPresenter
         view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                //set actionBox visibility
+                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 0) {
+                    view.getActionBox().setVisible(true);
+                } else {
+                    view.getActionBox().setVisible(false);
+                }
+                //init details
                 if (view.getOfferGrid().getSelectedUserMessageIds().size() > 1) {
                     view.getAcceptBtn().setVisible(false);
                     detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
@@ -375,26 +389,30 @@ public class ClientOffersPresenter
     }
 
     /** Action box handers. **/
-    private void addActionChangeHandler() {
-        view.getActionBox().addChangeHandler(new ChangeHandler() {
+    // Widget action handlers
+    private void addActionBoxChoiceHandlers() {
+        view.getActionRead().addClickHandler(new ClickHandler() {
             @Override
-            public void onChange(ChangeEvent event) {
-                switch (view.getActionBox().getSelectedIndex()) {
-                    case Constants.READ:
-                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
-                        break;
-                    case Constants.UNREAD:
-                        eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
-                        break;
-                    case Constants.STARED:
-                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
-                        break;
-                    case Constants.UNSTARED:
-                        eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
-                        break;
-                    default:
-                        break;
-                }
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnread().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
+            }
+        });
+        view.getActionStar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnstar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
             }
         });
     }

@@ -9,6 +9,8 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,7 +23,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -75,7 +76,8 @@ public class ClientDemandsView extends Composite
     //detail WrapperPanel
     @UiField SimplePanel wrapperPanel;
     @UiField Label demandTitlelabel;
-    @UiField(provided = true) ListBox actions;
+    @UiField DropdownButton actionBox;
+    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField HorizontalPanel demandHeader, conversationHeader;
     @UiField Button backBtn;
 
@@ -86,14 +88,6 @@ public class ClientDemandsView extends Composite
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
-
-        actions = new ListBox();
-        actions.addItem(Storage.MSGS.commonListDefault());
-        actions.addItem(Storage.MSGS.commonListRead());
-        actions.addItem(Storage.MSGS.commonListUnread());
-        actions.addItem(Storage.MSGS.commonListStarred());
-        actions.addItem(Storage.MSGS.commonListUnstarred());
-        actions.setSelectedIndex(0);
 
         initDemandTableAndPager();
         initConversationTableAndPager();
@@ -277,9 +271,30 @@ public class ClientDemandsView extends Composite
         return backBtn;
     }
 
+    //Action Box
     @Override
-    public ListBox getActions() {
-        return actions;
+    public DropdownButton getActionBox() {
+        return actionBox;
+    }
+
+    @Override
+    public NavLink getActionRead() {
+        return actionRead;
+    }
+
+    @Override
+    public NavLink getActionUnread() {
+        return actionUnread;
+    }
+
+    @Override
+    public NavLink getActionStar() {
+        return actionStar;
+    }
+
+    @Override
+    public NavLink getActionUnstar() {
+        return actionUnstar;
     }
 
     //Pagers
