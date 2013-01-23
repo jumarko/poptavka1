@@ -1,66 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.1.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.1.0/distro-source/core/src/gwt-module.dtd">
 <module rename-to="poptavka">
-    <inherits name="com.google.gwt.user.User"/>
-    <inherits name="com.google.gwt.i18n.I18N"/>
-    <inherits name="com.google.gwt.user.History"/>
-    <inherits name="com.google.gwt.logging.Logging"/>
-    <inherits name='com.google.gwt.inject.Inject'/>
-    <inherits name="com.google.gwt.uibinder.UiBinder" />
-    <inherits name="com.google.gwt.http.HTTP"/>
-	<!--     <inherits name='com.google.gwt.user.theme.standard.Standard'/>     -->
-    <inherits name='com.mvp4g.Mvp4gModule'/>
-    <inherits name='org.adamtacy.GWTEffects'/>
-    <!-- RequestFactory and JSON module required by security pack-->
-    <inherits name="com.google.web.bindery.requestfactory.RequestFactory" />
-    <inherits name="com.google.gwt.json.JSON"/>
-    <!-- Bootstrap styles -->
-    <inherits name="com.github.gwtbootstrap.Bootstrap" />
-    
-    <!-- GWT validation BEGIN -->
-    <inherits name='com.google.gwt.editor.Editor' />
-    <inherits name='org.hibernate.validator.HibernateValidator' />
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.i18n.I18N" />
+	<inherits name="com.google.gwt.user.History" />
+	<inherits name="com.google.gwt.logging.Logging" />
+	<inherits name='com.google.gwt.inject.Inject' />
+	<inherits name="com.google.gwt.uibinder.UiBinder" />
+	<inherits name="com.google.gwt.http.HTTP" />
+	<!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
+	<inherits name='com.mvp4g.Mvp4gModule' />
+	<inherits name='org.adamtacy.GWTEffects' />
+	<!-- RequestFactory and JSON module required by security pack -->
+	<inherits name="com.google.web.bindery.requestfactory.RequestFactory" />
+	<inherits name="com.google.gwt.json.JSON" />
+	<!-- Bootstrap styles -->
+	<inherits name="com.github.gwtbootstrap.Bootstrap" />
 
-    <!-- Specify the Validator for the Validation bootstrap to use. -->
-    <replace-with
-        class="com.eprovement.poptavka.client.common.validation.SampleValidatorFactory">
-        <when-type-is class="javax.validation.ValidatorFactory" />
-    </replace-with>
-    <!--  specify the ValidationMessageResolver to use for your custom validation messages -->
-    <replace-with
-        class="com.eprovement.poptavka.client.common.validation.CustomValidationMessagesResolver">
-        <when-type-is
-            class="com.google.gwt.validation.client.UserValidationMessagesResolver" />
-    </replace-with>
-    <!-- GWT validation END -->
+	<!-- GWT validation BEGIN -->
+	<inherits name='com.google.gwt.editor.Editor' />
+	<inherits name='org.hibernate.validator.HibernateValidator' />
 
-    <inherits name='com.eprovement.poptavka.DomainEnums' />
-    <inherits name='com.eprovement.poptavka.Exception' />
+	<!-- Specify the Validator for the Validation bootstrap to use. -->
+	<replace-with
+		class="com.eprovement.poptavka.client.common.validation.SampleValidatorFactory">
+		<when-type-is class="javax.validation.ValidatorFactory" />
+	</replace-with>
+	<!-- specify the ValidationMessageResolver to use for your custom validation 
+		messages -->
+	<replace-with
+		class="com.eprovement.poptavka.client.common.validation.CustomValidationMessagesResolver">
+		<when-type-is
+			class="com.google.gwt.validation.client.UserValidationMessagesResolver" />
+	</replace-with>
+	<!-- GWT validation END -->
 
-    <entry-point class="com.eprovement.poptavka.client.Poptavka"/>
+	<inherits name='com.eprovement.poptavka.DomainEnums' />
+	<inherits name='com.eprovement.poptavka.Exception' />
 
-    <source path="client"/>
-    <source path="shared"/>
+	<entry-point class="com.eprovement.poptavka.client.Poptavka" />
 
-    <source path="gwttest"/>
+	<source path="client" />
+	<source path="shared" />
 
-    <!-- Localization -->
-    <extend-property name="locale" values="en"/> 
-    <extend-property name="locale" values="cs"/>
+	<source path="gwttest" />
 
-    <!-- default locale - currently set for czech market -->
-    <set-property-fallback name="locale" value="en"/>
+	<!--Replacing of default bootstrap.min.css only! -->
+	<source path='client' />
+	<replace-with
+		class="com.eprovement.poptavka.client.resources.BootstrapConfigurator">
+		<when-type-is class="com.github.gwtbootstrap.client.ui.config.Configurator" />
+	</replace-with>
+	<public path="client">
+		<exclude name="** /*.java" />
+		<exclude name="** /*.class" />
+	</public>
 
-    <set-property name="user.agent" value="gecko1_8" />
+	<!-- Localization -->
+	<extend-property name="locale" values="en" />
+	<extend-property name="locale" values="cs" />
 
-     <!--Try uncommenting some of the following to configure logging further-->
-    <set-property name="gwt.logging.enabled" value="TRUE"/>
-    <set-property name="gwt.logging.logLevel" value="ALL"/>
-    <set-property name="gwt.logging.consoleHandler" value="DISABLED" />
-    <set-property name="gwt.logging.developmentModeHandler" value="DISABLED" />
-    <set-property name="gwt.logging.popupHandler" value="DISABLED" />
-    <set-property name="gwt.logging.systemHandler" value="ENABLED" />
-    <set-property name="gwt.logging.firebugHandler" value="ENABLED" />
+	<!-- default locale - currently set for czech market -->
+	<set-property-fallback name="locale" value="en" />
 
-    <!-- Do not define servlets here, use web.xml -->
+	<set-property name="user.agent" value="gecko1_8" />
+
+	<!--Try uncommenting some of the following to configure logging further -->
+	<set-property name="gwt.logging.enabled" value="TRUE" />
+	<set-property name="gwt.logging.logLevel" value="ALL" />
+	<set-property name="gwt.logging.consoleHandler" value="DISABLED" />
+	<set-property name="gwt.logging.developmentModeHandler"
+		value="DISABLED" />
+	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
+	<set-property name="gwt.logging.systemHandler" value="ENABLED" />
+	<set-property name="gwt.logging.firebugHandler" value="ENABLED" />
+
+	<!-- Do not define servlets here, use web.xml -->
 </module>

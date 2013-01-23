@@ -203,15 +203,10 @@
 		
 		<!-- Bootstrap styles -->
 		<repository>
-			<id>sonatype</id>
-			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
+        	<id>gwt-bootstrap</id>
+        	<name>GWT-Bootstrap SNAPSHOTS</name>
+        	<url>http://gwtbootstrap.github.com/maven/snapshots</url>
+    	</repository>
 
 	</repositories>
 
