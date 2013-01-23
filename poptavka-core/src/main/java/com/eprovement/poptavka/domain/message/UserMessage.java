@@ -128,7 +128,22 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.message.demand is not null"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and latestUserMessage.message.nextSibling is null"
-                        + " and latestUserMessage.message.offer is null\n")
+                        + " and latestUserMessage.message.offer is null\n"),
+        @NamedQuery(name = "getSupplierConvesrsationsWithAcceptedOffer",
+                query = "select latestUserMessage.id, count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join\n"
+                        + " subUserMessage.message.threadRoot as rootMessage,"
+                        + "UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.message.threadRoot = rootMessage"
+                        + " and latestUserMessage.user = :user"
+                        + " and subUserMessage.user = :user"
+                        + " and rootMessage.demand is not null"
+                        + " and latestUserMessage.message.firstBorn is null"
+                        + " and latestUserMessage.message.nextSibling is null"
+                        + " and latestUserMessage.message.offer is not null\n"
+                        + " and (latestUserMessage.message.offer.state = :statusAccepted"
+                        + " or latestUserMessage.message.offer.state = :statusCompleted)\n"
+                        + "group by latestUserMessage.id")
         /*@NamedQuery(name = "getClientConvesrsationsWithOffer",
                 query = "select latestUsearMessage.id, count(subUserMessage.id) + 1\n"
                         + "from UserMessage as subUserMessage right join\n"

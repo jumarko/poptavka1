@@ -40,7 +40,7 @@ public class LoginPopupView extends PopupPanel
                 pass = "123123";
             }
             if (role == BusinessRole.SUPPLIER) {
-                name = "marcel.mrkvicka@gmail.com";
+                name = "pras3xer@gmail.com";
                 pass = "123123";
             }
             if (role == BusinessRole.ADMIN) {

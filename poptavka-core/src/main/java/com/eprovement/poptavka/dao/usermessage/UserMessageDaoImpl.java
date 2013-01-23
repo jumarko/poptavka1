@@ -8,6 +8,7 @@ import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import java.util.HashMap;
@@ -112,6 +113,25 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         return ((Long) runNamedQueryForSingleResult(
                 "getSupplierConvesrsationsWithoutOfferCount",
                 queryParams)).intValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, Integer> getSupplierConvesrsationsWithAcceptedOffer(User user,
+        OfferState offerStateAccepted, OfferState offerStateCompleted) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+        queryParams.put("statusAccepted", offerStateAccepted);
+        queryParams.put("statusCompleted", offerStateCompleted);
+
+        List<Object[]> unread = runNamedQuery(
+                "getSupplierConvesrsationsWithAcceptedOffer",
+                queryParams);
+        Map<Long, Integer> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+        }
+        return unreadMap;
     }
 
     private Map<Long, Integer> getSupplierConvesrsationsHelper(User user,

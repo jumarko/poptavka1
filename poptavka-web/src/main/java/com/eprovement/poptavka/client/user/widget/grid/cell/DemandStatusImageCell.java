@@ -142,7 +142,7 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
                 sb.append(renderer.render(Storage.RSCS.images().statusWork()));
                 explanationText = Storage.MSGS.demandStatusClosed();
                 break;
-            case FINISHED:
+            case PENDINGCOMPLETION:
                 sb.append(renderer.render(Storage.RSCS.images().statusWork()));
                 explanationText = Storage.MSGS.demandStatusFinnished();
                 break;

@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.enums.MessageContext;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
@@ -226,5 +227,14 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public int getSupplierConvesrsationsWithOfferCount(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConvesrsationsWithOfferCount(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Long, Integer> getSupplierConvesrsationsWithAcceptedOffer(User user,
+            OfferState offerStateAccepted, OfferState offerStateCompleted) {
+        Preconditions.checkNotNull("Supplier specified must not be empty.", user);
+        return getDao().getSupplierConvesrsationsWithAcceptedOffer(user, offerStateAccepted,
+                offerStateCompleted);
     }
 }

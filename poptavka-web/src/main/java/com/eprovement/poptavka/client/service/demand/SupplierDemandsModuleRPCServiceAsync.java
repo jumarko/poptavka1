@@ -21,7 +21,7 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     void getSupplierPotentialDemandsCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Long> callback);
 
-    void getSupplierPotentialDemands(long supplierID, SearchDefinition searchDefinition,
+    void getSupplierPotentialDemands(long userId, long supplierId, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierPotentialDemandDetail>> callback);
 
     //SupplierOffers widget

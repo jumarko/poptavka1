@@ -60,9 +60,9 @@ public enum DemandStatus {
     ASSIGNED("ASSIGNED"),
 
     /**
-     * A Supplier finished the realization of Demand and switched it to state FINISHED.
+     * A Supplier finished the realization of Demand and is waiting for Client's acceptation.
      */
-    FINISHED("FINISHED"),
+    PENDINGCOMPLETION("PENDINGCOMPLETION"),
 
     /**
      * A Client checked FINISHED Demand and closed Demand if it was Ok.

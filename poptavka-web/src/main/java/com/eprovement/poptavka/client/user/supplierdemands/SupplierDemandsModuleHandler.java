@@ -74,7 +74,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierPotentialDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialDemands(
-                Storage.getUser().getUserId(), searchDefinition,
+                Storage.getUser().getUserId(), Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierPotentialDemandDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<SupplierPotentialDemandDetail> result) {

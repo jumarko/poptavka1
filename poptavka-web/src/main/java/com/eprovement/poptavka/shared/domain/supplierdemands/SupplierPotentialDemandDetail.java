@@ -44,6 +44,8 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
     private Date endDate; // column 4 - I believe this field is used to make urgency icon in our table
     private String title; // column 3
     private String price; // column ? - maybe we will not display this in table
+    // Supplier part
+    private long supplierId;
 
     // Keyprovider
     //--------------------------------------------------------------------------
@@ -101,7 +103,11 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
     //--------------------------------------------------------------------------
     @Override
     public long getSupplierId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return supplierId;
+    }
+
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
     }
 
     @Override

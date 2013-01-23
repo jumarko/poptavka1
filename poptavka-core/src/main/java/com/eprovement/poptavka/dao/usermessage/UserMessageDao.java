@@ -8,6 +8,7 @@ import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import java.util.List;
@@ -107,4 +108,18 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return number of supplier conversations where an offer has not been made
      */
     int getSupplierConvesrsationsWithOfferCount(User user);
+
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where an offer is ACCEPTED of COMPLETED
+     *
+     * @param user the supplier whose conversations to get
+     * @param queryName
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<Long, Integer> getSupplierConvesrsationsWithAcceptedOffer(User user,
+            OfferState offerStateAccepted, OfferState offerStateCompleted);
+
 }

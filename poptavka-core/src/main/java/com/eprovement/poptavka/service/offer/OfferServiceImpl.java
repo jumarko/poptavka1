@@ -62,6 +62,6 @@ public class OfferServiceImpl extends GenericServiceImpl<Offer, OfferDao> implem
     public long getAcceptedOffersCountForSupplier(long supplierId) {
         return this.getDao().getOffersCountForSupplier(supplierId,
                 this.getOfferState(OfferStateType.ACCEPTED.getValue()),
-                this.getOfferState(OfferStateType.DELIVERED.getValue()));
+                this.getOfferState(OfferStateType.COMPLETED.getValue()));
     }
 }

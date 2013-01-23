@@ -10,7 +10,7 @@ public enum OfferStateType {
     PENDING("PENDING"),
     DECLINED("DECLINED"),
     /** Offer was delivered and Demand was successfuly closed. **/
-    DELIVERED("DELIVERED");
+    COMPLETED("COMPLETED");
 
     private final String value;
 
