@@ -35,8 +35,8 @@ import javax.persistence.NamedQuery;
         + " and offer.supplier.id = :supplier\n"),
     @NamedQuery(name = "getOffersCountForSupplierByStates",
     query = "select count(*) from Offer offer\n"
-        + "where offer.state = :state1"
-        + " and offer.state = :state2"
+        + "where (offer.state = :state1"
+        + " or offer.state = :state2)"
         + " and offer.supplier.id = :supplier\n")
 })
 
