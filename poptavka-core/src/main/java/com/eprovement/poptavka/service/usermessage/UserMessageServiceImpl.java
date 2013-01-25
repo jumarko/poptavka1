@@ -9,8 +9,6 @@ import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.dao.usermessage.UserMessageDao;
 import com.eprovement.poptavka.domain.message.Message;
-import com.eprovement.poptavka.domain.enums.MessageContext;
-import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
@@ -67,11 +65,11 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
                 supplier.getId());
 
-        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
-        final Search potentialDemandsSearch = new Search(UserMessage.class);
-        potentialDemandsSearch.addFilterEqual("supplier", supplier);
-        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
-        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
+//        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
+//        final Search potentialDemandsSearch = new Search(UserMessage.class);
+//        potentialDemandsSearch.addFilterEqual("supplier", supplier);
+//        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
+//        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
 
         final long potentialDemandsCount = getDao().getPotentialDemandsCount(supplier);
         LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
@@ -92,11 +90,11 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
                 supplier.getId());
 
-        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
-        final Search potentialDemandsSearch = new Search(UserMessage.class);
-        potentialDemandsSearch.addFilterEqual("supplier", supplier);
-        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
-        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
+//        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
+//        final Search potentialDemandsSearch = new Search(UserMessage.class);
+//        potentialDemandsSearch.addFilterEqual("supplier", supplier);
+//        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
+//        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
 
         final List<UserMessage> potentialDemands = getDao().getPotentialDemands(supplier);
         LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
