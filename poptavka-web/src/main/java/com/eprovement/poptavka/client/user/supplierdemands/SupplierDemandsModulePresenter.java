@@ -69,7 +69,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        event.fireEvent();
+        // nothing
     }
 
     /**************************************************************************/

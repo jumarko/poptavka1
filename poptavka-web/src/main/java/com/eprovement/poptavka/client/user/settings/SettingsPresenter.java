@@ -94,7 +94,6 @@ public class SettingsPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-//        Window.confirm("Settings confirm method.");
         //pseudo method to verify if the view has changed
         boolean isUserChange = false;
         boolean isClientChange = false;
@@ -114,6 +113,8 @@ public class SettingsPresenter
             if (Window.confirm(Storage.MSGS.settingsNotificationLeavingPage())) {
                 event.fireEvent();
             }
+        } else {
+            event.fireEvent();
         }
     }
 
