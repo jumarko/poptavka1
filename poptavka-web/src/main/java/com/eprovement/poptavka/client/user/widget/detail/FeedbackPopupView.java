@@ -5,7 +5,6 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -48,12 +47,10 @@ public class FeedbackPopupView extends PopupPanel {
         this.setWidget(uiBinder.createAndBindUi(this));
         switch (rateWhat) {
             case CLIENT:
-                supplierPanel.getElement().getStyle().setDisplay(Style.Display.NONE);
-                clientPanel.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                clientPanel.setVisible(true);
                 break;
             case SUPPLIER:
-                clientPanel.getElement().getStyle().setDisplay(Style.Display.NONE);
-                supplierPanel.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                supplierPanel.setVisible(true);
                 break;
             default:
                 break;

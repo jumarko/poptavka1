@@ -171,7 +171,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
 
     public void onResponseFinnishOffer() {
         final FeedbackPopupView ratePopup =
-                new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
+                new FeedbackPopupView(FeedbackPopupView.CLIENT);
         ratePopup.setClientName(selectedObject.getClientName());
         ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
             @Override

@@ -236,7 +236,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         clientDemandsService.closeDemand(demandId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
             @Override
             public void onSuccess(ArrayList<Void> result) {
-//                eventBus.responseCloseDemand();
+                eventBus.responseCloseDemand();
             }
         });
     }

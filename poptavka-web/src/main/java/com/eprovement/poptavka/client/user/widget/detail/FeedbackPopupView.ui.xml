@@ -7,7 +7,7 @@
              type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel styleName="{res.detailViews.demandDetailContent}">
-        <g:HTMLPanel ui:field="supplierPanel" styleName='{res.detailViews.detailBlock}'>
+        <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
             <h4 class="{res.detailViews.demandDetailSectionHeader}">
                 <ui:msg key="formSupplierInfo">Supplier information</ui:msg>
             </h4>
@@ -19,7 +19,7 @@
             </g:HTMLPanel>
         </g:HTMLPanel>
 
-        <g:HTMLPanel ui:field="clientPanel" styleName='{res.detailViews.detailBlock}'>
+        <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
             <h4 class="{res.detailViews.demandDetailSectionHeader}">
                 <ui:msg key="formClientInfo">Client information</ui:msg>
             </h4>
@@ -33,7 +33,7 @@
 
 
 
-        <g:HTMLPanel>
+        <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                 <ui:msg key="formRanking">Overall rating:</ui:msg>
             </g:Label>
