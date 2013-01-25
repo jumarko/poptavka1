@@ -88,7 +88,7 @@
 		}
 	</ui:style>
 	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+		type='com.eprovement.poptavka.resources.StyleResource' />
 
 	<g:HTMLPanel ui:field="container">
 		<div ui:field="searchMenu" class='{style.search-menu}'>

@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.client.ui.SimplePanel;

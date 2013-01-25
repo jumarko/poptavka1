@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.resources.StyleResource;
 
 public class MessagesView extends Composite
         implements MessagesPresenter.MessagesLayoutInterface {

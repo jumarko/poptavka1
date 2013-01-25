@@ -6,7 +6,7 @@
   ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
   ui:generateLocales='default'>
       
-    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
     <ui:style>
     .important {
       font-weight: bold;

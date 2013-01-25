@@ -20,7 +20,7 @@
         }
     </ui:style>
     <ui:with field='res'
-             type='com.eprovement.poptavka.client.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel>
         <!-- menu -->

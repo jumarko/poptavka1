@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
-    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
 <!--    TODO Martin - vhodit do StyleResource a vsade kde je validacia pouzit z resource-->
     <ui:style>
         .error {

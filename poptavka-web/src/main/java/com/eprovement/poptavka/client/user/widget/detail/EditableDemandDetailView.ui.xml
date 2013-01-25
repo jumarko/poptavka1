@@ -7,7 +7,7 @@
         xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
 	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+		type='com.eprovement.poptavka.resources.StyleResource' />
 
 	<g:HTMLPanel ui:field="detail">
 		<h4 class="{res.detailViews.demandDetailSectionHeader}">

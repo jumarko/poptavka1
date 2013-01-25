@@ -4,7 +4,7 @@
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
-        <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+        <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
         <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
         <g:DockLayoutPanel styleName='{res.layout.fullSize}'>

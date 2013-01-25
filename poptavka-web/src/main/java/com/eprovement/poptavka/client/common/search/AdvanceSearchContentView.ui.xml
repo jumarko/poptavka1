@@ -4,7 +4,7 @@
 	xmlns:homeDemands="urn:import:com.eprovement.poptavka.client.homedemands"
 	xmlns:homeSuppliers="urn:import:com.eprovement.poptavka.client.homesuppliers">
 	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+		type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:VerticalPanel>
         <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX' barHeight='42' animationDuration="1000"

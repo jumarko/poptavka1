@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+.createTabPanel {
+	height: 100%;
+}
+
+.createTabPanel .gwt-TabLayoutPanelTab-selected .gwt-TabLayoutPanelTabInner div {
+	background: url(images/create-tab-hover.png) no-repeat top right;
+	cursor: pointer;
+}
+
+.createTabPanel .gwt-TabLayoutPanelContentContainer {
+	background: #ffffff;
+	border: none;
+	border-radius: 0 0 5px 5px;
+}
+
+.createTabPanel .gwt-TabLayoutPanelTabs {
+	width: 975px;
+	height: 40px;
+	background: url(images/header.gif) repeat-x top left !important;
+	border-radius: 5px 5px 0 0; 
+}
+
+.createTabPanel .gwt-TabLayoutPanelTab {
+	background: url(images/create-tab-arrow.png) no-repeat top right;
+	position: relative;
+	color: #ffffff;	
+	height: 39px;
+	line-height: 39px;
+	text-shadow: 1px 1px 1px #cb6300;
+	text-align: center;
+	font-weight: bold;
+	margin-right: -30px;
+	width: 220px;
+}
+.createTabPanel .gwt-TabLayoutPanelTab:first-child {
+	width: 200px;
+}
+

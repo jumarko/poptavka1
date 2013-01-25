@@ -5,7 +5,7 @@
     xmlns:s="urn:import:com.eprovement.poptavka.client.user.messages.tab">
 
     <ui:with field='res'
-        type='com.eprovement.poptavka.client.resources.StyleResource' />
+        type='com.eprovement.poptavka.resources.StyleResource' />
 
     <ui:style>
         .textArea {

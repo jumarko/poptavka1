@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+/** OLD **/
+.click-table {
+    cursor: pointer;
+}
+
+.click-table tr {
+    width: 120px;
+}
+
+.click-table tr:hover {
+    background-color: black;
+    color: white;
+}
+
+.header {
+    background-color: gray;
+}
+
+.even {
+    background-color: #ced;
+}
+
+.selected-row {
+    background-color: #abc;
+}
+
+.selected-offer {
+    background-color: #abcdef;
+}
+
+.hidden-field {
+    display: none;
+}
+
+/* @eval tableMenuItem com.module */
+.column-visible {
+    padding: 3px;
+    padding-left: 20px;
+    background: url("images/checkbox2.gif")	left no-repeat;
+}
+
+td.column-visible:hover {
+    background-color: green;
+}
+
+.column-hidden {
+    padding: 3px;
+    padding-left: 20px;
+    background: url("images/checkbox1.gif")	left no-repeat;
+}
+
+.bold {
+    font-weight: bold;
+}

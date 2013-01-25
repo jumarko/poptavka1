@@ -5,7 +5,7 @@
         xmlns:t="urn:import:com.eprovement.poptavka.client.common.search">
 
 	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+		type='com.eprovement.poptavka.resources.StyleResource' />
 
 <!--	<ui:style>
 		.home-container {

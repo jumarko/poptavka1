@@ -5,7 +5,7 @@
 	xmlns:w="urn:import:com.eprovement.poptavka.client.user.widget.detail">
 
 	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+		type='com.eprovement.poptavka.resources.StyleResource' />
 	<ui:style>
 		.panel {
 		min-width: 500px;

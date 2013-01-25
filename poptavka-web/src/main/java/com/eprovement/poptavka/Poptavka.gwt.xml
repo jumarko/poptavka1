@@ -46,19 +46,18 @@
 	<source path="gwttest" />
 
 	<!--Replacing of default bootstrap.min.css only! -->
-	<source path='client' />
-	<replace-with
-		class="com.eprovement.poptavka.client.resources.BootstrapConfigurator">
+	<source path='resources' />
+	<replace-with class="com.eprovement.poptavka.resources.BootstrapConfigurator">
 		<when-type-is class="com.github.gwtbootstrap.client.ui.config.Configurator" />
 	</replace-with>
-	<public path="client">
+	<public path="resources">
 		<exclude name="** /*.java" />
 		<exclude name="** /*.class" />
 	</public>
 
 	<!-- Localization -->
 	<extend-property name="locale" values="en" />
-	<extend-property name="locale" values="cs" />
+	<!--<extend-property name="locale" values="cs" />-->
 
 	<!-- default locale - currently set for czech market -->
 	<set-property-fallback name="locale" value="en" />

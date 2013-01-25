@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
-import com.eprovement.poptavka.client.resources.UniversalPager;
+import com.eprovement.poptavka.resources.UniversalPager;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.uibinder.client.UiBinder;

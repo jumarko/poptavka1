@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+.cell-table-logo-column {
+    border: none !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.cell-table-icon-column {
+    border: none !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.cell-table-hand-cursor {
+    cursor: pointer;
+    /*background-color: green;*/
+}
+
+.cell-table-hand-cursor:hover {
+    cursor: pointer;
+    background-color: red;
+}
+
+.unread {
+    font-weight:bold !important;
+}

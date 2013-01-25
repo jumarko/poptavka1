@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
-        <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+        <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
 	<ui:style>
 		.left {

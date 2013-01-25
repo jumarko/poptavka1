@@ -3,7 +3,7 @@
     xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <!-- injecting style resources -->
-    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
 
     <g:HTMLPanel ui:field="wrapper">
         <div ui:field='inliner'>

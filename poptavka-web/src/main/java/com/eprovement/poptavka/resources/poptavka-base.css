@@ -1,0 +1,393 @@
+@CHARSET "UTF-8";
+
+/**
+ * Css Resources for main basic layout of ALL views
+ *
+ * @author Beho, Jaro
+ *
+ */
+body {
+	margin: 0;
+	background: none;
+}
+
+input {
+	height: 30px;
+	line-height: 30px;
+}
+
+.body-background {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: url(images/main_bg.jpg) no-repeat top left #ffffff;
+}
+
+.body-container {
+	position: relative;
+	margin: 0 0 0 340px;	
+	width: 975px;
+	height: 100%;
+}
+
+.body-full-container {
+	padding: 0;
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+}
+
+.layout-public-main {
+	min-width: 800px;
+	/* max-width: 1024px; */
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+
+.layout-user-main {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+.header-container {
+	margin: 0 auto;
+	width: 100%;
+	background-color: none;
+}
+
+.header-content {
+	margin: 0;
+	padding: 0;
+	height: 100px;
+	float: right;
+}
+
+/*
+* Tool Bar Styles
+*
+*/
+.toolbar {
+	background: url(images/nav-bar.png) repeat-x left top;
+}
+
+.toolbar-header {
+	background: url(images/left-header.png) no-repeat 14px 19px;
+	color: #003153;
+	font-family: Arial, sans-serif;
+	font-size: 21px;
+	font-weight: normal;
+	line-height: 44px;
+	margin: 0;
+	padding-left: 29px;
+}
+
+.toolbar-items-block {
+	margin: 7px 0 0;
+	float: left;
+}
+
+/*
+*	Home Menu Styles
+*
+*/
+.home-menu {
+	padding: 0;
+	margin: 17px 0 0;
+	height: 73px;
+	float: left;
+	list-style-type: none;
+	background: url(images/menu_bg.gif) repeat-x;
+	border-right: 1px solid #00496b;
+	border-left: 1px solid #00496b;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+.home-menu ul {
+	height: 73px;
+	padding: 0;
+	margin: 0;
+}
+
+.home-menu li {
+	display: block;
+	float: left;
+}
+
+.home-menu li button {
+	width: 95px;
+	height: 73px;
+	line-height: 15px;
+	border: none;
+	color: #f4f4f4;
+	font-size: 13px;
+	font-weight: bold;
+	text-shadow: 1px 3px 3px #03272a;
+	text-align: center;
+	padding: 21px 0 0;
+}
+
+.home-menu li button:hover {
+	border: none;
+	text-shadow: 0px 0px 3px #777;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.home-menu li button:active {
+	border: none;
+}
+
+.home-menu li a {
+	color: #f4f4f4;
+}
+
+.home-logo {
+	float: left;
+	height: 105px;
+	line-height: 105px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 340px;
+}
+
+/*
+*	User Menu Styles
+*
+*/
+.user-logo {
+	float: left;
+	height: 105px;
+	line-height: 105px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 180px;
+}
+
+/*
+*	Search Bar Styles
+*
+*/
+.search-bar {
+	float: left;
+	height: 80px;
+	margin: 16px 20px 0;
+	width: 312px;
+}
+
+.search-view {
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+
+.search-view ul {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	list-style: none;
+}
+
+.search-view ul li {
+	display: inline;
+}
+
+.search-view select {
+	width: 115px;
+}
+
+.search-view input {
+	padding: 0 2px;
+	width: 100px;
+}
+
+/*
+*	Login styles
+*
+*/
+.login {
+	float: right;
+	margin: 28px 15px 0;
+	z-index: 150;
+}
+
+.login-bar {
+	color: #FFFFFF;
+	float: right;
+	margin: 37px 0 0;
+}
+
+.login-button {
+	background: url(images/login_bg.png) no-repeat;
+	width: 51px;
+	height: 28px;
+	padding: 8px 5px 0 60px;
+}
+
+.login-button a {
+	color: #fbfbfb;
+	display: block;
+}
+
+.login-button a:hover {
+	color: #fbfbfb;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.logout-button {
+	background: url(images/logout.png) no-repeat;
+	width: 90px;
+	height: 37px;
+}
+
+.logout-menu-bar {
+	background: url(images/logout-menubar.png) no-repeat;
+	border: medium none;
+	color: #6C7175;
+	height: 114px;
+	left: -28px;
+	padding: 24px 0 0 24px;
+	position: absolute;
+	top: 4px;
+	width: 137px;
+}
+
+.logout-menu-bar td {
+	line-height: 20px;
+}
+
+.logout-menu-bar td:hover {
+	color: #bd0000;
+	cursor: pointer;
+}
+
+.help-button {
+	margin: 0;
+	padding: 0;
+	background: url(images/help-button.png) no-repeat;
+	border: none;
+	float: right;
+	height: 20px;
+	width: 20px;
+}
+
+.full-size-panel {
+	width: 100%;
+	height: 100%;
+}
+
+.tab-layout-container {
+	border: none;
+}
+
+.tab-layout-panel {
+	border: none !important;
+}
+
+/*
+*	Demand Module styles
+*
+*/
+.submenu-header {
+	background: url(images/submenu_header.png) no-repeat;
+	color: #ffffff;
+	font-weight: bold;
+	line-height: 26px;
+	margin: 11px 0 -6px 0;
+	padding-left: 10px;
+	height: 36px;
+}
+
+.submenu-list {
+	margin: 0px;
+	padding: 0 0 0 10px;
+	list-style: none;
+}
+
+.submenu-list a {
+	display: block;
+	background: #1f7b82;
+	padding: 2px 15px;
+	color: #ffffff;
+	border-bottom: 1px solid #07545A;
+}
+
+.submenu-list a:hover {
+	cursor: pointer;
+	background: #15676d;
+}
+
+.pager {
+	background: url(images/tab_header.gif) repeat-x;
+	color: #ffffff;
+	border-bottom: 1px solid #07545a;
+}
+
+.stack-layout {
+	border-bottom: 1px solid #BDA45D;
+	position: absolute !important;
+	left: 50px;
+	right: 50px;
+	top: 20px;
+	bottom: 20px;
+	max-height: 500px;
+}
+
+.stack-layout-panel-header {
+	cursor: pointer;
+	cursor: hand;
+	font-weight: bold;
+	padding: 6px;
+	border: 1px solid #BDA45D;
+	border-bottom: 0px;
+	background: url(images/stack-layout-panel-header.gif) repeat-x;
+	text-shadow: 0 2px 2px #FBF2D8;
+}
+
+.stack-layout-panel-header:hover {
+	background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px
+		-1464px;
+	background: url(images/stack-layout-panel-header-hover.gif) repeat-x;
+}
+
+/*
+*	Footer Module styles
+*
+*/
+.footer-container {
+	background: none;
+}
+
+.footer-container p {
+	color: #000000;
+	margin: 0;
+}
+
+.footer-toggle {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	border: thin solid black;
+	border-bottom: none;
+	cursor: pointer;
+}
+
+.detail-info {
+	margin: 0 0 0 5px;
+	width: 400px;
+	border-radius: 5px;
+}
+
+/** DELETE AFTER THIS LINE **/
+
+/** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/
+.selected {
+	font-weight: bold;
+}

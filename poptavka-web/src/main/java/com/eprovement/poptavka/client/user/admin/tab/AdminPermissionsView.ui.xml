@@ -6,7 +6,7 @@
   xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
 
-    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
 
     <g:HTMLPanel>
         <table cellspacing='0' cellpadding='0'>

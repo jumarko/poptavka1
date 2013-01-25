@@ -4,7 +4,7 @@
 	xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
 	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+		type='com.eprovement.poptavka.resources.StyleResource' />
 	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
 	<ui:style>

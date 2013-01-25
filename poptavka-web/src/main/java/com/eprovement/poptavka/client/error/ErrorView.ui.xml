@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login">
     <ui:with field='res'
-             type='com.eprovement.poptavka.client.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:style>
         .important {
         font-weight: bold;

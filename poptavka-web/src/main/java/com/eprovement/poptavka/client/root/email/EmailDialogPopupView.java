@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.root.email;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter.IEmailDialogPopupView;
 import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
 import com.google.gwt.core.client.GWT;

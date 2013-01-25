@@ -7,7 +7,7 @@
 
         <!-- injecting style resources -->
         <ui:with field='res'
-             type='com.eprovement.poptavka.client.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
         <ui:style>
                 .error {
                 font-size:10px;

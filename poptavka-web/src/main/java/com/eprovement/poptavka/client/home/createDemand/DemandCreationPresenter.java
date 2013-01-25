@@ -13,7 +13,7 @@ import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPres
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter.FormDemandBasicInterface;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormUserRegistrationPresenter;
-import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.core.client.GWT;

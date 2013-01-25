@@ -24,8 +24,8 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.resources.richtext.RichTextStrings;
+import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.resources.richtext.RichTextStrings;
 
 import java.util.HashMap;
 

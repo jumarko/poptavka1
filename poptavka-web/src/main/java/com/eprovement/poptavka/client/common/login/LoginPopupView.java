@@ -2,7 +2,7 @@ package com.eprovement.poptavka.client.common.login;
 
 import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.login.LoginPopupPresenter.LoginPopupInterface;
-import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

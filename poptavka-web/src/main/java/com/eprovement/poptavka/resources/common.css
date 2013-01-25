@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+
+.small-loader {
+    width: 200px;
+    height: 160px;
+    background: url("images/loader.gif") no-repeat center;
+}
+
+.elem-hidden {
+    display: none;
+}
+
+.elem-visible {
+    display: block;
+}
+
+/** common widgets **/
+.info-message {
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.info-message div {
+    padding: 5px;
+    border: 1px solid #D7C289;
+    background-color: #FDF3D7;
+}
+
+.info-message div:hover {
+    background-color: #F7EBCD;
+    cursor: help;
+}
+
+.error-message {
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.error-message div {
+    padding: 5px;
+    border: solid #F0B6C3 1px;
+    background-color: #F8CFC4;
+}
+
+.error-message div:hover {
+    background-color: #FFB6C3;
+    cursor: help;
+}
+
+.disabled-text {
+    background-color: gray;;
+}
+
+.error-field {
+    background-color: #ffcece;
+}
+
+.loading-popup {
+    z-index: 101;
+    border: 1px solid black;
+    font-weight: bold;
+    min-width: 120px;
+    padding: 20px;
+    background-color: white;
+    text-align: center;
+}
+
+.hyperlink {
+    display: inline;
+}
+
+.user {
+/*    height: 800px;
+    width: 1300px*/
+    height: 100%;
+    width: 100%;
+}
+
+.user_content {
+/*    height: 500px;
+    width: 1050px;*/
+    height: 100%;
+    width: 100%;
+}
+
+.empty_style {
+
+}
+
+.textBoxAsLabel {
+    border: none;
+    background-color: #fff;
+    background: transparent;
+}
+
+.changed {
+    background-color: #00FF00 !important;
+}

@@ -5,8 +5,7 @@
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
     <!-- injecting style resources -->
-    <ui:with field='res'
-             type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>

@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.user.widget;
 
-import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;

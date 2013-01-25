@@ -5,7 +5,7 @@
 
 	<!-- injecting style resources -->
 	<ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+		type='com.eprovement.poptavka.resources.StyleResource' />
 	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
 	<ui:style>

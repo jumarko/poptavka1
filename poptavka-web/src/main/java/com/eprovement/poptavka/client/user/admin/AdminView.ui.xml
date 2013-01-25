@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:DockLayoutPanel unit="PX" styleName='{res.layout.fullSize}'>
         <g:west size="180">
