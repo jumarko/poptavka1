@@ -9,6 +9,7 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +24,14 @@ public final class ClientConverter extends AbstractConverter<Client, FullClientD
 
     @Override
     public FullClientDetail convertToTarget(Client source) {
+        Preconditions.checkArgument(source != null, "Client cannot be null!");
         FullClientDetail detail = new FullClientDetail();
         detail.setClientId(source.getId());
         if (source.getBusinessUser() != null) {
             detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
-            detail.getUserData().setOverallRating(source.getOveralRating());
+            if (source.getOveralRating() != null) {
+                detail.getUserData().setOverallRating(source.getOveralRating());
+            }
         }
         if (source.getSupplierBlacklist() != null) {
             List<Long> supplierBlackListIds = new ArrayList<Long>();

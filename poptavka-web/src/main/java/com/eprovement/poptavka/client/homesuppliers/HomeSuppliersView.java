@@ -8,7 +8,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.celltree.CustomCellTree;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
-import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
@@ -92,7 +92,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField
     HTMLPanel detail;
     @UiField
-    SupplierDetailView supplierDetailView;
+    UserDetailView userDetailView;
     @UiField
     Button contactBtn;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
@@ -265,7 +265,7 @@ public class HomeSuppliersView extends OverflowComposite
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        supplierDetailView.setSupplierDetail(fullSupplierDetail);
+        userDetailView.setSupplierDetail(fullSupplierDetail);
     }
 
     @Override

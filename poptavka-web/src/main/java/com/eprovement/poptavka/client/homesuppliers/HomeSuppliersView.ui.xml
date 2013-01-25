@@ -104,7 +104,7 @@
 					<g:ScrollPanel>
 						<g:HTMLPanel ui:field="detail" styleName='{res.layout.detailInfo}'>
 							<g:Label ui:field="reklama">Reklama</g:Label>
-							<d:SupplierDetailView ui:field="supplierDetailView" />
+							<d:UserDetailView ui:field="userDetailView" />
 						</g:HTMLPanel>
 					</g:ScrollPanel>
 				</g:center>

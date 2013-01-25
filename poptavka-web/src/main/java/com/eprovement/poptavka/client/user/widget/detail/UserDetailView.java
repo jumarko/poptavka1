@@ -12,32 +12,30 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SupplierDetailView extends Composite {
+public class UserDetailView extends Composite {
 
-    private static SupplierDetailViewUiBinder uiBinder = GWT
-            .create(SupplierDetailViewUiBinder.class);
+    private static UserDetailViewUiBinder uiBinder = GWT.create(UserDetailViewUiBinder.class);
 
-    interface SupplierDetailViewUiBinder extends
-            UiBinder<Widget, SupplierDetailView> {
+    interface UserDetailViewUiBinder extends UiBinder<Widget, UserDetailView> {
     }
     private static final String EMPTY = "";
-    @UiField(provided = true)
-    CellList categories, localities;
-    @UiField
-    Label overallRating, description, email, companyName, taxId, identificationNumber,
+    @UiField(provided = true) CellList categories, localities;
+    @UiField HTMLPanel categoryPanel, localityPanel;
+    @UiField Label overallRating, description, email, companyName, taxId, identificationNumber,
     firstName, lastName, phone, website, street, city, zipCode, certified, businessType;
 
-    public SupplierDetailView() {
+    public UserDetailView() {
         categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         initWidget(uiBinder.createAndBindUi(this));
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
-    public SupplierDetailView(String firstName) {
+    public UserDetailView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
@@ -51,6 +49,8 @@ public class SupplierDetailView extends Composite {
         if (detail.getUserData().getBusinessType() != null) {
             businessType.setText(detail.getUserData().getBusinessType().getValue());
         }
+        categoryPanel.setVisible(false);
+        localityPanel.setVisible(false);
         description.setText(detail.getUserData().getDescription());
         email.setText(detail.getUserData().getEmail());
         //Address

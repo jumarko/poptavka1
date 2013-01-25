@@ -6,7 +6,7 @@ import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
-import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
@@ -40,8 +40,8 @@ public class DetailsWrapperPresenter
     /**************************************************************************/
     /** Constants - TabPanel indexes. **/
     public static final int DEMAND_DETAIL_TAB = 0;
-    public static final int USER_DETAIL_TAB = 3;
-    public static final int CONVERSATION_TAB = 4;
+    public static final int USER_DETAIL_TAB = 1;
+    public static final int CONVERSATION_TAB = 2;
     /** Class Attributes. **/
     private UniversalTableGrid table = null;
     private EditableDemandDetailPresenter editDemandPresenter = null;
@@ -61,7 +61,7 @@ public class DetailsWrapperPresenter
 //        DemandDetailView getDemandDetail();
         SimplePanel getDemandDetailHolder();
 
-        SupplierDetailView getSupplierDetail();
+        UserDetailView getSupplierDetail();
 
         ConversationPanel getConversationPanel();
 
@@ -134,6 +134,11 @@ public class DetailsWrapperPresenter
     public void initDetailWrapper(UniversalTableGrid grid, SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
         view.getContainer().selectTab(CONVERSATION_TAB, false);
+        if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+            view.getUserDetailTabHeaderLabel().setText(Storage.MSGS.detailsWrapperTabSupplierDetail());
+        } else if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+            view.getUserDetailTabHeaderLabel().setText(Storage.MSGS.detailsWrapperTabClientDetail());
+        }
         this.table = grid;
     }
 
@@ -161,9 +166,9 @@ public class DetailsWrapperPresenter
                 break;
             case USER_DETAIL_TAB:
                 if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                    requestClientDetail(clientOrSupplierId);
-                } else {
                     requestSupplierDetail(clientOrSupplierId);
+                } else if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+                    requestClientDetail(clientOrSupplierId);
                 }
                 break;
             case CONVERSATION_TAB:
@@ -272,9 +277,9 @@ public class DetailsWrapperPresenter
     }
 
     /**
-     * Response method for fetching supplierDetail.
+     * Response method for fetching userDetail.
      *
-     * @param supplierDetail detail to be displayed
+     * @param userDetail detail to be displayed
      */
     public void onResponseSupplierDetail(FullSupplierDetail supplierDetail) {
         view.getSupplierDetail().setSupplierDetail(supplierDetail);
@@ -318,11 +323,13 @@ public class DetailsWrapperPresenter
     /* HELPER methods                                                         */
     /**************************************************************************/
     public void clear() {
-        if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS
-                || Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {
-            ((EditableDemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
-        } else {
-            ((DemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
+        if (view.getDemandDetailHolder().getWidget() != null) {
+            if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS
+                    || Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {
+                ((EditableDemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
+            } else {
+                ((DemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
+            }
         }
         view.getSupplierDetail().clear();
         view.getConversationPanel().clear();

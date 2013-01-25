@@ -44,7 +44,9 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         //TODO services
         if (source.getBusinessUser() != null) {
             detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
-            detail.getUserData().setOverallRating(source.getOveralRating());
+            if (source.getOveralRating() != null) {
+                detail.getUserData().setOverallRating(source.getOveralRating());
+            }
         }
         return detail;
 

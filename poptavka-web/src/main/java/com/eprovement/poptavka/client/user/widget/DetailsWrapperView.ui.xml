@@ -29,7 +29,7 @@
                                 <g:HTML ui:field="userDetailTabHeaderLabel"/>
 			</g:customHeader>
 			<g:ScrollPanel>
-				<w:SupplierDetailView ui:field="supplierDetail" />
+				<w:UserDetailView ui:field="userDetail" />
 			</g:ScrollPanel>
 		</g:tab>
 		<g:tab>
