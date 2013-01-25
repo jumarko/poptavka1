@@ -154,6 +154,7 @@ public class BusinessUserData extends DomainObject {
     public static class Builder {
 
         private String companyName;
+        private String description;
         private String personFirstName;
         private String personLastName;
         private String phone;
@@ -166,6 +167,11 @@ public class BusinessUserData extends DomainObject {
 
         public Builder companyName(String companyName) {
             this.companyName = companyName;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -207,6 +213,7 @@ public class BusinessUserData extends DomainObject {
     private BusinessUserData(Builder builder) {
 
         this.companyName = builder.companyName;
+        this.description = builder.description;
         this.personFirstName = builder.personFirstName;
         this.personLastName = builder.personLastName;
         this.phone = builder.phone;

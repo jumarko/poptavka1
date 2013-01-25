@@ -21,21 +21,13 @@
 				<ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
 			</g:header>
 			<g:ScrollPanel>
-                                <g:SimplePanel ui:field="editableDemandDetail" />
+                                <g:SimplePanel ui:field="demandDetailHolder" />
 			</g:ScrollPanel>
 		</g:tab>
 		<g:tab>
-			<g:header>
-				<ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
-			</g:header>
-			<g:ScrollPanel>
-				<w:DemandDetailView ui:field="demandDetail" />
-			</g:ScrollPanel>
-		</g:tab>
-		<g:tab>
-			<g:header>
-				<ui:msg key="detailsWrapperTabSupplierDetail">Supplier detail</ui:msg>
-			</g:header>
+			<g:customHeader>
+                                <g:HTML ui:field="userDetailTabHeaderLabel"/>
+			</g:customHeader>
 			<g:ScrollPanel>
 				<w:SupplierDetailView ui:field="supplierDetail" />
 			</g:ScrollPanel>

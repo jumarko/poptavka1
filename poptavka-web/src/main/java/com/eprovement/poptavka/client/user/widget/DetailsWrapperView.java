@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.user.widget;
 
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
@@ -9,6 +8,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -33,13 +34,20 @@ public class DetailsWrapperView extends Composite
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attribute. **/
-    @UiField TabLayoutPanel container;
-    @UiField SimplePanel editableDemandDetail;
-    @UiField DemandDetailView demandDetail;
-    @UiField SupplierDetailView supplierDetail;
-    @UiField ConversationPanel conversationPanel;
-    @UiField OfferQuestionWindow replyHolder;
-    @UiField HTMLPanel conversationHolder;
+    @UiField
+    TabLayoutPanel container;
+    @UiField
+    SimplePanel demandDetailHolder;
+    @UiField
+    SupplierDetailView supplierDetail;
+    @UiField
+    ConversationPanel conversationPanel;
+    @UiField
+    OfferQuestionWindow replyHolder;
+    @UiField
+    HTMLPanel conversationHolder;
+    @UiField
+    HTML userDetailTabHeaderLabel;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
 
@@ -81,13 +89,8 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public SimplePanel getEditableDemandDetail() {
-        return editableDemandDetail;
-    }
-
-    @Override
-    public DemandDetailView getDemandDetail() {
-        return demandDetail;
+    public SimplePanel getDemandDetailHolder() {
+        return demandDetailHolder;
     }
 
     @Override
@@ -108,6 +111,11 @@ public class DetailsWrapperView extends Composite
     @Override
     public HTMLPanel getConversationHolder() {
         return conversationHolder;
+    }
+
+    @Override
+    public Label getUserDetailTabHeaderLabel() {
+        return userDetailTabHeaderLabel;
     }
 
     @Override

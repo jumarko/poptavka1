@@ -4,6 +4,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -58,7 +59,6 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     BusinessUserDetail getUserById(Long userId) throws RPCException;
 
-
     /**
      * Finds user by specified email.
      * @param email
@@ -68,11 +68,12 @@ public interface RootRPCService extends RemoteService {
      */
     BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException;
 
-
     /**************************************************************************/
     /* DevelDetailWrapper widget methods                                      */
     /**************************************************************************/
     FullDemandDetail getFullDemandDetail(long demandId) throws RPCException;
+
+    FullClientDetail getFullClientDetail(long clientId) throws RPCException;
 
     FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException;
 
@@ -90,7 +91,7 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
-    UserActivationResult activateClient(BusinessUserDetail user, String activationCode) throws RPCException;
+    UserActivationResult activateUser(BusinessUserDetail user, String activationCode) throws RPCException;
 
     boolean sendActivationCodeAgain(BusinessUserDetail client) throws RPCException;
 

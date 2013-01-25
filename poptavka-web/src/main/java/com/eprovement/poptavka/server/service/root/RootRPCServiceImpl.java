@@ -17,6 +17,7 @@ import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
@@ -34,6 +35,7 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -77,6 +79,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     //Converters
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
+    private Converter<Client, FullClientDetail> clientConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
@@ -129,6 +132,12 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     public void setDemandConverter(
             @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
         this.demandConverter = demandConverter;
+    }
+
+    @Autowired
+    public void setClientConverter(
+            @Qualifier("clientConverter") Converter<Client, FullClientDetail> clientConverter) {
+        this.clientConverter = clientConverter;
     }
 
     @Autowired
@@ -229,12 +238,10 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, userId));
     }
 
-
     @Override
     public BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException {
         return businessUserConverter.convertToTarget(findUserByEmail(email));
     }
-
 
     /**************************************************************************/
     /* DevelDetailWrapper widget methods                                      */
@@ -242,6 +249,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException {
         return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
+    }
+
+    @Override
+    public FullClientDetail getFullClientDetail(long clientId) throws RPCException {
+        return clientConverter.convertToTarget(generalService.find(Client.class, clientId));
     }
 
     @Override
@@ -349,7 +361,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     /* Activation methods                                                     */
     /**************************************************************************/
     @Override
-    public UserActivationResult activateClient(BusinessUserDetail user, String activationCode) throws RPCException {
+    public UserActivationResult activateUser(BusinessUserDetail user, String activationCode) throws RPCException {
         try {
             userVerificationService.activateUser(findUserByEmail(user.getEmail()),
                     StringUtils.trimToEmpty(activationCode));

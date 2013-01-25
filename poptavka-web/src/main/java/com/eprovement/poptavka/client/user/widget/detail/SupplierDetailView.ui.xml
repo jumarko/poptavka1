@@ -22,6 +22,11 @@
 						<ui:msg key="formComapanyName">Company name: </ui:msg>
 					</g:Label>
 					<g:Label ui:field="companyName" />
+                                        
+					<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+						<ui:msg key="formBusinessType">Business type: </ui:msg>
+					</g:Label>
+					<g:Label ui:field="businessType" />
 				</g:HTMLPanel>
 
 				<g:HTMLPanel>
@@ -108,11 +113,6 @@
 					<ui:msg key="formEmail">Email: </ui:msg>
 				</g:Label>
 				<g:Label ui:field="email" />
-
-				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-					<ui:msg key="formWebsite">Website:</ui:msg>
-				</g:Label>
-				<g:Label ui:field="websiteContactPerson" />
 
 				<g:Label styleName='{res.detailViews.detailBlockLabel}'>
 					<ui:msg key="formInvoiceInfo">Invoice info</ui:msg>

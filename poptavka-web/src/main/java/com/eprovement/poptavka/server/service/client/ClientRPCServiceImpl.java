@@ -37,7 +37,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -5905531608577218017L;
-
     private GeneralService generalService;
     private ClientService clientService;
     private LocalityService localityService;
@@ -75,16 +74,16 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Autowired
-    public void setClientConverter(@Qualifier("clientConverter") Converter<Client, ClientDetail> clientConverter) {
+    public void setClientConverter(
+            @Qualifier("clientConverter") Converter<Client, ClientDetail> clientConverter) {
         this.clientConverter = clientConverter;
     }
 
     @Autowired
-    public void setBusinessUserConverter(@Qualifier("businessUserConverter") Converter<BusinessUser,
-            BusinessUserDetail> businessUserConverter) {
+    public void setBusinessUserConverter(
+            @Qualifier("businessUserConverter") Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
         this.businessUserConverter = businessUserConverter;
     }
-
 
     /**
      * Vytvorenie noveho klienta.
@@ -123,10 +122,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
         final Client newClientFromDB = clientService.create(newClient);
-        //use UserConverter???
         return businessUserConverter.convertToTarget(newClientFromDB.getBusinessUser());
     }
-
 
     // TODO FIX this, it's not working nullPointerException.
     public Locality getLocality(Long id) throws RPCException {
@@ -170,23 +167,28 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         //Busines data
         client.getBusinessUser().setEmail(detail.getUserDetail().getEmail());
 
-        client.getBusinessUser().getBusinessUserData().setDescription(detail.getUserDetail().getDescription());
-        client.getBusinessUser().getBusinessUserData().setCompanyName(detail.getUserDetail().getCompanyName());
-        client.getBusinessUser().getBusinessUserData().
-                setIdentificationNumber(detail.getUserDetail().getIdentificationNumber());
+        client.getBusinessUser().getBusinessUserData().setDescription(
+                detail.getUserDetail().getDescription());
+        client.getBusinessUser().getBusinessUserData().setCompanyName(
+                detail.getUserDetail().getCompanyName());
+        client.getBusinessUser().getBusinessUserData().setIdentificationNumber(
+                detail.getUserDetail().getIdentificationNumber());
 
         //-- Contact
-        client.getBusinessUser().getBusinessUserData().setPersonFirstName(detail.getUserDetail().getFirstName());
-        client.getBusinessUser().getBusinessUserData().setPersonLastName(detail.getUserDetail().getLastName());
-        client.getBusinessUser().getBusinessUserData().setPhone(detail.getUserDetail().getPhone());
+        client.getBusinessUser().getBusinessUserData().setPersonFirstName(
+                detail.getUserDetail().getFirstName());
+        client.getBusinessUser().getBusinessUserData().setPersonLastName(
+                detail.getUserDetail().getLastName());
+        client.getBusinessUser().getBusinessUserData().setPhone(
+                detail.getUserDetail().getPhone());
 
         clientService.update(client);
         return detail;
     }
 
     @Override
-    public ArrayList<ClientDetail> getSortedClients(int start, int count, Map<String, OrderType> orderColumns)
-        throws RPCException {
+    public ArrayList<ClientDetail> getSortedClients(
+            int start, int count, Map<String, OrderType> orderColumns) throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(start).maxResults(count)
                 .orderByColumns(orderColumns)

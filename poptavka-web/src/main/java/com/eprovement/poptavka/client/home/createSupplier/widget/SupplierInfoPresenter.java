@@ -31,7 +31,7 @@ public class SupplierInfoPresenter
 
         boolean validateEmail();
 
-        BusinessUserDetail createSupplier();
+        BusinessUserDetail createBusinessUserDetail();
 
         SimplePanel getAddressHolder();
     }

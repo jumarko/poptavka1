@@ -4,6 +4,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -45,6 +46,8 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     void getFullDemandDetail(long demandId, AsyncCallback<FullDemandDetail> callback);
 
+    void getFullClientDetail(long clientId, AsyncCallback<FullClientDetail> callback);
+
     void getFullSupplierDetail(long supplierId, AsyncCallback<FullSupplierDetail> callback);
 
     void getConversation(long threadId, long userId, AsyncCallback<List<MessageDetail>> callback);
@@ -61,7 +64,7 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
-    void activateClient(BusinessUserDetail user, String activationCode, AsyncCallback<UserActivationResult> callback);
+    void activateUser(BusinessUserDetail user, String activationCode, AsyncCallback<UserActivationResult> callback);
 
     void sendActivationCodeAgain(BusinessUserDetail client, AsyncCallback<Boolean> callback);
 

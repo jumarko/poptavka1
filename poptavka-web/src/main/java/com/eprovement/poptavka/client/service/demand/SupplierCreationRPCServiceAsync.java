@@ -4,8 +4,8 @@
  */
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 /**
  *
@@ -13,7 +13,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
  */
 public interface SupplierCreationRPCServiceAsync {
 
-    void createNewSupplier(BusinessUserDetail supplier, AsyncCallback<BusinessUserDetail> callback);
+    void createNewSupplier(FullSupplierDetail supplier, AsyncCallback<FullSupplierDetail> callback);
 
     /** @see UserRPCService#checkFreeEmail(String) */
     void checkFreeEmail(String email, AsyncCallback<Boolean> callback);

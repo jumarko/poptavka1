@@ -42,7 +42,7 @@ public class RatingCell extends AbstractCell<FullSupplierDetail> {
         sb.appendHtmlConstant("<div style=\"font-weight:bold; color:#F7BD00;\">");
         //TODO Jaro - musi byt obrazok rating.png rozekany na jednotlive rate,
         //alebo sa to da zrobit "posuvanim" cez CSS?
-        int rate = value.getOverallRating();
+        int rate = value.getUserData().getOverallRating();
         if (rate == 10) {                   //*****
 //            sb.append(renderer.render(RATE_10));
         } else if (9 <= rate && rate < 10) {

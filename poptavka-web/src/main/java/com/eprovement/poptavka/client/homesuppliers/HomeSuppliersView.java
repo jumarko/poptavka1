@@ -211,7 +211,7 @@ public class HomeSuppliersView extends OverflowComposite
                     @Override
                     public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();
-                        for (AddressDetail addr : ((FullSupplierDetail) object).getAddresses()) {
+                        for (AddressDetail addr : ((FullSupplierDetail) object).getUserData().getAddresses()) {
                             str.append(addr.getCity());
                             str.append(", ");
                         }

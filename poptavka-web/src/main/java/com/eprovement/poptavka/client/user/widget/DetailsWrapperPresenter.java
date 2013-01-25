@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -20,6 +21,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,16 +38,15 @@ public class DetailsWrapperPresenter
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    /** Constants. **/
-    public static final int EDITABLE_DEMAND = 0;
-    public static final int DEMAND = 1;
-    public static final int SUPPLIER = 2;
-    public static final int CHAT = 3;
+    /** Constants - TabPanel indexes. **/
+    public static final int DEMAND_DETAIL_TAB = 0;
+    public static final int USER_DETAIL_TAB = 3;
+    public static final int CONVERSATION_TAB = 4;
     /** Class Attributes. **/
     private UniversalTableGrid table = null;
     private EditableDemandDetailPresenter editDemandPresenter = null;
     private long demandId = -1;
-    private long supplierId = -1;
+    private long clientOrSupplierId = -1;
     private long threadRootId = -1;
 
     /**************************************************************************/
@@ -57,9 +58,8 @@ public class DetailsWrapperPresenter
 
         TabLayoutPanel getContainer();
 
-        DemandDetailView getDemandDetail();
-
-        SimplePanel getEditableDemandDetail();
+//        DemandDetailView getDemandDetail();
+        SimplePanel getDemandDetailHolder();
 
         SupplierDetailView getSupplierDetail();
 
@@ -68,6 +68,8 @@ public class DetailsWrapperPresenter
         OfferQuestionWindow getReplyHolder();
 
         HTMLPanel getConversationHolder();
+
+        Label getUserDetailTabHeaderLabel();
 
         void loadingDivShow(Widget holderWidget);
 
@@ -131,14 +133,7 @@ public class DetailsWrapperPresenter
      */
     public void initDetailWrapper(UniversalTableGrid grid, SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
-        if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS) {
-            setTabVisibility(EDITABLE_DEMAND, true);
-            setTabVisibility(DEMAND, false);
-        } else {
-            setTabVisibility(EDITABLE_DEMAND, false);
-            setTabVisibility(DEMAND, true);
-        }
-        view.getContainer().selectTab(CHAT, false);
+        view.getContainer().selectTab(CONVERSATION_TAB, false);
         this.table = grid;
     }
 
@@ -148,26 +143,30 @@ public class DetailsWrapperPresenter
      * changes tab.
      *
      * @param demandId
-     * @param supplierId
+     * @param clientOrSupplierId
      * @param threadRootId
      */
-    public void initDetails(long demandId, long supplierId, long threadRootId) {
+    public void initDetails(long demandId, long clientOrSupplierId, long threadRootId) {
         clear();
         this.demandId = demandId;
-        this.supplierId = supplierId;
+        this.clientOrSupplierId = clientOrSupplierId;
         this.threadRootId = threadRootId;
         requestActualTabData();
     }
 
     public void requestActualTabData() {
         switch (view.getContainer().getSelectedIndex()) {
-            case DEMAND:
+            case DEMAND_DETAIL_TAB:
                 requestDemandDetail(demandId);
                 break;
-            case SUPPLIER:
-                requestSupplierDetail(supplierId);
+            case USER_DETAIL_TAB:
+                if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+                    requestClientDetail(clientOrSupplierId);
+                } else {
+                    requestSupplierDetail(clientOrSupplierId);
+                }
                 break;
-            case CHAT:
+            case CONVERSATION_TAB:
                 requestConversation(threadRootId, Storage.getUser().getUserId());
                 break;
             default:
@@ -195,13 +194,6 @@ public class DetailsWrapperPresenter
     }
 
     /**************************************************************************/
-    /* This methods                                                           */
-    /**************************************************************************/
-    public void setTabVisibility(int column, boolean visible) {
-        view.getContainer().getTabWidget(column).getParent().setVisible(visible);
-    }
-
-    /**************************************************************************/
     /* Request methods                                                        */
     /**************************************************************************/
     //Radej takto, ako mat v kazdom eventbuse forward metody.
@@ -212,13 +204,18 @@ public class DetailsWrapperPresenter
      * @param type
      */
     public void requestDemandDetail(Long demandId) {
-        if (view.getContainer().getWidget(DEMAND).getParent().isVisible()) {
-            view.loadingDivShow(view.getDemandDetail());
+        if (view.getContainer().getWidget(DEMAND_DETAIL_TAB).getParent().isVisible()) {
+            view.loadingDivShow(view.getDemandDetailHolder());
         }
-        if (view.getContainer().getWidget(DEMAND).getParent().isVisible()) {
-            view.loadingDivShow(view.getEditableDemandDetail());
+        if (view.getContainer().getWidget(DEMAND_DETAIL_TAB).getParent().isVisible()) {
+            view.loadingDivShow(view.getDemandDetailHolder());
         }
         eventBus.requestDemandDetail(demandId);
+    }
+
+    public void requestClientDetail(Long clientId) {
+        view.loadingDivShow(view.getSupplierDetail());
+        eventBus.requestClientDetail(clientId);
     }
 
     public void requestSupplierDetail(Long supplierId) {
@@ -247,25 +244,37 @@ public class DetailsWrapperPresenter
      * @param demandDetail detail to be displayed
      */
     public void onResponseDemandDetail(FullDemandDetail demandDetail) {
-        if (view.getContainer().getWidget(DEMAND).getParent().isVisible()) {
-            view.getDemandDetail().setDemanDetail(demandDetail);
-            view.loadingDivHide(view.getDemandDetail());
-        }
-        if (view.getContainer().getWidget(EDITABLE_DEMAND).getParent().isVisible()) {
+        if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS
+                || Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {
             if (editDemandPresenter != null) {
                 eventBus.removeHandler(editDemandPresenter);
             }
             editDemandPresenter = eventBus.addHandler(EditableDemandDetailPresenter.class);
-            view.getEditableDemandDetail().setWidget(editDemandPresenter.getView());
+            view.getDemandDetailHolder().setWidget(editDemandPresenter.getView());
             ((EditableDemandDetailView) editDemandPresenter.getView()).setDemanDetail(demandDetail);
-            view.loadingDivHide(view.getEditableDemandDetail());
+            view.loadingDivHide(view.getDemandDetailHolder());
+        } else {
+            DemandDetailView demandDetailWidget = new DemandDetailView();
+            demandDetailWidget.setDemanDetail(demandDetail);
+            view.getDemandDetailHolder().setWidget(demandDetailWidget);
+            view.loadingDivHide(view.getDemandDetailHolder());
         }
+    }
+
+    /**
+     * Response method for fetching clientDetail.
+     *
+     * @param clientDetail to be displayed
+     */
+    public void onResponseClientDetail(FullClientDetail clientDetail) {
+        view.getSupplierDetail().setSupplierDetail(clientDetail);
+        view.loadingDivHide(view.getSupplierDetail());
     }
 
     /**
      * Response method for fetching supplierDetail.
      *
-     * @param demandDetail detail to be displayed
+     * @param supplierDetail detail to be displayed
      */
     public void onResponseSupplierDetail(FullSupplierDetail supplierDetail) {
         view.getSupplierDetail().setSupplierDetail(supplierDetail);
@@ -309,8 +318,12 @@ public class DetailsWrapperPresenter
     /* HELPER methods                                                         */
     /**************************************************************************/
     public void clear() {
-        view.getEditableDemandDetail().clear();
-        view.getDemandDetail().clear();
+        if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS
+                || Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {
+            ((EditableDemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
+        } else {
+            ((DemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
+        }
         view.getSupplierDetail().clear();
         view.getConversationPanel().clear();
     }

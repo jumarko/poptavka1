@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
@@ -118,7 +119,7 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = SupplierCreationHandler.class)
-    void registerSupplier(BusinessUserDetail newSupplier);
+    void registerSupplier(FullSupplierDetail newSupplier);
 
     @Event(handlers = SupplierCreationHandler.class)
     void checkFreeEmail(String value);

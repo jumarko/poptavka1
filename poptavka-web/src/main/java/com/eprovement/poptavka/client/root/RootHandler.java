@@ -10,6 +10,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -105,6 +106,15 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         });
     }
 
+    public void onRequestClientDetail(Long clientId) {
+        rootService.getFullClientDetail(clientId, new SecuredAsyncCallback<FullClientDetail>(eventBus) {
+            @Override
+            public void onSuccess(FullClientDetail result) {
+                eventBus.responseClientDetail(result);
+            }
+        });
+    }
+
     public void onRequestSupplierDetail(Long supplierId) {
         rootService.getFullSupplierDetail(supplierId, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
             @Override
@@ -147,6 +157,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             }
         });
     }
+
     /**
      * Send message. IMPORTANT: further implementation of other parts will show, if we need more than this method for
      * chat related stuff
@@ -204,14 +215,13 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /**************************************************************************/
     public void onActivateUser(BusinessUserDetail user, String activationCode) {
         // TODO martin review: whole (new) activation related logic and also "SentActivationCodeAgain" process
-        rootService.activateClient(user, activationCode, new SecuredAsyncCallback<UserActivationResult>(eventBus) {
+        rootService.activateUser(user, activationCode, new SecuredAsyncCallback<UserActivationResult>(eventBus) {
             @Override
             public void onSuccess(UserActivationResult result) {
                 eventBus.responseActivateUser(result);
             }
         });
     }
-
 
     public void onSendActivationCodeAgain(BusinessUserDetail user) {
         rootService.sendActivationCodeAgain(user, new SecuredAsyncCallback<Boolean>(eventBus) {

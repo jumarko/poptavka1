@@ -3,9 +3,11 @@
  */
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.client.common.validation.Email;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Detail object encapsulating all information provided when user is logged on.
@@ -23,14 +25,19 @@ public class UserDetail implements Serializable {
      * Logged user must always has non-null id set!
      */
     private long userId;
+    @NotBlank(message = "{supplierNotBlankEmail}")
+    @Email(message = "{supplierEmail}")
     private String email;
+    //TODO RELEASE - can be password here insead of BusinessUserDetail?
+    @NotBlank(message = "{supplierNotBlankPassword}")
+    private String password;
     private ArrayList<AccessRoleDetail> accessRoles;
 
     /**
      * Required for GWT
      */
     public UserDetail() {
-//        super();
+        //for serialization
     }
 
     public UserDetail(long userId, String email, ArrayList<AccessRoleDetail> accessRoles) {
@@ -54,6 +61,14 @@ public class UserDetail implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public ArrayList<AccessRoleDetail> getAccessRoles() {

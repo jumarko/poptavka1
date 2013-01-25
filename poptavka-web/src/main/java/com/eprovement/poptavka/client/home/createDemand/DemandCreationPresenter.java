@@ -15,8 +15,6 @@ import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPr
 import com.eprovement.poptavka.client.home.createDemand.widget.FormUserRegistrationPresenter;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,7 +35,6 @@ import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @Presenter(view = DemandCreationView.class, multiple = true)
@@ -357,13 +354,8 @@ public class DemandCreationPresenter
         // Fill in the FullDemandDetail obejct from former holder panels.
         FullDemandDetail demand = new FullDemandDetail();
         demand.setBasicInfo(basicValues.getValues());
-
-        //localities
-        demand.setLocalities(new ArrayList<LocalityDetail>(localityValues.getCellListDataProvider().getList()));
-
-        //categories
-        demand.setCategories(new ArrayList<CategoryDetail>(categoryValues.getCellListDataProvider().getList()));
-
+        demand.setLocalities(localityValues.getCellListDataProvider().getList());
+        demand.setCategories(categoryValues.getCellListDataProvider().getList());
         demand.setAdvInfo(advValues.getValues());
         eventBus.createDemand(demand, client.getClientId());
     }

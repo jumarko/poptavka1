@@ -149,7 +149,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
                     @Override
                     public String getValue(Object object) {
-                        return String.valueOf(((FullSupplierDetail) object).getCompanyName());
+                        return String.valueOf(((FullSupplierDetail) object).getUserData().getCompanyName());
                     }
                 });
 
@@ -164,7 +164,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
                     @Override
                     public String getValue(Object object) {
-                        return ((FullSupplierDetail) object).getBusinessType();
+                        return ((FullSupplierDetail) object).getUserData().getBusinessType().getValue();
                     }
                 });
 
@@ -190,7 +190,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
                     @Override
                     public String getValue(Object object) {
-                        return ((FullSupplierDetail) object).getVerification();
+                        return ((FullSupplierDetail) object).getUserData().getVerification().name();
                     }
                 });
     }

@@ -11,7 +11,7 @@ import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPre
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,6 +31,7 @@ import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Presenter(view = SupplierCreationView.class, multiple = true)
@@ -250,10 +251,11 @@ public class SupplierCreationPresenter
         ServicesSelectorView service =
                 (ServicesSelectorView) view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget();
 
-        BusinessUserDetail newSupplier = info.createSupplier();
-        newSupplier.getSupplier().setLocalities(locs.getCellListDataProvider().getList());
-        newSupplier.getSupplier().setCategories(cats.getCellListDataProvider().getList());
-        newSupplier.getSupplier().addService(service.getSelectedService());
+        FullSupplierDetail newSupplier = new FullSupplierDetail();
+        newSupplier.setUserData(info.createBusinessUserDetail());
+        newSupplier.setLocalities(locs.getCellListDataProvider().getList());
+        newSupplier.setCategories(cats.getCellListDataProvider().getList());
+        newSupplier.setServices(Arrays.asList(service.getSelectedService()));
 
         eventBus.registerSupplier(newSupplier);
         //signal event

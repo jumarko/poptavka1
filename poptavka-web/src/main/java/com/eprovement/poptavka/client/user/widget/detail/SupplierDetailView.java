@@ -3,8 +3,8 @@ package com.eprovement.poptavka.client.user.widget.detail;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
@@ -28,7 +28,7 @@ public class SupplierDetailView extends Composite {
     CellList categories, localities;
     @UiField
     Label overallRating, description, email, companyName, taxId, identificationNumber,
-    firstName, lastName, phone, website, street, city, zipCode, websiteContactPerson, certified;
+    firstName, lastName, phone, website, street, city, zipCode, certified, businessType;
 
     public SupplierDetailView() {
         categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
@@ -42,47 +42,58 @@ public class SupplierDetailView extends Composite {
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
-    public void setSupplierDetail(BusinessUserDetail userDetail) {
-        description.setText(userDetail.getSupplier().getDescription());
-        localities.setRowData(userDetail.getSupplier().getLocalities());
-        categories.setRowData(userDetail.getSupplier().getCategories());
-        email.setText(userDetail.getEmail());
-        companyName.setText(userDetail.getCompanyName());
-        identificationNumber.setText(userDetail.getIdentificationNumber());
-        firstName.setText(userDetail.getFirstName());
-        lastName.setText(userDetail.getLastName());
-        phone.setText(userDetail.getPhone());
-        website.setText(userDetail.getWebsite());
-        street.setText(userDetail.getAddresses().get(0).getStreet());
-        city.setText(userDetail.getAddresses().get(0).getCity());
-        zipCode.setText(userDetail.getAddresses().get(0).getZipCode());
-        websiteContactPerson.setText(userDetail.getWebsite());
-        taxId.setText(userDetail.getTaxId());
+    public void setSupplierDetail(FullClientDetail detail) {
+        if (detail.getUserData().getOverallRating() == -1) {
+            overallRating.setText("Not ranked");
+        } else {
+            overallRating.setText(Integer.toString(detail.getUserData().getOverallRating()));
+        }
+        if (detail.getUserData().getBusinessType() != null) {
+            businessType.setText(detail.getUserData().getBusinessType().getValue());
+        }
+        description.setText(detail.getUserData().getDescription());
+        email.setText(detail.getUserData().getEmail());
+        //Address
+        street.setText(detail.getUserData().getAddresses().get(0).getStreet());
+        city.setText(detail.getUserData().getAddresses().get(0).getCity());
+        zipCode.setText(detail.getUserData().getAddresses().get(0).getZipCode());
+        //BusinessUserData
+        companyName.setText(detail.getUserData().getCompanyName());
+        identificationNumber.setText(detail.getUserData().getIdentificationNumber());
+        firstName.setText(detail.getUserData().getFirstName());
+        lastName.setText(detail.getUserData().getLastName());
+        phone.setText(detail.getUserData().getPhone());
+        website.setText(detail.getUserData().getWebsite());
+        taxId.setText(detail.getUserData().getTaxId());
     }
 
     public void setSupplierDetail(FullSupplierDetail detail) {
-        if (detail.getOverallRating() == -1) {
-            overallRating.setText("");
+        if (detail.getUserData().getOverallRating() == -1) {
+            //TODO i18n
+            overallRating.setText("Not ranked");
         } else {
-            overallRating.setText(Integer.toString(detail.getOverallRating()));
+            overallRating.setText(Integer.toString(detail.getUserData().getOverallRating()));
+        }
+        if (detail.getUserData().getBusinessType() != null) {
+            businessType.setText(detail.getUserData().getBusinessType().getValue());
         }
         certified.setText(Boolean.toString(detail.isCertified()));
-        description.setText(detail.getDescription());
+        description.setText(detail.getUserData().getDescription());
         localities.setRowData(detail.getLocalities());
         categories.setRowData(detail.getCategories());
-        email.setText(detail.getEmail());
-        companyName.setText(detail.getCompanyName());
-        identificationNumber.setText(detail.getIdentificationNumber());
-        firstName.setText(detail.getFirstName());
-        lastName.setText(detail.getLastName());
-        phone.setText(detail.getPhone());
-        website.setText(detail.getWebsite());
-        //TODO Martin - ako zobrazit tie adresy ked ich je viac?
-        street.setText(detail.getAddresses().get(0).getStreet());
-        city.setText(detail.getAddresses().get(0).getCity());
-        zipCode.setText(detail.getAddresses().get(0).getZipCode());
-        websiteContactPerson.setText(detail.getWebsite());
-        taxId.setText(detail.getTaxId());
+        email.setText(detail.getUserData().getEmail());
+        //Address
+        street.setText(detail.getUserData().getAddresses().get(0).getStreet());
+        city.setText(detail.getUserData().getAddresses().get(0).getCity());
+        zipCode.setText(detail.getUserData().getAddresses().get(0).getZipCode());
+        //BusinessUserData
+        companyName.setText(detail.getUserData().getCompanyName());
+        identificationNumber.setText(detail.getUserData().getIdentificationNumber());
+        firstName.setText(detail.getUserData().getFirstName());
+        lastName.setText(detail.getUserData().getLastName());
+        phone.setText(detail.getUserData().getPhone());
+        website.setText(detail.getUserData().getWebsite());
+        taxId.setText(detail.getUserData().getTaxId());
     }
 
     public void clear() {
@@ -99,7 +110,6 @@ public class SupplierDetailView extends Composite {
         street.setText(EMPTY);
         city.setText(EMPTY);
         zipCode.setText(EMPTY);
-        websiteContactPerson.setText(EMPTY);
         taxId.setText(EMPTY);
     }
 }

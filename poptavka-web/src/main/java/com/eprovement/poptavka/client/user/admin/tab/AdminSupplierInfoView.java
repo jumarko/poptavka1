@@ -97,16 +97,16 @@ public class AdminSupplierInfoView extends Composite {
             return null;
         }
         // Update the detail object.
-        supplierInfo.setCompanyName(companyName.getText());
-        supplierInfo.setDescription(descriptionBox.getText());
-        supplierInfo.setFirstName(firstName.getText());
-        supplierInfo.setLastName(lastName.getText());
-        supplierInfo.setEmail(email.getText());
-        supplierInfo.setPhone(phone.getText());
-        supplierInfo.setVerification(verification.getItemText(verification.getSelectedIndex()));
-        supplierInfo.setOverallRating(Integer.valueOf(overalRating.getText()));
-        supplierInfo.setIdentificationNumber(identifNumber.getText());
-        supplierInfo.setBusinessType(businessType.getItemText(businessType.getSelectedIndex()));
+        supplierInfo.getUserData().setCompanyName(companyName.getText());
+        supplierInfo.getUserData().setDescription(descriptionBox.getText());
+        supplierInfo.getUserData().setFirstName(firstName.getText());
+        supplierInfo.getUserData().setLastName(lastName.getText());
+        supplierInfo.getUserData().setEmail(email.getText());
+        supplierInfo.getUserData().setPhone(phone.getText());
+        supplierInfo.getUserData().setVerification(verification.getItemText(verification.getSelectedIndex()));
+        supplierInfo.getUserData().setOverallRating(Integer.valueOf(overalRating.getText()));
+        supplierInfo.getUserData().setIdentificationNumber(identifNumber.getText());
+        supplierInfo.getUserData().setBusinessType(businessType.getItemText(businessType.getSelectedIndex()));
         supplierInfo.setCertified(certified.getValue());
         supplierInfo.setCategories(categories);
         supplierInfo.setLocalities(localities);
@@ -164,17 +164,17 @@ public class AdminSupplierInfoView extends Composite {
             updateButton.setEnabled(supplier != null);
             if (supplier != null) {
                 //Company
-                companyName.setText(supplier.getCompanyName());
-                overalRating.setText(Integer.toString(supplier.getOverallRating()));
-                descriptionBox.setText(supplier.getDescription());
+                companyName.setText(supplier.getUserData().getCompanyName());
+                overalRating.setText(Integer.toString(supplier.getUserData().getOverallRating()));
+                descriptionBox.setText(supplier.getUserData().getDescription());
                 //Contact
-                firstName.setText(supplier.getFirstName());
-                lastName.setText(supplier.getLastName());
-                email.setText(supplier.getEmail());
-                phone.setText(supplier.getPhone());
+                firstName.setText(supplier.getUserData().getFirstName());
+                lastName.setText(supplier.getUserData().getLastName());
+                email.setText(supplier.getUserData().getEmail());
+                phone.setText(supplier.getUserData().getPhone());
 
                 //Busines data
-                identifNumber.setText(supplier.getIdentificationNumber());
+                identifNumber.setText(supplier.getUserData().getIdentificationNumber());
                 supplierID.setText(Long.toString(supplier.getSupplierId()));
                 // BusinessType settings
                 // Add the types to the status box.
@@ -183,8 +183,8 @@ public class AdminSupplierInfoView extends Composite {
                 businessType.clear();
                 for (BusinessType type : BusinessType.values()) {
                     businessType.addItem(type.getValue());
-                    if (supplier.getBusinessType() != null
-                            && supplier.getBusinessType().equalsIgnoreCase(type.getValue())) {
+                    if (supplier.getUserData().getBusinessType() != null
+                            && supplier.getUserData().getBusinessType().equals(type)) {
                         j = i;
                     }
                     i++;
@@ -198,8 +198,8 @@ public class AdminSupplierInfoView extends Composite {
                 verification.clear();
                 for (Verification type : Verification.values()) {
                     verification.addItem(type.name());
-                    if (supplier.getVerification() != null
-                            && supplier.getVerification().equalsIgnoreCase(type.name())) {
+                    if (supplier.getUserData().getVerification() != null
+                            && supplier.getUserData().getVerification().equals(type)) {
                         j = i;
                     }
                     i++;

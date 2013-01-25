@@ -192,6 +192,7 @@ public interface LocalizableMessages extends Messages {
     String activationPassed();
 
     /** DetailsWrapperView.ui. **/
+    String detailsWrapperTabClientDetail();
     String detailsWrapperTabDemandDetail();
     String detailsWrapperTabSupplierDetail();
     String detailsWrapperTabConversationDetail();

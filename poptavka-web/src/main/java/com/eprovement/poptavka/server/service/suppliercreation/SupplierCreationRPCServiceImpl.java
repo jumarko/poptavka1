@@ -4,8 +4,8 @@
  */
 package com.eprovement.poptavka.server.service.suppliercreation;
 
-import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
@@ -23,14 +23,12 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.address.LocalityService;
-import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
@@ -50,9 +48,8 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private SupplierService supplierService;
     private ClientService clientService;
     private GeneralService generalService;
-    private LocalityService localityService;
-    private CategoryService categoryService;
-    private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
+    private Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
 
     @Autowired
@@ -71,25 +68,21 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     }
 
     @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
-    @Autowired
-    public void setLocalityService(LocalityService localityService) {
-        this.localityService = localityService;
-    }
-
-    @Autowired
     public void setBusinessUserConverter(
-            @Qualifier("businessUserConverter") Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
-        this.businessUserConverter = businessUserConverter;
+            @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
+        this.supplierConverter = supplierConverter;
     }
 
     @Autowired
     public void setCategoryConverter(
             @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
+    }
+
+    @Autowired
+    public void setLocalityConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
     }
 
     /**
@@ -104,13 +97,13 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
      * @return
      */
     @Override
-    public BusinessUserDetail createNewSupplier(BusinessUserDetail supplier) throws RPCException {
+    public FullSupplierDetail createNewSupplier(FullSupplierDetail supplier) throws RPCException {
         final Supplier newSupplier = new Supplier();
-        setNewSupplierBusinessUserData(supplier, newSupplier);
-        newSupplier.getBusinessUser().setEmail(supplier.getEmail());
-        newSupplier.getBusinessUser().setPassword(supplier.getPassword());
+        setNewSupplierBusinessUserData(supplier.getUserData(), newSupplier);
+        newSupplier.getBusinessUser().setEmail(supplier.getUserData().getEmail());
+        newSupplier.getBusinessUser().setPassword(supplier.getUserData().getPassword());
 
-        setNewSupplierAddresses(supplier, newSupplier);
+        setNewSupplierAddresses(supplier.getUserData(), newSupplier);
         setNewSupplierLocalities(supplier, newSupplier);
         setNewSupplierCategories(supplier, newSupplier);
         setNewSupplierUserServices(supplier, newSupplier);
@@ -131,16 +124,19 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
         clientService.create(client);
 
-        return businessUserConverter.convertToTarget(supplierFromDB.getBusinessUser());
+        return supplierConverter.convertToTarget(supplierFromDB);
     }
 
     private void setNewSupplierBusinessUserData(BusinessUserDetail supplier, Supplier newSupplier) {
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
                 .companyName(supplier.getCompanyName())
-                .taxId(supplier.getTaxId())
+                .description(supplier.getDescription())
+                .personFirstName(supplier.getFirstName())
+                .personLastName(supplier.getLastName())
+                .phone(supplier.getPhone())
                 .identificationNumber(supplier.getIdentificationNumber())
-                .phone(supplier.getPhone()).personFirstName(supplier.getFirstName())
-                .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
+                .taxId(supplier.getTaxId())
+                .website(supplier.getWebsite())
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
     }
@@ -169,10 +165,10 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
     }
 
-    private void setNewSupplierUserServices(BusinessUserDetail supplier, Supplier newSupplier) {
+    private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
         final List<UserService> us = new ArrayList<UserService>();
 
-        ArrayList<Integer> userServicesId = supplier.getSupplier().getServices();
+        ArrayList<Integer> userServicesId = supplier.getServices();
         for (Integer serviceId : userServicesId) {
             Service service = generalService.find(Service.class, Long.valueOf(serviceId));
             UserService userService = new UserService();
@@ -185,16 +181,12 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         newSupplier.getBusinessUser().setUserServices(us);
     }
 
-    private void setNewSupplierCategories(BusinessUserDetail supplier, Supplier newSupplier) {
-        newSupplier.setCategories(categoryConverter.convertToSourceList(supplier.getSupplier().getCategories()));
+    private void setNewSupplierCategories(FullSupplierDetail supplier, Supplier newSupplier) {
+        newSupplier.setCategories(categoryConverter.convertToSourceList(supplier.getCategories()));
     }
 
-    private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
-        final List<Locality> localities = new ArrayList<Locality>();
-        for (LocalityDetail localityDetail : supplier.getSupplier().getLocalities()) {
-            localities.add(this.getLocality(localityDetail.getId()));
-        }
-        newSupplier.setLocalities(localities);
+    private void setNewSupplierLocalities(FullSupplierDetail supplier, Supplier newSupplier) {
+        newSupplier.setLocalities(localityConverter.convertToSourceList(supplier.getLocalities()));
     }
 
     private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
@@ -208,7 +200,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
             //Ziskaj mesto typu Locality (String -> Locality)
             Locality cityLoc = (Locality) generalService.searchUnique(
                     new Search(Locality.class)
-                    .addFilterEqual("name", detail.getCity())
+                        .addFilterEqual("name", detail.getCity())
                         .addFilterEqual("type", LocalityType.CITY));
 
             //Zisti, ci sa taka adresa nachadza v DB.
@@ -234,17 +226,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
             }
         }
         return addresses;
-    }
-
-    // TODO FIX this, it's not working nullPointerException.
-    public Locality getLocality(Long id) throws RPCException {
-        System.out.println("Locality of id: " + id + ", localityService is null? " + (localityService == null));
-        return localityService.getLocality(id);
-//        return localityService.getById(10);
-    }
-
-    public Category getCategory(String id) throws RPCException {
-        return categoryService.getById(Long.parseLong(id));
     }
 
     @Override

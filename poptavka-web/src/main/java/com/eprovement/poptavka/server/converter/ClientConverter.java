@@ -8,11 +8,11 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ClientConverter extends AbstractConverter<Client, ClientDetail> {
+public final class ClientConverter extends AbstractConverter<Client, FullClientDetail> {
 
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
@@ -22,16 +22,13 @@ public final class ClientConverter extends AbstractConverter<Client, ClientDetai
     }
 
     @Override
-    public ClientDetail convertToTarget(Client source) {
-        ClientDetail detail = new ClientDetail();
-        detail.setId(source.getId());
-        if (source.getOveralRating() != null) {
-            detail.setOveralRating(source.getOveralRating());
+    public FullClientDetail convertToTarget(Client source) {
+        FullClientDetail detail = new FullClientDetail();
+        detail.setClientId(source.getId());
+        if (source.getBusinessUser() != null) {
+            detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
+            detail.getUserData().setOverallRating(source.getOveralRating());
         }
-        if (source.getVerification() != null) {
-            detail.setVerification(source.getVerification().name());
-        }
-        detail.setUserDetail(businessUserConverter.convertToTarget(source.getBusinessUser()));
         if (source.getSupplierBlacklist() != null) {
             List<Long> supplierBlackListIds = new ArrayList<Long>();
             for (Supplier supplier : source.getSupplierBlacklist().getSuppliers()) {
@@ -50,7 +47,7 @@ public final class ClientConverter extends AbstractConverter<Client, ClientDetai
     }
 
     @Override
-    public Client convertToSource(ClientDetail source) {
+    public Client convertToSource(FullClientDetail source) {
         throw new UnsupportedOperationException();
     }
 }

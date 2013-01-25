@@ -16,10 +16,14 @@
 package com.eprovement.poptavka.client.common.validation;
 
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.validation.client.AbstractGwtValidatorFactory;
@@ -37,8 +41,9 @@ public final class SampleValidatorFactory extends AbstractGwtValidatorFactory {
      * Validator marker for the Validation Sample project. Only the classes
      * listed in the {@link GwtValidation} annotation can be validated.
      */
-    @GwtValidation(value = {FullSupplierDetail.class, FullDemandDetail.class,
-            AddressDetail.class, EmailDialogDetail.class, LocalityDetail.class, CategoryDetail.class },
+    @GwtValidation(value = {FullClientDetail.class, FullSupplierDetail.class, FullDemandDetail.class,
+            AddressDetail.class, EmailDialogDetail.class, LocalityDetail.class, CategoryDetail.class,
+            MessageDetail.class, UserDetail.class, BusinessUserDetail.class },
     groups = {Default.class })
     public interface GwtValidator extends Validator {
     }

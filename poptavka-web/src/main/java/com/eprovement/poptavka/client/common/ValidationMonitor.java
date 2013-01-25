@@ -8,8 +8,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.IListDetailObject;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -52,12 +52,15 @@ public class ValidationMonitor<T> extends Composite
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField SimplePanel holder;
-    @UiField Label errorLabel;
+    @UiField
+    SimplePanel holder;
+    @UiField
+    Label errorLabel;
     /** Class attributes. **/
     private ArrayList<IListDetailObject> listData = null;
     private Validator validator = null;
     private Class<T> beanType;
+    private Boolean valid = null;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -76,24 +79,28 @@ public class ValidationMonitor<T> extends Composite
         //reset for new validation
         holder.getWidget().removeStyleName(Storage.RSCS.common().errorField());
         errorLabel.setText("");
+        valid = true;
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
                 holder.getWidget().getTitle(), getValue(), Default.class);
         for (ConstraintViolation<T> violation : violations) {
             holder.getWidget().addStyleName(Storage.RSCS.common().errorField());
             errorLabel.setText(violation.getMessage());
+            valid = false;
         }
     }
 
     @Override
     public boolean isValid() {
-        return errorLabel.getText().isEmpty();
+        if (valid == null) {
+            validate();
+        }
+        return valid;
     }
 
     /**************************************************************************/
     /* HasWidgets                                                             */
     /**************************************************************************/
-
     @Override
     public Widget getWidget() {
         return holder.getWidget();
@@ -102,12 +109,14 @@ public class ValidationMonitor<T> extends Composite
     @Override
     public void setWidget(Widget w) {
         addChangeHandler(w);
+        addBlurHandler(w);
         holder.setWidget(w);
     }
 
     @Override
     public void add(Widget w) {
         addChangeHandler(w);
+        addBlurHandler(w);
         holder.add(w);
     }
 
@@ -161,13 +170,17 @@ public class ValidationMonitor<T> extends Composite
                     validate();
                 }
             }, ValueChangeEvent.getType());
-        } else {
-            w.addDomHandler(new ChangeHandler() {
+        }
+    }
+
+    private void addBlurHandler(Widget w) {
+        if (w instanceof TextBox || w instanceof IntegerBox || w instanceof BigDecimalBox) {
+            w.addDomHandler(new BlurHandler() {
                 @Override
-                public void onChange(ChangeEvent event) {
+                public void onBlur(BlurEvent event) {
                     validate();
                 }
-            }, ChangeEvent.getType());
+            }, BlurEvent.getType());
         }
     }
 

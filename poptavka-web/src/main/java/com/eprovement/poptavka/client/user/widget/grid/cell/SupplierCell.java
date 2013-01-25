@@ -28,7 +28,7 @@ public class SupplierCell extends AbstractCell<FullSupplierDetail> {
 
         // Display the name in big letters.
         sb.appendHtmlConstant("<div style=\"size:200%;font-weight:bold;\">");
-        sb.appendEscaped(value.getCompanyName());
+        sb.appendEscaped(value.getUserData().getCompanyName());
         sb.appendHtmlConstant("</div>");
 
         // Display the address in normal text.

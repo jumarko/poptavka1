@@ -38,6 +38,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -412,6 +413,12 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(handlers = DetailsWrapperPresenter.class, passive = true)
     void responseDemandDetail(FullDemandDetail demandDetail);
+
+    @Event(handlers = RootHandler.class)
+    void requestClientDetail(Long clientId);
+
+    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
+    void responseClientDetail(FullClientDetail clientDetail);
 
     @Event(handlers = RootHandler.class)
     void requestSupplierDetail(Long supplierId);

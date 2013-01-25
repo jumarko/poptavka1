@@ -159,11 +159,10 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
             this.detailSection.getView().getReplyHolder().allowSendingOffer();
-            this.detailSection.setTabVisibility(DetailsWrapperPresenter.SUPPLIER, false);
             if (selectedObject != null) {
                 this.detailSection.initDetails(
                         selectedObject.getDemandId(),
-                        Storage.getSupplierId(),
+                        Storage.getClientId(),
                         selectedObject.getThreadRootId());
             }
         }

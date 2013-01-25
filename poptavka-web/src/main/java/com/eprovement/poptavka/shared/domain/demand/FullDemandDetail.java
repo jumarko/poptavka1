@@ -10,6 +10,7 @@ import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +127,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
 
         excludedSuppliers = new ArrayList<FullSupplierDetail>();
         for (FullSupplierDetail supplier : demand.getExcludedSuppliers()) {
-            excludedSuppliers.add(new FullSupplierDetail(supplier));
+//            excludedSuppliers.add(new FullSupplierDetail(supplier));
         }
     }
 
@@ -134,16 +135,16 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         return categories;
     }
 
-    public void setCategories(ArrayList<CategoryDetail> categories) {
-        this.categories = categories;
+    public void setCategories(Collection<CategoryDetail> categories) {
+        this.categories = new ArrayList<CategoryDetail>(categories);
     }
 
     public ArrayList<LocalityDetail> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(ArrayList<LocalityDetail> localities) {
-        this.localities = localities;
+    public void setLocalities(Collection<LocalityDetail> localities) {
+        this.localities = new ArrayList<LocalityDetail>(localities);
     }
 
     public long getClientId() {

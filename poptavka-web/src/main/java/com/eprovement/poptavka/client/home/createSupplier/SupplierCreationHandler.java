@@ -9,7 +9,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 
 /**
  * Handler for RPC calls for localities & categories.
@@ -28,14 +28,13 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
         supplierCreationService = service;
     }
 
-    public void onRegisterSupplier(final BusinessUserDetail newSupplier) {
-        supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-
+    public void onRegisterSupplier(final FullSupplierDetail newSupplier) {
+        supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
             @Override
-            public void onSuccess(BusinessUserDetail supplier) {
+            public void onSuccess(FullSupplierDetail supplier) {
                 // TODO forward to user/atAccount
                 eventBus.loadingHide();
-                eventBus.initActivationCodePopup(newSupplier, Constants.SUPPLIER_DEMANDS_WELCOME);
+                eventBus.initActivationCodePopup(newSupplier.getUserData(), Constants.SUPPLIER_DEMANDS_WELCOME);
             }
         });
     }
@@ -49,5 +48,4 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
             }
         });
     }
-
 }

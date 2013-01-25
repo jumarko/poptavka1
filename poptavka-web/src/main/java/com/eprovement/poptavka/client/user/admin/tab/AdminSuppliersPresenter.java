@@ -231,11 +231,11 @@ public class AdminSuppliersPresenter
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 for (Verification verification : Verification.values()) {
-                    if (!verification.name().equalsIgnoreCase(object.getVerification())) {
+                    if (!verification.name().equals(object.getUserData().getVerification())) {
                         if (!originalData.containsKey(object.getSupplierId())) {
-                            originalData.put(object.getSupplierId(), new FullSupplierDetail(object));
+                            originalData.put(object.getSupplierId(), object);
                         }
-                        object.setVerification(value);
+                        object.getUserData().setVerification(value);
                         eventBus.addSupplierToCommit(object);
                     }
                 }
@@ -252,7 +252,7 @@ public class AdminSuppliersPresenter
             public void update(int index, FullSupplierDetail object, Boolean value) {
                 if (object.isCertified() != value) {
                     if (!originalData.containsKey(object.getSupplierId())) {
-                        originalData.put(object.getSupplierId(), new FullSupplierDetail(object));
+                        originalData.put(object.getSupplierId(), object);
                     }
                     object.setCertified(value);
                     eventBus.addSupplierToCommit(object);
@@ -270,11 +270,11 @@ public class AdminSuppliersPresenter
             public void update(int index, FullSupplierDetail object, String value) {
                 for (BusinessType businessType : BusinessType.values()) {
                     if (businessType.getValue().equals(value)) {
-                        if (!object.getBusinessType().equals(businessType.name())) {
+                        if (!object.getUserData().getBusinessType().equals(businessType.name())) {
                             if (!originalData.containsKey(object.getSupplierId())) {
-                                originalData.put(object.getSupplierId(), new FullSupplierDetail(object));
+                                originalData.put(object.getSupplierId(), object);
                             }
-                            object.setBusinessType(value);
+                            object.getUserData().setBusinessType(value);
                             eventBus.addSupplierToCommit(object);
                         }
                     }
@@ -290,12 +290,12 @@ public class AdminSuppliersPresenter
         view.getSupplierNameColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
-                if (!object.getCompanyName().equals(value)) {
+                if (!object.getUserData().getCompanyName().equals(value)) {
                     if (!originalData.containsKey(object.getSupplierId())) {
-                        originalData.put(object.getSupplierId(), new FullSupplierDetail(object));
+                        originalData.put(object.getSupplierId(), object);
                     }
                 }
-                object.setCompanyName(value);
+                object.getUserData().setCompanyName(value);
                 eventBus.addSupplierToCommit(object);
             }
         });
@@ -347,7 +347,7 @@ public class AdminSuppliersPresenter
                 int idx = 0;
                 for (FullSupplierDetail data : originalData.values()) {
                     idx = view.getDataGrid().getVisibleItems().indexOf(data);
-                    view.getDataGrid().getVisibleItem(idx).updateWholeSupplier(data);
+//                    view.getDataGrid().getVisibleItem(idx).updateWholeSupplier(data);
                 }
                 view.getDataGrid().flush();
                 view.getDataGrid().redraw();

@@ -18,14 +18,11 @@ import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
 import com.eprovement.poptavka.domain.enums.Period;
-import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
-import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
-import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -39,7 +36,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,14 +125,16 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return
      */
     @Override
-    public BusinessUserDetail createNewSupplier(BusinessUserDetail supplier) throws RPCException {
+    public FullSupplierDetail createNewSupplier(FullSupplierDetail supplier) throws RPCException {
         final Supplier newSupplier = new Supplier();
-        setNewSupplierBusinessUserData(supplier, newSupplier);
-        newSupplier.getBusinessUser().setEmail(supplier.getEmail());
-        newSupplier.getBusinessUser().setPassword(supplier.getPassword());
-        setNewSupplierAddresses(supplier, newSupplier);
-        setNewSupplierLocalities(supplier, newSupplier);
-        setNewSupplierCategories(supplier, newSupplier);
+
+        newSupplier.getBusinessUser().setEmail(supplier.getUserData().getEmail());
+        newSupplier.getBusinessUser().setPassword(supplier.getUserData().getPassword());
+        newSupplier.setLocalities(localityConverter.convertToSourceList(supplier.getLocalities()));
+        newSupplier.setCategories(categoryConverter.convertToSourceList(supplier.getCategories()));
+
+        setNewSupplierAddresses(supplier.getUserData(), newSupplier);
+        setNewSupplierBusinessUserData(supplier.getUserData(), newSupplier);
         setNewSupplierUserServices(supplier, newSupplier);
         setNewSuppliersNotificationItems(newSupplier);
         assignBusinessRoleToNewSupplier(newSupplier);
@@ -154,9 +152,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
         clientService.create(client);
 
-        return this.toUserDetail(newSupplier);
-//        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
-//                supplierFromDB.getBusinessUser().getBusinessUserRoles());
+        return supplierConverter.convertToTarget(newSupplier);
     }
 
     private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
@@ -165,10 +161,14 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     private void setNewSupplierBusinessUserData(BusinessUserDetail supplier, Supplier newSupplier) {
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
-                .companyName(supplier.getCompanyName()).taxId(supplier.getTaxId())
+                .companyName(supplier.getCompanyName())
+                .taxId(supplier.getTaxId())
                 .identificationNumber(supplier.getIdentificationNumber())
-                .phone(supplier.getPhone()).personFirstName(supplier.getFirstName())
-                .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
+                .phone(supplier.getPhone())
+                .personFirstName(supplier.getFirstName())
+                .personLastName(supplier.getLastName())
+                //TODO RELEASE - chyba description v builderi BusinessUserData objektu?
+                //                .description(supplier.getDescription());
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
     }
@@ -197,10 +197,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
     }
 
-    private void setNewSupplierUserServices(BusinessUserDetail supplier, Supplier newSupplier) {
+    private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
         final List<UserService> us = new ArrayList<UserService>();
 
-        ArrayList<Integer> userServicesId = supplier.getSupplier().getServices();
+        ArrayList<Integer> userServicesId = supplier.getServices();
         for (Integer serviceId : userServicesId) {
             Service service = generalService.find(Service.class, Long.valueOf(serviceId));
             UserService userService = new UserService();
@@ -211,18 +211,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         }
 
         newSupplier.getBusinessUser().setUserServices(us);
-    }
-
-    private void setNewSupplierCategories(BusinessUserDetail supplier, Supplier newSupplier) {
-        newSupplier.setCategories(categoryConverter.convertToSourceList(supplier.getSupplier().getCategories()));
-    }
-
-    private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
-        final List<Locality> localities = new ArrayList<Locality>();
-        for (LocalityDetail localityDetail : supplier.getSupplier().getLocalities()) {
-            localities.add(this.getLocality(localityDetail.getId()));
-        }
-        newSupplier.setLocalities(localities);
     }
 
     private List<Address> getAddressesFromSupplierCityName(BusinessUserDetail supplier) {
@@ -349,13 +337,13 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         Supplier supplier = supplierService.getById(supplierDetail.getSupplierId());
 
         //Supplier
-        if (supplierDetail.getOverallRating() == -1) {
+        if (supplierDetail.getUserData().getOverallRating() == -1) {
             supplier.setOveralRating(null);
         } else {
-            supplier.setOveralRating(supplierDetail.getOverallRating());
+            supplier.setOveralRating(supplierDetail.getUserData().getOverallRating());
         }
         supplier.setCertified(supplierDetail.isCertified());
-        supplier.setVerification(Verification.valueOf(supplierDetail.getVerification()));
+        supplier.setVerification(supplierDetail.getUserData().getVerification());
 
         // -- categories
         List<Category> newCategories = categoryConverter.convertToSourceList(supplierDetail.getCategories());
@@ -373,20 +361,18 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 //        descriptionBox.setText(supplier.getDescription());
 
         //Busines data
-        supplier.getBusinessUser().setEmail(supplierDetail.getEmail());
+        supplier.getBusinessUser().setEmail(supplierDetail.getUserData().getEmail());
 
-        supplier.getBusinessUser().getBusinessUserData().setDescription(supplierDetail.getDescription());
-        if (supplierDetail.getBusinessType() != null && !supplierDetail.getBusinessType().equals("")) {
-            supplier.getBusinessUser().setBusinessType(BusinessType.valueOf(supplierDetail.getBusinessType()));
+        supplier.getBusinessUser().getBusinessUserData().setDescription(
+                supplierDetail.getUserData().getDescription());
+        if (supplierDetail.getUserData().getBusinessType() != null
+                && !supplierDetail.getUserData().getBusinessType().equals("")) {
+            supplier.getBusinessUser().setBusinessType(supplierDetail.getUserData().getBusinessType());
         }
-        supplier.getBusinessUser().getBusinessUserData().setCompanyName(supplierDetail.getCompanyName());
-        supplier.getBusinessUser().getBusinessUserData().
-                setIdentificationNumber(supplierDetail.getIdentificationNumber());
-
-        //-- Contact
-        supplier.getBusinessUser().getBusinessUserData().setPersonFirstName(supplierDetail.getFirstName());
-        supplier.getBusinessUser().getBusinessUserData().setPersonLastName(supplierDetail.getLastName());
-        supplier.getBusinessUser().getBusinessUserData().setPhone(supplierDetail.getPhone());
+        supplier.getBusinessUser().getBusinessUserData().setCompanyName(
+                supplierDetail.getUserData().getCompanyName());
+        supplier.getBusinessUser().getBusinessUserData().setIdentificationNumber(
+                supplierDetail.getUserData().getIdentificationNumber());
 
         supplierService.update(supplier);
         return supplierDetail;
@@ -417,72 +403,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         }
         GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
-    }
-
-    //TODO zmazat a nahradit konvertorom
-    protected BusinessUserDetail toUserDetail(Supplier supplier) {
-
-        BusinessUserDetail detail = new BusinessUserDetail();
-        detail.setUserId(supplier.getBusinessUser().getId());
-
-        // Set BusinessUserDetail according to his roles
-        for (BusinessUserRole role : supplier.getBusinessUser().getBusinessUserRoles()) {
-            if (role instanceof Client) {
-                Client clientRole = (Client) role;
-                detail.setClientId(clientRole.getId());
-                detail.addRole(BusinessRole.CLIENT);
-
-                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
-            }
-            if (role instanceof Supplier) {
-                Supplier supplierRole = (Supplier) role;
-                detail.setSupplierId(supplierRole.getId());
-                detail.addRole(BusinessRole.SUPPLIER);
-                FullSupplierDetail supplierDetail = new FullSupplierDetail();
-
-                // supplierServices
-                List<UserService> services = supplierRole.getBusinessUser().getUserServices();
-                for (UserService us : services) {
-                    supplierDetail.addService(us.getId().intValue());
-                }
-
-                // categories
-                ArrayList<String> categories = new ArrayList<String>();
-                List<Category> cats = supplierRole.getCategories();
-                for (Category cat : cats) {
-                    categories.add(cat.getId() + "");
-                }
-                //supplierDetail.setCategories(categories);
-
-                // localities
-                ArrayList<String> localities = new ArrayList<String>();
-                List<Locality> locs = supplierRole.getLocalities();
-                for (Locality loc : locs) {
-                    localities.add(loc.getId() + "");
-                }
-
-                // Other
-                detail.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
-                detail.setEmail(supplier.getBusinessUser().getEmail());
-                detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
-                detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
-                detail.setIdentificationNumber(
-                        supplier.getBusinessUser().getBusinessUserData().getIdentificationNumber());
-//                detail.setPassword(supplier.getBusinessUser().getPassword());
-                detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
-                detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
-
-//                supplierDetail.setLocalities(localities);
-
-                detail.setSupplier(supplierDetail);
-
-                detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
-            }
-        }
-
-        // TODO Beho fix this user ID
-//        System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
-        return detail;
     }
 
     private Category[] getAllSubCategories(Long id) {
