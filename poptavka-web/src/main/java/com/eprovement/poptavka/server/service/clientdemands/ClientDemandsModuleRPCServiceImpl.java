@@ -500,7 +500,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterIn("status", DemandStatus.ASSIGNED);
+        clientDemandsSearch.addFilterIn("status", DemandStatus.ASSIGNED,
+                DemandStatus.PENDINGCOMPLETION);
         clientDemandsSearch.addFilterEqual("client", client);
         clientDemandsSearch.addField("id",  Field.OP_COUNT);
         clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
