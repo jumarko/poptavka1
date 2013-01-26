@@ -4,9 +4,10 @@
  */
 package com.eprovement.poptavka.client.common;
 
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.IListDetailObject;
+import com.github.gwtbootstrap.client.ui.ControlGroup;
+import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -52,10 +53,9 @@ public class ValidationMonitor<T> extends Composite
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField
-    SimplePanel holder;
-    @UiField
-    Label errorLabel;
+    @UiField SimplePanel holder;
+    @UiField Label errorLabel;
+    @UiField ControlGroup controlGroup;
     /** Class attributes. **/
     private ArrayList<IListDetailObject> listData = null;
     private Validator validator = null;
@@ -77,15 +77,15 @@ public class ValidationMonitor<T> extends Composite
     /**************************************************************************/
     public void validate() {
         //reset for new validation
-        holder.getWidget().removeStyleName(Storage.RSCS.common().errorField());
         errorLabel.setText("");
+        controlGroup.setType(ControlGroupType.NONE);
         valid = true;
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
                 holder.getWidget().getTitle(), getValue(), Default.class);
         for (ConstraintViolation<T> violation : violations) {
-            holder.getWidget().addStyleName(Storage.RSCS.common().errorField());
             errorLabel.setText(violation.getMessage());
+            controlGroup.setType(ControlGroupType.ERROR);
             valid = false;
         }
     }

@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.google.gwt.user.client.ui.Label;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -50,11 +51,14 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
+    private List<Alert> statuses = new ArrayList<Alert>();
+    private List<Icon> icons = new ArrayList<Icon>();
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
     private int back = 0;
     @UiField
-    StatusIconLabel basicStatus, categoryStatus, localityStatus, serviceStatus;
+    Alert basicStatus, categoryStatus, localityStatus, serviceStatus;
+    @UiField
+    Icon basicIcon, categoryIcon, localityIcon, serviceIcon;
     @UiField
     SimplePanel supplierInfoHolder, categoryHolder, localityHolder, serviceHolder;
     @UiField
@@ -77,8 +81,8 @@ public class SupplierCreationView extends OverflowComposite
         initWidget(uiBinder.createAndBindUi(this));
 
         /** filling status list **/
-        StatusIconLabel[] array = {basicStatus, categoryStatus, localityStatus, serviceStatus};
-        statusLabels = Arrays.asList(array);
+        statuses = Arrays.asList(basicStatus, categoryStatus, localityStatus, serviceStatus);
+        icons = Arrays.asList(basicIcon, categoryIcon, localityIcon, serviceIcon);
         /** filling panels list **/
         SimplePanel[] panels = {supplierInfoHolder, categoryHolder, localityHolder, serviceHolder};
         holderPanels = Arrays.asList(panels);
@@ -147,8 +151,13 @@ public class SupplierCreationView extends OverflowComposite
     }
 
     @Override
-    public StatusIconLabel getStatusLabel(int order) {
-        return statusLabels.get(order);
+    public Alert getAlert(int order) {
+        return statuses.get(order);
+    }
+
+    @Override
+    public Icon getIcon(int order) {
+        return icons.get(order);
     }
 
     /** BUTTONS. **/

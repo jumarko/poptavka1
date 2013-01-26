@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
@@ -12,6 +11,10 @@ import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPre
 import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -57,7 +60,9 @@ public class SupplierCreationPresenter
 
         SimplePanel getHolderPanel(int order);
 
-        StatusIconLabel getStatusLabel(int order);
+        Alert getAlert(int order);
+
+        Icon getIcon(int order);
 
         /** Buttons. **/
         HasClickHandlers getRegisterButton();
@@ -132,11 +137,13 @@ public class SupplierCreationPresenter
                 if (view.getMainPanel().getSelectedIndex() < eventItem) {
                     //if previous step is valid, continue
                     if (canContinue(eventItem - 1)) {
-                        view.getStatusLabel(eventItem - 1).setPassedSmall(true);
-                        view.getStatusLabel(eventItem - 1).setMessage(MSGS.commonOK());
+                        view.getAlert(eventItem - 1).setType(AlertType.SUCCESS);
+                        view.getAlert(eventItem - 1).setText(MSGS.commonOK());
+                        view.getIcon(eventItem - 1).setType(IconType.OK_SIGN);
                     } else {
-                        view.getStatusLabel(eventItem - 1).setPassedSmall(false);
-                        view.getStatusLabel(eventItem - 1).setMessage(getErrorInfoLabel(eventItem - 1));
+                        view.getAlert(eventItem - 1).setType(AlertType.ERROR);
+                        view.getAlert(eventItem - 1).setText(getErrorInfoLabel(eventItem - 1));
+                        view.getIcon(eventItem - 1).setType(IconType.REMOVE_SIGN);
                         event.cancel();
                     }
                 }
