@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:b='urn:import:com.github.gwtbootstrap.client.ui'>
 
-    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
-<!--    TODO Martin - vhodit do StyleResource a vsade kde je validacia pouzit z resource-->
-    <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
-        }
-        .listBoxWidth {
-        width:200px;
-        }
-    </ui:style>
+	<ui:with field='res'
+		type='com.eprovement.poptavka.resources.StyleResource' />
+	<!-- TODO Martin - vhodit do StyleResource a vsade kde je validacia pouzit 
+		z resource -->
+	<ui:style>
+		.error {
+		font-size:10px;
+		color: red;
+		}
+		.listBoxWidth {
+		width:200px;
+		}
+	</ui:style>
 
-    <g:HTMLPanel>
-        <table>
-            <tbody>
-                <tr>
-                    <td>
-                        <ui:msg key="formCity">City</ui:msg>
-                    </td>
-                    <td>
-                        <g:SuggestBox title="suggestBoxCity" styleName="{style.listBoxWidth}" ui:field="cityBox" limit="7"/>
-                        <g:Label styleName="{style.error}" ui:field="cityErrorLabel"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <ui:msg key="formZipCode">Zip Code</ui:msg>
-                    </td>
-                    <td>
-                        <g:TextBox title="textBoxZipcode" ui:field="zipCode"/>
-                        <g:Label styleName="{style.error}" ui:field="zipErrorLabel"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <ui:msg key="formStreet">Street</ui:msg>
-                    </td>
-                    <td>
-                        <g:TextBox title="textBoxStreet" ui:field="street"/>
-                        <g:Label styleName="{style.error}" ui:field="streetErrorLabel"/>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </g:HTMLPanel>
+	<g:HTMLPanel>
+		<b:FluidRow>
+			<b:Column size="5">
+				<g:Label>
+					<ui:msg key="formCity">City</ui:msg>
+				</g:Label>
+			</b:Column>
+			<b:Column size="6">
+				<g:SuggestBox title="suggestBoxCity" styleName="{style.listBoxWidth}"
+					ui:field="cityBox" limit="7" />
+				<g:Label styleName="{style.error}" ui:field="cityErrorLabel" />
+			</b:Column>
+		</b:FluidRow>
+
+		<b:FluidRow>
+			<b:Column size="5">
+				<g:Label>
+					<ui:msg key="formZipCode">Zip Code</ui:msg>
+				</g:Label>
+			</b:Column>
+			<b:Column size="6">
+				<g:TextBox title="textBoxZipcode" ui:field="zipCode" />
+				<g:Label styleName="{style.error}" ui:field="zipErrorLabel" />
+			</b:Column>
+		</b:FluidRow>
+
+		<b:FluidRow>
+			<b:Column size="5">
+				<g:Label>
+					<ui:msg key="formStreet">Street</ui:msg>
+				</g:Label>
+			</b:Column>
+			<b:Column size="6">
+				<g:TextBox title="textBoxStreet" ui:field="street" />
+				<g:Label styleName="{style.error}" ui:field="streetErrorLabel" />
+			</b:Column>
+		</b:FluidRow>		
+	</g:HTMLPanel>
 </ui:UiBinder>
