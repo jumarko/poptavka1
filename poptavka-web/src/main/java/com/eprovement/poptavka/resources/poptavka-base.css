@@ -11,11 +11,6 @@ body {
 	background: none;
 }
 
-input {
-	height: 30px;
-	line-height: 30px;
-}
-
 .body-background {
 	margin: 0;
 	padding: 0;
@@ -26,7 +21,7 @@ input {
 
 .body-container {
 	position: relative;
-	margin: 0 0 0 340px;	
+	margin: 0 0 0 340px;
 	width: 975px;
 	height: 100%;
 }
@@ -65,6 +60,16 @@ input {
 	float: right;
 }
 
+.popup-dropdown-container table {
+	background: #ffffff;
+	padding: 10px;
+	margin: 3px 0 0 -9px;
+	line-height: 20px;
+	border: 1px solid #C2C8D2;
+	border-radius: 4px;
+	box-shadow: 0 0 3px #DDDDDD;
+}
+
 /*
 * Tool Bar Styles
 *
@@ -87,6 +92,30 @@ input {
 .toolbar-items-block {
 	margin: 7px 0 0;
 	float: left;
+}
+
+.toolbar-item {
+	float: left;
+	margin-right: 10px;
+}
+
+.toolbar-button-blue {
+	background: url(images/blue-button.gif) repeat-x #004273;
+	padding: 0px 12px;
+	border: 1px solid #004273;
+	border-radius: 4px;
+	height: 30px;
+	line-height: 28px;
+	color: #ffffff;
+	margin-right: 10px;
+	box-shadow: 0 0 3px #aaaaaa;
+	cursor: pointer;
+	text-shadow: 0 -1px #004273;
+}
+
+.toolbar-button-blue:hover {
+	color: #ffffff;
+	box-shadow: 0 0 5px #004273;
 }
 
 /*

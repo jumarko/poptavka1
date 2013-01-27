@@ -49,6 +49,7 @@
 						<g:HTMLPanel>
 							<g:Button ui:field="nextButtonTab1" styleName='btn btn-primary'>
 								<ui:msg key="commonBtnNext">Next</ui:msg>
+								<i class="icon-arrow-right"></i>
 							</g:Button>
 						</g:HTMLPanel>
 					</g:south>
@@ -66,8 +67,8 @@
 						<ui:msg key="supplierCreationTab2">Category selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
+				<g:DockLayoutPanel unit="PX" height="100%">
+					<g:south size="50">
 						<b:Tooltip text="{text.supplierCreationCatDescription}"
 							placement="BOTTOM">
 							<b:Alert ui:field='categoryStatus' type="DEFAULT" close="false"
@@ -80,18 +81,22 @@
 							</b:Alert>
 						</b:Tooltip>
 					</g:south>
+					<g:south size="35">
+						<g:HTMLPanel>
+							<g:Button ui:field="backButtonTab2">
+								<i class="icon-arrow-left"></i>
+								<ui:msg key="commonBtnBack">Back</ui:msg>
+							</g:Button>
+							<g:Button ui:field="nextButtonTab2">
+								<ui:msg key="commonBtnNext">Next</ui:msg>
+								<i class="icon-arrow-right"></i>
+							</g:Button>
+						</g:HTMLPanel>
+					</g:south>
 					<g:center>
-						<g:VerticalPanel>
+						<g:ScrollPanel>
 							<g:SimplePanel ui:field="categoryHolder" />
-							<g:HorizontalPanel>
-								<g:Button ui:field="backButtonTab2">
-									<ui:msg key="commonBtnBack">Back</ui:msg>
-								</g:Button>
-								<g:Button ui:field="nextButtonTab2">
-									<ui:msg key="commonBtnNext">Next</ui:msg>
-								</g:Button>
-							</g:HorizontalPanel>
-						</g:VerticalPanel>
+						</g:ScrollPanel>
 					</g:center>
 				</g:DockLayoutPanel>
 			</g:tab>
@@ -102,8 +107,8 @@
 						<ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
+				<g:DockLayoutPanel unit="PX" height="100%">
+					<g:south size="50">
 						<b:Tooltip text="{text.supplierCreationLocDescription}"
 							placement="BOTTOM">
 							<b:Alert ui:field='localityStatus' type="DEFAULT" close="false"
@@ -116,18 +121,22 @@
 							</b:Alert>
 						</b:Tooltip>
 					</g:south>
+					<g:south size="35">
+						<g:HTMLPanel>
+							<g:Button ui:field="backButtonTab3">
+								<i class="icon-arrow-left"></i>
+								<ui:msg key="commonBtnBack">Back</ui:msg>
+							</g:Button>
+							<g:Button ui:field="nextButtonTab3">
+								<ui:msg key="commonBtnNext">Next</ui:msg>
+								<i class="icon-arrow-right"></i>
+							</g:Button>
+						</g:HTMLPanel>
+					</g:south>
 					<g:center>
-						<g:VerticalPanel>
+						<g:ScrollPanel>
 							<g:SimplePanel ui:field="localityHolder" />
-							<g:HorizontalPanel>
-								<g:Button ui:field="backButtonTab3">
-									<ui:msg key="commonBtnBack">Back</ui:msg>
-								</g:Button>
-								<g:Button ui:field="nextButtonTab3">
-									<ui:msg key="commonBtnNext">Next</ui:msg>
-								</g:Button>
-							</g:HorizontalPanel>
-						</g:VerticalPanel>
+						</g:ScrollPanel>
 					</g:center>
 				</g:DockLayoutPanel>
 			</g:tab>
@@ -138,8 +147,8 @@
 						<ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
+				<g:DockLayoutPanel unit="PX" height="100%">
+					<g:south size="50">
 						<b:Tooltip text="{text.supplierCreationAdvDescription}"
 							placement="BOTTOM">
 							<b:Alert ui:field='serviceStatus' type="DEFAULT" close="false"
@@ -151,6 +160,17 @@
 							</b:Alert>
 						</b:Tooltip>
 					</g:south>
+					<g:south size="35">
+						<g:HTMLPanel>
+							<g:Button ui:field="backButtonTab4">
+								<i class="icon-arrow-left"></i>
+								<ui:msg key="commonBtnBack">Back</ui:msg>
+							</g:Button>
+							<g:Button ui:field="registerBtn">
+								<ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
+							</g:Button>
+						</g:HTMLPanel>
+					</g:south>
 					<g:center>
 						<g:HTMLPanel>
 							<g:SimplePanel ui:field="serviceHolder" />
@@ -159,17 +179,7 @@
 								<g:Anchor ui:field="conditionLink">
 									<ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
 								</g:Anchor>
-							</g:HorizontalPanel>
-							<br />
-							<g:HorizontalPanel>
-								<g:Button ui:field="backButtonTab4">
-									<ui:msg key="commonBtnBack">Back</ui:msg>
-								</g:Button>
-								<g:Button ui:field="registerBtn">
-									<ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
-								</g:Button>
-							</g:HorizontalPanel>
-							<hr />
+							</g:HorizontalPanel>							
 						</g:HTMLPanel>
 					</g:center>
 				</g:DockLayoutPanel>

@@ -9,7 +9,7 @@
 
 .button {
   padding: 0px;
-  cursor: pointer;
+  cursor: pointer !important;
   cursor: hand;
 }
 

@@ -15,7 +15,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -40,7 +40,7 @@ public class SupplierAssignedDemandsView extends Composite
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel;
-    @UiField HorizontalPanel toolBar;
+    @UiField HTMLPanel toolBar;
     @UiField Label tableNameLabel;
     @UiField Button finnishBtn;
 

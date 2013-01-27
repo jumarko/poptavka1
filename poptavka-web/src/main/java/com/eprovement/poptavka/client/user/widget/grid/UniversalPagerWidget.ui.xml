@@ -2,6 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 	
+	<ui:with field='res'
+		type='com.eprovement.poptavka.resources.StyleResource' />
+	
 	<ui:style>
 	.dropdown-select {
 		background: url(images/dropdown-icon.png) no-repeat top right;
@@ -16,15 +19,21 @@
 		line-heihgt: 32px;
 		width: 36px;
 		text-align: center;
-	}	
+		padding-right: 29px;
+	}
+	
+	.float05 {
+	float: left;
+	margin-right: 5px;	
+	}
 	</ui:style>
 	
-	<g:HorizontalPanel>
-		<c:SimplePager ui:field='pager' />
-		<g:MenuBar vertical="false" styleName='{style.dropdown-select}'>
+	<g:HTMLPanel styleName='{res.layout.toolbarItem}'>
+		<c:SimplePager ui:field='pager' styleName='{style.float05}' />
+		<g:MenuBar vertical="false" styleName='{style.dropdown-select} {style.float05}'>
 			<g:MenuItem ui:field="pageSize" styleName='{style.dropdown-item}'>
-				<g:MenuBar vertical="true" ui:field="pageSizeList" />
+				<g:MenuBar vertical="true" ui:field="pageSizeList" styleName='{res.layout.popupDropdownContainer}'/>
 			</g:MenuItem>
 		</g:MenuBar>
-	</g:HorizontalPanel>
+	</g:HTMLPanel>
 </ui:UiBinder>

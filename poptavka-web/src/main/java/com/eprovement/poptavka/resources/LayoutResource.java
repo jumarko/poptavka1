@@ -45,6 +45,9 @@ public interface LayoutResource extends CssResource {
     @ClassName("user-logo")
     String userLogo();
 
+    @ClassName("popup-dropdown-container")
+    String popupDropdownContainer();
+
     /* Tool Bar Styles */
     @ClassName("toolbar")
     String bodyNavbar();
@@ -54,6 +57,12 @@ public interface LayoutResource extends CssResource {
 
     @ClassName("toolbar-items-block")
     String toolbarItemsBlock();
+
+    @ClassName("toolbar-item")
+    String toolbarItem();
+
+    @ClassName("toolbar-button-blue")
+    String toolbarButtonBlue();
 
     /* login styles */
     @ClassName("login")
