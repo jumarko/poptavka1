@@ -15,16 +15,19 @@
 		.listBoxWidth {
 		width:200px;
 		}
+		.text-left {
+		text-align: right;
+		}
 	</ui:style>
 
 	<g:HTMLPanel>
 		<b:FluidRow>
-			<b:Column size="5">
-				<g:Label>
+			<b:Column size="2">
+				<g:Label styleName='pull-right'>
 					<ui:msg key="formCity">City</ui:msg>
 				</g:Label>
 			</b:Column>
-			<b:Column size="6">
+			<b:Column size="7">
 				<g:SuggestBox title="suggestBoxCity" styleName="{style.listBoxWidth}"
 					ui:field="cityBox" limit="7" />
 				<g:Label styleName="{style.error}" ui:field="cityErrorLabel" />
@@ -32,24 +35,24 @@
 		</b:FluidRow>
 
 		<b:FluidRow>
-			<b:Column size="5">
-				<g:Label>
+			<b:Column size="2">
+				<g:Label styleName='pull-right'>
 					<ui:msg key="formZipCode">Zip Code</ui:msg>
 				</g:Label>
 			</b:Column>
-			<b:Column size="6">
+			<b:Column size="7">
 				<g:TextBox title="textBoxZipcode" ui:field="zipCode" />
 				<g:Label styleName="{style.error}" ui:field="zipErrorLabel" />
 			</b:Column>
 		</b:FluidRow>
 
 		<b:FluidRow>
-			<b:Column size="5">
-				<g:Label>
+			<b:Column size="2">
+				<g:Label styleName='pull-right'>
 					<ui:msg key="formStreet">Street</ui:msg>
 				</g:Label>
 			</b:Column>
-			<b:Column size="6">
+			<b:Column size="7">
 				<g:TextBox title="textBoxStreet" ui:field="street" />
 				<g:Label styleName="{style.error}" ui:field="streetErrorLabel" />
 			</b:Column>
