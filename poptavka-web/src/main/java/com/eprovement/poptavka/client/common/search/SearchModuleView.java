@@ -3,10 +3,9 @@ package com.eprovement.poptavka.client.common.search;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -17,7 +16,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SearchModuleView extends Composite implements SearchModulePresenter.SearchModuleInterface {
@@ -55,6 +53,8 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 
             @Override
             public void execute() {
+                advanceSearchContentView.getTabLayoutPanel().selectTab(
+                        AdvanceSearchContentView.DEMANDS_SELECTOR_WIDGET);
                 setAdvanceContentTabsVisibility(true, false, false);
                 searchWhatItem.setText(demand.getText());
             }
@@ -63,6 +63,8 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 
             @Override
             public void execute() {
+                advanceSearchContentView.getTabLayoutPanel().selectTab(
+                        AdvanceSearchContentView.SUPPLIER_SELECTOR_WIDGET);
                 setAdvanceContentTabsVisibility(false, true, false);
                 searchWhatItem.setText(supplier.getText());
             }
@@ -71,6 +73,8 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 
             @Override
             public void execute() {
+                advanceSearchContentView.getTabLayoutPanel().selectTab(
+                        AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET);
                 setAdvanceContentTabsVisibility(false, false, true);
                 searchWhatItem.setText(custom.getText());
             }
@@ -166,31 +170,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
-    /*
-     * CLICK HANDLERS
-     *
-     * To define what action was made by user. Have to know because of acquiring
-     * data from appropiate view loaded in popup window. See
-     * handlerPopupPanelCloserEvent methods.
-     */
-
-    @UiHandler("searchContent")
-    public void handleSearchContentFocusClick(FocusEvent event) {
-        if (searchContent.getText().equals(Storage.MSGS.searchContent())) {
-            searchContent.setText("");
-        }
-    }
-
-    @UiHandler("searchContent")
-    public void handleSearchContentBlurClick(BlurEvent event) {
-        if (searchContent.getText().equals("")) {
-            searchContent.setText(Storage.MSGS.searchContent());
-        }
-    }
-
-    /*
-     * POPUP CLOSE HANDLER
-     */
+    /** POPUP CLOSE HANDLER. **/
     /**
      * When popup is closed. Appropiate filters are stored to
      * searchModuleDataHolder. Storing is according type of filtering performed

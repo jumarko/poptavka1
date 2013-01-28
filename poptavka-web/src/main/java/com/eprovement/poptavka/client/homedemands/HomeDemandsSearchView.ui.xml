@@ -4,8 +4,7 @@
 	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
 	<!-- injecting style resources -->
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
+	<ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
 	<ui:style>
 		.important {
