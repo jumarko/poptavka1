@@ -422,6 +422,7 @@ public interface LocalizableMessages extends Messages {
     String supplierCreationTab2();
     String supplierCreationTab3();
     String supplierCreationTab4();
+    String supplierCreationTab5();
     String supplierCreationAdvDescription();
     String supplierCreationAgreementConditions();
     String supplierCreationAgreementMessage();
@@ -430,12 +431,14 @@ public interface LocalizableMessages extends Messages {
     String supplierCreationCategorySelectorInfoLabel();
     String supplierCreationLocalitySelectorInfoLabel();
     String supplierCreationLocDescription();
+    String supplierCreationProvideCompanyInfoLabel();
     String supplierCreationProvidePersonalInfoLabel();
     String supplierCreationRegisterBtn();
     String supplierCreationServiceSelectorInfoLabel();
     String supplierCreationSecondTabErrorInfo();
     String supplierCreationThirdTabErrorInfo();;
     String supplierCreationFourthTabErrorInfo();
+    String supplierCreationFifthTabErrorInfo();
 
     /** FormUserRegistrationView.ui. **/
     String formUserRegMailAvailable();

@@ -1,189 +1,238 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-	xmlns:cl="urn:import:com.eprovement.poptavka.client.common.locality"
-	xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:cl="urn:import:com.eprovement.poptavka.client.common.locality"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
-	<!-- injecting style resources -->
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+        <!-- injecting style resources -->
+        <ui:with field='res'
+                 type='com.eprovement.poptavka.resources.StyleResource' />
+        <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-	<ui:style>
-		.tabIndex1 { z-index: 1; width: 240px;}
-		.tabIndex2 { z-index:
-		2; width: 230px;}
-		.tabIndex3 { z-index: 3; width: 230px;}
-		.tabIndex4 {
-		z-index: 4; width: 250px;}
-		.tabIndex5 { z-index: 5; width: 220px;}
+        <ui:style>
+                .tabIndex1 { z-index: 1; width: 240px;}
+                .tabIndex2 { z-index:
+                2; width: 230px;}
+                .tabIndex3 { z-index: 3; width: 230px;}
+                .tabIndex4 {
+                z-index: 4; width: 250px;}
+                .tabIndex5 { z-index: 5; width: 220px;}
 
-		.selectorLayout {width: 980px; height: 350px;}
-	</ui:style>
+                .selectorLayout {width: 980px; height: 350px;}
+        </ui:style>
 
-	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-		<g:TabLayoutPanel ui:field='mainPanel'
-			styleName='{res.createTabPanel.createTabPanel}' barUnit='PX'
-			barHeight='50'>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex5}">
-						1.
-						<ui:msg key="supplierCreationTab1">Supplier Registration</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="PX" height="100%">
-					<g:south size="50">
-						<b:Tooltip text="{text.supplierCreationBasicDescription}"
-							placement="BOTTOM">
-							<b:Alert ui:field='basicStatus' type="DEFAULT" close="false"
-								animation="true">
-								<b:Icon ui:field='basicIcon' type="INFO_SIGN" iconSize="LARGE" />
-								<ui:msg key="supplierCreationProvidePersonalInfoLabel">
-									Provide personal information.
-								</ui:msg>
-							</b:Alert>
-						</b:Tooltip>
-					</g:south>
-					<g:south size="35">
-						<g:HTMLPanel>
-							<g:Button ui:field="nextButtonTab1" styleName='btn btn-primary'>
-								<ui:msg key="commonBtnNext">Next</ui:msg>
-								<i class="icon-arrow-right"></i>
-							</g:Button>
-						</g:HTMLPanel>
-					</g:south>
-					<g:center>
-						<g:ScrollPanel>
-							<g:SimplePanel ui:field="supplierInfoHolder" />
-						</g:ScrollPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex4}">
-						2.
-						<ui:msg key="supplierCreationTab2">Category selection</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="PX" height="100%">
-					<g:south size="50">
-						<b:Tooltip text="{text.supplierCreationCatDescription}"
-							placement="BOTTOM">
-							<b:Alert ui:field='categoryStatus' type="DEFAULT" close="false"
-								animation="true">
-								<b:Icon ui:field='categoryIcon' type="INFO_SIGN"
-									iconSize="LARGE" />
-								<ui:msg key="supplierCreationCategorySelectorInfoLabel">
-									Select the most suitable category.
-								</ui:msg>
-							</b:Alert>
-						</b:Tooltip>
-					</g:south>
-					<g:south size="35">
-						<g:HTMLPanel>
-							<g:Button ui:field="backButtonTab2">
-								<i class="icon-arrow-left"></i>
-								<ui:msg key="commonBtnBack">Back</ui:msg>
-							</g:Button>
-							<g:Button ui:field="nextButtonTab2">
-								<ui:msg key="commonBtnNext">Next</ui:msg>
-								<i class="icon-arrow-right"></i>
-							</g:Button>
-						</g:HTMLPanel>
-					</g:south>
-					<g:center>
-						<g:ScrollPanel>
-							<g:SimplePanel ui:field="categoryHolder" />
-						</g:ScrollPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex3}">
-						3.
-						<ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="PX" height="100%">
-					<g:south size="50">
-						<b:Tooltip text="{text.supplierCreationLocDescription}"
-							placement="BOTTOM">
-							<b:Alert ui:field='localityStatus' type="DEFAULT" close="false"
-								animation="true">
-								<b:Icon ui:field='localityIcon' type="INFO_SIGN"
-									iconSize="LARGE" />
-								<ui:msg key="{text.supplierCreationLocalitySelectorInfoLabel}">
-									Select your Locality.
-								</ui:msg>
-							</b:Alert>
-						</b:Tooltip>
-					</g:south>
-					<g:south size="35">
-						<g:HTMLPanel>
-							<g:Button ui:field="backButtonTab3">
-								<i class="icon-arrow-left"></i>
-								<ui:msg key="commonBtnBack">Back</ui:msg>
-							</g:Button>
-							<g:Button ui:field="nextButtonTab3">
-								<ui:msg key="commonBtnNext">Next</ui:msg>
-								<i class="icon-arrow-right"></i>
-							</g:Button>
-						</g:HTMLPanel>
-					</g:south>
-					<g:center>
-						<g:ScrollPanel>
-							<g:SimplePanel ui:field="localityHolder" />
-						</g:ScrollPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex2}">
-						4.
-						<ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="PX" height="100%">
-					<g:south size="50">
-						<b:Tooltip text="{text.supplierCreationAdvDescription}"
-							placement="BOTTOM">
-							<b:Alert ui:field='serviceStatus' type="DEFAULT" close="false"
-								animation="true">
-								<b:Icon ui:field='serviceIcon' type="INFO_SIGN" iconSize="LARGE" />
-								<ui:msg key="{text.supplierCreationServiceSelectorInfoLabel}">
-									Select service you are interested in.
-								</ui:msg>
-							</b:Alert>
-						</b:Tooltip>
-					</g:south>
-					<g:south size="35">
-						<g:HTMLPanel>
-							<g:Button ui:field="backButtonTab4">
-								<i class="icon-arrow-left"></i>
-								<ui:msg key="commonBtnBack">Back</ui:msg>
-							</g:Button>
-							<g:Button ui:field="registerBtn">
-								<ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
-							</g:Button>
-						</g:HTMLPanel>
-					</g:south>
-					<g:center>
-						<g:HTMLPanel>
-							<g:SimplePanel ui:field="serviceHolder" />
-							<g:HorizontalPanel ui:field="agreementPanel">
-								<g:CheckBox ui:field="agreedCheck" />
-								<g:Anchor ui:field="conditionLink">
-									<ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
-								</g:Anchor>
-							</g:HorizontalPanel>							
-						</g:HTMLPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-		</g:TabLayoutPanel>
-	</g:HTMLPanel>
+        <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
+                <g:TabLayoutPanel ui:field='mainPanel'
+                                  styleName='{res.createTabPanel.createTabPanel}' barUnit='PX'
+                                  barHeight='50'>
+                        <g:tab>
+                                <g:customHeader size="30">
+                                        <g:HTML stylePrimaryName="{style.tabIndex5}">
+                                                1.
+                                                <ui:msg key="supplierCreationTab1">Account information</ui:msg>
+                                        </g:HTML>
+                                </g:customHeader>
+                                <g:DockLayoutPanel unit="PX" height="100%">
+                                        <g:south size="50">
+                                                <b:Tooltip text="{text.supplierCreationBasicDescription}"
+                                                           placement="BOTTOM">
+                                                        <b:Alert ui:field='accountStatus' type="DEFAULT" close="false"
+                                                                 animation="true">
+                                                                <b:Icon ui:field='accountIcon' type="INFO_SIGN" iconSize="LARGE" />
+                                                                <g:Label ui:field='infoLabel1'>
+                                                                        <ui:msg key="supplierCreationProvidePersonalInfoLabel">
+                                                                                Provide Account information.
+                                                                        </ui:msg>
+                                                                </g:Label>
+                                                        </b:Alert>
+                                                </b:Tooltip>
+                                        </g:south>
+                                        <g:south size="35">
+                                                <g:HTMLPanel>
+                                                        <g:Button ui:field="nextButtonTab1" styleName='btn btn-primary'>
+                                                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                                                <i class="icon-arrow-right"></i>
+                                                        </g:Button>
+                                                </g:HTMLPanel>
+                                        </g:south>
+                                        <g:center>
+                                                <g:ScrollPanel>
+                                                        <g:SimplePanel ui:field="supplierAccountInfoHolder" />
+                                                </g:ScrollPanel>
+                                        </g:center>
+                                </g:DockLayoutPanel>
+                        </g:tab>
+                        <g:tab>
+                                <g:customHeader size="30">
+                                        <g:HTML stylePrimaryName="{style.tabIndex5}">
+                                                2.
+                                                <ui:msg key="supplierCreationTab2">Supplier Informatino</ui:msg>
+                                        </g:HTML>
+                                </g:customHeader>
+                                <g:DockLayoutPanel unit="PX" height="100%">
+                                        <g:south size="50">
+                                                <b:Tooltip text="{text.supplierCreationBasicDescription}"
+                                                           placement="BOTTOM">
+                                                        <b:Alert ui:field='detailStatus' type="DEFAULT" close="false"
+                                                                 animation="true">
+                                                                <b:Icon ui:field='detailIcon' type="INFO_SIGN" iconSize="LARGE" />
+                                                                <g:Label ui:field='infoLabel2'>
+                                                                        <ui:msg key="supplierCreationProvideCompanyInfoLabel">
+                                                                                Provide company information.
+                                                                        </ui:msg>
+                                                                </g:Label>
+                                                        </b:Alert>
+                                                </b:Tooltip>
+                                        </g:south>
+                                        <g:south size="35">
+                                                <g:HTMLPanel>
+                                                        <g:Button ui:field="backButtonTab2">
+                                                                <i class="icon-arrow-left"></i>
+                                                                <ui:msg key="commonBtnBack">Back</ui:msg>
+                                                        </g:Button>
+                                                        <g:Button ui:field="nextButtonTab2" styleName='btn btn-primary'>
+                                                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                                                <i class="icon-arrow-right"></i>
+                                                        </g:Button>
+                                                </g:HTMLPanel>
+                                        </g:south>
+                                        <g:center>
+                                                <g:ScrollPanel>
+                                                        <g:SimplePanel ui:field="supplierDetailInfoHolder" />
+                                                </g:ScrollPanel>
+                                        </g:center>
+                                </g:DockLayoutPanel>
+                        </g:tab>
+                        <g:tab>
+                                <g:customHeader size="30">
+                                        <g:HTML stylePrimaryName="{style.tabIndex4}">
+                                                3.
+                                                <ui:msg key="supplierCreationTab2">Category selection</ui:msg>
+                                        </g:HTML>
+                                </g:customHeader>
+                                <g:DockLayoutPanel unit="PX" height="100%">
+                                        <g:south size="50">
+                                                <b:Tooltip text="{text.supplierCreationCatDescription}"
+                                                           placement="BOTTOM">
+                                                        <b:Alert ui:field='categoryStatus' type="DEFAULT" close="false"
+                                                                 animation="true">
+                                                                <b:Icon ui:field='categoryIcon' type="INFO_SIGN"
+                                                                        iconSize="LARGE" />
+                                                                <g:Label ui:field='infoLabel3'>
+                                                                        <ui:msg key="supplierCreationCategorySelectorInfoLabel">
+                                                                                Select the most suitable category.
+                                                                        </ui:msg>
+                                                                </g:Label>
+                                                        </b:Alert>
+                                                </b:Tooltip>
+                                        </g:south>
+                                        <g:south size="35">
+                                                <g:HTMLPanel>
+                                                        <g:Button ui:field="backButtonTab3">
+                                                                <i class="icon-arrow-left"></i>
+                                                                <ui:msg key="commonBtnBack">Back</ui:msg>
+                                                        </g:Button>
+                                                        <g:Button ui:field="nextButtonTab3">
+                                                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                                                <i class="icon-arrow-right"></i>
+                                                        </g:Button>
+                                                </g:HTMLPanel>
+                                        </g:south>
+                                        <g:center>
+                                                <g:ScrollPanel>
+                                                        <g:SimplePanel ui:field="categoryHolder" />
+                                                </g:ScrollPanel>
+                                        </g:center>
+                                </g:DockLayoutPanel>
+                        </g:tab>
+                        <g:tab>
+                                <g:customHeader size="30">
+                                        <g:HTML stylePrimaryName="{style.tabIndex3}">
+                                                4.
+                                                <ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
+                                        </g:HTML>
+                                </g:customHeader>
+                                <g:DockLayoutPanel unit="PX" height="100%">
+                                        <g:south size="50">
+                                                <b:Tooltip text="{text.supplierCreationLocDescription}"
+                                                           placement="BOTTOM">
+                                                        <b:Alert ui:field='localityStatus' type="DEFAULT" close="false"
+                                                                 animation="true">
+                                                                <b:Icon ui:field='localityIcon' type="INFO_SIGN"
+                                                                        iconSize="LARGE" />
+                                                                <g:Label ui:field='infoLabel4'>
+                                                                        <ui:msg key="{text.supplierCreationLocalitySelectorInfoLabel}">
+                                                                                Select your Locality.
+                                                                        </ui:msg>
+                                                                </g:Label>
+                                                        </b:Alert>
+                                                </b:Tooltip>
+                                        </g:south>
+                                        <g:south size="35">
+                                                <g:HTMLPanel>
+                                                        <g:Button ui:field="backButtonTab4">
+                                                                <i class="icon-arrow-left"></i>
+                                                                <ui:msg key="commonBtnBack">Back</ui:msg>
+                                                        </g:Button>
+                                                        <g:Button ui:field="nextButtonTab4">
+                                                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                                                <i class="icon-arrow-right"></i>
+                                                        </g:Button>
+                                                </g:HTMLPanel>
+                                        </g:south>
+                                        <g:center>
+                                                <g:ScrollPanel>
+                                                        <g:SimplePanel ui:field="localityHolder" />
+                                                </g:ScrollPanel>
+                                        </g:center>
+                                </g:DockLayoutPanel>
+                        </g:tab>
+                        <g:tab>
+                                <g:customHeader size="30">
+                                        <g:HTML stylePrimaryName="{style.tabIndex2}">
+                                                5.
+                                                <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
+                                        </g:HTML>
+                                </g:customHeader>
+                                <g:DockLayoutPanel unit="PX" height="100%">
+                                        <g:south size="50">
+                                                <b:Tooltip text="{text.supplierCreationAdvDescription}"
+                                                           placement="BOTTOM">
+                                                        <b:Alert ui:field='serviceStatus' type="DEFAULT" close="false"
+                                                                 animation="true">
+                                                                <b:Icon ui:field='serviceIcon' type="INFO_SIGN" iconSize="LARGE" />
+                                                                <g:Label ui:field='infoLabel5'>
+                                                                        <ui:msg key="{text.supplierCreationServiceSelectorInfoLabel}">
+                                                                                Select service you are interested in.
+                                                                        </ui:msg>
+                                                                </g:Label>
+                                                        </b:Alert>
+                                                </b:Tooltip>
+                                        </g:south>
+                                        <g:south size="35">
+                                                <g:HTMLPanel>
+                                                        <g:Button ui:field="backButtonTab5">
+                                                                <i class="icon-arrow-left"></i>
+                                                                <ui:msg key="commonBtnBack">Back</ui:msg>
+                                                        </g:Button>
+                                                        <g:Button ui:field="registerBtn">
+                                                                <ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
+                                                        </g:Button>
+                                                </g:HTMLPanel>
+                                        </g:south>
+                                        <g:center>
+                                                <g:HTMLPanel>
+                                                        <g:SimplePanel ui:field="serviceHolder" />
+                                                        <g:HorizontalPanel ui:field="agreementPanel">
+                                                                <g:CheckBox ui:field="agreedCheck" />
+                                                                <g:Anchor ui:field="conditionLink">
+                                                                        <ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
+                                                                </g:Anchor>
+                                                        </g:HorizontalPanel>							
+                                                </g:HTMLPanel>
+                                        </g:center>
+                                </g:DockLayoutPanel>
+                        </g:tab>
+                </g:TabLayoutPanel>
+        </g:HTMLPanel>
 </ui:UiBinder>

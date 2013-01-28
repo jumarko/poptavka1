@@ -3,13 +3,14 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
-import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
-import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierAccountInfoPresenter;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierDetailInfoPresenter;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Icon;
@@ -26,6 +27,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -43,13 +45,15 @@ public class SupplierCreationPresenter
         implements NavigationConfirmationInterface {
 
     // Main Panel Tab Constants
-    private static final int FIRST_TAB_BASIC = 0;
-    private static final int SECOND_TAB_CATEGORY = 1;
-    private static final int THIRD_TAB_LOCALITY = 2;
-    private static final int FOURTH_TAB_SERVICE = 3;
+    private static final int FIRST_SUPPLIER_ACCOUNT_TAB = 0;
+    private static final int SECOND_SUPPLIER_DETAIL_TAB = 1;
+    private static final int THIRD_TAB_CATEGORY = 2;
+    private static final int FOURTH_TAB_LOCALITY = 3;
+    private static final int FIFTH_TAB_SERVICE = 4;
     private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private SupplierInfoPresenter supplierBasicForm = null;
+    private SupplierAccountInfoPresenter supplierAccountForm = null;
+    private SupplierDetailInfoPresenter supplierDetailForm = null;
     private ServicesSelectorPresenter supplierServiceForm = null;
     private int maxSelectedTab = -1;
 
@@ -63,6 +67,8 @@ public class SupplierCreationPresenter
         Alert getAlert(int order);
 
         Icon getIcon(int order);
+
+        Label getLabel(int order);
 
         /** Buttons. **/
         HasClickHandlers getRegisterButton();
@@ -104,13 +110,14 @@ public class SupplierCreationPresenter
      * Used to navigate/invoke supplier creation module.
      */
     public void onGoToCreateSupplierModule() {
-        view.getMainPanel().selectTab(FIRST_TAB_BASIC);
-        eventBus.registerTabToken(FIRST_TAB_BASIC);
-        eventBus.initSupplierBasicForm(view.getHolderPanel(FIRST_TAB_BASIC));
+        view.getMainPanel().selectTab(FIRST_SUPPLIER_ACCOUNT_TAB);
+        eventBus.registerTabToken(FIRST_SUPPLIER_ACCOUNT_TAB);
+        eventBus.initSupplierAccountInfoForm(view.getHolderPanel(FIRST_SUPPLIER_ACCOUNT_TAB));
         //remove widgets to force widget to init them again
-        view.getHolderPanel(SECOND_TAB_CATEGORY).setWidget(null);
-        view.getHolderPanel(THIRD_TAB_LOCALITY).setWidget(null);
-        view.getHolderPanel(FOURTH_TAB_SERVICE).setWidget(null);
+        view.getHolderPanel(SECOND_SUPPLIER_DETAIL_TAB).setWidget(null);
+        view.getHolderPanel(THIRD_TAB_CATEGORY).setWidget(null);
+        view.getHolderPanel(FOURTH_TAB_LOCALITY).setWidget(null);
+        view.getHolderPanel(FIFTH_TAB_SERVICE).setWidget(null);
     }
 
     public void onGoToCreateSupplierModuleByHistory(int selectedTab) {
@@ -138,11 +145,11 @@ public class SupplierCreationPresenter
                     //if previous step is valid, continue
                     if (canContinue(eventItem - 1)) {
                         view.getAlert(eventItem - 1).setType(AlertType.SUCCESS);
-                        view.getAlert(eventItem - 1).setText(MSGS.commonOK());
+                        view.getLabel(eventItem - 1).setText(MSGS.commonOK());
                         view.getIcon(eventItem - 1).setType(IconType.OK_SIGN);
                     } else {
                         view.getAlert(eventItem - 1).setType(AlertType.ERROR);
-                        view.getAlert(eventItem - 1).setText(getErrorInfoLabel(eventItem - 1));
+                        view.getLabel(eventItem - 1).setText(getErrorInfoLabel(eventItem - 1));
                         view.getIcon(eventItem - 1).setType(IconType.REMOVE_SIGN);
                         event.cancel();
                     }
@@ -162,41 +169,49 @@ public class SupplierCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
-            case FIRST_TAB_BASIC:
-                eventBus.registerTabToken(FIRST_TAB_BASIC);
+            case FIRST_SUPPLIER_ACCOUNT_TAB:
+                eventBus.registerTabToken(FIRST_SUPPLIER_ACCOUNT_TAB);
                 break;
-            case SECOND_TAB_CATEGORY:
+            case SECOND_SUPPLIER_DETAIL_TAB:
+                eventBus.registerTabToken(FIRST_SUPPLIER_ACCOUNT_TAB);
+                if (maxSelectedTab < SECOND_SUPPLIER_DETAIL_TAB) {
+                    if (view.getHolderPanel(SECOND_SUPPLIER_DETAIL_TAB).getWidget() == null) {
+                        eventBus.initSupplierDetailInfoForm(view.getHolderPanel(SECOND_SUPPLIER_DETAIL_TAB));
+                    }
+                }
+                break;
+            case THIRD_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
-                eventBus.registerTabToken(SECOND_TAB_CATEGORY);
-                if (maxSelectedTab < SECOND_TAB_CATEGORY) {
-                    if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
+                eventBus.registerTabToken(THIRD_TAB_CATEGORY);
+                if (maxSelectedTab < THIRD_TAB_CATEGORY) {
+                    if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
                         eventBus.initCategoryWidget(
-                                view.getHolderPanel(SECOND_TAB_CATEGORY),
+                                view.getHolderPanel(THIRD_TAB_CATEGORY),
                                 Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                                 CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
                                 null);
                     }
                 }
                 break;
-            case THIRD_TAB_LOCALITY:
+            case FOURTH_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
-                eventBus.registerTabToken(THIRD_TAB_LOCALITY);
-                if (maxSelectedTab < THIRD_TAB_LOCALITY) {
-                    if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
+                eventBus.registerTabToken(FOURTH_TAB_LOCALITY);
+                if (maxSelectedTab < FOURTH_TAB_LOCALITY) {
+                    if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
                         eventBus.initLocalityWidget(
-                                view.getHolderPanel(THIRD_TAB_LOCALITY),
+                                view.getHolderPanel(FOURTH_TAB_LOCALITY),
                                 Constants.WITH_CHECK_BOXES,
                                 CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
                                 null);
                     }
                 }
                 break;
-            case FOURTH_TAB_SERVICE:
+            case FIFTH_TAB_SERVICE:
                 LOGGER.info(" -> init Service Form supplierService");
-                eventBus.registerTabToken(FOURTH_TAB_SERVICE);
-                if (maxSelectedTab < FOURTH_TAB_SERVICE) {
-                    if (view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget() == null) {
-                        eventBus.initServicesWidget(view.getHolderPanel(FOURTH_TAB_SERVICE));
+                eventBus.registerTabToken(FIFTH_TAB_SERVICE);
+                if (maxSelectedTab < FIFTH_TAB_SERVICE) {
+                    if (view.getHolderPanel(FIFTH_TAB_SERVICE).getWidget() == null) {
+                        eventBus.initServicesWidget(view.getHolderPanel(FIFTH_TAB_SERVICE));
                     }
                 }
                 break;
@@ -212,8 +227,8 @@ public class SupplierCreationPresenter
         view.getRegisterButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (canContinue(FOURTH_TAB_SERVICE)) {
-                    LOGGER.fine("registxer him!");
+                if (canContinue(FIFTH_TAB_SERVICE)) {
+                    LOGGER.fine("register him!");
                     registerSupplier();
                 } else {
                     LOGGER.fine("cannot continue");
@@ -237,29 +252,44 @@ public class SupplierCreationPresenter
     /**************************************************************************/
     // Inject widgets
     //--------------------------------------------------------------------------
-    public void onInitSupplierBasicForm(SimplePanel holderWidget) {
-        if (supplierBasicForm != null) {
-            eventBus.removeHandler(supplierBasicForm);
+    public void onInitSupplierAccountInfoForm(SimplePanel holderWidget) {
+        if (supplierAccountForm != null) {
+            eventBus.removeHandler(supplierAccountForm);
         }
-        supplierBasicForm = eventBus.addHandler(SupplierInfoPresenter.class);
-        supplierBasicForm.initSupplierForm(holderWidget);
+        supplierAccountForm = eventBus.addHandler(SupplierAccountInfoPresenter.class);
+        supplierAccountForm.initSupplierForm(holderWidget);
+    }
+
+    public void onInitSupplierDetailInfoForm(SimplePanel holderWidget) {
+        if (supplierDetailForm != null) {
+            eventBus.removeHandler(supplierDetailForm);
+        }
+        supplierDetailForm = eventBus.addHandler(SupplierDetailInfoPresenter.class);
+        supplierDetailForm.initSupplierForm(holderWidget);
     }
 
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
     private void registerSupplier() {
-        SupplierInfoInterface info =
-                (SupplierInfoInterface) view.getHolderPanel(FIRST_TAB_BASIC).getWidget();
+        SupplierAccountInfoPresenter.SupplierAccountInfoInterface accountInfo =
+                (SupplierAccountInfoPresenter.SupplierAccountInfoInterface) view.getHolderPanel(
+                    FIRST_SUPPLIER_ACCOUNT_TAB).getWidget();
+        SupplierDetailInfoPresenter.SupplierDetailInfoInterface detailinfo =
+                (SupplierDetailInfoPresenter.SupplierDetailInfoInterface) view.getHolderPanel(
+                    SECOND_SUPPLIER_DETAIL_TAB).getWidget();
         CategorySelectorInterface cats =
-                (CategorySelectorInterface) view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget();
+                (CategorySelectorInterface) view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget();
         LocalitySelectorInterface locs =
-                (LocalitySelectorInterface) view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget();
+                (LocalitySelectorInterface) view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget();
         ServicesSelectorView service =
-                (ServicesSelectorView) view.getHolderPanel(FOURTH_TAB_SERVICE).getWidget();
+                (ServicesSelectorView) view.getHolderPanel(FIFTH_TAB_SERVICE).getWidget();
 
         FullSupplierDetail newSupplier = new FullSupplierDetail();
-        newSupplier.setUserData(info.createBusinessUserDetail());
+        BusinessUserDetail user = new BusinessUserDetail();
+        user = accountInfo.updateBusinessUserDetail(user);
+        user = detailinfo.updateBusinessUserDetail(user);
+        newSupplier.setUserData(user);
         newSupplier.setLocalities(locs.getCellListDataProvider().getList());
         newSupplier.setCategories(cats.getCellListDataProvider().getList());
         newSupplier.setServices(Arrays.asList(service.getSelectedService()));
@@ -271,19 +301,21 @@ public class SupplierCreationPresenter
 
     private String getErrorInfoLabel(int step) {
         switch (step) {
-            case SECOND_TAB_CATEGORY:
+            case SECOND_SUPPLIER_DETAIL_TAB:
                 return MSGS.supplierCreationSecondTabErrorInfo();
-            case THIRD_TAB_LOCALITY:
+            case THIRD_TAB_CATEGORY:
                 return MSGS.supplierCreationThirdTabErrorInfo();
-            case FOURTH_TAB_SERVICE:
+            case FOURTH_TAB_LOCALITY:
                 return MSGS.supplierCreationFourthTabErrorInfo();
+            case FIFTH_TAB_SERVICE:
+                return MSGS.supplierCreationFifthTabErrorInfo();
             default:
                 return "";
         }
     }
 
     private boolean canContinue(int step) {
-        if (step == FOURTH_TAB_SERVICE) {
+        if (step == FIFTH_TAB_SERVICE) {
             //is aggreement terms checked?
             return view.isValid();
         } else {
