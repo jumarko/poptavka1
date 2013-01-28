@@ -25,7 +25,10 @@
 			<b:FluidRow>
 				<b:Column size="12">
 					<b:FluidRow>
-						<b:Column size="12">
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="7">
 							<b:Heading size="4">
 								<ui:msg key="formAccountInfo">Account Info</ui:msg>
 							</b:Heading>
@@ -80,7 +83,10 @@
 						</b:Column>
 					</b:FluidRow>
 					<b:FluidRow>
-						<b:Column size="12">
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="7">
 							<b:Heading size="4">
 								<ui:msg key="regSupFormContactPerson">Contact Person</ui:msg>
 							</b:Heading>

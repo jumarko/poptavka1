@@ -13,19 +13,22 @@
 		color: red;
 		}
 		.tab-panel-inputs {
-		width:
-		935px;
+		padding-top: 20px;
+		width:940px;
 		}
-		.tab-panel-inputs input {
-		width: 165px;
+		.text-left {
+		text-align: right;
 		}
 	</ui:style>
 	<g:HTMLPanel styleName='{style.tab-panel-inputs}'>
 		<b:FluidContainer>
 			<b:FluidRow>
-				<b:Column size="4">
+				<b:Column size="12">
 					<b:FluidRow>
-						<b:Column size="12">
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="7">
 							<b:Heading size="4">
 								<ui:msg key="formCompanyInfo">Company Info</ui:msg>
 							</b:Heading>
@@ -33,12 +36,12 @@
 					</b:FluidRow>
 
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formCompanyName">Company Name</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="companyName">
 								<g:TextBox title="companyName" />
 							</vm:ValidationMonitor>
@@ -46,12 +49,12 @@
 					</b:FluidRow>
 
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formIdentificationNumber">Identification Number</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="identificationNumber">
 								<g:TextBox title="identificationNumber" />
 							</vm:ValidationMonitor>
@@ -59,12 +62,12 @@
 					</b:FluidRow>
 
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formTaxNumber">Tax Number</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="taxId">
 								<g:TextBox title="taxId" />
 							</vm:ValidationMonitor>
@@ -72,21 +75,22 @@
 					</b:FluidRow>
 
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formWebsite">Your Website</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="website">
 								<g:TextBox title="website" />
 							</vm:ValidationMonitor>
 						</b:Column>
 					</b:FluidRow>
-                                </b:Column>
-                                <b:Column size="4">
 					<b:FluidRow>
-						<b:Column size="12">
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="7">
 							<b:Heading size="4">
 								<ui:msg key="formAddress">Address</ui:msg>
 							</b:Heading>
@@ -95,16 +99,21 @@
 
 					<g:SimplePanel ui:field="addressHolder" />
 
-				</b:Column>
-				
-				<b:Column size="4">
 					<b:FluidRow>
-						<b:Column size="12">
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="7">
 							<b:Heading size="4">
 								<ui:msg key="formDescription">Company Description</ui:msg>
 							</b:Heading>
 						</b:Column>
-						<b:Column size="12">
+					</b:FluidRow>
+					<b:FluidRow>
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="8">
 							<vm:ValidationMonitor ui:field="description">
 								<g:TextArea title="description" height="200px" width="300px" />
 							</vm:ValidationMonitor>
