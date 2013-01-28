@@ -6,7 +6,7 @@
  */
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierAccountInfoPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -107,12 +107,18 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     void userMenuStyleChange(int loadedModule);
 
     /**************************************************************************/
-    /* Business events handled by SupplierInfoPresenters.                     */
+    /* Business events handled by SupplierPresenters.                         */
     /**************************************************************************/
     @Event(handlers = SupplierCreationPresenter.class)
-    void initSupplierBasicForm(SimplePanel holderPanel);
+    void initSupplierAccountInfoForm(SimplePanel holderPanel);
 
-    @Event(handlers = SupplierInfoPresenter.class)
+    @Event(handlers = SupplierCreationPresenter.class)
+    void initSupplierDetailInfoForm(SimplePanel holderPanel);
+
+    /**************************************************************************/
+    /* Business events handled by SupplierAccountInfoPresenters.              */
+    /**************************************************************************/
+    @Event(handlers = SupplierAccountInfoPresenter.class)
     void checkFreeEmailResponse(Boolean result);
 
     /**************************************************************************/

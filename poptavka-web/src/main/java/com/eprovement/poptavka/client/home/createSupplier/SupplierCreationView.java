@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.google.gwt.user.client.ui.Label;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -49,29 +48,26 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    /** Constants. **/
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private List<Alert> statuses = new ArrayList<Alert>();
-    private List<Icon> icons = new ArrayList<Icon>();
-    private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
-    private int back = 0;
-    @UiField
-    Alert basicStatus, categoryStatus, localityStatus, serviceStatus;
-    @UiField
-    Icon basicIcon, categoryIcon, localityIcon, serviceIcon;
-    @UiField
-    SimplePanel supplierInfoHolder, categoryHolder, localityHolder, serviceHolder;
-    @UiField
-    TabLayoutPanel mainPanel;
-    @UiField
-    HorizontalPanel agreementPanel;
-    @UiField
-    CheckBox agreedCheck;
-    @UiField
-    Button nextButtonTab1, nextButtonTab2, nextButtonTab3, registerBtn,
-    backButtonTab2, backButtonTab3, backButtonTab4;
-    @UiField
-    Anchor conditionLink;
+    /** Class attributes. **/
+    private List<Alert> statuses;
+    private List<Icon> icons;
+    private List<Label> labels;
+    private List<SimplePanel> holderPanels;
+    /** UiBinder attributes. **/
+    @UiField Alert accountStatus, detailStatus, categoryStatus, localityStatus, serviceStatus;
+    @UiField Label infoLabel1, infoLabel2, infoLabel3, infoLabel4, infoLabel5;
+    @UiField Icon accountIcon, detailIcon, categoryIcon, localityIcon, serviceIcon;
+    @UiField SimplePanel supplierAccountInfoHolder, supplierDetailInfoHolder;
+    @UiField SimplePanel categoryHolder, localityHolder, serviceHolder;
+    @UiField TabLayoutPanel mainPanel;
+    @UiField HorizontalPanel agreementPanel;
+    @UiField CheckBox agreedCheck;
+    @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4,
+    registerBtn, backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
+    @UiField Anchor conditionLink;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -81,10 +77,12 @@ public class SupplierCreationView extends OverflowComposite
         initWidget(uiBinder.createAndBindUi(this));
 
         /** filling status list **/
-        statuses = Arrays.asList(basicStatus, categoryStatus, localityStatus, serviceStatus);
-        icons = Arrays.asList(basicIcon, categoryIcon, localityIcon, serviceIcon);
+        statuses = Arrays.asList(accountStatus, detailStatus, categoryStatus, localityStatus, serviceStatus);
+        icons = Arrays.asList(accountIcon, detailIcon, categoryIcon, localityIcon, serviceIcon);
+        labels = Arrays.asList(infoLabel1, infoLabel2, infoLabel3, infoLabel4, infoLabel5);
         /** filling panels list **/
-        SimplePanel[] panels = {supplierInfoHolder, categoryHolder, localityHolder, serviceHolder};
+        SimplePanel[] panels = {
+            supplierAccountInfoHolder, supplierDetailInfoHolder, categoryHolder, localityHolder, serviceHolder};
         holderPanels = Arrays.asList(panels);
 
         /** style implementation and overflow tweaks **/
@@ -120,6 +118,11 @@ public class SupplierCreationView extends OverflowComposite
         selectNextTab();
     }
 
+    @UiHandler("nextButtonTab4")
+    public void nextButtonTab4ClickHandler(ClickEvent event) {
+        selectNextTab();
+    }
+
     /** BACK. **/
     @UiHandler("backButtonTab2")
     public void backButtonTab2ClickHandler(ClickEvent event) {
@@ -133,6 +136,11 @@ public class SupplierCreationView extends OverflowComposite
 
     @UiHandler("backButtonTab4")
     public void backButtonTab4ClickHandler(ClickEvent event) {
+        selectPreviousTab();
+    }
+
+    @UiHandler("backButtonTab5")
+    public void backButtonTab5ClickHandler(ClickEvent event) {
         selectPreviousTab();
     }
 
@@ -158,6 +166,11 @@ public class SupplierCreationView extends OverflowComposite
     @Override
     public Icon getIcon(int order) {
         return icons.get(order);
+    }
+
+    @Override
+    public Label getLabel(int order) {
+        return labels.get(order);
     }
 
     /** BUTTONS. **/

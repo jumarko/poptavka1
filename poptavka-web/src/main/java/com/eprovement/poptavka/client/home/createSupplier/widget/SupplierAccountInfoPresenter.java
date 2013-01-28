@@ -15,13 +15,13 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-@Presenter(view = SupplierInfoView.class, multiple = true)
-public class SupplierInfoPresenter
-        extends LazyPresenter<SupplierInfoPresenter.SupplierInfoInterface, SupplierCreationEventBus> {
+@Presenter(view = SupplierAccountInfoView.class, multiple = true)
+public class SupplierAccountInfoPresenter
+        extends LazyPresenter<SupplierAccountInfoPresenter.SupplierAccountInfoInterface, SupplierCreationEventBus> {
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    public interface SupplierInfoInterface extends LazyView {
+    public interface SupplierAccountInfoInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -31,9 +31,8 @@ public class SupplierInfoPresenter
 
         boolean validateEmail();
 
-        BusinessUserDetail createBusinessUserDetail();
+        BusinessUserDetail updateBusinessUserDetail(BusinessUserDetail user);
 
-        SimplePanel getAddressHolder();
     }
 
     @Override
@@ -53,7 +52,6 @@ public class SupplierInfoPresenter
 
     public void initSupplierForm(SimplePanel embedToWidget) {
         embedToWidget.setWidget(view.getWidgetView());
-        eventBus.initAddressWidget(view.getAddressHolder());
     }
 
     public void onCheckFreeEmailResponse(Boolean isAvailable) {
