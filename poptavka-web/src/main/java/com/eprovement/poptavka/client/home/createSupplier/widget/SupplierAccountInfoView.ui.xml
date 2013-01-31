@@ -13,31 +13,34 @@
 		color: red;
 		}
 		.tab-panel-inputs {
-		width:
-		935px;
+		padding-top: 20px;
+		width:940px;
 		}
-		.tab-panel-inputs input {
-		width: 165px;
+		.text-left {
+		text-align: right;
 		}
 	</ui:style>
 	<g:HTMLPanel styleName='{style.tab-panel-inputs}'>
 		<b:FluidContainer>
 			<b:FluidRow>
-				<b:Column size="4">
+				<b:Column size="12">
 					<b:FluidRow>
-						<b:Column size="12">
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="7">
 							<b:Heading size="4">
 								<ui:msg key="formAccountInfo">Account Info</ui:msg>
 							</b:Heading>
 						</b:Column>
 					</b:FluidRow>
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formEmail">E-mail</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="email">
 								<g:TextBox title="email" />
 							</vm:ValidationMonitor>
@@ -48,12 +51,12 @@
 						</b:Column>
 					</b:FluidRow>
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formPassword">Password</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="password">
 								<g:PasswordTextBox title="password" />
 							</vm:ValidationMonitor>
@@ -64,12 +67,12 @@
 						</b:Column>
 					</b:FluidRow>
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formPasswordConfirm">Password Again</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="passwordConfirm">
 								<g:PasswordTextBox title="password" />
 							</vm:ValidationMonitor>
@@ -79,10 +82,11 @@
 								visible="false" state="ERROR_24" description="Passwords don't match" />
 						</b:Column>
 					</b:FluidRow>
-				</b:Column>
-                                <b:Column size="4">
 					<b:FluidRow>
-						<b:Column size="12">
+						<b:Column size="2">
+							<g:HTMLPanel></g:HTMLPanel>
+						</b:Column>
+						<b:Column size="7">
 							<b:Heading size="4">
 								<ui:msg key="regSupFormContactPerson">Contact Person</ui:msg>
 							</b:Heading>
@@ -90,12 +94,12 @@
 					</b:FluidRow>
 
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formFirstName">Name</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="firstName">
 								<g:TextBox title="firstName" />
 							</vm:ValidationMonitor>
@@ -103,12 +107,12 @@
 					</b:FluidRow>
 
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formLastName">Last Name</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="lastName">
 								<g:TextBox title="lastName" />
 							</vm:ValidationMonitor>
@@ -116,12 +120,12 @@
 					</b:FluidRow>
 
 					<b:FluidRow>
-						<b:Column size="5">
-							<g:Label>
+						<b:Column size="2">
+							<g:Label styleName='pull-right'>
 								<ui:msg key="formPhone">Phone</ui:msg>
 							</g:Label>
 						</b:Column>
-						<b:Column size="6">
+						<b:Column size="7">
 							<vm:ValidationMonitor ui:field="phone">
 								<g:TextBox title="phone" />
 							</vm:ValidationMonitor>
