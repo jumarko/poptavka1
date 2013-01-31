@@ -955,7 +955,28 @@
 						</execution>
 					</executions>
 				</plugin>
-			</plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.9.1</version>
+                    <configuration>
+                        <!--You have to ensure that location is properly configured in child module-->
+                        <!--By default following path will be correct in all direct children-->
+                        <configLocation>${project.parent.basedir}/checkstyle/custom_checks.xml</configLocation>
+                        <consoleOutput>true</consoleOutput>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
 		</pluginManagement>
 
 		<plugins>
