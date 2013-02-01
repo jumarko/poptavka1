@@ -162,7 +162,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             if (selectedObject != null) {
                 this.detailSection.initDetails(
                         selectedObject.getDemandId(),
-                        Storage.getClientId(),
                         selectedObject.getThreadRootId());
             }
         }
@@ -252,7 +251,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                         detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
                         detailSection.initDetails(
                                 selected.getDemandId(),
-                                selected.getSenderId(),
                                 selected.getThreadRootId());
                     }
                 }

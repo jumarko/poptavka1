@@ -9,8 +9,8 @@ import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailVie
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
+import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -21,7 +21,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -46,7 +45,7 @@ public class DetailsWrapperPresenter
     private UniversalTableGrid table = null;
     private EditableDemandDetailPresenter editDemandPresenter = null;
     private long demandId = -1;
-    private long clientOrSupplierId = -1;
+    private long supplierId = -1;
     private long threadRootId = -1;
 
     /**************************************************************************/
@@ -68,8 +67,6 @@ public class DetailsWrapperPresenter
         OfferQuestionWindow getReplyHolder();
 
         HTMLPanel getConversationHolder();
-
-        Label getUserDetailTabHeaderLabel();
 
         void loadingDivShow(Widget holderWidget);
 
@@ -134,11 +131,6 @@ public class DetailsWrapperPresenter
     public void initDetailWrapper(UniversalTableGrid grid, SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
         view.getContainer().selectTab(CONVERSATION_TAB, false);
-        if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-            view.getUserDetailTabHeaderLabel().setText(Storage.MSGS.detailsWrapperTabSupplierDetail());
-        } else if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-            view.getUserDetailTabHeaderLabel().setText(Storage.MSGS.detailsWrapperTabClientDetail());
-        }
         this.table = grid;
     }
 
@@ -148,13 +140,30 @@ public class DetailsWrapperPresenter
      * changes tab.
      *
      * @param demandId
-     * @param clientOrSupplierId
+     * @param supplierId
      * @param threadRootId
      */
-    public void initDetails(long demandId, long clientOrSupplierId, long threadRootId) {
+    public void initDetails(long demandId, long supplierId, long threadRootId) {
         clear();
         this.demandId = demandId;
-        this.clientOrSupplierId = clientOrSupplierId;
+        this.supplierId = supplierId;
+        this.threadRootId = threadRootId;
+        requestActualTabData();
+    }
+
+    /**
+     * Store needed ids for later data retrieving and hides User tab. Data are not retrieved immediately,
+     * but only for selected tab, therefore we need to remember them in case, user,
+     * changes tab.
+     *
+     * @param demandId
+     * @param supplierId
+     * @param threadRootId
+     */
+    public void initDetails(long demandId, long threadRootId) {
+        clear();
+        view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
+        this.demandId = demandId;
         this.threadRootId = threadRootId;
         requestActualTabData();
     }
@@ -165,11 +174,7 @@ public class DetailsWrapperPresenter
                 requestDemandDetail(demandId);
                 break;
             case USER_DETAIL_TAB:
-                if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                    requestSupplierDetail(clientOrSupplierId);
-                } else if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                    requestClientDetail(clientOrSupplierId);
-                }
+                requestSupplierDetail(supplierId);
                 break;
             case CONVERSATION_TAB:
                 requestConversation(threadRootId, Storage.getUser().getUserId());

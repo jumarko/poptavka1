@@ -1,18 +1,16 @@
 package com.eprovement.poptavka.client.user.widget;
 
-import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
-import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
 import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
+import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -40,7 +38,6 @@ public class DetailsWrapperView extends Composite
     @UiField ConversationPanel conversationPanel;
     @UiField OfferQuestionWindow replyHolder;
     @UiField HTMLPanel conversationHolder;
-    @UiField HTML userDetailTabHeaderLabel;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
 
@@ -104,11 +101,6 @@ public class DetailsWrapperView extends Composite
     @Override
     public HTMLPanel getConversationHolder() {
         return conversationHolder;
-    }
-
-    @Override
-    public Label getUserDetailTabHeaderLabel() {
-        return userDetailTabHeaderLabel;
     }
 
     @Override

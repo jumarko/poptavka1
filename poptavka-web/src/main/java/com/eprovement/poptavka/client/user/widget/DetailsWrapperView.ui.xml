@@ -1,51 +1,51 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.messaging"
-	xmlns:w="urn:import:com.eprovement.poptavka.client.user.widget.detail">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.messaging"
+             xmlns:w="urn:import:com.eprovement.poptavka.client.user.widget.detail">
 
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:style>
-		.panel {
-		min-width: 500px;
-		}
-		.relative {
-		position: relative;
-		}
-	</ui:style>
-	<g:TabLayoutPanel stylePrimaryName='{res.detailTabPanel.detailTabPanel}'
-		ui:field="container" barUnit="PX" barHeight="40" animationDuration="1000">
-		<g:tab>
-			<g:header>
-				<ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
-			</g:header>
-			<g:ScrollPanel>
-                                <g:SimplePanel ui:field="demandDetailHolder" />
-			</g:ScrollPanel>
-		</g:tab>
-		<g:tab>
-			<g:customHeader>
-                                <g:HTML ui:field="userDetailTabHeaderLabel"/>
-			</g:customHeader>
-			<g:ScrollPanel>
-				<w:UserDetailView ui:field="userDetail" />
-			</g:ScrollPanel>
-		</g:tab>
-		<g:tab>
-			<g:header>
-				<ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
-			</g:header>
-			<g:ScrollPanel>
-				<g:HTMLPanel ui:field="conversationHolder"
-					styleName='{res.detailViews.commonDetailContainer}'>
-					<g:HTMLPanel styleName='{res.detailViews.conversationContainer}'>
-						<d:ConversationPanel ui:field="conversationPanel"
-							styleName="{style.relative}" />
-						<d:OfferQuestionWindow ui:field="replyHolder" />
-					</g:HTMLPanel>
-				</g:HTMLPanel>
-			</g:ScrollPanel>
-		</g:tab>
-	</g:TabLayoutPanel>
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:style>
+        .panel {
+        min-width: 500px;
+        }
+        .relative {
+        position: relative;
+        }
+    </ui:style>
+    <g:TabLayoutPanel stylePrimaryName='{res.detailTabPanel.detailTabPanel}'
+                      ui:field="container" barUnit="PX" barHeight="40" animationDuration="1000">
+        <g:tab>
+            <g:header>
+                <ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
+            </g:header>
+            <g:ScrollPanel>
+                <g:SimplePanel ui:field="demandDetailHolder" />
+            </g:ScrollPanel>
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="detailsWrapperTabSupplierDetail">Supplier detail</ui:msg>
+            </g:header>
+            <g:ScrollPanel>
+                <w:UserDetailView ui:field="userDetail" />
+            </g:ScrollPanel>
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
+            </g:header>
+            <g:ScrollPanel>
+                <g:HTMLPanel ui:field="conversationHolder"
+                             styleName='{res.detailViews.commonDetailContainer}'>
+                    <g:HTMLPanel styleName='{res.detailViews.conversationContainer}'>
+                        <d:ConversationPanel ui:field="conversationPanel"
+                                             styleName="{style.relative}" />
+                        <d:OfferQuestionWindow ui:field="replyHolder" />
+                    </g:HTMLPanel>
+                </g:HTMLPanel>
+            </g:ScrollPanel>
+        </g:tab>
+    </g:TabLayoutPanel>
 </ui:UiBinder>
