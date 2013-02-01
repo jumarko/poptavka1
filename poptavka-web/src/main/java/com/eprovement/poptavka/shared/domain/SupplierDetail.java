@@ -16,7 +16,7 @@ public class SupplierDetail implements Serializable {
     private String description;
     private ArrayList<LocalityDetail> localities;
     private ArrayList<CategoryDetail> categories;
-    private ArrayList<Integer> services = new ArrayList<Integer>();
+    private ArrayList<ServiceDetail> services = new ArrayList<ServiceDetail>();
 
     public SupplierDetail() {
     }
@@ -65,16 +65,12 @@ public class SupplierDetail implements Serializable {
         this.description = description;
     }
 
-    public ArrayList<Integer> getServices() {
+    public ArrayList<ServiceDetail> getServices() {
         return services;
     }
 
-    public void setServices(List<Integer> serviceList) {
-        this.services = new ArrayList<Integer>(serviceList);
-    }
-
-    public void addService(int selectedService) {
-        services.add(Integer.valueOf(selectedService));
+    public void setServices(List<ServiceDetail> serviceList) {
+        this.services = new ArrayList<ServiceDetail>(serviceList);
     }
 
     public void setSupplierId(Long supplierId) {

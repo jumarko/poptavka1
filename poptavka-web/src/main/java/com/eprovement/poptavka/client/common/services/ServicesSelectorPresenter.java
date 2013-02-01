@@ -11,15 +11,16 @@ import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 
 @Presenter(view = ServicesSelectorView.class, multiple = true)
-public class ServicesSelectorPresenter extends
-        LazyPresenter<ServicesSelectorPresenter.SupplierServiceInterface, RootEventBus> {
+public class ServicesSelectorPresenter extends LazyPresenter<
+        ServicesSelectorPresenter.SupplierServiceInterface, RootEventBus> {
 
     public interface SupplierServiceInterface extends LazyView {
 
         void setServices(ArrayList<ServiceDetail> services);
 
+        ServiceDetail getSelectedService();
+
         UniversalGrid getTable();
-//        int getSelectedService();
 
         Widget getWidgetView();
     }

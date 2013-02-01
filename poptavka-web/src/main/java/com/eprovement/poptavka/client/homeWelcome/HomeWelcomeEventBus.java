@@ -46,7 +46,8 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class, navigationEvent = true)
+    @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class,
+            navigationEvent = true)
     String goToHomeWelcomeModule();
 
     /**************************************************************************/

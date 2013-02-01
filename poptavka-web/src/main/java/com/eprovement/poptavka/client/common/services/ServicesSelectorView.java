@@ -7,14 +7,12 @@ import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 
 public class ServicesSelectorView extends Composite implements ServicesSelectorPresenter.SupplierServiceInterface {
@@ -30,30 +28,17 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /** CONSTANTS. **/
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private static final String HEADER_TITLE = MSGS.columnTitle();
-    private static final String HEADER_DESCRIPTION = MSGS.columDescription();
-    private static final String HEADER_PRICE = MSGS.columnPrice();
-    private static final String HEADER_MONTHS = MSGS.columnDuration();
-    private static final int FEW_MONTHS = 4;
-    /** Attributes. **/
-    private ArrayList<ServiceDetail> serviceList;
-    /** UiFields. **/
-//    @UiField(provided = true) RadioTable table;
+    /** UiBinder attibutes. **/
     @UiField(provided = true)
     UniversalGrid table;
+    /** Class Attributes. **/
+    private SingleSelectionModel<ServiceDetail> selectionModel;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-//        ArrayList<String> list = new ArrayList<String>();
-//        list.add(HEADER_TITLE);
-//        list.add(HEADER_PRICE);
-//        list.add(HEADER_MONTHS);
-//        table = new RadioTable(list, false, 0);
         initTable();
 
         initWidget(uiBinder.createAndBindUi(this));
@@ -61,8 +46,10 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
 
     private void initTable() {
         /** Table initialization. **/
-        table = new UniversalGrid(ServiceDetail.KEY_PROVIDER);
-        
+        table = new UniversalGrid();
+        selectionModel = new SingleSelectionModel<ServiceDetail>(ServiceDetail.KEY_PROVIDER);
+        table.setSelectionModel(selectionModel);
+
         /** Column initialization. **/
         //Radio column
         table.addColumn(new Column<ServiceDetail, Boolean>(new RadioCell()) {
@@ -93,6 +80,7 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
             }
         }, Storage.MSGS.columnDuration(), "  ");
 
+        //Set table and columns sizes
         table.setSize("400px", "200px");
         table.setColumnWidth(0, "35px");
         table.setColumnWidth(1, "155px");
@@ -101,40 +89,11 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
     }
 
     /**************************************************************************/
-    /* UiHandlers                                                             */
-    /**************************************************************************/
-//    @UiHandler("table")
-//    public void tableClickHandler(ClickEvent event) {
-//        table.getClickedRow(event);
-//    }
-    /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
     @Override
     public void setServices(ArrayList<ServiceDetail> services) {
         table.getDataProvider().setList(services);
-//        this.serviceList = services;
-//        int i = 0;
-//        for (ServiceDetail sv : services) {
-//            ArrayList<String> data = new ArrayList<String>();
-//            data.add(sv.getId() + "");
-//            data.add("checkbox");
-//            data.add(sv.getTitle());
-//            data.add(sv.getPrice() + "");
-//            //set different count for different amount of months
-//            int months = sv.getPrepaidMonths();
-//            if (months < 2) {
-//                data.add(months + MSGS.month());
-//            } else {
-//                if (months > FEW_MONTHS) {
-//                    data.add(months + MSGS.months());
-//                } else {
-//                    data.add(months + MSGS.fewMonths());
-//                }
-//            }
-//            table.setRow(data, i);
-//            i++;
-//        }
     }
 
     /**************************************************************************/
@@ -145,10 +104,11 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
         return table;
     }
 
-//    @Override
-//    public int getSelectedService() {
-//        return table.getSelectedValue();
-//    }
+    @Override
+    public ServiceDetail getSelectedService() {
+        return this.selectionModel.getSelectedObject();
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

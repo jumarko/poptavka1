@@ -15,6 +15,9 @@ public class UniversalGrid<T> extends DataGrid<T> {
 
     public UniversalGrid() {
         super();
+        this.addColumnSortHandler(getSortHandler());
+        dataProvider.addDataDisplay(this);
+        setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
     }
 
     public UniversalGrid(ProvidesKey<T> keyProvider) {

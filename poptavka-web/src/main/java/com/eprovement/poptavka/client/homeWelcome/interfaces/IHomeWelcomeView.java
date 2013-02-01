@@ -15,7 +15,7 @@ public interface IHomeWelcomeView extends IsWidget {
     }
 
     HorizontalPanel getCategorySection();
-    
+
     SimplePanel getServicesPanel();
 
     SingleSelectionModel<CategoryDetail> getCategorySelectionModel();
