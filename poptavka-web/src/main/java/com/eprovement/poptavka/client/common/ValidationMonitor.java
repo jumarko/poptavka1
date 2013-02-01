@@ -7,7 +7,9 @@ package com.eprovement.poptavka.client.common;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.IListDetailObject;
 import com.github.gwtbootstrap.client.ui.ControlGroup;
+import com.github.gwtbootstrap.client.ui.Label;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
+import com.github.gwtbootstrap.client.ui.constants.LabelType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -17,8 +19,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.github.gwtbootstrap.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -37,6 +39,8 @@ import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 /**
+ * Main purpose of Validation monitor is to simplifies validation process through
+ * hibernate validation. In
  *
  * @author Martin Slavkovsky
  */
@@ -46,14 +50,15 @@ public class ValidationMonitor<T> extends Composite
     /**************************************************************************/
     /* UiBinder                                                               */
     /**************************************************************************/
-    interface ChangeMonitorUiBinder extends UiBinder<Widget, ValidationMonitor> {
+    interface ValidationMonitorUiBinder extends UiBinder<Widget, ValidationMonitor> {
     }
-    private static ChangeMonitorUiBinder uiBinder = GWT.create(ChangeMonitorUiBinder.class);
+    private static ValidationMonitorUiBinder uiBinder = GWT.create(ValidationMonitorUiBinder.class);
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField SimplePanel holder;
+    @UiField HTMLPanel errorPanel;
     @UiField Label errorLabel;
     @UiField ControlGroup controlGroup;
     /** Class attributes. **/
@@ -61,6 +66,7 @@ public class ValidationMonitor<T> extends Composite
     private Validator validator = null;
     private Class<T> beanType;
     private Boolean valid = null;
+    private boolean hideErrorPanel = true;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -77,14 +83,19 @@ public class ValidationMonitor<T> extends Composite
     /**************************************************************************/
     public void validate() {
         //reset for new validation
-        errorLabel.setText("");
-        controlGroup.setType(ControlGroupType.NONE);
+        if (hideErrorPanel) {
+            errorPanel.setVisible(false);
+            errorLabel.setText("");
+            controlGroup.setType(ControlGroupType.NONE);
+        }
         valid = true;
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
                 holder.getWidget().getTitle(), getValue(), Default.class);
         for (ConstraintViolation<T> violation : violations) {
+            errorPanel.setVisible(true);
             errorLabel.setText(violation.getMessage());
+            errorLabel.setType(LabelType.IMPORTANT);
             controlGroup.setType(ControlGroupType.ERROR);
             valid = false;
         }
@@ -92,9 +103,7 @@ public class ValidationMonitor<T> extends Composite
 
     @Override
     public boolean isValid() {
-        if (valid == null) {
-            validate();
-        }
+        validate();
         return valid;
     }
 
@@ -139,6 +148,18 @@ public class ValidationMonitor<T> extends Composite
     /* Methods                                                                */
     /**************************************************************************/
     /** Getters. **/
+    public HTMLPanel getErrorPanel() {
+        return errorPanel;
+    }
+
+    public Label getErrorLabel() {
+        return errorLabel;
+    }
+
+    public ControlGroup getControlGroup() {
+        return controlGroup;
+    }
+
     public Object getValue() {
         return getInputWidgetText();
     }
@@ -152,9 +173,22 @@ public class ValidationMonitor<T> extends Composite
         setInputWidgetText(value);
     }
 
+    public void setHideErrorPanel(boolean hideErrorPanel) {
+        this.hideErrorPanel = hideErrorPanel;
+    }
+
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * When entering input widget and leaving making some changes - call validate methods
+     * in case validation constraints are met. Validation process then displays appropriate
+     * error message.
+     *
+     * Only input widgets of types CellList and DateBox has registered change handler.
+     *
+     * @param w - input widget
+     */
     private void addChangeHandler(Widget w) {
         if (w instanceof CellList) {
             w.addHandler(new ValueChangeHandler<IListDetailObject>() {
@@ -173,6 +207,15 @@ public class ValidationMonitor<T> extends Composite
         }
     }
 
+    /**
+     * When entering input widget and leaving - call validate method in case no data were
+     * provided (text, numbers, etc..). Validation process displays appropriate error message
+     * if validation constraints are met. Each widget input widget has registered blur handler.
+     *
+     * Only input widgets of types TextBox, IntegerBox and BigDecimalBox has registered change handler.
+     *
+     * @param w - input widget
+     */
     private void addBlurHandler(Widget w) {
         if (w instanceof TextBox || w instanceof IntegerBox || w instanceof BigDecimalBox) {
             w.addDomHandler(new BlurHandler() {

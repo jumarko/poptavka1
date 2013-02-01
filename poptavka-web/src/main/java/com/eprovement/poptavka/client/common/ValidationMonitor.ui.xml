@@ -18,7 +18,7 @@
 	<b:ControlGroup ui:field="controlGroup">
 		<b:Controls>
 			<g:SimplePanel ui:field="holder" styleName='pull-left' />
-			<g:HTMLPanel addStyleNames='{style.error-label} pull-left'>
+			<g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='{style.error-label} pull-left'>
 				<b:Label ui:field="errorLabel" type="IMPORTANT" />
 			</g:HTMLPanel>
 		</b:Controls>

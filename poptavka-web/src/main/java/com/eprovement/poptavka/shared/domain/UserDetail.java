@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.common.validation.Email;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -25,11 +26,11 @@ public class UserDetail implements Serializable {
      * Logged user must always has non-null id set!
      */
     private long userId;
-    @NotBlank(message = "{supplierNotBlankEmail}")
-    @Email(message = "{supplierEmail}")
+    @NotBlank(message = "{userNotBlankEmail}")
+    @Email(message = "{userEmail}")
     private String email;
-    //TODO RELEASE - can be password here insead of BusinessUserDetail?
-    @NotBlank(message = "{supplierNotBlankPassword}")
+    @NotBlank(message = "{userNotBlankPassword}")
+    @Length(min = 5, message = "{userLengthPassword}")
     private String password;
     private ArrayList<AccessRoleDetail> accessRoles;
 

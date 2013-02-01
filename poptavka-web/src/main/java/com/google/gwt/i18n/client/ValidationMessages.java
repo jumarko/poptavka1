@@ -106,14 +106,23 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String demandPattern();
 
     /**************************************************************************/
-    /** Create Supplier Module - error messages.                              */
+    /** User Detail - error messages.                                         */
     /**************************************************************************/
-    @Key("supplier.notBlank.email")
-    String supplierNotBlankEmail();
+    @Key("user.notBlank.password")
+    String userNotBlankPassword();
 
-    @Key("supplier.email")
-    String supplierEmail();
+    @Key("user.length.password")
+    String userLengthPassword();
 
+    @Key("user.notBlank.email")
+    String userNotBlankEmail();
+
+    @Key("user.email")
+    String userEmail();
+
+    /**************************************************************************/
+    /** Supplier Detail - error messages.                                     */
+    /**************************************************************************/
     @Key("supplier.notBlank.companyName")
     String supplierNotBlankCompanyName();
 
@@ -137,15 +146,6 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("supplier.notBlank.description")
     String supplierNotBlankDescription();
-
-    @Key("supplier.notBlank.password")
-    String supplierNotBlankPassword();
-
-    @Key("supplier.min.password")
-    String supplierMinPassword();
-
-    @Key("supplier.notBlank.passwordConfirm")
-    String supplierNotBlankPassrowdConfirm();
 
     @Key("supplier.pattern.website")
     String supplierPatternWebsite();

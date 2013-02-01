@@ -45,10 +45,6 @@
 								<g:TextBox title="email" />
 							</vm:ValidationMonitor>
 						</b:Column>
-						<b:Column size="1">
-							<cm:StatusIconLabel ui:field="mailStatus"
-								visible="false" state="LOAD_24" description="Checking email availability" />
-						</b:Column>
 					</b:FluidRow>
 					<b:FluidRow>
 						<b:Column size="2">
@@ -61,10 +57,6 @@
 								<g:PasswordTextBox title="password" />
 							</vm:ValidationMonitor>
 						</b:Column>
-						<b:Column size="1">
-							<cm:StatusIconLabel ui:field="passwordStatus"
-								visible="false" state="ERROR_24" description="Short password" />
-						</b:Column>
 					</b:FluidRow>
 					<b:FluidRow>
 						<b:Column size="2">
@@ -76,10 +68,6 @@
 							<vm:ValidationMonitor ui:field="passwordConfirm">
 								<g:PasswordTextBox title="password" />
 							</vm:ValidationMonitor>
-						</b:Column>
-						<b:Column size="1">
-							<cm:StatusIconLabel ui:field="passwordCheckStatus"
-								visible="false" state="ERROR_24" description="Passwords don't match" />
 						</b:Column>
 					</b:FluidRow>
 					<b:FluidRow>
