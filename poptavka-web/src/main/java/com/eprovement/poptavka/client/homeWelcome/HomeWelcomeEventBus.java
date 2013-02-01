@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -45,13 +46,15 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class
-            , navigationEvent = true)
+    @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class, navigationEvent = true)
     String goToHomeWelcomeModule();
 
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void initServicesWidget(SimplePanel embedToWidget);
+
     @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 

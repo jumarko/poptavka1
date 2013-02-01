@@ -292,7 +292,7 @@ public class SupplierCreationPresenter
         newSupplier.setUserData(user);
         newSupplier.setLocalities(locs.getCellListDataProvider().getList());
         newSupplier.setCategories(cats.getCellListDataProvider().getList());
-        newSupplier.setServices(Arrays.asList(service.getSelectedService()));
+//        newSupplier.setServices(Arrays.asList(service.getSelectedService()));
 
         eventBus.registerSupplier(newSupplier);
         //signal event

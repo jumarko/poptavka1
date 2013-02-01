@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.common.services;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,7 +18,8 @@ public class ServicesSelectorPresenter extends
 
         void setServices(ArrayList<ServiceDetail> services);
 
-        int getSelectedService();
+        UniversalGrid getTable();
+//        int getSelectedService();
 
         Widget getWidgetView();
     }

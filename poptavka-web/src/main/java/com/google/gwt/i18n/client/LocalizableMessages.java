@@ -262,6 +262,7 @@ public interface LocalizableMessages extends Messages {
     String columnRating();
     String columnReceived();
     String columnSenderID();
+    String columnService();
     String columnState();
     String columnStatus();
     String columnSubject();

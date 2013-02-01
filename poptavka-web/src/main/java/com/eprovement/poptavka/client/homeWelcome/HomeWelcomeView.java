@@ -20,11 +20,15 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 
+
+/**************************************************************************/
+/* Class: Root Category Cell                                                     */
 public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter> implements IHomeWelcomeView {
 
     private static HomeWelcomeViewUiBinder uiBinder = GWT.create(HomeWelcomeViewUiBinder.class);
@@ -39,10 +43,9 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField
-    HorizontalPanel categorySection;
-    @UiField
-    Button button;
+    @UiField HorizontalPanel categorySection;
+    @UiField SimplePanel servicesPanel;
+    @UiField Button button;
     @UiField Button demandCreateBtn;
     @UiField Button securedButton;
     @UiField Button sendUsEmailButton;
@@ -152,11 +155,12 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
         return sendUsEmailButton;
     }
 
+    public SimplePanel getServicesPanel() {
+        return servicesPanel;
+    }
+
 
 }
-
-/**************************************************************************/
-/* Class: Root Category Cell                                                     */
 /**************************************************************************/
 class RootCategoryCell extends AbstractCell<CategoryDetail> {
 

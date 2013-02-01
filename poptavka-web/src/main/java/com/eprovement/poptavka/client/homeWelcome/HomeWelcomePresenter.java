@@ -54,6 +54,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToHomeWelcomeModule() {
+        eventBus.initServicesWidget(view.getServicesPanel());
     }
 
     @Override

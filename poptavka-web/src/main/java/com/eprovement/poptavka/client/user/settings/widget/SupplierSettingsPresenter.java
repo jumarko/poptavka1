@@ -185,8 +185,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClose(CloseEvent<DisclosurePanel> event) {
                 ServicesSelectorView servicesWidget = (ServicesSelectorView) servicesPanel.getWidget();
-                view.setServicesList(Arrays.asList(servicesWidget.getSelectedService()));
-                view.setServicesHeader(Integer.toString(servicesWidget.getSelectedService()));
+                //TODO RELEASE
+//                view.setServicesList(Arrays.asList(servicesWidget.getSelectedService()));
+//                view.setServicesHeader(Integer.toString(servicesWidget.getSelectedService()));
                 view.evaluateChanges(SERVICES, view.getServices().toString());
             }
         });

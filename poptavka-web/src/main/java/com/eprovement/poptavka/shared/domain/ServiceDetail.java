@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -16,7 +17,15 @@ public class ServiceDetail implements Serializable {
     private int prepaidMonths;
     private String type;
 
+    public static final ProvidesKey<ServiceDetail> KEY_PROVIDER = new ProvidesKey<ServiceDetail>() {
+        @Override
+        public Object getKey(ServiceDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+
     public ServiceDetail() {
+        //for serialization
     }
 
     public ServiceDetail(long id, String title, String desc, BigDecimal price, int months) {
