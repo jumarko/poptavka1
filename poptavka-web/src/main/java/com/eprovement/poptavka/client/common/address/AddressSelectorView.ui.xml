@@ -5,8 +5,7 @@
 
 	<ui:with field='res'
 		type='com.eprovement.poptavka.resources.StyleResource' />
-	<!-- TODO Martin - vhodit do StyleResource a vsade kde je validacia pouzit 
-		z resource -->
+
 	<ui:style>
 		.error {
 		font-size:10px;
