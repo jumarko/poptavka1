@@ -9,6 +9,7 @@
 body {
 	margin: 0;
 	background: none;
+	min-width: 1280px;
 }
 
 .body-background {
@@ -19,11 +20,25 @@ body {
 	background: url(images/main_bg.jpg) no-repeat top left #ffffff;
 }
 
+body > div {
+	min-width: 1280px;
+}
+
 .body-container {
 	position: relative;
 	margin: 0 0 0 340px;
 	width: 975px;
 	height: 100%;
+}
+
+.body-content {
+	background: #fff;
+	margin: 10px 0 5px 340px;
+	box-shadow: 0 0 5px #666666;
+	padding: 15px;
+	width: 780px;
+	min-height: 350px;
+	-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;
 }
 
 .body-full-container {
