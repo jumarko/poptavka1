@@ -4,29 +4,28 @@
  */
 package com.eprovement.poptavka.server.service.homedemands;
 
-import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandCategory;
 import com.eprovement.poptavka.domain.demand.DemandLocality;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
-import com.eprovement.poptavka.service.audit.AuditService;
 import com.eprovement.poptavka.service.common.TreeItemService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +64,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private DemandService demandService;
     private CategoryService categoryService;
     private LocalityService localityService;
-    private AuditService auditService;
     private TreeItemService treeItemService;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
@@ -83,11 +81,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
-    }
-
-    @Autowired
-    public void setAuditService(AuditService auditService) {
-        this.auditService = auditService;
     }
 
     @Autowired
@@ -620,30 +613,18 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     // ***********************************************************************
     // Other methods
     // ***********************************************************************
-    //TODO Martin - musim stale zistovat createdDate z auditServicy, alebo sa to pridani
-    //atributu createDate do Domain objektu vyplna samo?
     private List<FullDemandDetail> createDemandDetailListCat(Collection<DemandCategory> demands) {
         List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (DemandCategory demand : demands) {
-            //TODO RELEASE remove - createdDate is present in Demand domain object.
-            List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
-            Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand.getDemand());
-            demandDetail.setCreated(createdDate);
-            fullDemandDetails.add(demandDetail);
+            fullDemandDetails.add(demandConverter.convertToTarget(demand.getDemand()));
         }
         return fullDemandDetails;
     }
 
-    //TODO Martin - detto vid komentar k createDemandDetailListCat
     private List<FullDemandDetail> createDemandDetailListLoc(Collection<DemandLocality> demands) {
         List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (DemandLocality demand : demands) {
-            List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
-            Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand.getDemand());
-            demandDetail.setCreated(createdDate);
-            fullDemandDetails.add(demandDetail);
+            fullDemandDetails.add(demandConverter.convertToTarget(demand.getDemand()));
         }
         return fullDemandDetails;
     }
