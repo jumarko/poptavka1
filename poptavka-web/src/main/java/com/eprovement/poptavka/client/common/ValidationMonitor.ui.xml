@@ -7,18 +7,23 @@
 		type='com.eprovement.poptavka.resources.StyleResource' />
 
 	<ui:style>
-		.error-label {
+		.control-label {
 		margin: 5px 0 0 25px;
-		padding: 0 0 0 4px;
-		background: url(images/label-green.png) no-repeat 0 4px;
+		padding: 0 0 0 4px;		
 		display: block;
+		}
+		.red-label {
+		background: url(images/label-red.png) no-repeat 0 4px;
+		}
+		.green-label {
+		background: url(images/label-green.png) no-repeat 0 4px;
 		}
 	</ui:style>
 
 	<b:ControlGroup ui:field="controlGroup">
 		<b:Controls>
 			<g:SimplePanel ui:field="holder" styleName='pull-left' />
-			<g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='{style.error-label} pull-left'>
+			<g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='{style.control-label} {style.red-label} pull-left'>
 				<b:Label ui:field="errorLabel" type="IMPORTANT" />
 			</g:HTMLPanel>
 		</b:Controls>
