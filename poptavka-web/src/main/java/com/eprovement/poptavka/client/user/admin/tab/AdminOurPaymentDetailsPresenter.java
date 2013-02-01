@@ -83,7 +83,6 @@ public class AdminOurPaymentDetailsPresenter
      */
     public void onInitOurPaymentDetails(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_OUR_PAYMENT_DETAILS);
-        eventBus.clearSearchContent();
         searchDataHolder = filter;
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

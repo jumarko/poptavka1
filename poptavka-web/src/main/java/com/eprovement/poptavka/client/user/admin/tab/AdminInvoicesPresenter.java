@@ -117,7 +117,6 @@ public class AdminInvoicesPresenter
      */
     public void onInitInvoices(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_INVOICES);
-        eventBus.clearSearchContent();
         searchDataHolder = filter;
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getAdminInvoiceDetail().setVisible(false);

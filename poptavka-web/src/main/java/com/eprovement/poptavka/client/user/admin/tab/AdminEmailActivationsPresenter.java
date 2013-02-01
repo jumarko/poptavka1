@@ -86,7 +86,6 @@ public class AdminEmailActivationsPresenter
      */
     public void onInitEmailsActivation(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_EMAILS_ACTIVATION);
-        eventBus.clearSearchContent();
         searchDataHolder = filter;
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

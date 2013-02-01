@@ -80,7 +80,6 @@ public class AdminProblemsPresenter
      */
     public void onInitProblems(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_PROBLEMS);
-        eventBus.clearSearchContent();
         searchDataHolder = filter;
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         eventBus.displayView(view.getWidgetView());

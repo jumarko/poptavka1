@@ -83,6 +83,7 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     @Override
     public void setUpSearchBar(IsWidget advanceSearchWidget) {
         SearchModuleView searchBarView = (SearchModuleView) searchBar.getWidget();
+        searchBarView.getSearchContent().setText(null); //placeholder will set default -- null, or "" ???
         searchBarView.setAttributeSelectorWidget(advanceSearchWidget);
     }
 }

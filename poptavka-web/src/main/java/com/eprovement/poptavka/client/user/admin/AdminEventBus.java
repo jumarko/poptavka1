@@ -101,10 +101,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
             List<LocalityDetail> categoriesToSet);
 
-    /* Admin module forward section - comunication with parent widget*/
-    @Event(forwardToParent = true)
-    void clearSearchContent();
-
     @Event(forwardToParent = true)
     void atAccount();
 
