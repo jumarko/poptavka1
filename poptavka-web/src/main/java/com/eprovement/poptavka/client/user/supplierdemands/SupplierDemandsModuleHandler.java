@@ -63,11 +63,11 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierPotentialDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialDemandsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
 
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }
@@ -86,10 +86,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     private void getSupplierOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffersCount(
                 Storage.getSupplierId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }
@@ -108,10 +108,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     private void getSupplierAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemandsCount(
                 Storage.getSupplierId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }

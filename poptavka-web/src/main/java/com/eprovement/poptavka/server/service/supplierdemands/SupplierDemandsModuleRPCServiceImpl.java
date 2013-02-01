@@ -151,12 +151,15 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierPotentialDemandsCount(long userId,
+    public int getSupplierPotentialDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
-        return userMessageService.getPotentialDemandsCount(businessUser, potentialDemandsCountSearch);
+        //TODO RELEASE return int instead of long? In clientDemandsModuleRPC 
+        //was comment "TODO RELEASE" to do the replacement there. So it should be the same -> int???
+        return Long.valueOf(userMessageService.getPotentialDemandsCount(
+                businessUser, potentialDemandsCountSearch)).intValue();
     }
 
     /**
@@ -224,11 +227,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierOffersCount(long supplierID,
+    public int getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE Vojto/Ivan- implement SearchDefinition
         long count = offerService.getPendingOffersCountForSupplier(supplierID);
-        return count;
+        return Long.valueOf(count).intValue();
     }
 
     /**
@@ -298,10 +301,10 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public long getSupplierAssignedDemandsCount(long supplierID,
+    public int getSupplierAssignedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE Vojto/Ivan- implement SearchDefinition
-        return offerService.getAcceptedOffersCountForSupplier(supplierID);
+        return Long.valueOf(offerService.getAcceptedOffersCountForSupplier(supplierID)).intValue();
     }
 
     /**

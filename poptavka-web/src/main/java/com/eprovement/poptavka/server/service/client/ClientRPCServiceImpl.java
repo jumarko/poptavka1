@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+//TODO RELEASE REMOVE RPC
 @Configurable
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 

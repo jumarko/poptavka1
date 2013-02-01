@@ -190,7 +190,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientDemandsCount(long userId,
+    public int getClientDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
@@ -205,7 +205,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.addFilterEqual("client", client);
         clientDemandsSearch.addField("id",  Field.OP_COUNT);
         clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).longValue();
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
 
     /**
@@ -271,9 +271,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientDemandConversationsCount(long userId, long demandID,
+    public int getClientDemandConversationsCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE Martin/Ivlcek - change long return type to int
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         return root.getChildren().size();
     }
@@ -337,7 +336,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientOfferedDemandsCount(long userId,
+    public int getClientOfferedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
@@ -346,7 +345,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.addFilterEqual("client", client);
         clientDemandsSearch.addField("id",  Field.OP_COUNT);
         clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).longValue();
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
 
     /**
@@ -409,7 +408,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientOfferedDemandOffersCount(long userId, long demandID,
+    public int getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         // TODO RELEASE ivlcek - incorporate searchDefinition for this method and refactor with new sql
         Demand demand = generalService.find(Demand.class, demandID);
@@ -495,7 +494,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public long getClientAssignedDemandsCount(long userId,
+    public int getClientAssignedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
@@ -505,7 +504,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.addFilterEqual("client", client);
         clientDemandsSearch.addField("id",  Field.OP_COUNT);
         clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).longValue();
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
 
     /**

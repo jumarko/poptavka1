@@ -22,33 +22,33 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     //ClientDemands widget
     void getClientDemandsCount(long userID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getClientDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandDetail>> callback);
 
     void getClientDemandConversationsCount(long userID, long demandID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getClientDemandConversations(long userID, long demandID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandConversationDetail>> callback);
 
     //ClientOffers widget
     void getClientOfferedDemandsCount(long userID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getClientOfferedDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientDemandDetail>> callback);
 
     void getClientOfferedDemandOffersCount(long userID, long demandID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getClientOfferedDemandOffers(long userID, long demandID, long threadRootId, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientOfferedDemandOffersDetail>> callback);
 
     //ClientAssignedDemands widget
     void getClientAssignedDemandsCount(long userID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getClientAssignedDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientOfferedDemandOffersDetail>> callback);
