@@ -58,17 +58,14 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     public void render(Context context, MessageDetail value, SafeHtmlBuilder sb) {
         String cssBall;
         String cssColor;
-        String sender;
         if (Storage.getUser().getUserId() == value.getSenderId()) {
             cssBall = Storage.RSCS.detailViews().conversationDetailRed();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderRed();
-            sender = Storage.MSGS.commonSupplier();
         } else {
             cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
-            sender = Storage.MSGS.commonClient();
         }
-        renderer.render(sb, cssBall, cssColor, sender,
+        renderer.render(sb, cssBall, cssColor, value.getSenderName(),
                 dateFormat.format(value.getSent()), getBodyText(value.getBody()));
     }
 
