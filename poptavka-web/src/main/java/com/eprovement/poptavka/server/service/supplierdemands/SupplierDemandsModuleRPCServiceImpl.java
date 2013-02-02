@@ -229,8 +229,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public int getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE Vojto/Ivan- implement SearchDefinition
-        long count = offerService.getPendingOffersCountForSupplier(supplierID);
-        return Long.valueOf(count).intValue();
+        return offerService.getPendingOffersCountForSupplier(supplierID).intValue();
     }
 
     /**
@@ -303,7 +302,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public int getSupplierAssignedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE Vojto/Ivan- implement SearchDefinition
-        return Long.valueOf(offerService.getAcceptedOffersCountForSupplier(supplierID)).intValue();
+        return offerService.getAcceptedOffersCountForSupplier(supplierID).intValue();
     }
 
     /**

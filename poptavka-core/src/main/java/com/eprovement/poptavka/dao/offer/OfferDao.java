@@ -20,7 +20,7 @@ public interface OfferDao extends GenericDao<Offer> {
      * @param offerState - state of offer
      * @return count of supplier's offers
      */
-    long getOffersCountForSupplier(long supplierId, OfferState offerState);
+    Long getOffersCountForSupplier(long supplierId, OfferState offerState);
 
     /**
      * Gets a count of supplier's offers of given OfferStates.
@@ -29,6 +29,6 @@ public interface OfferDao extends GenericDao<Offer> {
      * @param offerState2 - state of offer
      * @return count of supplier's offers
      */
-    long getOffersCountForSupplier(long supplierId, OfferState offerState1, OfferState offerState2);
+    Long getOffersCountForSupplier(long supplierId, OfferState offerState1, OfferState offerState2);
 
 }

@@ -50,7 +50,7 @@ public class OfferServiceImpl extends GenericServiceImpl<Offer, OfferDao> implem
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public long getPendingOffersCountForSupplier(long supplierId) {
+    public Long getPendingOffersCountForSupplier(long supplierId) {
         return this.getDao().getOffersCountForSupplier(
                 supplierId, this.getOfferState(OfferStateType.PENDING.getValue()));
 
@@ -59,7 +59,7 @@ public class OfferServiceImpl extends GenericServiceImpl<Offer, OfferDao> implem
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public long getAcceptedOffersCountForSupplier(long supplierId) {
+    public Long getAcceptedOffersCountForSupplier(long supplierId) {
         return this.getDao().getOffersCountForSupplier(supplierId,
                 this.getOfferState(OfferStateType.ACCEPTED.getValue()),
                 this.getOfferState(OfferStateType.COMPLETED.getValue()));
