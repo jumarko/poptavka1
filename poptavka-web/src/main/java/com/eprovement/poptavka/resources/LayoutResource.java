@@ -29,7 +29,7 @@ public interface LayoutResource extends CssResource {
 
     @ClassName("body-container")
     String bodyContainer();
-    
+
     @ClassName("body-content")
     String bodyContent();
 
