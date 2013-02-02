@@ -42,6 +42,7 @@ public interface LocalizableMessages extends Messages {
 
     /** Common labels. **/
     String commonCategoriesLabel();
+    String commonClient();
     String commonEmptyCredentials();
     String commonEmptyTable();
     String commonLocalitiesLabel();
@@ -51,6 +52,7 @@ public interface LocalizableMessages extends Messages {
     String commonOK();
     String commonSelected();
     String commonServicesLabel();
+    String commonSupplier();
 
     /** Messages actions list box. **/
     String commonListDefault();
