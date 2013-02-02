@@ -204,7 +204,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             detail.setUserMessageId(um.getId());
             detail.setIsStarred(um.isStarred());
             detail.setMessageCount(mapEntry.getValue().intValue());
-            detail.setUnreadMessageCount(-1);
+            detail.setIsRead(um.isRead());
             // Demand part
             detail.setDemandId(um.getMessage().getDemand().getId());
             detail.setValidTo(um.getMessage().getDemand().getValidTo());
@@ -264,6 +264,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
@@ -276,16 +277,13 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setOfferId(offer.getId());
             // Message part
             sod.setReceivedDate(offer.getCreated());
+            sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             // set UserMessage attributes
             sod.setUserMessageId(latestUserMessage.getId());
             sod.setMessageCount(mapEntry.getValue());
             sod.setIsRead(latestUserMessage.isRead());
-            sod.setSupplierId(supplierID);
-            // TODO RELEASE ivlcek - remove unread message count. We will get this attribute value
-            // from latestUserMessage object
-            sod.setUnreadMessageCount(-1);
-            sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
-            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            sod.setIsStarred(latestUserMessage.isStarred());
+
             listSod.add(sod);
         }
         return listSod;
@@ -336,26 +334,29 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELEASE ivlcek - refactor and create converter, set Rating
-            sod.setSupplierId(offer.getSupplier().getId());
+            // supplier part
+            sod.setSupplierId(supplierID);
+            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
+            // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
+            // demand part
             sod.setDemandId(offer.getDemand().getId());
+            // offer part
             sod.setPrice(offer.getPrice().toPlainString());
             sod.setDeliveryDate(offer.getFinishDate());
             sod.setOfferId(offer.getId());
+            // Message part
             sod.setReceivedDate(offer.getCreated());
-            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             // set UserMessage attributes
+            sod.setUserMessageId(latestUserMessage.getId());
             sod.setMessageCount(entryKey.getValue());
             sod.setIsRead(latestUserMessage.isRead());
-            sod.setUserMessageId(latestUserMessage.getId());
+            sod.setIsStarred(latestUserMessage.isStarred());
 
-            // TODO RELEASE ivlcek - remove unread message count. We will get this attribute value from
-            // latestUserMessage object
-            sod.setUnreadMessageCount(-1);
-            sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
-            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             listSod.add(sod);
         }
         return listSod;
@@ -537,12 +538,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         sod.setMessageCount(conversationMessages.size());
         sod.setIsRead(latestUserMessage.isRead());
         sod.setUserMessageId(latestUserMessage.getId());
-
-//            sod.setMessageCount(messageService.getAllDescendantsCount(
-//                    latestUserMessage.getMessage(), offer.getSupplier().getBusinessUser()));
-        // TODO RELEASE ivlcek - remove unread message count. We will get this attribute value from
         // latestUserMessage object
-        sod.setUnreadMessageCount(-1);
         sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
         sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
         return sod;

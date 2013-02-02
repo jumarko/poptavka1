@@ -19,10 +19,4 @@ public interface MessageTableDisplay {
     int getMessageCount();
 
     void setMessageCount(int messageCount);
-
-    int getUnreadMessageCount();
-
-    void setUnreadMessageCount(int unreadMessageCount);
-
-    String getFormattedMessageCount();
 }

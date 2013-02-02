@@ -162,7 +162,7 @@ public class MessageColumnFactory<T> {
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
                 if (displayMessages) {
-                    return obj.getMessageDetail().getSubject() + " " + obj.getFormattedMessageCount();
+                    return obj.getMessageDetail().getSubject() + " " + obj.getMessageCount();
                 } else {
                     return obj.getMessageDetail().getSubject();
                 }

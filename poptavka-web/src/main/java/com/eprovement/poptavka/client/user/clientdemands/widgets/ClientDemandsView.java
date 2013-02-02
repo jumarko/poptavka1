@@ -159,9 +159,9 @@ public class ClientDemandsView extends Composite
                         StringBuilder str = new StringBuilder();
                         ClientDemandDetail detail = (ClientDemandDetail) object;
                         str.append(detail.getDemandTitle());
-                        if (detail.getMessageCount() > 0) {
+                        if (detail.getUnreadSubmessagesCount() > 0) {
                             str.append(" (");
-                            str.append(detail.getMessageCount());
+                            str.append(detail.getUnreadSubmessagesCount());
                             str.append(")");
                         }
                         return str.toString();

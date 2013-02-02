@@ -57,6 +57,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     private long userMessageId;
     private boolean read;
     private boolean starred;
+    private int unreadSubmessagesCount;
     private Date created;
     //Basic Demand Info
     @NotBlank(message = "{demandNotBlankTitle}")
@@ -369,5 +370,20 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         int hash = 7;
         hash = 11 * hash + (int) (this.demandId ^ (this.demandId >>> 32));
         return hash;
+    }
+
+    /**
+     * @return the unreadSubmessagesCount
+     */
+    @Override
+    public int getUnreadSubmessagesCount() {
+        return unreadSubmessagesCount;
+    }
+
+    /**
+     * @param unreadSubmessagesCount the unreadSubmessagesCount to set
+     */
+    public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
+        this.unreadSubmessagesCount = unreadSubmessagesCount;
     }
 }

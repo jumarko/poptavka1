@@ -5,9 +5,6 @@
 package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +13,7 @@ import java.util.Date;
  *
  * @author ivlcek
  */
-public class ClientOfferedDemandOffersDetail implements Serializable, TableDisplay, IUniversalDetail {
+public class ClientOfferedDemandOffersDetail implements Serializable, IUniversalDetail {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -39,7 +36,7 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
     private Date receivedDate;
     private Date deliveryDate;
     private int messageCount;
-    private int unreadMessageCount;
+
     //Keyprovider
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
             new ProvidesKey<IUniversalDetail>() {
@@ -224,21 +221,6 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
         this.messageCount = messageCount;
     }
 
-    /**
-     * @return the unreadMessageCount
-     */
-    @Override
-    public int getUnreadMessageCount() {
-        return unreadMessageCount;
-    }
-
-    /**
-     * @param unreadMessageCount the unreadMessageCount to set
-     */
-    public void setUnreadMessageCount(int unreadMessageCount) {
-        this.unreadMessageCount = unreadMessageCount;
-    }
-
     @Override
     public boolean isStarred() {
         return isStarred;
@@ -251,16 +233,6 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
 
     @Override
     public Date getEndDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public DemandStatus getDemandStatus() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public OfferStateType getOfferState() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -315,8 +287,8 @@ public class ClientOfferedDemandOffersDetail implements Serializable, TableDispl
                 + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
                 + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
                 + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
-                + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
-                + unreadMessageCount + '}';
+                + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", isRead="
+                + isRead + '}';
     }
 
     @Override

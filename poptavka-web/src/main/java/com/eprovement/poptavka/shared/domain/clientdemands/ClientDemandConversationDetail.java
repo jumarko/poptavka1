@@ -36,7 +36,7 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     private boolean isStarred;
     private int messageCount;
     // TODO ivlcek - remove unreadSubmessages
-    private int unreadSubmessages = -1;
+    private int unreadSubmessagesCount;
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
             new ProvidesKey<IUniversalDetail>() {
                 @Override
@@ -192,11 +192,6 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     }
 
     @Override
-    public int getUnreadMessageCount() {
-        return messageCount;
-    }
-
-    @Override
     public Date getDeliveryDate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -224,5 +219,20 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     @Override
     public long getOfferId() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @return the unreadSubmessagesCount
+     */
+    @Override
+    public int getUnreadSubmessagesCount() {
+        return unreadSubmessagesCount;
+    }
+
+    /**
+     * @param unreadSubmessagesCount the unreadSubmessagesCount to set
+     */
+    public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
+        this.unreadSubmessagesCount = unreadSubmessagesCount;
     }
 }

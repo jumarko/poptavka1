@@ -23,9 +23,7 @@ public class UserMessageDetail implements Serializable, MessageTableDisplay {
     private boolean isStarred;
     private MessageDetail messageDetail;
     private String senderEmail;
-
     private int messageCount;
-    private int unreadMessageCount;
 
     public UserMessageDetail() {
     }
@@ -93,22 +91,6 @@ public class UserMessageDetail implements Serializable, MessageTableDisplay {
     @Override
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
-    }
-
-    @Override
-    public int getUnreadMessageCount() {
-        return unreadMessageCount;
-    }
-
-    @Override
-    public void setUnreadMessageCount(int unreadMessageCount) {
-        this.unreadMessageCount = unreadMessageCount;
-    }
-
-    @Override
-    public String getFormattedMessageCount() {
-        return "(" + getMessageCount() + "/"
-                + getUnreadMessageCount() + ")";
     }
 
     public String toString() {

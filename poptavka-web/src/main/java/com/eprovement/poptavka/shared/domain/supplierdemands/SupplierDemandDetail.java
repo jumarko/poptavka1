@@ -36,6 +36,8 @@ public class SupplierDemandDetail implements Serializable, TableDisplay {
     private Date deliveryDate;
     private boolean read = false;
     private boolean starred = false;
+    private int unreadSubmessagesCount;
+
     public static final ProvidesKey<SupplierDemandDetail> KEY_PROVIDER =
             new ProvidesKey<SupplierDemandDetail>() {
 
@@ -183,5 +185,20 @@ public class SupplierDemandDetail implements Serializable, TableDisplay {
     @Override
     public DemandStatus getDemandStatus() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @return the unreadSubmessagesCount
+     */
+    @Override
+    public int getUnreadSubmessagesCount() {
+        return unreadSubmessagesCount;
+    }
+
+    /**
+     * @param unreadSubmessagesCount the unreadSubmessagesCount to set
+     */
+    public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
+        this.unreadSubmessagesCount = unreadSubmessagesCount;
     }
 }

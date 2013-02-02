@@ -23,6 +23,8 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
     private String clientName;
     private int clientRating;
 
+
+
     @Override
     public String toString() {
         return "ClientDemandMessageDetail{\n" + "messageId=" + getMessageId()
@@ -68,6 +70,11 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
 
     @Override
     public void setIsStarred(boolean value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getUnreadSubmessagesCount() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

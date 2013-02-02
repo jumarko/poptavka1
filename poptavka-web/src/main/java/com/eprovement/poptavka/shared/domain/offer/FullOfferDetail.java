@@ -24,7 +24,6 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     private static final long serialVersionUID = -563380651738612866L;
     // TODO remove dipsplayed
     private int messageCount;
-    private int unreadSubmessages;
     private MessageDetail messageDetail = new MessageDetail();
     private OfferDetail offerDetail = new OfferDetail();
     private FullDemandDetail demandDetail = new FullDemandDetail();
@@ -37,6 +36,7 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
                 }
             };
     private boolean isRead;
+    private int unreadSubmessagesCount;
 
     public FullOfferDetail() {
     }
@@ -163,11 +163,6 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     }
 
     @Override
-    public int getUnreadMessageCount() {
-        return unreadSubmessages;
-    }
-
-    @Override
     public Date getDeliveryDate() {
         return new Date();
     }
@@ -202,10 +197,6 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
         this.messageCount = messageCount;
     }
 
-    public void setUnreadSubmessages(int unreadSubmessages) {
-        this.unreadSubmessages = unreadSubmessages;
-    }
-
     @Override
     public long getOfferId() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -219,5 +210,20 @@ public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDe
     @Override
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
+    }
+
+    /**
+     * @return the unreadSubmessagesCount
+     */
+    @Override
+    public int getUnreadSubmessagesCount() {
+        return unreadSubmessagesCount;
+    }
+
+    /**
+     * @param unreadSubmessagesCount the unreadSubmessagesCount to set
+     */
+    public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
+        this.unreadSubmessagesCount = unreadSubmessagesCount;
     }
 }
