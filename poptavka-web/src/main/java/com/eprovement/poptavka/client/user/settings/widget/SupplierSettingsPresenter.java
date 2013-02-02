@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter.SupplierSettingsViewInterface;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -59,7 +60,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
         void setLocalitiesList(List<LocalityDetail> localitiesList);
 
-        void setServicesList(List<Integer> servicesList);
+        void setServicesList(List<ServiceDetail> servicesList);
 
         SettingDetail updateSupplierSettings(SettingDetail detail);
 
@@ -79,7 +80,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
         List<LocalityDetail> getLocalities();
 
-        List<Integer> getServices();
+        List<ServiceDetail> getServices();
 
         void initChangeCheking(String originalString);
 
@@ -185,8 +186,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClose(CloseEvent<DisclosurePanel> event) {
                 ServicesSelectorView servicesWidget = (ServicesSelectorView) servicesPanel.getWidget();
+                //TODO RELEASE
                 view.setServicesList(Arrays.asList(servicesWidget.getSelectedService()));
-                view.setServicesHeader(Integer.toString(servicesWidget.getSelectedService()));
+                view.setServicesHeader(Arrays.asList(servicesWidget.getSelectedService()).toString());
                 view.evaluateChanges(SERVICES, view.getServices().toString());
             }
         });

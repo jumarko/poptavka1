@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:r="urn:import:com.eprovement.poptavka.client.common.table">
+             xmlns:r="urn:import:com.eprovement.poptavka.client.common.table"
+             xmlns:g="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
-    <r:RadioTable ui:field="table" />
+    <g:UniversalGrid ui:field="table" />
 </ui:UiBinder>

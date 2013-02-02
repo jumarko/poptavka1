@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.user.settings.widget;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
@@ -51,7 +52,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     private String stringStorage;
     private List<CategoryDetail> categoriesList;
     private List<LocalityDetail> localitiesList;
-    private List<Integer> servicesList;
+    private List<ServiceDetail> servicesList;
     private Map<String, String> originalsStorage = new HashMap<String, String>();
 
     /**************************************************************************/
@@ -159,7 +160,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     }
 
     @Override
-    public void setServicesList(List<Integer> servicesList) {
+    public void setServicesList(List<ServiceDetail> servicesList) {
         this.servicesList = servicesList;
     }
 
@@ -215,7 +216,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     }
 
     @Override
-    public List<Integer> getServices() {
+    public List<ServiceDetail> getServices() {
         return servicesList;
     }
 

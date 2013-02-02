@@ -3,6 +3,7 @@ package com.eprovement.poptavka.shared.domain.supplier;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class FullSupplierDetail implements Serializable {
     private ArrayList<CategoryDetail> categories;
     @Valid
     @Size(min = 1)
-    private ArrayList<Integer> services = new ArrayList<Integer>();
+    private ArrayList<ServiceDetail> services = new ArrayList<ServiceDetail>();
     /** Others. **/
     private boolean certified = false;
 
@@ -66,12 +67,12 @@ public class FullSupplierDetail implements Serializable {
         this.categories = new ArrayList<CategoryDetail>(categories);
     }
 
-    public ArrayList<Integer> getServices() {
+    public ArrayList<ServiceDetail> getServices() {
         return services;
     }
 
-    public void setServices(Collection<Integer> services) {
-        this.services = new ArrayList<Integer>(services);
+    public void setServices(Collection<ServiceDetail> services) {
+        this.services = new ArrayList<ServiceDetail>(services);
     }
 
     public boolean isCertified() {

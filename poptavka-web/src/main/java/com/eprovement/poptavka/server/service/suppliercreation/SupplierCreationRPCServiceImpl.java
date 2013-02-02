@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.service.suppliercreation;
 
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
@@ -168,9 +169,8 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
         final List<UserService> us = new ArrayList<UserService>();
 
-        ArrayList<Integer> userServicesId = supplier.getServices();
-        for (Integer serviceId : userServicesId) {
-            Service service = generalService.find(Service.class, Long.valueOf(serviceId));
+        for (ServiceDetail serviceDetail : supplier.getServices()) {
+            Service service = generalService.find(Service.class, serviceDetail.getId());
             UserService userService = new UserService();
             userService.setService(service);
             userService.setStatus(Status.INACTIVE);

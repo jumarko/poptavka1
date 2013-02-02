@@ -200,9 +200,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
         final List<UserService> us = new ArrayList<UserService>();
 
-        ArrayList<Integer> userServicesId = supplier.getServices();
-        for (Integer serviceId : userServicesId) {
-            Service service = generalService.find(Service.class, Long.valueOf(serviceId));
+        for (ServiceDetail serviceDetail : supplier.getServices()) {
+            Service service = generalService.find(Service.class, serviceDetail.getId());
             UserService userService = new UserService();
             userService.setService(service);
             userService.setStatus(Status.INACTIVE);

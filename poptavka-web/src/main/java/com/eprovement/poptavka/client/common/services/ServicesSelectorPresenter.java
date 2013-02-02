@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.common.services;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,14 +11,16 @@ import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 
 @Presenter(view = ServicesSelectorView.class, multiple = true)
-public class ServicesSelectorPresenter extends
-        LazyPresenter<ServicesSelectorPresenter.SupplierServiceInterface, RootEventBus> {
+public class ServicesSelectorPresenter extends LazyPresenter<
+        ServicesSelectorPresenter.SupplierServiceInterface, RootEventBus> {
 
     public interface SupplierServiceInterface extends LazyView {
 
         void setServices(ArrayList<ServiceDetail> services);
 
-        int getSelectedService();
+        ServiceDetail getSelectedService();
+
+        UniversalGrid getTable();
 
         Widget getWidgetView();
     }
