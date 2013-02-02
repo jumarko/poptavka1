@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
