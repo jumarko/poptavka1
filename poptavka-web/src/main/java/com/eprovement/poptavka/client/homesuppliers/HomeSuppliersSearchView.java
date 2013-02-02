@@ -6,12 +6,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.IntegerBox;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import java.util.ArrayList;
 
 public class HomeSuppliersSearchView extends Composite implements
@@ -22,7 +23,9 @@ public class HomeSuppliersSearchView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeSuppliersSearchView> {
     }
     @UiField
-    TextBox companyName, ratingFrom, ratingTo, supplierDescription;
+    TextBox companyName, supplierDescription;
+    @UiField
+    IntegerBox ratingFrom, ratingTo;
     @UiField
     Button clearBtn;
 
@@ -43,10 +46,10 @@ public class HomeSuppliersSearchView extends Composite implements
                     supplierDescription.getText()));
         }
         if (!ratingFrom.getText().equals("0")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getValue()));
         }
         if (!ratingTo.getText().equals("100")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingTo.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingTo.getValue()));
         }
         return filters;
     }
