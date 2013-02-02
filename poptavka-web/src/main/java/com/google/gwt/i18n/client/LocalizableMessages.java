@@ -96,7 +96,7 @@ public interface LocalizableMessages extends Messages {
     String formFirstName();
     String formFromTo(int from, int to);
     String formFromToDate(Date from, Date to);
-    String formFromToPrice(int from, int to, String currencySign);
+    String formFromToPrice(int from, int to);
     String formFromToPercentage(int from, int to);
     String formIdentificationNumber();
     String formInvoiceNumber();

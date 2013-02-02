@@ -51,12 +51,16 @@
 				</b:Column>
 				<b:Column size="10">
 					<g:HTMLPanel>
+                        <!--<ui:msg key="formFromTo">-->
 						<!--TODO RELEASE - Not working my way like elsewhere -->
 						from
 						<g:TextBox styleName="{style.priceBox}" ui:field="priceFrom" />
 						to
 						<g:TextBox styleName="{style.priceBox}" ui:field="priceTo" />
-						<ui:msg key="formatCurrencySign">$</ui:msg>
+                        <!--$-->
+                        <!--<ui:msg key="formatCurrencySign">$</ui:msg>-->
+                        <!--</ui:msg>-->
+						<!--<ui:msg key="formatCurrencySign">$</ui:msg>-->
 						<!-- <ui:msg key="formFromTo"> from <g:TextBox styleName="{style.priceBox}" 
 							ui:field="priceFrom" /> to <g:TextBox styleName="{style.priceBox}" ui:field="priceTo" 
 							/> <ui:msg key="formatCurrencySign">$</ui:msg> </ui:msg> -->
