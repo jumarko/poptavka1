@@ -1,0 +1,57 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <g:HTMLPanel>
+        <b:Modal ui:field="modal">
+            <b:Form type="HORIZONTAL">
+                <b:Fieldset>
+                    <g:ListBox ui:field="list"/>
+                </b:Fieldset>
+                <b:Fieldset>
+                    <b:ControlGroup ui:field="emailControlGroup">
+                        <b:ControlLabel>
+                            <ui:msg key="formEmail">Email: </ui:msg>
+                        </b:ControlLabel>
+                        <b:Controls>
+                            <b:TextBox ui:field="emailTextBox" placeholder="Email"/>
+                        </b:Controls>
+                    </b:ControlGroup>
+                </b:Fieldset>
+                <b:Fieldset>
+                    <b:ControlGroup ui:field="passwordControlGroup">
+                        <b:ControlLabel>
+                            <ui:msg key="formPassword">Password:</ui:msg>
+                        </b:ControlLabel>
+                        <b:Controls>
+                            <b:PasswordTextBox ui:field="passwordTextBox" placeholder="Password"/>
+                        </b:Controls>
+                    </b:ControlGroup>
+                </b:Fieldset>
+                <b:Fieldset>
+                    <b:Alert ui:field='status' type="INFO" close="false" animation="true">
+                        <b:ProgressBar ui:field="progressBar" color="SUCCESS" type="ANIMATED" percent="100"/>
+                        <b:Icon ui:field='icon' type="INFO_SIGN" iconSize="LARGE" />
+                        <g:Label ui:field='infoLabel'>
+                            Enter email and password to login.
+                        </g:Label>
+                    </b:Alert>
+                </b:Fieldset>
+                <b:Fieldset>
+                    <b:ControlGroup>
+                        <b:Controls>
+                            <b:Button ui:field="submitBtn" type="PRIMARY">
+                                Login
+                            </b:Button>
+                            <b:Button ui:field="cancelBtn">
+                                Cancel
+                            </b:Button>
+                        </b:Controls>
+                    </b:ControlGroup>
+                </b:Fieldset>
+            </b:Form>
+        </b:Modal>             
+    </g:HTMLPanel>
+       
+</ui:UiBinder>

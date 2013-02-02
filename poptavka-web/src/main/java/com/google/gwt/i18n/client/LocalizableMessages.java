@@ -47,6 +47,7 @@ public interface LocalizableMessages extends Messages {
     String commonLocalitiesLabel();
     String commonNoData();
     String commonNotDefined();
+    String commonNotRanked();
     String commonOK();
     String commonSelected();
     String commonServicesLabel();

@@ -141,7 +141,6 @@ public class MessageList extends Composite implements MessageListPresenter.IList
 
 // **** Star collumn with defined valueUpdater and custom style
         starColumn = factory.createStarColumn();
-        //TODO
         //testing if assigning style in MessageColumnFactory works - works well 7.11.11 Beho
         //but keep here for reference
         //starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
@@ -150,7 +149,6 @@ public class MessageList extends Composite implements MessageListPresenter.IList
 
 // **** user column
         userCol = factory.createUserColumn(messageGrid.getSortHandler());
-        //TODO i18
 //        demandGrid.addColumn(userCol, Storage.MSGS.title());
         messageGrid.addColumn(userCol, "Od koho");
 

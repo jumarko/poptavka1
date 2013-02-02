@@ -67,7 +67,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
     public void onInitComposeNew() {
         Storage.setCurrentlyLoadedView(Constants.MESSAGES_COMPOSE_NEW);
 
-        //TODO Martin Uzivatel musi vybrat uzivatela z kontaktov
+        //TODO LATER Martin Uzivatel musi vybrat uzivatela z kontaktov
 
         view.clearMessage();
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

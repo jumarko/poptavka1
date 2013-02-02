@@ -23,9 +23,9 @@ import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.ui.TextBox;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
@@ -53,15 +53,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         void setLoadingStatus(String localizableMessage);
 
-        void setUnknownError();
-
-        void setLoginError();
+        void setErrorMessage(String message);
 
         LoginPopupPresenter getPresenter();
     }
     @Inject
     private UserRPCServiceAsync userService;
-
     @Inject
     private RootRPCServiceAsync rootService;
 
@@ -88,7 +85,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             public void onSuccess(BusinessUserDetail user) {
                 if (user == null) {
                     LOGGER.info("User entered invalid email=" + getUserEmail());
-                    view.setLoginError();
+                    view.setErrorMessage(Storage.MSGS.wrongLoginMessage());
                     return;
                 }
 
@@ -108,7 +105,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 }
             }
 
-
             @Override
             protected void onServiceFailure(Throwable caught, int errorResponse, String errorId) {
                 super.onServiceFailure(caught, errorResponse, errorId);
@@ -117,7 +113,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         });
 
     }
-
 
     private void loginUser() {
         view.setLoadingStatus(MSGS.verifyAccount());
@@ -137,7 +132,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     // Couldn't connect to server (could be timeout, SOP violation, etc.)
                     LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging, exception="
                             + exception.getMessage());
-                    view.setUnknownError();
+                    view.setErrorMessage(Storage.MSGS.loginUnknownError());
                     // TODO jumarko - Shall we send email notifications when this happens?
                 }
 
@@ -152,18 +147,18 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         fireAfterLoginEvent();
                     } else if (status == Response.SC_UNAUTHORIZED) {
                         LOGGER.fine("User entered wrong credentials !");
-                        view.setLoginError();
+                        view.setErrorMessage(Storage.MSGS.wrongLoginMessage());
                     } else {
                         // other status codes can be processed here
                         LOGGER.severe("Unexptected response status code while logging in, code=" + status);
-                        view.setUnknownError();
+                        view.setErrorMessage(Storage.MSGS.loginUnknownError());
                     }
                 }
             });
 
         } catch (RequestException exception) {
             LOGGER.severe("RequestException thrown during user logging, exception=" + exception.getMessage());
-            view.setUnknownError();
+            view.setErrorMessage(Storage.MSGS.loginUnknownError());
             // TODO jumarko - Shall we send email notifications when this happens?
         }
     }
@@ -260,12 +255,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         return view.getLogin().getText().trim();
     }
 
-
     private String getUserPassword() {
         return view.getPassword().getText();
     }
-
-
 
     public void loadWidget(int widgetId) {
         this.widgetToLoad = widgetId;

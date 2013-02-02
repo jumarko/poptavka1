@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.demandsModule.ClientOfferDetail;
 
+//TODO RELEASE - removed? not used
 public final class ClientOfferConverter extends AbstractConverter<UserMessage, ClientOfferDetail> {
 
     private ClientOfferConverter() {
@@ -15,7 +16,6 @@ public final class ClientOfferConverter extends AbstractConverter<UserMessage, C
     @Override
     public ClientOfferDetail convertToTarget(UserMessage userMessage) {
         ClientOfferDetail detail = new ClientOfferDetail();
-        //TODO Martin
         return detail;
     }
 

@@ -332,7 +332,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             client.setOveralRating(clientDetail.getOveralRating());
         }
         client.setVerification(Verification.valueOf(clientDetail.getVerification()));
-        //TODO Martin - how to update businessUserData, supplierBlackList, demandsIds???
+        //TODO LATER Martin - how to update businessUserData, supplierBlackList, demandsIds???
         generalService.merge(client);
     }
 
@@ -598,7 +598,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public void updateMessage(MessageDetail messageDetail) throws RPCException, ApplicationSecurityException {
         Message message = generalService.find(Message.class, messageDetail.getMessageId());
         try {
-            //TODO Martin - how to update missing ones
+            //TODO LATER Martin - how to update missing ones
             if (!message.getSubject().equals(messageDetail.getSubject())) {
                 message.setSubject(messageDetail.getSubject());
             }

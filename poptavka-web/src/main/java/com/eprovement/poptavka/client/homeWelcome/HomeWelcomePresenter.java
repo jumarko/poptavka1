@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
@@ -136,9 +135,10 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         view.getSendUsEmailButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                //TODO uncomment and remove second row if ivan will accept changes.
 //                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, "");
-                new SecurityDialogBoxes.AlertBox(eventBus, Storage.MSGS.errorTipTryWaiting()).center();
+//                SecurityDialogBoxes.showAlertBox(eventBus, Storage.MSGS.errorTipTryWaiting());
+                SecurityDialogBoxes.showAccessDeniedBox(eventBus);
+//                ExceptionUtils.showErrorDialog("error", "errorMessage");
             }
         });
 

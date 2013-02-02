@@ -42,7 +42,7 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
                 @Override
                 public void onFailure(Throwable caught) {
                     LOGGER.severe("LocalityDataProvider not working, caught=" + caught.getMessage());
-                    new SecurityDialogBoxes.AlertBox(eventBus, MSGS.errorTipTryWaiting()).show();
+                    SecurityDialogBoxes.showAlertBox(eventBus, MSGS.errorTipTryWaiting());
                 }
             });
         } else {
@@ -57,7 +57,7 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
                 @Override
                 public void onFailure(Throwable caught) {
                     LOGGER.severe("LocalityDataProvider not working, caught=" + caught.getMessage());
-                    new SecurityDialogBoxes.AlertBox(eventBus, MSGS.errorTipTryWaiting()).show();
+                    SecurityDialogBoxes.showAlertBox(eventBus, MSGS.errorTipTryWaiting());
                 }
             });
         }

@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <g:HTMLPanel>
+        <b:Modal ui:field="alertBoxModal" title="Alert" backdrop="STATIC" keyboard="true" animation="true">
+            <g:Label ui:field="alertBoxLabel" />
+            <b:ModalFooter ui:field="alertBoxFooter">
+                <b:Button ui:field="alertBoxReportBtn" icon="WRENCH" type="PRIMARY">
+                    <ui:msg key="commonBtnReport">Report</ui:msg>
+                </b:Button>
+            </b:ModalFooter>
+        </b:Modal>
+
+        <b:Modal ui:field="accessDeniedBoxModal" backdrop="STATIC" keyboard="true" animation="true">
+            <g:Label ui:field="accessDeniedBoxLabel" />
+            <b:ModalFooter ui:field="accessDeniedBoxFooter">
+                <b:Button ui:field="accessDeniedBoxReportBtn" icon="WRENCH" type="PRIMARY">
+                    <ui:msg key="commonBtnReport">Report</ui:msg>
+                </b:Button>
+            </b:ModalFooter>
+        </b:Modal>
+    </g:HTMLPanel>
+</ui:UiBinder>

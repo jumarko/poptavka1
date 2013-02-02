@@ -32,10 +32,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Module description:.
- * Data retrieving handle categorySelectionHandler.
- * TODO add description of this module.
- * All changes to CellTree, Table range (Pager), Table Selection is stored to history.
+ * Module displays all registered supplier in table. Suppliers can be filtered by choosing
+ * category from tree on the left side of view (table). By selecting item from table, full supplier detail
+ * is retrieved from DB and displayed in detail view on the right side of view (table).
+ *
+ * Data are retrieved asynchronously for both tree and table.
+ *
+ * If tree node is not opening by clicking on the node's text, check if root category has
+ * set right value for level. For root categories, 1 must be set, otherwise the algorithm
+ * won't work.
  *
  * @author Martin Slavkovsky
  */

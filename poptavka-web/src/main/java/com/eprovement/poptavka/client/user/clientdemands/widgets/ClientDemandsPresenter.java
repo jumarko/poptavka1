@@ -412,6 +412,7 @@ public class ClientDemandsPresenter
             @Override
             public String getStyleNames(IUniversalDetail row, int rowIndex) {
                 // TODO martin - change once isRead attribute will be populated in RPC layer
+                // martin 1.2 - don't understant the comment
                 if (row.getUnreadMessageCount() > 0) {
                     return Storage.RSCS.grid().unread();
                 }

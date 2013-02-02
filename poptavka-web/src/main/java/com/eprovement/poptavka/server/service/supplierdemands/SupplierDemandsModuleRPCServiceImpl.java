@@ -156,8 +156,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
-        //TODO RELEASE return int instead of long? In clientDemandsModuleRPC 
-        //was comment "TODO RELEASE" to do the replacement there. So it should be the same -> int???
+        //TODO RELEASE getPotentialDemandsCount could return int
         return Long.valueOf(userMessageService.getPotentialDemandsCount(
                 businessUser, potentialDemandsCountSearch)).intValue();
     }

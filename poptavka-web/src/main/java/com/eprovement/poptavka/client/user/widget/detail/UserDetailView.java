@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
@@ -69,8 +70,7 @@ public class UserDetailView extends Composite {
 
     public void setSupplierDetail(FullSupplierDetail detail) {
         if (detail.getUserData().getOverallRating() == -1) {
-            //TODO i18n
-            overallRating.setText("Not ranked");
+            overallRating.setText(Storage.MSGS.commonNotRanked());
         } else {
             overallRating.setText(Integer.toString(detail.getUserData().getOverallRating()));
         }

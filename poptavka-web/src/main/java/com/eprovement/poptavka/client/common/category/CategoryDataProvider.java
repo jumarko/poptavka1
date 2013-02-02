@@ -46,7 +46,7 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                 @Override
                 public void onFailure(Throwable caught) {
                     LOGGER.severe("CategoryDataProvider not working, caught=" + caught.getMessage());
-                    new SecurityDialogBoxes.AlertBox(eventBus, MSGS.errorTipTryWaiting()).show();
+                    SecurityDialogBoxes.showAlertBox(eventBus, MSGS.errorTipTryWaiting());
                 }
             });
         } else {
@@ -64,7 +64,7 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                         @Override
                         public void onFailure(Throwable caught) {
                             LOGGER.severe("CategoryDataProvider not working, caught=" + caught.getMessage());
-                            new SecurityDialogBoxes.AlertBox(eventBus, MSGS.errorTipTryWaiting()).show();
+                            SecurityDialogBoxes.showAlertBox(eventBus, MSGS.errorTipTryWaiting());
                         }
                     });
         }

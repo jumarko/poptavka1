@@ -1,26 +1,72 @@
 package com.eprovement.poptavka.shared.exceptions;
 
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.PopupPanel;
+import com.github.gwtbootstrap.client.ui.Modal;
+import com.github.gwtbootstrap.client.ui.ModalFooter;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import java.util.Arrays;
 
-public final class ExceptionUtils {
+/**
+ * @author ivan
+ * @author Martin Slavkovsky (2.2.2013 added uiBinder)
+ */
+public final class ExceptionUtils extends Composite {
 
+    /**************************************************************************/
+    /**  UiBinder.                                                           **/
+    /**************************************************************************/
+    private ExceptionUtilsUiBinder uiBinder = GWT.create(ExceptionUtilsUiBinder.class);
+
+    interface ExceptionUtilsUiBinder extends UiBinder<Widget, ExceptionUtils> {
+    }
+
+    /**************************************************************************/
+    /**  Initialization.                                                     **/
+    /**************************************************************************/
     private ExceptionUtils() {
         super();
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+    /**************************************************************************/
+    /**  Singleton definition.                                               **/
+    /**************************************************************************/
+    private static ExceptionUtils instance;
+
+    public static ExceptionUtils getInstance() {
+        if (instance == null) {
+            instance = new ExceptionUtils();
+        }
+        return instance;
+    }
+    /**************************************************************************/
+    /**  ShowErrorDialog.                                                    **/
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    static @UiField Modal showErrorModal;
+    static @UiField ModalFooter showErrorFooter;
+    static @UiField Label showErrorLabel;
+    static @UiField Button showErrorCloseBtn;
+
+    /** UiHandlers. **/
+    @UiHandler("showErrorCloseBtn")
+    public void showErrorCloseBtnHandler(ClickEvent e) {
+        ExceptionUtils.showErrorModal.hide();
     }
 
+    /** Setup bootstrap modal popup. **/
     public static void showErrorDialog(String errorTitle, String errorMessage) {
-
-
-        // TODO: show more handy popup
-        final PopupPanel errorPanel = new PopupPanel(true, true);
-        errorPanel.setWidget(new HTML(errorMessage));
-        errorPanel.center();
-        errorPanel.show();
-
+        getInstance();
+        showErrorLabel.setText(errorMessage);
+        showErrorModal.setTitle(errorTitle);
+        showErrorModal.show();
     }
-
 
     /**
      * Extracts message and stacktrace from given {@code throwable} and its cause (if any).
@@ -43,6 +89,7 @@ public final class ExceptionUtils {
 
         return message.toString();
     }
+
     /**
      * <p>A way to get the stack-trace of an throwable.</p>
      * @param throwable  the <code>Throwable</code> to be examined
@@ -55,6 +102,4 @@ public final class ExceptionUtils {
         }
         return "";
     }
-
-
 }
