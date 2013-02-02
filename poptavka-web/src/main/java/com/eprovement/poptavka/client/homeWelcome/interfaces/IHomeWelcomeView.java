@@ -4,7 +4,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
@@ -15,8 +14,6 @@ public interface IHomeWelcomeView extends IsWidget {
     }
 
     HorizontalPanel getCategorySection();
-
-    SimplePanel getServicesPanel();
 
     SingleSelectionModel<CategoryDetail> getCategorySelectionModel();
 

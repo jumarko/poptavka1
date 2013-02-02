@@ -20,7 +20,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
@@ -44,7 +43,6 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /* Attributes                                                             */
     /**************************************************************************/
     @UiField HorizontalPanel categorySection;
-    @UiField SimplePanel servicesPanel;
     @UiField Button button;
     @UiField Button demandCreateBtn;
     @UiField Button securedButton;
@@ -154,12 +152,6 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     public HasClickHandlers getSendUsEmailButton() {
         return sendUsEmailButton;
     }
-
-    public SimplePanel getServicesPanel() {
-        return servicesPanel;
-    }
-
-
 }
 /**************************************************************************/
 class RootCategoryCell extends AbstractCell<CategoryDetail> {

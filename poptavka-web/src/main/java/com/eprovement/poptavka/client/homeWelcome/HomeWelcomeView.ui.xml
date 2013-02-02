@@ -15,7 +15,6 @@
 		</g:north>
 		<g:center>
 			<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-                    <g:SimplePanel ui:field="servicesPanel"/>
 				<g:HorizontalPanel ui:field="categorySection" />
 				<h1>secured button calling secured RPC</h1>
 				<g:Button ui:field="demandCreateBtn">Call Simple Service with Default
