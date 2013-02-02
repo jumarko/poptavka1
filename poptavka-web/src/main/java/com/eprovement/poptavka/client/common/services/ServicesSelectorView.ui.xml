@@ -3,6 +3,5 @@
              xmlns:r="urn:import:com.eprovement.poptavka.client.common.table"
              xmlns:g="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
-    <!--<r:RadioTable ui:field="table" />-->
     <g:UniversalGrid ui:field="table" />
 </ui:UiBinder>

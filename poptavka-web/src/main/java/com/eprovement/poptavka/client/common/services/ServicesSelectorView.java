@@ -4,6 +4,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -12,7 +13,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 
 public class ServicesSelectorView extends Composite implements ServicesSelectorPresenter.SupplierServiceInterface {
@@ -28,11 +28,11 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /** UiBinder attibutes. **/
+    /** UiBinder attributes. **/
     @UiField(provided = true)
     UniversalGrid table;
-    /** Class Attributes. **/
-    private SingleSelectionModel<ServiceDetail> selectionModel;
+    /** Class attributes. **/
+    private ServiceDetail selected;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -46,39 +46,46 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
 
     private void initTable() {
         /** Table initialization. **/
-        table = new UniversalGrid();
-        selectionModel = new SingleSelectionModel<ServiceDetail>(ServiceDetail.KEY_PROVIDER);
-        table.setSelectionModel(selectionModel);
+        table = new UniversalGrid(ServiceDetail.KEY_PROVIDER);
 
         /** Column initialization. **/
         //Radio column
-        table.addColumn(new Column<ServiceDetail, Boolean>(new RadioCell()) {
+        Column<ServiceDetail, Boolean> radioButton = new Column<ServiceDetail, Boolean>(new RadioCell()) {
             @Override
             public Boolean getValue(ServiceDetail object) {
                 return false;
             }
-        }, "  ", "  ");
+        };
+        radioButton.setFieldUpdater(new FieldUpdater<ServiceDetail, Boolean>() {
+            @Override
+            public void update(int index, ServiceDetail object, Boolean value) {
+                if (value) {
+                    selected = object;
+                }
+            }
+        });
+        table.addColumn(radioButton);
         //Service title column
         table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
             @Override
             public String getValue(ServiceDetail object) {
                 return object.getTitle();
             }
-        }, Storage.MSGS.columnService(), "  ");
+        }, Storage.MSGS.columnService());
         //Price column
         table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
             @Override
             public Number getValue(ServiceDetail object) {
                 return object.getPrice();
             }
-        }, Storage.MSGS.columnPrice(), "  ");
+        }, Storage.MSGS.columnPrice());
         //Duration column
         table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
             @Override
             public Number getValue(ServiceDetail object) {
                 return object.getPrepaidMonths();
             }
-        }, Storage.MSGS.columnDuration(), "  ");
+        }, Storage.MSGS.columnDuration());
 
         //Set table and columns sizes
         table.setSize("400px", "200px");
@@ -106,7 +113,7 @@ public class ServicesSelectorView extends Composite implements ServicesSelectorP
 
     @Override
     public ServiceDetail getSelectedService() {
-        return this.selectionModel.getSelectedObject();
+        return selected;
     }
 
     @Override
