@@ -1,0 +1,10 @@
+# ignore maven target dir with compiled classes
+target/
+
+# ignore database spy log
+spy.log
+
+# ignore project IDE specific files
+.idea
+.project
+.setting
