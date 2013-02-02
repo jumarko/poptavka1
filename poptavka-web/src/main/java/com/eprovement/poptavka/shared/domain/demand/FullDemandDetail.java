@@ -47,6 +47,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     @Min(value = 0, message = "{demandMinPrice}")
     private int maxOffers;
     private int minRating;
+    private int clientRating;
     private String demandType;
     private DemandStatus demandStatus;
     private DemandDetailType detailType = DemandDetailType.BASE;
@@ -334,6 +335,14 @@ public class FullDemandDetail implements Serializable, TableDisplay {
 
     public List<FullSupplierDetail> getExcludedSuppliers() {
         return excludedSuppliers;
+    }
+
+    public int getClientRating() {
+        return clientRating;
+    }
+
+    public void setClientRating(int clientRating) {
+        this.clientRating = clientRating;
     }
 
     public void setExcludedSuppliers(List<FullSupplierDetail> excludedSuppliers) {

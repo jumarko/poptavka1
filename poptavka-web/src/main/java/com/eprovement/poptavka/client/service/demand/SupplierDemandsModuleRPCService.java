@@ -35,7 +35,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierPotentialDemandsCount(long supplierID,
+    int getSupplierPotentialDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
     /**
@@ -62,7 +62,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierOffersCount(long supplierID,
+    int getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
     /**
@@ -87,7 +87,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierAssignedDemandsCount(long supplierID,
+    int getSupplierAssignedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
     /**

@@ -58,10 +58,4 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat,
             List<LocalityDetail> localitiesToSet);
-
-    /**************************************************************************/
-    /* Business events handled by Presenters.                                 */
-    /**************************************************************************/
-    @Event(handlers = SearchModulePresenter.class)
-    void clearSearchContent();
 }

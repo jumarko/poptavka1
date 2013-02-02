@@ -112,7 +112,6 @@ public class AdminDemandsPresenter
      */
     public void onInitDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_DEMANDS);
-        eventBus.clearSearchContent();
         searchDataHolder = filter;
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

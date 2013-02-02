@@ -28,7 +28,7 @@ public class DemandDetailView extends Composite {
     @UiField(provided = true)
     CellList categories, localities;
     @UiField
-    Label demandName, price, endDate, validTo, description;
+    Label demandName, price, endDate, validTo, description, clientRating;
     //i18n
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.formatCurrency());
@@ -52,6 +52,7 @@ public class DemandDetailView extends Composite {
     public void setDemanDetail(FullDemandDetail demandDetail) {
         GWT.log("detail detail" + demandDetail.toString());
         demandName.setText(demandDetail.getTitle());
+        clientRating.setText(Integer.toString(demandDetail.getClientRating()));
         price.setText(currencyFormat.format(demandDetail.getPrice()));
         endDate.setText(dateFormat.format(demandDetail.getEndDate()));
         validTo.setText(dateFormat.format(demandDetail.getValidToDate()));

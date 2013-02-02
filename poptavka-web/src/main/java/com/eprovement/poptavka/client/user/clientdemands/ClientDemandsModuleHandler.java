@@ -76,10 +76,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     private void getClientDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }
@@ -101,10 +101,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     private void getClientDemandConversationsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandConversationsCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }
@@ -125,10 +125,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     private void getClientOfferedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }
@@ -150,10 +150,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     private void getClientOfferedDemandOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandOffersCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }
@@ -175,10 +175,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     private void getClientAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedDemandsCount(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Long>(eventBus) {
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Long result) {
-                        grid.getDataProvider().updateRowCount(result.intValue(), true);
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
     }

@@ -133,13 +133,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         return detail.getMaxOffers() > 0;
     }
 
-    // TODO FIX this, it's not working nullPo interException. -- who use it anyway???
-    public Locality getLocality(Long id) throws RPCException {
-        System.out.println("Locality of id: " + id + ", localityService is null? " + (localityService == null));
-        return localityService.getLocality(id);
-//        return localityService.getById(10);
-    }
-
     /**
      * Method creates a message that is associated with created demand. Message
      * is sent to all suppliers that complies with the demand criteria
@@ -194,7 +187,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         final List<Address> addresses = new ArrayList<Address>();
         if (clientDetail.getAddresses() != null) {
             for (AddressDetail detail : clientDetail.getAddresses()) {
-                Locality city = this.getLocality(detail.getCityId());
+                Locality city = localityService.getLocality(detail.getCityId());
                 Address address = new Address();
                 address.setCity(city);
                 address.setStreet(detail.getStreet());

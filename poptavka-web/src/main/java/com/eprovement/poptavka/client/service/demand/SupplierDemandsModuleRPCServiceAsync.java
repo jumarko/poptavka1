@@ -19,21 +19,21 @@ public interface SupplierDemandsModuleRPCServiceAsync {
 
     //SupplierDemands widget
     void getSupplierPotentialDemandsCount(long supplierID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getSupplierPotentialDemands(long userId, long supplierId, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierPotentialDemandDetail>> callback);
 
     //SupplierOffers widget
     void getSupplierOffersCount(long supplierID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getSupplierOffers(long supplierID, long userId, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierOffersDetail>> callback);
 
     //SupplierAssignedDemands widget
     void getSupplierAssignedDemandsCount(long supplierID, SearchDefinition searchDefinition,
-            AsyncCallback<Long> callback);
+            AsyncCallback<Integer> callback);
 
     void getSupplierAssignedDemands(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierOffersDetail>> callback);

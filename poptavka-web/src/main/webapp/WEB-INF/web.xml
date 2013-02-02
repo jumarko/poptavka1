@@ -216,24 +216,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ClientRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.client.ClientRPCServiceImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ClientRPCService</servlet-name>
-        <url-pattern>/poptavka/service/cs</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SupplierRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.supplier.SupplierRPCServiceImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SupplierRPCService</servlet-name>
-        <url-pattern>/poptavka/service/supplier</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>AdminRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.admin.AdminRPCServiceImpl</servlet-class>
     </servlet>
@@ -241,25 +223,6 @@
         <servlet-name>AdminRPCService</servlet-name>
         <url-pattern>/poptavka/service/admin</url-pattern>
     </servlet-mapping>
-
-    <servlet>
-        <servlet-name>MessageRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.message.MessageRPCServiceImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MessageRPCService</servlet-name>
-        <url-pattern>/poptavka/service/messages</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>OfferRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.offer.OfferRPCServiceImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>OfferRPCService</servlet-name>
-        <url-pattern>/poptavka/service/offers</url-pattern>
-    </servlet-mapping>
-
 
 
     <servlet>

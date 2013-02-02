@@ -71,8 +71,7 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    //TODO Martin - ako i18n format datumu?
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
+    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
     //detail WrapperPanel
     @UiField SimplePanel wrapperPanel;
     @UiField Label demandTitlelabel;

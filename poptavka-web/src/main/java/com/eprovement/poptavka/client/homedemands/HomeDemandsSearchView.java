@@ -4,21 +4,21 @@ import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.IntegerBox;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.util.ArrayList;
 import java.util.Date;
-import com.google.gwt.user.datepicker.client.CalendarUtil;
 
 public class HomeDemandsSearchView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -28,7 +28,9 @@ public class HomeDemandsSearchView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeDemandsSearchView> {
     }
     @UiField
-    TextBox demandTitle, priceFrom, priceTo;
+    TextBox demandTitle;
+    @UiField
+    IntegerBox priceFrom, priceTo;
     @UiField
     ListBox demandTypes, creationDate;
     @UiField
@@ -62,10 +64,10 @@ public class HomeDemandsSearchView extends Composite implements
                     demandTypes.getItemText(demandTypes.getSelectedIndex())));
         }
         if (!priceFrom.getText().equals("")) {
-            filters.add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getText()));
+            filters.add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getValue()));
         }
         if (!priceTo.getText().equals("")) {
-            filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
+            filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getValue()));
         }
         if (creationDate.getSelectedIndex() != 4) {
             filters.add(new FilterItem("createdDate", FilterItem.OPERATION_FROM, getCreatedDate()));
@@ -95,20 +97,6 @@ public class HomeDemandsSearchView extends Composite implements
                 break;
         }
         return date;
-    }
-
-    @UiHandler("priceFrom")
-    void validatePriceFrom(ChangeEvent event) {
-        if (!priceFrom.getText().matches("[0-9]+")) {
-            priceFrom.setText("");
-        }
-    }
-
-    @UiHandler("priceTo")
-    void validatePriceTo(ChangeEvent event) {
-        if (!priceTo.getText().matches("[0-9]+")) {
-            priceTo.setText("");
-        }
     }
 
     @UiHandler("clearBtn")

@@ -95,7 +95,6 @@ public class MessageColumnFactory<T> {
      *
      * NOTE:
      * Sorting is not implemented now.
-     * //TODO
      * Implement sorting according to star status
      *
      * @return star column
@@ -147,7 +146,6 @@ public class MessageColumnFactory<T> {
     /**
      * Creates client column with number of message in conversation.
      *
-     * TODO
      * in devel progress - no mandatory attributes are implementend in messageObjects - clinektName, messageCount
      * update sorting accordingly
      *
@@ -187,9 +185,6 @@ public class MessageColumnFactory<T> {
 
     /**
      * Creates demandCreation column.
-     *
-     * TODO
-     * in devel progress
      *
      * @param sortHandler
      * @return ratingColumn

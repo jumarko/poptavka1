@@ -165,7 +165,7 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     public void onInitDraft(SearchModuleDataHolder filter) {
         this.init();
         Storage.setCurrentlyLoadedView(Constants.MESSAGES_DRAFT);
-        //TODO Martin: getDraftMessages
+        //TODO LATER Martin: getDraftMessages
     }
 
     public void onInitTrash(SearchModuleDataHolder filter) {

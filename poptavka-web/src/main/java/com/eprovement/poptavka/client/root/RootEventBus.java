@@ -183,10 +183,6 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = SearchModule.class)
     void goToSearchModule();
 
-    // TODO Praso - mozeme odstranit? No usage
-    @Event(forwardToModules = SearchModule.class)
-    void clearSearchContent();
-
     /**
      * Contact us popup will appear. Parameters will be forwared to method fillContactUsValues().
      *

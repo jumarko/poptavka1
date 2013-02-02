@@ -115,7 +115,7 @@ public class MyProblemsView extends Composite implements
 //            }
 //        };
 
-//        cellTable.addColumn(checkColumn, "TODO");
+//        cellTable.addColumn(checkColumn, "   ");
 
         // ******************* DEMAND NAME *************************************
         Column<Problem, String> demandName = new Column<Problem, String>(

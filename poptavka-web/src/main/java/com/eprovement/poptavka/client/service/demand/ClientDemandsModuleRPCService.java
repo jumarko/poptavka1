@@ -38,7 +38,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientDemandsCount(long userId,
+    int getClientDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -65,7 +65,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientDemandConversationsCount(long userId, long demandID,
+    int getClientDemandConversationsCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -94,7 +94,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientOfferedDemandsCount(long userId,
+    int getClientOfferedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -120,7 +120,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      *               If userId represents some different user than client, exception will be thrown
      * @return offers count of given demand
      */
-    long getClientOfferedDemandOffersCount(long userId, long demandID,
+    int getClientOfferedDemandOffersCount(long userId, long demandID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -148,7 +148,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientAssignedDemandsCount(long userId,
+    int getClientAssignedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**

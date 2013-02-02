@@ -17,7 +17,7 @@ import java.util.Map;
 public class OfferDaoImpl extends GenericHibernateDao<Offer> implements OfferDao {
 
     @Override
-    public long getOffersCountForSupplier(long supplierId, OfferState offerState) {
+    public Long getOffersCountForSupplier(long supplierId, OfferState offerState) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("supplier", supplierId);
         params.put("state", offerState);
@@ -25,7 +25,7 @@ public class OfferDaoImpl extends GenericHibernateDao<Offer> implements OfferDao
     }
 
     @Override
-    public long getOffersCountForSupplier(long supplierId, OfferState offerState1, OfferState offerState2) {
+    public Long getOffersCountForSupplier(long supplierId, OfferState offerState1, OfferState offerState2) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("supplier", supplierId);
         params.put("state1", offerState1);

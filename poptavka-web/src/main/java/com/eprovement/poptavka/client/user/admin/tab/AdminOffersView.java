@@ -195,8 +195,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
 
                     @Override
                     public Date getValue(Object object) {
-                        return ((OfferDetail) object).getFinishDate();
-                        //TODO Martin - dorobit creation date
+                        return ((OfferDetail) object).getCreatedDate();
                     }
                 });
 

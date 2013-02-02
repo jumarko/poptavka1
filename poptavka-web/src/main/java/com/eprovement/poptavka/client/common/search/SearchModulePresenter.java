@@ -123,10 +123,6 @@ public class SearchModulePresenter
     /**************************************************************************/
     /** Business events handled by presenter                                  */
     /**************************************************************************/
-    public void onClearSearchContent() {
-        view.getSearchContent().setText(Storage.MSGS.searchContent());
-    }
-
     public void onResponsePaymentMethods(final List<PaymentMethodDetail> list) {
         final ListBox box = ((AdminInvoicesViewView) view.getPopupPanel().getWidget()).getPaymentMethodList();
         box.clear();

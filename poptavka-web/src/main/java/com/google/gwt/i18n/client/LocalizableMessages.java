@@ -42,14 +42,17 @@ public interface LocalizableMessages extends Messages {
 
     /** Common labels. **/
     String commonCategoriesLabel();
+    String commonClient();
     String commonEmptyCredentials();
     String commonEmptyTable();
     String commonLocalitiesLabel();
     String commonNoData();
     String commonNotDefined();
+    String commonNotRanked();
     String commonOK();
     String commonSelected();
     String commonServicesLabel();
+    String commonSupplier();
 
     /** Messages actions list box. **/
     String commonListDefault();
@@ -81,6 +84,7 @@ public interface LocalizableMessages extends Messages {
     String formCategories();
     String formCertified();
     String formCity();
+    String formClientRating();
     String formCompanyName();
     String formConstSymbol();
     String formCreationDate();
@@ -94,8 +98,9 @@ public interface LocalizableMessages extends Messages {
     String formFinnishDate();
     String formFirstName();
     String formFromTo(int from, int to);
+    String formFromTo2(int from1, int to1, int from2, int to2);
     String formFromToDate(Date from, Date to);
-    String formFromToPrice(int from, int to, String currencySign);
+    String formFromToPrice(int from1, int to1, int from2, int to2);
     String formFromToPercentage(int from, int to);
     String formIdentificationNumber();
     String formInvoiceNumber();

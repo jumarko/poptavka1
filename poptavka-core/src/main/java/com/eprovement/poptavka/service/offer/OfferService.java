@@ -25,12 +25,12 @@ public interface OfferService extends GenericService<Offer, OfferDao> {
      * @param supplierId
      * @return count of PENDING offers
      */
-    long getPendingOffersCountForSupplier(long supplierId);
+    Long getPendingOffersCountForSupplier(long supplierId);
 
     /**
      * Gets count of supplier's offers in state ACCEPTED.
      * @param supplierId
      * @return count of ACCEPTED offers
      */
-    long getAcceptedOffersCountForSupplier(long supplierId);
+    Long getAcceptedOffersCountForSupplier(long supplierId);
 }

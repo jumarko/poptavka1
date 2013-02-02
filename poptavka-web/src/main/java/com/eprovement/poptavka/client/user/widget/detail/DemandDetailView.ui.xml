@@ -43,6 +43,12 @@
 						<g:Label styleName='{res.detailViews.detailDateLabel}'
 							ui:field="validTo" />
 					</g:HTMLPanel>
+                    <g:HTMLPanel>
+						<g:Label styleName='{res.detailViews.detailBlockLabel}'>
+							<ui:msg key="formClientRating">Client rating:</ui:msg>
+						</g:Label>
+						<g:Label ui:field="clientRating" />
+					</g:HTMLPanel>
 				</g:HTMLPanel>
 
 				<g:HTMLPanel styleName='{res.detailViews.detailBlock}'>

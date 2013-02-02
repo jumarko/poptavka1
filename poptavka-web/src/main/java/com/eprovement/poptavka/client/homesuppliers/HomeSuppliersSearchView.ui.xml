@@ -4,84 +4,79 @@
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
-        <!-- injecting style resources -->
-        <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <!-- injecting style resources -->
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 		
-        <ui:style>
-                .important {
-                font-weight: bold;
-                font-style: italic;
-                }
+    <ui:style>
+        .important {
+        font-weight: bold;
+        font-style: italic;
+        }
 		
-                .rangeBox {
-                width: 30px;
-                margin-right: 10px;
-                margin-left: 10px;
-                }
+        .rangeBox {
+        width: 70px;
+        margin-right: 10px;
+        margin-left: 10px;
+        }
 		
-                .searchMainContent {
-                width: 200px;
-                }
+        .searchMainContent {
+        width: 200px;
+        }
 		
-                .margin {
+        .margin {
 			
-                }
-        </ui:style>
+        }
+    </ui:style>
 
-        <g:HTMLPanel>
-                <b:FluidContainer>
-                        <b:FluidRow>
-                                <b:Column size="2">
-                                        <g:Label>
-                                                <ui:msg key="formCompanyName">Company name:</ui:msg>
-                                        </g:Label>
-                                </b:Column>
-                                <b:Column size="10">
-                                        <g:TextBox ui:field="companyName" />
-                                </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                                <b:Column size="2">
-                                        <g:Label>
-                                                <ui:msg key="formRating">Rating:</ui:msg>
-                                        </g:Label>
-                                </b:Column>
-                                <b:Column size="10">
-                                        <g:HTMLPanel>
-                                                <!--TODO RELEASE - Not working my way like elsewhere-->
-                                                from
-                                                <g:TextBox styleName="{style.rangeBox}" ui:field="ratingFrom"/>
-                                                to
-                                                <g:TextBox styleName="{style.rangeBox}" ui:field="ratingTo"/>
-                                                <!--                                    <ui:msg key="formFromTo">
-                                                    from
-                                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingFrom" />
-                                                    to
-                                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingTo" />
-                                                </ui:msg>-->
-                                        </g:HTMLPanel>
-                                </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                                <b:Column size="2">
-                                        <g:Label>
-                                                <ui:msg key="formDescription">Supplier description:</ui:msg>
-                                        </g:Label>
-                                </b:Column>
-                                <b:Column size="10">
-                                        <g:TextBox ui:field="supplierDescription" />
-                                </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                                <b:Column size="2">
-                                        <g:HTMLPanel></g:HTMLPanel>
-                                </b:Column>
-                                <b:Column size="10">
-                                        <g:Button ui:field="clearBtn" styleName='btn btn-warning'>
-                                                <ui:msg key="commonBtnClear">Clear</ui:msg>
-                                        </g:Button>
-                                </b:Column>
-                        </b:FluidRow>
-                </b:FluidContainer>
-        </g:HTMLPanel>
+    <g:HTMLPanel>
+        <b:FluidContainer>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formCompanyName">Company name:</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <b:TextBox ui:field="companyName" />
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formRating">Rating:</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <g:HTMLPanel>
+                        <ui:msg key="formFromTo2">
+                            from
+                            <b:IntegerBox styleName="{style.rangeBox}" placeholder="0" ui:field="ratingFrom"/>
+                            to
+                            <b:IntegerBox styleName="{style.rangeBox}" placeholder="100" ui:field="ratingTo"/>
+                        </ui:msg>
+                    </g:HTMLPanel>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formDescription">Supplier description:</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <b:TextBox ui:field="supplierDescription" />
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="10">
+                    <b:Button ui:field="clearBtn" type="WARNING">
+                        <ui:msg key="commonBtnClear">Clear</ui:msg>
+                    </b:Button>
+                </b:Column>
+            </b:FluidRow>
+        </b:FluidContainer>
+    </g:HTMLPanel>
 </ui:UiBinder>

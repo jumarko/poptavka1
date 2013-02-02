@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -121,19 +120,15 @@ public class BusinessUserData extends DomainObject {
      * @return display string
      */
     public String getDisplayName() {
-        if (StringUtils.isNotEmpty(getCompanyName())) {
-            return getCompanyName();
-        } else {
-            String result = "";
+        String result = "";
 
-            if (!getPersonFirstName().isEmpty()) {
-                result = getPersonFirstName();
-            }
-            if (!getPersonLastName().isEmpty()) {
-                result += ", " + getPersonLastName();
-            }
-            return result;
+        if (!getPersonFirstName().isEmpty()) {
+            result = getPersonFirstName();
         }
+        if (!getPersonLastName().isEmpty()) {
+            result += ", " + getPersonLastName();
+        }
+        return result;
     }
 
     @Override

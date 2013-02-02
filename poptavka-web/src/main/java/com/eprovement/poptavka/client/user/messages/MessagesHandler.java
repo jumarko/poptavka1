@@ -42,12 +42,12 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 if (action.equals("composeNewForwarded")) {
-                    // TODO forward back where I was when forwarded to Compose Message widget
+                    // TODO LATER forward back where I was when forwarded to Compose Message widget
                 } else if (action.equals("composeNew")) {
-                    //TODO forward to inbox
+                    //TODO LATER forward to inbox
                     eventBus.initInbox(null);
                 } else if (action.equals("composeReply")) {
-                    //TODO forward to inbox && display relevant conversation with new reply
+                    //TODO LATER forward to inbox && display relevant conversation with new reply
                     eventBus.initInbox(null);
 //                    eventBus.displayConversation(
 //                        sentMessage.getThreadRootId(), sentMessage.getMessageId());

@@ -1,121 +1,117 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
-	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-	<!-- injecting style resources -->
-	<ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <!-- injecting style resources -->
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-	<ui:style>
-		.important {
-		font-weight: bold;
-		font-style: italic;
-		}
+    <ui:style>
+        .important {
+        font-weight: bold;
+        font-style: italic;
+        }
 
-		.priceBox {
-		width: 70px;
-		margin-right: 10px;
-		margin-left: 4px;
-		}
+        .priceBox {
+        width: 70px;
+        margin-right: 10px;
+        margin-left: 4px;
+        }
 
-		.dateBox {
-		width: 70px;
-		margin-right: 10px;
-		margin-left: 4px;
-		}
+        .dateBox {
+        width: 70px;
+        margin-right: 10px;
+        margin-left: 4px;
+        }
 
-		.searchMainContent {
-		width:
-		200px;
-		}
-	</ui:style>
+        .searchMainContent {
+        width:
+        200px;
+        }
+    </ui:style>
 
-	<g:HTMLPanel>
-		<b:FluidContainer>
-			<b:FluidRow>
-				<b:Column size="2">
-					<g:Label>
-						<ui:msg key="formTitle">Title</ui:msg>
-					</g:Label>
-				</b:Column>
-				<b:Column size="10">
-					<g:TextBox ui:field="demandTitle" />
-				</b:Column>
-			</b:FluidRow>
+    <g:HTMLPanel>
+        <b:FluidContainer>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formTitle">Title</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <b:TextBox ui:field="demandTitle" />
+                </b:Column>
+            </b:FluidRow>
 
-			<b:FluidRow>
-				<b:Column size="2">
-					<g:Label>
-						<ui:msg key="formPrice">Price:</ui:msg>
-					</g:Label>
-				</b:Column>
-				<b:Column size="10">
-					<g:HTMLPanel>
-						<!--TODO RELEASE - Not working my way like elsewhere -->
-						from
-						<g:TextBox styleName="{style.priceBox}" ui:field="priceFrom" />
-						to
-						<g:TextBox styleName="{style.priceBox}" ui:field="priceTo" />
-						<ui:msg key="formatCurrencySign">$</ui:msg>
-						<!-- <ui:msg key="formFromTo"> from <g:TextBox styleName="{style.priceBox}" 
-							ui:field="priceFrom" /> to <g:TextBox styleName="{style.priceBox}" ui:field="priceTo" 
-							/> <ui:msg key="formatCurrencySign">$</ui:msg> </ui:msg> -->
-					</g:HTMLPanel>
-				</b:Column>
-			</b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formPrice">Price:</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <g:HTMLPanel>
+                        <ui:msg key="formFromToPrice">
+                            from
+                            <b:IntegerBox styleName="{style.priceBox}" ui:field="priceFrom" />
+                            to
+                            <b:IntegerBox styleName="{style.priceBox}" ui:field="priceTo" />
+                            $
+                        </ui:msg>
+                    </g:HTMLPanel>
+                </b:Column>
+            </b:FluidRow>
 
-			<b:FluidRow>
-				<b:Column size="2">
-					<g:Label>
-						<ui:msg key="formDemandType">Demand Type:</ui:msg>
-					</g:Label>
-				</b:Column>
-				<b:Column size="10">
-					<g:ListBox ui:field="demandTypes" />
-				</b:Column>
-			</b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formDemandType">Demand Type:</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <g:ListBox ui:field="demandTypes" />
+                </b:Column>
+            </b:FluidRow>
 
-			<b:FluidRow>
-				<b:Column size="2">
-					<g:Label>
-						<ui:msg key="formCreationDate">Creation date:</ui:msg>
-					</g:Label>
-				</b:Column>
-				<b:Column size="10">
-					<g:ListBox ui:field="creationDate" />
-				</b:Column>
-			</b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formCreationDate">Creation date:</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <g:ListBox ui:field="creationDate" />
+                </b:Column>
+            </b:FluidRow>
 
-			<b:FluidRow>
-				<b:Column size="2">
-					<g:Label>
-						<ui:msg key="formFinnishDate">Finnish date:</ui:msg>
-					</g:Label>
-				</b:Column>
-				<b:Column size="10">
-					<g:HTMLPanel>
-						<!--TODO RELEASE - Not working my way like elsewhere -->
-						from
-						<p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateFrom" />
-						to
-						<p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateTo" />
-						<!-- <ui:msg key="formFromToDate"> from <p1:DateBox styleName="{style.dateBox}" 
-							ui:field="finnishDateFrom" /> to <p1:DateBox styleName="{style.dateBox}" 
-							ui:field="finnishDateTo" /> </ui:msg> -->
-					</g:HTMLPanel>
-				</b:Column>
-			</b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:Label>
+                        <ui:msg key="formFinnishDate">Finnish date:</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="10">
+                    <g:HTMLPanel>
+                        <ui:msg key="formFromToDate">
+                            from
+                            <p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateFrom" />
+                            to
+                            <p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateTo" />
+                        </ui:msg>
+                    </g:HTMLPanel>
+                </b:Column>
+            </b:FluidRow>
 
-			<b:FluidRow>
-				<b:Column size="2">
-					<g:HTMLPanel></g:HTMLPanel>
-				</b:Column>
-				<b:Column size="10">
-					<g:Button ui:field="clearBtn" styleName='btn btn-warning'>
-						<ui:msg key="commonBtnClear">Clear</ui:msg>
-					</g:Button>
-				</b:Column>
-			</b:FluidRow>
-		</b:FluidContainer>
-	</g:HTMLPanel>
+            <b:FluidRow>
+                <b:Column size="2">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="10">
+                    <b:Button ui:field="clearBtn" type="WARNING">
+                        <ui:msg key="commonBtnClear">Clear</ui:msg>
+                    </b:Button>
+                </b:Column>
+            </b:FluidRow>
+        </b:FluidContainer>
+    </g:HTMLPanel>
 </ui:UiBinder>

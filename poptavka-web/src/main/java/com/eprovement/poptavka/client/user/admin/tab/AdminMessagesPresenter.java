@@ -97,7 +97,6 @@ public class AdminMessagesPresenter
      */
     public void onInitMessages(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_MESSAGES);
-        eventBus.clearSearchContent();
         searchDataHolder = filter;
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
