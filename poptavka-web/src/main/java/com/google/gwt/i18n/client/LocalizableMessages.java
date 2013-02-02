@@ -82,6 +82,7 @@ public interface LocalizableMessages extends Messages {
     String formCategories();
     String formCertified();
     String formCity();
+    String formClientRating();
     String formCompanyName();
     String formConstSymbol();
     String formCreationDate();
