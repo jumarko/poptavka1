@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
+import com.eprovement.poptavka.client.common.BigDecimalBox;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -46,7 +47,7 @@ public class FormDemandBasicView extends Composite
     @UiField
     TextBox title;
     @UiField
-    TextBox priceString;
+    BigDecimalBox price;
     @UiField
     TextArea description;
     @UiField
@@ -103,13 +104,6 @@ public class FormDemandBasicView extends Composite
                 validateValidToDate();
             }
         }, CloseEvent.getType());
-
-        //TODO RELEASE remove helping prefilled fakedata
-        title.setText("poptavka");
-        priceString.setText("1234");
-        endDate.setValue(endDate.getDatePicker().getLastDate());
-        validToDate.setValue(validToDate.getDatePicker().getLastDate());
-        description.setText("Hoj Morho lud tvojho rodu, kto kradmou rukou siahne na tvoju slobodu.");
     }
 
     @UiHandler("title")
@@ -120,11 +114,11 @@ public class FormDemandBasicView extends Composite
         this.displayErrors(TITLE, violations);
     }
 
-    @UiHandler("priceString")
+    @UiHandler("price")
     public void validatePrice(BlurEvent e) {
         FullDemandDetail demandDetail = driver.flush();
         Set<ConstraintViolation<FullDemandDetail>> violations = validator.validateValue(
-                FullDemandDetail.class, "priceString", demandDetail.getPriceString(), Default.class);
+                FullDemandDetail.class, "price", demandDetail.getPrice(), Default.class);
         this.displayErrors(PRICE, violations);
     }
 
@@ -171,7 +165,7 @@ public class FormDemandBasicView extends Composite
         map.put(DemandField.TITLE, title.getText());
         map.put(DemandField.DESCRIPTION, description.getValue());
         try {
-            map.put(DemandField.PRICE, priceString.getText());
+            map.put(DemandField.PRICE, price.getText());
         } catch (Exception ex) {
             Window.alert("Exception: " + ex.getMessage());
         }
@@ -206,7 +200,7 @@ public class FormDemandBasicView extends Composite
                 this.errorLabelTitle.setText(errorMessage);
                 break;
             case PRICE:
-                this.priceString.setStyleName(style);
+                this.price.setStyleName(style);
                 this.errorLabelPrice.setText(errorMessage);
                 break;
             case END_DATE:
