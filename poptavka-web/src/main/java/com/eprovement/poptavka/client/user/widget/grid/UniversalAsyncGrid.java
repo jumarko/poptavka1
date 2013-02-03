@@ -413,7 +413,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         Column<T, Boolean> col = new Column<T, Boolean>(new StarCell()) {
             @Override
             public Boolean getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
+                IUniversalDetail obj = (IUniversalDetail) object;
                 return obj.isStarred();
             }
         };

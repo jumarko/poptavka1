@@ -238,18 +238,18 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
-        // TODO RELEASE ivlcek - replace by new SQL that will load demandIds,
-        // latest userMessageId and number of total submessages
+        // TODO RELEASE ivlcek, vojto - replace by new SQL that will load demandIds,
+        // latest userMessageId and number of total submessages. Vojto is working on this
         Iterator it = messageService.getListOfClientDemandMessagesUnread(generalService.find(
                 User.class, userId)).entrySet().iterator();
 
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             // key is message and val is number
-            Long messageId = (Long) pairs.getKey();
+            Long demandId = (Long) pairs.getKey();
             for (ClientDemandDetail cdd : cdds) {
-                if (cdd.getDemandId() == messageId) {
-                    cdd.setUnreadMessageCount(((Integer) pairs.getValue()).intValue());
+                if (cdd.getDemandId() == demandId) {
+                    cdd.setUnreadSubmessagesCount(((Integer) pairs.getValue()).intValue());
                     break;
                 }
             }
@@ -296,15 +296,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
                 messageService.getLatestSupplierUserMessagesWithoutOfferForDemnd(user, root);
 
-        for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
-            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
+        for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
+            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             // TODO RELEASE ivlcek - make detail object converter and create search definition
             ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
             // set UserMessage attributes
             cdcd.setUserMessageId(userMessage.getId());
             cdcd.setIsStarred(userMessage.isStarred());
             cdcd.setIsRead(userMessage.isRead());
-            cdcd.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+            cdcd.setMessageCount(userMessageEntry.getValue());
             // set Message attributes
             cdcd.setMessageId(userMessage.getMessage().getId());
             cdcd.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
@@ -313,6 +313,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set Demand attributes
             cdcd.setDemandId(demandID);
             // set Supplier attributes
+            // TODO RELEASE ivlcek - if latest user message is from Client then this line doesn't work with client id
             Supplier supplier = findSupplier(userMessage.getMessage().getSender().getId());
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
@@ -386,10 +387,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             // key is messageId and val is number of unread submessages
-            Long messageId = (Long) pairs.getKey();
+            Long demandId = (Long) pairs.getKey();
             for (ClientDemandDetail cdd : cdds) {
-                if (cdd.getDemandId() == messageId) {
-                    cdd.setUnreadMessageCount(((Integer) pairs.getValue()).intValue());
+                if (cdd.getDemandId() == demandId) {
+                    cdd.setUnreadSubmessagesCount(((Integer) pairs.getValue()).intValue());
                     break;
                 }
             }
@@ -434,15 +435,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
                 messageService.getLatestSupplierUserMessagesWithOfferForDemnd(user, root);
-        for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
-            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
+        for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
+            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             Offer offer = userMessage.getMessage().getOffer();
             // TODO ivlcek - refactor and create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
             codod.setIsStarred(userMessage.isStarred());
-            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+            codod.setMessageCount(userMessageEntry.getValue());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
@@ -526,15 +527,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
                 messageService.getLatestSupplierUserMessagesForAssignedDemand(user);
-        for (Long userMessageIdKey : latestSupplierUserMessagesWithUnreadSub.keySet()) {
-            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageIdKey);
+        for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
+            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             Offer offer = userMessage.getMessage().getOffer();
             // TODO RELEASE ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
             codod.setIsStarred(userMessage.isStarred());
-            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessageIdKey));
+            codod.setMessageCount(userMessageEntry.getValue());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());

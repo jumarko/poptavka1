@@ -94,7 +94,7 @@ import org.hibernate.annotations.CascadeType;
                         + " and subMessage.sender <> :user\n"
                         + "group by subMessage.sender.id"),
         @NamedQuery(name = "getListOfClientDemandMessagesUnreadSub",
-                query = "select message.id, count(subUserMessage.id)\n"
+                query = "select message.demand.id, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join"
                         + " subUserMessage.message as subMessage"
                         + " right join subMessage.threadRoot as message\n"
@@ -105,7 +105,7 @@ import org.hibernate.annotations.CascadeType;
                         + " and message.sender = :sender\n"
                         + "group by message.id"),
         @NamedQuery(name = "getListOfClientDemandMessagesWithOfferUnreadSub",
-                query = "select message.id, count(subUserMessage.id)\n"
+                query = "select message.demand.id, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join"
                         + " subUserMessage.message as subMessage"
                         + " right join subMessage.threadRoot as message\n"

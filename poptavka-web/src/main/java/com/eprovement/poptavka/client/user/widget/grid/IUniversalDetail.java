@@ -57,8 +57,6 @@ public interface IUniversalDetail {
 
     void setMessageCount(int messageCount);
 
-    int getUnreadMessageCount();
-
     Date getDeliveryDate();
 
     // Demand part

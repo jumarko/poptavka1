@@ -379,7 +379,7 @@ public class ClientOffersPresenter
         view.getDemandGrid().setRowStyles(new RowStyles<ClientDemandDetail>() {
             @Override
             public String getStyleNames(ClientDemandDetail row, int rowIndex) {
-                if (row.getUnreadMessageCount() > 0) {
+                if (row.getUnreadSubmessagesCount() > 0) {
                     return Storage.RSCS.grid().unread();
                 } else {
                     return "";

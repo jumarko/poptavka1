@@ -58,4 +58,8 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public int getUnreadSubmessagesCount() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

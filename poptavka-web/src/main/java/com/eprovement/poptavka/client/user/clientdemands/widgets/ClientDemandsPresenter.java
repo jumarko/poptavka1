@@ -120,7 +120,7 @@ public class ClientDemandsPresenter
         addActionBoxChoiceHandlers();
         // RowStyles
         addDemandGridRowStyles();
-        addConversationGridRowStyles();
+//        addConversationGridRowStyles();
     }
 
     /**************************************************************************/
@@ -399,21 +399,7 @@ public class ClientDemandsPresenter
         view.getDemandGrid().setRowStyles(new RowStyles<ClientDemandDetail>() {
             @Override
             public String getStyleNames(ClientDemandDetail row, int rowIndex) {
-                if (row.getUnreadMessageCount() > 0) {
-                    return Storage.RSCS.grid().unread();
-                }
-                return "";
-            }
-        });
-    }
-
-    private void addConversationGridRowStyles() {
-        view.getConversationGrid().setRowStyles(new RowStyles<IUniversalDetail>() {
-            @Override
-            public String getStyleNames(IUniversalDetail row, int rowIndex) {
-                // TODO martin - change once isRead attribute will be populated in RPC layer
-                // martin 1.2 - don't understant the comment
-                if (row.getUnreadMessageCount() > 0) {
+                if (row.getUnreadSubmessagesCount() > 0) {
                     return Storage.RSCS.grid().unread();
                 }
                 return "";

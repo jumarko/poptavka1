@@ -285,7 +285,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         view.getDataGrid().setRowStyles(new RowStyles<IUniversalDetail>() {
             @Override
             public String getStyleNames(IUniversalDetail row, int rowIndex) {
-                if (row.getUnreadMessageCount() > 0) {
+                if (!row.isRead()) {
                     return Storage.RSCS.grid().unread();
                 }
                 return "";

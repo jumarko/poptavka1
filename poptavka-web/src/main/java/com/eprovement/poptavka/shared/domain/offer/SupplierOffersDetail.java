@@ -5,9 +5,6 @@
 package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +13,7 @@ import java.util.Date;
  *
  * @author PC
  */
-public class SupplierOffersDetail implements Serializable, TableDisplay, IUniversalDetail {
+public class SupplierOffersDetail implements Serializable, IUniversalDetail {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -38,7 +35,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
     private Date receivedDate;
     private Date deliveryDate;
     private int messageCount;
-    private int unreadMessageCount;
     private long clientId;
     private String clientName;
     private String title;
@@ -227,21 +223,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
         this.messageCount = messageCount;
     }
 
-    /**
-     * @return the unreadMessageCount
-     */
-    @Override
-    public int getUnreadMessageCount() {
-        return unreadMessageCount;
-    }
-
-    /**
-     * @param unreadMessageCount the unreadMessageCount to set
-     */
-    public void setUnreadMessageCount(int unreadMessageCount) {
-        this.unreadMessageCount = unreadMessageCount;
-    }
-
     @Override
     public boolean isStarred() {
         return isStarred;
@@ -254,16 +235,6 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
 
     @Override
     public Date getEndDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public DemandStatus getDemandStatus() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public OfferStateType getOfferState() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -339,8 +310,8 @@ public class SupplierOffersDetail implements Serializable, TableDisplay, IUniver
                 + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
                 + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
                 + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
-                + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", unreadMessageCount="
-                + unreadMessageCount + '}';
+                + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", isRead="
+                + isRead + '}';
     }
 
     @Override

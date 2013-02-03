@@ -201,18 +201,16 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Message threadRoot1 = this.messageService.getById(1L);
         final Message threadRoot200 = this.messageService.getById(200L);
         final Message threadRoot300 = this.messageService.getById(300L);
+        final Demand demand = (Demand) this.generalService.find(Demand.class, 2L);
         final User client = this.generalService.find(User.class, 111111112L);
         final Map<Long, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesUnread(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                2, listOfClientDemandMessages.size());
+                1, listOfClientDemandMessages.size());
 
-        checkUserMessageIdExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
+        checkUserMessageIdExists(demand.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot1.getId()));
-        checkUserMessageIdExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
-        Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot200.getId()));
+                (Object) 1, (Object) listOfClientDemandMessages.get(demand.getId()));
     }
 
     @Test
@@ -221,14 +219,15 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Message threadRoot200 = this.messageService.getById(200L);
         final Message threadRoot300 = this.messageService.getById(300L);
         final User client = this.generalService.find(User.class, 111111112L);
+        final Demand demand = (Demand) this.generalService.find(Demand.class, 2L);
         final Map<Long, Integer> listOfClientDemandMessagesWithOffer =
                 this.messageService.getListOfClientDemandMessagesWithOfferUnreadSub(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
                 1, listOfClientDemandMessagesWithOffer.size());
 
-        checkUserMessageIdExists(threadRoot300.getId(), listOfClientDemandMessagesWithOffer.keySet());
+        checkUserMessageIdExists(demand.getId(), listOfClientDemandMessagesWithOffer.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1, (Object) listOfClientDemandMessagesWithOffer.get(threadRoot300.getId()));
+                (Object) 1, (Object) listOfClientDemandMessagesWithOffer.get(demand.getId()));
     }
 
     @Test

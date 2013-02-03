@@ -32,10 +32,9 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
     private BigDecimal price = null;
     private Date endDate;
     private Date validToDate;
-    private boolean read = false;
-    private boolean starred = false;
-    private int messageCount = -1;
-    private int unreadMessageCount = -1;
+    private boolean isRead = false;
+    private boolean isStarred = false;
+    private int unreadSubmessagesCount;
     public static final ProvidesKey<ClientDemandDetail> KEY_PROVIDER =
             new ProvidesKey<ClientDemandDetail>() {
                 @Override
@@ -102,12 +101,14 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.validToDate = validToDate;
     }
 
+    @Override
     public boolean isStarred() {
-        return starred;
+        return isStarred;
     }
 
-    public void setIsStarred(boolean starred) {
-        this.starred = starred;
+    @Override
+    public void setIsStarred(boolean isStarred) {
+        this.isStarred = isStarred;
     }
 
     public long getMessageId() {
@@ -128,26 +129,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public int getMessageCount() {
-        return messageCount;
-    }
-
-    public void setMessageCount(int messageCount) {
-        this.messageCount = messageCount;
-    }
-
-    public int getUnreadMessageCount() {
-        return unreadMessageCount;
-    }
-
-    public void setUnreadMessageCount(int unreadMessageCount) {
-        this.unreadMessageCount = unreadMessageCount;
-    }
-
-    public String getFormattedMessageCount() {
-        return "(" + getUnreadMessageCount() + "/" + getMessageCount() + ")";
     }
 
     public String getSender() {
@@ -186,5 +167,34 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
      */
     public void setThreadRootId(long threadRootId) {
         this.threadRootId = threadRootId;
+    }
+
+    /**
+     * @return the isRead
+     */
+    public boolean isIsRead() {
+        return isRead;
+    }
+
+    /**
+     * @param isRead the isRead to set
+     */
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    /**
+     * @return the unreadSubmessagesCount
+     */
+    @Override
+    public int getUnreadSubmessagesCount() {
+        return unreadSubmessagesCount;
+    }
+
+    /**
+     * @param unreadSubmessagesCount the unreadSubmessagesCount to set
+     */
+    public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
+        this.unreadSubmessagesCount = unreadSubmessagesCount;
     }
 }

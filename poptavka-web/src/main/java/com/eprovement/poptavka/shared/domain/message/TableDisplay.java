@@ -9,6 +9,8 @@ public interface TableDisplay {
 
     boolean isStarred();
 
+    int getUnreadSubmessagesCount();
+
     void setIsStarred(boolean value);
 
     Date getEndDate();

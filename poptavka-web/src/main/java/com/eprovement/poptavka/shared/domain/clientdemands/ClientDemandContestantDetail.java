@@ -32,6 +32,7 @@ public class ClientDemandContestantDetail implements Serializable, TableDisplay 
     private boolean starred = false;
     private int messageCount = -1;
     private int unreadSubmessages = -1;
+    private int unreadSubmessagesCount;
 
     public static final ProvidesKey<ClientDemandContestantDetail> KEY_PROVIDER =
             new ProvidesKey<ClientDemandContestantDetail>() {
@@ -159,6 +160,21 @@ public class ClientDemandContestantDetail implements Serializable, TableDisplay 
     public OfferStateType getOfferState() {
         //TODO Martin - temporary , correct later - clientAssignedProjects assked for this
         return OfferStateType.ACCEPTED;
+    }
+
+    /**
+     * @return the unreadSubmessagesCount
+     */
+    @Override
+    public int getUnreadSubmessagesCount() {
+        return unreadSubmessagesCount;
+    }
+
+    /**
+     * @param unreadSubmessagesCount the unreadSubmessagesCount to set
+     */
+    public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
+        this.unreadSubmessagesCount = unreadSubmessagesCount;
     }
 
 

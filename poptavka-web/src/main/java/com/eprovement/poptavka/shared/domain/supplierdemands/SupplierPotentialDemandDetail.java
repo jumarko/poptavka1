@@ -16,7 +16,7 @@ import java.util.Date;
  *
  * @author Ivan
  */
-public class SupplierPotentialDemandDetail implements Serializable, TableDisplay, IUniversalDetail {
+public class SupplierPotentialDemandDetail implements Serializable, IUniversalDetail, TableDisplay {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -34,9 +34,6 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
     private long userMessageId;
     private boolean isStarred; // column 1
     private int messageCount; // all messages between Supplier and Client regarding this potential demand
-    // TODO ivlcek - we can remove unreadMessageCount if isRead works. All RPC must be changes to retrieve latest
-    // UserMessage object from conversation between CLient and supplier
-    private int unreadMessageCount; // number of Supplier's unread messages regarding this potential demand
     private boolean isRead;
     // Demand part
     private long demandId;
@@ -230,21 +227,6 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
         this.messageCount = messageCount;
     }
 
-    /**
-     * @return the unreadMessageCount
-     */
-    @Override
-    public int getUnreadMessageCount() {
-        return unreadMessageCount;
-    }
-
-    /**
-     * @param unreadMessageCount the unreadMessageCount to set
-     */
-    public void setUnreadMessageCount(int unreadMessageCount) {
-        this.unreadMessageCount = unreadMessageCount;
-    }
-
     @Override
     public Date getDeliveryDate() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -332,18 +314,8 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
         this.price = price;
     }
 
-    @Override
-    public DemandStatus getDemandStatus() {
-        return DemandStatus.ACTIVE;
-    }
-
-
     // Offer part
     //--------------------------------------------------------------------------
-    @Override
-    public OfferStateType getOfferState() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public long getOfferId() {
@@ -360,4 +332,18 @@ public class SupplierPotentialDemandDetail implements Serializable, TableDisplay
         this.isRead = isRead;
     }
 
+    @Override
+    public int getUnreadSubmessagesCount() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public DemandStatus getDemandStatus() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public OfferStateType getOfferState() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
