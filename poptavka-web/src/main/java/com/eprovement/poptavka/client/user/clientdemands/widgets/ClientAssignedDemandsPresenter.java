@@ -287,7 +287,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 //                        object.getDemandId());
             }
         };
-        view.getDataGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);

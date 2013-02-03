@@ -185,23 +185,22 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /* Helper methods                                                         */
     /**************************************************************************/
     private void addCustomItemToSearchWhatBox(boolean addOrRemove) {
-        //TODO POPTAVKA 2.0 - allow searching in current view
-//        if (addOrRemove) {
-//            custom.setText(getCurrentViewNameString());
-//            searchWhatList.addItem(custom);
-//            searchWhatItem.setText(getCurrentViewNameString());
-//            //Nechat to tu, alebo to dat do onForward v prezenteri?
-//            //Ja myslim, ze moze ostat tu
-//            setAdvanceContentTabsVisibility(false, false, true);
-//            advanceSearchContentView.setCurrentViewTabName();
-//            advanceSearchContentView.getTabLayoutPanel().selectTab(1);
-//        } else {
-//            if (menuItemsCount == 3) {
-//                searchWhatList.removeItem(custom);
-//            }
-//            searchWhatItem.setText(demand.getText());
-//            advanceSearchContentView.getTabLayoutPanel().selectTab(0);
-//        }
+        if (addOrRemove) {
+            custom.setText(getCurrentViewNameString());
+            searchWhatList.addItem(custom);
+            searchWhatItem.setText(getCurrentViewNameString());
+            //Nechat to tu, alebo to dat do onForward v prezenteri?
+            //Ja myslim, ze moze ostat tu
+            setAdvanceContentTabsVisibility(false, false, true);
+            advanceSearchContentView.setCurrentViewTabName();
+            advanceSearchContentView.getTabLayoutPanel().selectTab(1);
+        } else {
+            if (menuItemsCount == 3) {
+                searchWhatList.removeItem(custom);
+            }
+            searchWhatItem.setText(demand.getText());
+            advanceSearchContentView.getTabLayoutPanel().selectTab(0);
+        }
     }
 
     /**

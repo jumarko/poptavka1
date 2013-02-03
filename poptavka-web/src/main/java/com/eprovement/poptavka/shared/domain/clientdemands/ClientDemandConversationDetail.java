@@ -32,6 +32,7 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
     private Date messageSent;
     private String supplierName;
     private String messageBody;
+    private String demandTitle;
     private boolean isRead;
     private boolean isStarred;
     private int messageCount;
@@ -206,9 +207,13 @@ public class ClientDemandConversationDetail implements Serializable, TableDispla
         return messageSent;
     }
 
+    public void setTitle(String title) {
+        demandTitle = title;
+    }
+
     @Override
     public String getTitle() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return demandTitle;
     }
 
     @Override

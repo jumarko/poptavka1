@@ -272,10 +272,10 @@ public class SupplierDemandsPresenter extends LazyPresenter<
 //                }
             }
         };
-        view.getDataGrid().getClientNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
-//        view.getDataGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
+        view.getDataGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getUrgencyColumn().setFieldUpdater(textFieldUpdater);
 //        view.getDataGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }

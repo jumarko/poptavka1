@@ -193,6 +193,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             detail.setClientId(um.getMessage().getDemand().getClient().getId());
             detail.setClientName(
                     um.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            if (um.getMessage().getDemand().getClient().getOveralRating() != null) {
+                detail.setRating(um.getMessage().getDemand().getClient().getOveralRating());
+            }
             // Supplier part
             detail.setSupplierId(supplierId);
             // Message part
@@ -263,7 +266,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // TODO RELASE ivlcek - refactor and create converter, set Rating
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setRating(offer.getSupplier().getOveralRating()); //TODO RELEASE - shouldn't be here client's rating???
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             // Client name can be displayed because it contrains only contact person name
@@ -271,6 +274,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setClientId(offer.getDemand().getClient().getId());
             // demand part
             sod.setDemandId(offer.getDemand().getId());
+            sod.setTitle(offer.getDemand().getTitle());
             // offer part
             sod.setPrice(offer.getPrice().toPlainString());
             sod.setDeliveryDate(offer.getFinishDate());
@@ -344,6 +348,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setClientId(offer.getDemand().getClient().getId());
             // demand part
             sod.setDemandId(offer.getDemand().getId());
+            sod.setTitle(offer.getDemand().getTitle());
             // offer part
             sod.setPrice(offer.getPrice().toPlainString());
             sod.setDeliveryDate(offer.getFinishDate());

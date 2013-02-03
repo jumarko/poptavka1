@@ -36,8 +36,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private Header checkHeader;
     private Column<IUniversalDetail, Boolean> checkColumn;
     private Column<IUniversalDetail, Boolean> starColumn;
-    private Column<IUniversalDetail, String> clientNameColumn;
-    private Column<IUniversalDetail, String> supplierNameColumn;
     private Column<IUniversalDetail, String> demandTitleColumn;
     private Column<IUniversalDetail, String> ratingColumn;
     private Column<IUniversalDetail, String> priceColumn;
@@ -45,14 +43,11 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private Column<IUniversalDetail, String> receiveDateColumn;
     private Column<IUniversalDetail, String> finnishDateColumn;
     //table column width constatnts
-    private static final int NAME_COL_WIDTH = 50;
     private static final int DEMAND_TITLE_COL_WIDTH = 50;
     private static final int RATING_COL_WIDTH = 10;
     private static final int PRICE_COL_WIDTH = 20;
     private static final int COL_WIDTH = 30;
     //table column contants
-    private static final String CLIENT_NAME_COLUMN = "clientName";
-    private static final String SUPPLIER_NAME_COLUMN = "supplierName";
     private static final String DEMAND_TITLE_COLUMN = "demandTitle";
     private static final String RATING_COLUMN = "rating";
     private static final String PRICE_COLUMN = "price";
@@ -131,7 +126,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initClientOffers() {
         gridColumns.clear();
-        gridColumns.add(SUPPLIER_NAME_COLUMN);
+        gridColumns.add(DEMAND_TITLE_COLUMN);
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
@@ -143,7 +138,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initClientAssignedDemands() {
         gridColumns.clear();
-        gridColumns.add(SUPPLIER_NAME_COLUMN);
+        gridColumns.add(DEMAND_TITLE_COLUMN);
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
         gridColumns.add(RATING_COLUMN);
@@ -155,9 +150,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initSupplierPotentialDemands() {
         gridColumns.clear();
-        gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(DEMAND_TITLE_COLUMN);
-//        gridColumns.add(RATING_COLUMN);
+        gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(URGENCY_COLUMN);
 //        gridColumns.add(RECEIVED_DATE_COLUMN);
@@ -168,7 +162,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initSupplierOffers() {
         gridColumns.clear();
-        gridColumns.add(CLIENT_NAME_COLUMN);
+        gridColumns.add(DEMAND_TITLE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
@@ -180,7 +174,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initSupplierAssignedDemands() {
         gridColumns.clear();
-        gridColumns.add(CLIENT_NAME_COLUMN);
+        gridColumns.add(DEMAND_TITLE_COLUMN);
         gridColumns.add(RATING_COLUMN);
         gridColumns.add(PRICE_COLUMN);
         gridColumns.add(FINNISH_DATE_COLUMN);
@@ -203,8 +197,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         // Star Column - always create this column
         starColumn = addStarColumn();
 
-        addClientNameColumn();
-        addSupplierNameColumn();
         addDemandTitleColumn();
         addRatingColumn();
         addPriceColumn();
@@ -215,48 +207,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
 
         addReceivedDateColumn();
         addFinnishDateColumn();
-    }
-
-    private void addClientNameColumn() {
-        if (gridColumns.contains(CLIENT_NAME_COLUMN)) {
-            clientNameColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnClient(), true, NAME_COL_WIDTH,
-                    new UniversalAsyncGrid.GetValue<String>() {
-                        @Override
-                        public String getValue(Object object) {
-                            StringBuilder str = new StringBuilder();
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            str.append(detail.getClientName());
-                            if (detail.getMessageCount() > 0) {
-                                str.append(" (");
-                                str.append(detail.getMessageCount());
-                                str.append(")");
-                            }
-                            return str.toString();
-                        }
-                    });
-        }
-    }
-
-    private void addSupplierNameColumn() {
-        if (gridColumns.contains(SUPPLIER_NAME_COLUMN)) {
-            supplierNameColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnSupplierName(), true, NAME_COL_WIDTH,
-                    new UniversalAsyncGrid.GetValue<String>() {
-                        @Override
-                        public String getValue(Object object) {
-                            StringBuilder str = new StringBuilder();
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            str.append(detail.getSupplierName());
-                            if (detail.getMessageCount() > 0) {
-                                str.append(" (");
-                                str.append(detail.getMessageCount());
-                                str.append(")");
-                            }
-                            return str.toString();
-                        }
-                    });
-        }
     }
 
     private void addDemandTitleColumn() {
@@ -334,14 +284,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
 
     public Column<IUniversalDetail, Boolean> getStarColumn() {
         return starColumn;
-    }
-
-    public Column<IUniversalDetail, String> getClientNameColumn() {
-        return clientNameColumn;
-    }
-
-    public Column<IUniversalDetail, String> getSupplierNameColumn() {
-        return supplierNameColumn;
     }
 
     public Column<IUniversalDetail, String> getDemandTitleColumn() {

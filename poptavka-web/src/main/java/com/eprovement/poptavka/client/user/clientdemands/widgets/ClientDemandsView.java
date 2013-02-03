@@ -46,18 +46,20 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     //table definition
     @UiField(provided = true) UniversalAsyncGrid<ClientDemandDetail> demandGrid;
+    //pager definition
+    @UiField(provided = true) UniversalPagerWidget demandPager;
     //table column width constatnts
     private static final int TITLE_COL_WIDTH = 50;
     private static final int PRICE_COL_WIDTH = 30;
     private static final int FINNISH_DATE_COL_WIDTH = 30;
     private static final int VALID_TO_DATE_COL_WIDTH = 30;
-    //pager definition
-    @UiField(provided = true) UniversalPagerWidget demandPager;
     /**************************************************************************/
     /* DemandConversationTable Attrinbutes                                         */
     /**************************************************************************/
     //table definition
     @UiField(provided = true) UniversalTableGrid conversationGrid;
+    //pager definition
+    @UiField(provided = true) UniversalPagerWidget conversationPager;
     //table columns
     private Column<IUniversalDetail, String> supplierNameColumn;
     private Column<IUniversalDetail, String> bodyPreviewColumn;
@@ -66,8 +68,6 @@ public class ClientDemandsView extends Composite
     private static final int SUPPLIER_NAME_COL_WIDTH = 20;
     private static final int BODY_PREVIEW_COL_WIDTH = 30;
     private static final int DATE_COL_WIDTH = 20;
-    //pager definition
-    @UiField(provided = true) UniversalPagerWidget conversationPager;
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/

@@ -312,6 +312,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setMessageSent(userMessage.getMessage().getSent());
             // set Demand attributes
             cdcd.setDemandId(demandID);
+            cdcd.setTitle(userMessage.getMessage().getDemand().getTitle());
             // set Supplier attributes
             // TODO RELEASE ivlcek - if latest user message is from Client then this line doesn't work with client id
             Supplier supplier = findSupplier(userMessage.getMessage().getSender().getId());
@@ -456,6 +457,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setPrice(offer.getPrice().toPlainString());
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
+            // set demand attributes
+            codod.setTitle(offer.getDemand().getTitle());
 
             listCodod.add(codod);
         }
@@ -544,10 +547,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());
-            codod.setDemandId(offer.getDemand().getId());
             codod.setPrice(offer.getPrice().toPlainString());
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
+            // set Demand attributes
+            codod.setDemandId(offer.getDemand().getId());
+            codod.setTitle(offer.getDemand().getTitle());
 
             listCodod.add(codod);
         }
