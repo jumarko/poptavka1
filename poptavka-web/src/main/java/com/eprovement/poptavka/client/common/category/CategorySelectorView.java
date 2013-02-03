@@ -1,25 +1,25 @@
 package com.eprovement.poptavka.client.common.category;
 
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SingleSelectionModel;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.google.gwt.user.cellview.client.CellBrowser;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.view.ReverseViewInterface;
 
 public class CategorySelectorView extends Composite
@@ -48,20 +48,14 @@ public class CategorySelectorView extends Composite
     /**************************************************************************/
     /* ATTRIBUTES                                                              */
     /**************************************************************************/
-    //Presenter
+    /** UiBinder attributes. **/
+    @UiField HTML loader;
+    @UiField SimplePanel cellBrowserHolder;
+    @UiField(provided = true) CellList<CategoryDetail> cellList;
+    /** Class attributes. **/
     private CategorySelectorPresenter categorySelectorPresenter;
-    @UiField
-    HTML loader;
-    //Cell Brower
-    @UiField//(provided = true)
-    SimplePanel cellBrowserHolder;
-    //Cell List
-    @UiField(provided = true)
-    CellList<CategoryDetail> cellList;
-    //Selection Moders
     MultiSelectionModel cellBrowserSelectionModel = new MultiSelectionModel();
     SingleSelectionModel cellListSelectionModel = new SingleSelectionModel();
-    //Data Providers
     ListDataProvider<CategoryDetail> cellListDataProvider = new ListDataProvider<CategoryDetail>();
 
     /**************************************************************************/
@@ -114,11 +108,6 @@ public class CategorySelectorView extends Composite
     @Override
     public Widget getWidgetView() {
         return this;
-    }
-
-    @Override
-    public void toggleLoader() {
-        loader.setVisible(!loader.isVisible());
     }
 }
 

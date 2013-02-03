@@ -71,7 +71,8 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
     private void responseSuggestions(final Request suggestRequest, final Callback callback,
             List<LocalitySuggestionDetail> result) {
         if (result.isEmpty()) {
-            addressSelectorPresenter.getCitySuggestionPopup().showNoCitiesFound();
+            addressSelectorPresenter.getCitySuggestionPopup().showNoCitiesFound(
+                    addressSelectorPresenter.getEventBus());
         } else {
             CitySuggestOracle.Response response = new CitySuggestOracle.Response();
             response.setSuggestions(convertToFormattedSuggestions(suggestRequest.getQuery(), result));

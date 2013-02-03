@@ -45,21 +45,15 @@ public class LocalitySelectorView extends Composite
     /**************************************************************************/
     /* ATTRIBUTES                                                              */
     /**************************************************************************/
-    //Presenter
+    /** UiBinder attirbutes. **/
+    @UiField HTML loader;
+    @UiField SimplePanel cellBrowserHolder;
+    @UiField(provided = true) CellList<LocalityDetail> cellList;
+    /** Class attributes. **/
     private LocalitySelectorPresenter localitySelectorPresenter;
-    @UiField
-    HTML loader;
-    //Cell Brower
-    @UiField//(provided = true)
-    SimplePanel cellBrowserHolder;
-    //Cell List
-    @UiField(provided = true)
-    CellList<LocalityDetail> cellList;
-    //Selection Moders
-    MultiSelectionModel cellBrowserSelectionModel = new MultiSelectionModel();
-    SingleSelectionModel cellListSelectionModel = new SingleSelectionModel();
-    //Data Providers
-    ListDataProvider<LocalityDetail> cellListDataProvider = new ListDataProvider<LocalityDetail>();
+    private MultiSelectionModel cellBrowserSelectionModel = new MultiSelectionModel();
+    private SingleSelectionModel cellListSelectionModel = new SingleSelectionModel();
+    private ListDataProvider<LocalityDetail> cellListDataProvider = new ListDataProvider<LocalityDetail>();
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -111,11 +105,6 @@ public class LocalitySelectorView extends Composite
     @Override
     public Widget getWidgetView() {
         return this;
-    }
-
-    @Override
-    public void toggleLoader() {
-        loader.setVisible(!loader.isVisible());
     }
 }
 
