@@ -83,6 +83,7 @@ public interface StyleResource extends ClientBundle {
     @Source("mailBox.css")
     MailBox mailBox();
 
+    @NotStrict
     @Source("detailViews.css")
     DetailViews detailViews();
 }

@@ -3,12 +3,16 @@
 /**
  * Css Resources for main basic layout of ALL views
  *
- * @author Beho, Jaro
+ * @author Jaro
  *
  */
 body {
 	margin: 0;
 	background: none;
+	min-width: 1280px;
+}
+
+body > div {
 	min-width: 1280px;
 }
 
@@ -18,10 +22,6 @@ body {
 	width: 100%;
 	height: 100%;
 	background: url(images/main_bg.jpg) no-repeat top left #ffffff;
-}
-
-body > div {
-	min-width: 1280px;
 }
 
 .body-container {
@@ -48,18 +48,19 @@ body > div {
 	height: 100%;
 }
 
-.layout-public-main {
-	min-width: 800px;
-	/* max-width: 1024px; */
-	margin-left: auto;
-	margin-right: auto;
-	position: relative;
-}
-
 .layout-user-main {
 	width: 100%;
 	height: 100%;
 	position: absolute;
+}
+
+.full-size-panel {
+	width: 100%;
+	height: 100%;
+}
+
+.fluid-main-grid {
+	padding: 0 20px 0 0;
 }
 
 .header-container {
@@ -73,16 +74,6 @@ body > div {
 	padding: 0;
 	height: 100px;
 	float: right;
-}
-
-.popup-dropdown-container table {
-	background: #ffffff;
-	padding: 10px;
-	margin: 3px 0 0 -9px;
-	line-height: 20px;
-	border: 1px solid #C2C8D2;
-	border-radius: 4px;
-	box-shadow: 0 0 3px #DDDDDD;
 }
 
 /*
@@ -322,21 +313,8 @@ body > div {
 	width: 20px;
 }
 
-.full-size-panel {
-	width: 100%;
-	height: 100%;
-}
-
-.tab-layout-container {
-	border: none;
-}
-
-.tab-layout-panel {
-	border: none !important;
-}
-
 /*
-*	Demand Module styles
+*	Toolbar Module styles
 *
 */
 .submenu-header {
@@ -374,6 +352,53 @@ body > div {
 	border-bottom: 1px solid #07545a;
 }
 
+/*
+*	Footer Module styles
+*
+*/
+.footer-container {
+	background: none;
+}
+
+.footer-container p {
+	color: #000000;
+	margin: 0;
+}
+
+.footer-toggle {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	border: thin solid black;
+	border-bottom: none;
+	cursor: pointer;
+}
+
+
+/** Other Styles **/
+.detail-info {
+	width: 100%;
+	border-radius: 5px;
+}
+
+.popup-dropdown-container table {
+	background: #ffffff;
+	padding: 10px;
+	margin: 3px 0 0 -9px;
+	line-height: 20px;
+	border: 1px solid #C2C8D2;
+	border-radius: 4px;
+	box-shadow: 0 0 3px #DDDDDD;
+}
+
+.tab-layout-container {
+	border: none;
+}
+
+.tab-layout-panel {
+	border: none !important;
+}
+
 .stack-layout {
 	border-bottom: 1px solid #BDA45D;
 	position: absolute !important;
@@ -400,35 +425,6 @@ body > div {
 		-1464px;
 	background: url(images/stack-layout-panel-header-hover.gif) repeat-x;
 }
-
-/*
-*	Footer Module styles
-*
-*/
-.footer-container {
-	background: none;
-}
-
-.footer-container p {
-	color: #000000;
-	margin: 0;
-}
-
-.footer-toggle {
-	position: absolute;
-	right: 0px;
-	bottom: 0px;
-	border: thin solid black;
-	border-bottom: none;
-	cursor: pointer;
-}
-
-.detail-info {
-	margin: 0 0 0 5px;
-	width: 400px;
-	border-radius: 5px;
-}
-
 /** DELETE AFTER THIS LINE **/
 
 /** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/

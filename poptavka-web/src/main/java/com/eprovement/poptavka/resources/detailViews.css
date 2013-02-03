@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : mailBox
     Created on : Feb 7, 2012, 8:18:20 AM
     Author     : slavkovsky.martin, Jaro
@@ -6,15 +6,9 @@
         Purpose of the stylesheet follows.
 */
 
-/* 
-   TODO customize this sample style
-   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
-*/
-
 .common-detail-container {
 	background: url(images/transparent_bg.png) repeat;
-	float: left;	
-	width: 400px;
+	float: left;
 }
 
 /*  DEMAND DETAIL SECTION  */
@@ -41,19 +35,20 @@
 .demand-detail-content {
 	background: url(images/transparent_bg.png) repeat;
 	float: left;
-	padding: 12px;
-	width: 376px;
+	padding: 15px;
 }
 
 .detail-block {
 	background: #ffffff;
 	float: left;
-	margin: 0 0 15px;
-	padding: 0 10px 10px;
-	width: 356px;
+	margin: 15px 0 0;
+	padding: 0;
 	border-radius: 4px 4px 0 0;
 	-moz-border-radius: 4px 4px 0 0;
 	-webkit-border-radius: 4px 4px 0 0;
+}
+.detail-block:first-child {
+	margin: 0;
 }
 
 .detail-block div {
@@ -61,16 +56,19 @@
 	line-height: 20px;
 }
 
+.detail-block .gwt-Label {
+	padding: 0 20px 10px;
+}
+
 .detail-block .detail-header {
-	background: url(images/detail-block-header.png) no-repeat 5px 8px;
+	background: url(images/detail-block-header.png) no-repeat 19px 13px;
 	color: #F06500;
 	font-size: 16px;
 	font-weight: bold;
 	height: 40px;
 	line-height: 40px;
-	padding: 0 0 0 36px;
-	width: 332px;
-	float: left;
+	padding: 5px 0 0 46px;
+	margin: 0;
 }
 
 .detail-block-label {
@@ -79,7 +77,6 @@
 	float: left;
 	line-height: 20px;
 	padding: 0 0 0 18px;
-	width: 165px;
 	font-weight: bold;
 }
 
