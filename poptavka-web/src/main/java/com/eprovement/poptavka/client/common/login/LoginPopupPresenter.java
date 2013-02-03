@@ -23,6 +23,7 @@ import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.github.gwtbootstrap.client.ui.ProgressBar;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -48,6 +49,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         TextBox getLogin();
 
         TextBox getPassword();
+
+        ProgressBar getProgressBar();
 
         void hidePopup();
 
@@ -78,11 +81,13 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     }
 
     private void verifyUser() {
+        view.getProgressBar().setPercent(0);
         // TODO release: check if user is VERIFIED
         // if not then display activation popup
         rootService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(BusinessUserDetail user) {
+                view.getProgressBar().setPercent(10);
                 if (user == null) {
                     LOGGER.info("User entered invalid email=" + getUserEmail());
                     view.setErrorMessage(Storage.MSGS.wrongLoginMessage());
@@ -125,6 +130,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         sbParams.append("&j_password=");
         sbParams.append(URL.encode(getUserPassword()));
 
+        view.getProgressBar().setPercent(15);
         try {
             rb.sendRequest(sbParams.toString(), new RequestCallback() {
                 @Override
@@ -138,6 +144,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                 @Override
                 public void onResponseReceived(final Request request, final Response response) {
+                    view.getProgressBar().setPercent(40);
                     int status = response.getStatusCode();
                     LOGGER.fine("Response status code = " + status);
                     if (status == Response.SC_OK) {
@@ -209,10 +216,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
             @Override
             public void onSuccess(UserDetail userDetail) {
+                view.getProgressBar().setPercent(70);
                 Storage.setUserDetail(userDetail);
                 userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
                     @Override
                     public void onSuccess(BusinessUserDetail loggedUser) {
+                        view.getProgressBar().setPercent(90);
                         GWT.log("user id " + loggedUser.getUserId());
                         Storage.setBusinessUserDetail(loggedUser);
                         Storage.loadClientAndSupplierIDs();
@@ -240,6 +249,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         GWT.log("BUSSINESS ROLES ++++ " + Storage.getBusinessUserDetail().getBusinessRoles().toString());
         GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
         //forward user to welcome view of appropriate module according to his roles
+        view.getProgressBar().setPercent(100);
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             eventBus.goToAdminModule(null, widgetToLoad);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(

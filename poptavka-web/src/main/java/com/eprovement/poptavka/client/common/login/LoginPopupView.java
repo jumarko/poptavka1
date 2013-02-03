@@ -156,6 +156,12 @@ public class LoginPopupView extends Composite
     }
 
     @Override
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+
+    @Override
     public boolean isValid() {
         // TODO ivlcek - maybe we should check the lenght of email and password to avoid 1 - 4 character long values
         // TODO ivlcek - are values somehow checked against some sort sql attacks?

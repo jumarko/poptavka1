@@ -265,8 +265,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getSupplier().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
-            // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
             // client part
+            // Client name can be displayed because it contrains only contact person name
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
             // demand part
