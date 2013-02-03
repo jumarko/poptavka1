@@ -37,9 +37,9 @@ public class SupplierDemandsView extends Composite
     /**************************************************************************/
     /** UiBinder attribute. **/
     @UiField(provided = true) UniversalTableGrid dataGrid;
+    @UiField(provided = true) UniversalPagerWidget pager;
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
-    @UiField UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel;
     @UiField HorizontalPanel toolBar;
     @UiField Label tableNameLabel;

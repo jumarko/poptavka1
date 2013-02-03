@@ -134,7 +134,7 @@ public class ClientDemandsView extends Composite
         conversationGrid = new UniversalTableGrid(
                 ClientDemandConversationDetail.KEY_PROVIDER,
                 Constants.CLIENT_DEMAND_DISCUSSIONS,
-                demandPager.getPageSize(),
+                conversationPager.getPageSize(),
                 resource);
         conversationGrid.setWidth("100%");
         conversationGrid.setHeight("100%");

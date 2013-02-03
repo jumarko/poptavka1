@@ -36,9 +36,9 @@ public class SupplierAssignedDemandsView extends Composite
     /* Attrinbutes                                                            */
     /**************************************************************************/
     @UiField(provided = true) UniversalTableGrid dataGrid;
+    @UiField(provided = true) UniversalPagerWidget pager;
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
-    @UiField UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel;
     @UiField HTMLPanel toolBar;
     @UiField Label tableNameLabel;

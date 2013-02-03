@@ -36,7 +36,7 @@ public class ClientAssignedDemandsView extends Composite
     /* Attrinbutes                                                            */
     /**************************************************************************/
     @UiField(provided = true) UniversalTableGrid dataGrid;
-    @UiField UniversalPagerWidget pager;
+    @UiField(provided = true) UniversalPagerWidget pager;
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField SimplePanel wrapperPanel;
