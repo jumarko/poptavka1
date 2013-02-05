@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.dao.usermessage.UserMessageDao;
+import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
@@ -201,38 +202,57 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConvesrsationsWithoutOffer(User user) {
+    public Map<Long, Integer> getSupplierConversationsWithoutOffer(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConvesrsationsWithoutOffer(user);
+        return getDao().getSupplierConversationsWithoutOffer(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConvesrsationsWithOffer(User user) {
+    public Map<Long, Integer> getSupplierConversationsWithOffer(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConvesrsationsWithOffer(user);
+        return getDao().getSupplierConversationsWithOffer(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public int getSupplierConvesrsationsWithoutOfferCount(User user) {
+    public int getSupplierConversationsWithoutOfferCount(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConvesrsationsWithoutOfferCount(user);
+        return getDao().getSupplierConversationsWithoutOfferCount(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public int getSupplierConvesrsationsWithOfferCount(User user) {
+    public int getSupplierConversationsWithOfferCount(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConvesrsationsWithOfferCount(user);
+        return getDao().getSupplierConversationsWithOfferCount(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConvesrsationsWithAcceptedOffer(User user,
+    public Map<Long, Integer> getSupplierConversationsWithAcceptedOffer(User user,
             OfferState offerStateAccepted, OfferState offerStateCompleted) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConvesrsationsWithAcceptedOffer(user, offerStateAccepted,
+        return getDao().getSupplierConversationsWithAcceptedOffer(user, offerStateAccepted,
                 offerStateCompleted);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
+            User user) {
+        return getDao().getClientConversationsWithoutOffer(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getClientConversationsWithoutOfferCount(User user) {
+        return getDao().getClientConversationsWithoutOfferCount(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getClientConversationsWithOfferCount(User user) {
+        return getDao().getClientConversationsWithOfferCount(user);
     }
 }

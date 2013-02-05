@@ -181,7 +181,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final User user = (User) generalService.find(User.class, userId);
         final Map<Long, Integer> latestUserMessagesWithCount =
-                userMessageService.getSupplierConvesrsationsWithoutOffer(user);
+                userMessageService.getSupplierConversationsWithoutOffer(user);
         // TODO RELEASE ivlcek - refactor with detail converter
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
@@ -252,7 +252,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
         final User user = (User) generalService.find(User.class, userId);
         final Map<Long, Integer> latestUserMessagesWithCount =
-                userMessageService.getSupplierConvesrsationsWithOffer(user);
+                userMessageService.getSupplierConversationsWithOffer(user);
         // TODO RELEASE ivlcek - refactor with detail converter
 
         for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
@@ -324,7 +324,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         OfferState offerAccepted = (OfferState) offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
         OfferState offerCompleted = (OfferState) offerService.getOfferState(OfferStateType.COMPLETED.getValue());
         Map<Long, Integer> latestUserMessages =
-                userMessageService.getSupplierConvesrsationsWithAcceptedOffer(
+                userMessageService.getSupplierConversationsWithAcceptedOffer(
                 supplier.getBusinessUser(), offerAccepted, offerCompleted);
 
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();

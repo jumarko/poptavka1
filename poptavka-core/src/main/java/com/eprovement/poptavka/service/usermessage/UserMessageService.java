@@ -6,6 +6,7 @@ package com.eprovement.poptavka.service.usermessage;
 
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.dao.usermessage.UserMessageDao;
+import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
@@ -180,7 +181,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<Long, Integer> getSupplierConvesrsationsWithoutOffer(User user);
+    Map<Long, Integer> getSupplierConversationsWithoutOffer(User user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
@@ -191,7 +192,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<Long, Integer> getSupplierConvesrsationsWithOffer(User user);
+    Map<Long, Integer> getSupplierConversationsWithOffer(User user);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -199,7 +200,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has been made
      */
-    int getSupplierConvesrsationsWithoutOfferCount(User user);
+    int getSupplierConversationsWithoutOfferCount(User user);
 
     /** Retrieves the count of supplier's conversations where an offer has not
      * been made
@@ -207,7 +208,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has not been made
      */
-    int getSupplierConvesrsationsWithOfferCount(User user);
+    int getSupplierConversationsWithOfferCount(User user);
 
 
     /**
@@ -220,7 +221,35 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<Long, Integer> getSupplierConvesrsationsWithAcceptedOffer(User user,
+    Map<Long, Integer> getSupplierConversationsWithAcceptedOffer(User user,
             OfferState offerStateAccepted, OfferState offerStateCompleted);
 
+   /**
+    * Gets a list of all client's conversation related to their demands where
+    * no offer has been made
+    *
+    * @param user The client whose demands to get
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>User</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
+            User user);
+
+    /** Retrieves the count of client's conversations where an offer has not
+     * been made
+     *
+     * @param user the client whose conversations to get
+     * @return number of client's conversations where an offer has not been made
+     */
+    int getClientConversationsWithoutOfferCount(User user);
+
+     /** Retrieves the count of client's conversations where an offer has
+     * been made
+     *
+     * @param user the client whose conversations to get
+     * @return number of client's conversations where an offer has been made
+     */
+    int getClientConversationsWithOfferCount(User user);
 }
