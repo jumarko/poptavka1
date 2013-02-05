@@ -2,6 +2,7 @@ package com.eprovement.poptavka.service.usermessage;
 
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
@@ -47,6 +48,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     private BusinessUser businessUser;
     private User user2;
     private BusinessUser businessUser2;
+    private User userClient;
 
 
     @Before
@@ -60,6 +62,8 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         user2.setId(111111114L);
         this.businessUser2 = new BusinessUser();
         businessUser2.setId(111111114L);
+        this.userClient = new User();
+        userClient.setId(111111112L);
     }
 
 
@@ -167,9 +171,9 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     }
 
     @Test
-    public void testGetSupplierConvesrsationsWithoutOffer() {
+    public void testGetSupplierConversationsWithoutOffer() {
         final Map<Long, Integer> supplierConversations = this.userMessageService
-                .getSupplierConvesrsationsWithoutOffer(this.user);
+                .getSupplierConversationsWithoutOffer(this.user);
         Assert.assertEquals(3, supplierConversations.size());
         checkUserMessageIdAndCount(8L, 4, supplierConversations);
         checkUserMessageIdAndCount(202L, 1, supplierConversations);
@@ -177,26 +181,53 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     }
 
     @Test
-    public void testGetSupplierConvesrsationsWithOffer() {
+    public void testGetSupplierConversationsWithOffer() {
         final Map<Long, Integer> supplierConversations = this.userMessageService
-                .getSupplierConvesrsationsWithOffer(this.user);
+                .getSupplierConversationsWithOffer(this.user);
 
         Assert.assertEquals(1, supplierConversations.size());
         checkUserMessageIdAndCount(304L, 2, supplierConversations);
     }
 
     @Test
-    public void testGetSupplierConvesrsationsWithoutOfferCount() {
+    public void testGetSupplierConversationsWithoutOfferCount() {
         final int supplierConversationsCount = this.userMessageService
-                .getSupplierConvesrsationsWithoutOfferCount(this.user);
+                .getSupplierConversationsWithoutOfferCount(this.user);
         Assert.assertEquals(3, supplierConversationsCount);
     }
 
     @Test
-    public void testGetSupplierConvesrsationsWithOfferCount() {
+    public void testGetSupplierConversationsWithOfferCount() {
         final int supplierConversationsCount = this.userMessageService
-                .getSupplierConvesrsationsWithOfferCount(this.user);
+                .getSupplierConversationsWithOfferCount(this.user);
         Assert.assertEquals(1, supplierConversationsCount);
+    }
+
+    @Test
+    public void testGetClientConversationsWithoutOffer() {
+        final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
+                .getClientConversationsWithoutOffer(this.userClient);
+        Assert.assertEquals(2, clientConversations.size());
+        checkUserMessageIdAndCountAndSupplierId(7L, 4, 111111111L, clientConversations);
+        checkUserMessageIdAndCountAndSupplierId(201L, 1, 111111111L, clientConversations);
+    }
+
+    @Test
+    public void testGetClientConversationsWithoutOfferCount() {
+        final int clientConversationsCount = this.userMessageService
+                .getClientConversationsWithoutOfferCount(this.userClient);
+        Assert.assertEquals("The count of client's (id="
+                + this.userClient.getId() + "conversations without offer is"
+                + " incorrect.", 2, clientConversationsCount);
+    }
+
+    @Test
+    public void testGetClientConversationsWithOfferCount() {
+        final int clientConversationsCount = this.userMessageService
+                .getClientConversationsWithOfferCount(this.userClient);
+        Assert.assertEquals("The count of client's (id="
+                + this.userClient.getId() + "conversations with offer is"
+                + " incorrect.", 1, clientConversationsCount);
     }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
@@ -284,6 +315,24 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
                 "The count of [id=" + userMessageId + "]'s conversation"
                 + " should be " + count + ", not " + actualCount + ".",
                actualCount == count);
+    }
+    
+    private void checkUserMessageIdAndCountAndSupplierId(final long userMessageId,
+            final int count, final long supplierId, Map<UserMessage, ClientConversation> allUserMessages) {
+        UserMessage userMessageExpected = new UserMessage();
+        userMessageExpected.setId(userMessageId);
+        Assert.assertTrue(
+                "UserMessuage [id=" + userMessageId + "] not expected to be in"
+                + " collection [" + allUserMessages + "] is there.",
+                allUserMessages.containsKey(userMessageExpected));
+        Assert.assertEquals(
+                "The count of [id=" + userMessageId + "]'s conversation"
+                + " is incorrect.",
+               (long) count, (long) allUserMessages.get(userMessageExpected).getMessageCount());
+        Assert.assertEquals(
+                "The supplier of [id=" + userMessageId + "]'s conversation"
+                + " is incorrect.",
+               (long) supplierId, (long) allUserMessages.get(userMessageExpected).getSupplier().getId());
     }
 }
 
