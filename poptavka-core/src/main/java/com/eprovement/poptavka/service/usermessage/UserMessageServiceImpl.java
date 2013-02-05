@@ -203,15 +203,16 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithoutOffer(User user) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConversationsWithoutOffer(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
+
         return getDao().getSupplierConversationsWithOffer(user, pendingState);
     }
 
@@ -231,7 +232,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
             OfferState offerStateAccepted, OfferState offerStateCompleted) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConversationsWithAcceptedOffer(user, offerStateAccepted,

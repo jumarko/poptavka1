@@ -150,7 +150,7 @@ import javax.persistence.NamedQuery;
                         + " count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join\n"
                         + " subUserMessage.message.threadRoot as rootMessage,"
-                        + " UserMessage as latestUserMessage"
+
                         + " left join latestUserMessage.message.roles toRole,"
                         + " User as supplier\n"
                         + "where latestUserMessage.message.threadRoot = rootMessage"

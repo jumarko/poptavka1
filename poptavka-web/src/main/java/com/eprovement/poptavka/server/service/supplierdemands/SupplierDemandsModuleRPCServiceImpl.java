@@ -154,9 +154,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
-        //TODO RELEASE getPotentialDemandsCount could return int
-        return Long.valueOf(userMessageService.getPotentialDemandsCount(
-                businessUser, potentialDemandsCountSearch)).intValue();
+        return userMessageService.getPotentialDemandsCount(businessUser, potentialDemandsCountSearch);
     }
 
     /**
@@ -303,7 +301,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public int getSupplierAssignedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE Vojto/Ivan- implement SearchDefinition
-        return offerService.getAcceptedOffersCountForSupplier(supplierID).intValue();
+        return offerService.getAcceptedOffersCountForSupplier(supplierID);
     }
 
     /**
@@ -324,8 +322,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         Supplier supplier = generalService.find(Supplier.class, supplierID);
 
-        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
-        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+
         Map<Long, Integer> latestUserMessages =
                 userMessageService.getSupplierConversationsWithAcceptedOffer(
                 supplier.getBusinessUser(), offerAccepted, offerCompleted);
@@ -337,6 +334,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
+            // TODO RELEASE ivlcek - refactor and create converter, set Rating
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getSupplier().getOveralRating());
