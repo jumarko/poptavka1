@@ -103,10 +103,9 @@ public class ClientOffersPresenter
         // Range Change Handlers
         addDemandGridRangeChangeHandler();
         addOfferGridRangeChangeHandler();
-        addOfferGridSelectionModelHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
-        addOfferTableSelectionHandler();
+        addOfferGridSelectionModelHandler();
         // Field Updaters
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
@@ -267,6 +266,125 @@ public class ClientOffersPresenter
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    /** Action box handers. **/
+    //--------------------------------------------------------------------------
+    private void addActionBoxChoiceHandlers() {
+        view.getActionRead().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnread().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
+            }
+        });
+        view.getActionStar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
+            }
+        });
+        view.getActionUnstar().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
+            }
+        });
+    }
+
+    /** SelectionHandlers. **/
+    //--------------------------------------------------------------------------
+    /**
+     * Show child table and fire event for getting its data.
+     * Hides detail section if no row is selected.
+     */
+    private void addDemandTableSelectionHandler() {
+        view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
+                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
+                        .getSelectionModel()).getSelectedObject();
+                if (selected != null) {
+                    Storage.setDemandId(selected.getDemandId());
+                    Storage.setThreadRootId(selected.getThreadRootId());
+                    view.setDemandTableVisible(false);
+                    view.setOfferTableVisible(true);
+                    view.getOfferPager().startLoading();
+                    view.setDemandTitleLabel(selected.getDemandTitle());
+                    view.getOfferGrid().getDataCount(eventBus, null);
+                    eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
+                }
+            }
+        });
+    }
+
+    /**
+     * Show or Hide details section and action box.
+     * Show if and only of one table row is selected.
+     * Hide otherwise - not or more than one rows are selected.
+     */
+    public void addOfferGridSelectionModelHandler() {
+        view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                //set actionBox visibility
+                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 0) {
+                    view.getActionBox().setVisible(true);
+                } else {
+                    view.getActionBox().setVisible(false);
+                }
+                //init details
+                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 1) {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    IUniversalDetail selected = view.getOfferGrid().getSelectedObjects().get(0);
+                    selectedOfferedDemandOffer = selected;
+                    if (detailSection == null) {
+                        eventBus.requestDetailWrapperPresenter();
+                    } else {
+                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                        detailSection.initDetails(
+                                selected.getDemandId(),
+                                selected.getSupplierId(),
+                                selected.getThreadRootId());
+                    }
+                }
+            }
+        });
+    }
+
+    /** Field updater. **/
+    //--------------------------------------------------------------------------
+    /**
+     * Show and loads detail section. Show after clicking on certain columns that
+     * have defined this fieldUpdater.
+     */
+    public void addTextColumnFieldUpdaters() {
+        textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
+            @Override
+            public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
+                object.setIsRead(true);
+                view.setDemandTableVisible(false);
+                view.setOfferTableVisible(true);
+
+                MultiSelectionModel selectionModel = view.getOfferGrid().getSelectionModel();
+                selectionModel.clear();
+                selectionModel.setSelected(object, true);
+//                eventBus.createTokenForHistory2(Storage.getDemandId(),
+//                        view.getOfferPager().getPage(), object.getOfferId());
+            }
+        };
+        view.getOfferGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
+    }
+
     // Field Updaters
     public void addCheckHeaderUpdater() {
         view.getOfferGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
@@ -292,60 +410,6 @@ public class ClientOffersPresenter
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
                 });
-    }
-
-    public void addOfferGridSelectionModelHandler() {
-        view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                //set actionBox visibility
-                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 0) {
-                    view.getActionBox().setVisible(true);
-                } else {
-                    view.getActionBox().setVisible(false);
-                }
-                //init details
-                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 1) {
-                    view.getAcceptBtn().setVisible(false);
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                } else {
-                    view.getAcceptBtn().setVisible(false);
-                    IUniversalDetail selected = view.getOfferGrid().getSelectedObjects().get(0);
-                    selectedOfferedDemandOffer = selected;
-                    if (detailSection == null) {
-                        eventBus.requestDetailWrapperPresenter();
-                    } else {
-                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        detailSection.initDetails(
-                                selected.getDemandId(),
-                                selected.getSupplierId(),
-                                selected.getThreadRootId());
-                    }
-                }
-            }
-        });
-    }
-
-    public void addTextColumnFieldUpdaters() {
-        textFieldUpdater = new FieldUpdater<ClientOfferedDemandOffersDetail, String>() {
-            @Override
-            public void update(int index, ClientOfferedDemandOffersDetail object, String value) {
-                object.setIsRead(true);
-                view.setDemandTableVisible(false);
-                view.setOfferTableVisible(true);
-
-                MultiSelectionModel selectionModel = view.getOfferGrid().getSelectionModel();
-                selectionModel.clear();
-                selectionModel.setSelected(object, true);
-//                eventBus.createTokenForHistory2(Storage.getDemandId(),
-//                        view.getOfferPager().getPage(), object.getOfferId());
-            }
-        };
-        view.getOfferGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
-        view.getOfferGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
-        view.getOfferGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getOfferGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
-        view.getOfferGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
     // Buttons
@@ -383,73 +447,6 @@ public class ClientOffersPresenter
                     return Storage.RSCS.grid().unread();
                 } else {
                     return "";
-                }
-            }
-        });
-    }
-
-    /** Action box handers. **/
-    // Widget action handlers
-    private void addActionBoxChoiceHandlers() {
-        view.getActionRead().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnread().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-        view.getActionStar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnstar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-    }
-
-    //SelectionHandlers
-    private void addDemandTableSelectionHandler() {
-        view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
-                ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
-                        .getSelectionModel()).getSelectedObject();
-                if (selected != null) {
-                    Storage.setDemandId(selected.getDemandId());
-                    Storage.setThreadRootId(selected.getThreadRootId());
-                    view.setDemandTitleLabel(selected.getDemandTitle());
-                    view.setDemandTableVisible(false);
-                    view.setOfferTableVisible(true);
-                    view.getOfferPager().startLoading();
-                    view.getOfferGrid().getDataCount(eventBus, null);
-                    eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
-                }
-            }
-        });
-    }
-
-    private void addOfferTableSelectionHandler() {
-        view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (view.getOfferGrid().getSelectedUserMessageIds().size() < 2) {
-                    view.getAcceptBtn().setVisible(true);
-                } else {
-                    view.getAcceptBtn().setVisible(false);
-                    if (detailSection != null) {
-                        detailSection.clear();
-                    }
                 }
             }
         });

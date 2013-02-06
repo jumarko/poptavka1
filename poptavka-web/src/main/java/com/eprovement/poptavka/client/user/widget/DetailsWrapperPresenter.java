@@ -57,7 +57,6 @@ public class DetailsWrapperPresenter
 
         TabLayoutPanel getContainer();
 
-//        DemandDetailView getDemandDetail();
         SimplePanel getDemandDetailHolder();
 
         UserDetailView getSupplierDetail();
@@ -130,7 +129,6 @@ public class DetailsWrapperPresenter
      */
     public void initDetailWrapper(UniversalTableGrid grid, SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
-        view.getContainer().selectTab(CONVERSATION_TAB, false);
         this.table = grid;
     }
 
@@ -148,6 +146,7 @@ public class DetailsWrapperPresenter
         this.demandId = demandId;
         this.supplierId = supplierId;
         this.threadRootId = threadRootId;
+        view.getContainer().selectTab(CONVERSATION_TAB, false);
         requestActualTabData();
     }
 
@@ -165,6 +164,25 @@ public class DetailsWrapperPresenter
         view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
         this.demandId = demandId;
         this.threadRootId = threadRootId;
+        view.getContainer().selectTab(CONVERSATION_TAB, false);
+        requestActualTabData();
+    }
+
+    /**
+     * Store needed ids for later data retrieving and hides User and Conversation tab.
+     * Data are not retrieved immediately, but only for selected tab,
+     * therefore we need to remember them in case, user, changes tab.
+     *
+     * @param demandId
+     * @param supplierId
+     * @param threadRootId
+     */
+    public void initDetails(long demandId) {
+        clear();
+        view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
+        view.getContainer().getTabWidget(CONVERSATION_TAB).getParent().setVisible(false);
+        this.demandId = demandId;
+        view.getContainer().selectTab(DEMAND_DETAIL_TAB, false);
         requestActualTabData();
     }
 
@@ -206,36 +224,40 @@ public class DetailsWrapperPresenter
     /**************************************************************************/
     /* Request methods                                                        */
     /**************************************************************************/
-    //Radej takto, ako mat v kazdom eventbuse forward metody.
-    /*
-     * Request/Response Method pair
-     * DemandDetail for detail section
+    /**
+     * Request demand detail for detail section tab: Demand.
+     *
      * @param demandId
-     * @param type
      */
     public void requestDemandDetail(Long demandId) {
-        if (view.getContainer().getWidget(DEMAND_DETAIL_TAB).getParent().isVisible()) {
-            view.loadingDivShow(view.getDemandDetailHolder());
-        }
-        if (view.getContainer().getWidget(DEMAND_DETAIL_TAB).getParent().isVisible()) {
-            view.loadingDivShow(view.getDemandDetailHolder());
-        }
+        view.loadingDivShow(view.getDemandDetailHolder());
         eventBus.requestDemandDetail(demandId);
     }
 
+    /**
+     * Request client detail for detail section tab: User - Client.
+     *
+     * @param clientId
+     */
     public void requestClientDetail(Long clientId) {
         view.loadingDivShow(view.getSupplierDetail());
         eventBus.requestClientDetail(clientId);
     }
 
+    /**
+     * Request supplier detail for detail section tab: User - Supplier.
+     *
+     * @param supplierId
+     */
     public void requestSupplierDetail(Long supplierId) {
         view.loadingDivShow(view.getSupplierDetail());
         eventBus.requestSupplierDetail(supplierId);
     }
 
     /**
-     * Loads conversation between client and supplier. Each conversation begins with threadRoot message that must be
-     * passed here as a parameter.
+     * Request conversation messages for detail section tab: Conversations.
+     * Loads conversation between client and supplier. Each conversation begins
+     * with threadRoot message that must be passed here as a parameter.
      *
      * @param threadRootId - root message i.e. first demand message in the conversation always created by client
      * @param userId - user who's chatting messages we are going to retrieve
@@ -262,13 +284,12 @@ public class DetailsWrapperPresenter
             editDemandPresenter = eventBus.addHandler(EditableDemandDetailPresenter.class);
             view.getDemandDetailHolder().setWidget(editDemandPresenter.getView());
             ((EditableDemandDetailView) editDemandPresenter.getView()).setDemanDetail(demandDetail);
-            view.loadingDivHide(view.getDemandDetailHolder());
         } else {
             DemandDetailView demandDetailWidget = new DemandDetailView();
             demandDetailWidget.setDemanDetail(demandDetail);
             view.getDemandDetailHolder().setWidget(demandDetailWidget);
-            view.loadingDivHide(view.getDemandDetailHolder());
         }
+        view.loadingDivHide(view.getDemandDetailHolder());
     }
 
     /**
@@ -293,40 +314,20 @@ public class DetailsWrapperPresenter
 
     /**
      * Response method for fetching demand-related chat.
-     * Internally creates clickHandler for ReplyWidgets submit button.
      *
      * @param chatMessages - demand-related conversation
-     * @param supplierListType
      */
     public void onResponseConversation(List<MessageDetail> chatMessages) {
         view.getConversationPanel().setMessageList(chatMessages, true);
-        //bind messages to handler that updates read status
-        setMessageReadHandler();
         view.loadingDivHide(view.getConversationHolder());
     }
 
     /**************************************************************************/
     /* HELPER methods                                                         */
     /**************************************************************************/
-    private void setMessageReadHandler() {
-        //TODO RELEASE: refactor migth not be needed because all messages are set to read when displaying conversation
-//        final ChangeHandler click = new ChangeHandler() {
-//            @Override
-//            public void onChange(ChangeEvent event) {
-//                String messagId = ((TextBox) event.getSource()).getText();
-//                eventBus.requestReadStatusUpdate(Arrays.asList(Long.valueOf(messagId)), true);
-//                table.refresh();
-//            }
-//        };
-//        for (int i = 0; i < view.getConversationPanel().getMessagePanel().getWidgetCount(); i++) {
-//            ((SimpleMessageWindow) view.getConversationPanel().getMessagePanel().getWidget(i))
-//                    .getUpdateRead().addChangeHandler(click);
-//        }
-    }
-
-    /**************************************************************************/
-    /* HELPER methods                                                         */
-    /**************************************************************************/
+    /**
+     * Clear detail section means reseting widget's attributes of all tabs widgets.
+     */
     public void clear() {
         if (view.getDemandDetailHolder().getWidget() != null) {
             if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS

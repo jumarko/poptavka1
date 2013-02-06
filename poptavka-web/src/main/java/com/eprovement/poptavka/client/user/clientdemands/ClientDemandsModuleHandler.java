@@ -105,6 +105,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                     @Override
                     public void onSuccess(Integer result) {
                         grid.getDataProvider().updateRowCount(result, true);
+                        if (result == 0) {
+                            eventBus.responseConversationNoData();
+                        }
                     }
                 });
     }
