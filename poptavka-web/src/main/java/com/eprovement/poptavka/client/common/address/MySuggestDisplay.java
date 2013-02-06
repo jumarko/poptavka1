@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.common.address;
 import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.root.RootEventBus;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
@@ -64,14 +65,14 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
     /**************************************************************************/
     /* SHOW                                                                   */
     /**************************************************************************/
-    public void showNoCitiesFound() {
+    public void showNoCitiesFound(final RootEventBus eventbus) {
         VerticalPanel vp = new VerticalPanel();
         vp.add(new Label(Storage.MSGS.addressNoCityFound()));
         Anchor anchor = new Anchor(Storage.MSGS.commonBtnReport());
         anchor.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // TODO implement report feature
+                eventbus.initEmailDialogPopup();
             }
         });
         vp.add(anchor);

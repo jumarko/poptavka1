@@ -25,6 +25,7 @@ public class SupplierPotentialDemandDetail implements Serializable, IUniversalDe
     // Client part
     private long clientId;
     private String clientName; // column 2
+    private int clientRating; // column ?
     // Message part
     private long messageId;
     private long threadRootId;
@@ -112,9 +113,13 @@ public class SupplierPotentialDemandDetail implements Serializable, IUniversalDe
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void setRating(int rating) {
+        clientRating = rating;
+    }
+
     @Override
     public int getRating() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return clientRating;
     }
 
     // Message part

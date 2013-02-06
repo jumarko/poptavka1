@@ -43,18 +43,30 @@ public class LoginPopupView extends Composite
     /* Attribute                                                              */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField Modal modal;
-    @UiField ListBox list;
-    @UiField TextBox emailTextBox;
-    @UiField PasswordTextBox passwordTextBox;
-    @UiField Alert status;
-    @UiField ProgressBar progressBar;
-    @UiField Icon icon;
-    @UiField Label infoLabel;
-    @UiField Button submitBtn;
-    @UiField Button cancelBtn;
-    @UiField ControlGroup emailControlGroup;
-    @UiField ControlGroup passwordControlGroup;
+    @UiField
+    Modal modal;
+    @UiField
+    ListBox list;
+    @UiField
+    TextBox emailTextBox;
+    @UiField
+    PasswordTextBox passwordTextBox;
+    @UiField
+    Alert status;
+    @UiField
+    ProgressBar progressBar;
+    @UiField
+    Icon icon;
+    @UiField
+    Label infoLabel;
+    @UiField
+    Button submitBtn;
+    @UiField
+    Button cancelBtn;
+    @UiField
+    ControlGroup emailControlGroup;
+    @UiField
+    ControlGroup passwordControlGroup;
     /** Class attributes. **/
     private LoginPopupPresenter presenter;
     /**************************************************************************/
@@ -195,6 +207,16 @@ public class LoginPopupView extends Composite
         infoLabel.setText(message);
         cancelBtn.setEnabled(false);
         submitBtn.setEnabled(false);
+    }
+
+    @Override
+    public void setLoadingProgress(Integer newPercentage, String newMessage) {
+        if (newPercentage != null) {
+            progressBar.setPercent(newPercentage);
+        }
+        if (newMessage != null) {
+            infoLabel.setText(newMessage);
+        }
     }
 
     /**

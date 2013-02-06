@@ -6,12 +6,9 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.RootRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
-import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -20,8 +17,6 @@ import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -37,62 +32,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     @Inject
     private UserRPCServiceAsync userService;
     private static final Logger LOGGER = Logger.getLogger("RootHandler");
-
-
-    /*
-     * Localities methods
-     */
-    public void onGetLocalities(final LocalityType localityType, final AsyncDataProvider dataProvider) {
-        rootService.getLocalities(localityType, new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> list) {
-                if (dataProvider != null) {
-                    dataProvider.updateRowData(0, list);
-                }
-                eventBus.setLocalityData(localityType, list);
-            }
-        });
-    }
-
-    public void onGetChildLocalities(final LocalityType localityType, String id,
-            final ListDataProvider dataProvider) {
-        rootService.getLocalities(Long.parseLong(id), new SecuredAsyncCallback<List<LocalityDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<LocalityDetail> list) {
-                if (dataProvider != null) {
-                    dataProvider.setList(list);
-                }
-                eventBus.setLocalityData(localityType, list);
-            }
-        });
-    }
-
-    /*
-     * Categories methods
-     */
-    public void onGetRootCategories(final AsyncDataProvider dataProvider) {
-        rootService.getCategories(new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> list) {
-                if (dataProvider != null) {
-                    dataProvider.updateRowData(0, list);
-                }
-                eventBus.setCategoryData(list);
-            }
-        });
-    }
-
-    public void onGetChildCategories(long categoryId, final ListDataProvider dataProvider) {
-        rootService.getCategoryChildren(categoryId, new SecuredAsyncCallback<List<CategoryDetail>>(eventBus) {
-            @Override
-            public void onSuccess(List<CategoryDetail> list) {
-                if (dataProvider != null) {
-                    dataProvider.setList(list);
-                }
-                eventBus.setCategoryData(list);
-            }
-        });
-    }
 
     /*
      * DevelDetailWrapper widget methods

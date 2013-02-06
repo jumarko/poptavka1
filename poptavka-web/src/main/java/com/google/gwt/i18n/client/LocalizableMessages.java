@@ -329,8 +329,10 @@ public interface LocalizableMessages extends Messages {
     String offerStateDeclined();
 
     // Messages for LoginPopupPresenter & LoginPopupView
-    String verifyAccount();
+    String loggingForward();
     String loggingIn();
+    String loggingLoadProfile();
+    String loggingVerifyAccount();
     String wrongLoginMessage();
     String loginUnknownError();
 

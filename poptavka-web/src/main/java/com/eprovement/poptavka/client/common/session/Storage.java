@@ -198,11 +198,8 @@ public final class Storage {
         setUserDetail(null);
         setBusinessUserDetail(null);
         setAppCalledByURL(null);
-        // TODO martin - shall we clear following values when invalidating Storage? i.e. during logout
-        // Will History be working correctly if we clear these values?
-        // Martin will try to make new solution for history between login/logout
-//        setDemandId(-1L);
-//        setCurrentlyLoadedView(-1);
+        setDemandId(-1L);
+        setCurrentlyLoadedView(-1);
     }
     /**************************************************************************/
     /* Workarount to access tree from its data provider.                      */

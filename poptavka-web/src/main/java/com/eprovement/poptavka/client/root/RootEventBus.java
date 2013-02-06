@@ -10,8 +10,6 @@
  */
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.error.ErrorModule;
@@ -34,7 +32,6 @@ import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter;
-import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
@@ -49,8 +46,6 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.ListDataProvider;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -309,29 +304,13 @@ public interface RootEventBus extends EventBusWithLookup {
     void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
         List<CategoryDetail> categoriesToSet);
 
-    @Event(handlers = CategorySelectorPresenter.class)
-    void setCategoryData(List<CategoryDetail> list);
-
-    @Event(handlers = RootHandler.class)
-    void getRootCategories(AsyncDataProvider dataProvider);
-
-    @Event(handlers = RootHandler.class)
-    void getChildCategories(long categoryId, ListDataProvider dataProvider);
-
     /**************************************************************************/
     /* LOCALITY SELECTOR WIDGET.                                              */
     /**************************************************************************/
-    // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** LocalitySelector section. **/
     @Event(handlers = RootPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
         List<LocalityDetail> localitiesToSet);
-
-    @Event(handlers = RootHandler.class)
-    void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);
-
-    @Event(handlers = RootHandler.class)
-    void getChildLocalities(final LocalityType localityType, String locCode, ListDataProvider dataProvider);
 
     /**************************************************************************/
     /* ADDRESS SELECTOR WIDGET.                                               */
@@ -350,15 +329,6 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(handlers = ServicesSelectorPresenter.class)
     void setServices(ArrayList<ServiceDetail> services);
-
-    //Common Locality & Address selector widget
-    /**
-     * Decide which presenter to use according to previous calls of initLocalityWidget and initAddressWidget methods.
-     * @param localityType
-     * @param localityList
-     */
-    @Event(handlers = LocalitySelectorPresenter.class)
-    void setLocalityData(LocalityType localityType, List<LocalityDetail> localityList);
 
     /**************************************************************************/
     /* EMAIL DIALOG POPUP.                                                    */

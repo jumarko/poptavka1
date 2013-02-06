@@ -32,6 +32,7 @@ public class ClientOfferedDemandOffersDetail implements Serializable, IUniversal
     private boolean isRead;
     private String supplierName;
     private String price;
+    private String demandTitle;
     private Integer rating;
     private Date receivedDate;
     private Date deliveryDate;
@@ -276,9 +277,14 @@ public class ClientOfferedDemandOffersDetail implements Serializable, IUniversal
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+
+    public void setTitle(String title) {
+        demandTitle = title;
+    }
+
     @Override
     public String getTitle() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return demandTitle;
     }
 
     @Override

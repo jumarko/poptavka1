@@ -53,6 +53,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         void setLoadingStatus(String localizableMessage);
 
+        void setLoadingProgress(Integer newPercentage, String newMessage);
+
         void setErrorMessage(String message);
 
         LoginPopupPresenter getPresenter();
@@ -72,12 +74,13 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      */
     public void doLogin() {
         if (view.isValid()) { // both email and password fields are not empty
-            view.setLoadingStatus(MSGS.verifyAccount());
+            view.setLoadingStatus(MSGS.loggingVerifyAccount());
             verifyUser();
         }
     }
 
     private void verifyUser() {
+        view.setLoadingProgress(0, MSGS.loggingVerifyAccount());
         // TODO release: check if user is VERIFIED
         // if not then display activation popup
         rootService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
@@ -90,6 +93,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 }
 
                 if (user.isVerified()) {
+                    view.setLoadingProgress(30, MSGS.loggingIn());
                     // user has already been verified - it is ready for login
                     loginUser();
                 } else {
@@ -115,7 +119,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     }
 
     private void loginUser() {
-        view.setLoadingStatus(MSGS.verifyAccount());
 
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getSpringLoginUrl());
         rb.setHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -138,11 +141,11 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                 @Override
                 public void onResponseReceived(final Request request, final Response response) {
+                    view.setLoadingProgress(50, MSGS.loggingLoadProfile());
                     int status = response.getStatusCode();
                     LOGGER.fine("Response status code = " + status);
                     if (status == Response.SC_OK) {
                         LOGGER.info("User=" + view.getLogin() + " has logged in!");
-                        view.setLoadingStatus(MSGS.loggingIn());
                         // notify all interested components that user has succesfully logged in
                         fireAfterLoginEvent();
                     } else if (status == Response.SC_UNAUTHORIZED) {
@@ -209,10 +212,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
             @Override
             public void onSuccess(UserDetail userDetail) {
+                view.setLoadingProgress(70, MSGS.loggingForward());
                 Storage.setUserDetail(userDetail);
                 userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
                     @Override
                     public void onSuccess(BusinessUserDetail loggedUser) {
+                        view.setLoadingProgress(90, null);
                         GWT.log("user id " + loggedUser.getUserId());
                         Storage.setBusinessUserDetail(loggedUser);
                         Storage.loadClientAndSupplierIDs();
@@ -240,6 +245,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         GWT.log("BUSSINESS ROLES ++++ " + Storage.getBusinessUserDetail().getBusinessRoles().toString());
         GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
         //forward user to welcome view of appropriate module according to his roles
+        view.setLoadingProgress(100, null);
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             eventBus.goToAdminModule(null, widgetToLoad);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(

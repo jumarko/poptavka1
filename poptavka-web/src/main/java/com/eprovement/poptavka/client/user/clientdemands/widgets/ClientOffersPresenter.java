@@ -341,10 +341,10 @@ public class ClientOffersPresenter
 //                        view.getOfferPager().getPage(), object.getOfferId());
             }
         };
-        view.getOfferGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
-//        view.getOfferGrid().getEndDateColumn().setFieldUpdater(textFieldUpdater);
+        view.getOfferGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
         view.getOfferGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 

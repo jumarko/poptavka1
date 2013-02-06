@@ -17,7 +17,6 @@ import java.util.List;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -63,10 +62,6 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     @NotBlank(message = "{demandNotBlankTitle}")
     @Size(min = 5, max = 50, message = "{demandSizeTitle}")
     private String title;
-    @NotBlank(message = "{demandNotBlankPrice}")
-    @Pattern(regexp = "\\d+(\\.\\d{2})*", message = "{demandPatternPrice}")
-    private String priceString;
-//    @DecimalMin(value = "0", message = "{demandMinPrice}")
     @Min(value = 0, message = "{demandMinPrice}")
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")
@@ -96,7 +91,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     public void setBasicInfo(HashMap<DemandField, Object> map) {
         this.setTitle((String) map.get(DemandField.TITLE));
         this.setDescription((String) map.get(DemandField.DESCRIPTION));
-        this.setPrice((String) map.get(DemandField.PRICE));
+        this.setPrice((BigDecimal) map.get(DemandField.PRICE));
         this.setEndDate((Date) map.get(DemandField.END_DATE));
         this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
     }
@@ -107,6 +102,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         this.demandType = (String) map.get(DemandField.DEMAND_TYPE);
     }
     //---------------------------- GETTERS AND SETTERS --------------------
+
     public void updateWholeDemand(FullDemandDetail demand) {
         demandId = demand.getDemandId();
         title = demand.getTitle();
@@ -301,37 +297,16 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         this.description = description;
     }
 
-    public void setPriceString(String priceStr) {
-        this.priceString = priceStr;
-    }
-
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public String getPriceString() {
-        return priceString;
     }
 
     public void setType(DemandDetailType demandDetailType) {
         this.detailType = demandDetailType;
     }
 
-    public void setPrice(String price) {
-        if (price != null) {
-            if (price.equals("") || price.equals("null")) {
-                this.price = null;
-            } else {
-                this.price = BigDecimal.valueOf(Long.valueOf(price));
-                this.priceString = price;
-            }
-        }
-    }
-
     public void setPrice(BigDecimal price) {
         this.price = price;
-        // TODO: WTF is this ??
-        this.priceString = price.toString();
     }
 
     public List<FullSupplierDetail> getExcludedSuppliers() {
