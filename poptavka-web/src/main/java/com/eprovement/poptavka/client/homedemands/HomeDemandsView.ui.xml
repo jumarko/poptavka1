@@ -7,53 +7,6 @@
 
 	<ui:with field='res'
 		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:style>
-		.name {
-		font-weight: bold;
-		width: auto;
-		}
-
-		.panel {
-		width: 400px;
-		spacing: 5;
-		}
-
-		.gridMenu {
-		margin: 7px 0 0;
-		float:left;
-		}
-
-		.paginator {
-		margin: 0px 10px;
-		float: left;
-		}
-
-		.pageSize {
-		float: left;
-		height: 31px;
-		padding: 6px;
-		border-radius: 3px 3px 3px 3px;
-		}
-
-		.button {
-		background:
-		url(images/new-offer-green.png) no-repeat;
-		padding: 0 0 1px 23px;
-		border: none;
-		color: #FFFFFF;
-		font-weight: bold;
-		height: 31px;
-		width:
-		119px;
-		float: left;
-		}
-
-		.dataGrid {
-		width: 100%;
-		height: 100%;
-		}
-
-	</ui:style>
 
 	<g:DockLayoutPanel unit="PX"
 		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
@@ -79,15 +32,15 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65">
-					<g:HTMLPanel styleName='{style.gridMenu}'>
+					<g:HTMLPanel styleName='{res.layout.toolbarItemsBlock}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-						<g:Button ui:field="offerBtn" styleName='{style.button}'>
+						<g:Button ui:field="offerBtn"
+							styleName='{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}'>
 							<ui:msg key="homeDemandsOfferBtn">Send Offer</ui:msg>
 						</g:Button>
-						<s:UniversalPagerWidget ui:field='pager'
-							styleName='{style.paginator}' />
+						<s:UniversalPagerWidget ui:field='pager' />
 					</g:HTMLPanel>
 				</g:north>
 				<g:center>

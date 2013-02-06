@@ -5,23 +5,16 @@
 
 	<ui:with field='res'
 		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:style>
-		.my-class {
-		width: 100%;
-		height: 100%;
-		}
 
-	</ui:style>
-
-	<g:HTMLPanel>
-
-		<b:Heading size='4'
-			styleName="{res.detailViews.demandDetailSectionHeader}">
-			<ui:msg key="formDemandInfo">Demand information</ui:msg>
-		</b:Heading>
-
-		<g:HTMLPanel>
-			<g:ScrollPanel addStyleNames='{style.my-class}'>
+	<g:DockLayoutPanel unit="PX" styleName='{res.layout.fullSize}'>
+		<g:north size="40">
+			<b:Heading size='4'
+				styleName="{res.detailViews.demandDetailSectionHeader}">
+				<ui:msg key="formDemandInfo">Demand information</ui:msg>
+			</b:Heading>
+		</g:north>
+		<g:center>
+			<g:ScrollPanel>
 				<b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent}'>
 					<b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
 						<b:Column size='12'>
@@ -95,11 +88,11 @@
 							<b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
 								<ui:msg key="formDescription">Description: </ui:msg>
 							</b:Heading>
-							<g:Label ui:field="description"/>
+							<g:Label ui:field="description" />
 						</b:Column>
 					</b:FluidRow>
 				</b:FluidContainer>
 			</g:ScrollPanel>
-		</g:HTMLPanel>
-	</g:HTMLPanel>
+		</g:center>
+	</g:DockLayoutPanel>
 </ui:UiBinder>
