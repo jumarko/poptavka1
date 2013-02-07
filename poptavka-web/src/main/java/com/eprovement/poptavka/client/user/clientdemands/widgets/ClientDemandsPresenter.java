@@ -96,7 +96,8 @@ public class ClientDemandsPresenter
     //viewType
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
-    private IUniversalDetail selectedObject = null;
+    private ClientDemandDetail selectedDemandObject = null;
+    private IUniversalDetail selectedConversationObject = null;
     private long selectedClientDemandId = -1;
     private long selectedClientDemandConversationId = -1;
     //
@@ -111,16 +112,15 @@ public class ClientDemandsPresenter
         // Range Change Handlers
         addDemandGridRangeChangeHandler();
         addConversationGridRangeChangeHandler();
-        addConversationGridSelectionModelHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
+        addConversationGridSelectionModelHandler();
         // Field Updaters
         addTextColumnFieldUpdaters();
         // Listbox actions
         addActionBoxChoiceHandlers();
         // RowStyles
         addDemandGridRowStyles();
-//        addConversationGridRowStyles();
     }
 
     /**************************************************************************/
@@ -201,7 +201,7 @@ public class ClientDemandsPresenter
         this.selectedClientDemandConversationId = childId;
         if (childId != -1 && !wasEqual) {
             selectionModel.clear();
-            selectedObject = null;
+            selectedConversationObject = null;
             eventBus.getClientDemandConversation(childId);
         }
 
@@ -223,11 +223,14 @@ public class ClientDemandsPresenter
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
-            if (selectedObject != null) {
+            if (selectedConversationObject != null) {
                 this.detailSection.initDetails(
-                        selectedObject.getDemandId(),
-                        selectedObject.getSupplierId(),
-                        selectedObject.getThreadRootId());
+                        selectedConversationObject.getDemandId(),
+                        selectedConversationObject.getSupplierId(),
+                        selectedConversationObject.getThreadRootId());
+            }
+            if (selectedDemandObject != null) {
+                this.detailSection.initDetails(selectedDemandObject.getDemandId());
             }
         }
     }
@@ -249,12 +252,36 @@ public class ClientDemandsPresenter
 
     public void onDisplayClientDemandConversations(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsDemandConversation");
+        view.setDemandTableVisible(false);
+        view.setConversationTableVisible(true);
+        view.getConversationPager().startLoading();
 
         view.getConversationGrid().getDataProvider().updateRowData(
                 view.getConversationGrid().getStart(), data);
 
         if (selectedClientDemandConversationId != -1) {
             eventBus.getClientDemandConversation(selectedClientDemandConversationId);
+        }
+    }
+
+    /**
+     * In conversation (child) table is empty for selected demand from parent table, there is
+     * no need to display it. And also when it cases problem because details wrapper is
+     * bind to selection on Conversation table items, therefore, if no data, no details wrapper
+     * can be call automatically. Therefore we need to do it manually.
+     */
+    public void onResponseConversationNoData() {
+        SingleSelectionModel selectionModel = (SingleSelectionModel) view.getDemandGrid().getSelectionModel();
+        //init details
+        if (selectionModel.getSelectedSet().isEmpty()) {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+        } else {
+            if (detailSection == null) {
+                eventBus.requestDetailWrapperPresenter();
+            } else {
+                detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                detailSection.initDetails(selectedDemandObject.getDemandId());
+            }
         }
     }
 
@@ -276,58 +303,8 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
-    public void addConversationGridSelectionModelHandler() {
-        view.getConversationGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                //set actionBox visibility
-                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 0) {
-                    view.getActionBox().setVisible(true);
-                } else {
-                    view.getActionBox().setVisible(false);
-                }
-                //init details
-                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 1) {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                } else {
-                    IUniversalDetail selected = view.getConversationGrid().getSelectedObjects().get(0);
-                    selectedObject = selected;
-                    if (detailSection == null) {
-                        eventBus.requestDetailWrapperPresenter();
-                    } else {
-                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        detailSection.initDetails(
-                                selected.getDemandId(),
-                                selected.getSenderId(),
-                                selected.getThreadRootId());
-                    }
-                }
-            }
-        });
-    }
-    // Field Updaters
-
-    public void addTextColumnFieldUpdaters() {
-        textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
-            @Override
-            public void update(int index, ClientDemandConversationDetail object, String value) {
-                object.setIsRead(true);
-                view.setDemandTableVisible(false);
-                view.setConversationTableVisible(true);
-                MultiSelectionModel selectionModel = view.getConversationGrid().getSelectionModel();
-                selectionModel.clear();
-                selectionModel.setSelected(object, true);
-//                eventBus.createTokenForHistory2(Storage.getDemandId(),
-//                        view.getConversationPager().getPage(), object.getSupplierId());
-            }
-        };
-        view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
-        view.getBodyPreviewColumn().setFieldUpdater(textFieldUpdater);
-        view.getDateColumn().setFieldUpdater(textFieldUpdater);
-    }
-
     /** Action box handers. **/
-    // Widget action handlers
+    //--------------------------------------------------------------------------
     private void addActionBoxChoiceHandlers() {
         view.getActionRead().addClickHandler(new ClickHandler() {
             @Override
@@ -355,7 +332,12 @@ public class ClientDemandsPresenter
         });
     }
 
-    //SelectionHandlers
+    /** SelectionHandlers. **/
+    //--------------------------------------------------------------------------
+    /**
+     * Show child table and fire event for getting its data.
+     * Hides detail section if no row is selected.
+     */
     private void addDemandTableSelectionHandler() {
         view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -364,17 +346,76 @@ public class ClientDemandsPresenter
                 ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
                         .getSelectionModel()).getSelectedObject();
                 if (selected != null) {
+                    selectedDemandObject = selected;
                     Storage.setDemandId(selected.getDemandId());
                     Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
-                    view.setDemandTableVisible(false);
-                    view.setConversationTableVisible(true);
-                    view.getConversationPager().startLoading();
                     view.getConversationGrid().getDataCount(eventBus, null);
                     eventBus.createTokenForHistory2(selected.getDemandId(), view.getConversationPager().getPage(), -1);
                 }
             }
         });
+    }
+
+    /**
+     * Show or Hide details section and action box.
+     * Show if and only of one table row is selected.
+     * Hide otherwise - not or more than one rows are selected.
+     */
+    public void addConversationGridSelectionModelHandler() {
+        view.getConversationGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                //set actionBox visibility
+                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 0) {
+                    view.getActionBox().setVisible(true);
+                } else {
+                    view.getActionBox().setVisible(false);
+                }
+                //init details
+                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 1) {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    IUniversalDetail selected = view.getConversationGrid().getSelectedObjects().get(0);
+                    selectedConversationObject = selected;
+                    if (detailSection == null) {
+                        eventBus.requestDetailWrapperPresenter();
+                    } else {
+                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                        detailSection.initDetails(
+                                selected.getDemandId(),
+                                selected.getSupplierId(),
+                                selected.getThreadRootId());
+                    }
+                }
+            }
+        });
+    }
+
+    /** Field updater. **/
+    //--------------------------------------------------------------------------
+    /**
+     * Show and loads detail section. Show after clicking on certain columns that
+     * have defined this fieldUpdater.
+     */
+    public void addTextColumnFieldUpdaters() {
+        textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
+            @Override
+            public void update(int index, ClientDemandConversationDetail object, String value) {
+                object.setIsRead(true);
+                view.setDemandTableVisible(false);
+                view.setConversationTableVisible(true);
+
+                MultiSelectionModel selectionModel = view.getConversationGrid().getSelectionModel();
+                selectionModel.clear();
+                selectionModel.setSelected(object, true);
+//                eventBus.createTokenForHistory2(Storage.getDemandId(),
+//                        view.getConversationPager().getPage(), object.getSupplierId());
+            }
+        };
+        view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getBodyPreviewColumn().setFieldUpdater(textFieldUpdater);
+        view.getDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
     //Button handlers
