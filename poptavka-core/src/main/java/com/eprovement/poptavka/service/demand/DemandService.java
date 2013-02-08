@@ -222,7 +222,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     Set<Demand> getDemands(ResultCriteria resultCriteria,
-            Category[] categories, Locality[] localities);
+                           List<Category> categories, List<Locality> localities);
 
     /**
      * Evaluate the number of demands associated to the given
@@ -232,7 +232,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @param categories
      * @return number of demands related to the <code>category</code>(-ies).
      */
-    long getDemandsCount(Category[] categories, Locality[] localities);
+    long getDemandsCount(List<Category> categories, List<Locality> localities);
 
     /**
      * Get number of all client demands that have at least one offer.

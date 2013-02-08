@@ -69,19 +69,18 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
     }
 
     @Override
-    public Set<Supplier> getSuppliers(Category[] categories, Locality[] localities, ResultCriteria resultCriteria) {
-        if (categories == null || categories.length == 0 || CollectionsHelper.containsOnlyNulls(categories)) {
+    public Set<Supplier> getSuppliers(List<Category> categories, List<Locality> localities,
+                                      ResultCriteria resultCriteria) {
+        if (CollectionsHelper.containsOnlyNulls(categories)) {
             return Collections.emptySet();
         }
-        if (localities == null || localities.length == 0 || CollectionsHelper.containsOnlyNulls(localities)) {
+        if (CollectionsHelper.containsOnlyNulls(localities)) {
             return Collections.emptySet();
         }
 
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
-                Category.class));
-        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
-                Locality.class));
+        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(categories, Category.class));
+        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(localities, Locality.class));
         return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalities", params, resultCriteria));
     }
 
@@ -102,12 +101,10 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
     }
 
     @Override
-    public long getSuppliersCount(Category[] categories, Locality[] localities, ResultCriteria resultCriteria) {
+    public long getSuppliersCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
-                Locality.class));
-        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
-                Category.class));
+        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(localities, Locality.class));
+        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(categories, Category.class));
         return (Long) runNamedQueryForSingleResult(
                 "getSuppliersCountForCategoriesAndLocalities", params,
                 resultCriteria);

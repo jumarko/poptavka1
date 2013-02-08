@@ -319,12 +319,12 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
 
     @Override
-    public Set<Demand> getDemands(ResultCriteria resultCriteria, Category[] categories, Locality[] localities) {
+    public Set<Demand> getDemands(ResultCriteria resultCriteria, List<Category> categories, List<Locality> localities) {
         return this.getDao().getDemands(categories, localities, resultCriteria);
     }
 
     @Override
-    public long getDemandsCount(Category[] categories, Locality[] localities) {
+    public long getDemandsCount(List<Category> categories, List<Locality> localities) {
         return this.getDao().getDemandsCount(categories, localities, ResultCriteria.EMPTY_CRITERIA);
     }
 

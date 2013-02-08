@@ -67,7 +67,7 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * @return number of suppliers related to the <code>locality</code>(-ies).
      */
 
-    long getSuppliersCount(Category[] categories, Locality[] localities,
+    long getSuppliersCount(List<Category> categories, List<Locality> localities,
             ResultCriteria resultCriteria);
 
 
@@ -102,7 +102,7 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * @return collection of suppliers that are related to the given localities and adher to <code>resultCriteria</code>
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
-    Set<Supplier> getSuppliers(Category[] categories, Locality[] localities, ResultCriteria resultCriteria);
+    Set<Supplier> getSuppliers(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
 
     /**
      * Optmized method for loading suppliers count for all categories in one query!

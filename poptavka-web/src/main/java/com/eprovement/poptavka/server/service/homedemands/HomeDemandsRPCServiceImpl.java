@@ -173,10 +173,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * generalService.Search for retrieving data. Therefore different set of
      * methods is used for optimizing the proces.
      *
-     * @param start - define begin range of pagination
-     * @param maxResult - define how many data will be retrieved
-     * @param detail - define filter criteria
-     * @param orderColumns - define ordering (attribute, type)
+     * @param definition search filters
      * @return list of demand details
      * @throws RPCException
      */
@@ -213,9 +210,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * This method is used when <b>no filtering</b> is required. Get demands
      * defined by range(start, maxResult) and ordering.
      *
-     * @param start - define begin range of pagination
-     * @param maxResult - define how many data will be retrieved
-     * @param orderColumns - define ordering (attribute, type)
+     * @param searchDefinition search filters
      * @return list of demand details
      */
     private List<FullDemandDetail> getSortedDemands(SearchDefinition searchDefinition) {
@@ -245,9 +240,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * This method is used when <b>category filtering</b> is required. Get
      * demands data of given categories
      *
-     * @param categories - define categories to filter through
-     * @param maxResult - define how many data will be retrieved
-     * @param orderColumns - define ordering (attribute, type)
+     * @param searchDefinition search filters
      * @return demand details list of given categories
      */
     private List<FullDemandDetail> getSortedCategoryDemands(SearchDefinition searchDefinition) {
@@ -282,9 +275,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * This method is used when <b>localities filtering</b> is required. Get
      * demands data of given localities
      *
-     * @param localities - define localities to filter through
-     * @param maxResult - define how many data will be retrieved
-     * @param orderColumns - define ordering (attribute, type)
+     * @param searchDefinition search filters
      * @return demand details list of given localities
      */
     private List<FullDemandDetail> getSortedLocalityDemands(SearchDefinition searchDefinition) {
@@ -317,19 +308,14 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         for (LocalityDetail locDetail : localities) {
             locs.add(localityService.getLocality(locDetail.getId()));
         }
-        return demandService.getDemandsCount(
-                cats.toArray(new Category[cats.size()]),
-                locs.toArray(new Locality[locs.size()]));
+        return demandService.getDemandsCount(cats, locs);
     }
 
     /**
      * This method is used when both <b>categories & localities filtering</b> is
      * required. Get demands data of given categories & localities
      *
-     * @param categories - define categories to filter through
-     * @param localities - define localities to filter through
-     * @param maxResult - define how many data will be retrieved
-     * @param orderColumns - define ordering (attribute, type)
+     * @param searchDefinition search filters
      * @return demand details list of given categories & localities
      */
     private List<FullDemandDetail> getSortedCategoryLocalityDemands(SearchDefinition searchDefinition) {
@@ -342,8 +328,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             locs.add(localityService.getLocality(catDetail.getId()));
         }
         return demandConverter.convertToTargetList(demandService.getDemands(
-                criteriaConverter.convertToSource(searchDefinition),
-                cats.toArray(new Category[cats.size()]), locs.toArray(new Locality[locs.size()])));
+                criteriaConverter.convertToSource(searchDefinition), cats, locs));
     }
 
     // ***********************************************************************
@@ -443,7 +428,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * therefore there is no need to use backend methods which use
      * <i>general.Search</i> for retrieving data.
      *
-     * @param detail - define filtering criteria, which helps this method to
+     * @param definition - define filtering criteria, which helps this method to
      * make decision
      * @return demand detail list
      */
@@ -478,8 +463,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * there is need to use backend methods which use <i>general.Search</i> for
      * retrieving data.
      *
-     * @param detail - define filtering criteria, which helps this method to
-     * make decision
+     * @param searchDefinition - define filtering criteria, which helps this method to make decision
      * @return demand detail list
      */
     private List<FullDemandDetail> filterWithAttributes(SearchDefinition searchDefinition) {

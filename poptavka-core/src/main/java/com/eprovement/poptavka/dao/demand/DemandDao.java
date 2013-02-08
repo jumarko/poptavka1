@@ -175,7 +175,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return collection of demands that are related to the given localities and adher to <code>resultCriteria</code>
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
-    Set<Demand> getDemands(Category[] categories, Locality[] localities, ResultCriteria resultCriteria);
+    Set<Demand> getDemands(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
 
 
      /**
@@ -193,8 +193,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return number of suppliers related to the <code>locality</code>(-ies).
      */
 
-    long getDemandsCount(Category[] categories, Locality[] localities,
-            ResultCriteria resultCriteria);
+    long getDemandsCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
 
     /**
      * Get number of all client demands that have at least one offer.

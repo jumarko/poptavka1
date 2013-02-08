@@ -6,6 +6,7 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.user.Supplier;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -106,7 +107,7 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      * @return
      */
     Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
-            Category[] categories, Locality[] localities);
+                               List<Category> categories, List<Locality> localities);
     /**
      * Highly optimized method for getting number of suppliers for all categories.
      *
@@ -134,7 +135,7 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      * @param categories
      * @return number of suppliers related to the <code>category</code>(-ies).
      */
-    long getSuppliersCount(Category[] categories, Locality[] localities);
+    long getSuppliersCount(List<Category> categories, List<Locality> localities);
 
    /**
     * Evaluate the number of suppliers associated to the given
@@ -146,8 +147,7 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
     * @param resultCriteria
     * @return
     */
-    long getSuppliersCount(Category[] categories, Locality[] localities,
-            ResultCriteria resultCriteria);
+    long getSuppliersCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
     /**
      * Similar to the {@link #getSuppliersCount(com.eprovement.poptavka.domain.demand.Category...)}
      * but restricted to the one category and with better performance.

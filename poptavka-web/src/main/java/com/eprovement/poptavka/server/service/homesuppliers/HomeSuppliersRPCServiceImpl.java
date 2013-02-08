@@ -249,19 +249,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         for (LocalityDetail locDetail : localities) {
             locs.add(localityService.getLocality(locDetail.getId()));
         }
-        return supplierService.getSuppliersCount(
-                cats.toArray(new Category[cats.size()]),
-                locs.toArray(new Locality[locs.size()]));
+        return supplierService.getSuppliersCount(cats, locs);
     }
 
     /**
      * This method is used when both <b>categories & localities filtering</b> is
      * required. Get suppliers data of given categories & localities
      *
-     * @param categories - define categories to filter through
-     * @param localities - define localities to filter through
-     * @param maxResult - define how many data will be retrieved
-     * @param orderColumns - define ordering (attribute, type)
+     * @param searchDefinition search filters
      * @return supplier details list of given categories & localities
      */
     private List<FullSupplierDetail> getSortedCategoryLocalitySuppliers(SearchDefinition searchDefinition) {
@@ -274,9 +269,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
             locs.add(localityService.getLocality(catDetail.getId()));
         }
         return supplierConverter.convertToTargetList(supplierService.getSuppliers(
-                criteriaConverter.convertToSource(searchDefinition),
-                cats.toArray(new Category[cats.size()]),
-                locs.toArray(new Locality[locs.size()])));
+                criteriaConverter.convertToSource(searchDefinition), cats, locs));
     }
 
     /**************************************************************************/

@@ -374,7 +374,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
     private void checkSuppliersForCategoriesAndLocalities(int expectedCount,
             Long[] categoryIds, Long[] localityIds) {
         final Set<Supplier> suppliers = this.supplierService.getSuppliers(null,
-                getCategories(categoryIds), getLocalities(localityIds));
+                Arrays.asList(getCategories(categoryIds)), Arrays.asList(getLocalities(localityIds)));
         Assert.assertNotNull(suppliers);
         Assert.assertEquals(expectedCount, suppliers.size());
     }
@@ -382,7 +382,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
     private void checkSuppliersCountForCategoriesAndLocalities(int expectedCount,
             Long[] categoryIds, Long[] localityIds) {
         final long suppliersCount = this.supplierService.getSuppliersCount(
-                getCategories(categoryIds), getLocalities(localityIds));
+                Arrays.asList(getCategories(categoryIds)), Arrays.asList(getLocalities(localityIds)));
 
         Assert.assertEquals(expectedCount, suppliersCount);
     }

@@ -85,9 +85,8 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     @Transactional(readOnly = true)
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
-                                      Category[] categories, Locality[] localities) {
-        return this.getDao().getSuppliers(categories, localities,
-                resultCriteria);
+                                      List<Category> categories, List<Locality> localities) {
+        return this.getDao().getSuppliers(categories, localities, resultCriteria);
     }
 
 
@@ -186,7 +185,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      */
     @Override
     @Transactional(readOnly = true)
-    public long getSuppliersCount(Category[] categories, Locality[] localities) {
+    public long getSuppliersCount(List<Category> categories, List<Locality> localities) {
         return this.getDao().getSuppliersCount(categories, localities, null);
     }
 
@@ -195,10 +194,8 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      */
     @Override
     @Transactional(readOnly = true)
-    public long getSuppliersCount(Category[] categories, Locality[] localities,
-                                  ResultCriteria resultCriteria) {
-        return this.getDao().getSuppliersCount(categories, localities,
-                resultCriteria);
+    public long getSuppliersCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria) {
+        return this.getDao().getSuppliersCount(categories, localities, resultCriteria);
     }
 
     /**

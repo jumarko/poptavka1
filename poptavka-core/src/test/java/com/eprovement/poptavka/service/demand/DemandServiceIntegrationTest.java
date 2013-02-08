@@ -446,8 +446,8 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Collection<Demand> demandsByCategoriesAndLocalities =
                 this.demandService.getDemands(
                         ResultCriteria.EMPTY_CRITERIA,
-                        new Category[]{category11},
-                        new Locality[]{locality11});
+                        Arrays.asList(category11),
+                        Arrays.asList(locality11));
 
         Assert.assertThat(demandsByCategoriesAndLocalities.size(), Is.is(2));
         checkDemandExists(demandsByCategoriesAndLocalities, 5);
@@ -462,7 +462,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
 
         final long demandsCount =
-                this.demandService.getDemandsCount(new Category[]{category11}, new Locality[]{locality11});
+                this.demandService.getDemandsCount(Arrays.asList(category11), Arrays.asList(locality11));
 
         Assert.assertThat(demandsCount, Is.is(2L));
     }
