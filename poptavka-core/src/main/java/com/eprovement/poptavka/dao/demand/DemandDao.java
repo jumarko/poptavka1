@@ -156,13 +156,6 @@ public interface DemandDao extends GenericDao<Demand> {
     long getAllDemandsCount();
 
 
-    /**
-     * Load all demands that are new, i.e. have status {@link com.eprovement.poptavka.domain.enums.DemandStatus#NEW}
-     * @return
-     * @param resultCriteria
-     */
-    List<Demand> getAllNewDemands(ResultCriteria resultCriteria);
-
 
     /**
      * Load all demands associated to the given category (-ies) and

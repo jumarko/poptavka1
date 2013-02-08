@@ -13,7 +13,6 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericService;
 
 import java.util.List;
@@ -192,23 +191,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     long getOfferCount(Demand demand);
-
-
-    /**
-     * Send given demand to potential suppliers.
-     * @param demand
-     * @throws  MessageCannotBeSentException if some error occurs while sending message to suppliers.
-     */
-    void sendDemandToSuppliers(Demand demand) throws MessageException;
-
-    /**
-     * Send all new demands to potential suppliers.
-     */
-    void sendDemandsToSuppliers();
-
-
-    /** @see DemandDao#getAllNewDemands(com.eprovement.poptavka.domain.common.ResultCriteria) */
-    List<Demand> getAllNewDemands();
 
 
     /**

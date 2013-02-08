@@ -1,22 +1,24 @@
 package com.eprovement.poptavka.service.demand;
 
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.service.user.SupplierService;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import junit.framework.TestCase;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyListOf;
 import org.mockito.Mockito;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Juraj Martinka
@@ -31,28 +33,19 @@ public class NaiveSuppliersSelectionTest extends TestCase {
     public void setUp() {
         final SupplierService supplierServiceMock = Mockito.mock(SupplierService.class);
 
-        final Set<Supplier> localitySuppliers = new HashSet<Supplier>();
-        localitySuppliers.add(createSupplier(1L, 10));
-        localitySuppliers.add(createSupplier(2L, 1));
-        localitySuppliers.add(createSupplier(3L, 3));
-        localitySuppliers.add(createSupplier(4L, 29));
-        localitySuppliers.add(createSupplier(5L, 90));
-        localitySuppliers.add(createSupplier(6L, 13));
-        localitySuppliers.add(createSupplier(7L, 21));
-        localitySuppliers.add(createSupplier(8L, 18));
-        localitySuppliers.add(createSupplier(9L, 30));
-        Mockito.when(supplierServiceMock.getSuppliers(Mockito.<Locality>anyVararg()))
-                .thenReturn(localitySuppliers);
-
-        final Set<Supplier> categorySuppliers = new HashSet<Supplier>();
-        categorySuppliers.add(createSupplier(11L, 100));
-        categorySuppliers.add(createSupplier(12L, 10));
-        categorySuppliers.add(createSupplier(13L, 30));
-        categorySuppliers.add(createSupplier(14L, 29));
-        categorySuppliers.add(createSupplier(15L, 88));
-        categorySuppliers.add(createSupplier(16L, 13));
-        Mockito.when(supplierServiceMock.getSuppliers(Mockito.<Category>anyVararg()))
-                .thenReturn(categorySuppliers);
+        final Set<Supplier> suppliers = new HashSet<Supplier>();
+        suppliers.add(createSupplier(1L, 10));
+        suppliers.add(createSupplier(2L, 1));
+        suppliers.add(createSupplier(3L, 3));
+        suppliers.add(createSupplier(4L, 29));
+        suppliers.add(createSupplier(5L, 90));
+        suppliers.add(createSupplier(6L, 13));
+        suppliers.add(createSupplier(7L, 21));
+        suppliers.add(createSupplier(8L, 18));
+        suppliers.add(createSupplier(9L, 30));
+        Mockito.when(supplierServiceMock.getSuppliers(any(ResultCriteria.class), anyListOf(Category.class),
+                anyListOf(Locality.class)))
+                .thenReturn(suppliers);
 
 
         ((NaiveSuppliersSelection) this.naiveSuppliersSelection).setSupplierService(supplierServiceMock);
@@ -80,6 +73,6 @@ public class NaiveSuppliersSelectionTest extends TestCase {
         demand.setClient(new Client());
         final Set<PotentialSupplier> demandPotentialSuppliers =
                 this.naiveSuppliersSelection.getPotentialSuppliers(demand);
-        org.junit.Assert.assertThat(demandPotentialSuppliers.size(), Is.is(5));
+        org.junit.Assert.assertThat(demandPotentialSuppliers.size(), Is.is(3));
     }
 }

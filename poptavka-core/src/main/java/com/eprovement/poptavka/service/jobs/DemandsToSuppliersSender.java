@@ -1,7 +1,8 @@
 package com.eprovement.poptavka.service.jobs;
 
-import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.jobs.base.JobTask;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,18 +18,20 @@ public class DemandsToSuppliersSender implements JobTask {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemandsToSuppliersSender.class);
 
-    private DemandService demandService;
+    private final PotentialDemandService potentialDemandService;
+
+    public DemandsToSuppliersSender(PotentialDemandService potentialDemandService) {
+        Validate.notNull(potentialDemandService);
+        this.potentialDemandService = potentialDemandService;
+    }
 
     // TODO jumar separate logging into the aspect
     @Scheduled(cron = EVERY_MIDNIGHT)
     @Transactional
     public void execute() {
         LOGGER.info("DemandsToSuppliersSender status=start");
-        this.demandService.sendDemandsToSuppliers();
+        this.potentialDemandService.sendDemandsToPotentialSuppliers();
         LOGGER.info("DemandsToSuppliersSender status=finish");
     }
 
-    public void setDemandService(DemandService demandService) {
-        this.demandService = demandService;
-    }
 }

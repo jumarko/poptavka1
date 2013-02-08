@@ -52,4 +52,29 @@ public class PotentialSupplier {
                 + ", rating=" + rating
                 + '}';
     }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final PotentialSupplier that = (PotentialSupplier) o;
+
+        if (supplier != null ? !supplier.equals(that.supplier) : that.supplier != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return supplier != null ? supplier.hashCode() : 0;
+    }
 }

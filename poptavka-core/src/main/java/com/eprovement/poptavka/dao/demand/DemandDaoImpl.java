@@ -11,7 +11,6 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
 
@@ -22,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -163,14 +160,6 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     }
 
 
-    @Override
-    public List<Demand> getAllNewDemands(ResultCriteria resultCriteria) {
-        final Demand newDemandExample = new Demand();
-
-        final Criteria newDemandCriteria = getHibernateSession().createCriteria(Demand.class);
-        newDemandCriteria.add(Restrictions.eq("status", DemandStatus.NEW));
-        return buildResultCriteria(newDemandCriteria, resultCriteria).list();
-    }
 
     @Override
     public long getClientDemandsWithOfferCount(Client client) {

@@ -7,6 +7,7 @@ package com.eprovement.poptavka.server.service.demandcreation;
 
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
@@ -47,6 +48,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);
     private DemandService demandService;
+    private PotentialDemandService potentialDemandService;
     private LocalityService localityService;
     private ClientService clientService;
     private Converter<Demand, FullDemandDetail> demandConverter;
@@ -57,6 +59,11 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
+    }
+
+    @Autowired
+    public void setPotentialDemandService(PotentialDemandService potentialDemandService) {
+        this.potentialDemandService = potentialDemandService;
     }
 
     @Autowired
@@ -144,7 +151,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private void sendDemandToSuppliers(Demand demand) {
         // send message and handle exception if any
         try {
-            this.demandService.sendDemandToSuppliers(demand);
+            this.potentialDemandService.sendDemandToPotentialSuppliers(demand);
         } catch (MessageException e) {
             LOGGER.error("Demand " + demand + " has not been sent to suppliers. "
                     + "The next try will be made by regular job.");

@@ -18,7 +18,9 @@ import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
+import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.eprovement.poptavka.util.aop.AopUtils;
 import com.eprovement.poptavka.util.user.UserTestUtils;
 import com.googlecode.genericdao.search.Search;
 import java.util.Arrays;
@@ -26,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -190,6 +194,9 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testCreateSupplier() {
+        final PotentialDemandService potentialDemandServiceMock = mock(PotentialDemandService.class);
+        ((SupplierServiceImpl) AopUtils.unproxy(supplierService)).setPotentialDemandService(potentialDemandServiceMock);
+
         final Supplier newSupplier = new Supplier();
         newSupplier.getBusinessUser().setEmail("new@supplier.com");
         newSupplier.getBusinessUser().setPassword("myPassword");
