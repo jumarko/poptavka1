@@ -4,8 +4,9 @@ import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.product.UserService;
@@ -28,11 +29,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -150,6 +154,21 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
                 locArr2);
     }
 
+    @Test
+    public void testGetSuppliersForCategoriesAndLocalitiesIncludingParents() {
+        final Long[] catArr1 = {11L, 312L};
+        final Long[] locArr1 = {11L, 21L};
+        checkSuppliersForCategoriesAndLocalitiesIncludingParents(3, catArr1, locArr1);
+
+        final Long[] catArr2 = {312L};
+        final Long[] locArr2 = {21L};
+        checkSuppliersForCategoriesAndLocalitiesIncludingParents(1, catArr2, locArr2);
+
+        final Long[] catArr3 = {1L, 3L};
+        final Long[] locArr3 = {2L};
+        checkSuppliersForCategoriesAndLocalitiesIncludingParents(0, catArr3, locArr3);
+    }
+
 
     @Test
     public void testGetSuppliersForAllCategories() {
@@ -201,43 +220,44 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         newSupplier.getBusinessUser().setEmail("new@supplier.com");
         newSupplier.getBusinessUser().setPassword("myPassword");
         newSupplier.getBusinessUser().setAccessRoles(Arrays.asList(this.generalService.find(AccessRole.class, 1L)));
-        final Address clientAddress = new Address();
-        clientAddress.setCity(this.localityService.getLocality(211L));
-        clientAddress.setStreet("Gotham city");
-        clientAddress.setZipCode("12");
-        newSupplier.getBusinessUser().setAddresses(Arrays.asList(clientAddress));
+        final Address supplierAddress = new Address();
+        supplierAddress.setCity(this.localityService.getLocality(211L));
+        supplierAddress.setStreet("Gotham city");
+        supplierAddress.setZipCode("12");
+        newSupplier.getBusinessUser().setAddresses(Arrays.asList(supplierAddress));
         newSupplier.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("New").personLastName("Supplier").build());
         newSupplier.getBusinessUser().setSettings(new Settings());
         newSupplier.setLocalities(localityService.getLocalities(LocalityType.CITY));
-        newSupplier.setCategories(categoryService.getRootCategories());
+        newSupplier.setCategories(Arrays.asList(categoryService.getCategory(112L)));
         this.supplierService.create(newSupplier);
 
+        // CHECKS
         final List<Supplier> persistedSuppliers = this.supplierService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
                         .withName("New")
                         .withSurName("Supplier")
                         .build());
-        Assert.assertNotNull(persistedSuppliers);
+        assertNotNull(persistedSuppliers);
         final Supplier createdSupplier = persistedSuppliers.get(0);
-        Assert.assertNotNull(createdSupplier.getId());
+        assertNotNull(createdSupplier.getId());
         Assert.assertEquals("new@supplier.com", createdSupplier.getBusinessUser().getEmail());
 
         // check BusinessUserRole-s
         Assert.assertFalse(createdSupplier.getBusinessUser().getBusinessUserRoles().isEmpty());
-        Assert.assertThat(createdSupplier.getBusinessUser().getBusinessUserRoles().get(0).getId(),
+        assertThat(createdSupplier.getBusinessUser().getBusinessUserRoles().get(0).getId(),
                 is(createdSupplier.getId()));
 
 
         final Search userServiceSearch = new Search(UserService.class);
         userServiceSearch.addFilterEqual("user", createdSupplier.getBusinessUser());
         final List<UserService> serviceAssignedToClient = this.generalService.search(userServiceSearch);
-        Assert.assertNotNull(serviceAssignedToClient.get(0));
-        Assert.assertThat(serviceAssignedToClient.get(0).getUser().getEmail(), is("new@supplier.com"));
-        Assert.assertThat(serviceAssignedToClient.get(0).getService().getCode(), is(Registers.Service.CLASSIC));
+        assertNotNull(serviceAssignedToClient.get(0));
+        assertThat(serviceAssignedToClient.get(0).getUser().getEmail(), is("new@supplier.com"));
+        assertThat(serviceAssignedToClient.get(0).getService().getCode(), is(Registers.Service.CLASSIC));
 
         // check if new supplier has also all supplier notifications set to the sensible values
-        Assert.assertNotNull(createdSupplier.getBusinessUser().getSettings());
+        assertNotNull(createdSupplier.getBusinessUser().getSettings());
         UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
                 this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_DEMAND, Notification.class),
                 true, Period.INSTANTLY);
@@ -253,6 +273,18 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
                 this.registerService.getValue(Registers.Notification.SUPPLIER_OFFER_STATUS_CHANGED, Notification.class),
                 false, Period.INSTANTLY);
+
+
+        // check that potential demand has been sent to supplier immediately after he has been created
+        final ArgumentCaptor<Demand> demandCaptor = ArgumentCaptor.forClass(Demand.class);
+        final ArgumentCaptor<PotentialSupplier> supplierCaptor = ArgumentCaptor.forClass(PotentialSupplier.class);
+        verify(potentialDemandServiceMock).sendDemandToPotentialSupplier(
+                demandCaptor.capture(), supplierCaptor.capture());
+        assertNotNull("Potential demand cannot be null!", demandCaptor.getValue());
+        assertThat("Incorrect demand has been sent to supplier", demandCaptor.getValue().getId(), is(8L));
+        assertNotNull("Potential supplier cannot be null!", supplierCaptor.getValue());
+        assertThat("Incorrect supplier has been passed",
+                supplierCaptor.getValue().getSupplier().getId(), is(newSupplier.getId()));
     }
 
 
@@ -266,7 +298,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
                 UserSearchCriteria.Builder.userSearchCriteria()
                         .withCompanyName(supplierCompanyName)
                         .build());
-        Assert.assertNotNull(suppliers);
+        assertNotNull(suppliers);
         Assert.assertEquals(1, suppliers.size());
 
         final Supplier supplierToModify = suppliers.get(0);
@@ -281,33 +313,17 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
                 UserSearchCriteria.Builder.userSearchCriteria()
                         .withCompanyName(supplierCompanyName)
                         .build());
-        Assert.assertNotNull(persistedSupplier);
-        Assert.assertNotNull(persistedSupplier.get(0).getId());
+        assertNotNull(persistedSupplier);
+        assertNotNull(persistedSupplier.get(0).getId());
         // check if certification has been changed correctly
         Assert.assertEquals(!isCertified, persistedSupplier.get(0).isCertified());
-    }
-
-
-    @Ignore
-    @Test
-    public void testSortSuppliersByCompanyName() {
-        final ResultCriteria sortByCompanyNameCriteria = new ResultCriteria.Builder()
-                .firstResult(0)
-                .maxResults(2)
-                .orderByColumns(Arrays.asList("businessUser.businessUserData.companyName"))
-                .build();
-
-        final Set<Supplier> loc1SuppliersByCompanyName = this.supplierService.getSuppliers(sortByCompanyNameCriteria,
-                this.localityService.getLocality(1L));
-
-
     }
 
 
     //----------------------------------------- HELPER METHODS ---------------------------------------------------------
     private void checkSuppliersForLocalities(int expectedCount, Long... localitiesCodes) {
         final Set<Supplier> suppliers = this.supplierService.getSuppliers(getLocalities(localitiesCodes));
-        Assert.assertNotNull(suppliers);
+        assertNotNull(suppliers);
         Assert.assertEquals(expectedCount, suppliers.size());
     }
 
@@ -335,7 +351,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
     private void checkSuppliersForCategories(int expectedCount, Long... categoriesIds) {
         final Set<Supplier> suppliers = this.supplierService.getSuppliers(getCategories(categoriesIds));
-        Assert.assertNotNull(suppliers);
+        assertNotNull(suppliers);
         Assert.assertEquals(expectedCount, suppliers.size());
     }
 
@@ -378,20 +394,29 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
                 suppliersCountForAllCategories.get(this.categoryService.getCategory(categoryId)));
     }
 
+
     private void checkSuppliersForCategoriesAndLocalities(int expectedCount,
-            Long[] categoryIds, Long[] localityIds) {
+                                                          Long[] categoryIds, Long[] localityIds) {
         final Set<Supplier> suppliers = this.supplierService.getSuppliers(null,
                 Arrays.asList(getCategories(categoryIds)), Arrays.asList(getLocalities(localityIds)));
-        Assert.assertNotNull(suppliers);
+        assertNotNull(suppliers);
         Assert.assertEquals(expectedCount, suppliers.size());
     }
 
     private void checkSuppliersCountForCategoriesAndLocalities(int expectedCount,
-            Long[] categoryIds, Long[] localityIds) {
+                                                               Long[] categoryIds, Long[] localityIds) {
         final long suppliersCount = this.supplierService.getSuppliersCount(
                 Arrays.asList(getCategories(categoryIds)), Arrays.asList(getLocalities(localityIds)));
 
         Assert.assertEquals(expectedCount, suppliersCount);
+    }
+
+    private void checkSuppliersForCategoriesAndLocalitiesIncludingParents(int expectedCount,
+            Long[] categoryIds, Long[] localityIds) {
+        final Set<Supplier> suppliers = this.supplierService.getSuppliersIncludingParents(
+                Arrays.asList(getCategories(categoryIds)), Arrays.asList(getLocalities(localityIds)), null);
+        assertNotNull(suppliers);
+        Assert.assertEquals(expectedCount, suppliers.size());
     }
 
 }

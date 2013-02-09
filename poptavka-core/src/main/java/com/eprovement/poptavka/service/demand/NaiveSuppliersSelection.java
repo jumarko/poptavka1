@@ -4,6 +4,7 @@ package com.eprovement.poptavka.service.demand;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.google.common.base.Preconditions;
@@ -12,8 +13,11 @@ import org.apache.commons.collections.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -25,22 +29,30 @@ import java.util.TreeSet;
  */
 public class NaiveSuppliersSelection implements SuppliersSelection {
 
+    /** All demand states that are valid for suppliers selection. */
+    public static final List<DemandStatus> VALID_DEMAND_STATES =
+            Collections.unmodifiableList(Arrays.asList(DemandStatus.ACTIVE, DemandStatus.OFFERED));
     private static final Logger LOGGER = LoggerFactory.getLogger(NaiveSuppliersSelection.class);
     private SupplierService supplierService;
 
     @Override
     public Set<PotentialSupplier> getPotentialSuppliers(final Demand demand) {
-
         Preconditions.checkNotNull(demand);
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(demand.getCategories()),
                 "Demand must have at least one category assigned.");
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(demand.getLocalities()),
                 "Demand must have at least one locality assigned.");
 
+
+        if (! VALID_DEMAND_STATES.contains(demand.getStatus())) {
+            LOGGER.debug("action=get_potential_suppliers demand={} is not in valid state, skipping.", demand);
+            return Collections.emptySet();
+        }
+
         LOGGER.debug("action=get_potential_suppliers status=start demand={}. Find all possible suppliers for demand",
                 demand);
-        final Set<Supplier> suppliers = supplierService.getSuppliers(ResultCriteria.EMPTY_CRITERIA,
-                demand.getCategories(), demand.getLocalities());
+        final Set<Supplier> suppliers = supplierService.getSuppliersIncludingParents(
+                demand.getCategories(), demand.getLocalities(), ResultCriteria.EMPTY_CRITERIA);
         LOGGER.debug("action=get_potential_suppliers status=finish demand={} suppliers_count={} ",
                 new Object[] {demand, demand.getCategories().size(), suppliers.size()});
 

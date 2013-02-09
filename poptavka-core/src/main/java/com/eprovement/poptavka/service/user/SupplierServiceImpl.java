@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,6 +130,12 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
                                       List<Category> categories, List<Locality> localities) {
         return this.getDao().getSuppliers(categories, localities, resultCriteria);
+    }
+
+    @Override
+    public Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
+                                                      ResultCriteria resultCriteria) {
+        return getDao().getSuppliersIncludingParents(categories, localities, resultCriteria);
     }
 
 
@@ -240,6 +247,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         return this.getDao().getSuppliersCount(categories, localities, resultCriteria);
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -270,9 +278,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         LOGGER.info("action=send_potential_demands_to_supplier status=start supplier={}", newSupplier);
 
         final PotentialSupplier newPotentialSupplier = new PotentialSupplier(newSupplier);
-        final Set<Demand> potentialDemandsCandidates =
-                demandService.getDemands(EMPTY_CRITERIA, newSupplier.getCategories(), newSupplier.getLocalities());
-        for (Demand demandsCandidate : potentialDemandsCandidates) {
+        for (Demand demandsCandidate : getPotentialDemandsCandidates(newSupplier)) {
             // TODO: call of isRealPotentialSupplier can be quit inefficient since getSuppliers is called subsequently
             // try to make uniform solution
             if (isRealPotentialSupplier(newPotentialSupplier, demandsCandidate)) {
@@ -283,18 +289,32 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         LOGGER.info("action=send_potential_demands_to_supplier status=finish supplier={}", newSupplier);
     }
 
+    private Set<Demand> getPotentialDemandsCandidates(Supplier newSupplier) {
+        return demandService.getDemands(EMPTY_CRITERIA, newSupplier.getCategories(), newSupplier.getLocalities());
+    }
+
     /**
      * Decides whether given supplier is really a good candidate to be a supplier for given demand.
      * This should filter low rating and similar unsuitable suppliers.
+     * This also filter demands in invalid states.
      *
      * @param newPotentialSupplier
      * @param demand
      * @return true if given supplier is a good potential supplier for demand, false otherwise
      * @see com.eprovement.poptavka.service.demand.NaiveSuppliersSelection
      */
-    private boolean isRealPotentialSupplier(PotentialSupplier newPotentialSupplier, Demand demand) {
+    private boolean isRealPotentialSupplier(final PotentialSupplier newPotentialSupplier, Demand demand) {
         final Set<PotentialSupplier> potentialSuppliers = suppliersSelection.getPotentialSuppliers(demand);
-        return potentialSuppliers.contains(newPotentialSupplier);
+        return CollectionUtils.exists(potentialSuppliers, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                if (!(object instanceof PotentialSupplier)) {
+                    throw new IllegalStateException("Potential suppliers collection must contain only elements"
+                            + " of type " + PotentialSupplier.class);
+                }
+                return newPotentialSupplier.getSupplier().equals(((PotentialSupplier) object).getSupplier());
+            }
+        });
     }
 
 

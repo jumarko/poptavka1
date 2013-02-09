@@ -48,19 +48,6 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
         this.suppliersSelection = suppliersSelection;
     }
 
-//
-//    // TODO: use this test ?
-//    @Test
-//    public void testGetAllNewDemands() {
-//        final List<Demand> allNewDemands = this.demandDao.getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);
-//        Assert.assertThat("Incorrect count of all new demands", allNewDemands.size(), Is.is(3));
-//        checkDemandExist(allNewDemands, 1L);
-//        checkDemandExist(allNewDemands, 7L);
-//        checkDemandExist(allNewDemands, 8L);
-////        checkDemandExist(allNewDemands, 9L);
-////        checkDemandExist(allNewDemands, 10L);
-//    }
-
 
     @Override
     public void sendDemandsToPotentialSuppliers() {
@@ -68,7 +55,7 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
         // TODO try to parallel this task - maybe in Scala? or Gpars http://gpars.codehaus.org/Parallelizer :)
 
 
-        final List<Demand> allNewDemands = getAllNewDemands();
+        final List<Demand> allNewDemands = getAllDemandsInValidState();
         for (Demand newDemand : allNewDemands) {
             try {
                 sendDemandToPotentialSuppliers(newDemand);

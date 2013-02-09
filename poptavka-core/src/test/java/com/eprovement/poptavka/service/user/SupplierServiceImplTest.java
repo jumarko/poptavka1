@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,10 +53,13 @@ public class SupplierServiceImplTest {
         final List<Locality> locality1 = Arrays.asList(createLocality(1L));
         myNewSupplier.setCategories(category1);
         myNewSupplier.setLocalities(locality1);
-        when(demandServiceMock.getDemands(any(ResultCriteria.class), category1, locality1)).thenReturn(
+        when(demandServiceMock.getDemands(any(ResultCriteria.class), eq(category1), eq(locality1))).thenReturn(
                 new HashSet(Arrays.asList(new Demand()))
         );
+
         supplierService.sendPotentialDemandsToNewSupplier(myNewSupplier);
+
+
     }
 
     private Category createCategory(long categoryId) {

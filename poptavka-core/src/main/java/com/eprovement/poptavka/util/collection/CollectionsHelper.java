@@ -1,6 +1,11 @@
 package com.eprovement.poptavka.util.collection;
 
+import com.eprovement.poptavka.domain.common.DomainObject;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
+
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +36,30 @@ public final class CollectionsHelper {
         }
 
         return true;
+    }
+
+    /**
+     * Takes given collection of domain objects and transform it to the collection containing IDs
+     * of those domain objects.
+     * @param domainObjects
+     * @param <T> any descendant of {@link DomainObject}
+     * @return collection containing IDs of given domain objects
+     */
+    public static <T extends DomainObject> Collection<Long> getCollectionOfIds(Collection<T> domainObjects) {
+        if (CollectionUtils.isEmpty(domainObjects)) {
+            return Collections.emptyList();
+        }
+
+        return CollectionUtils.collect(domainObjects, new Transformer() {
+            @Override
+            public Object transform(Object input) {
+                if (!(input instanceof DomainObject)) {
+                    throw new IllegalStateException("Element in collection must be of type=" + DomainObject.class
+                            + ". Unexpected type found: " + (input != null ? input.getClass() : null));
+                }
+                return ((DomainObject) input).getId();
+            }
+        });
     }
 
 

@@ -27,11 +27,15 @@
     <DEMAND ID="7" TYPE_ID="1" TITLE="Demand 7" DESCRIPTION="7: Normal request for java application."        PRICE="1110"
             STATUS="NEW" CREATEDDATE="2001-01-01 00:00:01" />
     <DEMAND ID="8" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."        PRICE="9000000"
+            STATUS="ACTIVE" CREATEDDATE="2001-01-01 00:00:01" />
+    <!--demand with id 18 is the same as with id 8 bus has status NEW -->
+    <DEMAND ID="18" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."        PRICE="9000000"
             STATUS="NEW" CREATEDDATE="2001-01-01 00:00:01" />
     <DEMAND ID="9" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."
             STATUS="ACTIVE" CREATEDDATE="2001-01-01 00:00:01" />
     <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application." PRICE="10000"
             STATUS="ACTIVE" CREATEDDATE="2010-10-01 13:33:34" />
+
 
     <!--########################################## suppliers for demands ###########################################-->
     <DEMAND_SUPPLIER DEMAND_ID="1" SUPPLIER_ID="1111111114" />
@@ -48,6 +52,7 @@
     <DEMAND_LOCALITY ID="6" DEMAND_ID="6" LOCALITY_ID="11" />   <!-- "locality11"-->
     <DEMAND_LOCALITY ID="7" DEMAND_ID="7" LOCALITY_ID="11" />   <!-- "locality11"-->
     <DEMAND_LOCALITY ID="8" DEMAND_ID="8" LOCALITY_ID="121" />   <!-- "locality121"-->
+    <DEMAND_LOCALITY ID="18" DEMAND_ID="18" LOCALITY_ID="121" />   <!-- "locality121"-->
     <DEMAND_LOCALITY ID="9" DEMAND_ID="9" LOCALITY_ID="21" />   <!-- "locality21"-->
     <DEMAND_LOCALITY ID="10" DEMAND_ID="10" LOCALITY_ID="2" />  <!-- "locality2"-->
 
@@ -60,6 +65,7 @@
     <DEMAND_CATEGORY ID="6" DEMAND_ID="6" CATEGORY_ID="11" /> <!-- "Category 11" -->
     <DEMAND_CATEGORY ID="7" DEMAND_ID="7" CATEGORY_ID="31" /> <!-- "Category 31" -->
     <DEMAND_CATEGORY ID="8" DEMAND_ID="8" CATEGORY_ID="112" /> <!-- "Category 112" -->
+    <DEMAND_CATEGORY ID="18" DEMAND_ID="18" CATEGORY_ID="112" /> <!-- "Category 112" -->
     <DEMAND_CATEGORY ID="9" DEMAND_ID="9" CATEGORY_ID="312" /> <!-- "Category 312" -->
     <DEMAND_CATEGORY ID="10" DEMAND_ID="10" CATEGORY_ID="1132" /> <!-- "Category 1132" -->
 

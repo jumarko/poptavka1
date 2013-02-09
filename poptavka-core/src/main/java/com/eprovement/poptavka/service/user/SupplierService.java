@@ -108,6 +108,13 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
                                List<Category> categories, List<Locality> localities);
+
+    /**
+     * @see SupplierDao#getSuppliersCountIncludingParents(java.util.List, java.util.List,
+     * com.eprovement.poptavka.domain.common.ResultCriteria)
+     */
+    Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
+                                           ResultCriteria resultCriteria);
     /**
      * Highly optimized method for getting number of suppliers for all categories.
      *
@@ -148,6 +155,7 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
     * @return
     */
     long getSuppliersCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
+
     /**
      * Similar to the {@link #getSuppliersCount(com.eprovement.poptavka.domain.demand.Category...)}
      * but restricted to the one category and with better performance.

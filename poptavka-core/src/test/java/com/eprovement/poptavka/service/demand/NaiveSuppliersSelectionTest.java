@@ -12,7 +12,7 @@ import com.eprovement.poptavka.service.user.SupplierService;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import junit.framework.TestCase;
+
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import org.mockito.Mockito;
  *         Date: 9/29/11
  *         Time: 10:45 PM
  */
-public class NaiveSuppliersSelectionTest extends TestCase {
+public class NaiveSuppliersSelectionTest {
 
     private SuppliersSelection naiveSuppliersSelection = new NaiveSuppliersSelection();
 
@@ -43,8 +43,9 @@ public class NaiveSuppliersSelectionTest extends TestCase {
         suppliers.add(createSupplier(7L, 21));
         suppliers.add(createSupplier(8L, 18));
         suppliers.add(createSupplier(9L, 30));
-        Mockito.when(supplierServiceMock.getSuppliers(any(ResultCriteria.class), anyListOf(Category.class),
-                anyListOf(Locality.class)))
+        Mockito.when(supplierServiceMock.getSuppliersIncludingParents(anyListOf(Category.class),
+                anyListOf(Locality.class),
+                any(ResultCriteria.class)))
                 .thenReturn(suppliers);
 
 
@@ -62,17 +63,34 @@ public class NaiveSuppliersSelectionTest extends TestCase {
 
 
     @Test
-    public void testGetPotentialSuppliers() {
+    public void testGetPotentialSuppliersForValidDemandStatus() {
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.ACTIVE, 3);
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.OFFERED, 3);
+    }
 
+    @Test
+    public void testGetPotentialSuppliersForInvalidDemandStatus() {
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.NEW, 0);
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.ASSIGNED, 0);
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.CANCELED, 0);
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.INACTIVE, 0);
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.CLOSED, 0);
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.PENDINGCOMPLETION, 0);
+        checkGetPotentialSuppliersForDemandWithStatus(DemandStatus.TO_BE_CHECKED, 0);
+    }
+
+
+    private void checkGetPotentialSuppliersForDemandWithStatus(DemandStatus demandStatus,
+                                                               int expectedPotentialSuppliersCount) {
         final Demand demand = new Demand();
         demand.setCategories(Arrays.asList(new Category()));
         demand.setLocalities(Arrays.asList(new Locality()));
         demand.setMinRating(25);
         demand.setMaxSuppliers(5);
-        demand.setStatus(DemandStatus.NEW);
+        demand.setStatus(demandStatus);
         demand.setClient(new Client());
         final Set<PotentialSupplier> demandPotentialSuppliers =
                 this.naiveSuppliersSelection.getPotentialSuppliers(demand);
-        org.junit.Assert.assertThat(demandPotentialSuppliers.size(), Is.is(3));
+        org.junit.Assert.assertThat(demandPotentialSuppliers.size(), Is.is(expectedPotentialSuppliersCount));
     }
 }

@@ -6,7 +6,6 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,8 +80,29 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(categories, Category.class));
         params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(localities, Locality.class));
+
         return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalities", params, resultCriteria));
+
     }
+
+
+    @Override
+    public Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
+                                                      ResultCriteria resultCriteria) {
+        if (CollectionsHelper.containsOnlyNulls(categories)) {
+            return Collections.emptySet();
+        }
+        if (CollectionsHelper.containsOnlyNulls(localities)) {
+            return Collections.emptySet();
+        }
+
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoryIds", CollectionsHelper.getCollectionOfIds(categories));
+        params.put("localityIds", CollectionsHelper.getCollectionOfIds(localities));
+
+        return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalitiesIncludingParents", params, resultCriteria));
+    }
+
 
 
     /** {@inheritDoc} */
@@ -102,13 +122,20 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
 
     @Override
     public long getSuppliersCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria) {
+        return getSuppliersCountForCategoriesAndLocalities(categories, localities, resultCriteria,
+                "getSuppliersCountForCategoriesAndLocalities");
+    }
+
+
+    private long getSuppliersCountForCategoriesAndLocalities(List<Category> categories, List<Locality> localities,
+                                                             ResultCriteria resultCriteria, String namedQueryName) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(localities, Locality.class));
         params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(categories, Category.class));
-        return (Long) runNamedQueryForSingleResult(
-                "getSuppliersCountForCategoriesAndLocalities", params,
-                resultCriteria);
+
+        return (Long) runNamedQueryForSingleResult(namedQueryName, params, resultCriteria);
     }
+
 
     @Override
     public long getSuppliersCountQuick(Locality locality) {

@@ -96,6 +96,13 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * category (-ies) - each must be associated to both - while applying
      * additional criteria <code>resultCriteria</code> if they are specified.
      *
+     * <p>
+     * This method finds suppliers which belong directly to any category from given {@code categories}
+     * and any locality from given {@code localities}
+     * as well as suppliers which belong to any child category of given {@code categories}
+     * and any child locality of given {@code localities}
+     * </p>
+     *
      * @param categories
      * @param localities
      * @param resultCriteria
@@ -103,6 +110,37 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
     Set<Supplier> getSuppliers(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
+
+    /**
+     * Load all suppliers associated to any category (or its parent) from given categories
+     *      AND to any locality (or its) from given localities.
+     * This is somewhat opposite to the functionality provided by {@link #getSuppliers(java.util.List, java.util.List,
+     * com.eprovement.poptavka.domain.common.ResultCriteria)}.
+     *
+     * <p>
+     *     This is especially suitable for searching all potential suppliers which belong to given {@code categories}
+     *     and {@code localities}.
+     * </p>
+     * Example: <br />
+     * <ul>
+     *  <li>Supplier {@code S1} registered himself for locality Alabama and category Electronics.</li
+     *  <li>Client {@code C1} created demand with locality Montgomery (capital city of Alabama)
+     *  and category 'Desktop computers' (child category of Electronics).</li>
+     * </ul>
+     * As a result this method returns collection containing supplier {@code S1}
+     * when passing locality 'Montgomery' and category 'Desktop computers' as arguments to this method.
+     *
+     * @param categories list of categories, supplier must be associated either directly to any of these categories
+     *                   or to some parent
+     * @param localities list of localities, supplier must be associated either directly to any of these localities
+     *                   or to some parent
+     * @param resultCriteria filtering criteria
+     * @return collection of suppliers that are related to the given localities and adher to <code>resultCriteria</code>
+     * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
+     */
+    Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
+                                               ResultCriteria resultCriteria);
+
 
     /**
      * Optmized method for loading suppliers count for all categories in one query!
