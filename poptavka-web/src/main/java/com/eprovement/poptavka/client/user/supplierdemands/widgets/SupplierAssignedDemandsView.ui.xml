@@ -9,7 +9,7 @@
 
 	<ui:style>		
 		.label {
-		display: none;		
+		display: none;
 		}
 	</ui:style>
 
@@ -20,6 +20,7 @@
  				<g:Label ui:field="tableNameLabel" styleName='{style.label}'/>
 				<g:Button ui:field="finnishBtn" visible="false" 
 				styleName="{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}">
+					<i class="icon-ok-sign icon-white"></i>
 					<ui:msg key="supplierAssignedDemandsFinnishBtn">Finnish</ui:msg>
 				</g:Button>
 				<b:DropdownButton ui:field="actionBox" visible="false"

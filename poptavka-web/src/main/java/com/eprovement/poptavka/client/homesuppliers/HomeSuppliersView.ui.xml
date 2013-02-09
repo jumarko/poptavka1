@@ -2,55 +2,11 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail"
-	xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+	xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-	<!-- injecting style resources -->
 	<ui:with field='res'
 		type='com.eprovement.poptavka.resources.StyleResource' />
-
-	<ui:style>
-		.name {
-		font-weight: bold;
-		width: auto;
-		}
-
-		.panel {
-		width: 400px;
-		spacing: 5;
-		}
-
-		.list {
-		width: 100px;
-		}
-
-		.gridMenu {
-		margin: 7px 0 0;
-		float: left;
-		}
-
-		.paginator {
-		margin: 0px 10px;
-		float: left;
-		}
-
-		.pageSize {
-		border-radius: 3px 3px 3px 3px;
-		float: left;
-		height: 31px;
-		padding: 6px;
-		}
-
-		.button {
-		background: url(images/new-offer-green.png) no-repeat;
-		border: medium none;
-		color: #FFFFFF;
-		font-weight: bold;
-		height: 31px;
-		padding: 0 0 1px 23px;
-		width: 119px;
-		float: left;
-		}
-	</ui:style>
 
 	<g:DockLayoutPanel unit="PX"
 		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
@@ -59,8 +15,8 @@
 				<g:north size="65">
 					<g:HTMLPanel>
 						<h2 class='{res.layout.toolbarHeader}'>
-                                                    <ui:msg key="homeSuppliersToolbarLabel">Category</ui:msg>
-                                                </h2>
+							<ui:msg key="homeSuppliersToolbarLabel">Category</ui:msg>
+						</h2>
 					</g:HTMLPanel>
 				</g:north>
 				<g:center>
@@ -76,42 +32,33 @@
 		<g:center>
 			<g:DockLayoutPanel unit="PX">
 				<g:north size="65">
-					<g:HTMLPanel styleName='{style.gridMenu}'>
+					<g:HTMLPanel styleName='{res.layout.toolbarItemsBlock}'>
 						<g:DecoratorPanel ui:field="filterLabelPanel">
 							<g:Label ui:field="filterLabel" />
 						</g:DecoratorPanel>
-						<g:Button ui:field="contactBtn" styleName='{style.button}'>
-                                                    <ui:msg key="homeSuppliersContactBtn">Contact</ui:msg>
-                                                </g:Button>
-						<s:UniversalPagerWidget ui:field="pager"
-							styleName='{style.paginator}' />
+						<g:Button ui:field="contactBtn"
+							styleName='{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}'>
+							<ui:msg key="homeSuppliersContactBtn">Contact</ui:msg>
+						</g:Button>
+						<s:UniversalPagerWidget ui:field="pager" />
 					</g:HTMLPanel>
 				</g:north>
 				<g:center>
-					<c:DataGrid ui:field="dataGrid" />
+					<b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
+						<b:FluidRow>
+							<b:Column size="7">
+								<c:DataGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}'/>
+							</b:Column>
+							<b:Column size="5">
+								<g:HTMLPanel ui:field="detail" styleName='{res.layout.detailInfo}'>
+									<g:Label ui:field="reklama">Reklama</g:Label>
+									<d:UserDetailView ui:field="userDetailView" />
+								</g:HTMLPanel>
+							</b:Column>
+						</b:FluidRow>
+					</b:FluidContainer>
 				</g:center>
-				<g:south size="30">
-					<g:HTMLPanel></g:HTMLPanel>
-				</g:south>
 			</g:DockLayoutPanel>
 		</g:center>
-		<g:east size="430">
-			<g:DockLayoutPanel unit="PX">
-				<g:north size="65">
-					<g:HTMLPanel></g:HTMLPanel>
-				</g:north>
-				<g:center>
-					<g:ScrollPanel>
-						<g:HTMLPanel ui:field="detail" styleName='{res.layout.detailInfo}'>
-							<g:Label ui:field="reklama">Reklama</g:Label>
-							<d:UserDetailView ui:field="userDetailView" />
-						</g:HTMLPanel>
-					</g:ScrollPanel>
-				</g:center>
-			</g:DockLayoutPanel>
-		</g:east>
-		<g:east size="20">
-			<g:HTMLPanel></g:HTMLPanel>
-		</g:east>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

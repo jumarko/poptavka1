@@ -3,29 +3,15 @@ package com.eprovement.poptavka.resources;
 import com.google.gwt.resources.client.CssResource;
 
 /**
- *
  * GWT Wrapper for base app layout.
  *
  * @author Beho, Jaro
- *
  */
 public interface LayoutResource extends CssResource {
 
     /** MainView.class **/
-    @ClassName("layout-public-main")
-    String layoutPublic();
-
-    @ClassName("layout-user-main")
-    String layoutUser();
-
-    @ClassName("header-container")
-    String headerContainer();
-
-    @ClassName("header-content")
-    String headerContent();
-
-    @ClassName("footer-container")
-    String footerContainer();
+    @ClassName("body-background")
+    String bodyBackground();
 
     @ClassName("body-container")
     String bodyContainer();
@@ -36,22 +22,22 @@ public interface LayoutResource extends CssResource {
     @ClassName("body-full-container")
     String bodyFullContainer();
 
-    @ClassName("body-background")
-    String bodyBackground();
+    @ClassName("layout-user-main")
+    String layoutUser();
 
-    @ClassName("detail-info")
-    String detailInfo();
+    @ClassName("full-size-panel")
+    String fullSize();
 
-    @ClassName("home-logo")
-    String homeLogo();
+    @ClassName("fluid-main-grid")
+    String fluidMainGrid();
 
-    @ClassName("user-logo")
-    String userLogo();
+    @ClassName("header-container")
+    String headerContainer();
 
-    @ClassName("popup-dropdown-container")
-    String popupDropdownContainer();
+    @ClassName("header-content")
+    String headerContent();
 
-    /* Tool Bar Styles */
+    /** Tool Bar Styles **/
     @ClassName("toolbar")
     String bodyNavbar();
 
@@ -67,7 +53,25 @@ public interface LayoutResource extends CssResource {
     @ClassName("toolbar-button-blue")
     String toolbarButtonBlue();
 
-    /* login styles */
+    /** Home Menu Styles **/
+    @ClassName("home-menu")
+    String homeMenu();
+
+    @ClassName("home-logo")
+    String homeLogo();
+
+    /** User Menu Styles **/
+    @ClassName("user-logo")
+    String userLogo();
+
+    /** Search Bar Styles **/
+    @ClassName("search-bar")
+    String searchBar();
+
+    @ClassName("search-view")
+    String searchView();
+
+    /** Login Styles **/
     @ClassName("login")
     String login();
 
@@ -86,24 +90,29 @@ public interface LayoutResource extends CssResource {
     @ClassName("help-button")
     String helpButton();
 
+    /** Toolbar Module styles **/
+    @ClassName("submenu-header")
+    String submenuHeader();
+
+    @ClassName("submenu-list")
+    String submenuList();
+
+    @ClassName("pager")
+    String pager();
+
+    /** Footer Module Styles **/
+    @ClassName("footer-container")
+    String footerContainer();
+
     @ClassName("footer-toggle")
     String footerToggle();
 
-    @ClassName("home-menu")
-    String homeMenu();
+    /** Other Styles **/
+    @ClassName("detail-info")
+    String detailInfo();
 
-    @ClassName("search-bar")
-    String searchBar();
-
-    @ClassName("search-view")
-    String searchView();
-
-    @ClassName("selected")
-    String selected();
-
-    /** UserView.class **/
-    @ClassName("full-size-panel")
-    String fullSize();
+    @ClassName("popup-dropdown-container")
+    String popupDropdownContainer();
 
     @ClassName("tab-layout-container")
     String tabLayoutContainer();
@@ -111,21 +120,14 @@ public interface LayoutResource extends CssResource {
     @ClassName("tab-layout-panel")
     String tabLayoutPanel();
 
-    @ClassName("pager")
-    String pager();
-
-    @ClassName("submenu-header")
-    String submenuHeader();
-
-    @ClassName("submenu-list")
-    String submenuList();
-
-    /** DemandCreation.class **/
     @ClassName("stack-layout")
     String stackLayout();
 
     @ClassName("stack-layout-panel-header")
     String stackLayoutPanelHeader();
+
+    @ClassName("selected")
+    String selected();
 
     /** DELETE AFTER THIS LINE **/
 
