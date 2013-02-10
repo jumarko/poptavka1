@@ -21,10 +21,10 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.math.BigDecimal;
@@ -119,6 +119,14 @@ public class ValidationMonitor<T> extends Composite
     }
 
     /**
+     * Set valid property. May be useful in some cases.
+     * @return
+     */
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    /**
      * Tell if component is valid.
      * @return true if valid, false elsewere.
      */
@@ -168,10 +176,15 @@ public class ValidationMonitor<T> extends Composite
     }
 
     /**
-     * Remove component that is validated.
-     * @param w - widget to be removed.
-     * @return true if successfully removed, false elsewhere.
+     * Cancel validation in some cases.
      */
+    public void reset() {
+        errorPanel.setVisible(false);
+        errorLabel.setText("");
+        controlGroup.setType(ControlGroupType.NONE);
+        valid = true;
+    }
+
     @Override
     public boolean remove(Widget w) {
         return holder.remove(w);
@@ -274,12 +287,12 @@ public class ValidationMonitor<T> extends Composite
      * provided (text, numbers, etc..). Validation process displays appropriate error message
      * if validation constraints are met. Each widget input widget has registered blur handler.
      *
-     * Only input widgets of types TextBox, IntegerBox and BigDecimalBox has registered change handler.
+     * Only input widgets of types TextBoxBase, IntegerBox and BigDecimalBox has registered change handler.
      *
      * @param w - input widget
      */
     private void addBlurHandler(Widget w) {
-        if (w instanceof TextBox || w instanceof IntegerBox || w instanceof BigDecimalBox) {
+        if (w instanceof TextBoxBase || w instanceof IntegerBox || w instanceof BigDecimalBox) {
             w.addDomHandler(new BlurHandler() {
                 @Override
                 public void onBlur(BlurEvent event) {
@@ -294,14 +307,12 @@ public class ValidationMonitor<T> extends Composite
      * @return
      */
     private Object getInputWidgetText() {
-        if (holder.getWidget() instanceof TextBox) {
-            return ((TextBox) holder.getWidget()).getText();
+        if (holder.getWidget() instanceof TextBoxBase) {
+            return ((TextBoxBase) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof IntegerBox) {
             return ((IntegerBox) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof BigDecimalBox) {
             return ((BigDecimalBox) holder.getWidget()).getValue();
-        } else if (holder.getWidget() instanceof TextArea) {
-            return ((TextArea) holder.getWidget()).getText();
         } else if (holder.getWidget() instanceof DateBox) {
             return ((DateBox) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof ListBox) {
@@ -318,14 +329,12 @@ public class ValidationMonitor<T> extends Composite
      * @param value
      */
     private void setInputWidgetText(Object value) {
-        if (holder.getWidget() instanceof TextBox) {
-            ((TextBox) holder.getWidget()).setText((String) value);
+        if (holder.getWidget() instanceof TextBoxBase) {
+            ((TextBoxBase) holder.getWidget()).setValue((String) value);
         } else if (holder.getWidget() instanceof IntegerBox) {
             ((IntegerBox) holder.getWidget()).setValue((Integer) value);
         } else if (holder.getWidget() instanceof BigDecimalBox) {
             ((BigDecimalBox) holder.getWidget()).setValue((BigDecimal) value);
-        } else if (holder.getWidget() instanceof TextArea) {
-            ((TextArea) holder.getWidget()).setText((String) value);
         } else if (holder.getWidget() instanceof DateBox) {
             ((DateBox) holder.getWidget()).setValue((Date) value);
         } else if (holder.getWidget() instanceof ListBox) {

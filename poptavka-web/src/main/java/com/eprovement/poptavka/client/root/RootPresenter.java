@@ -24,6 +24,7 @@ import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
+import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormPresenter;
 import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
@@ -47,6 +48,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private LoginPopupPresenter login = null;
     private LoadingPopupPresenter loading = null;
     private ActivationCodePopupPresenter activation = null;
+    private UserRegistrationFormPresenter accountRegistrationForm = null;
     private ServicesSelectorPresenter services = null;
 
     /**************************************************************************/
@@ -260,6 +262,16 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         activation.initActivationCodePopup(client, widgetToLoad);
     }
 
+    // Inject widgets for user registration
+    //--------------------------------------------------------------------------
+    public void onInitUserRegistrationForm(SimplePanel holderWidget) {
+        if (accountRegistrationForm != null) {
+            eventBus.removeHandler(accountRegistrationForm);
+        }
+        accountRegistrationForm = eventBus.addHandler(UserRegistrationFormPresenter.class);
+        accountRegistrationForm.initUserRegistrationForm(holderWidget);
+    }
+
     public void onInitServicesWidget(SimplePanel holderWidget) {
         if (services != null) {
             eventBus.removeHandler(services);
@@ -267,9 +279,9 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         services = eventBus.addHandler(ServicesSelectorPresenter.class);
         services.initServicesWidget(holderWidget);
     }
+
 //    private static final int OFFSET_X = 60;
 //    private static final int OFFSET_Y = 35;
-
 //    private void createLoadingPopup(String loadingMessage, Widget anchor) {
 //        popup = new PopupPanel(false, true);
 //        popup.setGlassEnabled(true);

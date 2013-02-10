@@ -184,6 +184,56 @@ public class SearchModulePresenter
         });
     }
 
+    private void searchBtnClickHandlerInnerClass() {
+        AdvanceSearchContentInterface advSearchContent =
+                (AdvanceSearchContentInterface) view.getPopupPanel().getWidget();
+        //create and fill searching criteria holder - searchModuleDataHolder
+        SearchModuleDataHolder filter = advSearchContent.getSearchModuleDataHolder();
+        //if attributes, categories and localities are not set
+        if (filter == null) {
+            //and if search content is also empty
+            if (view.getSearchContent().getText().isEmpty()) {
+                showPopupNoSearchCriteria();
+                return;
+            } else {
+                //otherwise create empty searching criteria holder
+                filter = new SearchModuleDataHolder();
+                //and set at lease search content text for full text search.
+                filter.setSearchText(view.getSearchContent().getText());
+            }
+        }
+        //choose right method for searching according to search what attribute
+        //Appropriate RPC is called and it forwards user to appropriate view.
+        switch (view.getSearchWhat()) {
+            case 0:
+                eventBus.goToHomeDemandsModule(filter);
+                break;
+            case 1:
+                eventBus.goToHomeSuppliersModule(filter);
+                break;
+            default:
+                /* Search what attribute can always set to search in eighter demands or suppliers.
+                 * But if nieghter of those were chosen, it means "search in current view" item is
+                 * now available. This item is dynamically added to menu according to current view,
+                 * but only if it supports searching. Therefore if process got here,
+                 * "search current view" is chosen therefore again, call appropriate RPC and view.
+                 * The decision is made according to CurrentlyLoadedView flag. */
+                if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+                    eventBus.goToClientDemandsModule(filter, Storage.getCurrentlyLoadedView());
+                }
+                if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
+                    eventBus.goToSupplierDemandsModule(filter, Storage.getCurrentlyLoadedView());
+                }
+                if (Constants.getAdminConstants().contains(Storage.getCurrentlyLoadedView())) {
+                    eventBus.goToAdminModule(filter, Storage.getCurrentlyLoadedView());
+                }
+                if (Constants.getMessagesConstants().contains(Storage.getCurrentlyLoadedView())) {
+                    eventBus.goToMessagesModule(filter, Storage.getCurrentlyLoadedView());
+                }
+                break;
+        }
+    }
+
     private void addAdvSearchBtnClickHandler() {
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
             @Override

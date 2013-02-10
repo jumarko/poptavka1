@@ -6,7 +6,6 @@
  */
 package com.eprovement.poptavka.client.home.createDemand;
 
-import com.eprovement.poptavka.client.home.createDemand.widget.FormUserRegistrationPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -111,6 +110,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
 
+    @Event(forwardToParent = true)
+    void initUserRegistrationForm(SimplePanel holderPanel);
+
     /**************************************************************************/
     /* Business events handled by DemandCreatoinPresenter.                    */
     /**************************************************************************/
@@ -121,23 +123,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void initDemandAdvForm(SimplePanel holderWidget);
 
     @Event(handlers = DemandCreationPresenter.class)
-    void initRegistrationForm(SimplePanel holderWidget);
-
-//    @Event(handlers = DemandCreationPresenter.class)
-//    void toggleLoginRegistration();
-    @Event(handlers = DemandCreationPresenter.class)
-    void loginError();
-
-//    @Event(handlers = DemandCreationPresenter.class)
-//    void responseCreateDemand();
-    @Event(handlers = DemandCreationPresenter.class)
     void restoreDefaultFirstTab();
-
-    /**************************************************************************/
-    /* Business events handled by FormUserRegustratoinPresenter.              */
-    /**************************************************************************/
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void checkFreeEmailResponse(Boolean result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -149,12 +135,4 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     // if it is used in another module. And I think it is bacause I saw it in left-over
     @Event(handlers = DemandCreationHandler.class)
     void createDemand(FullDemandDetail detail, Long clientId);
-
-    // TODO praso - check if this one is used in suppliserCreationModule. we shouln't have duplicates
-//    @Event(handlers = DemandCreationHandler.class)
-//    void verifyExistingClient(String email, String password);
-//    @Event(handlers = SupplierCreationHandler.class)
-//    void checkFreeEmail(String value);
-    @Event(handlers = DemandCreationHandler.class)
-    void checkFreeEmail(String value);
 }

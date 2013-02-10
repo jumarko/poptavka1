@@ -227,9 +227,4 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         }
         return addresses;
     }
-
-    @Override
-    public boolean checkFreeEmail(String email) throws RPCException {
-        return clientService.checkFreeEmail(email);
-    }
 }

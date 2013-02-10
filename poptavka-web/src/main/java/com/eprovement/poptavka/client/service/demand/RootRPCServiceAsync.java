@@ -86,4 +86,10 @@ public interface RootRPCServiceAsync {
     void getBusinessUserByEmail(String email, AsyncCallback<BusinessUserDetail> async);
 
     void updateDemands(long demandId, ArrayList<ChangeDetail> changes, AsyncCallback<Boolean> callback);
+
+    /**************************************************************************/
+    /* Registration user methods - Account info                               */
+    /**************************************************************************/
+    /** @see UserRPCService#checkFreeEmail(String) */
+    void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
 }

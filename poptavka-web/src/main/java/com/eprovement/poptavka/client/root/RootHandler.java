@@ -213,4 +213,17 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             }
         });
     }
+
+    /**************************************************************************/
+    /* Account Info                                                           */
+    /**************************************************************************/
+    public void onCheckFreeEmail(String email) {
+        rootService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean result) {
+                LOGGER.fine("result of compare " + result);
+                eventBus.checkFreeEmailResponse(result);
+            }
+        });
+    }
 }

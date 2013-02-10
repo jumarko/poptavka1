@@ -38,14 +38,4 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
             }
         });
     }
-
-    public void onCheckFreeEmail(String email) {
-        supplierCreationService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
-            @Override
-            public void onSuccess(Boolean result) {
-                LOGGER.fine("result of compare " + result);
-                eventBus.checkFreeEmailResponse(result);
-            }
-        });
-    }
 }

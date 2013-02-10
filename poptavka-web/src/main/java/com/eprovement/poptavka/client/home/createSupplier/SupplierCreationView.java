@@ -1,42 +1,38 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import com.github.gwtbootstrap.client.ui.Icon;
-import com.google.gwt.user.client.ui.Label;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.resources.StyleResource;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
-
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.resources.StyleResource;
-import com.github.gwtbootstrap.client.ui.Alert;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import java.util.Arrays;
+import java.util.List;
 
 public class SupplierCreationView extends OverflowComposite
-        implements SupplierCreationPresenter.CreationViewInterface, ProvidesValidate {
+        implements SupplierCreationPresenter.CreationViewInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -48,25 +44,15 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /** Constants. **/
-    private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     /** Class attributes. **/
-    private List<Alert> statuses;
-    private List<Icon> icons;
-    private List<Label> labels;
     private List<SimplePanel> holderPanels;
     /** UiBinder attributes. **/
-    @UiField Alert accountStatus, detailStatus, categoryStatus, localityStatus, serviceStatus;
-    @UiField Label infoLabel1, infoLabel2, infoLabel3, infoLabel4, infoLabel5;
-    @UiField Icon accountIcon, detailIcon, categoryIcon, localityIcon, serviceIcon;
-    @UiField SimplePanel supplierAccountInfoHolder, supplierDetailInfoHolder;
-    @UiField SimplePanel categoryHolder, localityHolder, serviceHolder;
+    @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4;
     @UiField TabLayoutPanel mainPanel;
     @UiField HorizontalPanel agreementPanel;
     @UiField CheckBox agreedCheck;
-    @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4,
-    registerBtn, backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
+    @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3,
+    registerBtn, backButtonTab2, backButtonTab3, backButtonTab4;
     @UiField Anchor conditionLink;
 
     /**************************************************************************/
@@ -76,14 +62,8 @@ public class SupplierCreationView extends OverflowComposite
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        /** filling status list **/
-        statuses = Arrays.asList(accountStatus, detailStatus, categoryStatus, localityStatus, serviceStatus);
-        icons = Arrays.asList(accountIcon, detailIcon, categoryIcon, localityIcon, serviceIcon);
-        labels = Arrays.asList(infoLabel1, infoLabel2, infoLabel3, infoLabel4, infoLabel5);
         /** filling panels list **/
-        SimplePanel[] panels = {
-            supplierAccountInfoHolder, supplierDetailInfoHolder, categoryHolder, localityHolder, serviceHolder};
-        holderPanels = Arrays.asList(panels);
+        holderPanels = Arrays.asList(contentHolder1, contentHolder2, contentHolder3, contentHolder4);
 
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();
@@ -91,7 +71,7 @@ public class SupplierCreationView extends OverflowComposite
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }
-        categoryHolder.setSize("956px", "350px");
+        contentHolder2.setSize("956px", "350px");
     }
 
     /**************************************************************************/
@@ -103,44 +83,14 @@ public class SupplierCreationView extends OverflowComposite
     }
 
     /** NEXT. **/
-    @UiHandler("nextButtonTab1")
-    public void nextButtonTab1ClickHandler(ClickEvent event) {
-        selectNextTab();
-    }
-
-    @UiHandler("nextButtonTab2")
-    public void nextButtonTab2ClickHandler(ClickEvent event) {
-        selectNextTab();
-    }
-
-    @UiHandler("nextButtonTab3")
-    public void nextButtonTab3ClickHandler(ClickEvent event) {
-        selectNextTab();
-    }
-
-    @UiHandler("nextButtonTab4")
-    public void nextButtonTab4ClickHandler(ClickEvent event) {
+    @UiHandler(value = {"nextButtonTab1", "nextButtonTab2", "nextButtonTab3" })
+    public void nextButtonsClickHandler(ClickEvent event) {
         selectNextTab();
     }
 
     /** BACK. **/
-    @UiHandler("backButtonTab2")
-    public void backButtonTab2ClickHandler(ClickEvent event) {
-        selectPreviousTab();
-    }
-
-    @UiHandler("backButtonTab3")
-    public void backButtonTab3ClickHandler(ClickEvent event) {
-        selectPreviousTab();
-    }
-
-    @UiHandler("backButtonTab4")
-    public void backButtonTab4ClickHandler(ClickEvent event) {
-        selectPreviousTab();
-    }
-
-    @UiHandler("backButtonTab5")
-    public void backButtonTab5ClickHandler(ClickEvent event) {
+    @UiHandler(value = {"backButtonTab2", "backButtonTab3", "backButtonTab4" })
+    public void backButtonsClickHandler(ClickEvent event) {
         selectPreviousTab();
     }
 
@@ -156,21 +106,6 @@ public class SupplierCreationView extends OverflowComposite
     @Override
     public SimplePanel getHolderPanel(int order) {
         return holderPanels.get(order);
-    }
-
-    @Override
-    public Alert getAlert(int order) {
-        return statuses.get(order);
-    }
-
-    @Override
-    public Icon getIcon(int order) {
-        return icons.get(order);
-    }
-
-    @Override
-    public Label getLabel(int order) {
-        return labels.get(order);
     }
 
     /** BUTTONS. **/
@@ -191,7 +126,7 @@ public class SupplierCreationView extends OverflowComposite
                 new HTMLPanel("<div id='text' style='overflow: auto; height: 500px;'>"
                 + "</div><hr /><div style='text-align: center' id='button'></div>");
         HTML content = new HTML(StyleResource.INSTANCE.conditions().getText());
-        Button closeButton = new Button(MSGS.commonBtnClose());
+        Button closeButton = new Button(Storage.MSGS.commonBtnClose());
         contentPanel.add(content, "text");
         contentPanel.add(closeButton, "button");
         panel.setWidget(contentPanel);
@@ -211,8 +146,7 @@ public class SupplierCreationView extends OverflowComposite
         panel.show();
     }
 
-    @Override
-    public boolean isValid() {
+    public boolean isAgreementChecked() {
         if (agreedCheck.getValue()) {
             return agreedCheck.getValue();
         } else {
