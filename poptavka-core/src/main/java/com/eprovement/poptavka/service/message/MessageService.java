@@ -5,6 +5,7 @@ import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericService;
@@ -255,23 +256,16 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemnd(User user, Message threadRoot);
+    Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemand(User user, Message threadRoot);
 
     /**
-     * Gets all latest userMessages from all suppliers who sent some offer response to demand.
+     * Gets all latest userMessages from all suppliers who sent some offer response to demand. This offer is in
+     * state PENDING.
      *
      * @param user
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemnd(User user, Message threadRoot);
-
-    /**
-     * Gets all latest userMessages from all suppliers are assigned to client demands.
-     *
-     * @param user
-     * @param threadRoot
-     * @return
-     */
-    Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user);
+    Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
+            OfferState pendingState);
 }

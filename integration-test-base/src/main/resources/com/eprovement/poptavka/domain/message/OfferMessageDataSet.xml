@@ -29,7 +29,6 @@
              PARENT_ID="1"
              SUBJECT="Re: Dnes nepridem - zajtra "
              SENDER_ID="111111114"
-             FIRSTBORN_ID="2"
              THREADROOT_ID="1"
              DEMAND_ID="2"
              OFFER_ID="12" />
@@ -44,6 +43,7 @@
              SENDER_ID="111111112"
              NEXTSIBLING_ID="4"
              THREADROOT_ID="1"
+             OFFER_ID="11"
              DEMAND_ID="2" />
 
     <!-- Second Reply to the reply to the original (thread root) message -->
@@ -54,6 +54,7 @@
              PARENT_ID="3"
              SENDER_ID="111111112"
              THREADROOT_ID="1"
+             OFFER_ID="11"
              DEMAND_ID="2" />
 
     <MESSAGEUSERROLE ID="2" MESSAGE_ID="1" USER_ID="111111111" TYPE="TO"/>

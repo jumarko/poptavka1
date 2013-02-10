@@ -294,7 +294,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
-                messageService.getLatestSupplierUserMessagesWithoutOfferForDemnd(user, root);
+                messageService.getLatestSupplierUserMessagesWithoutOfferForDemand(user, root);
 
         for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
@@ -432,10 +432,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             long threadRootId, SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         User user = generalService.find(User.class, userId);
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
+        OfferState offerPending = offerService.getOfferState(OfferStateType.PENDING.getValue());
+
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
-                messageService.getLatestSupplierUserMessagesWithOfferForDemnd(user, root);
+                messageService.getLatestSupplierUserMessagesWithOfferForDemand(user, root, offerPending);
         for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             Offer offer = userMessage.getMessage().getOffer();
@@ -526,10 +528,13 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         User user = generalService.find(User.class, userId);
+        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
+        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
-                messageService.getLatestSupplierUserMessagesForAssignedDemand(user);
+                userMessageService.getSupplierConversationsWithAcceptedOffer(user, offerAccepted, offerCompleted);
         for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             Offer offer = userMessage.getMessage().getOffer();
