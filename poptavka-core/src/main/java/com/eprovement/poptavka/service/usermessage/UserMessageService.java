@@ -192,7 +192,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<Long, Integer> getSupplierConversationsWithOffer(User user);
+    Map<Long, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -235,7 +235,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     * the supplier with whom the conversation is being made
     */
     Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user);
+            User user, Message root);
 
     /** Retrieves the count of client's conversations where an offer has not
      * been made

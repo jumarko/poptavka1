@@ -91,7 +91,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     public void setBasicInfo(HashMap<DemandField, Object> map) {
         this.setTitle((String) map.get(DemandField.TITLE));
         this.setDescription((String) map.get(DemandField.DESCRIPTION));
-        this.setPrice((BigDecimal) map.get(DemandField.PRICE));
+        this.setPrice(new BigDecimal((String) map.get(DemandField.PRICE)));
         this.setEndDate((Date) map.get(DemandField.END_DATE));
         this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
     }
