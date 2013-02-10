@@ -100,6 +100,7 @@ public interface LocalizableMessages extends Messages {
     String formExpirationDate();
     String formFinnishDate();
     String formFirstName();
+    String formFrom();
     String formFromTo(int from, int to);
     String formFromTo2(int from1, int to1, int from2, int to2);
     String formFromToDate(Date from, Date to);
@@ -127,6 +128,7 @@ public interface LocalizableMessages extends Messages {
     String formTaxBasis();
     String formTaxNumber();
     String formTitle();
+    String formTo();
     String formTotalPrice();
     String formValidTo();
     String formVarSymbol();

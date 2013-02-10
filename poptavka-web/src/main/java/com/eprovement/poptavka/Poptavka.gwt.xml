@@ -16,6 +16,7 @@
 	<inherits name="com.google.gwt.json.JSON" />
 	<!-- Bootstrap styles -->
 	<inherits name="com.github.gwtbootstrap.Bootstrap" />
+    <inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
 
 	<!-- GWT validation BEGIN -->
 	<inherits name='com.google.gwt.editor.Editor' />
@@ -26,7 +27,7 @@
 		class="com.eprovement.poptavka.client.common.validation.SampleValidatorFactory">
 		<when-type-is class="javax.validation.ValidatorFactory" />
 	</replace-with>
-	<!-- specify the ValidationMessageResolver to use for your custom validation 
+	<!-- specify the ValidationMessageResolver to use for your custom validation
 		messages -->
 	<replace-with
 		class="com.eprovement.poptavka.client.common.validation.CustomValidationMessagesResolver">

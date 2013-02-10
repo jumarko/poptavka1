@@ -183,8 +183,12 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             return filterWithoutAttributes(definition);
         } else {
             if (!definition.getFilter().getSearchText().isEmpty()) {
-                return fullTextSearch(definition.getFilter().getSearchText()).subList(
-                        definition.getFirstResult(), definition.getMaxResult());
+                List<FullDemandDetail> demands = fullTextSearch(definition.getFilter().getSearchText());
+                if (demands.size() < (definition.getFirstResult() + definition.getMaxResult())) {
+                    return demands;
+                } else {
+                    return demands.subList(definition.getFirstResult(), definition.getMaxResult());
+                }
             } else if (definition.getFilter().getAttributes().isEmpty()) {
                 return filterWithoutAttributes(definition);
             } else {

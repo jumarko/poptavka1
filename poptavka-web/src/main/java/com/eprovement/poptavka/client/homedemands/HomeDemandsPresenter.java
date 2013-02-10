@@ -138,10 +138,6 @@ public class HomeDemandsPresenter
 
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
-        //This sets content of tab: current view attribute selector in popup.
-        //However demands attribute selector is already loaded by default in first tab,
-        //another setting in fourth tab is not needed
-        eventBus.setUpSearchBar(null);
     }
 
     @Override
@@ -158,6 +154,9 @@ public class HomeDemandsPresenter
      *                               - it's also used as pointer to differ root and child sections
      */
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchModuleDataHolder) {
+        if (searchModuleDataHolder == null) {
+            eventBus.setUpSearchBar(null);
+        }
         //flags initialization
         //----------------------------------------------------------------------
         calledFromHistory = false;
@@ -226,6 +225,7 @@ public class HomeDemandsPresenter
                 Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
                 //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
                 //ale ak bude dynamicky (zobrazia searching criteria), tak ano
+                //TODO RELEASE Martin i18n
                 view.getFilterLabel().setText("Results satisfying searching criteria:" + filterHolder.toString());
                 view.getFilterLabelPanel().setVisible(true);
             }

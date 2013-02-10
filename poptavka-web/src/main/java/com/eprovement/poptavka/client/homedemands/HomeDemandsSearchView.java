@@ -7,6 +7,7 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.IntegerBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.datepicker.client.ui.DateBoxAppended;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,7 +17,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.google.gwt.user.datepicker.client.DateBox;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -34,7 +34,7 @@ public class HomeDemandsSearchView extends Composite implements
     @UiField
     ListBox demandTypes, creationDate;
     @UiField
-    DateBox finnishDateFrom, finnishDateTo;
+    DateBoxAppended finnishDateFrom, finnishDateTo;
     @UiField
     Button clearBtn;
 
@@ -72,12 +72,12 @@ public class HomeDemandsSearchView extends Composite implements
         if (creationDate.getSelectedIndex() != 4) {
             filters.add(new FilterItem("createdDate", FilterItem.OPERATION_FROM, getCreatedDate()));
         }
-        if (finnishDateFrom.getValue() != null) {
-            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
-        }
-        if (finnishDateTo.getValue() != null) {
-            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
-        }
+//        if (finnishDateFrom.getValue() != null) {
+//            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
+//        }
+//        if (finnishDateTo.getValue() != null) {
+//            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
+//        }
         return filters;
     }
 

@@ -1,10 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:b2="urn:import:com.github.gwtbootstrap.datepicker.client.ui">
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>
         .important {
@@ -51,13 +53,12 @@
                 </b:Column>
                 <b:Column size="10">
                     <g:HTMLPanel>
-                        <ui:msg key="formFromToPrice">
-                            from
-                            <b:IntegerBox styleName="{style.priceBox}" ui:field="priceFrom" />
-                            to
-                            <b:IntegerBox styleName="{style.priceBox}" ui:field="priceTo" />
-                            $
-                        </ui:msg>
+                        <b:InputAddOn appendText="$">
+                            <b:IntegerBox placeholder="{msgs.formFrom}" styleName="{style.priceBox}" ui:field="priceFrom" />
+                        </b:InputAddOn>
+                        <b:InputAddOn appendText="$">
+                            <b:IntegerBox placeholder="{msgs.formTo}" styleName="{style.priceBox}" ui:field="priceTo" />
+                        </b:InputAddOn>
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>
@@ -92,12 +93,11 @@
                 </b:Column>
                 <b:Column size="10">
                     <g:HTMLPanel>
-                        <ui:msg key="formFromToDate">
-                            from
-                            <p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateFrom" />
-                            to
-                            <p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateTo" />
-                        </ui:msg>
+                        <!--TODO RELEASE Jaro-->
+                        <!--<b2:DateBoxAppended  placeholder="{msgs.formFrom}" format="{formatDate}" autoClose="true" icon="CALENDAR"-->
+                        <b2:DateBoxAppended styleName="{style.dateBox}" ui:field="finnishDateFrom" />
+                        <!--<b2:DateBoxAppended placeholder="{msgs.formTo}" format="{formatDate}" autoClose="true" icon="CALENDAR"-->
+                        <b2:DateBoxAppended styleName="{style.dateBox}" ui:field="finnishDateTo" />
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>
