@@ -13,7 +13,6 @@
                     <value>classpath:/messaging.properties</value>
                     <value>classpath:/fulltext.properties</value>
                     <value>classpath:/mail.properties</value>
-                    <value>classpath:/social.properties</value>
                 </list>
             </property>
         </bean>
