@@ -66,7 +66,7 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex5}">
 						2.
-						<ui:msg key="supplierCreationTab2">Supplier Informatino</ui:msg>
+						<ui:msg key="supplierCreationTab2">Supplier Information</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="PX" height="100%">
@@ -107,7 +107,7 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex4}">
 						3.
-						<ui:msg key="supplierCreationTab2">Category selection</ui:msg>
+						<ui:msg key="supplierCreationTab3">Category selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="PX" height="100%">
@@ -149,7 +149,7 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex3}">
 						4.
-						<ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
+						<ui:msg key="supplierCreationTab4">Locality selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="PX" height="100%">
@@ -191,7 +191,7 @@
 				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{style.tabIndex2}">
 						5.
-						<ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
+						<ui:msg key="supplierCreationTab5">Service Selection</ui:msg>
 					</g:HTML>
 				</g:customHeader>
 				<g:DockLayoutPanel unit="PX" height="100%">

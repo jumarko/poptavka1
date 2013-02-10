@@ -157,19 +157,16 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     public UniversalAsyncGrid(int pageSize, Resources resources) {
         super(pageSize, resources);
-        setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
     }
 
     public UniversalAsyncGrid(List<String> gridColumns, int pageSize, Resources resources) {
         super(pageSize, resources);
         this.gridColumns = gridColumns;
-        setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
     }
 
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
         this.gridColumns = gridColumns;
-        setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
     }
 
     /**************************************************************************/
@@ -230,7 +227,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             public void updateRowCount(int size, boolean exact) {
                 super.updateRowCount(size, exact);
                 if (size > 0) {
+                    setEmptyTableWidget(null);
                     eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
+                } else {
+                    setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
                 }
             }
 
