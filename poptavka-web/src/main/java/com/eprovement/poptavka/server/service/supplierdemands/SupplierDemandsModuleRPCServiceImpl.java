@@ -178,14 +178,14 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long userId, long supplierId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final User user = (User) generalService.find(User.class, userId);
-        final Map<Long, Integer> latestUserMessagesWithCount =
+        final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithoutOffer(user);
         // TODO RELEASE ivlcek - refactor with detail converter
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
 
-        for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
-            UserMessage um = (UserMessage) generalService.find(UserMessage.class, mapEntry.getKey());
+        for (Map.Entry<UserMessage, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
+            UserMessage um = mapEntry.getKey();
             SupplierPotentialDemandDetail detail = new SupplierPotentialDemandDetail();
             // Client part
             detail.setClientId(um.getMessage().getDemand().getClient().getId());
@@ -250,12 +250,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
         final User user = (User) generalService.find(User.class, userId);
-        final Map<Long, Integer> latestUserMessagesWithCount =
+        final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithOffer(user);
         // TODO RELEASE ivlcek - refactor with detail converter
 
-        for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
-            UserMessage latestUserMessage = userMessageService.getById(mapEntry.getKey());
+        for (Map.Entry<UserMessage, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
+            UserMessage latestUserMessage = mapEntry.getKey();
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 

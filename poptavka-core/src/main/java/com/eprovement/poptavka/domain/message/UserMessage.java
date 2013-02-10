@@ -88,7 +88,7 @@ import javax.persistence.NamedQuery;
                         + " and userMessage.message.demand.status"
                         + " = 'ACTIVE'"),
         @NamedQuery(name = "getSupplierConversationsWithoutOffer",
-                query = "select latestUserMessage.id, count(subUserMessage.id)\n"
+                query = "select latestUserMessage, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join\n"
                         + " subUserMessage.message.threadRoot as rootMessage,"
                         + "UserMessage as latestUserMessage\n"
@@ -101,7 +101,7 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.message.offer is null\n"
                         + "group by latestUserMessage.id"),
         @NamedQuery(name = "getSupplierConversationsWithOffer",
-                query = "select latestUserMessage.id, count(subUserMessage.id)\n"
+                query = "select latestUserMessage, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join\n"
                         + " subUserMessage.message.threadRoot as rootMessage,"
                         + "UserMessage as latestUserMessage\n"

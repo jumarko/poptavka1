@@ -172,7 +172,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSupplierConversationsWithoutOffer() {
-        final Map<Long, Integer> supplierConversations = this.userMessageService
+        final Map<UserMessage, Integer> supplierConversations = this.userMessageService
                 .getSupplierConversationsWithoutOffer(this.user);
         Assert.assertEquals(3, supplierConversations.size());
         checkUserMessageIdAndCount(8L, 4, supplierConversations);
@@ -182,7 +182,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSupplierConversationsWithOffer() {
-        final Map<Long, Integer> supplierConversations = this.userMessageService
+        final Map<UserMessage, Integer> supplierConversations = this.userMessageService
                 .getSupplierConversationsWithOffer(this.user);
 
         Assert.assertEquals(1, supplierConversations.size());
@@ -305,12 +305,14 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     }
 
     private void checkUserMessageIdAndCount(final long userMessageId,
-            final int count, Map<Long, Integer> allUserMessages) {
+            final int count, Map<UserMessage, Integer> allUserMessages) {
+        UserMessage userMessage = new UserMessage();
+        userMessage.setId(userMessageId);
         Assert.assertTrue(
                 "UserMessuage [id=" + userMessageId + "] not expected to be in"
                 + " collection [" + allUserMessages + "] is there.",
-                allUserMessages.containsKey(userMessageId));
-        int actualCount =  allUserMessages.get(userMessageId);
+                allUserMessages.containsKey(userMessage));
+        int actualCount =  allUserMessages.get(userMessage);
         Assert.assertTrue(
                 "The count of [id=" + userMessageId + "]'s conversation"
                 + " should be " + count + ", not " + actualCount + ".",
