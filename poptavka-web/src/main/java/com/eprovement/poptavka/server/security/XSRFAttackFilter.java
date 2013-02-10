@@ -5,8 +5,6 @@
 package com.eprovement.poptavka.server.security;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -15,6 +13,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
@@ -22,7 +22,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 public class XSRFAttackFilter extends GenericFilterBean {
 
-    private static final Logger LOGGER = Logger.getLogger(XSRFAttackFilter.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(XSRFAttackFilter.class.getName());
 
     @Override
     public void doFilter(ServletRequest req,
@@ -34,8 +34,8 @@ public class XSRFAttackFilter extends GenericFilterBean {
         String cookieId = request.getParameter("JSESSIONID");
         String sessionId = request.getSession().getId();
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("cookieId=" + cookieId + " / sessionId=" + sessionId);
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace("cookieId={} / sessionId={}", cookieId, sessionId);
         }
 
         // if the user is authenticated, the cookie session id and the id sent as a request param must match

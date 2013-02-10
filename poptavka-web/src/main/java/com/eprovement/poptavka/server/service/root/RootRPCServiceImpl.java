@@ -22,7 +22,6 @@ import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.exception.UserNotExistException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -47,8 +46,6 @@ import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.Date;
 
 import com.googlecode.genericdao.search.Search;
@@ -309,52 +306,42 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
-        try {
-            Message message = messageService.newReply(this.messageService.getById(
-                    questionMessageToSend.getParentId()),
-                    this.generalService.find(User.class, questionMessageToSend.getSenderId()));
-            message.setBody(questionMessageToSend.getBody());
-            message.setSubject(questionMessageToSend.getSubject());
-            messageService.send(message);
+        Message message = messageService.newReply(this.messageService.getById(
+                questionMessageToSend.getParentId()),
+                this.generalService.find(User.class, questionMessageToSend.getSenderId()));
+        message.setBody(questionMessageToSend.getBody());
+        message.setSubject(questionMessageToSend.getSubject());
+        messageService.send(message);
 //            Don't undersand create method here?
 //            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(message));
 //            Isn't creating detail object enough?
 //            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(message);
-            return messageConverter.convertToTarget(message);
-        } catch (MessageException ex) {
-            Logger.getLogger(RootRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        return messageConverter.convertToTarget(message);
     }
 
     @Override
     public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
-        try {
-            Message message = messageService.newReply(this.messageService.getById(
-                    offerMessageToSend.getParentId()),
-                    this.generalService.find(User.class, offerMessageToSend.getSenderId()));
-            message.setBody(offerMessageToSend.getBody());
-            // TODO RELEASE ivlcek - create converter for offer
-            // update demand entity
-            Demand demand = message.getDemand();
-            demand.setStatus(DemandStatus.OFFERED);
-            generalService.save(demand);
-            Offer offer = new Offer();
-            offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
-            offer.setFinishDate(offerMessageToSend.getOfferFinishDate());
-            offer.setPrice(offerMessageToSend.getPrice());
-            offer.setState(generalService.find(OfferState.class, 2L));
-            offer.setDemand(message.getDemand());
-            offer.setCreated(new Date());
-            Offer offerFromDB = generalService.save(offer);
-            message.setOffer(offerFromDB);
-            // TODO RELEASE ivlcek - shall I save message here or shall I let send() method do it?
-            messageService.send(message);
-            return messageConverter.convertToTarget(message);
-        } catch (MessageException ex) {
-            Logger.getLogger(RootRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        Message message = messageService.newReply(this.messageService.getById(
+                offerMessageToSend.getParentId()),
+                this.generalService.find(User.class, offerMessageToSend.getSenderId()));
+        message.setBody(offerMessageToSend.getBody());
+        // TODO RELEASE ivlcek - create converter for offer
+        // update demand entity
+        Demand demand = message.getDemand();
+        demand.setStatus(DemandStatus.OFFERED);
+        generalService.save(demand);
+        Offer offer = new Offer();
+        offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
+        offer.setFinishDate(offerMessageToSend.getOfferFinishDate());
+        offer.setPrice(offerMessageToSend.getPrice());
+        offer.setState(generalService.find(OfferState.class, 2L));
+        offer.setDemand(message.getDemand());
+        offer.setCreated(new Date());
+        Offer offerFromDB = generalService.save(offer);
+        message.setOffer(offerFromDB);
+        // TODO RELEASE ivlcek - shall I save message here or shall I let send() method do it?
+        messageService.send(message);
+        return messageConverter.convertToTarget(message);
     }
 
     /**************************************************************************/

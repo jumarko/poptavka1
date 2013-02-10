@@ -14,7 +14,6 @@ import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.MessageConverter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -40,8 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -95,19 +92,14 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      */
     @Override
     public MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException {
-        try {
-            Message m = messageService.newReply(this.messageService.getById(
-                    messageDetailImpl.getThreadRootId()),
-                    this.generalService.find(User.class, messageDetailImpl.getSenderId()));
-            m.setBody(messageDetailImpl.getBody());
-            m.setSubject(INTERNAL_MESSAGE);
-            // TODO LATER - for message module
-            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
-            return messageDetailFromDB;
-        } catch (MessageException ex) {
-            Logger.getLogger(MessagesRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        Message m = messageService.newReply(this.messageService.getById(
+                messageDetailImpl.getThreadRootId()),
+                this.generalService.find(User.class, messageDetailImpl.getSenderId()));
+        m.setBody(messageDetailImpl.getBody());
+        m.setSubject(INTERNAL_MESSAGE);
+        // TODO LATER - for message module
+        MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
+        return messageDetailFromDB;
     }
 
     @Override
@@ -203,11 +195,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
 //            userMessage.getMessage().equals(this);
             for (MessageUserRole mur : recipients) {
                 if (mur.getMessage().equals(userMessage.getMessage())) {
-                    try {
-                        userMessage.getMessage().setSender(mur.getMessage().getSender());
-                    } catch (MessageException ex) {
-                        Logger.getLogger(MessagesRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    userMessage.getMessage().setSender(mur.getMessage().getSender());
                 }
             }
 //            modify to return MessageDetail

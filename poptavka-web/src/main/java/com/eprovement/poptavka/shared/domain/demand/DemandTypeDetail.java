@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 
 /**
@@ -17,7 +16,6 @@ public class DemandTypeDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
-    private final static Logger LOGGER = Logger.getLogger("FullDemandDetail");
     private Long id;
     private String value;
     private String description;

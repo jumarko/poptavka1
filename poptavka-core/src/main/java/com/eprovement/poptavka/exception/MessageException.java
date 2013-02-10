@@ -7,7 +7,7 @@ package com.eprovement.poptavka.exception;
  * @author Vojtech Hubr
  *         Date: 21.8.2011
  */
-public class MessageException extends Exception {
+public class MessageException extends RuntimeException {
     /**
      * Creates a new instance of <code>MessageException</code> without detail message.
      */

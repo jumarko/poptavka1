@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,7 +46,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Configurable
 public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService implements HomeSuppliersRPCService {
 
-    private static final Logger LOGGER = Logger.getLogger("HomeSuppliersRPCServiceImpl");
     private GeneralService generalService;
     private TreeItemService treeItemService;
     private LocalityService localityService;

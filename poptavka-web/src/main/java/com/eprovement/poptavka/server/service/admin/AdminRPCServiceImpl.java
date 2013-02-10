@@ -24,7 +24,6 @@ import com.eprovement.poptavka.domain.user.Problem;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.domain.user.rights.Permission;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -58,8 +57,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -75,6 +75,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 @Configurable
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminRPCServiceImpl.class);
 
     private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
@@ -597,28 +599,24 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateMessage(MessageDetail messageDetail) throws RPCException, ApplicationSecurityException {
         Message message = generalService.find(Message.class, messageDetail.getMessageId());
-        try {
-            //TODO LATER Martin - how to update missing ones
-            if (!message.getSubject().equals(messageDetail.getSubject())) {
-                message.setSubject(messageDetail.getSubject());
-            }
-            if (!message.getBody().equals(messageDetail.getBody())) {
-                message.setBody(messageDetail.getBody());
-            }
-            if (!message.getCreated().equals(messageDetail.getCreated())) {
-                message.setCreated(messageDetail.getCreated());
-            }
-            if (!message.getSent().equals(messageDetail.getSent())) {
-                message.setSent(messageDetail.getSent());
-            }
-            if (!message.getMessageState().equals(MessageState.valueOf(messageDetail.getMessageState()))) {
-                message.setMessageState(MessageState.valueOf(messageDetail.getMessageState()));
-            }
-
-            generalService.merge(message);
-        } catch (MessageException ex) {
-            Logger.getLogger(AdminRPCServiceImpl.class.getName()).log(Level.SEVERE, "Coudn't update message.", ex);
+        //TODO LATER Martin - how to update missing ones
+        if (!message.getSubject().equals(messageDetail.getSubject())) {
+            message.setSubject(messageDetail.getSubject());
         }
+        if (!message.getBody().equals(messageDetail.getBody())) {
+            message.setBody(messageDetail.getBody());
+        }
+        if (!message.getCreated().equals(messageDetail.getCreated())) {
+            message.setCreated(messageDetail.getCreated());
+        }
+        if (!message.getSent().equals(messageDetail.getSent())) {
+            message.setSent(messageDetail.getSent());
+        }
+        if (!message.getMessageState().equals(MessageState.valueOf(messageDetail.getMessageState()))) {
+            message.setMessageState(MessageState.valueOf(messageDetail.getMessageState()));
+        }
+
+        generalService.merge(message);
     }
 
     /**

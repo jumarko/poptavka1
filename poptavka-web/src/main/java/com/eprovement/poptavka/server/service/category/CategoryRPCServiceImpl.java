@@ -1,8 +1,9 @@
 package com.eprovement.poptavka.server.service.category;
 
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -24,7 +25,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     private CategoryService categoryService;
     private SupplierService supplierService;
     private Converter<Category, CategoryDetail> categoryConverter;
-    private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
+    private static final Logger LOGGER = LoggerFactory.getLogger("CategoryRPCServiceImpl");
 
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
@@ -79,16 +80,11 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
 
     @Override
     public List<CategoryDetail> getCategoryChildren(Long category) throws RPCException {
-        System.out.println("Getting children categories");
-        try {
-            if (category != null) {
-                final Category cat = categoryService.getById(category);
-                if (cat != null) {
-                    return categoryConverter.convertToTargetList(cat.getChildren());
-                }
+        if (category != null) {
+            final Category cat = categoryService.getById(category);
+            if (cat != null) {
+                return categoryConverter.convertToTargetList(cat.getChildren());
             }
-        } catch (NullPointerException ex) {
-            LOGGER.info("NullPointerException while executing getCategoryChildren");
         }
         return new ArrayList<CategoryDetail>();
     }

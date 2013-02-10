@@ -8,12 +8,10 @@ import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -133,10 +131,7 @@ public class MessageConverterTest extends BasicIntegrationTest {
 
             return message;
         } catch (ParseException ex) {
-            Logger.getLogger(MessageConverterTest.class.getName()).log(Level.SEVERE, "ParseException", ex);
-        } catch (MessageException ex) {
-            Logger.getLogger(MessageConverterTest.class.getName()).log(Level.SEVERE, "MessageException", ex);
+            throw new RuntimeException("Cannot create message", ex);
         }
-        return null;
     }
 }
