@@ -210,7 +210,11 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
+<<<<<<< HEAD
     public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
+=======
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user) {
+>>>>>>> 05125f0... UserMesssageService - changed the supplier's conversation methods to return UserMessage instead of its id to speed up loading on front end
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
 
         return getDao().getSupplierConversationsWithOffer(user, pendingState);

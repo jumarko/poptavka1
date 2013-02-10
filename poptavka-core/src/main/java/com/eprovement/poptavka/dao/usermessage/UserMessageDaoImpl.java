@@ -83,13 +83,14 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithoutOffer(User user) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user) {
         return getSupplierConversationsHelper(user,
                 "getSupplierConversationsWithoutOffer");
     }
 
     /** {@inheritDoc} */
     @Override
+<<<<<<< HEAD
     public Map<Long, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
@@ -103,6 +104,11 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
             unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
         }
         return unreadMap;
+=======
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user) {
+        return getSupplierConversationsHelper(user,
+                "getSupplierConversationsWithOffer");
+>>>>>>> 05125f0... UserMesssageService - changed the supplier's conversation methods to return UserMessage instead of its id to speed up loading on front end
     }
 
     /** {@inheritDoc} */
@@ -146,7 +152,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         return unreadMap;
     }
 
-    private Map<Long, Integer> getSupplierConversationsHelper(User user,
+    private Map<UserMessage, Integer> getSupplierConversationsHelper(User user,
             String queryName) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
@@ -154,11 +160,11 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         List<Object[]> unread = runNamedQuery(
                 queryName,
                 queryParams);
-        Map<Long, Integer> unreadMap = new HashMap();
+        Map<UserMessage, Integer> conversationMap = new HashMap();
         for (Object[] entry : unread) {
-            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+            conversationMap.put((UserMessage) entry[0], ((Long) entry[1]).intValue());
         }
-        return unreadMap;
+        return conversationMap;
     }
 
     /** {@inheritDoc} */

@@ -79,21 +79,25 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * that are accessible to the supplier where any offer has been made
      *
      * @param user the supplier whose conversations to get
-     * @return map of the latest <code>UserMessage</code> ids and number of
+     * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
     Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user);
 
     /**
-     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
      * supplier's conversations along with the counts of messages in each conversation
      * that are accessible to the supplier where an offer has been made
      *
      * @param user the supplier whose conversations to get
-     * @return map of the latest <code>UserMessage</code> ids and number of
+     * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
+<<<<<<< HEAD
     Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
+=======
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user);
+>>>>>>> 05125f0... UserMesssageService - changed the supplier's conversation methods to return UserMessage instead of its id to speed up loading on front end
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
