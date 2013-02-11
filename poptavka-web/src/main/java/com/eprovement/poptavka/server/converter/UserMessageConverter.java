@@ -5,23 +5,15 @@ package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
-import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.google.common.base.Preconditions;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public final class UserMessageConverter extends AbstractConverter<UserMessage, MessageDetail> {
 
-    private GeneralService generalService;
 
     private UserMessageConverter() {
         // Spring instantiates converters - see converters.xml
-    }
-
-    @Autowired
-    public void setGeneralService(GeneralService generalService) {
-        this.generalService = generalService;
     }
 
     @Override
