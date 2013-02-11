@@ -49,8 +49,9 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     private String description;
     @NotBlank(message = "{supplierNotBlankTaxNumber}")
     private String taxId;
-    @Pattern(regexp = "(www.|http://|ftp://|https://)([a-zA-Z0-9\\-]+)\\.([a-zA-Z0-9\\-]+)",
-    message = "{supplierPatternWebsite}")
+    @Pattern(regexp =
+        "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
+        message = "{supplierPatternWebsite}")
     private String website;
     /** Class lists. **/
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();
