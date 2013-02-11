@@ -14,17 +14,19 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Vojtech Hubr
  */
 public final class Searcher {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Searcher.class);
 
     private Searcher() {
         // utility class - DO NOT INSTANTIATE!
@@ -330,11 +332,11 @@ public final class Searcher {
                 ((String) value).toUpperCase();
             }
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(Searcher.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.warn("Cannot get value from item={}", item, ex);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Searcher.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.warn("Cannot get value from item={}", item, ex);
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(Searcher.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.warn("Cannot get value from item={}", item, ex);
         }
         return value;
     }

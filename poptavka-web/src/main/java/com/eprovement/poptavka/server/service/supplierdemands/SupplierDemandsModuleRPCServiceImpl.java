@@ -17,7 +17,6 @@ import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -451,20 +449,13 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
         // TODO RELEASE ivlcek - update the onAddResponseMessage in DetailsWrapperPresenter
         // so that we can retrieve latest userMessageId as parameter.
-
-        try {
-            UserMessage latestUserMessage = userMessageService.getById(userMessageId);
-            Message message = messageService.newReply(latestUserMessage.getMessage(),
-                    this.generalService.find(User.class, userId));
-            // TODO RELEASE ivlcek - load text from resources
-            message.setBody("Demand has been delivered by supplier. Supplier asked for official acceptance.");
-            messageService.send(message);
-            return messageConverter.convertToTarget(message);
-        } catch (MessageException ex) {
-            java.util.logging.Logger.getLogger(SupplierDemandsModuleRPCServiceImpl.class.getName()).log(
-                    Level.SEVERE, null, ex);
-            return null;
-        }
+        UserMessage latestUserMessage = userMessageService.getById(userMessageId);
+        Message message = messageService.newReply(latestUserMessage.getMessage(),
+                this.generalService.find(User.class, userId));
+        // TODO RELEASE ivlcek - load text from resources
+        message.setBody("Demand has been delivered by supplier. Supplier asked for official acceptance.");
+        messageService.send(message);
+        return messageConverter.convertToTarget(message);
     }
 
     /**

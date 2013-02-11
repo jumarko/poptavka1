@@ -17,7 +17,6 @@ import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -51,8 +50,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -702,19 +699,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws RPCException,
             ApplicationSecurityException {
-        try {
-            Message m = messageService.newReply(this.messageService.getById(
-                    messageDetailImpl.getParentId()),
-                    this.generalService.find(User.class, messageDetailImpl.getSenderId()));
-            m.setBody(messageDetailImpl.getBody());
-            m.setSubject(messageDetailImpl.getSubject());
-            // TODO set the id correctly, check it
-            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
-            return messageDetailFromDB;
-        } catch (MessageException ex) {
-            Logger.getLogger(ClientDemandsModuleRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        Message m = messageService.newReply(this.messageService.getById(
+                messageDetailImpl.getParentId()),
+                this.generalService.find(User.class, messageDetailImpl.getSenderId()));
+        m.setBody(messageDetailImpl.getBody());
+        m.setSubject(messageDetailImpl.getSubject());
+        // TODO set the id correctly, check it
+        MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
+        return messageDetailFromDB;
     }
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
