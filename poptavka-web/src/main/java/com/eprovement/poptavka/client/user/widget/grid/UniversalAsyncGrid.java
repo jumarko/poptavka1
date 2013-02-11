@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.grid;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CustomImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
@@ -13,7 +14,6 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -90,8 +90,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     /*                          ATTRIBUTES                                    */
     /**************************************************************************/
-    private static final int COLUMN_WIDTH_ICON = 7;
-    private static final int COLUMN_WIDTH_URGENT = 50;
     /**
      * Asynchronous Data Provider. When all data count is known, asynchronous
      * data provider is created {@link #createAsyncDataProvider(final int resultCount)}.
@@ -286,7 +284,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * @param getter - the value getter for the cell
      */
     public <C> Column<T, C> addColumn(Cell<C> cell,
-            String headerText, boolean sort, int width, final GetValue<C> getter) {
+            String headerText, boolean sort, String width, final GetValue<C> getter) {
         Column<T, C> column = new Column<T, C>(cell) {
             @Override
             public C getValue(T demand) {
@@ -297,7 +295,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             column.setSortable(true);
         }
         addColumn(column, headerText);
-        setColumnWidth(column, width, Unit.PX);
+        setColumnWidth(column, width);
         return column;
     }
 
@@ -316,7 +314,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             }
         };
         addColumn(checkColumn, header);
-        setColumnWidth(checkColumn, COLUMN_WIDTH_ICON, Unit.PX);
+        setColumnWidth(checkColumn, Constants.COL_WIDTH_ICON);
         return checkColumn;
     }
 
@@ -353,7 +351,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         //set column style
         col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
         addColumn(col);
-        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
+        setColumnWidth(col, Constants.COL_WIDTH_ICON);
         return col;
     }
 
@@ -374,7 +372,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
 //        addColumn(col, headerText);
         addColumn(col);
-        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
+        setColumnWidth(col, Constants.COL_WIDTH_ICON);
         return col;
     }
 
@@ -394,7 +392,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         };
         urgencyColumn.setSortable(true);
         addColumn(urgencyColumn, headerText);
-        setColumnWidth(urgencyColumn, COLUMN_WIDTH_URGENT, Unit.PX);
+        setColumnWidth(urgencyColumn, Constants.COL_WIDTH_URGENT);
         return urgencyColumn;
     }
 
@@ -420,7 +418,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         //set column style
         col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
         addColumn(col);
-        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
+        setColumnWidth(col, Constants.COL_WIDTH_ICON);
         return col;
     }
 

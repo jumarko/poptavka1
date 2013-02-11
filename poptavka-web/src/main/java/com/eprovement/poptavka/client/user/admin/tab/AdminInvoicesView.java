@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
@@ -44,11 +45,10 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     //                              ATTRIBUTES                                */
     //*************************************************************************/
     //Table constants
-    private static final int ID_COL_WIDTH = 50;
-    private static final int INVOICE_COL_WIDTH = 50;
-    private static final int VAR_SYMB_COL_WIDTH = 60;
-    private static final int TOTAL_PRICE_COL_WIDTH = 60;
-    private static final int PAY_METHOD_COL_WIDTH = 60;
+    private static final String INVOICE_COL_WIDTH = "50px";
+    private static final String VAR_SYMB_COL_WIDTH = "60px";
+    private static final String TOTAL_PRICE_COL_WIDTH = "60px";
+    private static final String PAY_METHOD_COL_WIDTH = "60px";
     //
     @UiField
     Button commit, rollback, refresh;
@@ -118,9 +118,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
         // change.
         dataGrid = new UniversalAsyncGrid<InvoiceDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setWidth("700px");
-        dataGrid.setHeight("500px");
-        dataGrid.setEmptyTableWidget(new Label("No data available."));
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -137,7 +136,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     private void initTableColumns() {
         // ID
         idColumn = dataGrid.addColumn(
-                new ClickableTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
+                new ClickableTextCell(), Storage.MSGS.columnID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override

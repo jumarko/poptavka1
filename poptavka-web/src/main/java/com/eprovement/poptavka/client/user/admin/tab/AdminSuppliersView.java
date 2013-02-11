@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
@@ -44,11 +45,10 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     //                              ATTRIBUTES                                */
     //*************************************************************************/
     //Table constants
-    private static final int ID_COL_WIDTH = 30;
-    private static final int COMPANY_NAME_COL_WIDTH = 50;
-    private static final int BUSINESS_TYPE_COL_WIDTH = 50;
-    private static final int CERTIFIED_COL_WIDTH = 15;
-    private static final int VERIFICATION_COL_WIDTH = 50;
+    private static final String COMPANY_NAME_COL_WIDTH = "50px";
+    private static final String BUSINESS_TYPE_COL_WIDTH = "50px";
+    private static final String CERTIFIED_COL_WIDTH = "15px";
+    private static final String VERIFICATION_COL_WIDTH = "50px";
     //
     @UiField
     Button commit, rollback, refresh;
@@ -114,9 +114,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         // TABLE
         dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setWidth("700px");
-        dataGrid.setHeight("500px");
-        dataGrid.setEmptyTableWidget(new Label("No data available."));
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
 
         // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -133,7 +132,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private void initGridColumns() {
         // Supplier ID.
         idColumn = dataGrid.addColumn(
-                new ClickableTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
+                new ClickableTextCell(), Storage.MSGS.columnID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override

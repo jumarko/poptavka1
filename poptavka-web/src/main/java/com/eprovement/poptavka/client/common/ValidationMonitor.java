@@ -42,7 +42,7 @@ import javax.validation.groups.Default;
  * Main purpose of Validation monitor is to simplifies validation process through
  * hibernate validation. Works like this:
  * Unlike validation of whole object using validation Editor, validation monitor
- * validates only one attribute separately. In enable partial validation of form attributes.
+ * validates only one attribute separately. It enable partial validation of form attributes.
  * And to do partial validation in form, we needed additional logic and components.
  * All this additional requirements are build in validation monitor.
  *

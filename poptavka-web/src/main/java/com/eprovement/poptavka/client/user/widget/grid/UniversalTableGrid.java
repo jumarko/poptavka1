@@ -42,11 +42,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private Column<IUniversalDetail, Date> urgencyColumn;
     private Column<IUniversalDetail, String> receiveDateColumn;
     private Column<IUniversalDetail, String> finnishDateColumn;
-    //table column width constatnts
-    private static final int DEMAND_TITLE_COL_WIDTH = 50;
-    private static final int RATING_COL_WIDTH = 10;
-    private static final int PRICE_COL_WIDTH = 20;
-    private static final int COL_WIDTH = 30;
     //table column contants
     private static final String DEMAND_TITLE_COLUMN = "demandTitle";
     private static final String RATING_COLUMN = "rating";
@@ -57,7 +52,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private List<String> gridColumns = new ArrayList<String>();
     //Other
     private MultiSelectionModel<IUniversalDetail> selectionModel;
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
+    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -212,7 +207,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private void addDemandTitleColumn() {
         if (gridColumns.contains(DEMAND_TITLE_COLUMN)) {
             demandTitleColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(), true, DEMAND_TITLE_COL_WIDTH,
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(),
+                    true, Constants.COL_WIDTH_TITLE,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -225,7 +221,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private void addRatingColumn() {
         if (gridColumns.contains(RATING_COLUMN)) {
             ratingColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnRating(), true, RATING_COL_WIDTH,
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnRating(),
+                    true, Constants.COL_WIDTH_RATING,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -238,7 +235,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private void addPriceColumn() {
         if (gridColumns.contains(PRICE_COLUMN)) {
             priceColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(), false, PRICE_COL_WIDTH,
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(),
+                    true, Constants.COL_WIDTH_PRICE,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -251,7 +249,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private void addReceivedDateColumn() {
         if (gridColumns.contains(RECEIVED_DATE_COLUMN)) {
             receiveDateColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnReceived(), true, COL_WIDTH,
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnReceived(),
+                    true, Constants.COL_WIDTH_DATE,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
@@ -264,7 +263,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private void addFinnishDateColumn() {
         if (gridColumns.contains(FINNISH_DATE_COLUMN)) {
             finnishDateColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnDeliveryDate(), true, COL_WIDTH,
+                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnDeliveryDate(),
+                    true, Constants.COL_WIDTH_DATE,
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {

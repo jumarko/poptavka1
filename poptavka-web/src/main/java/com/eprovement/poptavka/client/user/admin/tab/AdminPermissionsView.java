@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
@@ -41,10 +42,9 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     //                              ATTRIBUTES                                */
     //*************************************************************************/
     //Table constants
-    private static final int ID_COL_WIDTH = 50;
-    private static final int CODE_COL_WIDTH = 50;
-    private static final int NAME_COL_WIDTH = 100;
-    private static final int DESCRIPTION_COL_WIDTH = 100;
+    private static final String CODE_COL_WIDTH = "20%";
+    private static final String NAME_COL_WIDTH = "20%";
+    private static final String DESCRIPTION_COL_WIDTH = "60%";
     //
     @UiField
     Button commit, rollback, refresh;
@@ -103,9 +103,8 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
         // TABLE
         dataGrid = new UniversalAsyncGrid<PermissionDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setWidth("700px");
-        dataGrid.setHeight("500px");
-        dataGrid.setEmptyTableWidget(new Label("No data available."));
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
 
         // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -122,7 +121,8 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override

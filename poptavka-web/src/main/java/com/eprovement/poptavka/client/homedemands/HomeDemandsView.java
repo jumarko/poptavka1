@@ -9,18 +9,17 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.resources.StyleResource;
-import com.eprovement.poptavka.resources.celltree.CustomCellTree;
-import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.resources.celltree.CustomCellTree;
+import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -72,39 +71,28 @@ public class HomeDemandsView extends OverflowComposite
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     //Table constants
-    private static final int CREATED_DATE_COL_WIDTH = 90;
-    private static final int TITLE_COL_WIDTH = 200;
-    private static final int LOCALITY_COL_WIDTH = 150;
-//    private static final int PRICE_WIDTH = 80;
-    private static final int URGENT_COL_WIDTH = 50;
+    private static final String LOCALITY_COL_WIDTH = "150px";
     //Table definitions
-    @UiField(provided = true)
-    UniversalAsyncGrid<FullDemandDetail> dataGrid;
+    @UiField(provided = true) UniversalAsyncGrid<FullDemandDetail> dataGrid;
     private List<String> gridColumns = Arrays.asList(
             new String[]{
-                "createdDate", "title", "locality", "price"
+                "createdDate", "title", "locality", "endDate"
             });
     //Pager
-    @UiField(provided = true)
-    UniversalPagerWidget pager;
+    @UiField(provided = true) UniversalPagerWidget pager;
     //CellTree
-    @UiField(provided = true)
-    CellTree cellTree;
+    @UiField(provided = true) CellTree cellTree;
     //Using category detail key provider in selection model, allow us to have displayed
     //alwas only one node. The other are automaticaly closed.
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     // Others
-    @UiField
-    Label bannerLabel, filterLabel;
-    @UiField
-    DecoratorPanel filterLabelPanel;
-    @UiField
-    DemandDetailView demandDetail;
-    @UiField
-    Button offerBtn;
+    @UiField Label bannerLabel, filterLabel;
+    @UiField DecoratorPanel filterLabelPanel;
+    @UiField DemandDetailView demandDetail;
+    @UiField Button offerBtn;
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-//    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
+    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -134,7 +122,6 @@ public class HomeDemandsView extends OverflowComposite
                 Constants.WITHOUT_CHECK_BOXES,
                 CategoryCell.DISPLAY_COUNT_OF_DEMANDS), null, resource);
         Storage.setTree(cellTree);
-        // cellTree.setSize("300px", "100px");
         cellTree.setAnimationEnabled(true);
     }
 
@@ -146,8 +133,8 @@ public class HomeDemandsView extends OverflowComposite
         // Create a CellTable
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns, pager.getPageSize(), resource);
-        dataGrid.setMinimumTableWidth(CREATED_DATE_COL_WIDTH + TITLE_COL_WIDTH
-                + +LOCALITY_COL_WIDTH + URGENT_COL_WIDTH, Style.Unit.PX);
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
         // Selection handler
         dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
 
@@ -164,7 +151,8 @@ public class HomeDemandsView extends OverflowComposite
 
         // Date of creation
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.columnCreatedDate(), true, CREATED_DATE_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), bundle.columnCreatedDate(),
+                true, Constants.COL_WIDTH_DATE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -175,13 +163,11 @@ public class HomeDemandsView extends OverflowComposite
                             Date now = new Date();
                             long millis = now.getTime() - demandDetail.getCreated().getTime();
                             if (millis < Storage.DAY_LENGTH) {
-                                return DateTimeFormat.getFormat(
-                                        DateTimeFormat.PredefinedFormat.TIME_SHORT).format(demandDetail.getCreated());
+                                return formatter.format(demandDetail.getCreated());
                             } else if (Storage.DAY_LENGTH <= millis && millis < 2 * Storage.DAY_LENGTH) {
                                 return Storage.MSGS.creationDateYesterday();
                             } else {
-                                return DateTimeFormat.getFormat(
-                                        DateTimeFormat.PredefinedFormat.DATE_SHORT).format(demandDetail.getCreated());
+                                return formatter.format(demandDetail.getCreated());
                             }
                         }
                     }
@@ -189,7 +175,8 @@ public class HomeDemandsView extends OverflowComposite
 
         // Demand Info
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.columnDemandTitle(), true, TITLE_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), bundle.columnDemandTitle(),
+                true, Constants.COL_WIDTH_TITLE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -214,16 +201,6 @@ public class HomeDemandsView extends OverflowComposite
                         return str.toString();
                     }
                 });
-
-        // Price
-        /**************************************************************************/
-//        dataGrid.addColumn(new TextCell(), bundle.price(), true, PRICE_WIDTH,
-//                new UniversalAsyncGrid.GetValue<String>() {
-//                    @Override
-//                    public String getValue(Object object) {
-//                        return currencyFormat.format(((FullDemandDetail) object).getPrice());
-//                    }
-//                });
 
         // Urgence
         /**************************************************************************/
@@ -255,14 +232,6 @@ public class HomeDemandsView extends OverflowComposite
         return pager.getPager();
     }
 
-//    @Override
-//    public ListBox getPageSizeCombo() {
-//        return pager.getPageSizeListBox();
-//    }
-//    @Override
-//    public int getPageSize() {
-//        return pager.getPageSize();
-//    }
     /** Filter. **/
     @Override
     public DecoratorPanel getFilterLabelPanel() {

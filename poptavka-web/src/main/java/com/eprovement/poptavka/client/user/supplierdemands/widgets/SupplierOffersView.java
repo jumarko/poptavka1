@@ -2,9 +2,9 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
+import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
@@ -64,6 +64,8 @@ public class SupplierOffersView extends Composite
                 Constants.SUPPLIER_OFFERS,
                 pager.getPageSize(),
                 resource);
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
         pager.setDisplay(dataGrid);
     }
 

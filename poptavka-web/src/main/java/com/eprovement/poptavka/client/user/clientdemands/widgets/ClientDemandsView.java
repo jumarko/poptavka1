@@ -2,11 +2,11 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
+import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
@@ -48,11 +48,6 @@ public class ClientDemandsView extends Composite
     @UiField(provided = true) UniversalAsyncGrid<ClientDemandDetail> demandGrid;
     //pager definition
     @UiField(provided = true) UniversalPagerWidget demandPager;
-    //table column width constatnts
-    private static final int TITLE_COL_WIDTH = 50;
-    private static final int PRICE_COL_WIDTH = 30;
-    private static final int FINNISH_DATE_COL_WIDTH = 30;
-    private static final int VALID_TO_DATE_COL_WIDTH = 30;
     /**************************************************************************/
     /* DemandConversationTable Attrinbutes                                         */
     /**************************************************************************/
@@ -65,9 +60,8 @@ public class ClientDemandsView extends Composite
     private Column<IUniversalDetail, String> bodyPreviewColumn;
     private Column<IUniversalDetail, String> dateColumn;
     //table column width constatnts
-    private static final int SUPPLIER_NAME_COL_WIDTH = 20;
-    private static final int BODY_PREVIEW_COL_WIDTH = 30;
-    private static final int DATE_COL_WIDTH = 20;
+    private static final String SUPPLIER_NAME_COL_WIDTH = "30%";
+    private static final String BODY_PREVIEW_COL_WIDTH = "70%";
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
@@ -152,7 +146,8 @@ public class ClientDemandsView extends Composite
         demandGrid.addDemandStatusColumn(Storage.MSGS.columnStatus());
         // Demand title column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(), true, TITLE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(),
+                true, Constants.COL_WIDTH_TITLE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -170,7 +165,8 @@ public class ClientDemandsView extends Composite
 
         // Demand price column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(), true, PRICE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(),
+                true, Constants.COL_WIDTH_PRICE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -180,7 +176,8 @@ public class ClientDemandsView extends Composite
 
         // Finnish date column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnFinnishDate(), true, FINNISH_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnFinnishDate(),
+                true, Constants.COL_WIDTH_DATE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -190,7 +187,8 @@ public class ClientDemandsView extends Composite
 
         // Valid-to date column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnValidTo(), true, VALID_TO_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnValidTo(),
+                true, Constants.COL_WIDTH_DATE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -205,8 +203,8 @@ public class ClientDemandsView extends Composite
     public void initConversationTableColumns() {
         // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL,
-                Storage.MSGS.columnSupplierName(), true, SUPPLIER_NAME_COL_WIDTH,
+                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnSupplierName(),
+                true, SUPPLIER_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -224,7 +222,8 @@ public class ClientDemandsView extends Composite
 
         // Demand price column
         bodyPreviewColumn = conversationGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnText(), false, BODY_PREVIEW_COL_WIDTH,
+                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnText(),
+                true, BODY_PREVIEW_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -237,7 +236,8 @@ public class ClientDemandsView extends Composite
 
         // Date column
         dateColumn = conversationGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnDate(), true, DATE_COL_WIDTH,
+                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnDate(),
+                true, Constants.COL_WIDTH_DATE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
