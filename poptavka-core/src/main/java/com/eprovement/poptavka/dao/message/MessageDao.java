@@ -4,6 +4,7 @@ import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 
 import java.util.List;
@@ -150,7 +151,7 @@ public interface MessageDao extends GenericDao<Message> {
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemnd(User user, Message threadRoot);
+    Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemand(User user, Message threadRoot);
 
     /**
      * Gets all latest userMessages from all suppliers who sent some offer response to demand.
@@ -159,14 +160,6 @@ public interface MessageDao extends GenericDao<Message> {
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemnd(User user, Message threadRoot);
-
-    /**
-     * Gets all latest userMessages from all suppliers who are assigned to client demands.
-     *
-     * @param user
-     * @param threadRoot
-     * @return
-     */
-    Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user);
+    Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
+            OfferState pendingState);
 }

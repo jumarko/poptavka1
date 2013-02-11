@@ -6,6 +6,7 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
@@ -112,13 +113,13 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
-    public Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemnd(User user, Message threadRoot) {
+    public Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemand(User user, Message threadRoot) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("threadRoot", threadRoot);
         queryParams.put("user", user);
 
         List<Object[]> unread = runNamedQuery(
-                "getLatestSupplierUserMessagesWithoutOfferForDemnd",
+                "getLatestSupplierUserMessagesWithoutOfferForDemand",
                 queryParams);
         Map<Long, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {
@@ -128,28 +129,15 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
-    public Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemnd(User user, Message threadRoot) {
+    public Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
+        OfferState pendingState) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("threadRoot", threadRoot);
         queryParams.put("user", user);
+        queryParams.put("pendingState", pendingState);
 
         List<Object[]> unread = runNamedQuery(
-                "getLatestSupplierUserMessagesWithOfferForDemnd",
-                queryParams);
-        Map<Long, Integer> unreadMap = new HashMap();
-        for (Object[] entry : unread) {
-            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
-        }
-        return unreadMap;
-    }
-
-    @Override
-    public Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user) {
-        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
-        queryParams.put("user", user);
-
-        List<Object[]> unread = runNamedQuery(
-                "getLatestSupplierUserMessagesForAssignedDemand",
+                "getLatestSupplierUserMessagesWithOfferForDemand",
                 queryParams);
         Map<Long, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {

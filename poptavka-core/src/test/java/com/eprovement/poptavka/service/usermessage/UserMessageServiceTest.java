@@ -2,9 +2,11 @@ package com.eprovement.poptavka.service.usermessage;
 
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
@@ -182,8 +184,9 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSupplierConversationsWithOffer() {
+        final OfferState pendingState = generalService.find(OfferState.class, 2L);
         final Map<Long, Integer> supplierConversations = this.userMessageService
-                .getSupplierConversationsWithOffer(this.user);
+                .getSupplierConversationsWithOffer(this.user, pendingState);
 
         Assert.assertEquals(1, supplierConversations.size());
         checkUserMessageIdAndCount(304L, 2, supplierConversations);
@@ -205,11 +208,17 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetClientConversationsWithoutOffer() {
+        final Message root = generalService.find(Message.class, 1L);
         final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
-                .getClientConversationsWithoutOffer(this.userClient);
-        Assert.assertEquals(2, clientConversations.size());
+                .getClientConversationsWithoutOffer(this.userClient, root);
+        Assert.assertEquals(1, clientConversations.size());
         checkUserMessageIdAndCountAndSupplierId(7L, 4, 111111111L, clientConversations);
-        checkUserMessageIdAndCountAndSupplierId(201L, 1, 111111111L, clientConversations);
+
+        final Message root2 = generalService.find(Message.class, 200L);
+        final Map<UserMessage, ClientConversation> clientConversations2 = this.userMessageService
+                .getClientConversationsWithoutOffer(this.userClient, root2);
+        Assert.assertEquals(1, clientConversations2.size());
+        checkUserMessageIdAndCountAndSupplierId(201L, 1, 111111111L, clientConversations2);
     }
 
     @Test
@@ -316,7 +325,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
                 + " should be " + count + ", not " + actualCount + ".",
                actualCount == count);
     }
-    
+
     private void checkUserMessageIdAndCountAndSupplierId(final long userMessageId,
             final int count, final long supplierId, Map<UserMessage, ClientConversation> allUserMessages) {
         UserMessage userMessageExpected = new UserMessage();

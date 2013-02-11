@@ -111,7 +111,8 @@ import javax.persistence.NamedQuery;
                         + " and rootMessage.demand is not null"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and latestUserMessage.message.nextSibling is null"
-                        + " and latestUserMessage.message.offer is not null\n"
+                        + " and latestUserMessage.message.offer is not null"
+                        + " and latestUserMessage.message.offer.state = :pendingState\n"
                         + "group by latestUserMessage.id"),
         @NamedQuery(name = "getSupplierConversationsWithOfferCount",
                 query = "select count(latestUserMessage.id)\n"
@@ -154,6 +155,7 @@ import javax.persistence.NamedQuery;
                         + " User as supplier\n"
                         + "where latestUserMessage.message.threadRoot = rootMessage"
                         + " and rootMessage.demand is not null"
+                        + " and rootMessage = :root"
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and latestUserMessage.message.nextSibling is null"

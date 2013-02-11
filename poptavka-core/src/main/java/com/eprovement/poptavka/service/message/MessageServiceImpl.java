@@ -8,6 +8,7 @@ import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GeneralService;
@@ -197,22 +198,16 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemnd(User user, Message threadRoot) {
-        return getDao().getLatestSupplierUserMessagesWithoutOfferForDemnd(user, threadRoot);
+    public Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemand(User user, Message threadRoot) {
+        return getDao().getLatestSupplierUserMessagesWithoutOfferForDemand(user, threadRoot);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemnd(User user, Message threadRoot) {
-        return getDao().getLatestSupplierUserMessagesWithOfferForDemnd(user, threadRoot);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<Long, Integer> getLatestSupplierUserMessagesForAssignedDemand(User user) {
-        return getDao().getLatestSupplierUserMessagesForAssignedDemand(user);
+    public Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
+        OfferState pendingState) {
+        return getDao().getLatestSupplierUserMessagesWithOfferForDemand(user, threadRoot, pendingState);
     }
 
     /** {@inheritDoc} */

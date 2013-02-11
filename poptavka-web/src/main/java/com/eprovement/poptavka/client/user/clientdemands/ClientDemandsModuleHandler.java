@@ -79,6 +79,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
+                        GWT.log("getClientDemandsCount: " + result);
                         grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
@@ -104,6 +105,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
+                        GWT.log("getClientDemandConversationsCount: " + result);
                         grid.getDataProvider().updateRowCount(result, true);
                         if (result == 0) {
                             eventBus.responseConversationNoData();
@@ -131,6 +133,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
+                        GWT.log("getClientOfferedDemandsCount: " + result);
                         grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
@@ -156,6 +159,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
+                        GWT.log("getClientOfferedDemandOffersCount: " + result);
                         grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
@@ -181,6 +185,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
+                        GWT.log("getClientAssignedDemandsCount: " + result);
                         grid.getDataProvider().updateRowCount(result, true);
                     }
                 });

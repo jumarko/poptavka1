@@ -209,9 +209,9 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithOffer(User user) {
+    public Map<Long, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConversationsWithOffer(user);
+        return getDao().getSupplierConversationsWithOffer(user, pendingState);
     }
 
     /** {@inheritDoc} */
@@ -240,8 +240,8 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user) {
-        return getDao().getClientConversationsWithoutOffer(user);
+            User user, Message root) {
+        return getDao().getClientConversationsWithoutOffer(user, root);
     }
 
     /** {@inheritDoc} */

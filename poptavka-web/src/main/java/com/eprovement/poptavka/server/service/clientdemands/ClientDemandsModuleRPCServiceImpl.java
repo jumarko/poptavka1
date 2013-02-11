@@ -9,6 +9,7 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
@@ -271,14 +272,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public int getClientDemandConversationsCount(long userId, long demandID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
-        return root.getChildren().size();
+    public int getClientDemandConversationsCount(final long userId, final long demandID,
+            final SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        final User user = generalService.find(User.class, userId);
+        return userMessageService.getClientConversationsWithoutOfferCount(user);
     }
 
     /**
-     * Get a list of latest user messages from suppliers who sent a question response to given demand.
+     * Gets a list of all client's conversation related to their demands where no offer has been made
      *
      * @param userId logged client user Id
      * @param demandID demand with question responses from suppliers
@@ -287,24 +288,26 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<ClientDemandConversationDetail> getClientDemandConversations(long userId, long demandID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        User user = generalService.find(User.class, userId);
-        Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
-        List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
+    public List<ClientDemandConversationDetail> getClientDemandConversations(final long userId, final long demandID,
+            final SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        final User user = generalService.find(User.class, userId);
+        final Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
+        final Map<UserMessage, ClientConversation> latestSupplierUserMessagesWithUnreadSub =
+                userMessageService.getClientConversationsWithoutOffer(user, root);
+        final List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
 
-        Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
-                messageService.getLatestSupplierUserMessagesWithoutOfferForDemnd(user, root);
+        for (Map.Entry<UserMessage, ClientConversation> userMessageEntry
+                : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
 
-        for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
-            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
+            final UserMessage userMessage = userMessageEntry.getKey();
+
             // TODO RELEASE ivlcek - make detail object converter and create search definition
-            ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
+            final ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
             // set UserMessage attributes
             cdcd.setUserMessageId(userMessage.getId());
             cdcd.setIsStarred(userMessage.isStarred());
             cdcd.setIsRead(userMessage.isRead());
-            cdcd.setMessageCount(userMessageEntry.getValue());
+            cdcd.setMessageCount(userMessageEntry.getValue().getMessageCount());
             // set Message attributes
             cdcd.setMessageId(userMessage.getMessage().getId());
             cdcd.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
@@ -315,7 +318,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setTitle(userMessage.getMessage().getDemand().getTitle());
             // set Supplier attributes
             // TODO RELEASE ivlcek - if latest user message is from Client then this line doesn't work with client id
-            Supplier supplier = findSupplier(userMessage.getMessage().getSender().getId());
+            final Supplier supplier = findSupplier(userMessageEntry.getValue().getSupplier().getId());
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             cdcd.setSenderId(supplier.getBusinessUser().getId());
@@ -410,11 +413,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public int getClientOfferedDemandOffersCount(long userId, long demandID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public int getClientOfferedDemandOffersCount(final long userId, final long demandID,
+            final SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         // TODO RELEASE ivlcek - incorporate searchDefinition for this method and refactor with new sql
-        Demand demand = generalService.find(Demand.class, demandID);
-        return demand.getOffers().size();
+        final User user = generalService.find(User.class, userId);
+        return userMessageService.getClientConversationsWithOfferCount(user);
     }
 
     /**
@@ -432,10 +435,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             long threadRootId, SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         User user = generalService.find(User.class, userId);
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
+        OfferState offerPending = offerService.getOfferState(OfferStateType.PENDING.getValue());
+
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
-                messageService.getLatestSupplierUserMessagesWithOfferForDemnd(user, root);
+                messageService.getLatestSupplierUserMessagesWithOfferForDemand(user, root, offerPending);
         for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             Offer offer = userMessage.getMessage().getOffer();
@@ -526,10 +531,13 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         User user = generalService.find(User.class, userId);
+        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
+        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
         Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
-                messageService.getLatestSupplierUserMessagesForAssignedDemand(user);
+                userMessageService.getSupplierConversationsWithAcceptedOffer(user, offerAccepted, offerCompleted);
         for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             Offer offer = userMessage.getMessage().getOffer();

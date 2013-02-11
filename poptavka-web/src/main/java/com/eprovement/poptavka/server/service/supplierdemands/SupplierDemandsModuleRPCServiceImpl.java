@@ -252,10 +252,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public List<SupplierOffersDetail> getSupplierOffers(long supplierID, long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
+        OfferState pendingState = offerService.getOfferState(OfferStateType.PENDING.getValue());
 
         final User user = (User) generalService.find(User.class, userId);
         final Map<Long, Integer> latestUserMessagesWithCount =
-                userMessageService.getSupplierConversationsWithOffer(user);
+                userMessageService.getSupplierConversationsWithOffer(user, pendingState);
         // TODO RELEASE ivlcek - refactor with detail converter
 
         for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
@@ -325,8 +326,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         Supplier supplier = generalService.find(Supplier.class, supplierID);
 
-        OfferState offerAccepted = (OfferState) offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
-        OfferState offerCompleted = (OfferState) offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
+        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
         Map<Long, Integer> latestUserMessages =
                 userMessageService.getSupplierConversationsWithAcceptedOffer(
                 supplier.getBusinessUser(), offerAccepted, offerCompleted);
