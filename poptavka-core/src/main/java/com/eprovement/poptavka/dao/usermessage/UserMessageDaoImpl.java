@@ -6,6 +6,7 @@ package com.eprovement.poptavka.dao.usermessage;
 
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
+import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -198,9 +199,10 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public int getClientConversationsWithOfferCount(User user) {
+    public int getClientConversationsWithOfferCount(User user, Demand demand) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
+        queryParams.put("demand", demand);
 
         return ((Long) runNamedQueryForSingleResult(
                 "getClientConversationsWithOfferCount",

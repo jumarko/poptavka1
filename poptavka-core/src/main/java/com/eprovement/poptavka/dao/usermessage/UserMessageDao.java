@@ -6,6 +6,7 @@ package com.eprovement.poptavka.dao.usermessage;
 
 import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
+import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -145,10 +146,11 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
     int getClientConversationsWithoutOfferCount(User user);
 
      /** Retrieves the count of client's conversations where an offer has
-     * been made
+     * been made for given demand.
      *
      * @param user the client whose conversations to get
+     * @param demand the demand for which conversations to get
      * @return number of client's conversations where an offer has been made
      */
-    int getClientConversationsWithOfferCount(User user);
+    int getClientConversationsWithOfferCount(User user, Demand demand);
 }
