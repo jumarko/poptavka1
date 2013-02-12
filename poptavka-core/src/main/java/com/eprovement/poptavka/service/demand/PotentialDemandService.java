@@ -14,12 +14,6 @@ public interface PotentialDemandService {
 
 
     /**
-     * Send all new demands to potential suppliers.
-     */
-    void sendDemandsToPotentialSuppliers();
-
-
-    /**
      * Send given demand to all potential suppliers.
      * @param demand
      * @throws com.eprovement.poptavka.exception.MessageException if some error occurs by sending message to suppliers.

@@ -150,10 +150,6 @@
         <constructor-arg index="2" ref="supplierSelection"/>
     </bean>
 
-    <bean id="demandsToSuppliersSender" class="com.eprovement.poptavka.service.jobs.DemandsToSuppliersSender">
-        <constructor-arg ref="potentialDemandsService"/>
-    </bean>
-
     <!-- Other -->
     <bean id="applicationContextProvider" class="com.eprovement.poptavka.application.ApplicationContextProvider"/>
 

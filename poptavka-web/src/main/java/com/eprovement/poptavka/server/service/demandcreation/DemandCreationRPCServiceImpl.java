@@ -7,7 +7,6 @@ package com.eprovement.poptavka.server.service.demandcreation;
 
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
-import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
@@ -17,7 +16,6 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.DemandService;
@@ -31,7 +29,6 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,9 +43,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         implements DemandCreationRPCService {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);
     private DemandService demandService;
-    private PotentialDemandService potentialDemandService;
     private LocalityService localityService;
     private ClientService clientService;
     private Converter<Demand, FullDemandDetail> demandConverter;
@@ -61,10 +56,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         this.demandService = demandService;
     }
 
-    @Autowired
-    public void setPotentialDemandService(PotentialDemandService potentialDemandService) {
-        this.potentialDemandService = potentialDemandService;
-    }
 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
@@ -132,32 +123,12 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         /** categories **/
         demand.setCategories(categoryConverter.convertToSourceList(detail.getCategories()));
 
-        Demand newDemandFromDB = demandService.create(demand);
-        sendDemandToSuppliers(newDemandFromDB);
+        final Demand newDemandFromDB = demandService.create(demand);
         return demandConverter.convertToTarget(newDemandFromDB);
     }
 
     private boolean maxOffersSpecified(FullDemandDetail detail) {
         return detail.getMaxOffers() > 0;
-    }
-
-    /**
-     * Method creates a message that is associated with created demand. Message
-     * is sent to all suppliers that complies with the demand criteria
-     *
-     * demand messages should be sent and possibly separate this heuristic
-     *
-     * @param demand
-     */
-    private void sendDemandToSuppliers(Demand demand) {
-        // send message and handle exception if any
-        try {
-            this.potentialDemandService.sendDemandToPotentialSuppliers(demand);
-        } catch (MessageException e) {
-            LOGGER.error("Demand " + demand + " has not been sent to suppliers. "
-                    + "The next try will be made by regular job.");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
     }
 
     /**

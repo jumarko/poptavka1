@@ -50,22 +50,6 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
 
 
     @Override
-    public void sendDemandsToPotentialSuppliers() {
-
-        // TODO try to parallel this task - maybe in Scala? or Gpars http://gpars.codehaus.org/Parallelizer :)
-
-
-        final List<Demand> allNewDemands = getAllDemandsInValidState();
-        for (Demand newDemand : allNewDemands) {
-            try {
-                sendDemandToPotentialSuppliers(newDemand);
-            } catch (MessageException e) {
-                LOGGER.error("An error occured while trying to send message to suppliers for demand " + newDemand, e);
-            }
-        }
-    }
-
-    @Override
     @Transactional
     public void sendDemandToPotentialSuppliers(Demand demand) throws MessageException {
         LOGGER.info("Action=demand_send_to_suppliers status=start demand=" + demand);
