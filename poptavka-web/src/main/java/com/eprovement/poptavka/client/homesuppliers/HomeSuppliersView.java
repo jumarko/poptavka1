@@ -19,7 +19,6 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.ImageResourceCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -73,28 +72,18 @@ public class HomeSuppliersView extends OverflowComposite
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     //Table constants
-    private static final int SUPPLIER_NAME_COL_WIDTH = 120;
-    private static final int RATING_COL_WIDTH = 50;
-    private static final int ADDRESS_COL_WIDTH = 60;
-    private static final int LOGO_COL_WIDTH = 25;
+    private static final String ADDRESS_COL_WIDTH = "120px";
+    private static final String LOGO_COL_WIDTH = "70px";
     //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
-    @UiField(provided = true)
-    CellTree cellTree;
-    @UiField(provided = true)
-    UniversalAsyncGrid<FullSupplierDetail> dataGrid;
-    @UiField(provided = true)
-    UniversalPagerWidget pager;
-    @UiField
-    Label reklama, filterLabel;
-    @UiField
-    DecoratorPanel filterLabelPanel;
-    @UiField
-    HTMLPanel detail;
-    @UiField
-    UserDetailView userDetailView;
-    @UiField
-    Button contactBtn;
+    @UiField(provided = true) CellTree cellTree;
+    @UiField(provided = true) UniversalAsyncGrid<FullSupplierDetail> dataGrid;
+    @UiField(provided = true) UniversalPagerWidget pager;
+    @UiField Label reklama, filterLabel;
+    @UiField DecoratorPanel filterLabelPanel;
+    @UiField HTMLPanel detail;
+    @UiField UserDetailView userDetailView;
+    @UiField Button contactBtn;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     private List<String> gridColumns = Arrays.asList(
@@ -138,7 +127,6 @@ public class HomeSuppliersView extends OverflowComposite
                 Constants.WITHOUT_CHECK_BOXES,
                 CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS), null, resource);
         Storage.setTree(cellTree);
-        // cellTree.setSize("300px", "100px");
         cellTree.setAnimationEnabled(true);
     }
 
@@ -154,8 +142,8 @@ public class HomeSuppliersView extends OverflowComposite
         // change.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(gridColumns, pager.getPageSize(), resource);
-        dataGrid.setMinimumTableWidth(LOGO_COL_WIDTH + SUPPLIER_NAME_COL_WIDTH
-                + RATING_COL_WIDTH + ADDRESS_COL_WIDTH, Unit.PX);
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
         // Selection handler
         dataGrid.setSelectionModel(new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER));
 
@@ -185,7 +173,7 @@ public class HomeSuppliersView extends OverflowComposite
         logoCol.setSortable(false);
         logoCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
         dataGrid.addColumn(logoCol, Storage.MSGS.columnLogo());
-        dataGrid.setColumnWidth(logoCol, LOGO_COL_WIDTH, Unit.PX);
+        dataGrid.setColumnWidth(logoCol, LOGO_COL_WIDTH);
 
         // Company name.
         /**************************************************************************/
@@ -193,7 +181,7 @@ public class HomeSuppliersView extends OverflowComposite
         Column<FullSupplierDetail, SupplierCell> companyNameCol = new IdentityColumn(new SupplierCell());
         companyNameCol.setSortable(true);
         dataGrid.addColumn(companyNameCol, Storage.MSGS.columnSupplierName());
-        dataGrid.setColumnWidth(companyNameCol, SUPPLIER_NAME_COL_WIDTH, Unit.PX);
+        dataGrid.setColumnWidth(companyNameCol, Constants.COL_WIDTH_TITLE);
 
         // SupplierRating.
         /**************************************************************************/
@@ -202,7 +190,7 @@ public class HomeSuppliersView extends OverflowComposite
         ratingCol.setSortable(true);
         ratingCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
         dataGrid.addColumn(ratingCol, Storage.MSGS.columnRating());
-        dataGrid.setColumnWidth(ratingCol, RATING_COL_WIDTH, Unit.PX);
+        dataGrid.setColumnWidth(ratingCol, Constants.COL_WIDTH_RATING);
 
         // Address.
         /**************************************************************************/

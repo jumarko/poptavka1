@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
@@ -47,17 +48,12 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     //                              ATTRIBUTES                                */
     //*************************************************************************/
     //Table constants
-    private static final int BODY_COL_WIDTH = 200;
-    private static final int SENT_COL_WIDTH = 60;
-    private static final int CREATED_COL_WIDTH = 60;
-    private static final int STATE_COL_WIDTH = 150;
-    private static final int TYPE_COL_WIDTH = 150;
-    private static final int SUBJECT_COL_WIDTH = 150;
-    private static final int ID_COL_WIDTH = 50;
-    private static final int DID_COL_WIDTH = 50;
-    private static final int RID_COL_WIDTH = 50;
-    private static final int SID_COL_WIDTH = 50;
-    private static final int PID_COL_WIDTH = 50;
+    private static final String BODY_COL_WIDTH = "200px";
+    private static final String SENT_COL_WIDTH = "60px";
+    private static final String CREATED_COL_WIDTH = "60px";
+    private static final String STATE_COL_WIDTH = "150px";
+    private static final String TYPE_COL_WIDTH = "150px";
+    private static final String SUBJECT_COL_WIDTH = "150px";
     //
     @UiField
     Button commit, rollback, refresh;
@@ -123,9 +119,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         // change.
         dataGrid = new UniversalAsyncGrid<MessageDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setWidth("1000px");
-        dataGrid.setHeight("500px");
-        dataGrid.setEmptyTableWidget(new Label("No data available."));
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -230,7 +225,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addSenderIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnSenderID(), true, SID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnSenderID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override
@@ -241,7 +237,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addParentIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnPID(), true, PID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnPID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override
@@ -252,7 +249,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addDemandIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDID(), true, DID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override
@@ -263,7 +261,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addIdColumn() {
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override

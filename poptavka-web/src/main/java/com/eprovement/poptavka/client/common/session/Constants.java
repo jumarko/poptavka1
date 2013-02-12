@@ -179,4 +179,15 @@ public final class Constants {
     /* Address selector                                                       */
     /**************************************************************************/
     public static final int MIN_CHARS_TO_SEARCH = 3;
+
+    /**************************************************************************/
+    /* Column widths                                                          */
+    /**************************************************************************/
+    public static final String COL_WIDTH_TITLE = "100%";
+    public static final String COL_WIDTH_PRICE = "100px";
+    public static final String COL_WIDTH_DATE = "140px";
+    public static final String COL_WIDTH_RATING = "80px";
+    public static final String COL_WIDTH_ICON = "40px";
+    public static final String COL_WIDTH_URGENT = "50px";
+    public static final String COL_WIDTH_ID = "50px";
 }

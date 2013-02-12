@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
@@ -50,13 +51,10 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     //                              ATTRIBUTES                                */
     //*************************************************************************/
     //Table constants
-    private static final int ID_COL_WIDTH = 50;
-    private static final int CID_COL_WIDTH = 50;
-    private static final int TITLE_COL_WIDTH = 160;
-    private static final int TYPE_COL_WIDTH = 100;
-    private static final int STATUS_COL_WIDTH = 140;
-    private static final int EXPIRATION_COL_WIDTH = 40;
-    private static final int END_COL_WIDTH = 40;
+    private static final String TITLE_COL_WIDTH = "160px";
+    private static final String TYPE_COL_WIDTH = "100px";
+    private static final String STATUS_COL_WIDTH = "140px";
+    private static final String EXPIRATION_COL_WIDTH = "40px";
     //
     @UiField
     Button commit, rollback, refresh;
@@ -125,7 +123,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         dataGrid = new UniversalAsyncGrid<FullDemandDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
-        dataGrid.setEmptyTableWidget(new Label("No data available."));
+        dataGrid.setHeight("100%");
 
         // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -142,7 +140,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private void initTableColumns() {
 
         // Demand ID.
-        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnID(), true, ID_COL_WIDTH,
+        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override
@@ -152,7 +151,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 });
 
         // Client ID.
-        cidColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnCID(), true, CID_COL_WIDTH,
+        cidColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnCID(),
+                true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override
@@ -217,7 +217,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
         // Demand end date.
         demandEndColumn = dataGrid.addColumn(
-                new DatePickerCell(dateFormat), Storage.MSGS.columnEndDate(), true, END_COL_WIDTH,
+                new DatePickerCell(dateFormat), Storage.MSGS.columnEndDate(),
+                true, Constants.COL_WIDTH_DATE,
                 new GetValue<Date>() {
 
                     @Override

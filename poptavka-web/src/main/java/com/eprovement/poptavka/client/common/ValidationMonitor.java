@@ -40,7 +40,16 @@ import javax.validation.groups.Default;
 
 /**
  * Main purpose of Validation monitor is to simplifies validation process through
- * hibernate validation. In
+ * hibernate validation. Works like this:
+ * Unlike validation of whole object using validation Editor, validation monitor
+ * validates only one attribute separately. It enable partial validation of form attributes.
+ * And to do partial validation in form, we needed additional logic and components.
+ * All this additional requirements are build in validation monitor.
+ *
+ * To use Validation monitor. Wrap component you want to validate by validation monitor.
+ * Supported components are: TextBox, IntegerBox, BigDecimalBox, DateBox, ListBox, CellList.
+ * Then you have to define validation monitor as (provided=true) and manually initialize it,
+ * because validation monitor need to know Class<T> of validated object. And thats it. Enjoy.
  *
  * @author Martin Slavkovsky
  */
@@ -71,6 +80,11 @@ public class ValidationMonitor<T> extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Initialize Validation monitor. Need to manually initialize because we need
+     * to know Class<T>.
+     * @param beanType
+     */
     public ValidationMonitor(Class<T> beanType) {
         this.beanType = beanType;
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -81,6 +95,9 @@ public class ValidationMonitor<T> extends Composite
     /**************************************************************************/
     /* Validation                                                             */
     /**************************************************************************/
+    /**
+     * Provide partial validation of component that was wrapped by validation monitor class.
+     */
     public void validate() {
         //reset for new validation
         if (hideErrorPanel) {
@@ -101,6 +118,10 @@ public class ValidationMonitor<T> extends Composite
         }
     }
 
+    /**
+     * Tell if component is valid.
+     * @return true if valid, false elsewere.
+     */
     @Override
     public boolean isValid() {
         validate();
@@ -129,16 +150,28 @@ public class ValidationMonitor<T> extends Composite
         holder.add(w);
     }
 
+    /**
+     * Clear component that is validated.
+     */
     @Override
     public void clear() {
         holder.clear();
     }
 
+    /**
+     * Not supported yet.
+     * @return
+     */
     @Override
     public Iterator<Widget> iterator() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Remove component that is validated.
+     * @param w - widget to be removed.
+     * @return true if successfully removed, false elsewhere.
+     */
     @Override
     public boolean remove(Widget w) {
         return holder.remove(w);
@@ -148,31 +181,60 @@ public class ValidationMonitor<T> extends Composite
     /* Methods                                                                */
     /**************************************************************************/
     /** Getters. **/
+    /**
+     * Get error panel. It contains error label.
+     * @return
+     */
     public HTMLPanel getErrorPanel() {
         return errorPanel;
     }
 
+    /**
+     * Get error label. Validation messages are displayed through this label.
+     * @return
+     */
     public Label getErrorLabel() {
         return errorLabel;
     }
 
+    /**
+     * Get control group. It contains panel for holding validating component and
+     * error label.
+     * @return
+     */
     public ControlGroup getControlGroup() {
         return controlGroup;
     }
 
+    /**
+     * Get component's value.
+     * @return
+     */
     public Object getValue() {
         return getInputWidgetText();
     }
 
+    /**
+     * Get this widget.
+     * @return
+     */
     public Widget getChangeMonitorWidget() {
         return this;
     }
 
     /** Setters. **/
+    /**
+     * Set component's value.
+     * @param value
+     */
     public void setValue(Object value) {
         setInputWidgetText(value);
     }
 
+    /**
+     * Hide error panel if needed.
+     * @param hideErrorPanel
+     */
     public void setHideErrorPanel(boolean hideErrorPanel) {
         this.hideErrorPanel = hideErrorPanel;
     }
@@ -227,6 +289,10 @@ public class ValidationMonitor<T> extends Composite
         }
     }
 
+    /**
+     * Get component's value that is validated.
+     * @return
+     */
     private Object getInputWidgetText() {
         if (holder.getWidget() instanceof TextBox) {
             return ((TextBox) holder.getWidget()).getText();
@@ -247,6 +313,10 @@ public class ValidationMonitor<T> extends Composite
         }
     }
 
+    /**
+     * Set component's value.
+     * @param value
+     */
     private void setInputWidgetText(Object value) {
         if (holder.getWidget() instanceof TextBox) {
             ((TextBox) holder.getWidget()).setText((String) value);

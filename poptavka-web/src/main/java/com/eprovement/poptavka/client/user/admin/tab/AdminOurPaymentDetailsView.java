@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentDetail;
@@ -90,9 +91,8 @@ public class AdminOurPaymentDetailsView extends Composite
         // change.
         dataGrid = new UniversalAsyncGrid<PaymentDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setWidth("700px");
-        dataGrid.setHeight("500px");
-        dataGrid.setEmptyTableWidget(new Label("No data available."));
+        dataGrid.setWidth("100%");
+        dataGrid.setHeight("100%");
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -107,8 +107,9 @@ public class AdminOurPaymentDetailsView extends Composite
      * Add the columns to the table.
      */
     private void initTableColumns() {
+        //TODO LATER Martin - i18n
         // Demand ID.
-        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+        dataGrid.addColumn(new TextCell(), "ID", true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
                     @Override
@@ -118,7 +119,7 @@ public class AdminOurPaymentDetailsView extends Composite
                 });
 
         // Bank Account
-        bankAccountColumn = dataGrid.addColumn(new EditTextCell(), "BankAccount", true, 50,
+        bankAccountColumn = dataGrid.addColumn(new EditTextCell(), "BankAccount", true, "50px",
                 new GetValue<String>() {
 
                     @Override
@@ -128,7 +129,7 @@ public class AdminOurPaymentDetailsView extends Composite
                 });
 
         // Bank Code
-        bankCodeColumn = dataGrid.addColumn(new EditTextCell(), "BankCode", true, 160,
+        bankCodeColumn = dataGrid.addColumn(new EditTextCell(), "BankCode", true, "160px",
                 new GetValue<String>() {
 
                     @Override
@@ -138,7 +139,7 @@ public class AdminOurPaymentDetailsView extends Composite
                 });
 
         // Iban
-        ibanColumn = dataGrid.addColumn(new EditTextCell(), "Iban", true, 100,
+        ibanColumn = dataGrid.addColumn(new EditTextCell(), "Iban", true, "100px",
                 new GetValue<String>() {
 
                     @Override
@@ -148,7 +149,7 @@ public class AdminOurPaymentDetailsView extends Composite
                 });
 
         // Swift Code
-        swiftCodeColumn = dataGrid.addColumn(new EditTextCell(), "SwiftCode", true, 140,
+        swiftCodeColumn = dataGrid.addColumn(new EditTextCell(), "SwiftCode", true, "140px",
                 new GetValue<String>() {
 
                     @Override
