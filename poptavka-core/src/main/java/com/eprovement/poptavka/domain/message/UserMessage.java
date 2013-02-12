@@ -183,6 +183,7 @@ import javax.persistence.NamedQuery;
                         + " latestUserMessage.message.threadRoot as rootMessage\n"
                         + "where rootMessage.demand is not null"
                         + " and latestUserMessage.user = :user"
+                        + " and latestUserMessage.message.demand = :demand"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is not null")

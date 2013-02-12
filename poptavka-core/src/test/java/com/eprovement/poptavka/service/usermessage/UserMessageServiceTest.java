@@ -2,6 +2,7 @@ package com.eprovement.poptavka.service.usermessage;
 
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
@@ -232,8 +233,9 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetClientConversationsWithOfferCount() {
+        Demand demand = this.generalService.find(Demand.class, 2L);
         final int clientConversationsCount = this.userMessageService
-                .getClientConversationsWithOfferCount(this.userClient);
+                .getClientConversationsWithOfferCount(this.userClient, demand);
         Assert.assertEquals("The count of client's (id="
                 + this.userClient.getId() + "conversations with offer is"
                 + " incorrect.", 1, clientConversationsCount);

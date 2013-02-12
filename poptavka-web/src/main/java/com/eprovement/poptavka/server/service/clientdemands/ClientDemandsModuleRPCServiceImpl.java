@@ -414,7 +414,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             final SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         // TODO RELEASE ivlcek - incorporate searchDefinition for this method and refactor with new sql
         final User user = generalService.find(User.class, userId);
-        return userMessageService.getClientConversationsWithOfferCount(user);
+        final Demand demand = generalService.find(Demand.class, demandID);
+        return userMessageService.getClientConversationsWithOfferCount(user, demand);
     }
 
     /**

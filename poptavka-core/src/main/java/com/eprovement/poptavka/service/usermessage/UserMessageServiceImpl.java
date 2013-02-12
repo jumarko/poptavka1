@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.dao.usermessage.UserMessageDao;
+import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -252,7 +253,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
-    public int getClientConversationsWithOfferCount(User user) {
-        return getDao().getClientConversationsWithOfferCount(user);
+    public int getClientConversationsWithOfferCount(User user, Demand demand) {
+        return getDao().getClientConversationsWithOfferCount(user, demand);
     }
 }
