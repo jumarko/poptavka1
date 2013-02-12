@@ -55,7 +55,7 @@ a,a:visited,a:hover {
 	font-size: small;
 	cursor: pointer;
 	cursor: hand;
-	background: url(images/hborder.png) repeat-x 0px -27px #cccccc;
+	background: 0px -27px #cccccc;
 	border: 1px outset #ccc;
 }
 
