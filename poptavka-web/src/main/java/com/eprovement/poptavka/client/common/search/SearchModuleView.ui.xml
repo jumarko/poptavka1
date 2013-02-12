@@ -10,34 +10,28 @@
 		font-style: italic;
 		}
 
-		.search-menu {
-		background: #e8edf0;
-		padding: 6px;
-		}
-
 		.search-textbox[type="text"] {
-		width: 267px;
-		height: 37px;
-		line-height:
-		37px;
-		border: 1px solid #aabac1;
-		padding: 8px 6px;
-		color: #002f51;
-		border-radius: 3px 0 0 3px;
-		-moz-border-radius: 3px 0 0 3px;
-		-webkit-border-radius: 3px 0 0 3px;
+		background: none repeat scroll 0 0 transparent;
+		border: medium none;
+		box-shadow: none;
+		color: #0E41AA;
+		height: 40px;
+		line-height: 37px;
 		margin: 0;
+		padding: 8px 15px;
+		width:
+		149px;
 		}
 
 		.search-button {
-		background: url(images/search-button.png) no-repeat;
-		border: medium
-		none;
+		background: none repeat scroll 0 0 transparent;
+		border: medium none;
 		color: #FFFFFF;
+		cursor: pointer;
 		font-weight: bold;
-		height: 37px;
-		width: 32px;
-		cursor:pointer;
+		height: 40px;
+		padding: 0;
+		width: 54px;
 		}
 
 		.blue-button:hover {
@@ -45,7 +39,9 @@
 		}
 
 		.search-list {
-		background: url(images/advanced-search-dropdown.png) repeat;
+		background:
+		url(images/advanced-search-dropdown.png)
+		repeat;
 		float:right;
 		color:#002F51;
 		height:23px;
@@ -59,34 +55,40 @@
 
 		.search-list-item {
 		line-height:20px;
-		padding: 0 27px 0 5px;
+		padding: 0 27px 0
+		5px;
 		width:105px;
 		}
 
 		.search-list-dropdown table {
 		background: #ffffff;
 		padding:10px;
-		margin: 3px 0 0 -9px;
+		margin:
+		3px 0 0 -9px;
 		line-height:
 		20px;
 		width: 136px;
 		border: 1px solid #C2C8D2;
 		border-radius: 4px;
-		box-shadow: 0 0 3px #DDDDDD;
+		box-shadow: 0 0 3px
+		#DDDDDD;
 		}
 
-		.search-list-dropdown table td:hover {
+		.search-list-dropdown
+		table td:hover {
 		color: #bd0000;
-		cursor: pointer;
+		cursor:pointer;
 		}
 
 		.advanced-search {
-		background:url(images/advanced-search-button.gif)
-		no-repeat 0 7px;
-		border: none;
-		margin: 8px 0 0 7px;
-		padding: 0 0 0 7px;
-		cursor:pointer;
+		background: none repeat scroll 0 0
+		transparent;
+		border: medium none;
+		color: #FFFFFF;
+		cursor: pointer;
+		margin: 0 0 0 24px;
+		padding: 5px 0;
+		width: 89px;
 		}
 	</ui:style>
 	<ui:with field='res'
@@ -94,7 +96,7 @@
 	<ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
 	<g:HTMLPanel ui:field="container">
-		<div ui:field="searchMenu" class='{style.search-menu}'>
+		<div ui:field="searchMenu">
 			<g:HorizontalPanel>
 				<b:TextBox ui:field="searchContent" placeholder="{msgs.searchContent}"
 					styleName='{style.search-textbox}' />
