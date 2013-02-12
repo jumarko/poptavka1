@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import java.util.Date;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -17,6 +18,7 @@ import com.google.gwt.text.shared.SafeHtmlRenderer;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 
+//TODO LATER Martin - not used - refactor or delete
 public class ClickableDateCell extends AbstractCell<Date> {
 
     private SafeHtmlRenderer<Date> renderer = new AbstractSafeHtmlRenderer<Date>() {
@@ -26,10 +28,10 @@ public class ClickableDateCell extends AbstractCell<Date> {
             long creationDate = demandCreation.getTime();
             long actualDate = new Date().getTime();
             //conditions
-            if ((actualDate - creationDate) < Storage.DAY_LENGTH) {
+            if ((actualDate - creationDate) < Constants.DAY_LENGTH) {
                 return SafeHtmlUtils.fromTrustedString(Storage.MSGS.creationDateToday());
             }
-            if ((actualDate - creationDate) < (Storage.DAY_LENGTH * 2)) {
+            if ((actualDate - creationDate) < (Constants.DAY_LENGTH * 2)) {
                 return SafeHtmlUtils.fromTrustedString(Storage.MSGS.creationDateYesterday());
             }
             return SafeHtmlUtils.fromTrustedString(DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT)

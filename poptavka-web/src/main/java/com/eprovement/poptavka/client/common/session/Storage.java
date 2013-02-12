@@ -42,7 +42,6 @@ public final class Storage {
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final ValidationMessages VMSGS = GWT.create(ValidationMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
-    public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
     public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";
     //local constants
     private static UserDetail userDetail = null;

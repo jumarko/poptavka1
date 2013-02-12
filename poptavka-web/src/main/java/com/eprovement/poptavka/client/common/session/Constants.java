@@ -190,4 +190,9 @@ public final class Constants {
     public static final String COL_WIDTH_ICON = "40px";
     public static final String COL_WIDTH_URGENT = "50px";
     public static final String COL_WIDTH_ID = "50px";
+
+    /**************************************************************************/
+    /* Other Constants                                                        */
+    /**************************************************************************/
+    public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
 }

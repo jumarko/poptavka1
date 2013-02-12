@@ -54,6 +54,9 @@ public interface LocalizableMessages extends Messages {
     String commonServicesLabel();
     String commonSupplier();
 
+    /** Tooltip labels. **/
+    String tooltipUrgency();
+
     /** Messages actions list box. **/
     String commonListDefault();
     String commonListRead();
@@ -277,7 +280,6 @@ public interface LocalizableMessages extends Messages {
     String columnTitle();
     String columnTotalPrice();
     String columnType();
-    String columnUrgency();
     String columnValidTo();
     String columnValue();
     String columnVarSymb();

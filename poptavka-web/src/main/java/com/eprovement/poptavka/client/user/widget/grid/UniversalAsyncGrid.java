@@ -377,12 +377,12 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     }
 
     /**
-     * Creates urgencyDisplay column.
+     * Creates urgency's column with urgency's header represented by urgency's image.
      *
-     * @param sortHandler
      * @return urgencyColumn
      */
-    public Column<T, Date> addUrgentColumn(String headerText) {
+    public Column<T, Date> addUrgentColumn() {
+        //create urgency's column represented by endDate's value
         Column<T, Date> urgencyColumn = new Column<T, Date>(new UrgentImageCell()) {
             @Override
             public Date getValue(T object) {
@@ -391,7 +391,20 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             }
         };
         urgencyColumn.setSortable(true);
-        addColumn(urgencyColumn, headerText);
+        //create urgency's header represented by urgency's image
+        Header urgencyHeader = new Header<Date>(new UrgentImageCell()) {
+
+                @Override
+                public Date getValue() {
+                    /* Returning null value tells UrgetUmageCell to use header image.
+                     * Using it this way we can use same class:UrgentImageCell for
+                     * providing urgency images as for hear as for urgency column items.
+                     * Otherwise we must creating new class image cell providing only header's image. */
+                    return null;
+                }
+            };
+        //put it together
+        addColumn(urgencyColumn, urgencyHeader);
         setColumnWidth(urgencyColumn, Constants.COL_WIDTH_URGENT);
         return urgencyColumn;
     }
