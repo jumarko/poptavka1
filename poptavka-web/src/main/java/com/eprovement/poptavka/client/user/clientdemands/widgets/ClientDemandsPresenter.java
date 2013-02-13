@@ -229,9 +229,6 @@ public class ClientDemandsPresenter
                         selectedConversationObject.getSupplierId(),
                         selectedConversationObject.getThreadRootId());
             }
-            if (selectedDemandObject != null) {
-                this.detailSection.initDetails(selectedDemandObject.getDemandId());
-            }
         }
     }
 
@@ -425,7 +422,7 @@ public class ClientDemandsPresenter
             public void onClick(ClickEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
                 if (detailSection != null) {
-                    detailSection.clear();
+                    detailSection.reset();
                 }
                 view.getDemandPager().startLoading();
                 view.setConversationTableVisible(false);
