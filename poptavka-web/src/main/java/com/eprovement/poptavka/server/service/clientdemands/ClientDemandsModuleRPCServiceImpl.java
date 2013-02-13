@@ -544,6 +544,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
             codod.setIsStarred(userMessage.isStarred());
+            codod.setUserMessageId(userMessage.getId());
             codod.setMessageCount(userMessageEntry.getValue());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
