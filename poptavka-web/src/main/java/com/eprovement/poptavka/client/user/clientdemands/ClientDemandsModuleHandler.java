@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -356,5 +357,26 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                         eventBus.initClientOfferedDemandOffersByHistory(result, childTablePage, childId, filterHolder);
                     }
                 });
+    }
+
+    /**************************************************************************/
+    /* CRUD operation of demand                                               */
+    /**************************************************************************/
+    public void onRequestDeleteDemand(long demandId) {
+        clientDemandsService.deleteDemand(demandId, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean result) {
+                eventBus.responseDeleteDemand(result);
+            }
+        });
+    }
+
+    public void onRequestUpdateDemand(long demandId, ArrayList<ChangeDetail> updatedFields) {
+        clientDemandsService.updateDemand(demandId, updatedFields, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean result) {
+                eventBus.responseUpdateDemand(result);
+            }
+        });
     }
 }

@@ -22,7 +22,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.mvp4g.client.annotation.Presenter;
@@ -60,16 +59,11 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
 
         boolean isValid();
 
-        HTMLPanel getChoiceButtonsPanel();
+        void setFieldEnables(boolean enable);
 
-        Button getSubmitButton();
+        void resetFields();
 
-        Button getCancelButton();
-
-        HTMLPanel getEditButtonsPanel();
-
-        void setEnables(boolean enable);
-
+        void revertFields();
     }
     //history of changes
     private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
@@ -84,7 +78,7 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
             public void onClick(ClickEvent event) {
                 eventBus.initCategoryWidget(
                         view.getSelectorWidgetPopup(),
-                        Constants.WITH_CHECK_BOXES,
+                        Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
                         view.getCategories());
                 view.getSelectorWidgetPopup().center();
@@ -134,19 +128,15 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
                 }
             }
         });
-        view.getSubmitButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (view.isValid()) {
-                    eventBus.requestUpdateDemand(view.getDemandId(), updatedFields);
-                }
-            }
-        });
     }
 
     public void onResponseUpdateDemand(Boolean result) {
         if (result) {
             Window.alert("Successfully updated");
         }
+    }
+
+    public ArrayList<ChangeDetail> getUpdatedFields() {
+        return updatedFields;
     }
 }
