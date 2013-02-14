@@ -266,7 +266,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                         detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
                         detailSection.initDetails(
                                 selected.getDemandId(),
-                                selected.getSenderId(),
+                                selected.getSupplierId(),
                                 selected.getThreadRootId());
                     }
                 }

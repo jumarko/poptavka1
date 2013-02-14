@@ -142,7 +142,7 @@ public class DetailsWrapperPresenter
      * @param threadRootId
      */
     public void initDetails(long demandId, long supplierId, long threadRootId) {
-        clear();
+        reset();
         this.demandId = demandId;
         this.supplierId = supplierId;
         this.threadRootId = threadRootId;
@@ -160,7 +160,7 @@ public class DetailsWrapperPresenter
      * @param threadRootId
      */
     public void initDetails(long demandId, long threadRootId) {
-        clear();
+        reset();
         view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
         this.demandId = demandId;
         this.threadRootId = threadRootId;
@@ -178,7 +178,7 @@ public class DetailsWrapperPresenter
      * @param threadRootId
      */
     public void initDetails(long demandId) {
-        clear();
+        reset();
         view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
         view.getContainer().getTabWidget(CONVERSATION_TAB).getParent().setVisible(false);
         this.demandId = demandId;
@@ -219,6 +219,14 @@ public class DetailsWrapperPresenter
             detail.setMessageCount(detail.getMessageCount() + 1);
         }
         table.redraw();
+    }
+
+    /**
+     * Set all tabs visible and clear tabs' widgets' attributes.
+     */
+    public void reset() {
+        setAllTabVisibility(true);
+        clear();
     }
 
     /**************************************************************************/
@@ -326,9 +334,19 @@ public class DetailsWrapperPresenter
     /* HELPER methods                                                         */
     /**************************************************************************/
     /**
+     * Set all tabs' visibility.
+     * @param visible - true - all tabs will be visible, false elsewhere
+     */
+    private void setAllTabVisibility(boolean visible) {
+        view.getContainer().getTabWidget(DEMAND_DETAIL_TAB).getParent().setVisible(visible);
+        view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(visible);
+        view.getContainer().getTabWidget(CONVERSATION_TAB).getParent().setVisible(visible);
+    }
+
+    /**
      * Clear detail section means reseting widget's attributes of all tabs widgets.
      */
-    public void clear() {
+    private void clear() {
         if (view.getDemandDetailHolder().getWidget() != null) {
             if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS
                     || Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {

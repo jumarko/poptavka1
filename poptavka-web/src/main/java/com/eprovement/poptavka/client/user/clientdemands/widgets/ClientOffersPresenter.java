@@ -419,7 +419,7 @@ public class ClientOffersPresenter
             public void onClick(ClickEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
                 if (detailSection != null) {
-                    detailSection.clear();
+                    detailSection.reset();
                 }
                 view.getDemandPager().startLoading();
                 view.setOfferTableVisible(false);
