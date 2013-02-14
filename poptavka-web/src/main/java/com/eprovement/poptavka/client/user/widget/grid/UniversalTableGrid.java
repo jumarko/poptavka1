@@ -197,7 +197,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         addPriceColumn();
 
         if (gridColumns.contains(URGENCY_COLUMN)) {
-            urgencyColumn = addUrgentColumn(Storage.MSGS.columnUrgency());
+            urgencyColumn = addUrgentColumn();
         }
 
         addReceivedDateColumn();

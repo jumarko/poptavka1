@@ -153,6 +153,7 @@ public class HomeDemandsView extends OverflowComposite
         /**************************************************************************/
         dataGrid.addColumn(new TextCell(), bundle.columnCreatedDate(),
                 true, Constants.COL_WIDTH_DATE,
+                //TODO LATER Martin - use ClicableDateCell, but modify to only CreatedDateCell
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
@@ -162,9 +163,9 @@ public class HomeDemandsView extends OverflowComposite
                         } else {
                             Date now = new Date();
                             long millis = now.getTime() - demandDetail.getCreated().getTime();
-                            if (millis < Storage.DAY_LENGTH) {
+                            if (millis < Constants.DAY_LENGTH) {
                                 return formatter.format(demandDetail.getCreated());
-                            } else if (Storage.DAY_LENGTH <= millis && millis < 2 * Storage.DAY_LENGTH) {
+                            } else if (Constants.DAY_LENGTH <= millis && millis < 2 * Constants.DAY_LENGTH) {
                                 return Storage.MSGS.creationDateYesterday();
                             } else {
                                 return formatter.format(demandDetail.getCreated());
@@ -204,7 +205,7 @@ public class HomeDemandsView extends OverflowComposite
 
         // Urgence
         /**************************************************************************/
-        dataGrid.addUrgentColumn(Storage.MSGS.columnUrgency());
+        dataGrid.addUrgentColumn();
     }
 
     /**************************************************************************/

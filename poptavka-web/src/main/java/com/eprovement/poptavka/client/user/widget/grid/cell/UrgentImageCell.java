@@ -1,120 +1,86 @@
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
-import java.util.Date;
-
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.github.gwtbootstrap.client.ui.constants.Placement;
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
-import com.google.gwt.user.client.ui.PopupPanel;
+import java.util.Date;
 
-import com.eprovement.poptavka.client.common.session.Storage;
-
+/**
+ * Provides urgency images.
+ *
+ * @author Martin Slavkovsky
+ */
 public class UrgentImageCell extends AbstractCell<Date> {
 
     private static ImageResourceRenderer renderer;
     private static final int DAY_URGENT = 4;
     private static final int DAY_URGENT_LESS = 8;
-    private static final int DAY_NORMAL = 12;
+//    TODO RELEASE Jaro - uncomment if implemented
+//    private static final ImageResource HEADER = Storage.RSCS.images().header();
     private static final ImageResource URGENT = Storage.RSCS.images().urgent();
     private static final ImageResource URGENT_LESS = Storage.RSCS.images().lessUrgent();
     private static final ImageResource NORMAL = Storage.RSCS.images().normal();
-    private PopupPanel popup = new PopupPanel(true);
-    private boolean displayed;
 
     public UrgentImageCell() {
-        super("click", "keydown", "mouseover", "mouseout");
         if (renderer == null) {
             renderer = new ImageResourceRenderer();
         }
     }
 
     @Override
-    public void render(com.google.gwt.cell.client.Cell.Context context,
-            Date value, SafeHtmlBuilder sb) {
-        long diffSec = value.getTime() - (new Date()).getTime();
-        long diffDays = diffSec / Storage.DAY_LENGTH;
+    public void render(Context context, Date value, SafeHtmlBuilder sb) {
+        /*
+         * Getting value null tells us to use header image and create tooltip.
+         * The result will be used in header.
+         */
+        if (value == null) {
+            renderUrgencyHeader(context, value, sb);
+            /*
+             * Otherwise provide appropriate urgency image according to given date.
+             */
+        } else {
+            renderUrgencyColumnCell(context, value, sb);
+        }
+    }
 
-        //(0-4) velmi specha
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void renderUrgencyHeader(Context context, Date value, SafeHtmlBuilder sb) {
+        StringBuilder sbs = new StringBuilder();
+        //TODO RELEASE Jaro - make it look goot like in design. Thanks.
+        sbs.append("<a href=\"#\" ");
+        sbs.append("placement=\"" + Placement.BOTTOM + "\" ");
+        sbs.append("delay=0");
+        sbs.append("animation=\"true\" ");
+//            sbs.append("data-toggle=\"tooltip-arrow\" ");
+        sbs.append("title=\"" + Storage.MSGS.tooltipUrgency() + "\" ");
+        sbs.append(">");
+        sb.appendHtmlConstant(sbs.toString());
+        //TODO RELEASE Jaro - switch to HEADER if implemented
+        sb.append(renderer.render(URGENT));
+//            sb.append(renderer.render(HEADER));
+        sb.appendHtmlConstant("</a>");
+    }
+
+    private void renderUrgencyColumnCell(Context context, Date value, SafeHtmlBuilder sb) {
+        long diffMilliseconds = value.getTime() - (new Date()).getTime();
+        long diffDays = diffMilliseconds / Constants.DAY_LENGTH;
+
+        //(0-4 days) hight
         if ((int) diffDays <= DAY_URGENT) {
             sb.append(renderer.render(URGENT));
-            //(5-8) specha
+            //(5-8 days) medium
         } else if ((int) diffDays <= DAY_URGENT_LESS) {
             sb.append(renderer.render(URGENT_LESS));
-        } else if ((int) diffDays <= DAY_NORMAL) {
-            //(9-12) nespecha
+            //(9-infinity days) low
+        } else {
             sb.append(renderer.render(NORMAL));
         }
-    }
-
-    @Override
-    public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
-            Element parent, Date value, NativeEvent event,
-            ValueUpdater<Date> valueUpdater) {
-        if (("click".equals(event.getType())) || ("keydown".equals(event.getType()))) {
-            onEnterKeyDown(context, parent, value, event, valueUpdater);
-        }
-        if ("mouseover".equals(event.getType())) {
-            displayPopup(parent, event);
-        }
-        if ("mouseout".equals(event.getType())) {
-            hidePopup();
-        }
-    }
-
-    @Override
-    protected void onEnterKeyDown(
-            com.google.gwt.cell.client.Cell.Context context, Element parent,
-            Date value, NativeEvent event, ValueUpdater<Date> valueUpdater) {
-        if (valueUpdater != null) {
-            valueUpdater.update(value);
-        }
-    }
-
-    private void displayPopup(Element parent, NativeEvent event) {
-        final String listItemStart = "<li>";
-        final String listItemEnd = "</li>";
-        final String space = " - ";
-
-        if (displayed) {
-            return;
-        }
-        popup.setWidth("150px");
-        popup.setHeight("150px");
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("<ul style='list-style: none; margin-left: 5px;'>");
-        //Hight Urgency
-        sb.append(listItemStart);
-        sb.append(AbstractImagePrototype.create(Storage.RSCS.images().urgent()).getHTML());
-        sb.append(space);
-        sb.append(Storage.MSGS.urgentHigh());
-        sb.append(listItemEnd);
-        //Less Urgency
-        sb.append(listItemStart);
-        sb.append(AbstractImagePrototype.create(Storage.RSCS.images().lessUrgent()).getHTML());
-        sb.append(space);
-        sb.append(Storage.MSGS.urgentLess());
-        sb.append(listItemEnd);
-        //Normal
-        sb.append(listItemStart);
-        sb.append(AbstractImagePrototype.create(Storage.RSCS.images().normal()).getHTML());
-        sb.append(space);
-        sb.append(Storage.MSGS.urgentNormal());
-        sb.append(listItemEnd);
-
-        popup.getElement().setInnerHTML(sb.toString());
-        popup.setPopupPosition(event.getClientX() + 50, event.getClientY() + 35);
-        popup.show();
-        displayed = true;
-    }
-
-    private void hidePopup() {
-        displayed = false;
-        popup.hide();
     }
 }
