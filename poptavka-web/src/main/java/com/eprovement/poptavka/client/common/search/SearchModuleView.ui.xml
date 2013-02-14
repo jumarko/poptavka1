@@ -11,7 +11,8 @@
 		}
 
 		.search-textbox[type="text"] {
-		background: none repeat scroll 0 0 transparent;
+		background: none repeat scroll 0 0
+		transparent;
 		border: medium none;
 		box-shadow: none;
 		color: #0E41AA;
@@ -35,18 +36,20 @@
 		}
 
 		.blue-button:hover {
-		cursor: pointer;
+		cursor:
+		pointer;
 		}
 
 		.search-list {
-		background:
-		url(images/advanced-search-dropdown.png)
-		repeat;
-		float:right;
-		color:#002F51;
-		height:23px;
-		margin:6px 8px;
-		width:137px;
+		background: url(images/advanced-search-dropdown.png) repeat scroll 0 0
+		transparent;
+		color: #002F51;
+		cursor: pointer;
+		height: 23px;
+		left: 743px;
+		position: absolute;
+		top: 80px;
+		width: 137px;
 		}
 
 		.search-list {

@@ -384,6 +384,7 @@ a,a:visited,a:hover {
 
 .gwt-MenuBarPopup {
 	margin: 0px 0px 0px 3px;
+	min-width: 30px;
 }
 
 .gwt-MenuBarPopup .menuPopupTopCenter {
@@ -1370,4 +1371,8 @@ td.datePickerMonth {
 	z-index: 10000;
 	min-width: 0;
 	background: #ff0000;
+}
+
+.modal {
+	min-width: 200px;
 }

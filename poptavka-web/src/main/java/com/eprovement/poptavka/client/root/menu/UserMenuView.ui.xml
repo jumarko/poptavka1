@@ -7,24 +7,24 @@
 
 	<ui:style>
 		.button1 { background: url(images/menu-icons.png) no-repeat 0 0; }
-		.button2 { background: url(images/menu-icons.png) no-repeat 0 -73px; }
-		.button3 { background: url(images/menu-icons.png) no-repeat 0 -146px; }
-		.button4 { background: url(images/menu-icons.png) no-repeat 0 -219px; }
-		.button5 { background: url(images/menu-icons.png) no-repeat 0 -292px; }
-		.button6 { background: url(images/menu-icons.png) no-repeat 0 -365px; }
-		.button7 { background: url(images/menu-icons.png) no-repeat 0 -438px; }
-		.button8 { background: url(images/menu-icons.png) no-repeat 0 -511px; }
-		.button9 { background: url(images/menu-icons.png) no-repeat 0 -584px; }
+		.button2 { background: url(images/menu-icons.png) no-repeat 0 -90px; }
+		.button3 { background: url(images/menu-icons.png) no-repeat 0 -180px; }
+		.button4 { background: url(images/menu-icons.png) no-repeat 0 -270px; }
+		.button5 { background: url(images/menu-icons.png) no-repeat 0 -360px; }
+		.button6 { background: url(images/menu-icons.png) no-repeat 0 -450px; }
+		.button7 { background: url(images/menu-icons.png) no-repeat 0 -540px; }
+		.button8 { background: url(images/menu-icons.png) no-repeat 0 -630px; }
+		.button9 { background: url(images/menu-icons.png) no-repeat 0 -720px; }
 
 		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }
-		.button2:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -73px; }
-		.button3:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -146px; }
-		.button4:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -219px; }
-		.button5:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -292px; }
-		.button6:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -365px; }
-		.button7:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -438px; }
-		.button8:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -511px; }
-		.button9:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -584px; }
+		.button2:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -90px; }
+		.button3:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -180px; }
+		.button4:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -270px; }
+		.button5:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -360px; }
+		.button6:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -450px; }
+		.button7:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -540px; }
+		.button8:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -630px; }
+		.button9:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -720px; }
 	</ui:style>
 
 	<g:HTMLPanel>
