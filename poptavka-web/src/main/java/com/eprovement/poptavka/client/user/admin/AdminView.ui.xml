@@ -14,6 +14,12 @@
                     </div>
                     <ul class='{res.layout.submenuList}'>
                         <li>
+                            <g:Button ui:field="newDemandsBtn">
+                                <ui:msg key="adminTableNewDemand">New Demands</ui:msg>
+                            </g:Button>
+                        </li>
+                        <!--TODO LATER Martin - finnish admin interface-->
+<!--                        <li>
                             <g:Button ui:field="demandsButton">
                                 <ui:msg key="adminTableDemand">Demands</ui:msg>
                             </g:Button>
@@ -53,11 +59,11 @@
                                 <ui:msg key="adminTableMessage">Message</ui:msg>
                             </g:Button>
                         </li>
-                        <!--<li>
+                        <li>
                             <g:Button ui:field="ourPaymentDetailsButton">
                                 <ui:msg key="adminTableOurPaymentDetail">OurPaymentDetails</ui:msg>
                             </g:Button>
-                   	</li>-->
+                   	</li>
                         <li>
                             <g:Button ui:field="paymentMethodsButton">
                                 <ui:msg key="adminTablePaymentMethod">PaymentMethod</ui:msg>
@@ -77,7 +83,7 @@
                             <g:Button ui:field="problemsButton">
                                 <ui:msg key="adminTableProblem">Problem</ui:msg>
                             </g:Button>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </g:HTMLPanel>

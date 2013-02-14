@@ -112,8 +112,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         }
         demand.setMinRating(detail.getMinRating());
         // TODO release - change demand status to NEW before release
-        // but revisit the {@link NaiveSupperSelection#VALID_DEMAND_STATES} - should include NEW state in that case
-        demand.setStatus(DemandStatus.ACTIVE);
+        demand.setStatus(DemandStatus.NEW);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getValidToDate());
         demand.setClient(this.clientService.getById(cliendId));

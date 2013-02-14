@@ -20,6 +20,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public interface AdminRPCServiceAsync {
 
@@ -79,6 +80,13 @@ public interface AdminRPCServiceAsync {
     void getAdminMessages(SearchDefinition searchDefinition, AsyncCallback<List<MessageDetail>> callback);
 
     void updateMessage(MessageDetail detailObject, AsyncCallback<MessageDetail> callback);
+
+    //---------------------- NEW DEMANDS --------------------------------------------
+    void getAdminNewDemandsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);
+
+    void getAdminNewDemands(SearchDefinition searchDefinition, AsyncCallback<List<FullDemandDetail>> callback);
+
+    void approveDemands(Set<FullDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
     void getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);
