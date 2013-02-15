@@ -6,10 +6,16 @@
  * @author Jaro
  *
  */
+html {
+	background: url(images/content_bg.jpg) repeat;
+}
+
 body {
 	margin: 0;
-	background: none;
+	padding: 0;
+	background: url(images/body_bg.jpg) no-repeat top right transparent;
 	min-width: 1280px;
+	height: 100%;
 }
 
 body > div {
@@ -21,7 +27,7 @@ body > div {
 	padding: 0;
 	width: 100%;
 	height: 100%;
-	background: url(images/main_bg.jpg) no-repeat top left #ffffff;
+	background: transparent;
 }
 
 .body-container {
@@ -66,14 +72,16 @@ body > div {
 .header-container {
 	margin: 0 auto;
 	width: 100%;
-	background-color: none;
 }
 
 .header-content {
-	margin: 0;
-	padding: 0;
-	height: 100px;
-	float: right;
+    height: 75px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    z-index: 50;
 }
 
 /*
@@ -81,7 +89,7 @@ body > div {
 *
 */
 .toolbar {
-	background: url(images/nav-bar.png) repeat-x left top;
+
 }
 
 .toolbar-header {
@@ -96,7 +104,7 @@ body > div {
 }
 
 .toolbar-items-block {
-	margin: 7px 0 0;
+	margin: 9px 0 0;
 	float: left;
 }
 
@@ -129,17 +137,11 @@ body > div {
 *
 */
 .home-menu {
-	padding: 0;
-	margin: 17px 0 0;
-	height: 73px;
-	float: left;
-	list-style-type: none;
-	background: url(images/menu_bg.gif) repeat-x;
-	border-right: 1px solid #00496b;
-	border-left: 1px solid #00496b;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
+    background: url("images/menu_bg.png") no-repeat top right transparent;
+    float: left;
+    height: 90px;
+    list-style-type: none;
+    padding: 0 55px;
 }
 
 .home-menu ul {
@@ -155,15 +157,14 @@ body > div {
 
 .home-menu li button {
 	width: 95px;
-	height: 73px;
+	height: 90px;
 	line-height: 15px;
 	border: none;
 	color: #f4f4f4;
 	font-size: 13px;
 	font-weight: bold;
-	text-shadow: 1px 3px 3px #03272a;
 	text-align: center;
-	padding: 21px 0 0;
+	padding: 30px 0 0;
 }
 
 .home-menu li button:hover {
@@ -181,28 +182,18 @@ body > div {
 	color: #f4f4f4;
 }
 
-.home-logo {
-	float: left;
-	height: 105px;
-	line-height: 105px;
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	width: 340px;
-}
-
 /*
-*	User Menu Styles
+*	Logo Styles
 *
 */
-.user-logo {
-	float: left;
-	height: 105px;
-	line-height: 105px;
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	width: 180px;
+
+.home-logo, .user-logo {
+    background: url(images/logo.png) no-repeat scroll 0 0 transparent;
+    height: 112px;
+    position: absolute;
+    top: 11px;
+    width: 235px;
+    z-index: 150;
 }
 
 /*
@@ -210,10 +201,11 @@ body > div {
 *
 */
 .search-bar {
-	float: left;
-	height: 80px;
-	margin: 16px 20px 0;
-	width: 312px;
+    background: url(images/search_bg.png) no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 76px;
+    margin: 26px 0 0 20px;
+    width: 203px;
 }
 
 .search-view {
@@ -248,7 +240,7 @@ body > div {
 */
 .login {
 	float: right;
-	margin: 28px 15px 0;
+	margin: 26px 30px 0 15px;
 	z-index: 150;
 }
 
@@ -260,14 +252,17 @@ body > div {
 
 .login-button {
 	background: url(images/login_bg.png) no-repeat;
-	width: 51px;
-	height: 28px;
-	padding: 8px 5px 0 60px;
+    height: 42px;
+    text-align: center;
+    width: 134px;
 }
 
 .login-button a {
-	color: #fbfbfb;
-	display: block;
+	color: #FBFBFB;
+    display: block;
+    font-size: 15px;
+    line-height: 39px;
+    padding: 0 0 5px 35px;
 }
 
 .login-button a:hover {

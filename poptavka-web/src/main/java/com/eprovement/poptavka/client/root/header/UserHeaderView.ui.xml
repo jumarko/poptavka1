@@ -10,36 +10,36 @@
 		.important {
 			font-weight: bold;
 		}
-		
+
 		.username {
 			float: right;
 			margin: 0 10px;
 			color: #000000;
 		}
-		
+
 		.newMessageCount {
 			float: right;
 			margin: 0;
 			color: #000000;
 		}
-		
+
 		.pushButton {
 			float: right;
 			margin: 0 5px 0 10px;
 		}
-		
+
 		.pushButton:hover {
 			cursor: pointer;
 		}
 	</ui:style>
 
-	<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContent}'>
+	<g:HTMLPanel ui:field='headerHolder'>
 		<!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
 
 		<!-- new type -->
 		<!-- Logo -->
-		<!-- <div style="position: absolute; background: url(images/logo.png) no-repeat 
-			scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;"> 
+		<!-- <div style="position: absolute; background: url(images/logo.png) no-repeat
+			scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;">
 			</div> -->
 		<!-- end Logo -->
 
