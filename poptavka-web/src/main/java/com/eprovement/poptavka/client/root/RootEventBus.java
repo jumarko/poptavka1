@@ -12,8 +12,10 @@ package com.eprovement.poptavka.client.root;
 
 import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
+import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormPresenter;
 import com.eprovement.poptavka.client.error.ErrorModule;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
+
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
@@ -451,4 +453,15 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootHandler.class)
     void requestUpdateDemand(long demandId, ArrayList<ChangeDetail> changes);
 
+    /**************************************************************************/
+    /* Business events handled by AccountAccountInfoPresenters.               */
+    /**************************************************************************/
+    @Event(handlers = RootPresenter.class)
+    void initUserRegistrationForm(SimplePanel holderWidget);
+
+    @Event(handlers = RootHandler.class)
+    void checkFreeEmail(String value);
+
+    @Event(handlers = UserRegistrationFormPresenter.class)
+    void checkFreeEmailResponse(Boolean result);
 }

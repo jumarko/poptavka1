@@ -102,4 +102,13 @@ public interface RootRPCService extends RemoteService {
 
     Boolean updateDemands(long demandId, ArrayList<ChangeDetail> changes) throws
             RPCException, ApplicationSecurityException;
+
+    /**************************************************************************/
+    /* Registration user methods - Account info                               */
+    /**************************************************************************/
+    /**
+     * Checks wheter given {@code email} is available.
+     * @param email ęmail address to be checked
+     */
+    boolean checkFreeEmail(String email) throws RPCException;
 }

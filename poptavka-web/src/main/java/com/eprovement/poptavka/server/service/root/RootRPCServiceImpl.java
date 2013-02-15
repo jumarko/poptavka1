@@ -29,6 +29,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.UserVerificationService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -69,6 +70,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     //Services
     private LocalityService localityService;
     private CategoryService categoryService;
+    private ClientService clientService;
     private GeneralService generalService;
     private MessageService messageService;
     private UserMessageService userMessageService;
@@ -96,6 +98,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    @Autowired
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @Autowired
@@ -450,5 +457,13 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
             }
         }
         return demand;
+    }
+
+    /**************************************************************************/
+    /* Registration user methods - Account info                               */
+    /**************************************************************************/
+    @Override
+    public boolean checkFreeEmail(String email) throws RPCException {
+        return clientService.checkFreeEmail(email);
     }
 }

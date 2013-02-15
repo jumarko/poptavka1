@@ -71,7 +71,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     @Future(message = "{demandFutureValidToDate}")
     private Date validToDate;
     @NotBlank(message = "{demandNotBlankDescription}")
-    @Size(min = 5, message = "{demandSizeDescription}")
+    @Size(min = 20, message = "{demandSizeDescription}")
     private String description;
     //
     private List<FullSupplierDetail> excludedSuppliers;

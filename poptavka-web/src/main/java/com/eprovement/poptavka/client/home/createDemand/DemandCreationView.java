@@ -1,26 +1,26 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class DemandCreationView extends OverflowComposite implements DemandCreationPresenter.CreationViewInterface {
 
@@ -34,26 +34,25 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private static final Logger LOGGER = Logger.getLogger("DemandCreationView");
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
-    private int back = 0;
     @UiField
-    StatusIconLabel userStatus, basicStatus, categoryStatus, localityStatus, advStatus;
-    @UiField
-    SimplePanel userFormHolder, basicInfoHolder, categoryHolder, localityHolder, advInfoHolder;
+    SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5;
     @UiField
     TabLayoutPanel mainPanel;
     @UiField
     DockLayoutPanel userFormPanel;
     @UiField
-    Button loginBtn, registerBtn, createDemandBtn;
+    Button loginBtn, registerBtn;
     @UiField
-    Button nextButtonTab2, nextButtonTab3, nextButtonTab4,
-    backButtonTab3, backButtonTab4, backButtonTab5;
+    Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4, nextButtonTab5;
     @UiField
-    HTML firstTabHeader;
+    Button backButtonTab1, backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
+    @UiField
+    HTML headerLabelTab1, headerLabelTab2, headerLabelTab3, headerLabelTab4, headerLabelTab5;
+    @UiField
+    HTMLPanel buttonsPanelTab1;
+    @UiField
+    Label infoLabel1;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -61,13 +60,10 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        recalculateTabNumbers();
 
-        /** filling status list **/
-        StatusIconLabel[] array = {userStatus, basicStatus, categoryStatus, localityStatus, advStatus};
-        statusLabels = Arrays.asList(array);
         /** filling panels list **/
-        SimplePanel[] panels = {userFormHolder, basicInfoHolder, categoryHolder, localityHolder, advInfoHolder};
-        holderPanels = Arrays.asList(panels);
+        holderPanels = Arrays.asList(contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5);
 
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();
@@ -75,42 +71,52 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }
-        categoryHolder.setSize("956px", "350px");
+        contentHolder3.setSize("956px", "350px");
     }
 
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
     /** NEXT. **/
-    @UiHandler("nextButtonTab2")
-    public void nextButtonTab2ClickHandler(ClickEvent event) {
-        selectNextTab();
-    }
-
-    @UiHandler("nextButtonTab3")
-    public void nextButtonTab3ClickHandler(ClickEvent event) {
-        selectNextTab();
-    }
-
-    @UiHandler("nextButtonTab4")
-    public void nextButtonTab4ClickHandler(ClickEvent event) {
+    @UiHandler(value = {"nextButtonTab1", "nextButtonTab2", "nextButtonTab3", "nextButtonTab4" })
+    public void nextButtonsClickHandler(ClickEvent event) {
         selectNextTab();
     }
 
     /** BACK. **/
-    @UiHandler("backButtonTab3")
-    public void backButtonTab3ClickHandler(ClickEvent event) {
+    @UiHandler(value = {"backButtonTab1", "backButtonTab2", "backButtonTab3", "backButtonTab4" })
+    public void backButtonsClickHandler(ClickEvent event) {
         selectPreviousTab();
     }
 
-    @UiHandler("backButtonTab4")
-    public void backButtonTab4ClickHandler(ClickEvent event) {
-        selectPreviousTab();
+    /**************************************************************************/
+    /* Other methods                                                          */
+    /**************************************************************************/
+    /**
+     * Set first tab visibility.
+     * After setting visibility, recalculating tab numbers is processed.
+     * @param visible - true for visible, false elsewhere.
+     */
+    @Override
+    public void setFirstTabVisibility(boolean visible) {
+        mainPanel.getTabWidget(0).getParent().setVisible(visible);
+        mainPanel.getTabWidget(0).setVisible(visible);
+        backButtonTab2.setVisible(visible);
+        recalculateTabNumbers();
     }
 
-    @UiHandler("backButtonTab5")
-    public void backButtonTab5ClickHandler(ClickEvent event) {
-        selectPreviousTab();
+    public void setLoginLayout() {
+        loginBtn.setVisible(true);
+        registerBtn.setVisible(true);
+        buttonsPanelTab1.setVisible(false);
+        infoLabel1.setText(Storage.MSGS.demandCreationInfoLabel1());
+    }
+
+    public void setRegisterLayout() {
+        loginBtn.setVisible(false);
+        registerBtn.setVisible(false);
+        buttonsPanelTab1.setVisible(true);
+        infoLabel1.setText(Storage.MSGS.demandCreationInfoLabel12());
     }
 
     /**************************************************************************/
@@ -127,16 +133,10 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         return holderPanels.get(order);
     }
 
-    /** LABELS. **/
-    @Override
-    public StatusIconLabel getStatusLabel(int order) {
-        return statusLabels.get(order);
-    }
-
     /** HEADERS. **/
     @Override
-    public HTML getFirstTabHeader() {
-        return firstTabHeader;
+    public HTML getHeaderLabelTab1() {
+        return headerLabelTab1;
     }
 
     /** BUTTONS. **/
@@ -150,42 +150,53 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         return registerBtn;
     }
 
+    /**
+     * Get next button 1 - represents register client button.
+     * @return button
+     */
     @Override
-    public Button getCreateDemandButton() {
-        return createDemandBtn;
+    public Button getNextButtonTab1() {
+        return nextButtonTab1;
     }
 
-    public Button getBackButtonTab3() {
-        return backButtonTab3;
+    /**
+     * Get next button 5 - represents creating demand button.
+     * @return button
+     */
+    @Override
+    public Button getNextButtonTab5() {
+        return nextButtonTab5;
     }
 
-    public Button getBackButtonTab4() {
-        return backButtonTab4;
+    /**
+     * Get back button 1 - represents restoring first tab.
+     * @return button
+     */
+    @Override
+    public Button getBackButtonTab1() {
+        return backButtonTab1;
     }
 
-    public Button getBackButtonTab5() {
-        return backButtonTab5;
-    }
-
-    /** OTHERS. **/
-//    @Override
-//    public void toggleLoginRegistration() {
-//        createDemandBtn.setVisible(!createDemandBtn.isVisible());
-//        switchUserFormMessages(createDemandBtn.isVisible());
-//
-//    }
-//
-//    public void switchUserFormMessages(boolean toRegister) {
-//        if (toRegister) {
-//            userStatus.setTexts(MSGS.regMessage(), MSGS.regDescription());
-//            userStatus.setStyleState(StyleResource.INSTANCE.common().infoMessage(), State.INFO_16);
-//        } else {
-//            userStatus.setTexts(MSGS.loginMessage(), MSGS.loginDescription());
-//        }
-//    }
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /* Other methods                                                          */
+    /**************************************************************************/
+    /**
+     * Calculate visible tab numbers.
+     */
+    public void recalculateTabNumbers() {
+        int count = 1;
+        if (mainPanel.getTabWidget(0).getParent().isVisible()) {
+            headerLabelTab1.setHTML(count++ + ". " + Storage.MSGS.demandCreationTab1());
+        }
+        headerLabelTab2.setHTML(count++ + ". " + Storage.MSGS.demandCreationTab2());
+        headerLabelTab3.setHTML(count++ + ". " + Storage.MSGS.demandCreationTab3());
+        headerLabelTab4.setHTML(count++ + ". " + Storage.MSGS.demandCreationTab4());
+        headerLabelTab5.setHTML(count++ + ". " + Storage.MSGS.demandCreationTab5());
     }
 
     /**************************************************************************/

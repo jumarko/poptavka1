@@ -76,14 +76,4 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                 });
         LOGGER.info("submitting new demand");
     }
-
-    public void onCheckFreeEmail(String email) {
-        demandCreationService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>(eventBus) {
-            @Override
-            public void onSuccess(Boolean result) {
-                LOGGER.fine("result of compare " + result);
-                eventBus.checkFreeEmailResponse(result);
-            }
-        });
-    }
 }

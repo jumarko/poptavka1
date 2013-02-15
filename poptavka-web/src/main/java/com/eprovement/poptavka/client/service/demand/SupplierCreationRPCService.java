@@ -20,10 +20,4 @@ public interface SupplierCreationRPCService extends RemoteService {
     String URL = "service/suppliercreation";
 
     FullSupplierDetail createNewSupplier(FullSupplierDetail supplier) throws RPCException;
-
-    /**
-     * Checks wheter given {@code email} is available.
-     * @param email ęmail address to be checked
-     */
-    boolean checkFreeEmail(String email) throws RPCException;
 }

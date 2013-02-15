@@ -1,40 +1,58 @@
-package com.eprovement.poptavka.client.home.createSupplier.widget;
+package com.eprovement.poptavka.client.common.userRegistration;
 
 import com.eprovement.poptavka.client.common.ValidationMonitor;
+import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.github.gwtbootstrap.client.ui.FluidRow;
+import com.github.gwtbootstrap.client.ui.RadioButton;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.github.gwtbootstrap.client.ui.constants.LabelType;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.Arrays;
 import java.util.List;
 
-public class SupplierAccountInfoView extends Composite
-        implements SupplierAccountInfoPresenter.SupplierAccountInfoInterface, ProvidesValidate {
+/**
+ * User registration widget represent user's registration form.
+ * It creates BusinessUserDetail. Provides field validation.
+ * @author Martin Slavkovsky
+ */
+public class UserRegistrationFormView extends Composite
+        implements UserRegistrationFormPresenter.AccountFormInterface, ProvidesValidate {
 
     /**************************************************************************/
     /* UiBinder                                                               */
     /**************************************************************************/
-    private static SupplierAccountInfoViewUiBinder uiBinder = GWT.create(SupplierAccountInfoViewUiBinder.class);
+    private static AccountRegistrationFormViewUiBinder uiBinder = GWT.create(AccountRegistrationFormViewUiBinder.class);
 
-    interface SupplierAccountInfoViewUiBinder extends UiBinder<Widget, SupplierAccountInfoView> {
+    interface AccountRegistrationFormViewUiBinder extends UiBinder<Widget, UserRegistrationFormView> {
     }
     /**************************************************************************/
     /* Attribute                                                              */
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) ValidationMonitor phone, email, firstName, lastName, password, passwordConfirm;
+    @UiField(provided = true) ValidationMonitor website, companyName, identificationNumber, taxId, description;
+    @UiField SimplePanel addressHolder;
+    @UiField RadioButton personRadio, companyRadio;
+    @UiField FluidRow companyInfoRow, companyNameRow, identifNumberRow, taxNumberRow;
     /** Class attributes. **/
-    private List<ValidationMonitor> validationMonitors;
+    private List<ValidationMonitor> validationMonitorsPersonalOnly;
+    private List<ValidationMonitor> validationMonitorsCompanyOnly;
     //Constants
     private static final int SHORT_PASSWORD = 5;
     private static final int LONG_PASSWORD = 8;
@@ -44,18 +62,40 @@ public class SupplierAccountInfoView extends Composite
     /**************************************************************************/
     @Override
     public void createView() {
+        initValidationMonitors();
+
+        initWidget(uiBinder.createAndBindUi(this));
+
+        //set validation monitors as array for easier access.
+        validationMonitorsPersonalOnly = Arrays.asList(
+                phone, email, firstName, lastName, password, passwordConfirm);
+        validationMonitorsCompanyOnly = Arrays.asList(companyName, identificationNumber, taxId,
+                phone, email, firstName, lastName, password, passwordConfirm);
+
+        personRadio.setValue(true, false);
+        setCompanyInputsVisibility(false);
+    }
+
+    /**
+     * Initialize validation monitors for each field we want to validate.
+     */
+    private void initValidationMonitors() {
         firstName = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
         lastName = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
         phone = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
         email = new ValidationMonitor<UserDetail>(UserDetail.class);
         password = new ValidationMonitor<UserDetail>(UserDetail.class);
         passwordConfirm = new ValidationMonitor<UserDetail>(UserDetail.class);
-
-        initWidget(uiBinder.createAndBindUi(this));
-
-        validationMonitors = Arrays.asList(phone, email, firstName, lastName, password, passwordConfirm);
+        companyName = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
+        description = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
+        website = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
+        identificationNumber = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
+        taxId = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
     }
 
+    /**
+     * Set action handlers that cannot be accessed by UiHandlers on widget load.
+     */
     @Override
     public void onLoad() {
         ((TextBox) password.getWidget()).addKeyUpHandler(new KeyUpHandler() {
@@ -71,6 +111,42 @@ public class SupplierAccountInfoView extends Composite
                 initVisualPasswordConfirmCheck(event);
             }
         });
+
+        ((TextBox) website.getWidget()).addBlurHandler(new BlurHandler() {
+            @Override
+            public void onBlur(BlurEvent event) {
+                if (((TextBox) website.getWidget()).getText().isEmpty()) {
+                    website.reset();
+                }
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    @UiHandler("personRadio")
+    public void personRadioClickHandler(ClickEvent e) {
+        setCompanyInputsVisibility(false);
+    }
+
+    @UiHandler("companyRadio")
+    public void personCompanyClickHandler(ClickEvent e) {
+        setCompanyInputsVisibility(true);
+    }
+
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    /**
+     * Toggle company info.
+     * @param toggle
+     */
+    public void setCompanyInputsVisibility(boolean toggle) {
+        companyInfoRow.setVisible(toggle);
+        companyNameRow.setVisible(toggle);
+        identifNumberRow.setVisible(toggle);
+        taxNumberRow.setVisible(toggle);
     }
 
     /**************************************************************************/
@@ -79,10 +155,21 @@ public class SupplierAccountInfoView extends Composite
     @Override
     public boolean isValid() {
         boolean valid = true;
-        for (ValidationMonitor box : validationMonitors) {
+        if (companyRadio.getValue()) {
+            for (ValidationMonitor box : validationMonitorsCompanyOnly) {
+                valid = box.isValid() && valid;
+            }
+        }
+        for (ValidationMonitor box : validationMonitorsPersonalOnly) {
             valid = box.isValid() && valid;
         }
-        return valid;
+        boolean validAddress = ((AddressSelectorView) addressHolder.getWidget()).isValid();
+        return valid && validAddress;
+    }
+
+    @Override
+    public SimplePanel getAddressHolder() {
+        return addressHolder;
     }
 
     @Override
@@ -96,18 +183,29 @@ public class SupplierAccountInfoView extends Composite
     }
 
     @Override
-    public BusinessUserDetail updateBusinessUserDetail(BusinessUserDetail user) {
+    public BusinessUserDetail createBusinessUserDetail() {
+        BusinessUserDetail user = new BusinessUserDetail();
         user.setEmail((String) email.getValue());
         user.setPassword((String) password.getValue());
         user.setFirstName((String) firstName.getValue());
         user.setLastName((String) lastName.getValue());
         user.setPhone((String) phone.getValue());
+        user.setCompanyName((String) companyName.getValue());
+        user.setDescription((String) description.getValue());
+        user.setIdentificationNumber((String) identificationNumber.getValue());
+        user.setTaxId((String) taxId.getValue());
+        user.setWebsite((String) website.getValue());
+        user.setAddresses(Arrays.asList(((AddressSelectorView) addressHolder.getWidget()).createAddress()));
         return user;
     }
 
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Validate email field.
+     * @param isAvailable
+     */
     @Override
     public void initVisualFreeEmailCheck(Boolean isAvailable) {
         email.getErrorPanel().setVisible(true);
@@ -117,12 +215,17 @@ public class SupplierAccountInfoView extends Composite
             email.getErrorLabel().setType(LabelType.SUCCESS);
             email.getControlGroup().setType(ControlGroupType.SUCCESS);
         } else {
+            email.setValid(false);
             email.getErrorLabel().setText(Storage.MSGS.formUserRegMailNotAvailable());
             email.getErrorLabel().setType(LabelType.IMPORTANT);
             email.getControlGroup().setType(ControlGroupType.ERROR);
         }
     }
 
+    /**
+     * Validate password field.
+     * @param event
+     */
     private void initVisualPasswordCheck(KeyUpEvent event) {
         password.setHideErrorPanel(false);
         int passwordLength = ((String) password.getValue()).length();
@@ -140,14 +243,19 @@ public class SupplierAccountInfoView extends Composite
         }
     }
 
+    /**
+     * Validate password confirm field.
+     * @param event
+     */
     private void initVisualPasswordConfirmCheck(KeyUpEvent event) {
         passwordConfirm.setHideErrorPanel(false);
-        if (!((String) password.getValue()).equals(passwordConfirm.getValue())) {
+        if (!(password.getValue()).equals(passwordConfirm.getValue())) {
             passwordConfirm.getErrorPanel().setVisible(true);
             passwordConfirm.getControlGroup().setType(ControlGroupType.ERROR);
             passwordConfirm.getErrorLabel().setText(Storage.MSGS.formUserRegPasswordsUnmatch());
             passwordConfirm.getErrorLabel().setType(LabelType.IMPORTANT);
         } else {
+            passwordConfirm.setValid(false);
             passwordConfirm.getErrorPanel().setVisible(true);
             passwordConfirm.getControlGroup().setType(ControlGroupType.SUCCESS);
             passwordConfirm.getErrorLabel().setText(Storage.MSGS.formUserRegPasswordsMatch());

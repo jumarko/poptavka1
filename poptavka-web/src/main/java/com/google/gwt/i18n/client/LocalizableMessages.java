@@ -120,6 +120,7 @@ public interface LocalizableMessages extends Messages {
     String formPrice();
     String formRating();
     String formRateComment();
+    String formRequiredFields();
     String formServices();
     String formShipmentDate();
     String formStreet();
@@ -399,25 +400,16 @@ public interface LocalizableMessages extends Messages {
     String demandCreationTab3();
     String demandCreationTab4();
     String demandCreationTab5();
-    String demandCreationAdvDescription();
-    String demandCreationBasicDescription();
-    String demandCreationCatDescription();
-    String demandCreationCategorySelectorInfoLabel();
-    String demandCreationCreateDemandBtn();
-    String demandCreationFormDemandAdvInfoLabel();
-    String demandCreationFormDemandBasicInfoLabel();
-    String demandCreationLocalitySelectorInfoLabel();
-    String demandCreationLocDescription();
-    String demandCreationLoginDescription();
+    String demandCreationInfoLabel1();
+    String demandCreationInfoLabel12();
+    String demandCreationInfoLabel2();
+    String demandCreationInfoLabel3();
+    String demandCreationInfoLabel4();
+    String demandCreationInfoLabel5();
     String demandCreationLoginOrRegister();
-    String demandCreationLoginOrRegisterToContinueLabel();
+    String demandCreationCreateDemandBtn();
     String demandCreationRegisterBtn();
-    String demandCreationRegisterInfoLabel();
     String demandCreationSuccessfullyCreated();
-    String demandCreationSecondTabErrorInfo();
-    String demandCreationThirdTabErrorInfo();
-    String demandCreationFourthTabErrorInfo();
-    String demandCreationFifthTabErrorInfo();
 
     /** FormDemandAdvView.ui. **/
     String formDemandAdvDemandAttractive();
@@ -432,23 +424,13 @@ public interface LocalizableMessages extends Messages {
     String supplierCreationTab2();
     String supplierCreationTab3();
     String supplierCreationTab4();
-    String supplierCreationTab5();
-    String supplierCreationAdvDescription();
+    String supplierCreationInfoLabel1();
+    String supplierCreationInfoLabel2();
+    String supplierCreationInfoLabel3();
+    String supplierCreationInfoLabel4();
     String supplierCreationAgreementConditions();
     String supplierCreationAgreementMessage();
-    String supplierCreationBasicDescription();
-    String supplierCreationCatDescription();
-    String supplierCreationCategorySelectorInfoLabel();
-    String supplierCreationLocalitySelectorInfoLabel();
-    String supplierCreationLocDescription();
-    String supplierCreationProvideCompanyInfoLabel();
-    String supplierCreationProvidePersonalInfoLabel();
     String supplierCreationRegisterBtn();
-    String supplierCreationServiceSelectorInfoLabel();
-    String supplierCreationSecondTabErrorInfo();
-    String supplierCreationThirdTabErrorInfo();;
-    String supplierCreationFourthTabErrorInfo();
-    String supplierCreationFifthTabErrorInfo();
 
     /** FormUserRegistrationView.ui. **/
     String formUserRegMailAvailable();

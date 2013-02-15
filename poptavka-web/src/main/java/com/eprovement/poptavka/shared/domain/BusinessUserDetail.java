@@ -43,8 +43,6 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     @Pattern(regexp = "[0-9]+", message = "{supplierPatternPhone}")
     @NotBlank(message = "{supplierNotBlankPhone}")
     private String phone;
-    @NotBlank(message = "{supplierNotBlankPassword}")
-    private String password;
     @NotBlank(message = "{supplierNotBlankDescription}")
     private String description;
     @NotBlank(message = "{supplierNotBlankTaxNumber}")
@@ -225,7 +223,6 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
         str.append(", firstName=" + firstName);
         str.append(", lastName=" + lastName);
         str.append(", phone=" + phone);
-        str.append(", password=" + password);
         str.append(", description=" + description);
         str.append(", taxId=" + taxId);
         str.append(", website=" + website);

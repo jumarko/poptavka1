@@ -244,7 +244,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         GWT.log("BUSSINESS ROLES ++++ " + Storage.getBusinessUserDetail().getBusinessRoles().toString());
         GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
-        //forward user to welcome view of appropriate module according to his roles
+        //If exact module is known to be loaded, do it
+        if (widgetToLoad == Constants.CREATE_DEMAND) {
+            eventBus.goToCreateDemandModule();
+            return;
+        }
+        //otherwise forward user to welcome view of appropriate module according to his roles
         view.setLoadingProgress(100, null);
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             eventBus.goToAdminModule(null, widgetToLoad);

@@ -1,184 +1,225 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-	xmlns:p1="urn:import:com.google.gwt.user.datepicker.client" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-	<!-- injecting style resources -->
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <!-- injecting style resources -->
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-	<ui:style>
-		.tabIndex1 { z-index: 1; width: 240px;}
-		.tabIndex2 { z-index:
-		2; width: 220px;}
-		.tabIndex3 { z-index: 3; width: 220px;}
-		.tabIndex4 {
-		z-index: 4; width: 220px;}
-		.tabIndex5 { z-index: 5; width: 200px;}
+    <ui:style>
+        .tabIndex1 { z-index: 1; width: 240px;}
+        .tabIndex2 { z-index:
+        2; width: 220px;}
+        .tabIndex3 { z-index: 3; width: 220px;}
+        .tabIndex4 {
+        z-index: 4; width: 220px;}
+        .tabIndex5 { z-index: 5; width: 200px;}
 
-		.selectorLayout {width: 980px; height: 350px;}
-	</ui:style>
+        .selectorLayout {width: 980px; height: 350px;}
+    </ui:style>
 
-	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-		<g:TabLayoutPanel ui:field='mainPanel'
-			stylePrimaryName='{res.createTabPanel.createTabPanel}' barUnit='PX'
-			barHeight='50'>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML ui:field="firstTabHeader" stylePrimaryName="{style.tabIndex5}">
-						1.
-						<ui:msg key="demandCreationTab1">Contact Info</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="PX" ui:field='userFormPanel'>
-					<g:center>
-						<g:ScrollPanel>
-							<b:FluidContainer>
-								<b:FluidRow>
-									<b:Column size="12">
-										<b:Heading size="4">
-											<ui:msg key="demandCreationLoginOrRegister">Login or Register to continue</ui:msg>
-										</b:Heading>
-									</b:Column>
-								</b:FluidRow>
+    <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
+        <g:TabLayoutPanel ui:field='mainPanel'
+                          stylePrimaryName='{res.createTabPanel.createTabPanel}' barUnit='PX'
+                          barHeight='50'>
+            <!--1-->
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML  ui:field="headerLabelTab1" stylePrimaryName="{style.tabIndex5}">
+                        <ui:msg key="demandCreationTab1">Contact Info</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="PX" ui:field='userFormPanel'>
+                    <g:north size="30">
+                        <g:Label ui:field="infoLabel1">
+                            <ui:msg key="clientCreationInfoLabel1">
+                                Login or register for free to continue.
+                            </ui:msg>
+                        </g:Label>
+                    </g:north>
+                    <g:center>
+                        <g:ScrollPanel>
+                            <!--                            <b:FluidContainer>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <b:Heading size="4">
+                                        <ui:msg key="demandCreationLoginOrRegister">Login or Register to continue</ui:msg>
+                                    </b:Heading>
+                                </b:Column>
+                            </b:FluidRow>-->
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:SimplePanel ui:field="contentHolder1" />
+                                    </b:Column>
+                                </b:FluidRow>
 
-								<g:SimplePanel ui:field="userFormHolder" />
-
-								<b:FluidRow>
-									<b:Column size="12">
-										<g:Button ui:field="loginBtn" styleName='btn btn-primary'>
-											<ui:msg key="commonLoginBtn">Login</ui:msg>
-										</g:Button>
-										<g:Button ui:field="registerBtn" styleName='btn'>
-											<ui:msg key="demandCreationRegisterBtn">Register for FREE</ui:msg>
-										</g:Button>
-									</b:Column>
-								</b:FluidRow>
-							</b:FluidContainer>
-						</g:ScrollPanel>
-					</g:center>
-					<g:south size="50">
-						<cm:StatusIconLabel ui:field='userStatus'
-							style='{res.common.infoMessage}' message='{text.demandCreationLoginOrRegisterToContinueLabel}'
-							description='{text.demandCreationLoginDescription}' />
-					</g:south>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex4}">
-						2.
-						<ui:msg key="demandCreationTab2">Demand Creation</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="PX" height="100%">
-					<g:south size="50">
-						<cm:StatusIconLabel ui:field='basicStatus'
-							style='{res.common.infoMessage}' message='{text.demandCreationFormDemandBasicInfoLabel}'
-							description='{text.demandCreationBasicDescription}' />
-					</g:south>
-					<g:south size="35">
-						<g:HTMLPanel>
-							<g:Button ui:field="nextButtonTab2">
-								<ui:msg key="commonBtnNext">Next</ui:msg>
-								<i class="icon-arrow-right"></i>
-							</g:Button>
-						</g:HTMLPanel>
-					</g:south>
-					<g:center>
-						<g:ScrollPanel>
-							<g:SimplePanel ui:field="basicInfoHolder" />
-						</g:ScrollPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex3}">
-						3.
-						<ui:msg key="demandCreationTab3">Category selection</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='categoryStatus'
-							style='{res.common.infoMessage}' message='{text.demandCreationCategorySelectorInfoLabel}'
-							description='{text.demandCreationCatDescription}' />
-					</g:south>
-					<g:center>
-						<g:VerticalPanel>
-							<g:SimplePanel ui:field="categoryHolder" styleName='{style.selectorLayout}' />
-							<g:HorizontalPanel>
-								<g:Button ui:field="backButtonTab3">
-									<ui:msg key='commonBtnBack'>Back</ui:msg>
-								</g:Button>
-								<g:Button ui:field="nextButtonTab3">
-									<ui:msg key="commonBtnNext">Next</ui:msg>
-								</g:Button>
-							</g:HorizontalPanel>
-						</g:VerticalPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex2}">
-						4.
-						<ui:msg key="demandCreationTab4">Locality selection</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='localityStatus'
-							style='{res.common.infoMessage}' message='{text.demandCreationLocalitySelectorInfoLabel}'
-							description='{text.demandCreationLocDescription}' />
-					</g:south>
-					<g:center>
-						<g:VerticalPanel>
-							<g:SimplePanel ui:field="localityHolder" />
-							<g:HorizontalPanel>
-								<g:Button ui:field="backButtonTab4">
-									<ui:msg key='commonBtnBack'>Back</ui:msg>
-								</g:Button>
-								<g:Button ui:field="nextButtonTab4">
-									<ui:msg key="commonBtnNext">Next</ui:msg>
-								</g:Button>
-							</g:HorizontalPanel>
-						</g:VerticalPanel>
-					</g:center>
-				</g:DockLayoutPanel>
-			</g:tab>
-			<g:tab>
-				<g:customHeader size="30">
-					<g:HTML stylePrimaryName="{style.tabIndex1}">
-						5.
-						<ui:msg key="demandCreationTab5">Demand Advanced Info</ui:msg>
-					</g:HTML>
-				</g:customHeader>
-				<g:DockLayoutPanel unit="EM" height="100%">
-					<g:north size="20">
-						<g:SimplePanel ui:field="advInfoHolder" />
-					</g:north>
-					<g:center>
-						<g:HorizontalPanel>
-							<g:Button ui:field="backButtonTab5">
-								<ui:msg key='commonBtnBack'>Back</ui:msg>
-							</g:Button>
-							<g:Button ui:field="createDemandBtn">
-								<ui:msg key='demandCreationCreateDemandBtn'>Create demand</ui:msg>
-							</g:Button>
-						</g:HorizontalPanel>
-					</g:center>
-					<g:south size="4">
-						<cm:StatusIconLabel ui:field='advStatus'
-							style='{res.common.infoMessage}' message='{text.demandCreationFormDemandAdvInfoLabel}'
-							description='{text.demandCreationAdvDescription}' />
-					</g:south>
-
-
-				</g:DockLayoutPanel>
-			</g:tab>
-		</g:TabLayoutPanel>
-	</g:HTMLPanel>
+                            
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Button ui:field="loginBtn" styleName='btn btn-primary'>
+                                            <ui:msg key="commonLoginBtn">Login</ui:msg>
+                                        </g:Button>
+                                        <g:Button ui:field="registerBtn" styleName='btn'>
+                                            <ui:msg key="demandCreationRegisterBtn">Register for FREE</ui:msg>
+                                        </g:Button>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:ScrollPanel>
+                    </g:center>
+                    <g:south size="35">
+                        <g:HTMLPanel ui:field="buttonsPanelTab1">
+                            <g:Button ui:field="backButtonTab1" styleName='btn'>
+                                <i class="icon-arrow-left"></i>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="nextButtonTab1"  styleName='btn btn-primary'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                <i class="icon-arrow-right"></i>
+                            </g:Button>
+                        </g:HTMLPanel>
+                    </g:south>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <!--2-->
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML ui:field="headerLabelTab2" stylePrimaryName="{style.tabIndex2}">
+                        <ui:msg key="demandCreationTab2">Demand Creation</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="PX" height="100%">
+                    <g:north size="30">
+                        <g:Label>
+                            <ui:msg key="clientCreationInfoLabel2">
+                                Fill basic demand information to continue.
+                            </ui:msg>
+                        </g:Label>
+                    </g:north>
+                    <g:center>
+                        <g:ScrollPanel>
+                            <g:SimplePanel ui:field="contentHolder2" />
+                        </g:ScrollPanel>
+                    </g:center>
+                    <g:south size="35">
+                        <g:HTMLPanel>
+                            <g:Button ui:field="backButtonTab2" styleName='btn'>
+                                <i class="icon-arrow-left"></i>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="nextButtonTab2" styleName='btn btn-primary'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                <i class="icon-arrow-right"></i>
+                            </g:Button>
+                        </g:HTMLPanel>
+                    </g:south>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <!--3-->
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML ui:field="headerLabelTab3" stylePrimaryName="{style.tabIndex3}">
+                        <ui:msg key="demandCreationTab3">Category selection</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="PX" height="100%">
+                    <g:north size="30">
+                        <g:Label>
+                            <ui:msg key="clientCreationInfoLabel3">
+                                Select the most suitable category. The more accurate category the more relevant suppliers will contact you.
+                            </ui:msg>
+                        </g:Label>
+                    </g:north>
+                    <g:center>
+                        <g:ScrollPanel>
+                            <g:SimplePanel ui:field="contentHolder3" />
+                        </g:ScrollPanel>
+                    </g:center>
+                    <g:south size="35">
+                        <g:HTMLPanel>
+                            <g:Button ui:field="backButtonTab3" styleName='btn'>
+                                <i class="icon-arrow-left"></i>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="nextButtonTab3" styleName='btn btn-primary'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                <i class="icon-arrow-right"></i>
+                            </g:Button>
+                        </g:HTMLPanel>
+                    </g:south>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <!--4-->
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML ui:field="headerLabelTab4" stylePrimaryName="{style.tabIndex4}">
+                        <ui:msg key="demandCreationTab4">Locality selection</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="PX" height="100%">
+                    <g:north size="30">
+                        <g:Label>
+                            <ui:msg key="clientCreationInfoLabel4">
+                                Select your Locality.
+                            </ui:msg>
+                        </g:Label>
+                    </g:north>
+                    <g:center>
+                        <g:ScrollPanel>
+                            <g:SimplePanel ui:field="contentHolder4" />
+                        </g:ScrollPanel>
+                    </g:center>
+                    <g:south size="35">
+                        <g:HTMLPanel>
+                            <g:Button ui:field="backButtonTab4" styleName='btn'>
+                                <i class="icon-arrow-left"></i>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="nextButtonTab4" styleName='btn btn-primary'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                <i class="icon-arrow-right"></i>
+                            </g:Button>
+                        </g:HTMLPanel>
+                    </g:south>
+                </g:DockLayoutPanel>
+            </g:tab>
+            <!--5-->
+            <g:tab>
+                <g:customHeader size="30">
+                    <g:HTML ui:field="headerLabelTab5" stylePrimaryName="{style.tabIndex5}">
+                        <ui:msg key="demandCreationTab5">Demand Advanced Info</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="PX" height="100%">
+                    <g:north size="30">
+                        <g:Label>
+                            <ui:msg key="clientCreationInfoLabel5">
+                                Fill advance demand information to continue.
+                            </ui:msg>
+                        </g:Label>
+                    </g:north>
+                    <g:center>
+                        <g:ScrollPanel>
+                            <g:SimplePanel ui:field="contentHolder5" />
+                        </g:ScrollPanel>
+                    </g:center>
+                    <g:south size="35">
+                        <g:HTMLPanel>
+                            <g:Button ui:field="backButtonTab5" styleName='btn'>
+                                <i class="icon-arrow-left"></i>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="nextButtonTab5" styleName='btn btn-primary'>
+                                <ui:msg key='demandCreationCreateDemandBtn'>Create demand</ui:msg>
+                                <i class="icon-save"></i>
+                            </g:Button>
+                        </g:HTMLPanel>
+                    </g:south>
+                </g:DockLayoutPanel>
+            </g:tab>
+        </g:TabLayoutPanel>
+    </g:HTMLPanel>
 </ui:UiBinder>
