@@ -14,12 +14,10 @@
  * the License.
  */
 .cellTreeWidget {
-	background: #ffffff;
-	opacity: 0.8;
-	border: 1px solid #C1D2DC;
-	margin: 0 0 30px 15px;
-	border-radius: 5px;
-	color: #003e5f;
+	background: transparent;
+	border: none;
+	margin: 10px 0 0;
+	color: #443b19;
 }
 
 .cellTreeEmptyMessage {
@@ -28,20 +26,26 @@
 }
 
 .cellTreeItem {
-	padding-top: 4px;
-	padding-bottom: 0px;
+	padding: 2px 10px 2px;
 	cursor: hand;
 	cursor: pointer;
 	zoom: 1;
 }
 
 .cellTreeItem .cellTreeItem {
-	background: url(images/cellTreeItemBorder.gif) top left no-repeat;
-	padding-right: 25px;
+	background: none;
+}
+
+.cellTreeItem:hover {
+	background: #ffffff;
+}
+
+.cellTreeItem .cellTreeSelectedItem {
+	background: #faf7eb;
 }
 
 .cellTreeItemImage {
-	top: 7px;
+	top: 8px;
 }
 
 .cellTreeItemImageValue {
@@ -55,17 +59,18 @@
 }
 
 .cellTreeOpenItem {
-	
+	color: #237e00;
 }
 
 .cellTreeTopItem {
 	font-weight: normal;
 	margin-top: 20px;
-	padding: 3px 0px 3px 10px !important;	
+	padding: 3px 10px 3px 10px !important;
+	background: url(images/cellTreeItemBorder.gif) repeat-x bottom;
 }
 
 .cellTreeTopItemImage {
-	top: 13px;
+	top: 11px;
 }
 
 .cellTreeWidget div div div div:first-child .cellTreeTopItem .cellTreeTopItemImageValue
@@ -86,8 +91,7 @@
 
 /* @sprite */
 .cellTreeSelectedItem { /* gwt-image: 'cellTreeSelectedBackground'; */
-	background-color: #ffffff;
-	color: #f16600;
+	color: #237e00;
 	height: auto;
 	overflow: visible;
 	font-weight: bold;

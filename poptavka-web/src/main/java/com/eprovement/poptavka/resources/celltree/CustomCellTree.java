@@ -4,12 +4,15 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellTree;
 
 public interface CustomCellTree extends CellTree.Resources {
-    @Source("cellTreeClosedItem.gif")
+    @Override
+    @Source("cellTreeClosedItem.png")
     ImageResource cellTreeClosedItem();
 
-    @Source("cellTreeOpenItem.gif")
+    @Override
+    @Source("cellTreeOpenItem.png")
     ImageResource cellTreeOpenItem();
 
+    @Override
     @Source("customCellTree.css")
     CellTree.Style cellTreeStyle();
 }

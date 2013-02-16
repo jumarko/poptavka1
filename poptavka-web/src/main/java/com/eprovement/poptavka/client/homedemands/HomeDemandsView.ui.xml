@@ -10,9 +10,9 @@
 
 	<g:DockLayoutPanel unit="PX"
 		styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
-		<g:west size="320">
+		<g:west size="330">
 			<g:DockLayoutPanel unit="PX">
-				<g:north size="65">
+				<g:north size="49">
 					<g:HTMLPanel>
 						<h2 class='{res.layout.toolbarHeader}'>
 							<ui:msg key="homeDemandsToolbarLabel">Category</ui:msg>
@@ -20,9 +20,11 @@
 					</g:HTMLPanel>
 				</g:north>
 				<g:center>
-					<g:ScrollPanel>
-						<c:CellTree ui:field="cellTree" />
-					</g:ScrollPanel>
+					<g:HTMLPanel styleName='{res.layout.cellTreeContainer}'>
+						<g:ScrollPanel>
+							<c:CellTree ui:field="cellTree" />
+						</g:ScrollPanel>
+					</g:HTMLPanel>
 				</g:center>
 			</g:DockLayoutPanel>
 		</g:west>

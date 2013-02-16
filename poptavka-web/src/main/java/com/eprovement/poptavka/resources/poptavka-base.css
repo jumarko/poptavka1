@@ -348,6 +348,17 @@ body > div {
 }
 
 /*
+*   CellTree Styles
+*
+*/
+.cellTree-container {
+	width: 100%;
+	height: 100%;
+	background: url(images/celltree_bg.jpg) repeat;
+	overflow: auto;
+}
+
+/*
 *	Footer Module styles
 *
 */
