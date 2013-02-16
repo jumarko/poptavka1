@@ -8,10 +8,11 @@
 
     <!-- aspects' beans' -->
     <bean id="exceptionLogger" class="com.eprovement.poptavka.application.logging.ExceptionLogger" factory-method="aspectOf">
+        <property name="mailSenderAddress" value="${mail.system.address}" />
         <property name="recipients">
             <!-- Write down mail addresses where the notification email will be sent when an exception occurs -->
             <list>
-                <value>jumarko@gmail.com</value>
+                <value>${mail.support.address}</value>
             </list>
         </property>
         <property name="mailService" ref="mailService" />

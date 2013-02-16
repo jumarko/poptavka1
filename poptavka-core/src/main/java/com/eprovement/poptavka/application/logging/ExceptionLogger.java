@@ -28,9 +28,11 @@ import org.springframework.mail.SimpleMailMessage;
 public class ExceptionLogger {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionLogger.class);
 
-    private static final String NOTIFICATION_MAIL_FROM = "poptavka1@gmail.com";
     private static final int DEFAULT_STACKTRASE_SIZE = 1000;
+    private static final String DEFAUL_MAIL_SENDER_ADDRESS = "noreply@want-something.com";
 
+    /** Email address of sender: This will be set to FROM header of sent emails. */
+    private String mailSenderAddress = DEFAUL_MAIL_SENDER_ADDRESS;
     private MailService mailService;
     private List<String> recipients;
 
@@ -40,6 +42,10 @@ public class ExceptionLogger {
      */
     private boolean excludeExceptionsInTestPhase = true;
 
+
+    public void setMailSenderAddress(String mailSenderAddress) {
+        this.mailSenderAddress = mailSenderAddress;
+    }
 
     public void setRecipients(List<String> recipients) {
         this.recipients = recipients;
@@ -122,7 +128,7 @@ public class ExceptionLogger {
 
     private SimpleMailMessage createNotificationMessage(Exception exception) {
         final SimpleMailMessage exceptionNotificationMessage = new SimpleMailMessage();
-        exceptionNotificationMessage.setFrom(NOTIFICATION_MAIL_FROM);
+        exceptionNotificationMessage.setFrom(mailSenderAddress);
         exceptionNotificationMessage.setTo(recipients.toArray(new String[recipients.size()]));
 
         final StringWriter stackTraceWriter = new StringWriter(DEFAULT_STACKTRASE_SIZE);

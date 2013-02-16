@@ -1,9 +1,12 @@
 package com.eprovement.poptavka.server.service.mail;
 
+import com.eprovement.poptavka.validation.EmailValidator;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -26,21 +29,26 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
     private static final Logger LOGGER = LoggerFactory
             .getLogger(MailRPCServiceImpl.class);
 
-    private static final String NOTIFICATION_MAIL_FROM = "poptavka1@gmail.com";
+    private static final String DEFAULT_NOTIFICATION_MAIL_SENDER = "noreply@want-something.com";
 
     private MailService mailService;
+    private String notificationMailSender = DEFAULT_NOTIFICATION_MAIL_SENDER;
+
 
     /**
-     * Method used to send messages using gmail SMTP server, in future possibly
-     * replaced by our own SMTP server.
-     *
+     * Send notification email to the given recipient ({@code emailDialogDetail#getRecipient}).
+     * <p>
+     *     This implementation sends emails in an asynchronous way.
+     * </p>
+     * @param emailDialogDetail object describing all email details
+     * @see #setNotificationMailSender(String)  for setting sender (FROM) for notification emails.
      */
     @Override
     public Boolean sendMail(EmailDialogDetail emailDialogDetail) throws RPCException {
         LOGGER.info("Sending mail message to: " + emailDialogDetail.getRecipient());
 
         final SimpleMailMessage notificationMessage = new SimpleMailMessage();
-        notificationMessage.setFrom(NOTIFICATION_MAIL_FROM);
+        notificationMessage.setFrom(notificationMailSender);
         notificationMessage.setTo(emailDialogDetail.getRecipient());
 
         notificationMessage.setSubject(emailDialogDetail.getSubject());
@@ -63,5 +71,13 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
     public void setMailService(MailService mailService) {
         this.mailService = mailService;
     }
+
+    @Value("${mail.noreply.address}")
+    public void setNotificationMailSender(String notificationMailSender) {
+        Validate.isTrue(EmailValidator.getInstance().isValid(notificationMailSender),
+                "notificationMailSender is not a valid email address)");
+        this.notificationMailSender = notificationMailSender;
+    }
+
 
 }

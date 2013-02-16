@@ -12,6 +12,7 @@ import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.mail.MailService;
+import com.eprovement.poptavka.validation.EmailValidator;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -29,18 +30,23 @@ public class UserVerificationServiceImpl implements UserVerificationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserVerificationServiceImpl.class);
     private static final int ACTIVATION_CODE_LENGTH = 6;
     private static final Locale ENGLISH_LOCALE = new Locale("en", "EN");
-    private final GeneralService generalService;
-    private MailService mailService;
 
-    public UserVerificationServiceImpl(GeneralService generalService) {
+    private final String activationEmailFromAddress;
+    private final GeneralService generalService;
+    private final MailService mailService;
+
+    public UserVerificationServiceImpl(GeneralService generalService, MailService mailService,
+                                       String activationEmailFromAddress) {
         Validate.notNull(generalService);
+        Validate.notNull(mailService);
+        Validate.isTrue(EmailValidator.getInstance().isValid(activationEmailFromAddress),
+                "activationEmailFromAddress is not a valid email address!");
 
         this.generalService = generalService;
+        this.mailService = mailService;
+        this.activationEmailFromAddress = activationEmailFromAddress;
     }
 
-    public void setMailService(MailService mailService) {
-        this.mailService = mailService;
-    }
 
     @Override
     public String sendNewActivationCode(User businessUser) {
@@ -56,16 +62,14 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         Validate.notNull(user, "user cannot be null!");
         // User#activationEmail is set within scope of "generateActivationCode" method
         final String activationCode = generateActivationCode(user);
-        if (mailService != null) {
-            LOGGER.info("action=send_new_activation_email email={} businuessUser={}",
-                    user.getEmail(), user);
-            final SimpleMailMessage activationMailMessage =
-                    createActivationMailMessage(user.getEmail(), activationCode);
-            if (async) {
-                mailService.sendAsync(activationMailMessage);
-            } else {
-                mailService.send(activationMailMessage);
-            }
+        LOGGER.info("action=send_new_activation_email email={} businuessUser={}",
+                user.getEmail(), user);
+        final SimpleMailMessage activationMailMessage =
+                createActivationMailMessage(user.getEmail(), activationCode);
+        if (async) {
+            mailService.sendAsync(activationMailMessage);
+        } else {
+            mailService.send(activationMailMessage);
         }
         return activationCode;
     }
@@ -159,7 +163,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         ResourceBundle rb = ResourceBundle.getBundle("localization", ENGLISH_LOCALE);
         String activationEmailText = rb.getString("uc10.mail.sentence1");
 
-        activationMessage.setFrom("poptavka1@gmail.com");
+        activationMessage.setFrom(activationEmailFromAddress);
         activationMessage.setTo(userMail);
 
         activationMessage.setSubject("Poptavka account activation");

@@ -77,7 +77,7 @@ public class MailServiceImpl implements MailService {
             this.javaMailSender.send(message);
             LOGGER.info("action=send_mail_async status=finish messages=" + message);
         } catch (Exception e) {
-            LOGGER.error("action=send_mail_async status=error messages=" + message);
+            LOGGER.error("action=send_mail_async status=error messages=" + message, e);
         }
     }
 }
