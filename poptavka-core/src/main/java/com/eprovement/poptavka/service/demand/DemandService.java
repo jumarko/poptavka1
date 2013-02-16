@@ -217,6 +217,13 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
     long getDemandsCount(List<Category> categories, List<Locality> localities);
 
     /**
+     *  @see DemandDao#getDemandsIncludingParents(java.util.List, java.util.List,
+     *                                            com.eprovement.poptavka.domain.common.ResultCriteria)
+     */
+    Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
+                                           ResultCriteria resultCriteria);
+
+    /**
      * Get number of all client demands that have at least one offer.
      * @param client - client's demands
      * @return number of client's demands with offers

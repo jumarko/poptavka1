@@ -290,7 +290,8 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     }
 
     private Set<Demand> getPotentialDemandsCandidates(Supplier newSupplier) {
-        return demandService.getDemands(EMPTY_CRITERIA, newSupplier.getCategories(), newSupplier.getLocalities());
+        return demandService.getDemandsIncludingParents(newSupplier.getCategories(), newSupplier.getLocalities(),
+                EMPTY_CRITERIA);
     }
 
     /**

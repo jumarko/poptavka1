@@ -110,11 +110,11 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
                                List<Category> categories, List<Locality> localities);
 
     /**
-     * @see SupplierDao#getSuppliersCountIncludingParents(java.util.List, java.util.List,
-     * com.eprovement.poptavka.domain.common.ResultCriteria)
+     * @see SupplierDao#getSuppliersIncludingParents(java.util.List, java.util.List,
+     * com.eprovement.poptavka.domain.common.ResultCriteria).
      */
     Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
-                                           ResultCriteria resultCriteria);
+                                               ResultCriteria resultCriteria);
     /**
      * Highly optimized method for getting number of suppliers for all categories.
      *

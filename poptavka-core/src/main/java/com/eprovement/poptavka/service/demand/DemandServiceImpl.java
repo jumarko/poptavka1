@@ -252,8 +252,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
     @Override
+    public Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
+                                                  ResultCriteria resultCriteria) {
+        return this.getDao().getDemandsIncludingParents(categories, localities, resultCriteria);
+    }
+
+    @Override
     public long getClientDemandsWithOfferCount(Client client) {
-        Preconditions.checkNotNull("Client must be specified for finding potential demands", client);
+        Preconditions.checkNotNull(client, "Client must be specified for finding potential demands");
         LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
 
         final long demandsCount = getDao().getClientDemandsWithOfferCount(client);
@@ -264,7 +270,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     @Override
     public List<Demand> getClientDemandsWithOffer(Client client) {
-        Preconditions.checkNotNull("Client must be specified for finding potential demands", client);
+        Preconditions.checkNotNull(client, "Client must be specified for finding potential demands");
         LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
 
         final List<Demand> demands = getDao().getClientDemandsWithOffer(client);

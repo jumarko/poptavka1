@@ -468,6 +468,27 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertThat(demandsCount, Is.is(2L));
     }
 
+
+    @Test
+    public void testGetDemandsByCategoryAndLocalityIncludingParents() {
+        final Locality locality11 = this.localityService.getById(11);
+        final Category category11 = this.categoryService.getById(11);
+
+
+        final Collection<Demand> demandsByCategoriesAndLocalities =
+                this.demandService.getDemandsIncludingParents(
+                        Arrays.asList(category11),
+                        Arrays.asList(locality11),
+                        ResultCriteria.EMPTY_CRITERIA);
+
+        Assert.assertThat(demandsByCategoriesAndLocalities.size(), Is.is(3));
+        checkDemandExists(demandsByCategoriesAndLocalities, 1);
+        checkDemandExists(demandsByCategoriesAndLocalities, 5);
+        checkDemandExists(demandsByCategoriesAndLocalities, 6);
+
+    }
+
+
     @Test
     public void testGetClientDemandsWithOffer() {
         Client client = generalService.find(Client.class, 111111112L);

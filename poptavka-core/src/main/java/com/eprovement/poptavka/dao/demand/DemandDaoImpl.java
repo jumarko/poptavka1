@@ -159,6 +159,22 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
                 resultCriteria);
     }
 
+    @Override
+    public Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
+                                                  ResultCriteria resultCriteria) {
+        if (CollectionsHelper.containsOnlyNulls(categories)) {
+            return Collections.emptySet();
+        }
+        if (CollectionsHelper.containsOnlyNulls(localities)) {
+            return Collections.emptySet();
+        }
+
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoryIds", CollectionsHelper.getCollectionOfIds(categories));
+        params.put("localityIds", CollectionsHelper.getCollectionOfIds(localities));
+
+        return toSet(runNamedQuery("getDemandsForCategoriesAndLocalitiesIncludingParents", params, resultCriteria));
+    }
 
 
     @Override
