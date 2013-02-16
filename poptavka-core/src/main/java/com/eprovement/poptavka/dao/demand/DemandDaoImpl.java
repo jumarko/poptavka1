@@ -11,7 +11,6 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
 
@@ -22,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -137,44 +134,48 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
 
 
     @Override
-    public Set<Demand> getDemands(Category[] categories, Locality[] localities, ResultCriteria resultCriteria) {
-        if (categories == null || categories.length == 0 || CollectionsHelper.containsOnlyNulls(categories)) {
+    public Set<Demand> getDemands(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria) {
+        if (CollectionsHelper.containsOnlyNulls(categories)) {
             return Collections.emptySet();
         }
-        if (localities == null || localities.length == 0 || CollectionsHelper.containsOnlyNulls(localities)) {
+        if (CollectionsHelper.containsOnlyNulls(localities)) {
             return Collections.emptySet();
         }
 
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
-                Category.class));
-        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
-                Locality.class));
+        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(categories, Category.class));
+        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(localities, Locality.class));
         return toSet(runNamedQuery("getDemandsForCategoriesAndLocalities", params, resultCriteria));
     }
 
 
     @Override
-    public long getDemandsCount(Category[] categories, Locality[] localities, ResultCriteria resultCriteria) {
+    public long getDemandsCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
-                Locality.class));
-        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
-                Category.class));
+        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(localities, Locality.class));
+        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(categories, Category.class));
         return (Long) runNamedQueryForSingleResult(
                 "getDemandsCountForCategoriesAndLocalities", params,
                 resultCriteria);
     }
 
-
     @Override
-    public List<Demand> getAllNewDemands(ResultCriteria resultCriteria) {
-        final Demand newDemandExample = new Demand();
+    public Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
+                                                  ResultCriteria resultCriteria) {
+        if (CollectionsHelper.containsOnlyNulls(categories)) {
+            return Collections.emptySet();
+        }
+        if (CollectionsHelper.containsOnlyNulls(localities)) {
+            return Collections.emptySet();
+        }
 
-        final Criteria newDemandCriteria = getHibernateSession().createCriteria(Demand.class);
-        newDemandCriteria.add(Restrictions.eq("status", DemandStatus.NEW));
-        return buildResultCriteria(newDemandCriteria, resultCriteria).list();
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoryIds", CollectionsHelper.getCollectionOfIds(categories));
+        params.put("localityIds", CollectionsHelper.getCollectionOfIds(localities));
+
+        return toSet(runNamedQuery("getDemandsForCategoriesAndLocalitiesIncludingParents", params, resultCriteria));
     }
+
 
     @Override
     public long getClientDemandsWithOfferCount(Client client) {

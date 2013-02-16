@@ -13,7 +13,6 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericService;
 
 import java.util.List;
@@ -195,23 +194,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
 
 
     /**
-     * Send given demand to potential suppliers.
-     * @param demand
-     * @throws  MessageCannotBeSentException if some error occurs while sending message to suppliers.
-     */
-    void sendDemandToSuppliers(Demand demand) throws MessageException;
-
-    /**
-     * Send all new demands to potential suppliers.
-     */
-    void sendDemandsToSuppliers();
-
-
-    /** @see DemandDao#getAllNewDemands(com.eprovement.poptavka.domain.common.ResultCriteria) */
-    List<Demand> getAllNewDemands();
-
-
-    /**
      * Gets all the demands from given categories (including their
      * subcategories) which are also associated to the given localities
      * (all their sub-localities) which also meet the supplied criteria
@@ -222,7 +204,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     Set<Demand> getDemands(ResultCriteria resultCriteria,
-            Category[] categories, Locality[] localities);
+                           List<Category> categories, List<Locality> localities);
 
     /**
      * Evaluate the number of demands associated to the given
@@ -232,7 +214,14 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @param categories
      * @return number of demands related to the <code>category</code>(-ies).
      */
-    long getDemandsCount(Category[] categories, Locality[] localities);
+    long getDemandsCount(List<Category> categories, List<Locality> localities);
+
+    /**
+     *  @see DemandDao#getDemandsIncludingParents(java.util.List, java.util.List,
+     *                                            com.eprovement.poptavka.domain.common.ResultCriteria)
+     */
+    Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
+                                           ResultCriteria resultCriteria);
 
     /**
      * Get number of all client demands that have at least one offer.

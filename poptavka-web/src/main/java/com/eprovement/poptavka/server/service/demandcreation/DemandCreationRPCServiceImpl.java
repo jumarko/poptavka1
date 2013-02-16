@@ -16,7 +16,6 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.DemandService;
@@ -30,7 +29,6 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,7 +43,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         implements DemandCreationRPCService {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);
     private DemandService demandService;
     private LocalityService localityService;
     private ClientService clientService;
@@ -58,6 +55,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
     }
+
 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
@@ -114,6 +112,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         }
         demand.setMinRating(detail.getMinRating());
         // TODO release - change demand status to NEW before release
+        // but revisit the {@link NaiveSupperSelection#VALID_DEMAND_STATES} - should include NEW state in that case
         demand.setStatus(DemandStatus.ACTIVE);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getValidToDate());
@@ -124,32 +123,12 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         /** categories **/
         demand.setCategories(categoryConverter.convertToSourceList(detail.getCategories()));
 
-        Demand newDemandFromDB = demandService.create(demand);
-        sendDemandToSuppliers(newDemandFromDB);
+        final Demand newDemandFromDB = demandService.create(demand);
         return demandConverter.convertToTarget(newDemandFromDB);
     }
 
     private boolean maxOffersSpecified(FullDemandDetail detail) {
         return detail.getMaxOffers() > 0;
-    }
-
-    /**
-     * Method creates a message that is associated with created demand. Message
-     * is sent to all suppliers that complies with the demand criteria
-     *
-     * demand messages should be sent and possibly separate this heuristic
-     *
-     * @param demand
-     */
-    private void sendDemandToSuppliers(Demand demand) {
-        // send message and handle exception if any
-        try {
-            this.demandService.sendDemandToSuppliers(demand);
-        } catch (MessageException e) {
-            LOGGER.error("Demand " + demand + " has not been sent to suppliers. "
-                    + "The next try will be made by regular job.");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
     }
 
     /**

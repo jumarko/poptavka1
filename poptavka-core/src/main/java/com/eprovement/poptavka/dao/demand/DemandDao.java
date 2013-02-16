@@ -156,13 +156,6 @@ public interface DemandDao extends GenericDao<Demand> {
     long getAllDemandsCount();
 
 
-    /**
-     * Load all demands that are new, i.e. have status {@link com.eprovement.poptavka.domain.enums.DemandStatus#NEW}
-     * @return
-     * @param resultCriteria
-     */
-    List<Demand> getAllNewDemands(ResultCriteria resultCriteria);
-
 
     /**
      * Load all demands associated to the given category (-ies) and
@@ -175,7 +168,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return collection of demands that are related to the given localities and adher to <code>resultCriteria</code>
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
-    Set<Demand> getDemands(Category[] categories, Locality[] localities, ResultCriteria resultCriteria);
+    Set<Demand> getDemands(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
 
 
      /**
@@ -193,8 +186,76 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return number of suppliers related to the <code>locality</code>(-ies).
      */
 
-    long getDemandsCount(Category[] categories, Locality[] localities,
-            ResultCriteria resultCriteria);
+    long getDemandsCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
+
+
+    /**
+     * Loads all the demands associated to the any category (or its parent) of given {@code categories}
+     * AND to any locality (or its parent) from given localities.
+     *
+     * <div>
+     *     Example:<br />
+     *     <p>
+     *     Let's have following localities:
+     *     <ul>
+     *         <li>Locality1</li>
+     *         <li>Locality11</li>
+     *         <li>Locality2</li>
+     *         <li>Locality21</li>
+     *     </ul>
+     *     Locality1 is parent of Locality11, Locality2 is parent of Locality21. Locality1 and Locality2 are unrelated.
+     *     </p>
+     *     <p>
+     *     Furthermore, Let's have following categories:
+     *     <ul>
+     *         <li>Category1</li>
+     *         <li>Category11</li>
+     *         <li>Category2</li>
+     *         <li>Category21</li>
+     *     </ul>
+     *     Category1 is parent of Category11, Category2 is parent of Category21. Category1 and Category2 are unrelated.
+     *     </p>
+     *     <p>
+     *         There are demands associated to the localities and categories:
+     *         <ul>
+     *             <li>Demand1-1 -> Locality1, Category1</li>
+     *             <li>Demand1-11 -> Locality1, Category11</li>
+     *             <li>Demand1-2 -> Locality1, Category2</li>
+     *             <li>Demand1-21 -> Locality1, Category21</li>
+     *             <li>Demand11-1 -> Locality11, Category1</li>
+     *             <li>Demand11-11 -> Locality11, Category11</li>
+     *             <li>Demand11-2 -> Locality11, Category2</li>
+     *             <li>Demand11-21 -> Locality11, Category21</li>
+     *             <li>Demand2-1 -> Locality2, Category1</li>
+     *             <li>Demand2-11 -> Locality2, Category11</li>
+     *             <li>Demand2-2 -> Locality2, Category2</li>
+     *             <li>Demand2-21 -> Locality2, Category21</li>
+     *             <li>Demand21-1 -> Locality1, Category1</li>
+     *             <li>Demand21-11 -> Locality1, Category11</li>
+     *             <li>Demand21-2 -> Locality1, Category2</li>
+     *             <li>Demand21-21 -> Locality1, Category21</li>
+     *         </ul>
+     *     </p>
+     *
+     *     <p>
+     *         If we issue following method:
+     *         <pre>
+     *             getDemandsIncludingParents(
+     *                 Arrays.asList(Locality11, Locality2),
+     *                 Arrays.asList(Category21),
+     *                 EMPTY_CRITERIA)
+     *         </pre>
+     *         then we should get collection {Demand1-2, Demand1-21, Demand11-2, Demand11-21, Demand2-2, Demand2-21}
+     *     </p>
+     * </div>
+     *
+     * @param resultCriteria further search criteria
+     * @param categories list of categories
+     * @param localities list of all localities
+     * @return list of demands associated to proper locality and category
+     */
+    Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
+                                           ResultCriteria resultCriteria);
 
     /**
      * Get number of all client demands that have at least one offer.

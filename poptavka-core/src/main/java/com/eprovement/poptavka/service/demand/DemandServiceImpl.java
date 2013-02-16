@@ -11,36 +11,28 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
-import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
-import com.eprovement.poptavka.domain.enums.MessageContext;
-import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
-import com.eprovement.poptavka.domain.message.Message;
-import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
-import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
-import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -57,8 +49,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private ClientService clientService;
     private SupplierService supplierService;
     private RegisterService registerService;
-    private MessageService messageService;
-    private SuppliersSelection suppliersSelection;
 
     public DemandServiceImpl(DemandDao demandDao) {
         setDao(demandDao);
@@ -250,87 +240,26 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return demand.getOffers().size();
     }
 
-    @Override
-    @Transactional
-    public void sendDemandToSuppliers(Demand demand) throws MessageException {
-        LOGGER.info("Action=demand_send_to_suppliers status=start demand=" + demand);
-        fillDefaultValues(demand);
-
-        // TODO RELEASE ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
-        // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
-        // Napriklad message.body moze byt prazdne = demand.description
-        // message subject moze byt prazdne = demand.title
-        Message message = messageService.newThreadRoot(demand.getClient()
-                .getBusinessUser());
-        message.setBody(demand.getDescription() + " Description might be empty");
-        message.setDemand(demand);
-        message.setLastModified(new Date());
-        message.setSubject(demand.getTitle());
-
-        // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
-        // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
-        final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
-        final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
-        for (PotentialSupplier potentialSupplier : potentialSuppliers) {
-            MessageUserRole messageUserRole = new MessageUserRole();
-            messageUserRole.setMessage(message);
-            messageUserRole.setUser(potentialSupplier.getSupplier().getBusinessUser());
-            messageUserRole.setType(MessageUserRoleType.TO);
-            messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-            messageUserRoles.add(messageUserRole);
-        }
-
-        message.setRoles(messageUserRoles);
-
-        LOGGER.debug("Action=demand_send_to_suppliers status=finish demand={} message={} roles={}",
-                new Object[] {demand, message, message.getRoles()});
-
-        message = messageService.create(message);
-
-        messageService.send(message);
-        LOGGER.info("Action=demand_send_to_suppliers status=finish demand=" + demand);
-    }
-
-    private void fillDefaultValues(Demand demand) {
-        if (demand.getMaxSuppliers() == null) {
-            demand.setMaxSuppliers(DEFAULT_MAX_SUPPLIERS);
-        }
-    }
 
     @Override
-    public void sendDemandsToSuppliers() {
-
-        // TODO try to parallelling this task - maybe in Scala? or Gpars http://gpars.codehaus.org/Parallelizer :)
-
-
-        final List<Demand> allNewDemands = getAllNewDemands();
-        for (Demand newDemand : allNewDemands) {
-            try {
-                sendDemandToSuppliers(newDemand);
-            } catch (MessageException e) {
-                LOGGER.error("An error occured while trying to send message to suppliers for demand " + newDemand, e);
-            }
-        }
-    }
-
-    public List<Demand> getAllNewDemands() {
-        return getDao().getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);
-    }
-
-
-    @Override
-    public Set<Demand> getDemands(ResultCriteria resultCriteria, Category[] categories, Locality[] localities) {
+    public Set<Demand> getDemands(ResultCriteria resultCriteria, List<Category> categories, List<Locality> localities) {
         return this.getDao().getDemands(categories, localities, resultCriteria);
     }
 
     @Override
-    public long getDemandsCount(Category[] categories, Locality[] localities) {
+    public long getDemandsCount(List<Category> categories, List<Locality> localities) {
         return this.getDao().getDemandsCount(categories, localities, ResultCriteria.EMPTY_CRITERIA);
     }
 
     @Override
+    public Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
+                                                  ResultCriteria resultCriteria) {
+        return this.getDao().getDemandsIncludingParents(categories, localities, resultCriteria);
+    }
+
+    @Override
     public long getClientDemandsWithOfferCount(Client client) {
-        Preconditions.checkNotNull("Client must be specified for finding potential demands", client);
+        Preconditions.checkNotNull(client, "Client must be specified for finding potential demands");
         LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
 
         final long demandsCount = getDao().getClientDemandsWithOfferCount(client);
@@ -341,7 +270,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     @Override
     public List<Demand> getClientDemandsWithOffer(Client client) {
-        Preconditions.checkNotNull("Client must be specified for finding potential demands", client);
+        Preconditions.checkNotNull(client, "Client must be specified for finding potential demands");
         LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
 
         final List<Demand> demands = getDao().getClientDemandsWithOffer(client);
@@ -363,13 +292,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         this.registerService = registerService;
     }
 
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    public void setSuppliersSelection(SuppliersSelection suppliersSelection) {
-        this.suppliersSelection = suppliersSelection;
-    }
 
     //---------------------------------------------- HELPER METHODS ----------------------------------------------------
     private boolean isNewClient(Demand demand) {

@@ -73,6 +73,20 @@ import org.hibernate.validator.constraints.NotBlank;
                         + " demandLocality.demand"
                         + " and demandCategory.category.id in (:categoryIds)"
                         + " and demandLocality.locality.id in (:localityIds)"),
+        @NamedQuery(name = "getDemandsForCategoriesAndLocalitiesIncludingParents",
+                query = "select demandCategory.demand"
+                        + " from DemandCategory demandCategory,"
+                        + " DemandLocality demandLocality"
+                        + " where demandCategory.demand ="
+                        + " demandLocality.demand"
+                        + " and exists (select c.id from Category c "
+                        + "where c.leftBound >= demandCategory.category.leftBound"
+                        + " and c.rightBound <= demandCategory.category.rightBound "
+                        + "and c.id in (:categoryIds))"
+                        + " and exists (select l.id from Locality l "
+                        + "where l.leftBound >= demandLocality.locality.leftBound"
+                        + " and l.rightBound <= demandLocality.locality.rightBound"
+                        + " and l.id in (:localityIds))"),
     @NamedQuery(name = "getClientDemandsWithOfferCount",
                 query = "select count(*) from Demand as demand, Offer as offer"
                         + " where demand.client = :client"

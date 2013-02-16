@@ -73,11 +73,9 @@
         <property name="clientService" ref="clientService" />
         <property name="supplierService" ref="supplierService" />
         <property name="registerService" ref="registerService" />
-        <property name="messageService" ref="messageService" />
-        <property name="suppliersSelection" ref="demandSelection" />
     </bean>
 
-    <bean id="demandSelection" class="com.eprovement.poptavka.service.demand.NaiveSuppliersSelection">
+    <bean id="supplierSelection" class="com.eprovement.poptavka.service.demand.NaiveSuppliersSelection">
         <property name="supplierService" ref="supplierService" />
     </bean>
 
@@ -107,6 +105,9 @@
         <constructor-arg ref="supplierDao" />
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
+        <property name="demandService" ref="demandService" />
+        <property name="potentialDemandService" ref="potentialDemandsService" />
+        <property name="suppliersSelection" ref="supplierSelection" />
     </bean>
 
     <bean id="messageService" class="com.eprovement.poptavka.service.message.MessageServiceImpl">
@@ -143,8 +144,10 @@
         <property name="supplierService" ref="supplierService" />
     </bean>
 
-    <bean id="demandsToSuppliersSender" class="com.eprovement.poptavka.service.jobs.DemandsToSuppliersSender">
-        <property name="demandService" ref="demandService" />
+    <bean id="potentialDemandsService" class="com.eprovement.poptavka.service.demand.MessageBasedPotentialDemandService">
+        <constructor-arg index="0" ref="generalService"/>
+        <constructor-arg index="1" ref="messageService"/>
+        <constructor-arg index="2" ref="supplierSelection"/>
     </bean>
 
     <!-- Other -->
