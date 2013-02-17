@@ -30,4 +30,26 @@ public interface LocalityDao extends GenericDao<Locality> {
      */
     List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria);
 
+    /**
+     * Gets a list of localities whose name is shorter than <code>maxlengthExcl</code> and
+     * contains <code>nameSubString</code> and whose type is <code>type</code>
+     * @param maxLengthExcl
+     * @param nameLike
+     * @param type
+     * @return 
+     */
+    List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubString,
+            LocalityType type);
+
+    /**
+     * Gets a list of localities whose name is the same length or longer than <code>minLength</code> and
+     * contains <code>nameSubString</code> and whose type is <code>type</code>
+     * @param minLength
+     * @param nameLike
+     * @param type
+     * @return 
+     */
+    List<Locality> getLocalitiesByMinLength(int minLength, String nameSubString,
+            LocalityType type);
+
 }
