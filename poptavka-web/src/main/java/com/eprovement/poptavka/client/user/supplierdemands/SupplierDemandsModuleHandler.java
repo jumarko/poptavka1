@@ -183,8 +183,16 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
         //TODO RPC
     }
 
-    public void onRequestRateClient(int rating, String comment) {
-        //TODO RELEASE
+    public void onRequestRateClient(final long demandID, final Integer clientRating, final String clientMessage) {
+        supplierDemandsService.enterFeedbackForClient(demandID, clientRating, clientMessage,
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        GWT.log("onRequestRateClient finished");
+                        // TODO RELEASE Martin - maybe hide popup and reset userMessageId for selected objec in table
+                        getSupplierAssignedDemands(null);
+                    }
+                });
     }
 
     public void onUpdateUnreadMessagesCount() {

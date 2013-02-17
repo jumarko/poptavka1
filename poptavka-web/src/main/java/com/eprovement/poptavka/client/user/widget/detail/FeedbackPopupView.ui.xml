@@ -20,6 +20,10 @@
         </g:HTMLPanel>
 
         <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
+            <p><ui:msg key="feedbackToClientMessage">An request has been sent to Client to accept the project.
+               Meanwhile please enter feedback for Client
+               </ui:msg>
+            </p>
             <h4 class="{res.detailViews.demandDetailSectionHeader}">
                 <ui:msg key="formClientInfo">Client information</ui:msg>
             </h4>
@@ -49,7 +53,7 @@
                 <g:item>9</g:item>
                 <g:item>10 - The best</g:item>
             </g:ListBox>
-                                
+
             <g:Label styleName='{res.detailViews.detailHeader}'>
                 <ui:msg key="formRateComment">Rate commment: </ui:msg>
             </g:Label>

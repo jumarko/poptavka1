@@ -586,4 +586,7 @@ public interface LocalizableMessages extends Messages {
     String adminFormType();
     String adminFormValue();
 
+    /* Feedback popup info */
+    String feedbackToClientMessage();
+
 }
