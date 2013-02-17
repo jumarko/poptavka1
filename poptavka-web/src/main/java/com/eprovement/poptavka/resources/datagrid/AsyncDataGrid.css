@@ -16,7 +16,7 @@
 @def selectionBorderWidth  2px;
 
 .dataGridWidget {
-	
+
 }
 
 .dataGridFirstColumn {
@@ -26,7 +26,7 @@
 }
 
 .dataGridLastColumn {
-	
+
 }
 
 .dataGridLastColumn div img {
@@ -44,17 +44,18 @@
 }
 
 @sprite .dataGridHeader {
-	border-bottom: 1px solid #fea100;
 	gwt-image: 'dataGridHeader';
 	background-position: top right;
+	background-color: #f1ecda;
 	padding: 5px 12px 3px 12px;
 	text-align: left;
-	color: #ffffff;
+	color: #6f6b59;
 	overflow: hidden;
 	white-space: nowrap;
 	font-size: 16px;
 	font-weight: normal;
 	text-shadow: none;
+	border: none;
 }
 
 .dataGridCell {
@@ -65,17 +66,17 @@
 }
 
 .dataGridFirstColumnFooter {
-	
+
 }
 
-.dataGridFirstColumnHeader {	
+.dataGridFirstColumnHeader {
 	border-radius: 6px 0 0 0;
 	-moz-border-radius: 6px 0 0 0;
 	-webkit-border-radius: 6px 0 0 0;
 }
 
 .dataGridLastColumnFooter {
-	
+
 }
 
 @sprite .dataGridSortableHeader {
@@ -108,25 +109,23 @@
 }
 
 .dataGridEvenRow {
-	background: #ffffff;
-	opacity: 0.8;
+	background: #faf7eb;
 }
 
 .dataGridEvenRowCell {
 	border: none;
-	border-bottom: 1px dashed #919799;
-	border-left: 1px solid #e1e9eb;
+	border-top: 1px solid #e9e5d7;
+	border-right: 1px solid #e9e5d7;
 }
 
 .dataGridOddRow {
-	background: #ffffff;
-	opacity: 0.95;
+	background: #faf7eb;
 }
 
 .dataGridOddRowCell {
 	border: none;
-	border-bottom: 1px dashed #919799;
-	border-left: 1px solid #e1e9eb;
+	border-bottom: 1px dashed #e9e5d7;
+	border-right: 1px solid #e9e5d7;
 }
 
 .dataGridHoveredRow {
@@ -153,7 +152,7 @@
 .dataGridSelectedRow {
 	height: auto;
 	overflow: auto;
-	background: #fdf9bf;
+	background: #ffffff;
 	opacity: 1;
 }
 
@@ -168,5 +167,5 @@
  * The keyboard selected cell is visible over selection.
  */
 .dataGridKeyboardSelectedCell {
-	
+
 }

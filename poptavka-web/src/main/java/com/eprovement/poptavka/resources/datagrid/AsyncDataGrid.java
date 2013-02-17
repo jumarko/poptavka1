@@ -17,14 +17,17 @@ public interface AsyncDataGrid extends DataGrid.Resources {
     @ImageOptions(flipRtl = true)
     ImageResource dataGridLastSortableHeader();
 
-    @Source("dataGridSortedHeaderAscending.png")
+    @Override
+    @Source("dataGridSortedHeaderAscending.gif")
     @ImageOptions(flipRtl = true)
     ImageResource dataGridSortAscending();
 
-    @Source("dataGridSortedHeaderDescending.png")
+    @Override
+    @Source("dataGridSortedHeaderDescending.gif")
     @ImageOptions(flipRtl = true)
     ImageResource dataGridSortDescending();
 
+    @Override
     @Source({ DataGrid.Style.DEFAULT_CSS, "AsyncDataGrid.css" })
     CustomStyle dataGridStyle();
 
