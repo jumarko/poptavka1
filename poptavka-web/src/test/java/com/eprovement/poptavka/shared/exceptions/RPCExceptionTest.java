@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Test ensures that all RPC services declares "throws RPCException".
@@ -46,7 +47,8 @@ public class RPCExceptionTest {
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
     private static boolean isRpcExceptionAwareMethod(Method rpcMethod) {
         return rpcMethod.getAnnotation(RpcExceptionUnaware.class) == null
-                && rpcMethod.getAnnotation(Autowired.class) == null;
+                && rpcMethod.getAnnotation(Autowired.class) == null
+                && rpcMethod.getAnnotation(Value.class) == null;
 
     }
 

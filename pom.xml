@@ -31,7 +31,7 @@
 		<p6spy.version>1.3</p6spy.version>
 		<guava.version>r07</guava.version>
 		<hibernate.version>4.1.4.Final</hibernate.version>
-		<!--Most recent version 4.3.0.Final cannot be used because GWT does not 
+		<!--Most recent version 4.3.0.Final cannot be used because GWT does not
 			support it! -->
 		<hibernate-validator.version>4.1.0.Final</hibernate-validator.version>
 		<hibernate-search.version>4.1.1.Final</hibernate-search.version>
@@ -198,8 +198,8 @@
 			<id>gwt-maven-rewraps</id>
 			<url>http://gwt-maven-rewraps.googlecode.com/hg/</url>
 		</repository>
-		
-		
+
+
 		<!-- Bootstrap styles -->
 		<repository>
         	<id>gwt-bootstrap</id>
@@ -291,7 +291,7 @@
 				<artifactId>joda-time-hibernate</artifactId>
 				<version>${joda-time-hibernate.version}</version>
 				<exclusions>
-					<!-- we must hibernate dependency othewise strange "Incompatible class 
+					<!-- we must hibernate dependency othewise strange "Incompatible class
 						error" occurs -->
 					<exclusion>
 						<groupId>org.hibernate</groupId>
@@ -382,7 +382,7 @@
 				<artifactId>hibernate-jpamodelgen</artifactId>
 				<version>${hibernate-jpamodelgen.version}</version>
 			</dependency>
-			<!-- This first dependency includes all the JPA implementations for the 
+			<!-- This first dependency includes all the JPA implementations for the
 				DAOs -->
 			<dependency>
 				<groupId>com.googlecode.genericdao</groupId>
@@ -396,7 +396,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<!-- This second one includes the Hibernate Entity Manager plugin for 
+			<!-- This second one includes the Hibernate Entity Manager plugin for
 				the framework -->
 			<dependency>
 				<groupId>com.googlecode.genericdao</groupId>
@@ -929,7 +929,7 @@
 						<!--Set spring profile to "test" to be able to resolve correct properties -->
 						<systemProperties>
 							<spring.profiles.active>test</spring.profiles.active>
-							<!--We need to set P6SPY home directory otherwise it is not able to 
+							<!--We need to set P6SPY home directory otherwise it is not able to
 								find spy.properties correctly -->
 							<p6.home>${project.parent.basedir}/poptavka-core/src/main/resources</p6.home>
 						</systemProperties>
@@ -975,8 +975,8 @@
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<!-- The maven-compiler-plugin approach has the disadvantage that the 
-						maven compiler plugin does currently not allow to specify multiple compiler 
+					<!-- The maven-compiler-plugin approach has the disadvantage that the
+						maven compiler plugin does currently not allow to specify multiple compiler
 						arguments (disable annotation processing) -->
 					<compilerArgument>-proc:none</compilerArgument>
 				</configuration>
@@ -1027,52 +1027,53 @@
 
 
 			<!-- aspectj -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>${aspectj-maven-plugin.version}</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-					<complianceLevel>${maven.compiler.source}</complianceLevel>
-					<!--<XnoInline>true</XnoInline> -->
-					<aspectLibraries>
-						<aspectLibrary>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-aspects</artifactId>
-						</aspectLibrary>
-						<aspectLibrary>
-							<groupId>org.springframework.security</groupId>
-							<artifactId>spring-security-aspects</artifactId>
-						</aspectLibrary>
-					</aspectLibraries>
-					<showWeaveInfo>true</showWeaveInfo>
-					<proceedOnError>false</proceedOnError>
-					<verbose>true</verbose>
-					<encoding>UTF-8</encoding>
-					<!--<outxml>true</outxml> -->
-					<!--<outxmlfile>META-INF/aop.xml</outxmlfile> -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>${aspectj-maven-plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <complianceLevel>${maven.compiler.source}</complianceLevel>
+                    <!--<XnoInline>true</XnoInline> -->
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-aspects</artifactId>
+                        </aspectLibrary>
+                        <aspectLibrary>
+                            <groupId>org.springframework.security</groupId>
+                            <artifactId>spring-security-aspects</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                    <showWeaveInfo>true</showWeaveInfo>
+                    <proceedOnError>false</proceedOnError>
+                    <Xlint>warning</Xlint>
+                    <verbose>true</verbose>
+                    <encoding>UTF-8</encoding>
+                    <outxml>true</outxml>
+                    <outxmlfile>target/aspectj-out.xml</outxmlfile>
 
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjtools</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-						<phase>compile</phase>
-					</execution>
-				</executions>
-			</plugin>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<!--FindBugs -->
+            <!--FindBugs -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>

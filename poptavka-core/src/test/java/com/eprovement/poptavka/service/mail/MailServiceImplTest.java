@@ -68,7 +68,7 @@ public class MailServiceImplTest extends BasicIntegrationTest {
     private SimpleMailMessage createTestMailMessage(String userMail) {
         final SimpleMailMessage testMessage = new SimpleMailMessage();
 
-        testMessage.setFrom("poptavka1@gmail.com");
+        testMessage.setFrom("poptavka1@test.com");
         testMessage.setTo(userMail);
 
         testMessage.setSubject("Poptavka MailService Test");

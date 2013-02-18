@@ -135,7 +135,8 @@
 
     <bean id="userVerificationService" class="com.eprovement.poptavka.service.user.UserVerificationServiceImpl">
         <constructor-arg ref="generalService" />
-        <property name="mailService" ref="mailService"/>
+        <constructor-arg ref="mailService"/>
+        <constructor-arg value="${mail.noreply.address}" />
     </bean>
 
     <!-- Jobs -->
@@ -174,11 +175,11 @@
 
     <!-- Mail support -->
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="${mailserver.host}" />
-        <property name="port" value="${mailserver.port}" />
-        <property name="protocol" value="${mailserver.protocol}" />
-        <property name="username" value="${mailserver.username}" />
-        <property name="password" value="${mailserver.password}" />
+        <property name="host" value="${mail.server.host}" />
+        <property name="port" value="${mail.server.port}" />
+        <property name="protocol" value="${mail.server.protocol}" />
+        <property name="username" value="${mail.server.username}" />
+        <property name="password" value="${mail.server.password}" />
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
