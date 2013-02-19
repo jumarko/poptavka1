@@ -121,34 +121,37 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String userEmail();
 
     /**************************************************************************/
-    /** Supplier Detail - error messages.                                     */
+    /** User Detail - error messages.                                     */
     /**************************************************************************/
-    @Key("supplier.notBlank.companyName")
-    String supplierNotBlankCompanyName();
+    @Key("user.notBlank.companyName")
+    String userNotBlankCompanyName();
 
-    @Key("supplier.notBlank.identifNumber")
-    String supplierNotBlankIdentifNumber();
+    @Key("user.notBlank.identifNumber")
+    String userNotBlankIdentifNumber();
 
-    @Key("supplier.notBlank.taxNumber")
-    String supplierNotBlankTaxNumber();
+    @Key("user.notBlank.taxNumber")
+    String userNotBlankTaxNumber();
 
-    @Key("supplier.notBlank.firstName")
-    String supplierNotBlankFirstName();
+    @Key("user.notBlank.firstName")
+    String userNotBlankFirstName();
 
-    @Key("supplier.notBlank.lastName")
-    String supplierNotBlankLastName();
+    @Key("user.notBlank.lastName")
+    String userNotBlankLastName();
 
-    @Key("supplier.notBlank.phone")
-    String supplierNotBlankPhone();
+    @Key("user.notBlank.phone")
+    String userNotBlankPhone();
 
-    @Key("supplier.pattern.phone")
-    String supplierPatternPhone();
+    @Key("user.pattern.phone")
+    String userPatternPhone();
 
-    @Key("supplier.notBlank.description")
-    String supplierNotBlankDescription();
+    @Key("user.notBlank.description")
+    String userNotBlankDescription();
 
-    @Key("supplier.pattern.website")
-    String supplierPatternWebsite();
+    @Key("user.size.description")
+    String userSizeDescription();
+
+    @Key("user.pattern.website")
+    String userPatternWebsite();
 
     /**************************************************************************/
     /** Email Dialog Popup - error messages.                                  */
