@@ -555,7 +555,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public void enterFeedbackForClient(final long demandID, final Integer clientRating, final String clientMessage)
         throws RPCException, ApplicationSecurityException {
-        final Demand demand = (Demand) generalService.find(Demand.class, demandID);
+        final Demand demand = generalService.find(Demand.class, demandID);
         Rating rating;
         if (demand.getRating() == null) {
             rating = new Rating();
