@@ -45,6 +45,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             case Constants.CLIENT_ASSIGNED_DEMANDS:
                 getClientAssignedDemandsCount(grid, searchDefinition);
                 break;
+            case Constants.CLIENT_CLOSED_DEMANDS:
+                getClientClosedDemandsCount(grid, searchDefinition);
+                break;
             default:
                 break;
         }
@@ -66,6 +69,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:
                 getClientAssignedDemands(searchDefinition);
+                break;
+            case Constants.CLIENT_CLOSED_DEMANDS:
+                getClientClosedDemands(searchDefinition);
                 break;
             default:
                 break;
@@ -203,16 +209,30 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    public void onRequestRateSupplier(final long demandID, final Integer supplierRating, final String supplierMessage) {
-        clientDemandsService.enterFeedbackForSupplier(demandID, supplierRating, supplierMessage,
-                new SecuredAsyncCallback<Void>(eventBus) {
+    /**************************************************************************/
+    /* Retrieving methods - CLIENT CLOSED DEMANDS                           */
+    /**************************************************************************/
+    private void getClientClosedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientClosedDemandsCount(
+                Storage.getUser().getUserId(), searchDefinition,
+                new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
-                    public void onSuccess(Void result) {
-                        GWT.log("onRequestRateClient finished");
-                        // TODO RELEASE Martin - maybe hide popup and reset userMessageId for selected objec in table
+                    public void onSuccess(Integer result) {
+                        GWT.log("getClientAssignedDemandsCount: " + result);
+                        grid.getDataProvider().updateRowCount(result, true);
                     }
                 });
+    }
 
+    private void getClientClosedDemands(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientClosedDemands(
+                Storage.getUser().getUserId(), searchDefinition,
+                new SecuredAsyncCallback<List<ClientOfferedDemandOffersDetail>>(eventBus) {
+                    @Override
+                    public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
+                        eventBus.displayClientAssignedDemands(result);
+                    }
+                });
     }
 
     /**************************************************************************/
@@ -256,6 +276,18 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 eventBus.responseCloseDemand();
             }
         });
+    }
+
+    public void onRequestRateSupplier(final long demandID, final Integer supplierRating, final String supplierMessage) {
+        clientDemandsService.enterFeedbackForSupplier(demandID, supplierRating, supplierMessage,
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        GWT.log("onRequestRateClient finished");
+                        // TODO RELEASE Martin - maybe hide popup and reset userMessageId for selected objec in table
+                    }
+                });
+
     }
 
     public void onRequestAcceptOffer(long offerId) {

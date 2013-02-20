@@ -37,6 +37,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 getSupplierAssignedDemandsCount(grid, searchDefinition);
                 break;
+            case Constants.SUPPLIER_CLOSED_DEMANDS:
+                getSupplierClosedDemandsCount(grid, searchDefinition);
+                break;
             default:
                 break;
         }
@@ -52,6 +55,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 break;
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 getSupplierAssignedDemands(searchDefinition);
+                break;
+            case Constants.SUPPLIER_CLOSED_DEMANDS:
+                getSupplierClosedDemands(searchDefinition);
                 break;
             default:
                 break;
@@ -118,6 +124,28 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     private void getSupplierAssignedDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemands(
+                Storage.getSupplierId(), searchDefinition,
+                new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
+                    @Override
+                    public void onSuccess(List<SupplierOffersDetail> result) {
+                        eventBus.displaySupplierAssignedDemands(result);
+                    }
+                });
+    }
+
+    private void getSupplierClosedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierClosedDemandsCount(
+                Storage.getSupplierId(), searchDefinition,
+                new SecuredAsyncCallback<Integer>(eventBus) {
+                    @Override
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
+                    }
+                });
+    }
+
+    private void getSupplierClosedDemands(SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierClosedDemands(
                 Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override

@@ -575,8 +575,39 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return listCodod;
     }
 
+    //******************** CLIENT - My Closed Demands *************************/
+    /**
+     * Get all closed demands.
+     * When client accept supplier's work, demand is closed and stored to demand's history.
+     *
+     * @param userId user's id
+     * @param filter
+     * @return
+     */
+    @Override
+    public int getClientClosedDemandsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        //TODO RELEASE - implement
+        return 0;
+    }
+
+    /**
+     * Get all closed demands.
+     * When client accept supplier's work, demand is closed and stored to demand's history.
+     *
+     * @param userId user's id
+     * @param searchDefinition
+     * @return
+     */
+    @Override
+    public List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        //TODO RELEASE - implement
+        return new ArrayList<ClientOfferedDemandOffersDetail>();
+    }
+
     /**************************************************************************/
-    /*  Other getter methods                                                  */
+    /* Other getter methods                                                   */
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)

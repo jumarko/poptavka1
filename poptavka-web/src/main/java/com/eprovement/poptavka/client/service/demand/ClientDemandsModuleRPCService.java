@@ -165,6 +165,29 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     List<ClientOfferedDemandOffersDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
+    //******************** CLIENT - My Assigned Demands ***********************/
+    /**
+     * Get all closed demands.
+     * When client accept supplier's work, demand is closed and stored to demand's history.
+     *
+     * @param userId user's id
+     * @param filter
+     * @return
+     */
+    int getClientClosedDemandsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Get all closed demands.
+     * When client accept supplier's work, demand is closed and stored to demand's history.
+     *
+     * @param userId user's id
+     * @param searchDefinition
+     * @return
+     */
+    List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/

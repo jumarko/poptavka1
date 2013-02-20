@@ -102,6 +102,29 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     List<SupplierOffersDetail> getSupplierAssignedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
+    //******************* SUPPLIER - My Closed Demands ************************/
+    /**
+     * Get supplier's closed demands.
+     * When supplier's work has been accepted, demand changed his status to Closed.
+     *
+     * @param supplierID
+     * @param filter
+     * @return
+     */
+    int getSupplierClosedDemandsCount(long supplierID,
+            SearchDefinition searchDefinition) throws RPCException;
+
+    /**
+     * Get supplier's closed demands.
+     * When supplier's work has been accepted, demand changed his status to Closed.
+     *
+     * @param supplierID
+     * @param searchDefinition
+     * @return
+     */
+    List<SupplierOffersDetail> getSupplierClosedDemands(long supplierID,
+            SearchDefinition searchDefinition) throws RPCException;
+
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/

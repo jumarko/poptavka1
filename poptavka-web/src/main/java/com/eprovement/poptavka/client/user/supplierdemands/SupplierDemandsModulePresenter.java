@@ -33,6 +33,8 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
         Button getSupplierAssignedDemandsButton();
 
+        Button getSupplierClosedDemandsButton();
+
         Button getSupplierCreateDemand();
 
         Button getSupplierCreateSupplier();
@@ -95,6 +97,12 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
         });
+        view.getSupplierClosedDemandsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CLOSED_DEMANDS);
+            }
+        });
     }
 
     /**************************************************************************/
@@ -123,11 +131,12 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 supplierAssigendDemands = eventBus.addHandler(SupplierAssignedDemandsPresenter.class);
                 supplierAssigendDemands.onInitSupplierAssignedDemands(filter);
                 break;
-            case Constants.CREATE_DEMAND:
-                eventBus.goToCreateDemandModule();
-                break;
-            case Constants.CREATE_SUPPLIER:
-                eventBus.goToCreateSupplierModule();
+            case Constants.SUPPLIER_CLOSED_DEMANDS:
+                if (supplierAssigendDemands != null) {
+                    eventBus.removeHandler(supplierAssigendDemands);
+                }
+                supplierAssigendDemands = eventBus.addHandler(SupplierAssignedDemandsPresenter.class);
+                supplierAssigendDemands.onInitSupplierClosedDemands(filter);
                 break;
             default:
                 eventBus.initSupplierDemandsWelcome();
@@ -160,17 +169,8 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 view.getSupplierAssignedDemandsButton().setStyleName("");
                 break;
-            case Constants.CREATE_DEMAND:
-                view.getSupplierCreateDemand().setStyleName("");
-                break;
-            case Constants.CREATE_SUPPLIER:
-                view.getSupplierCreateSupplier().setStyleName("");
-                break;
-            case Constants.HOME_DEMANDS_MODULE:
-                view.getAllDemands().setStyleName("");
-                break;
-            case Constants.HOME_SUPPLIERS_MODULE:
-                view.getAllSuppliers().setStyleName("");
+            case Constants.SUPPLIER_CLOSED_DEMANDS:
+                view.getSupplierClosedDemandsButton().setStyleName("");
                 break;
             default:
                 break;

@@ -101,12 +101,13 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     public void onInitSupplierAssignedDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_ASSIGNED_DEMANDS);
 
-        eventBus.setUpSearchBar(new Label("Supplier's assigned projects attibure's selector will be here."));
-        searchDataHolder = filter;
+        initWidget(filter);
+    }
 
-        eventBus.displayView(view.getWidgetView());
-        //init wrapper widget
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+    public void onInitSupplierClosedDemands(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_CLOSED_DEMANDS);
+
+        initWidget(filter);
     }
 
     public void onInitSupplierAssignedDemandsByHistory(
@@ -208,6 +209,18 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void initWidget(SearchModuleDataHolder filter) {
+        eventBus.setUpSearchBar(new Label("Supplier's assigned/closed projects attibure's selector will be here."));
+        searchDataHolder = filter;
+
+        eventBus.displayView(view.getWidgetView());
+        //init wrapper widget
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+    }
+
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/

@@ -54,8 +54,6 @@ public class ClientAssignedDemandsView extends Composite
 
         initTable();
         initWidget(uiBinder.createAndBindUi(this));
-
-        tableNameLabel.setText(Storage.MSGS.clientAssignedDemandsTitle());
     }
 
     private void initTable() {

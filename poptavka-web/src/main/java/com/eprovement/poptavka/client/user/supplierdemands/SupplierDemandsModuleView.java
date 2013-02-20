@@ -22,7 +22,7 @@ public class SupplierDemandsModuleView extends Composite
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Button supplierNewDemands, supplierOffers, supplierAssignedDemands;
+    Button supplierNewDemands, supplierOffers, supplierAssignedDemands, supplierClosedDemands;
     Button supplierCreateDemand, supplierCreateSupplier, allDemands, allSuppliers;
 
     /**************************************************************************/
@@ -56,6 +56,11 @@ public class SupplierDemandsModuleView extends Composite
     @Override
     public Button getSupplierAssignedDemandsButton() {
         return supplierAssignedDemands;
+    }
+
+    @Override
+    public Button getSupplierClosedDemandsButton() {
+        return supplierClosedDemands;
     }
 
     @Override

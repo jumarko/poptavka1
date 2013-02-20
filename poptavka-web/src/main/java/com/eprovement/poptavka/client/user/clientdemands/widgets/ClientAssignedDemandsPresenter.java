@@ -95,16 +95,17 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /* Navigation events */
     /**************************************************************************/
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
+        //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
 
-        eventBus.setUpSearchBar(new Label("Client's assigned projects attibure's selector will be here."));
-        searchDataHolder = filter;
-        eventBus.createTokenForHistory1(0);
+        initWidget(filter);
+    }
 
-        eventBus.displayView(view.getWidgetView());
-        eventBus.loadingDivHide();
-        //init wrapper widget
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+    public void onInitClientClosedDemands(SearchModuleDataHolder filter) {
+        //Must be present here. Loading data rely on this atrtibute
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_CLOSED_DEMANDS);
+
+        initWidget(filter);
     }
 
     public void onInitClientAssignedDemandsByHistory(
@@ -203,6 +204,20 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void initWidget(SearchModuleDataHolder filter) {
+        eventBus.setUpSearchBar(new Label("Client's closed projects attibure's selector will be here."));
+        searchDataHolder = filter;
+        eventBus.createTokenForHistory1(0);
+
+        eventBus.displayView(view.getWidgetView());
+        eventBus.loadingDivHide();
+        //init wrapper widget
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+    }
+
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/

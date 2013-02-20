@@ -36,6 +36,11 @@
                                         <ui:msg key="menuSupplierAssignedDemands">Assigned demands</ui:msg>
                                     </g:Button>
                                 </li>
+                                <li>
+                                    <g:Button ui:field="supplierClosedDemands">
+                                        <ui:msg key="menuSupplierClosedDemands">Closed demands</ui:msg>
+                                    </g:Button>
+                                </li>
                             </ul>
                         </div>
                     </g:HTMLPanel>
