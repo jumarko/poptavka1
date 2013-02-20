@@ -32,24 +32,25 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     private Long clientId = -1L;
     private Long supplierId = -1L;
     /** BusinessUserData. **/
-    @NotBlank(message = "{supplierNotBlankCompanyName}")
+    @NotBlank(message = "{userNotBlankCompanyName}")
     private String companyName;
-    @NotBlank(message = "{supplierNotBlankIdentifNumber}")
+    @NotBlank(message = "{userNotBlankIdentifNumber}")
     private String identificationNumber;
-    @NotBlank(message = "{supplierNotBlankFirstName}")
+    @NotBlank(message = "{userNotBlankFirstName}")
     private String firstName;
-    @NotBlank(message = "{supplierNotBlankLastName}")
+    @NotBlank(message = "{userNotBlankLastName}")
     private String lastName;
-    @Pattern(regexp = "[0-9]+", message = "{supplierPatternPhone}")
-    @NotBlank(message = "{supplierNotBlankPhone}")
+    @Pattern(regexp = "[0-9]+", message = "{userPatternPhone}")
+    @NotBlank(message = "{userNotBlankPhone}")
     private String phone;
-    @NotBlank(message = "{supplierNotBlankDescription}")
+    @Size(min = 20, message = "{userSizeDescription}")
+    @NotBlank(message = "{userNotBlankDescription}")
     private String description;
-    @NotBlank(message = "{supplierNotBlankTaxNumber}")
+    @NotBlank(message = "{userNotBlankTaxNumber}")
     private String taxId;
     @Pattern(regexp =
         "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
-        message = "{supplierPatternWebsite}")
+        message = "{userPatternWebsite}")
     private String website;
     /** Class lists. **/
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();

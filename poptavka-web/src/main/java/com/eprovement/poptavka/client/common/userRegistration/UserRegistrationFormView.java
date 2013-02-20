@@ -68,9 +68,9 @@ public class UserRegistrationFormView extends Composite
 
         //set validation monitors as array for easier access.
         validationMonitorsPersonalOnly = Arrays.asList(
-                phone, email, firstName, lastName, password, passwordConfirm);
+                phone, email, firstName, lastName, password, passwordConfirm, description);
         validationMonitorsCompanyOnly = Arrays.asList(companyName, identificationNumber, taxId,
-                phone, email, firstName, lastName, password, passwordConfirm);
+                phone, email, firstName, lastName, password, passwordConfirm, description);
 
         personRadio.setValue(true, false);
         setCompanyInputsVisibility(false);
@@ -111,7 +111,10 @@ public class UserRegistrationFormView extends Composite
                 initVisualPasswordConfirmCheck(event);
             }
         });
-
+        //website is not necessary therefore if user type same website,
+        //validate its input by initialization of validation monitor, but when
+        //user end up leaving empty box after playing with input,
+        //reset validation monitor that was initialized by that inputs.
         ((TextBox) website.getWidget()).addBlurHandler(new BlurHandler() {
             @Override
             public void onBlur(BlurEvent event) {
