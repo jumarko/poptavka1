@@ -100,4 +100,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void getClientOfferedDemandOffer(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
 
     void getClientAssignedDemand(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
+
+    void enterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage,
+            AsyncCallback<Void> calback);
 }

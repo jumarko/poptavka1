@@ -191,7 +191,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void requestEditOffer(long id);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestRateClient(int rating, String comment);
+    void requestRateClient(long demandID, Integer clientRating, String clientMessage);
 
     //Updaters
     //--------------------------------------------------------------------------

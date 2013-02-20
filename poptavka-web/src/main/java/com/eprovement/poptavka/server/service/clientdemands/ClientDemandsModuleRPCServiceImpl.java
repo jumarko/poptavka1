@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.service.clientdemands;
 
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.demand.Rating;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
@@ -880,5 +881,33 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 //        } else {
 //            return new FullOfferDetail();
 //        }
+    }
+
+    @Override
+    /**
+     * Client enters a new feedback for Supplier with respect to given demand.
+     *
+     * @param demandID of Demand to which this feedback is connected
+     * @param supplierRating integer number that will be assigned to supplier
+     * @param supplierMessage comment that will be assigned to supplier
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public void enterFeedbackForSupplier(final long demandID, final Integer supplierRating,
+        final String supplierMessage)
+        throws RPCException, ApplicationSecurityException {
+        final Demand demand = generalService.find(Demand.class, demandID);
+        Rating rating;
+        if (demand.getRating() == null) {
+            rating = new Rating();
+        } else {
+            rating = demand.getRating();
+        }
+        rating.setSupplierRating(supplierRating);
+        rating.setSupplierMessage(supplierMessage);
+        generalService.save(rating);
+        demand.setRating(rating);
+        generalService.save(demand);
     }
 }

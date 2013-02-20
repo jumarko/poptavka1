@@ -209,4 +209,15 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
 
     ClientOfferedDemandOffersDetail getClientAssignedDemand(long offerID) throws RPCException,
             ApplicationSecurityException;
+
+    /**
+     * Client enters a new feedback for Supplier with respect to given demand.
+     *
+     * @param demandID of Demand to which this feedback is connected
+     * @param supplierRating integer number that will be assigned to supplier
+     * @param supplierMessage comment that will be assigned to supplier
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    void enterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage) throws RPCException;
 }
