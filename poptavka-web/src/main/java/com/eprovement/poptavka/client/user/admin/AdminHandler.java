@@ -28,6 +28,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @EventHandler
 public class AdminHandler extends BaseEventHandler<AdminEventBus> {
@@ -57,6 +58,9 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 break;
             case Constants.ADMIN_MESSAGES:
                 getAdminMessagesCount(grid, searchDefinition);
+                break;
+            case Constants.ADMIN_NEW_DEMANDS:
+                getAdminNewDemandsCount(grid, searchDefinition);
                 break;
             case Constants.ADMIN_OFFERS:
                 getAdminOffersCount(grid, searchDefinition);
@@ -103,6 +107,9 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 break;
             case Constants.ADMIN_MESSAGES:
                 getAdminMessages(searchDefinition);
+                break;
+            case Constants.ADMIN_NEW_DEMANDS:
+                getAdminNewDemands(searchDefinition);
                 break;
             case Constants.ADMIN_OFFERS:
                 getAdminOffers(searchDefinition);
@@ -377,6 +384,37 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             @Override
             public void onSuccess(MessageDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
+            }
+        });
+    }
+
+    /**********************************************************************************************
+     ***********************  New Demands SECTION. ************************************************
+     **********************************************************************************************/
+    public void getAdminNewDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        adminService.getAdminNewDemandsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+            @Override
+            public void onSuccess(Long result) {
+                grid.getDataProvider().updateRowCount(result.intValue(), true);
+            }
+        });
+    }
+
+    public void getAdminNewDemands(SearchDefinition searchDefinition) {
+        adminService.getAdminNewDemands(searchDefinition,
+                new SecuredAsyncCallback<List<FullDemandDetail>>(eventBus) {
+                    @Override
+                    public void onSuccess(List<FullDemandDetail> result) {
+                        eventBus.displayAdminNewDemands(result);
+                    }
+                });
+    }
+
+    public void onRequestApproveDemands(final UniversalAsyncGrid grid, Set<FullDemandDetail> demandsToApprove) {
+        adminService.approveDemands(demandsToApprove, new SecuredAsyncCallback<Void>(eventBus) {
+            @Override
+            public void onSuccess(Void result) {
+                grid.refresh();
             }
         });
     }

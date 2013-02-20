@@ -1,0 +1,38 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:u="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <g:DockLayoutPanel unit="PX">
+        <g:north size="65">
+            <g:HorizontalPanel ui:field="toolBar" styleName="{res.layout.toolbarItemsBlock}">
+                <g:DecoratorPanel ui:field="filterLabelPanel">
+                    <g:Label ui:field="filterLabel" />
+                </g:DecoratorPanel>
+                <g:Button ui:field="approveBtn" visible="false" styleName="btn btn-primary">
+                    <ui:msg key="adminCommonBtnApprove">Approve</ui:msg>
+                </g:Button>
+                <u:UniversalPagerWidget ui:field='pager'/>
+            </g:HorizontalPanel>
+        </g:north>
+        <g:center>
+            <b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
+                <b:FluidRow>
+                    <b:Column size="7">
+                        <u:UniversalAsyncGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}' />
+                    </b:Column>
+                    <b:Column size="5">
+                        <g:HTMLPanel styleName='{res.layout.detailInfo}'>
+                            <g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
+                            <d:DemandDetailView ui:field="demandDetail" visible="false"/>
+                        </g:HTMLPanel>
+                    </b:Column>
+                </b:FluidRow>
+            </b:FluidContainer>
+        </g:center>
+    </g:DockLayoutPanel>
+</ui:UiBinder>

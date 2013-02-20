@@ -46,6 +46,8 @@ public class AdminPresenter
 
         Button getMessageButton();
 
+        Button getNewDemandsBtn();
+
         Button getPaymentMethodButton();
 
         Button getPermissionButton();
@@ -106,6 +108,12 @@ public class AdminPresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.ADMIN_MESSAGES);
+            }
+        });
+        view.getNewDemandsBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_NEW_DEMANDS);
             }
         });
         view.getPaymentMethodButton().addClickHandler(new ClickHandler() {
@@ -186,6 +194,9 @@ public class AdminPresenter
                 break;
             case Constants.ADMIN_MESSAGES:
                 eventBus.initMessages(filter);
+                break;
+            case Constants.ADMIN_NEW_DEMANDS:
+                eventBus.initNewDemands(filter);
                 break;
             case Constants.ADMIN_OFFERS:
                 eventBus.initOffers(filter);

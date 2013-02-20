@@ -22,9 +22,22 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Button demandsButton, offersButton, clientsButton, suppliersButton,
-    accessRolesButton, emailActivationsButton, invoicesButton, messagesButton,
-    paymentMethodsButton, permissionsButton, preferencesButton, problemsButton; //ourPaymentDetailsButton,
+    Button newDemandsBtn;
+    //TODO LATER Martin - finnish admin interface for other tables
+    //Temporary initialzie manually because in uiBinder are those buttons commented
+    Button demandsButton = new Button();
+    Button offersButton = new Button();
+    Button clientsButton = new Button();
+    Button suppliersButton = new Button();
+    Button accessRolesButton = new Button();
+    Button emailActivationsButton = new Button();
+    Button invoicesButton = new Button();
+    Button messagesButton = new Button();
+    Button paymentMethodsButton = new Button();
+    Button permissionsButton = new Button();
+    Button preferencesButton = new Button();
+    Button problemsButton = new Button();
+    //ourPaymentDetailsButton,
 
     @Override
     public void createView() {
@@ -82,11 +95,15 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
         return messagesButton;
     }
 
+    @Override
+    public Button getNewDemandsBtn() {
+        return newDemandsBtn;
+    }
+
 //    @Override
 //    public Button getOurPaymentDetailsButton() {
 //        ourPaymentDetailsButton.getTargetHistoryButton(ButtonString);
 //    }
-
     @Override
     public Button getPaymentMethodButton() {
         return paymentMethodsButton;

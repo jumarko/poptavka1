@@ -3,11 +3,11 @@ package com.eprovement.poptavka.client.user.admin;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
-//import com.eprovement.poptavka.client.user.admin.tab.AdminDemandInfoPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminDemandsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminEmailActivationsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminInvoicesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminMessagesPresenter;
+import com.eprovement.poptavka.client.user.admin.tab.AdminNewDemandsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminOffersPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminOurPaymentDetailsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminPaymentMethodsPresenter;
@@ -48,6 +48,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
@@ -113,6 +114,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(forwardToParent = true)
     void loginFromSession();
 
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/
@@ -145,6 +149,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(handlers = AdminMessagesPresenter.class)
     void initMessages(SearchModuleDataHolder filter);
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void initNewDemands(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void initPaymentMethods(SearchModuleDataHolder filter);
@@ -229,6 +236,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(handlers = AdminMessagesPresenter.class)
     void displayAdminTabMessages(List<MessageDetail> messages);
 
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void displayAdminNewDemands(List<FullDemandDetail> demands);
+
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void displayAdminTabPaymentMethods(List<PaymentMethodDetail> clients);
 
@@ -302,4 +312,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(handlers = AdminDemandsPresenter.class)
     void responseUpdateDemands(Boolean result);
+
+    @Event(handlers = AdminHandler.class)
+    void requestApproveDemands(UniversalAsyncGrid grid, Set<FullDemandDetail> demandsToApprove);
 }

@@ -57,6 +57,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminRPCServiceImpl.class);
-
     private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
     private DemandService demandService;
@@ -372,8 +372,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     /**
      * ********************************************************************************************
-     * ********************** OFFER SECTION.
-     * ************************************************
+     * ********************** OFFER SECTION.*******************************************************
      * ********************************************************************************************
      */
     @Override
@@ -617,6 +616,40 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         }
 
         generalService.merge(message);
+    }
+
+    /**************************************************************************/
+    /*  NEW DEMANDS SECTION.                                                  */
+    /**************************************************************************/
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public Long getAdminNewDemandsCount(SearchDefinition searchDefinition) throws
+            RPCException, ApplicationSecurityException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.addFilterEqual("status", DemandStatus.NEW);
+        search.setSearchClass(Demand.class);
+        return (long) generalService.count(search);
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public List<FullDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition) throws
+            RPCException, ApplicationSecurityException {
+        Search search = searchConverter.convertToSource(searchDefinition);
+        search.addFilterEqual("status", DemandStatus.NEW);
+        search.setSearchClass(Demand.class);
+        return fullDemandConverter.convertToTargetList(generalService.search(search));
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public void approveDemands(Set<FullDemandDetail> demandsToApprove) throws
+            RPCException, ApplicationSecurityException {
+        for (FullDemandDetail demandDetail : demandsToApprove) {
+            Demand demand = generalService.find(Demand.class, demandDetail.getDemandId());
+            demand.setStatus(DemandStatus.ACTIVE);
+            generalService.merge(demand);
+        }
     }
 
     /**

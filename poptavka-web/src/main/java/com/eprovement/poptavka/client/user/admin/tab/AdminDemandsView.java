@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
@@ -140,7 +139,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private void initTableColumns() {
 
         // Demand ID.
-        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnID(),
+        idColumn = dataGrid.addColumn(dataGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnID(),
                 true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 
@@ -151,7 +150,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 });
 
         // Client ID.
-        cidColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnCID(),
+        cidColumn = dataGrid.addColumn(dataGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnCID(),
                 true, Constants.COL_WIDTH_ID,
                 new GetValue<String>() {
 

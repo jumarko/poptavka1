@@ -7,6 +7,7 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
+import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -75,6 +76,14 @@ public class FullDemandDetail implements Serializable, TableDisplay {
     private String description;
     //
     private List<FullSupplierDetail> excludedSuppliers;
+    //KeyProvider
+    public static final ProvidesKey<FullDemandDetail> KEY_PROVIDER =
+            new ProvidesKey<FullDemandDetail>() {
+                @Override
+                public Object getKey(FullDemandDetail item) {
+                    return item == null ? null : item.getDemandId();
+                }
+            };
 
     /**
      * for serialization. *

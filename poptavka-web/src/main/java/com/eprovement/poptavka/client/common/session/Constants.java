@@ -97,6 +97,7 @@ public final class Constants {
     public static final int ADMIN_EMAILS_ACTIVATION = 103;
     public static final int ADMIN_INVOICES = 104;
     public static final int ADMIN_MESSAGES = 105;
+    public static final int ADMIN_NEW_DEMANDS = 113;
     public static final int ADMIN_OFFERS = 106;
     public static final int ADMIN_OUR_PAYMENT_DETAILS = 107;
     public static final int ADMIN_PAYMENT_METHODS = 108;

@@ -23,6 +23,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RemoteServiceRelativePath(AdminRPCService.URL)
 public interface AdminRPCService extends RemoteService {
@@ -94,6 +95,15 @@ public interface AdminRPCService extends RemoteService {
             ApplicationSecurityException;
 
     void updateMessage(MessageDetail detailObject) throws RPCException, ApplicationSecurityException;
+
+    //---------------------- NEW DEMANDS --------------------------------------------
+    Long getAdminNewDemandsCount(SearchDefinition searchDefinition) throws
+            RPCException, ApplicationSecurityException;
+
+    List<FullDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition) throws RPCException,
+            ApplicationSecurityException;
+
+    void approveDemands(Set<FullDemandDetail> demandsToApprove) throws RPCException, ApplicationSecurityException;
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
     Long getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition) throws RPCException,
