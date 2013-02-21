@@ -1,9 +1,9 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-import java.io.Serializable;
 
-public class DemandRatingsDetail implements Serializable {
+public class DemandRatingsDetail implements IsSerializable {
 
     /**
      * Generated serialVersionUID.

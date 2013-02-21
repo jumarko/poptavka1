@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -40,6 +41,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
             case Constants.SUPPLIER_CLOSED_DEMANDS:
                 getSupplierClosedDemandsCount(grid, searchDefinition);
                 break;
+            case Constants.SUPPLIER_RATINGS:
+                getSupplierRatingsCount(grid, searchDefinition);
+                break;
             default:
                 break;
         }
@@ -58,6 +62,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 break;
             case Constants.SUPPLIER_CLOSED_DEMANDS:
                 getSupplierClosedDemands(searchDefinition);
+                break;
+            case Constants.SUPPLIER_RATINGS:
+                getSupplierRatings(searchDefinition);
                 break;
             default:
                 break;
@@ -151,6 +158,28 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                     @Override
                     public void onSuccess(List<SupplierOffersDetail> result) {
                         eventBus.displaySupplierAssignedDemands(result);
+                    }
+                });
+    }
+
+    private void getSupplierRatingsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierRatingsCount(
+                Storage.getSupplierId(), searchDefinition,
+                new SecuredAsyncCallback<Integer>(eventBus) {
+                    @Override
+                    public void onSuccess(Integer result) {
+                        grid.getDataProvider().updateRowCount(result, true);
+                    }
+                });
+    }
+
+    private void getSupplierRatings(SearchDefinition searchDefinition) {
+        supplierDemandsService.getSupplierRatings(
+                Storage.getSupplierId(), searchDefinition,
+                new SecuredAsyncCallback<List<DemandRatingsDetail>>(eventBus) {
+                    @Override
+                    public void onSuccess(List<DemandRatingsDetail> result) {
+                        eventBus.displaySupplierRatings(result);
                     }
                 });
     }

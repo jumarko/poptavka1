@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.eprovement.poptavka.client.user.clientdemands.widgets;
+package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
+import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -26,11 +26,11 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.List;
 
-@Presenter(view = ClientRatingsView.class, multiple = true)
-public class ClientRatingsPresenter extends LazyPresenter<
-        ClientRatingsPresenter.ClientRatingsLayoutInterface, ClientDemandsModuleEventBus> {
+@Presenter(view = SupplierRatingsView.class, multiple = true)
+public class SupplierRatingsPresenter extends LazyPresenter<
+        SupplierRatingsPresenter.SupplierRatingsLayoutInterface, SupplierDemandsModuleEventBus> {
 
-    public interface ClientRatingsLayoutInterface extends LazyView, IsWidget {
+    public interface SupplierRatingsLayoutInterface extends LazyView, IsWidget {
 
         UniversalAsyncGrid getDataGrid();
 
@@ -58,9 +58,9 @@ public class ClientRatingsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
-    public void onInitClientRatings(SearchModuleDataHolder filter) {
+    public void onInitSupplierRatings(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_RATINGS);
+        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_RATINGS);
 
         initWidget(filter);
     }
@@ -86,8 +86,8 @@ public class ClientRatingsPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplayClientRatings(List<IUniversalDetail> data) {
-        GWT.log("++ onResponseClientsRatings");
+    public void onDisplaySupplierRatings(List<IUniversalDetail> data) {
+        GWT.log("++ onResponseSupplierRatings");
 
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), data);
@@ -100,7 +100,7 @@ public class ClientRatingsPresenter extends LazyPresenter<
     /* Helper methods                                                         */
     /**************************************************************************/
     private void initWidget(SearchModuleDataHolder filter) {
-        eventBus.setUpSearchBar(new Label("Client's ratings attibure's selector will be here."));
+        eventBus.setUpSearchBar(new Label("Supplier's ratings attibure's selector will be here."));
         searchDataHolder = filter;
 
         eventBus.displayView(view.getWidgetView());

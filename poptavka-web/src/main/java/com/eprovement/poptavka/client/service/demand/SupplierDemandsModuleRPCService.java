@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -125,6 +126,27 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     List<SupplierOffersDetail> getSupplierClosedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
+    //******************** SUPPLIER - My Ratings ******************************/
+    /**
+     * Get ratings of my closed demands.
+     *
+     * @param userId user's id
+     * @param filter
+     * @return
+     */
+    int getSupplierRatingsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Get ratings of my all closed demands.
+     *
+     * @param userId user's id
+     * @param searchDefinition
+     * @return
+     */
+    List<DemandRatingsDetail> getSupplierRatings(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/
@@ -150,8 +172,8 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     /* Get Detail object for selecting in selection models                    */
     /**************************************************************************/
-    SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID)
-        throws RPCException, ApplicationSecurityException;
+    SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID) throws
+            RPCException, ApplicationSecurityException;
 
     SupplierOffersDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
 
