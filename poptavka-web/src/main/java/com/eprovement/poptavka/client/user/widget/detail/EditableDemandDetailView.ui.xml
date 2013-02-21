@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
         xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+     	xmlns:g="urn:import:com.google.gwt.user.client.ui"
         xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
         xmlns:i="urn:import:com.eprovement.poptavka.client.common"
         xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
@@ -120,24 +120,6 @@
                                         <cm:ChangeMonitor ui:field='descriptionMonitor'>
                                                 <g:TextArea ui:field="description" title="description" />
                                         </cm:ChangeMonitor>
-				</g:HTMLPanel>
-
-				<g:HTMLPanel ui:field="choiceButtonsPanel">
-					<g:Button ui:field="editDemandButton">
-                                            <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                                        </g:Button>
-					<g:Button ui:field="deleteDemandButton">
-                                            <ui:msg key="commonBtnDelete">Delete</ui:msg>
-                                        </g:Button>
-				</g:HTMLPanel>
-
-				<g:HTMLPanel ui:field="editButtonsPanel">
-					<g:Button ui:field="submitButton">
-                                            <ui:msg key="commonBtnSubmit">submit</ui:msg>
-                                        </g:Button>
-					<g:Button ui:field="cancelButton">
-                                            <ui:msg key="commonBtnCancel">Cancel</ui:msg>
-                                        </g:Button>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:ScrollPanel>

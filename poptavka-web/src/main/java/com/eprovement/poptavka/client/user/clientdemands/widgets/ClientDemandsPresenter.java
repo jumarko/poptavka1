@@ -15,6 +15,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversat
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -22,10 +23,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -56,9 +60,22 @@ public class ClientDemandsPresenter
         SimplePager getDemandPager();
 
         SimplePager getConversationPager();
-        // Others
+
+        //Others
+        Button getEditDemandButton();
+
+        Button getDeleteDemandButton();
+
+        Button getSubmitButton();
+
+        Button getCancelButton();
 
         Button getBackBtn();
+
+        //HtmlPanels
+        HTMLPanel getChoiceButtonsPanel();
+
+        HTMLPanel getEditButtonsPanel();
 
         UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
 
@@ -94,21 +111,26 @@ public class ClientDemandsPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     //viewType
-    private DetailsWrapperPresenter detailSection = null;
+    private DetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
-    private ClientDemandDetail selectedDemandObject = null;
-    private IUniversalDetail selectedConversationObject = null;
+    private ClientDemandDetail selectedDemandObject;
+    private IUniversalDetail selectedConversationObject;
     private long selectedClientDemandId = -1;
     private long selectedClientDemandConversationId = -1;
     //
-    private FieldUpdater textFieldUpdater = null;
+    private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override
     public void bindView() {
+        //Buttons
         addBackBtnClickHandler();
+        addEditDemandBtnClickHandler();
+        addDelteDemandBtnClickHandler();
+        addSubmitBtnClickHandler();
+        addCancelBtnClickHandler();
         // Range Change Handlers
         addDemandGridRangeChangeHandler();
         addConversationGridRangeChangeHandler();
@@ -124,7 +146,7 @@ public class ClientDemandsPresenter
     }
 
     /**************************************************************************/
-    /* Navigation events */
+    /* Navigation events                                                      */
     /**************************************************************************/
     public void onInitClientDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
@@ -219,7 +241,7 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
-    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
+    public void onResponseDetailWrapperPresenter(final DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
@@ -229,6 +251,17 @@ public class ClientDemandsPresenter
                         selectedConversationObject.getSupplierId(),
                         selectedConversationObject.getThreadRootId());
             }
+            detailSection.getView().getContainer().addSelectionHandler(
+                    new SelectionHandler<Integer>() {
+                        @Override
+                        public void onSelection(SelectionEvent<Integer> event) {
+                            if (detailSection.getView().getContainer().getSelectedIndex() == 0) {
+                                view.getChoiceButtonsPanel().setVisible(true);
+                            } else {
+                                view.getChoiceButtonsPanel().setVisible(false);
+                            }
+                        }
+                    });
         }
     }
 
@@ -295,8 +328,19 @@ public class ClientDemandsPresenter
     }
 
     /**************************************************************************/
-    /* Business events handled by eventbus or RPC                             */
+    /* Response methods                                                       */
     /**************************************************************************/
+    public void onResponseDeleteDemand(boolean result) {
+        //TODO LATER Martin - make proper notify popup and change layout
+        backBtnClickHandlerInner();
+        Window.alert("deleted succesfully");
+    }
+
+    public void onResponseUpdateDemand(boolean result) {
+        //TODO LATER Martin - make proper notify popup
+        Window.alert("Updated succesfully");
+    }
+
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
@@ -420,14 +464,68 @@ public class ClientDemandsPresenter
         view.getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
-                if (detailSection != null) {
-                    detailSection.reset();
+                backBtnClickHandlerInner();
+            }
+        });
+    }
+
+    private void backBtnClickHandlerInner() {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+        if (detailSection != null) {
+            detailSection.reset();
+        }
+        view.getDemandPager().startLoading();
+        view.setConversationTableVisible(false);
+        view.setDemandTableVisible(true);
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+    }
+
+    private void addEditDemandBtnClickHandler() {
+        view.getEditDemandButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getChoiceButtonsPanel().setVisible(false);
+                view.getEditButtonsPanel().setVisible(true);
+                detailSection.getEditDemandPresenter().getView().setFieldEnables(true);
+            }
+        });
+    }
+
+    private void addDelteDemandBtnClickHandler() {
+        view.getDeleteDemandButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getEditButtonsPanel().setVisible(false);
+                view.getChoiceButtonsPanel().setVisible(false);
+                eventBus.requestDeleteDemand(selectedDemandObject.getDemandId());
+            }
+        });
+    }
+
+    private void addSubmitBtnClickHandler() {
+        view.getSubmitButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getChoiceButtonsPanel().setVisible(true);
+                view.getEditButtonsPanel().setVisible(false);
+                detailSection.getEditDemandPresenter().getView().resetFields();
+                if (detailSection.getEditDemandPresenter().getView().isValid()) {
+                    eventBus.requestUpdateDemand(selectedDemandObject.getDemandId(),
+                            detailSection.getEditDemandPresenter().getUpdatedFields());
                 }
-                view.getDemandPager().startLoading();
-                view.setConversationTableVisible(false);
-                view.setDemandTableVisible(true);
-                view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+            }
+        });
+    }
+
+    private void addCancelBtnClickHandler() {
+        view.getCancelButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getChoiceButtonsPanel().setVisible(true);
+                view.getEditButtonsPanel().setVisible(false);
+
+                detailSection.getEditDemandPresenter().getView().revertFields();
+                detailSection.getEditDemandPresenter().getView().setFieldEnables(false);
             }
         });
     }

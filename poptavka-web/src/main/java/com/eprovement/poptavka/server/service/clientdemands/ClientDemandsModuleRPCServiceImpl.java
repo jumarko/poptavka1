@@ -5,6 +5,8 @@
 package com.eprovement.poptavka.server.service.clientdemands;
 
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCService;
+import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.Rating;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
@@ -30,6 +32,9 @@ import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -45,6 +50,7 @@ import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -79,6 +85,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private MessageService messageService;
     private DemandService demandService;
     //Converters
+    private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Message, MessageDetail> messageConverter;
@@ -86,15 +94,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private Converter<Demand, ClientDemandDetail> clientDemandConverter;
     private Converter<Message, FullOfferDetail> fullOfferConverter;
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Autowired methods
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* Autowired methods                                                      */
+    /**************************************************************************/
     //Services
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -133,6 +135,18 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     //Converters
     @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
+    }
+
+    @Autowired
+    public void setLocalityConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
+    }
+
+    @Autowired
     public void setDemandConverter(
             @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
         this.demandConverter = demandConverter;
@@ -168,15 +182,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         this.fullOfferConverter = fullOfferConverter;
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Table getter methods
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* Table getter methods                                                   */
+    /**************************************************************************/
     //************************* CLIENT - My Demands ***************************/
     /**
      * Get all demand's count that has been created by client. When new demand is created by client, will be involved
@@ -567,15 +575,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return listCodod;
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Other getter methods
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /*  Other getter methods                                                  */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException {
@@ -608,15 +610,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return messageDetailImpls;
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Setter methods
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* Setter methods                                                         */
+    /**************************************************************************/
     /**
      * COMMON. Change 'read' status of sent messages to chosen value
      */
@@ -780,15 +776,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return unreadMessagesDetail;
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*
-     * Get Detail object for selecting in selection models
-     */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* Get Detail object for selecting in selection models                    */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientDemandDetail getClientDemand(long clientDemandID) throws RPCException, ApplicationSecurityException {
@@ -841,6 +831,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientOfferedDemandOffersDetail getClientOfferedDemandOffer(long clientOfferedDemandOfferID) throws
             RPCException, ApplicationSecurityException {
+        //TODO LATER - if history in Client Demands will be supported again
         return new ClientOfferedDemandOffersDetail();
     }
 
@@ -848,39 +839,85 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientOfferedDemandOffersDetail getClientAssignedDemand(long assignedDemandID) throws
             RPCException, ApplicationSecurityException {
-        return null;
-//        if (assignedDemandID == 1L) {
-//            FullOfferDetail d1 = new FullOfferDetail();
-//            d1.getOfferDetail().setDemandId(1L);
-//            d1.getOfferDetail().setState(OfferStateType.ACCEPTED);
-//            d1.getOfferDetail().setClientName("Martin Slavkovsky");
-//            d1.getOfferDetail().setSupplierName("Good Data");
-//            d1.getOfferDetail().setDemandTitle("Poptavka 1234");
-//            d1.getOfferDetail().setRating(90);
-//            d1.getOfferDetail().setPrice(10000);
-//            d1.getOfferDetail().setFinishDate(new Date());
-//            d1.getOfferDetail().setCreatedDate(new Date());
-//            MessageDetail md1 = new MessageDetail();
-//            md1.setUserMessageId(1L);
-//            d1.setMessageDetail(md1);
-//            return d1;
-//        } else if (assignedDemandID == 2L) {
-//            FullOfferDetail d2 = new FullOfferDetail();
-//            d2.getOfferDetail().setDemandId(2L);
-//            d2.getOfferDetail().setState(OfferStateType.ACCEPTED);
-//            d2.getOfferDetail().setClientName("Ivan Vlcek");
-//            d2.getOfferDetail().setSupplierName("CoraGeo");
-//            d2.getOfferDetail().setDemandTitle("Poptavka na GIS");
-//            d2.getOfferDetail().setRating(90);
-//            d2.getOfferDetail().setPrice(10000);
-//            d2.getOfferDetail().setFinishDate(new Date());
-//            d2.getOfferDetail().setCreatedDate(new Date());
-//            MessageDetail md2 = new MessageDetail();
-//            md2.setUserMessageId(2L);
-//            return d2;
-//        } else {
-//            return new FullOfferDetail();
-//        }
+        //TODO LATER - if history in Client Demands will be supported again
+        return new ClientOfferedDemandOffersDetail();
+    }
+
+    /**************************************************************************/
+    /* CRUD operation of demand                                               */
+    /**************************************************************************/
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public Boolean updateDemand(long demandId, ArrayList<ChangeDetail> changes) throws
+            RPCException, ApplicationSecurityException {
+        Demand demand = generalService.find(Demand.class, demandId);
+        updateDemandFields(demand, changes);
+        generalService.merge(demand);
+
+        return true;
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public Boolean deleteDemand(long demandId) throws RPCException, ApplicationSecurityException {
+        Demand demand = generalService.find(Demand.class, demandId);
+        //TODO RELEASE - remove object or set status to removed ???
+        //If set status - New status DELETED is needed
+        //demand.setStatus(DemandStatus.DELETED);
+        //if delete object - removal cases foregin key constrain violation
+        //both generalService and demandService
+        //return generalService.remove(demand);
+        //return demandService.remove(demand);
+        return true;
+    }
+
+    private Demand updateDemandFields(Demand demand, ArrayList<ChangeDetail> changes) {
+        for (ChangeDetail change : changes) {
+            switch ((FullDemandDetail.DemandField) change.getField()) {
+                case TITLE:
+                    demand.setTitle((String) change.getValue());
+                    break;
+                case DESCRIPTION:
+                    demand.setDescription((String) change.getValue());
+                    break;
+                case PRICE:
+                    demand.setPrice((BigDecimal) change.getValue());
+                    break;
+                case END_DATE:
+                    demand.setEndDate((Date) change.getValue());
+                    break;
+                case VALID_TO_DATE:
+                    demand.setValidTo((Date) change.getValue());
+                    break;
+                case MAX_OFFERS:
+                    demand.setMaxSuppliers((Integer) change.getValue());
+                    break;
+                case MIN_RATING:
+                    demand.setMinRating(Integer.parseInt((String) change.getValue()));
+                    break;
+                case DEMAND_STATUS:
+                    demand.setStatus(DemandStatus.valueOf((String) change.getValue()));
+                    break;
+                case CREATED:
+                    demand.setCreatedDate((Date) change.getValue());
+                    break;
+                case CATEGORIES:
+                    demand.setCategories(categoryConverter.convertToSourceList(
+                            (ArrayList<CategoryDetail>) change.getValue()));
+                    break;
+                case LOCALITIES:
+                    demand.setLocalities(localityConverter.convertToSourceList(
+                            (ArrayList<LocalityDetail>) change.getValue()));
+                    break;
+                case EXCLUDE_SUPPLIER:
+                    demand.setExcludedSuppliers(supplierConverter.convertToSourceList(
+                            (ArrayList<FullSupplierDetail>) change.getValue()));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return demand;
     }
 
     @Override

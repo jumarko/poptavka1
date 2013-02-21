@@ -12,6 +12,7 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPre
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -24,6 +25,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
+import java.util.ArrayList;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -254,6 +256,21 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestRateSupplier(long demandID, Integer rating, String comment);
+
+    /**************************************************************************/
+    /* Business events for demand's CRUD operations                           */
+    /**************************************************************************/
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void requestDeleteDemand(long demandId);
+
+    @Event(handlers = ClientDemandsPresenter.class)
+    void responseDeleteDemand(boolean result);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void requestUpdateDemand(long demandId, ArrayList<ChangeDetail> updatedFields);
+
+    @Event(handlers = ClientDemandsPresenter.class)
+    void responseUpdateDemand(boolean result);
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */

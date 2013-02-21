@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -209,6 +210,14 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
 
     ClientOfferedDemandOffersDetail getClientAssignedDemand(long offerID) throws RPCException,
             ApplicationSecurityException;
+
+    /**************************************************************************/
+    /* CRUD operation of demand                                               */
+    /**************************************************************************/
+    Boolean updateDemand(long demandId, ArrayList<ChangeDetail> changes) throws
+            RPCException, ApplicationSecurityException;
+
+    Boolean deleteDemand(long demandId) throws RPCException, ApplicationSecurityException;
 
     /**
      * Client enters a new feedback for Supplier with respect to given demand.

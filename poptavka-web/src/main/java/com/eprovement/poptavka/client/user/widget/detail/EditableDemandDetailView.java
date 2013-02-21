@@ -16,10 +16,8 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -55,8 +53,8 @@ public class EditableDemandDetailView extends Composite implements
     @UiField DateBox endDate, validToDate;
     @UiField IntegerBox maxOffers, minRating;
     @UiField TextArea description;
-    @UiField HTMLPanel detail, choiceButtonsPanel, editButtonsPanel;
-    @UiField Button editDemandButton, deleteDemandButton, submitButton, cancelButton, editCatBtn, editLocBtn;
+    @UiField HTMLPanel detail;
+    @UiField Button editCatBtn, editLocBtn;
     /** Class attributes. **/
     private List<ChangeMonitor> monitors;
     private long demandId;
@@ -76,6 +74,18 @@ public class EditableDemandDetailView extends Composite implements
         localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         excludedSuppliers = new CellList<FullSupplierDetail>(new SupplierCell());
         //
+        initValidationMonitors();
+
+        initWidget(uiBinder.createAndBindUi(this));
+
+        detail.setVisible(true);
+        setFieldEnables(false);
+
+        StyleResource.INSTANCE.detailViews().ensureInjected();
+        StyleResource.INSTANCE.common().ensureInjected();
+    }
+
+    private void initValidationMonitors() {
         titleMonitor = new ChangeMonitor<FullDemandDetail>(
                 FullDemandDetail.class, new ChangeDetail(DemandField.TITLE));
         categoriesMonitor = new ChangeMonitor<FullDemandDetail>(
@@ -96,18 +106,9 @@ public class EditableDemandDetailView extends Composite implements
                 FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING));
         descriptionMonitor = new ChangeMonitor<FullDemandDetail>(
                 FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION));
-
         monitors = Arrays.asList(
             titleMonitor, categoriesMonitor, localitiesMonitor, excludedSuppliersMonitor, priceMonitor,
             endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
-
-        initWidget(uiBinder.createAndBindUi(this));
-
-        detail.setVisible(true);
-        editButtonsPanel.setVisible(false);
-        setEnables(false);
-        StyleResource.INSTANCE.detailViews().ensureInjected();
-        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     //Popup
@@ -119,35 +120,20 @@ public class EditableDemandDetailView extends Composite implements
     }
 
     /**************************************************************************/
-    /* UI BINDER HANDLERS                                                     */
-    /* This handlers only hanlde graphic changes. They don't handle the logic.*/
-    /* Logis is handled by presenter                                          */
+    /* METHODS                                                                */
     /**************************************************************************/
-    @UiHandler("editDemandButton")
-    public void editDemandButtonClickHandler(ClickEvent e) {
-        choiceButtonsPanel.setVisible(false);
-        editButtonsPanel.setVisible(true);
-        setEnables(true);
-    }
-
-    @UiHandler("submitButton")
-    public void submitButtonClickHandler(ClickEvent e) {
+    @Override
+    public void resetFields() {
         for (ChangeMonitor monitor : monitors) {
             monitor.reset();
         }
-        choiceButtonsPanel.setVisible(true);
-        editButtonsPanel.setVisible(false);
-        setEnables(false);
     }
 
-    @UiHandler("cancelButton")
-    public void cancelButtonClickHandler(ClickEvent e) {
+    @Override
+    public void revertFields() {
         for (ChangeMonitor monitor : monitors) {
             monitor.revert();
         }
-        choiceButtonsPanel.setVisible(true);
-        editButtonsPanel.setVisible(false);
-        setEnables(false);
     }
 
     /**************************************************************************/
@@ -182,7 +168,7 @@ public class EditableDemandDetailView extends Composite implements
     }
 
     @Override
-    public void setEnables(boolean enable) {
+    public void setFieldEnables(boolean enable) {
         title.setEnabled(enable);
         price.setEnabled(enable);
         endDate.setEnabled(enable);
@@ -222,25 +208,7 @@ public class EditableDemandDetailView extends Composite implements
     /**************************************************************************/
     /* GETTER                                                                 */
     /**************************************************************************/
-    /** Buttons. **/
-    public Button getDeleteDemandButton() {
-        return deleteDemandButton;
-    }
-
-    public Button getEditDemandButton() {
-        return editDemandButton;
-    }
-
-    @Override
-    public Button getSubmitButton() {
-        return submitButton;
-    }
-
-    @Override
-    public Button getCancelButton() {
-        return cancelButton;
-    }
-
+    /** Button. **/
     @Override
     public Button getEditCatBtn() {
         return editCatBtn;
@@ -254,16 +222,6 @@ public class EditableDemandDetailView extends Composite implements
     /** Panels. **/
     public HTMLPanel getDetail() {
         return detail;
-    }
-
-    @Override
-    public HTMLPanel getChoiceButtonsPanel() {
-        return choiceButtonsPanel;
-    }
-
-    @Override
-    public HTMLPanel getEditButtonsPanel() {
-        return editButtonsPanel;
     }
 
     @Override

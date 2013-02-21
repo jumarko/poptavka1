@@ -1,11 +1,14 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
@@ -100,6 +103,15 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void getClientOfferedDemandOffer(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
 
     void getClientAssignedDemand(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
+
+    /**************************************************************************/
+    /* CRUD operation of demand                                               */
+    /**************************************************************************/
+    void updateDemand(long demandId, ArrayList<ChangeDetail> changes, AsyncCallback<Boolean> calback) throws
+            RPCException, ApplicationSecurityException;
+
+    void deleteDemand(long demandId, AsyncCallback<Boolean> calback) throws
+            RPCException, ApplicationSecurityException;
 
     void enterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage,
             AsyncCallback<Void> calback);

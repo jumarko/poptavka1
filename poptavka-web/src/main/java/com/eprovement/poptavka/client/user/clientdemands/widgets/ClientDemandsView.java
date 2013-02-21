@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
@@ -18,8 +19,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -72,7 +73,8 @@ public class ClientDemandsView extends Composite
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField HorizontalPanel demandHeader, conversationHeader;
-    @UiField Button backBtn;
+    @UiField Button backBtn, editDemandButton, deleteDemandButton, submitButton, cancelButton;
+    @UiField HTMLPanel choiceButtonsPanel, editButtonsPanel;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -265,12 +267,44 @@ public class ClientDemandsView extends Composite
         return dateColumn;
     }
 
+    /** Button. **/
     @Override
     public Button getBackBtn() {
         return backBtn;
     }
 
-    //Action Box
+    @Override
+    public Button getEditDemandButton() {
+        return editDemandButton;
+    }
+
+    @Override
+    public Button getDeleteDemandButton() {
+        return deleteDemandButton;
+    }
+
+    @Override
+    public Button getSubmitButton() {
+        return submitButton;
+    }
+
+    @Override
+    public Button getCancelButton() {
+        return cancelButton;
+    }
+
+    /** Html. **/
+    @Override
+    public HTMLPanel getChoiceButtonsPanel() {
+        return choiceButtonsPanel;
+    }
+
+    @Override
+    public HTMLPanel getEditButtonsPanel() {
+        return editButtonsPanel;
+    }
+
+    /** Action Box. **/
     @Override
     public DropdownButton getActionBox() {
         return actionBox;
