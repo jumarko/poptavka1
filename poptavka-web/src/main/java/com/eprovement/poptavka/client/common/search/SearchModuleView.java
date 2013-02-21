@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.search;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
@@ -37,6 +38,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
+        popupPanel.addStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
         //Aby sa nam nezobrazoval taky ramcek (popup bez widgetu) pri starte modulu
         //Musi to byt takto? Neda sa to urobit krajsie? (len hide nefunguje)
         popupPanel.show();

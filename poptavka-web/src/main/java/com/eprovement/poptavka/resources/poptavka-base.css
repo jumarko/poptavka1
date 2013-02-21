@@ -234,6 +234,26 @@ body>div {
     width: 100px;
 }
 
+.advanced-search-modal {
+	width: 1075px;
+    /* Changing the width of a Twitter Bootstrap Modal:
+     * Here we set the width of the modal element to 1075px wide, this is the actual width we are setting the modal too.
+     * We then need to accomodate for the new width by modifying the modal margins.
+     * We change the left margin from -280px to -532px, 1075 / 2 */
+    margin: -250px 0 0 -532px;
+	height: 600px;
+}
+
+.advanced-search-small-modal {
+	width: 750px;
+    /* Changing the width of a Twitter Bootstrap Modal:
+     * Here we set the width of the modal element to 750px wide, this is the actual width we are setting the modal too.
+     * We then need to accomodate for the new width by modifying the modal margins.
+     * We change the left margin from -280px to -375px, 1075 / 2 */
+    margin: -250px 0 0 -375px;
+	height: 400px;
+}
+
 /*
 *	Login styles
 *
