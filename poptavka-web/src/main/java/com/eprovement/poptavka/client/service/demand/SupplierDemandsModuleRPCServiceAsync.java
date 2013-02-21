@@ -38,6 +38,13 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     void getSupplierAssignedDemands(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierOffersDetail>> callback);
 
+    //SupplierClosedDemands widget
+    void getSupplierClosedDemandsCount(long supplierID, SearchDefinition searchDefinition,
+            AsyncCallback<Integer> callback);
+
+    void getSupplierClosedDemands(long supplierID, SearchDefinition searchDefinition,
+            AsyncCallback<List<SupplierOffersDetail>> callback);
+
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/

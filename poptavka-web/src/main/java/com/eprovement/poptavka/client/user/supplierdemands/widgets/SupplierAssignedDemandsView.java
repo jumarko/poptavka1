@@ -54,8 +54,6 @@ public class SupplierAssignedDemandsView extends Composite
 
         initTable();
         initWidget(uiBinder.createAndBindUi(this));
-
-        tableNameLabel.setText(Storage.MSGS.supplierAssignedDemandsTableTitle());
     }
 
     private void initTable() {

@@ -367,6 +367,39 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return listSod;
     }
 
+    //******************* SUPPLIER - My Closed Demands **********************/
+    /**
+     * Get supplier's closed demands count.
+     * When supplier's work has been accepted, demand changed his status to Closed.
+     *
+     * @param supplierID
+     * @param filter
+     * @return
+     */
+    @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public int getSupplierClosedDemandsCount(long supplierID,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        //TODO RELEASE - implement
+        return 0;
+    }
+
+    /**
+     * Get supplier's closed demands.
+     * When supplier's work has been accepted, demand changed his status to Closed.
+     *
+     * @param supplierID
+     * @param filter
+     * @return
+     */
+    @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public List<SupplierOffersDetail> getSupplierClosedDemands(long supplierID,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        //TODO RELEASE - implement
+        return new ArrayList<SupplierOffersDetail>();
+    }
+
     /**************************************************************************/
     /* Other getter methods                                                         */
     /**************************************************************************/

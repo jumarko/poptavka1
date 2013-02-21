@@ -71,15 +71,17 @@ public final class Constants {
     // Client
     public static final int CLIENT_DEMANDS_WELCOME = 9;
     public static final int CLIENT_DEMANDS = 10;
-    public static final int CLIENT_DEMAND_DISCUSSIONS = 18;
-    public static final int CLIENT_OFFERED_DEMANDS = 11;
-    public static final int CLIENT_OFFERED_DEMAND_OFFERS = 19;
-    public static final int CLIENT_ASSIGNED_DEMANDS = 12;
+    public static final int CLIENT_DEMAND_DISCUSSIONS = 11;
+    public static final int CLIENT_OFFERED_DEMANDS = 12;
+    public static final int CLIENT_OFFERED_DEMAND_OFFERS = 13;
+    public static final int CLIENT_ASSIGNED_DEMANDS = 14;
+    public static final int CLIENT_CLOSED_DEMANDS = 15;
     // Supplier
-    public static final int SUPPLIER_DEMANDS_WELCOME = 14;
-    public static final int SUPPLIER_POTENTIAL_DEMANDS = 15;
-    public static final int SUPPLIER_OFFERS = 16;
-    public static final int SUPPLIER_ASSIGNED_DEMANDS = 17;
+    public static final int SUPPLIER_DEMANDS_WELCOME = 16;
+    public static final int SUPPLIER_POTENTIAL_DEMANDS = 17;
+    public static final int SUPPLIER_OFFERS = 18;
+    public static final int SUPPLIER_ASSIGNED_DEMANDS = 19;
+    public static final int SUPPLIER_CLOSED_DEMANDS = 8;
 
     /* Messages module constants */
     public static final int MESSAGES_INBOX = 20;

@@ -151,9 +151,11 @@ public interface LocalizableMessages extends Messages {
     String menuClientDemands();
     String menuClientOffers();
     String menuClientAssignedDemands();
+    String menuClientClosedDemands();
     String menuSupplierDemands();
     String menuSupplierOffers();
     String menuSupplierAssignedDemands();
+    String menuSupplierClosedDemands();
 
     /*** ATTRIBUTES ***********************************************************/
     /** HeaderView.ui. **/

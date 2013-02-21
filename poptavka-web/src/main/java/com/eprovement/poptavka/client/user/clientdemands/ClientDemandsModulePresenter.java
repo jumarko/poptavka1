@@ -36,6 +36,8 @@ public class ClientDemandsModulePresenter
 
         Button getClientAssignedDemandsButton();
 
+        Button getClientClosedDemandsButton();
+
         SimplePanel getContentPanel();
 
         IsWidget getWidgetView();
@@ -106,6 +108,12 @@ public class ClientDemandsModulePresenter
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
             }
         });
+        view.getClientClosedDemandsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
+            }
+        });
     }
 
     /**************************************************************************/
@@ -134,6 +142,13 @@ public class ClientDemandsModulePresenter
                 }
                 clientAssigendDemands = eventBus.addHandler(ClientAssignedDemandsPresenter.class);
                 clientAssigendDemands.onInitClientAssignedDemands(filter);
+                break;
+            case Constants.CLIENT_CLOSED_DEMANDS:
+                if (clientAssigendDemands != null) {
+                    eventBus.removeHandler(clientAssigendDemands);
+                }
+                clientAssigendDemands = eventBus.addHandler(ClientAssignedDemandsPresenter.class);
+                clientAssigendDemands.onInitClientClosedDemands(filter);
                 break;
             default:
                 eventBus.initClientDemandsWelcome();
@@ -165,6 +180,9 @@ public class ClientDemandsModulePresenter
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:
                 view.getClientAssignedDemandsButton().setStyleName("");
+                break;
+            case Constants.CLIENT_CLOSED_DEMANDS:
+                view.getClientClosedDemandsButton().setStyleName("");
                 break;
             default:
                 break;

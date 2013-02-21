@@ -56,6 +56,13 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void getClientAssignedDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientOfferedDemandOffersDetail>> callback);
 
+    //ClientClosedDemands widget
+    void getClientClosedDemandsCount(long userID, SearchDefinition searchDefinition,
+            AsyncCallback<Integer> callback);
+
+    void getClientClosedDemands(long userID, SearchDefinition searchDefinition,
+            AsyncCallback<List<ClientOfferedDemandOffersDetail>> callback);
+
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/
