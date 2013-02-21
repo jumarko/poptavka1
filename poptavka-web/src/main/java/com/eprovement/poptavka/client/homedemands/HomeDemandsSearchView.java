@@ -56,28 +56,28 @@ public class HomeDemandsSearchView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
-        if (!demandTitle.getText().equals("")) {
+        if (!demandTitle.getText().isEmpty()) {
             filters.add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
         if (demandTypes.getSelectedIndex() != 0) {
             filters.add(new FilterItem("type.description", FilterItem.OPERATION_EQUALS,
                     demandTypes.getItemText(demandTypes.getSelectedIndex())));
         }
-        if (!priceFrom.getText().equals("")) {
+        if (!priceFrom.getText().isEmpty()) {
             filters.add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getValue()));
         }
-        if (!priceTo.getText().equals("")) {
+        if (!priceTo.getText().isEmpty()) {
             filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getValue()));
         }
         if (creationDate.getSelectedIndex() != 4) {
             filters.add(new FilterItem("createdDate", FilterItem.OPERATION_FROM, getCreatedDate()));
         }
-//        if (finnishDateFrom.getValue() != null) {
-//            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
-//        }
-//        if (finnishDateTo.getValue() != null) {
-//            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
-//        }
+        if (finnishDateFrom.getValue() != null) {
+            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
+        }
+        if (finnishDateTo.getValue() != null) {
+            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
+        }
         return filters;
     }
 

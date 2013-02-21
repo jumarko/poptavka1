@@ -132,19 +132,27 @@ public class SearchModulePresenter
                     SearchModuleDataHolder filter = new SearchModuleDataHolder();
                     //set search content text for full text search
                     filter.setSearchText(view.getSearchContent().getText());
-                    switch (Storage.getCurrentlyLoadedView()) {
-                        case Constants.HOME_SUPPLIERS_BY_DEFAULT:
-                            eventBus.goToHomeSuppliersModule(filter);
-                            break;
-                        default:
-                            eventBus.goToHomeDemandsModule(filter);
-                            break;
-                    }
+                    forwardToCurrentView(filter);
                 } else {
                     showPopupNoSearchCriteria();
                 }
             }
         });
+    }
+
+    /**
+     * Choose right method for searching in current view.
+     * Appropriate RPC is called and it forwards user to appropriate view.
+     */
+    private void forwardToCurrentView(SearchModuleDataHolder filter) {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.HOME_SUPPLIERS_BY_DEFAULT:
+                eventBus.goToHomeSuppliersModule(filter);
+                break;
+            default:
+                eventBus.goToHomeDemandsModule(filter);
+                break;
+        }
     }
 
     /**
@@ -156,10 +164,12 @@ public class SearchModulePresenter
             public void onClick(ClickEvent event) {
                 //create and fill searching criteria holder - searchModuleDataHolder
                 SearchModuleDataHolder filter = view.getAdvanceSearchContentView().getSearchModuleDataHolder();
-                //if attributes, categories and localities are not set
-                //disable advance search button
-                view.getAdvanceSearchContentView().getSearchBtn().setEnabled(filter != null);
-                forwardAccordingToSearchWhat(filter);
+                if (filter != null) {
+                    view.getPopupPanel().hide();
+                    forwardToCurrentView(filter);
+                } else {
+                    showPopupNoSearchCriteria();
+                }
             }
         });
     }

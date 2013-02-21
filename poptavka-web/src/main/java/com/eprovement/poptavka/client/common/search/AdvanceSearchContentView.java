@@ -71,7 +71,6 @@ public class AdvanceSearchContentView extends Composite
     @Override
     public void onLoad() {
         demand.setScheduledCommand(new Scheduler.ScheduledCommand() {
-
             @Override
             public void execute() {
                 mainPanel.selectTab(AdvanceSearchContentView.DEMANDS_SELECTOR_WIDGET);
@@ -80,7 +79,6 @@ public class AdvanceSearchContentView extends Composite
             }
         });
         supplier.setScheduledCommand(new Scheduler.ScheduledCommand() {
-
             @Override
             public void execute() {
                 mainPanel.selectTab(AdvanceSearchContentView.SUPPLIER_SELECTOR_WIDGET);
@@ -89,7 +87,6 @@ public class AdvanceSearchContentView extends Composite
             }
         });
         custom = new MenuItem("", new Scheduler.ScheduledCommand() {
-
             @Override
             public void execute() {
                 mainPanel.selectTab(AdvanceSearchContentView.CURRENT_SELECTOR_WIDGET);
@@ -173,7 +170,6 @@ public class AdvanceSearchContentView extends Composite
         return searchBtn;
     }
 
-
     @Override
     public int getSearchWhat() {
         if (searchWhatItem.getText().equals(demand.getText())) {
@@ -188,7 +184,13 @@ public class AdvanceSearchContentView extends Composite
     @Override
     public SearchModuleDataHolder getSearchModuleDataHolder() {
         SearchModuleDataHolder search = new SearchModuleDataHolder();
-        if (attributeSelectorWidgetPanel.getWidget() != null) {
+        if (mainPanel.getTabWidget(DEMANDS_SELECTOR_WIDGET).getParent().isVisible()) {
+            search.setAttributes(demandsAttributeSelectorWidget.getFilter());
+        }
+        if (mainPanel.getTabWidget(SUPPLIER_SELECTOR_WIDGET).getParent().isVisible()) {
+            search.setAttributes(suppliersAttributeSelectorWidget.getFilter());
+        }
+        if (mainPanel.getTabWidget(CURRENT_SELECTOR_WIDGET).getParent().isVisible()) {
             search.setAttributes(((SearchModulesViewInterface) attributeSelectorWidgetPanel.getWidget())
                     .getFilter());
         }

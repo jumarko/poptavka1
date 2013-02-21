@@ -104,15 +104,13 @@
 				<g:header>
 					<ui:msg key="advSearchDemandsTab">Demand's table attributes</ui:msg>
 				</g:header>
-				<homeDemands:HomeDemandsSearchView
-					ui:field="demandsAttributeSelectorWidget" />
+				<homeDemands:HomeDemandsSearchView ui:field="demandsAttributeSelectorWidget" />
 			</g:tab>
 			<g:tab>
 				<g:header>
 					<ui:msg key="advSearchSuppliersTab">Supplier's table attributes</ui:msg>
 				</g:header>
-				<homeSuppliers:HomeSuppliersSearchView
-					ui:field="suppliersAttributeSelectorWidget" />
+				<homeSuppliers:HomeSuppliersSearchView ui:field="suppliersAttributeSelectorWidget" />
 			</g:tab>
 			<g:tab>
 				<g:customHeader size="10">
