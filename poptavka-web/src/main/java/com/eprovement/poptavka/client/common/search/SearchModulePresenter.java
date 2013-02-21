@@ -5,13 +5,11 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersSearchView;
-import com.eprovement.poptavka.client.user.admin.searchViews.AdminInvoicesViewView;
-import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
@@ -19,7 +17,6 @@ import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -28,7 +25,6 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
-import java.util.List;
 
 /*
  * Musi byt mulitple = true, inak advance search views sa nebudu zobrazovat
@@ -51,7 +47,7 @@ public class SearchModulePresenter
         //GETTERS - widgets & panel
         AdvanceSearchContentView getAdvanceSearchContentView();
 
-        PopupPanel getPopupPanel();
+        Modal getPopupPanel();
 
         Widget getWidgetView();
 
@@ -123,26 +119,6 @@ public class SearchModulePresenter
     }
 
     /**************************************************************************/
-    /** Business events handled by presenter                                  */
-    /**************************************************************************/
-    public void onResponsePaymentMethods(final List<PaymentMethodDetail> list) {
-        final ListBox box = ((AdminInvoicesViewView) view.getPopupPanel().getWidget()).getPaymentMethodList();
-        box.clear();
-        box.setVisible(true);
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                box.addItem("select method...");
-                for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(), list.get(i).getName());
-                }
-                box.setSelectedIndex(0);
-                GWT.log("PaymentMethodList filled");
-            }
-        });
-    }
-
-    /**************************************************************************/
     /** Additional events used in bind method                                 */
     /**************************************************************************/
     /**
@@ -178,10 +154,8 @@ public class SearchModulePresenter
         view.getAdvanceSearchContentView().getSearchBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                AdvanceSearchContentInterface advSearchContent =
-                        (AdvanceSearchContentInterface) view.getPopupPanel().getWidget();
                 //create and fill searching criteria holder - searchModuleDataHolder
-                SearchModuleDataHolder filter = advSearchContent.getSearchModuleDataHolder();
+                SearchModuleDataHolder filter = view.getAdvanceSearchContentView().getSearchModuleDataHolder();
                 //if attributes, categories and localities are not set
                 //disable advance search button
                 view.getAdvanceSearchContentView().getSearchBtn().setEnabled(filter != null);
@@ -241,6 +215,7 @@ public class SearchModulePresenter
                                             CategoryCell.DISPLAY_COUNT_DISABLED,
                                             null);
                                 }
+                                view.getPopupPanel().addStyleName("height:300px");
                                 break;
                             case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
                                 //If not yet initialized, do it
@@ -252,8 +227,10 @@ public class SearchModulePresenter
                                             CategoryCell.DISPLAY_COUNT_DISABLED,
                                             null);
                                 }
+                                view.getPopupPanel().addStyleName("height:300px");
                                 break;
                             default:
+                                view.getPopupPanel().addStyleName("height:150px");
                                 break;
                         }
                     }
