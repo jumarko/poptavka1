@@ -93,11 +93,12 @@
                 </b:Column>
                 <b:Column size="10">
                     <g:HTMLPanel>
-                        <!--TODO RELEASE Jaro-->
-                        <!--<b2:DateBoxAppended  placeholder="{msgs.formFrom}" format="{formatDate}" autoClose="true" icon="CALENDAR"-->
-                        <b2:DateBoxAppended styleName="{style.dateBox}" ui:field="finnishDateFrom" />
-                        <!--<b2:DateBoxAppended placeholder="{msgs.formTo}" format="{formatDate}" autoClose="true" icon="CALENDAR"-->
-                        <b2:DateBoxAppended styleName="{style.dateBox}" ui:field="finnishDateTo" />
+                        <b:InputAddOn appendIcon="CALENDAR">
+                            <b2:DateBox placeholder="{msgs.formFrom}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox}" ui:field="finnishDateFrom" />
+                        </b:InputAddOn>
+                        <b:InputAddOn appendIcon="CALENDAR">
+                            <b2:DateBox placeholder="{msgs.formTo}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox}" ui:field="finnishDateTo" />
+                        </b:InputAddOn>
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>

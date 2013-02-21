@@ -166,7 +166,7 @@ public class SearchModulePresenter
                 SearchModuleDataHolder filter = view.getAdvanceSearchContentView().getSearchModuleDataHolder();
                 if (filter != null) {
                     view.getPopupPanel().hide();
-                    forwardToCurrentView(filter);
+                    forwardAccordingToSearchWhat(filter);
                 } else {
                     showPopupNoSearchCriteria();
                 }

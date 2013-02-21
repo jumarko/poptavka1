@@ -75,6 +75,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class Supplier extends BusinessUserRole {
 
+    /** Fields that are available for full-text search. */
+    public static final String[] SUPPLIER_FULLTEXT_FIELDS = new String[] {
+        "businessUser.businessUserData.companyName" ,
+        "businessUser.businessUserData.description"};
+
     @ManyToMany
     @NotAudited
     @JoinTable(
