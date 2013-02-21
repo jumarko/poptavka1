@@ -4,8 +4,8 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
+import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -135,9 +135,11 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         view.getSendUsEmailButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                //TODO Martin - use for invoking variety popups for development
 //                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, "");
 //                SecurityDialogBoxes.showAlertBox(eventBus, Storage.MSGS.errorTipTryWaiting());
-                SecurityDialogBoxes.showAccessDeniedBox(eventBus);
+//                SecurityDialogBoxes.showAccessDeniedBox(eventBus);
+                new FeedbackPopupView(FeedbackPopupView.CLIENT);
 //                ExceptionUtils.showErrorDialog("error", "errorMessage");
             }
         });

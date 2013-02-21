@@ -1,66 +1,128 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs'
+             type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:HTMLPanel styleName="{res.detailViews.demandDetailContent}">
-        <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
-            <h4 class="{res.detailViews.demandDetailSectionHeader}">
-                <ui:msg key="formSupplierInfo">Supplier information</ui:msg>
-            </h4>
-            <g:HTMLPanel>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                    <ui:msg key="formSupplierName">Supplier name: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="supplierName" />
+        <b:Modal ui:field="popup">
+            <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
+                <h4 class="{res.detailViews.demandDetailSectionHeader}">
+                    <ui:msg key="formSupplierInfo">Supplier information</ui:msg>
+                </h4>
+                <g:HTMLPanel>
+                    <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                        <ui:msg key="formSupplierName">Supplier name: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="supplierName" />
+                </g:HTMLPanel>
             </g:HTMLPanel>
-        </g:HTMLPanel>
 
-        <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
-            <p><ui:msg key="feedbackToClientMessage">An request has been sent to Client to accept the project.
-               Meanwhile please enter feedback for Client
-               </ui:msg>
-            </p>
-            <h4 class="{res.detailViews.demandDetailSectionHeader}">
-                <ui:msg key="formClientInfo">Client information</ui:msg>
-            </h4>
-            <g:HTMLPanel>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                    <ui:msg key="formClientName">Client name:</ui:msg>
-                </g:Label>
-                <g:Label ui:field="clientName" />
+            <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
+                <p>
+                    <ui:msg key="feedbackToClientMessage">An request has been sent to Client to accept the project.
+                        Meanwhile please enter feedback for Client
+                    </ui:msg>
+                </p>
+                <h4 class="{res.detailViews.demandDetailSectionHeader}">
+                    <ui:msg key="formClientInfo">Client information</ui:msg>
+                </h4>
+                <g:HTMLPanel>
+                    <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                        <ui:msg key="formClientName">Client name:</ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="clientName" />
+                </g:HTMLPanel>
             </g:HTMLPanel>
-        </g:HTMLPanel>
 
 
+            <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+                <g:Label>Your feedback will help us and other users to prevent possible problems.</g:Label>
+            </g:HTMLPanel>
+            <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+                <b:FluidContainer>
+                    <b:FluidRow>
+                        <b:Column size="2">
+                            <g:ToggleButton ui:field="starBtn1">*****</g:ToggleButton>
+                        </b:Column>
+                        <b:Column size="10">
+                            <b:Hero>
+                                <b:Heading size="2">Excelent</b:Heading>
+                                <b:Paragraph>
+                                    <ui:msg key="feedbackComment1">Perfect, professional, according expectations, no problem</ui:msg>
+                                </b:Paragraph>
+                            </b:Hero>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="2">
+                            <g:ToggleButton ui:field="starBtn2">****</g:ToggleButton>
+                        </b:Column>
+                        <b:Column size="10">
+                            <b:Hero>
+                                <b:Heading size="2">Good</b:Heading>
+                                <b:Paragraph>
+                                    <ui:msg key="feedbackComment2">Miror problems, slighly misunderstandings, but still first class work</ui:msg>
+                                </b:Paragraph>
+                            </b:Hero>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="2">
+                            <g:ToggleButton ui:field="starBtn3">***</g:ToggleButton>
+                        </b:Column>
+                        <b:Column size="10">
+                            <b:Hero>
+                                <b:Heading size="2">Fair</b:Heading>
+                                <b:Paragraph>
+                                    <ui:msg key="feedbackComment3">Had problems, acceptable, but not complete work</ui:msg>
+                                </b:Paragraph>
+                            </b:Hero>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="2">
+                            <g:ToggleButton ui:field="starBtn4">**</g:ToggleButton>
+                        </b:Column>
+                        <b:Column size="10">
+                            <b:Hero>
+                                <b:Heading size="2">Poor</b:Heading>
+                                <b:Paragraph>
+                                    <ui:msg key="feedbackComment4">Had several problems, serious misunderstandings, not satisfied, ...</ui:msg>
+                                </b:Paragraph>
+                            </b:Hero>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="2">
+                            <g:ToggleButton ui:field="starBtn5">*</g:ToggleButton>
+                        </b:Column>
+                        <b:Column size="10">
+                            <b:Hero>
+                                <b:Heading size="2">Very bad</b:Heading>
+                                <b:Paragraph>
+                                    <ui:msg key="feedbackComment5">Not acceptable work, unsatisfied, ...</ui:msg>
+                                </b:Paragraph>
+                            </b:Hero>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </g:HTMLPanel>
 
-        <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
-            <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                <ui:msg key="formRanking">Overall rating:</ui:msg>
-            </g:Label>
-            <g:ListBox ui:field="rating" >
-                <g:item>1 - The worst</g:item>
-                <g:item>2</g:item>
-                <g:item>3</g:item>
-                <g:item>4</g:item>
-                <g:item>5</g:item>
-                <g:item>6</g:item>
-                <g:item>7</g:item>
-                <g:item>8</g:item>
-                <g:item>9</g:item>
-                <g:item>10 - The best</g:item>
-            </g:ListBox>
-
-            <g:Label styleName='{res.detailViews.detailHeader}'>
-                <ui:msg key="formRateComment">Rate commment: </ui:msg>
-            </g:Label>
-            <g:TextArea ui:field="comment" />
-            <g:Button ui:field="rateBtn">
-                <ui:msg key="commonBtnRate">Rate</ui:msg>
-            </g:Button>
-        </g:HTMLPanel>
+            <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
+                <g:Anchor ui:field="anchorComment">
+                    <ui:msg key="formRateComment">Insert additional rate commment: </ui:msg>
+                </g:Anchor>
+                <b:TextArea placeholder="{msgs.feedbackAdditionalCommentPlaceholder}" ui:field="commentArea" visible="false" />
+                <g:Button ui:field="rateBtn">
+                    <ui:msg key="commonBtnRate">Rate</ui:msg>
+                </g:Button>
+            </g:HTMLPanel>
+        </b:Modal>
     </g:HTMLPanel>
 </ui:UiBinder>

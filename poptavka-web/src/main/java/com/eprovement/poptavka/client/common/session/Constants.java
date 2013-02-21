@@ -197,5 +197,13 @@ public final class Constants {
     /**************************************************************************/
     /* Other Constants                                                        */
     /**************************************************************************/
+    public static final int RATE_1 = 2;
+    public static final int RATE_2 = 1;
+    public static final int RATE_3 = 0;
+    public static final int RATE_4 = -1;
+    public static final int RATE_5 = -2;
+    /**************************************************************************/
+    /* Other Constants                                                        */
+    /**************************************************************************/
     public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
 }

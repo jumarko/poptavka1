@@ -4,47 +4,58 @@
  */
 package com.eprovement.poptavka.client.user.widget.detail;
 
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.github.gwtbootstrap.client.ui.Modal;
+import com.github.gwtbootstrap.client.ui.TextArea;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
  * @author mato
  */
-public class FeedbackPopupView extends PopupPanel {
+public class FeedbackPopupView extends Composite {
 
     private static FeedbackPopupViewUiBinder uiBinder = GWT.create(FeedbackPopupViewUiBinder.class);
 
     interface FeedbackPopupViewUiBinder extends UiBinder<Widget, FeedbackPopupView> {
     }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    @UiField Modal popup;
     @UiField HTMLPanel clientPanel, supplierPanel;
     /** SupplierPanel. **/
     @UiField Label supplierName;
     /** ClientPanel. **/
     @UiField Label clientName;
     /** Rate. **/
-    @UiField ListBox rating;
-    @UiField TextArea comment;
+    @UiField Anchor anchorComment;
+    @UiField TextArea commentArea;
+    @UiField ToggleButton starBtn1, starBtn2, starBtn3, starBtn4, starBtn5;
     @UiField Button rateBtn;
+    private int rating;
+    private String comment;
     public static final int CLIENT = 0;
     public static final int SUPPLIER = 1;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
     public FeedbackPopupView(int rateWhat) {
-        super();
-        this.setAutoHideEnabled(true);
-        this.setAnimationEnabled(true);
-        this.setModal(true);
-        this.setGlassEnabled(true);
-        this.center();
-        this.setWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
+        popup.show();
         switch (rateWhat) {
             case CLIENT:
                 clientPanel.setVisible(true);
@@ -57,16 +68,81 @@ public class FeedbackPopupView extends PopupPanel {
         }
     }
 
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    @UiHandler("anchorComment")
+    public void anchorCommentClickHandler(ClickEvent e) {
+        commentArea.setVisible(!commentArea.isVisible());
+    }
+
+    @UiHandler("starBtn1")
+    public void ratingButton1ClickHandler(ClickEvent e) {
+        unToggleOtherButtons(starBtn1);
+        rating = Constants.RATE_1;
+        comment = Storage.MSGS.feedbackComment1();
+    }
+
+    @UiHandler("starBtn2")
+    public void ratingButton2ClickHandler(ClickEvent e) {
+        unToggleOtherButtons(starBtn2);
+        rating = Constants.RATE_2;
+        comment = Storage.MSGS.feedbackComment2();
+    }
+
+    @UiHandler("starBtn3")
+    public void ratingButton3ClickHandler(ClickEvent e) {
+        unToggleOtherButtons(starBtn3);
+        rating = Constants.RATE_3;
+        comment = Storage.MSGS.feedbackComment3();
+    }
+
+    @UiHandler("starBtn4")
+    public void ratingButton45ClickHandler(ClickEvent e) {
+        unToggleOtherButtons(starBtn4);
+        rating = Constants.RATE_4;
+        comment = Storage.MSGS.feedbackComment4();
+    }
+
+    @UiHandler("starBtn5")
+    public void ratingButton5ClickHandler(ClickEvent e) {
+        unToggleOtherButtons(starBtn5);
+        rating = Constants.RATE_5;
+        comment = Storage.MSGS.feedbackComment5();
+    }
+
+    /**************************************************************************/
+    /* GETTERS & SETTERS                                                      */
+    /**************************************************************************/
     public Button getRateBtn() {
         return rateBtn;
     }
 
+    public boolean isToogleRating() {
+        if (starBtn1.isDown()) {
+            return true;
+        }
+        if (starBtn2.isDown()) {
+            return true;
+        }
+        if (starBtn3.isDown()) {
+            return true;
+        }
+        if (starBtn4.isDown()) {
+            return true;
+        }
+        if (starBtn5.isDown()) {
+            return true;
+        }
+        return false;
+    }
+
     public int getRating() {
-        return Integer.parseInt(rating.getItemText(rating.getSelectedIndex()));
+        return rating;
     }
 
     public String getComment() {
-        return comment.getText();
+        return comment + "\nAddition:" + commentArea.getText();
     }
 
     public void setSupplierName(String supplierName) {
@@ -75,5 +151,26 @@ public class FeedbackPopupView extends PopupPanel {
 
     public void setClientName(String clientName) {
         this.clientName.setText(clientName);
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void unToggleOtherButtons(ToggleButton button) {
+        if (!button.equals(starBtn1)) {
+            starBtn1.setDown(false);
+        }
+        if (!button.equals(starBtn2)) {
+            starBtn2.setDown(false);
+        }
+        if (!button.equals(starBtn3)) {
+            starBtn3.setDown(false);
+        }
+        if (!button.equals(starBtn4)) {
+            starBtn4.setDown(false);
+        }
+        if (!button.equals(starBtn5)) {
+            starBtn5.setDown(false);
+        }
     }
 }
