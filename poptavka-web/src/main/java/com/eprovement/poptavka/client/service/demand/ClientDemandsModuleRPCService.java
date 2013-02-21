@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -165,7 +166,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     List<ClientOfferedDemandOffersDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
-    //******************** CLIENT - My Assigned Demands ***********************/
+    //******************** CLIENT - My Closed Demands *************************/
     /**
      * Get all closed demands.
      * When client accept supplier's work, demand is closed and stored to demand's history.
@@ -186,6 +187,27 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @return
      */
     List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+
+    //******************** CLIENT - My Ratings ********************************/
+    /**
+     * Get ratings of my closed demands.
+     *
+     * @param userId user's id
+     * @param filter
+     * @return
+     */
+    int getClientRatingsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Get ratings of my all closed demands.
+     *
+     * @param userId user's id
+     * @param searchDefinition
+     * @return
+     */
+    List<DemandRatingsDetail> getClientRatings(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/

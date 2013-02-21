@@ -76,12 +76,14 @@ public final class Constants {
     public static final int CLIENT_OFFERED_DEMAND_OFFERS = 13;
     public static final int CLIENT_ASSIGNED_DEMANDS = 14;
     public static final int CLIENT_CLOSED_DEMANDS = 15;
+    public static final int CLIENT_RATINGS = 6;
     // Supplier
     public static final int SUPPLIER_DEMANDS_WELCOME = 16;
     public static final int SUPPLIER_POTENTIAL_DEMANDS = 17;
     public static final int SUPPLIER_OFFERS = 18;
     public static final int SUPPLIER_ASSIGNED_DEMANDS = 19;
     public static final int SUPPLIER_CLOSED_DEMANDS = 8;
+    public static final int SUPPLIER_RATINGS = 7;
 
     /* Messages module constants */
     public static final int MESSAGES_INBOX = 20;

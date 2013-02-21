@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -62,6 +63,13 @@ public interface ClientDemandsModuleRPCServiceAsync {
 
     void getClientClosedDemands(long userID, SearchDefinition searchDefinition,
             AsyncCallback<List<ClientOfferedDemandOffersDetail>> callback);
+
+    //ClientRatings widget
+    void getClientRatingsCount(long userID, SearchDefinition searchDefinition,
+            AsyncCallback<Integer> callback);
+
+    void getClientRatings(long userID, SearchDefinition searchDefinition,
+            AsyncCallback<List<DemandRatingsDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */

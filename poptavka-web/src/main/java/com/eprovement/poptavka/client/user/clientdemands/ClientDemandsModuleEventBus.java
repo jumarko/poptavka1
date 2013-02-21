@@ -9,10 +9,12 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedD
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsWelcomePresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -212,6 +214,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void responseFeedback();
+
+    /**************************************************************************/
+    /* Business events handled by ClientAssignedDemandsPresenter.             */
+    /**************************************************************************/
+    @Event(handlers = ClientRatingsPresenter.class)
+    void displayClientRatings(List<DemandRatingsDetail> result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

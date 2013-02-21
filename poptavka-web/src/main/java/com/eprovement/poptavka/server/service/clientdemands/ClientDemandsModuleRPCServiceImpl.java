@@ -34,6 +34,7 @@ import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
@@ -52,11 +53,11 @@ import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,7 +211,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         demandStatuses.add(DemandStatus.OFFERED);
         clientDemandsSearch.addFilterIn("status", demandStatuses);
         clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.addField("id", Field.OP_COUNT);
         clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
         return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
@@ -354,7 +355,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.setSearchClass(Demand.class);
         clientDemandsSearch.addFilterIn("status", DemandStatus.OFFERED);
         clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.addField("id", Field.OP_COUNT);
         clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
         return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
@@ -512,7 +513,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.addFilterIn("status", DemandStatus.ASSIGNED,
                 DemandStatus.PENDINGCOMPLETION);
         clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.addField("id", Field.OP_COUNT);
         clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
         return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
@@ -600,6 +601,33 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE - implement
         return new ArrayList<ClientOfferedDemandOffersDetail>();
+    }
+
+    //******************** CLIENT - My Ratings ********************************/
+    /**
+     * Get ratings of my closed demands.
+     *
+     * @param userId user's id
+     * @param filter
+     * @return
+     */
+    @Override
+    public int getClientRatingsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        return 0;
+    }
+
+    /**
+     * Get ratings of my all closed demands.
+     *
+     * @param userId user's id
+     * @param searchDefinition
+     * @return
+     */
+    @Override
+    public List<DemandRatingsDetail> getClientRatings(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        return new ArrayList<DemandRatingsDetail>();
     }
 
     /**************************************************************************/
@@ -803,34 +831,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) throws
             RPCException, ApplicationSecurityException {
-        //Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
-        if (clientDemandConversationID == 1L) {
-            ClientDemandConversationDetail a1 = new ClientDemandConversationDetail();
-            a1.setUserMessageId(1L);
-            a1.setSupplierId(1L);
-            a1.setSupplierName("Good Data");
-            a1.setMessageBody("Tak ak date cenu o 10% dole ta to beriem.");
-            a1.setMessageSent(new Date());
-            return a1;
-        } else if (clientDemandConversationID == 2L) {
-            ClientDemandConversationDetail a2 = new ClientDemandConversationDetail();
-            a2.setUserMessageId(2L);
-            a2.setSupplierId(2L);
-            a2.setSupplierName("Eprovement");
-            a2.setMessageBody("Chcem chcem chcem!!!");
-            a2.setMessageSent(new Date());
-            return a2;
-        } else if (clientDemandConversationID == 3L) {
-            ClientDemandConversationDetail a3 = new ClientDemandConversationDetail();
-            a3.setUserMessageId(3L);
-            a3.setSupplierId(3L);
-            a3.setSupplierName("CoraGeo");
-            a3.setMessageBody("To nic lepsie nemate?");
-            a3.setMessageSent(new Date());
-            return a3;
-        } else {
-            return new ClientDemandConversationDetail();
-        }
+        //TODO Martin - finnish
+        //- Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
+        return new ClientDemandConversationDetail();
     }
 
     @Override

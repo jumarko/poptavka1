@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPresenter;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
@@ -38,6 +39,8 @@ public class ClientDemandsModulePresenter
 
         Button getClientClosedDemandsButton();
 
+        Button getClientRatingsButton();
+
         SimplePanel getContentPanel();
 
         IsWidget getWidgetView();
@@ -45,6 +48,7 @@ public class ClientDemandsModulePresenter
     private ClientDemandsPresenter clientDemands = null;
     private ClientOffersPresenter clientOffers = null;
     private ClientAssignedDemandsPresenter clientAssigendDemands = null;
+    private ClientRatingsPresenter clientRatings = null;
     private LoadingDiv loadingDiv = new LoadingDiv();
 
     /**************************************************************************/
@@ -114,6 +118,12 @@ public class ClientDemandsModulePresenter
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
             }
         });
+        view.getClientRatingsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_RATINGS);
+            }
+        });
     }
 
     /**************************************************************************/
@@ -150,6 +160,13 @@ public class ClientDemandsModulePresenter
                 clientAssigendDemands = eventBus.addHandler(ClientAssignedDemandsPresenter.class);
                 clientAssigendDemands.onInitClientClosedDemands(filter);
                 break;
+            case Constants.CLIENT_RATINGS:
+                if (clientRatings != null) {
+                    eventBus.removeHandler(clientRatings);
+                }
+                clientRatings = eventBus.addHandler(ClientRatingsPresenter.class);
+                clientRatings.onInitClientRatings(filter);
+                break;
             default:
                 eventBus.initClientDemandsWelcome();
                 break;
@@ -183,6 +200,9 @@ public class ClientDemandsModulePresenter
                 break;
             case Constants.CLIENT_CLOSED_DEMANDS:
                 view.getClientClosedDemandsButton().setStyleName("");
+                break;
+            case Constants.CLIENT_RATINGS:
+                view.getClientRatingsButton().setStyleName("");
                 break;
             default:
                 break;

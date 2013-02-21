@@ -41,6 +41,11 @@
                                         <ui:msg key="menuClientClosedDemands">Closed demands</ui:msg>
                                     </g:Button>
                                 </li>
+                                <li>
+                                    <g:Button ui:field="clientRatings">
+                                        <ui:msg key="menuClientRatings">My Ratings</ui:msg>
+                                    </g:Button>
+                                </li>
                             </ul>
                         </div>
                     </g:HTMLPanel>

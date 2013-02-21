@@ -152,10 +152,12 @@ public interface LocalizableMessages extends Messages {
     String menuClientOffers();
     String menuClientAssignedDemands();
     String menuClientClosedDemands();
+    String menuClientRatings();
     String menuSupplierDemands();
     String menuSupplierOffers();
     String menuSupplierAssignedDemands();
     String menuSupplierClosedDemands();
+    String menuSupplierRatings();
 
     /*** ATTRIBUTES ***********************************************************/
     /** HeaderView.ui. **/
@@ -271,6 +273,8 @@ public interface LocalizableMessages extends Messages {
     String columnPID();
     String columnPrice();
     String columnRating();
+    String columnRatingClient();
+    String columnRatingSupplier();
     String columnReceived();
     String columnSenderID();
     String columnService();
