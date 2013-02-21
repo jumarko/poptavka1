@@ -9,6 +9,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
@@ -26,7 +27,6 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
@@ -36,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -151,7 +150,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         } else {
             //fulltext
             if (!definition.getFilter().getSearchText().isEmpty()) {
-                return fullTextSearchCount(definition.getFilter().getSearchText());
+                return fullTextSearchCount(definition);
                 //criteria search
             } else {
                 return filterWithAttributesCount(definition);
@@ -181,7 +180,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         } else {
             //fulltext
             if (!definition.getFilter().getSearchText().isEmpty()) {
-                return fullTextSearch(definition.getFilter().getSearchText());
+                return fullTextSearch(definition);
                 //criteria search
             } else {
                 return filterWithAttributes(definition);
@@ -225,14 +224,24 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     /*  Get suppliers in fulltext search                                      */
     /**************************************************************************/
     /**
-     * Get supplier's count by full text search.
+     * Get suppliers count by full text search.
      *
      * @param searchText - text to be searched
-     * @return supplier's count
+     * @return suppliers count
      * @throws RPCException
      */
-    public long fullTextSearchCount(String searchText) throws RPCException {
-        return this.fulltextSearchService.searchCount(Supplier.class, Supplier.SUPPLIER_FULLTEXT_FIELDS, searchText);
+    public long fullTextSearchCount(SearchDefinition definition) throws RPCException {
+        final List<BusinessUserData> foundUsers = this.fulltextSearchService.search(
+                BusinessUserData.class, BusinessUserData.USER_FULLTEXT_FIELDS, definition.getFilter().getSearchText());
+
+        Search search = new Search(Supplier.class);
+        search.addFilterIn("businessUser.businessUserData", foundUsers);
+        search.setFirstResult(definition.getFirstResult());
+        search.setMaxResults(definition.getMaxResult());
+        search.addField("id", Field.OP_COUNT);
+        search.setResultMode(Search.RESULT_SINGLE);
+
+        return (Long) generalService.searchUnique(search);
     }
 
     /**
@@ -242,23 +251,25 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @return suppliers
      * @throws RPCException
      */
-    public List<FullSupplierDetail> fullTextSearch(String searchText) throws RPCException {
-        final List<Supplier> foundDemands =
-                this.fulltextSearchService.search(Supplier.class, Supplier.SUPPLIER_FULLTEXT_FIELDS, searchText);
-        return supplierConverter.convertToTargetList(foundDemands);
+    public List<FullSupplierDetail> fullTextSearch(SearchDefinition definition) throws RPCException {
+        final List<BusinessUserData> foundUsers = this.fulltextSearchService.search(
+                BusinessUserData.class, BusinessUserData.USER_FULLTEXT_FIELDS, definition.getFilter().getSearchText());
+
+        Search search = new Search(Supplier.class);
+        search.addFilterIn("businessUser.businessUserData", foundUsers);
+        search.setFirstResult(definition.getFirstResult());
+        search.setMaxResults(definition.getMaxResult());
+
+        return supplierConverter.convertToTargetList(generalService.search(search));
     }
 
     /**************************************************************************/
     /*  Get suppliers in search by representer be seraching criteria          */
     /**************************************************************************/
     /**
-     * This method decide which backend method used to retrieve data. Method is
-     * used when <b>additional attributes filtering</b> is required, therefore
-     * there is need to use backend methods which use <i>general.Search</i> for
-     * retrieving data.
+     * This method decide which method is used to create Search object for retrieve counts.
      *
-     * @param definition - define filtering criteria, which helps this method to
-     * make decision
+     * @param definition - define filtering criteria
      * @return suppliers count
      */
     private long filterWithAttributesCount(SearchDefinition definition) {
@@ -304,14 +315,10 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     /**
-     * This method decide which backend method used to retrieve data. Method is
-     * used when <b>additional attributes filtering</b> is required, therefore
-     * there is need to use backend methods which use <i>general.Search</i> for
-     * retrieving data.
+     * This method decide which method is used to create Search object for retrieve data.
      *
-     * @param detail - define filtering criteria, which helps this method to
-     * make decision
-     * @return supplier detail list
+     * @param definition define filtering criteria
+     * @return suppliers
      */
     private List<FullSupplierDetail> filterWithAttributes(SearchDefinition definition) {
         //0 0
@@ -447,7 +454,6 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         for (SupplierCategory supplierCat : suppliersCat) {
             userDetails.add(supplierConverter.convertToTarget(supplierCat.getSupplier()));
         }
-        GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
     }
 
@@ -456,7 +462,6 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         for (SupplierLocality supplierLoc : suppliersLoc) {
             userDetails.add(supplierConverter.convertToTarget(supplierLoc.getSupplier()));
         }
-        GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
     }
 

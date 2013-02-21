@@ -209,26 +209,28 @@ public class HomeDemandsPresenter
             view.getFilterLabelPanel().setVisible(false);
         } else {
             //HOME_DEMANDS_BY_WELCOME
-            if (filterHolder.getSearchText().isEmpty()
-                    && filterHolder.getLocalities().isEmpty()
-                    && filterHolder.getAttributes().isEmpty()
-                    && filterHolder.getCategories().size() == 1) {
-                Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
-                //select given category
-                view.getSelectionCategoryModel().setSelected(filterHolder.getCategories().get(0), true);
-                //open appropiate node
-                openNode(getIndex(view.getCellTree().getRootTreeNode(), filterHolder.getCategories().get(0)));
-                view.getFilterLabel().setText("");
-                view.getFilterLabelPanel().setVisible(false);
-            } else {
-                //HOME_DEMANDS_BY_SEARCH
-                Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
-                //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
-                //ale ak bude dynamicky (zobrazia searching criteria), tak ano
-                //TODO RELEASE Martin i18n
-                view.getFilterLabel().setText("Results satisfying searching criteria:" + filterHolder.toString());
-                view.getFilterLabelPanel().setVisible(true);
-            }
+            //TODO RELEASE Martin - cannot work this way. While searching one category
+            //can be olso choosen. When implementing home module, refactor this.
+//            if (filterHolder.getSearchText().isEmpty()
+//                    && filterHolder.getLocalities().isEmpty()
+//                    && filterHolder.getAttributes().isEmpty()
+//                    && filterHolder.getCategories().size() == 1) {
+//                Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
+//                //select given category
+//                view.getSelectionCategoryModel().setSelected(filterHolder.getCategories().get(0), true);
+//                //open appropiate node
+//                openNode(getIndex(view.getCellTree().getRootTreeNode(), filterHolder.getCategories().get(0)));
+//                view.getFilterLabel().setText("");
+//                view.getFilterLabelPanel().setVisible(false);
+//            } else {
+            //HOME_DEMANDS_BY_SEARCH
+            Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
+            //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
+            //ale ak bude dynamicky (zobrazia searching criteria), tak ano
+            //TODO RELEASE Martin i18n
+            view.getFilterLabel().setText("Results satisfying searching criteria:" + filterHolder.toString());
+            view.getFilterLabelPanel().setVisible(true);
+//            }
 
         }
         searchDataHolder = filterHolder;
