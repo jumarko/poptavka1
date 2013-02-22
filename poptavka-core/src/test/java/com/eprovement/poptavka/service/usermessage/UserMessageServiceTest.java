@@ -185,15 +185,9 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSupplierConversationsWithOffer() {
-<<<<<<< HEAD
         final OfferState pendingState = generalService.find(OfferState.class, 2L);
-        final Map<Long, Integer> supplierConversations = this.userMessageService
-                .getSupplierConversationsWithOffer(this.user, pendingState);
-=======
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
-                .getSupplierConversationsWithOffer(this.user);
->>>>>>> 05125f0... UserMesssageService - changed the supplier's conversation methods to return UserMessage instead of its id to speed up loading on front end
-
+                .getSupplierConversationsWithOffer(this.user, pendingState);
         Assert.assertEquals(1, supplierConversations.size());
         checkUserMessageIdAndCount(304L, 2, supplierConversations);
     }

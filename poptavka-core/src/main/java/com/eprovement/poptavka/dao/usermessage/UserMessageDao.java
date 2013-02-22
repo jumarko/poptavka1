@@ -8,7 +8,7 @@ import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.ClientConversation;
-import com.eprovement.poptavka.domain.message.ClientConversation;import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
@@ -60,14 +60,14 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
     List<UserMessage> getSentItems(User user);
 
     /**
-     * Get's all the user's valid potential demand messages count
+     * Gets all the user's valid potential demand messages count
      * @param supplier the supplier to retreive the demand messages for
      * @return count of <code>UserMesage</code> of the potential demand mesages
      */
     long getPotentialDemandsCount(BusinessUser supplier);
 
     /**
-     * Get's all the user's valid potential demand messages
+     * Gets all the user's valid potential demand messages
      * @param supplier the supplier to retreive the demand messages for
      * @return list of <code>UserMesage</code> of the potential demand mesages
      */
@@ -93,11 +93,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
-<<<<<<< HEAD
     Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
-=======
-    Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user);
->>>>>>> 05125f0... UserMesssageService - changed the supplier's conversation methods to return UserMessage instead of its id to speed up loading on front end
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -105,7 +101,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has been made
      */
-    int getSupplierConversationsWithoutOfferCount(User user);
+    long getSupplierConversationsWithoutOfferCount(User user);
 
     /** Retrieves the count of supplier's conversations where an offer has not
      * been made
@@ -113,7 +109,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has not been made
      */
-    int getSupplierConversationsWithOfferCount(User user);
+    long getSupplierConversationsWithOfferCount(User user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
@@ -147,7 +143,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the client whose conversations to get
      * @return number of client's conversations where an offer has not been made
      */
-    int getClientConversationsWithoutOfferCount(User user);
+    long getClientConversationsWithoutOfferCount(User user);
 
      /** Retrieves the count of client's conversations where an offer has
      * been made for given demand.
@@ -156,5 +152,5 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param demand the demand for which conversations to get
      * @return number of client's conversations where an offer has been made
      */
-    int getClientConversationsWithOfferCount(User user, Demand demand);
+    long getClientConversationsWithOfferCount(User user, Demand demand);
 }

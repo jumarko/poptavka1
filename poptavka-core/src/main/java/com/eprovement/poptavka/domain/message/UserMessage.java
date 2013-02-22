@@ -131,7 +131,7 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is null\n"),
         @NamedQuery(name = "getSupplierConversationsWithAcceptedOffer",
-                query = "select latestUserMessage.id, count(subUserMessage.id)\n"
+                query = "select latestUserMessage, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join\n"
                         + " subUserMessage.message.threadRoot as rootMessage,"
                         + "UserMessage as latestUserMessage\n"
@@ -150,7 +150,7 @@ import javax.persistence.NamedQuery;
                         + " count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join\n"
                         + " subUserMessage.message.threadRoot as rootMessage,"
-
+                        + " UserMessage as latestUserMessage"
                         + " left join latestUserMessage.message.roles toRole,"
                         + " User as supplier\n"
                         + "where latestUserMessage.message.threadRoot = rootMessage"

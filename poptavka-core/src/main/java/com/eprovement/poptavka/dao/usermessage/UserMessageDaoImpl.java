@@ -90,8 +90,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-<<<<<<< HEAD
-    public Map<Long, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
         queryParams.put("pendingState", pendingState);
@@ -99,43 +98,43 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         List<Object[]> unread = runNamedQuery(
                 "getSupplierConversationsWithOffer",
                 queryParams);
-        Map<Long, Integer> unreadMap = new HashMap();
+        Map<UserMessage, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {
-            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+            unreadMap.put((UserMessage) entry[0], ((Long) entry[1]).intValue());
         }
         return unreadMap;
-=======
+    }
+
     public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user) {
         return getSupplierConversationsHelper(user,
                 "getSupplierConversationsWithOffer");
->>>>>>> 05125f0... UserMesssageService - changed the supplier's conversation methods to return UserMessage instead of its id to speed up loading on front end
     }
 
     /** {@inheritDoc} */
     @Override
-    public int getSupplierConversationsWithOfferCount(User user) {
+    public long getSupplierConversationsWithOfferCount(User user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
 
         return ((Long) runNamedQueryForSingleResult(
                 "getSupplierConversationsWithOfferCount",
-                queryParams)).intValue();
+                queryParams));
     }
 
     /** {@inheritDoc} */
     @Override
-    public int getSupplierConversationsWithoutOfferCount(User user) {
+    public long getSupplierConversationsWithoutOfferCount(User user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
 
         return ((Long) runNamedQueryForSingleResult(
                 "getSupplierConversationsWithoutOfferCount",
-                queryParams)).intValue();
+                queryParams));
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
         OfferState offerStateAccepted, OfferState offerStateCompleted) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
@@ -145,9 +144,9 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         List<Object[]> unread = runNamedQuery(
                 "getSupplierConversationsWithAcceptedOffer",
                 queryParams);
-        Map<Long, Integer> unreadMap = new HashMap();
+        Map<UserMessage, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {
-            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+            unreadMap.put((UserMessage) entry[0], ((Long) entry[1]).intValue());
         }
         return unreadMap;
     }
@@ -194,25 +193,25 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public int getClientConversationsWithoutOfferCount(User user) {
+    public long getClientConversationsWithoutOfferCount(User user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
 
         return ((Long) runNamedQueryForSingleResult(
                 "getClientConversationsWithoutOfferCount",
-                queryParams)).intValue();
+                queryParams));
     }
 
     /** {@inheritDoc} */
     @Override
-    public int getClientConversationsWithOfferCount(User user, Demand demand) {
+    public long getClientConversationsWithOfferCount(User user, Demand demand) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
         queryParams.put("demand", demand);
 
         return ((Long) runNamedQueryForSingleResult(
                 "getClientConversationsWithOfferCount",
-                queryParams)).intValue();
+                queryParams));
     }
 
 

@@ -534,10 +534,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
-        Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
+        Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
                 userMessageService.getSupplierConversationsWithAcceptedOffer(user, offerAccepted, offerCompleted);
-        for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
-            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
+        for (Map.Entry<UserMessage, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
+            UserMessage userMessage = userMessageEntry.getKey();
             Offer offer = userMessage.getMessage().getOffer();
             // TODO RELEASE ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
