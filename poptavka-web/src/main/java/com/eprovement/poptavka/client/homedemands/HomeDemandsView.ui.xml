@@ -51,7 +51,7 @@
                         <b:FluidRow>
                             <b:Column size="7">
                                 <c:DataGrid ui:field="dataGrid"
-                                    styleName='{res.layout.layoutUser}' />
+                                    addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
                             </b:Column>
                             <b:Column size="5">
                                 <g:HTMLPanel styleName='{res.layout.detailInfo}'>
