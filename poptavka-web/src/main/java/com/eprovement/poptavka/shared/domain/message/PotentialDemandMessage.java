@@ -1,17 +1,14 @@
 package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import java.io.Serializable;
+
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
-public class PotentialDemandMessage extends DemandMessageDetail implements Serializable, TableDisplay {
+public class PotentialDemandMessage extends DemandMessageDetail implements IsSerializable, TableDisplay {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -6105359783491407143L;
     private String clientName;
     private Integer clientRating;
 

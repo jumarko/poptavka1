@@ -31,7 +31,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Configurable
 public class UserRPCServiceImpl extends AutoinjectingRemoteService implements UserRPCService {
 
-    private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
     private LoginService loginService;
     private Converter<AccessRole, AccessRoleDetail> accessRoleConverter;

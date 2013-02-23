@@ -5,7 +5,7 @@
 package com.eprovement.poptavka.shared.search;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +19,8 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-public class FilterItem implements Serializable {
+public class FilterItem implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = 800019522231189460L;
     /*
      * OPERATIONS
      */

@@ -2,18 +2,13 @@ package com.eprovement.poptavka.shared.domain.demandsModule;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
-import java.io.Serializable;
 import java.util.Date;
-
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
 import java.math.BigDecimal;
-public class PotentialDemandDetail implements Serializable {
+public class PotentialDemandDetail implements IsSerializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -6105359783491407143L;
     private long demandId;
     private long messageId;
     private long userMessageId;

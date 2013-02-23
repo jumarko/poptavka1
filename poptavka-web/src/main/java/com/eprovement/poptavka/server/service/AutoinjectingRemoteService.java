@@ -15,7 +15,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  */
 public abstract class AutoinjectingRemoteService extends RemoteServiceServlet {
 
-    private static final long serialVersionUID = 237077627422062352L;
 
     @Override
     public void init(ServletConfig config) throws ServletException {

@@ -4,20 +4,20 @@
  */
 package com.eprovement.poptavka.shared.domain;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
-import java.io.Serializable;
+
 
 /**
  *
  * @author Martin Slavkovsky
  */
 public class LocalitySuggestionDetail //MultiWordSuggestOracle.MultiWordSuggestion
-        implements Serializable, Suggestion {
+        implements IsSerializable, Suggestion {
 
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    private static final long serialVersionUID = -6029478783391927533L;
     /** Suggestion. **/
     private String displayString;
     private String replacementString;

@@ -7,10 +7,6 @@ public class CategoryDetail implements IListDetailObject {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -8677227400869014970L;
     private long id;
     private String name;
     private long demandsCount;

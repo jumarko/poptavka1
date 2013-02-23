@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 
 /**
@@ -11,12 +11,8 @@ import java.util.ArrayList;
  * @author Martin Slavkovsky
  *
  */
-public class AccessRoleDetail implements Serializable {
+public class AccessRoleDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
     private Long id;
     private String name;
     private String description;

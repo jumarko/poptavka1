@@ -78,7 +78,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminRPCServiceImpl.class);
-    private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
     private DemandService demandService;
     private LocalityService localityService;

@@ -4,9 +4,10 @@ import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
-import java.io.Serializable;
+
 import java.util.Date;
 
 /**
@@ -14,15 +15,11 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientDemandConversationDetail implements Serializable, TableDisplay, IUniversalDetail {
+public class ClientDemandConversationDetail implements IsSerializable, TableDisplay, IUniversalDetail {
 
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
     private long demandId;
     private long messageId;
     private long threadMessageId;

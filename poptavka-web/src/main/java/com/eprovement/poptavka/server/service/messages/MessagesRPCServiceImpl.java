@@ -50,10 +50,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implements MessagesRPCService {
 
     public static final String INTERNAL_MESSAGE = "Interna sprava";
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -2239531608577928736L;
     private GeneralService generalService;
     private MessageService messageService;
     private UserMessageService userMessageService;

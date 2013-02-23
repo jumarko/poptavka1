@@ -1,15 +1,11 @@
 package com.eprovement.poptavka.shared.domain;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDetail implements Serializable {
+public class SupplierDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -8271479725303195283L;
     private Long supplierId;
     private Integer overallRating;
     private boolean certified;

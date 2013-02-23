@@ -41,7 +41,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         implements SettingsRPCService {
 
-    private static final long serialVersionUID = 113266708108432157L;
     private GeneralService generalService;
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Category, CategoryDetail> categoryConverter;

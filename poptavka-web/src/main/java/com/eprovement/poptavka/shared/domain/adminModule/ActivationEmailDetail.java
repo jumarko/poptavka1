@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Date;
 
 /**
@@ -11,12 +11,8 @@ import java.util.Date;
  * @author Martin Slavkovsky
  *
  */
-public class ActivationEmailDetail implements Serializable {
+public class ActivationEmailDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
     private Long id;
     private String activationCode;
     private Date timeout;

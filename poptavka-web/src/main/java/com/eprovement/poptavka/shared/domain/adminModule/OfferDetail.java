@@ -1,8 +1,7 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import java.io.Serializable;
-//import java.math.BigDecimal;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Date;
 
 /**
@@ -12,12 +11,8 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public class OfferDetail implements Serializable {
+public class OfferDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -563380651738612866L;
     // OfferDetail
     private long id;
 //    private BigDecimal price;

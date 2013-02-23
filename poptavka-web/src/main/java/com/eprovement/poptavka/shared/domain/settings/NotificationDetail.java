@@ -5,15 +5,16 @@
 package com.eprovement.poptavka.shared.domain.settings;
 
 import com.eprovement.poptavka.domain.enums.Period;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+
 
 /**
  *
  * @author Martin Slavkovsky
  */
-public class NotificationDetail implements Serializable {
+public class NotificationDetail implements IsSerializable {
 
-    private static final long serialVersionUID = 511356577933573718L;
     private long notificationIdemId;
     private Boolean enabled;
     private String name;

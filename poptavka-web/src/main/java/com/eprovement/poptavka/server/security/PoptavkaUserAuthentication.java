@@ -19,7 +19,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
  */
 public class PoptavkaUserAuthentication implements Authentication {
 
-    private static final long serialVersionUID = -3091441742758356129L;
 
     private boolean authenticated;
 

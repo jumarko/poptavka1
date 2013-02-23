@@ -14,10 +14,6 @@ public class LocalityDetail implements IListDetailObject {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = 8480517227278818048L;
     private LocalityDetail parent;
     private Long id;
     private String name;

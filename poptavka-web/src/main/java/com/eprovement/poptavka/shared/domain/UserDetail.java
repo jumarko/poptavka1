@@ -5,8 +5,8 @@ package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.client.common.validation.Email;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
-import java.io.Serializable;
 import java.util.ArrayList;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -16,12 +16,8 @@ import org.hibernate.validator.constraints.NotBlank;
  * @see com.eprovement.poptavka.client.service.demand.UserRPCService
  * @see com.eprovement.poptavka.service.user.LoginService
  */
-public class UserDetail implements Serializable {
+public class UserDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -120882367332196457L;
     /**
      * Logged user must always has non-null id set!
      */

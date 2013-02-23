@@ -4,19 +4,19 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
-public class FullSupplierDetail implements Serializable {
+public class FullSupplierDetail implements IsSerializable {
 
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /** Generated serialVersionUID. **/
-    private static final long serialVersionUID = -8271479725303195283L;
     private long supplierId;
     /** BusinessUserDetail. **/
     private BusinessUserDetail userData;

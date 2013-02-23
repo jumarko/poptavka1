@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.shared.domain.demand;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,12 +14,8 @@ import java.util.Date;
  *
  * @author ivan.vlcek
  */
-public class OfferDemandDetail implements Serializable {
+public class OfferDemandDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -927462467233123906L;
     private int numberOfOffers;
     private int maxOffers;
 

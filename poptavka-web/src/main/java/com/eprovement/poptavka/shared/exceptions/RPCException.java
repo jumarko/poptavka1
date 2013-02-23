@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.shared.exceptions;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class RPCException extends RuntimeException implements Serializable {
+public class RPCException extends RuntimeException implements IsSerializable {
     private String symbol;
 
     private Throwable cause;

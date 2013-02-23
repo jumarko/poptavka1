@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.shared.search;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Map;
 
 /**
@@ -9,7 +9,7 @@ import java.util.Map;
  *
  * @author Martin Slavkovsky
  */
-public class SearchDefinition implements Serializable {
+public class SearchDefinition implements IsSerializable {
 
     private int firstResult = -1;
     private int maxResult = -1;
