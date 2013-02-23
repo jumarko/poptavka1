@@ -159,8 +159,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return this.getDao().getDemandsCount(localities);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The result of this operation is cached therefore client cannot rely on the freshness of result.
+     */
+
     @Override
+    @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Locality locality) {
         return this.getDao().getDemandsCountQuick(locality);
@@ -214,8 +220,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return this.getDao().getDemandsCount(categories);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The result of this operation is cached therefore client cannot rely on the freshness of result.
+     */
     @Override
+    @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Category category) {
         return this.getDao().getDemandsCountQuick(category);

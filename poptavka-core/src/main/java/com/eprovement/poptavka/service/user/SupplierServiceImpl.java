@@ -169,8 +169,11 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
     /**
      * {@inheritDoc}
+     * <p>
+     * The result of this operation is cached therefore client cannot rely on the freshness of result.
      */
     @Override
+    @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Locality locality) {
         return this.getDao().getSuppliersCountQuick(locality);
@@ -250,8 +253,11 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
     /**
      * {@inheritDoc}
+     * <p>
+     * The result of this operation is cached therefore client cannot rely on the freshness of result.
      */
     @Override
+    @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Category category) {
         return this.getDao().getSuppliersCountQuick(category);
