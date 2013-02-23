@@ -409,6 +409,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public int getSupplierRatingsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         return 0;
@@ -422,6 +423,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<DemandRatingsDetail> getSupplierRatings(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         return new ArrayList<DemandRatingsDetail>();

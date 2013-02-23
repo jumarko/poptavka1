@@ -612,6 +612,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public int getClientRatingsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         return 0;
@@ -625,6 +626,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<DemandRatingsDetail> getClientRatings(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         return new ArrayList<DemandRatingsDetail>();
