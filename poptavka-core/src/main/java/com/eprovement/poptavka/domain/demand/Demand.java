@@ -13,9 +13,15 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 import com.eprovement.poptavka.util.strings.ToStringUtils;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,18 +39,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-import org.hibernate.search.annotations.Boost;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.validator.constraints.NotBlank;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The core domain class which represents demand entered by client.
@@ -133,12 +133,10 @@ public class Demand extends DomainObject {
 
     /** The max date when the demand should be finished. */
     @Temporal(value = TemporalType.DATE)
-    @Future
     private Date endDate;
 
     /** This demand is considered to be valid in system until this day. */
     @Temporal(value = TemporalType.DATE)
-    @Future
     private Date validTo;
 
     /** Path in the storage file system where all attachments are saved. */
