@@ -331,5 +331,18 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         update(message);
     }
 
+    /**
+     * A status message will be sent into conversation between client and supplier.
+     *
+     * @param latestUserMessageId of latest UserMessage
+     * @param user user on whose behalf system sends a status message
+     * @param messageBody localized text of the message
+     */
+    public void sendGeneratedMessage(long latestUserMessageId, User user, String messageBody) {
+        UserMessage latestUserMessage = userMessageService.getById(latestUserMessageId);
+        Message message = newReply(latestUserMessage.getMessage(), user);
+        message.setBody(messageBody);
+        send(message);
+    }
 
 }

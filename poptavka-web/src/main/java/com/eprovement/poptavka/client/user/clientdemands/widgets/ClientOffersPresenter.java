@@ -433,7 +433,8 @@ public class ClientOffersPresenter
         view.getAcceptBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestAcceptOffer(selectedOfferedDemandOffer.getOfferId());
+                eventBus.requestAcceptOffer(selectedOfferedDemandOffer.getOfferId(),
+                        selectedOfferedDemandOffer.getUserMessageId());
             }
         });
     }

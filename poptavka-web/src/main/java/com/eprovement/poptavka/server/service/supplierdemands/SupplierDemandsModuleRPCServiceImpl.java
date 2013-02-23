@@ -469,7 +469,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public MessageDetail finishOffer(long offerId, long userMessageId, long userId) throws
+    public MessageDetail finishOffer(long offerId, long userMessageId, long userId, String finishOfferMessage) throws
             RPCException, ApplicationSecurityException {
         Offer offer = (Offer) generalService.find(Offer.class, offerId);
         // change demand status to PENDINGCOMPLETION
@@ -480,13 +480,10 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         offer.setState(offerService.getOfferState(OfferStateType.COMPLETED.getValue()));
         generalService.merge(offer);
 
-        // TODO RELEASE ivlcek - update the onAddResponseMessage in DetailsWrapperPresenter
-        // so that we can retrieve latest userMessageId as parameter.
         UserMessage latestUserMessage = userMessageService.getById(userMessageId);
         Message message = messageService.newReply(latestUserMessage.getMessage(),
                 this.generalService.find(User.class, userId));
-        // TODO RELEASE ivlcek - load text from resources
-        message.setBody("Demand has been delivered by supplier. Supplier asked for official acceptance.");
+        message.setBody(finishOfferMessage);
         messageService.send(message);
         return messageConverter.convertToTarget(message);
     }

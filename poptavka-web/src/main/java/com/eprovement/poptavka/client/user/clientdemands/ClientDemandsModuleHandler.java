@@ -269,13 +269,14 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    public void onRequestCloseDemand(long demandId) {
-        clientDemandsService.closeDemand(demandId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
-            @Override
-            public void onSuccess(ArrayList<Void> result) {
-                eventBus.responseCloseDemand();
-            }
-        });
+    public void onRequestCloseDemand(long demandId, long userMessaggeId) {
+        clientDemandsService.closeDemand(demandId, userMessaggeId, Storage.MSGS.closeDemandMessage(),
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        eventBus.responseCloseDemand();
+                    }
+                });
     }
 
     public void onRequestRateSupplier(final long demandID, final Integer supplierRating, final String supplierMessage) {
@@ -290,15 +291,16 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     }
 
-    public void onRequestAcceptOffer(long offerId) {
+    public void onRequestAcceptOffer(long offerId, long latestUserMessageId) {
         GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
-        clientDemandsService.acceptOffer(offerId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
-            @Override
-            public void onSuccess(ArrayList<Void> result) {
-                GWT.log("onRequestAcceptOffer finished");
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
-            }
-        });
+        clientDemandsService.acceptOffer(offerId, latestUserMessageId, Storage.MSGS.acceptedOfferMessage(),
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        GWT.log("onRequestAcceptOffer finished");
+                        eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
+                    }
+                });
     }
 
     /**************************************************************************/

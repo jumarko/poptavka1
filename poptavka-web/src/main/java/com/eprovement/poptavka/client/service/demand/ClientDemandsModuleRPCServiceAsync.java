@@ -84,11 +84,9 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void setMessageStarStatus(List<Long> list, boolean newStatus,
             AsyncCallback<Void> callback);
 
-    void closeDemand(long id,
-            AsyncCallback<ArrayList<Void>> callback);
+    void closeDemand(long demandId, long latestUserMessageId, String closeDemandMessage, AsyncCallback<Void> callback);
 
-    void acceptOffer(long offerId,
-            AsyncCallback<ArrayList<Void>> callback);
+    void acceptOffer(long offerId, long latestUserMessageId, String acceptOfferMessage, AsyncCallback<Void> callback);
 
     /**************************************************************************/
     /* Messages methods                                                       */

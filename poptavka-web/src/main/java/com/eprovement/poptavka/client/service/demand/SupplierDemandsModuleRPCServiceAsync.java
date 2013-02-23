@@ -62,7 +62,8 @@ public interface SupplierDemandsModuleRPCServiceAsync {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
 
-    void finishOffer(long offerId, long userMessageId, long userId, AsyncCallback<MessageDetail> callback);
+    void finishOffer(long offerId, long userMessageId, long userId, String finishOfferMessage,
+            AsyncCallback<MessageDetail> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 

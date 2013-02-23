@@ -376,11 +376,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientDemandDetail> getClientOfferedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        // load list of client demands with offer
-        // TODO RELEASE ivlcek - check if this method works correctly, otherwise use a search with new
-        // demandstatus offered
-//        List<Demand> clientDemands = demandService.getClientDemandsWithOffer(findClient(userId));
-
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
@@ -391,20 +386,18 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
         // load a map of unread messages for all client demands with offer, then iterate this map and
-        // match with clientDemands
-        Iterator it = messageService.getListOfClientDemandMessagesWithOfferUnreadSub(
-                generalService.find(User.class, userId)).entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            // key is messageId and val is number of unread submessages
-            Long demandId = (Long) pairs.getKey();
+        // match with clientDemands so that unread submessages count will be set
+        for (Map.Entry<Long, Integer> userMessageEntry : messageService.getListOfClientDemandMessagesWithOfferUnreadSub(
+                generalService.find(User.class, userId)).entrySet()) {
+            userMessageEntry.getKey();
+            userMessageEntry.getValue();
+            // key is demandId and valuse is number of unread submessages
             for (ClientDemandDetail cdd : cdds) {
-                if (cdd.getDemandId() == demandId) {
-                    cdd.setUnreadSubmessagesCount(((Integer) pairs.getValue()).intValue());
+                if (cdd.getDemandId() == userMessageEntry.getKey()) {
+                    cdd.setUnreadSubmessagesCount(((Integer) userMessageEntry.getValue()).intValue());
                     break;
                 }
             }
-            it.remove();
         }
         return cdds;
     }
@@ -458,6 +451,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setIsStarred(userMessage.isStarred());
             codod.setMessageCount(userMessageEntry.getValue());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
+            codod.setUserMessageId(userMessage.getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
             codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
@@ -680,45 +674,52 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * of whole process.
      *
      * @param demandDetail
+     * @param latestUserMessageId for which a new automatically generated reply message will be sent
      * @throws RPCException
      * @throws ApplicationSecurityException W
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void closeDemand(long id) throws RPCException, ApplicationSecurityException {
-        //TODO Juraj - skontrolovat
-        Demand demand = generalService.find(Demand.class, id);
+    public void closeDemand(long demandId, long latestUserMessageId, String closeDemandMessage) throws RPCException,
+        ApplicationSecurityException {
+        Demand demand = generalService.find(Demand.class, demandId);
         demand.setStatus(DemandStatus.CLOSED);
-        generalService.merge(demand);
-        //Asi nech zmizne aj zo SupplierAssignedDemands
+        generalService.save(demand);
+        messageService.sendGeneratedMessage(
+                latestUserMessageId, demand.getClient().getBusinessUser(), closeDemandMessage);
     }
 
     /**
      * Accept selected offer and decline other offers and change demand state to ASSIGNED.
      *
      * @param offerId to be accepted
-     * @return
+     * @param latestUserMessageId for which a new automatic reply message will be sent
+     * @return void
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void acceptOffer(long offerId) throws RPCException, ApplicationSecurityException {
+    public void acceptOffer(final long offerId, final long latestUserMessageId, String acceptOfferMesage)
+        throws RPCException, ApplicationSecurityException {
         Offer offer = (Offer) this.generalService.find(Offer.class, offerId);
 
         // set offer as accepted
         offer.setState((OfferState) offerService.getOfferState(
                 OfferStateType.ACCEPTED.getValue()));
-        generalService.merge(offer);
+        generalService.save(offer);
 
         // load other offers and set them as declined
         Demand demand = offer.getDemand();
         for (Offer declinedOffer : demand.getOffers()) {
             declinedOffer.setState(offerService.getOfferState(OfferStateType.ACCEPTED.getValue()));
-            generalService.merge(declinedOffer);
+            generalService.save(declinedOffer);
         }
         demand.setStatus(DemandStatus.ASSIGNED);
-        generalService.merge(demand);
+        generalService.save(demand);
+
+        messageService.sendGeneratedMessage(
+                latestUserMessageId, demand.getClient().getBusinessUser(), acceptOfferMesage);
     }
 
     /**
@@ -885,7 +886,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
         updateDemandFields(demand, changes);
-        generalService.merge(demand);
+        generalService.save(demand);
 
         return true;
     }
