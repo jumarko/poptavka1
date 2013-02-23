@@ -194,36 +194,20 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     }
 
     private List<Address> getAddressesFromSupplierCityName(BusinessUserDetail supplier) {
-        List<Address> addresses = new ArrayList<Address>();
-        Search addrSearch;
+        final List<Address> addresses = new ArrayList<Address>();
         for (AddressDetail detail : supplier.getAddresses()) {
             //Ziskaj mesto typu Locality (String -> Locality)
-            Locality cityLoc = (Locality) generalService.searchUnique(
+            final Locality cityLoc = (Locality) generalService.searchUnique(
                     new Search(Locality.class)
                         .addFilterEqual("name", detail.getCity())
                         .addFilterEqual("type", LocalityType.CITY));
 
-            //Zisti, ci sa taka adresa nachadza v DB.
-            addrSearch = new Search(Address.class);
-            //ktore lepsie pouzit?
-//            addrSearch.addFilterEqual("city.name", detail.getCity());
-            addrSearch.addFilterEqual("city", cityLoc);
-            addrSearch.addFilterEqual("street", detail.getStreet());
-            addrSearch.addFilterEqual("houseNum", detail.getHouseNum());
-            Address existingAddress = (Address) generalService.searchUnique(addrSearch);
-
-            if (existingAddress == null) {
-                //Ak sa taka adresa nenachadza v DB, vytvor ju
-                Address address = new Address();
-                address.setCity(cityLoc);
-                address.setStreet(detail.getStreet());
-                address.setHouseNum(detail.getHouseNum());
-                address.setZipCode(detail.getZipCode());
-                addresses.add(address);
-            } else {
-                //Ak ano, prirad ju
-                addresses.add(existingAddress);
-            }
+            final Address address = new Address();
+            address.setCity(cityLoc);
+            address.setStreet(detail.getStreet());
+            address.setHouseNum(detail.getHouseNum());
+            address.setZipCode(detail.getZipCode());
+            addresses.add(address);
         }
         return addresses;
     }
