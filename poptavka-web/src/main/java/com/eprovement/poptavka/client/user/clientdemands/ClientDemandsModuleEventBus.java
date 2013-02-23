@@ -226,7 +226,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void requestCloseDemand(long id);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestAcceptOffer(long offerid);
+    void requestAcceptOffer(long offerid, long latestUserMessageId);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void updateUnreadMessagesCount();

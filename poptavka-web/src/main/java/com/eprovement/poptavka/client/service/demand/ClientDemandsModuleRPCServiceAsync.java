@@ -87,8 +87,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void closeDemand(long id,
             AsyncCallback<ArrayList<Void>> callback);
 
-    void acceptOffer(long offerId,
-            AsyncCallback<ArrayList<Void>> callback);
+    void acceptOffer(long offerId, long latestUserMessageId, AsyncCallback<MessageDetail> callback);
 
     /**************************************************************************/
     /* Messages methods                                                       */

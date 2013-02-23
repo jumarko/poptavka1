@@ -208,7 +208,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
 
     void closeDemand(long id) throws RPCException, ApplicationSecurityException;
 
-    void acceptOffer(long offerId) throws RPCException, ApplicationSecurityException;
+    MessageDetail acceptOffer(long offerId, long latestUserMessageId) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Messages methods                                                       */

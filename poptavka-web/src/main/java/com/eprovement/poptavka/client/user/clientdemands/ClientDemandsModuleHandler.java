@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -290,11 +291,12 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     }
 
-    public void onRequestAcceptOffer(long offerId) {
+    public void onRequestAcceptOffer(long offerId, long latestUserMessageId) {
         GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
-        clientDemandsService.acceptOffer(offerId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
+        clientDemandsService.acceptOffer(offerId, latestUserMessageId,
+                new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
-            public void onSuccess(ArrayList<Void> result) {
+            public void onSuccess(MessageDetail  result) {
                 GWT.log("onRequestAcceptOffer finished");
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
             }
