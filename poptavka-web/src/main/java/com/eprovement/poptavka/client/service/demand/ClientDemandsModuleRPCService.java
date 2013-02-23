@@ -206,9 +206,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException, ApplicationSecurityException;
 
-    void closeDemand(long demandId, long latestUserMessageId, String closeDemandMessage) throws RPCException,
-            ApplicationSecurityException;
-
     void acceptOffer(long offerId, long latestUserMessageId, String acceptOfferMessage) throws RPCException,
             ApplicationSecurityException;
 
@@ -245,7 +242,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     Boolean deleteDemand(long demandId) throws RPCException, ApplicationSecurityException;
 
     /**
-     * Client enters a new feedback for Supplier with respect to given demand.
+     * Client enters a new feedback for Supplier with respect to given demand and close that demand.
      *
      * @param demandID of Demand to which this feedback is connected
      * @param supplierRating integer number that will be assigned to supplier
@@ -253,5 +250,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
-    void enterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage) throws RPCException;
+    void closeDemandAndEnterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage) throws
+            RPCException;
 }

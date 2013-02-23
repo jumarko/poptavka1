@@ -269,23 +269,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    public void onRequestCloseDemand(long demandId, long userMessaggeId) {
-        clientDemandsService.closeDemand(demandId, userMessaggeId, Storage.MSGS.closeDemandMessage(),
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        eventBus.responseCloseDemand();
-                    }
-                });
-    }
-
     public void onRequestRateSupplier(final long demandID, final Integer supplierRating, final String supplierMessage) {
         clientDemandsService.enterFeedbackForSupplier(demandID, supplierRating, supplierMessage,
                 new SecuredAsyncCallback<Void>(eventBus) {
                     @Override
                     public void onSuccess(Void result) {
-                        GWT.log("onRequestRateClient finished");
-                        // TODO RELEASE Martin - maybe hide popup and reset userMessageId for selected objec in table
+                        eventBus.responseFeedback();
+                        eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
                     }
                 });
 
