@@ -36,6 +36,8 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDe
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +62,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         implements SupplierDemandsModuleRPCService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierDemandsModuleRPCServiceImpl.class);
+    public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     //Services
     private GeneralService generalService;
@@ -486,7 +489,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         Message message = messageService.newReply(latestUserMessage.getMessage(),
                 this.generalService.find(User.class, userId));
         // TODO RELEASE ivlcek - load text from resources
-        message.setBody("Demand has been delivered by supplier. Supplier asked for official acceptance.");
+        message.setBody(MSGS.finishedOfferMessage());
         messageService.send(message);
         return messageConverter.convertToTarget(message);
     }

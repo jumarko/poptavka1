@@ -591,4 +591,8 @@ public interface LocalizableMessages extends Messages {
     /* Feedback popup info */
     String feedbackToClientMessage();
 
+    /* Generated Messages */
+    String acceptedOfferMessage();
+    String finishedOfferMessage();
+
 }

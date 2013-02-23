@@ -295,12 +295,12 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
         clientDemandsService.acceptOffer(offerId, latestUserMessageId,
                 new SecuredAsyncCallback<MessageDetail>(eventBus) {
-            @Override
-            public void onSuccess(MessageDetail  result) {
-                GWT.log("onRequestAcceptOffer finished");
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
-            }
-        });
+                    @Override
+                    public void onSuccess(MessageDetail result) {
+                        GWT.log("onRequestAcceptOffer finished");
+                        eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
+                    }
+                });
     }
 
     /**************************************************************************/

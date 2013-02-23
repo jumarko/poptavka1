@@ -47,6 +47,8 @@ import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.util.search.Searcher;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
@@ -76,6 +78,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         implements ClientDemandsModuleRPCService {
 
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
+    public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     //Services
     private ClientService clientService;
     private SupplierService supplierService;
@@ -699,7 +702,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public MessageDetail acceptOffer(final long offerId, final long latestUserMessageId)
-            throws RPCException, ApplicationSecurityException {
+        throws RPCException, ApplicationSecurityException {
         Offer offer = (Offer) this.generalService.find(Offer.class, offerId);
 
         // set offer as accepted
@@ -720,7 +723,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Message message = messageService.newReply(latestUserMessage.getMessage(),
                 demand.getClient().getBusinessUser());
         // TODO RELEASE ivlcek - load text from resources
-        message.setBody("Offer has been accepted by client and the work on the project can start");
+        message.setBody(MSGS.acceptedOfferMessage());
         messageService.send(message);
         return messageConverter.convertToTarget(message);
 
