@@ -36,6 +36,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 /**
  * @author Juraj Martinka
  *         Date: 4.2.11
@@ -450,7 +453,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                         Arrays.asList(category11),
                         Arrays.asList(locality11));
 
-        Assert.assertThat(demandsByCategoriesAndLocalities.size(), Is.is(2));
+        assertThat(demandsByCategoriesAndLocalities.size(), Is.is(2));
         checkDemandExists(demandsByCategoriesAndLocalities, 5);
         checkDemandExists(demandsByCategoriesAndLocalities, 6);
 
@@ -465,7 +468,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final long demandsCount =
                 this.demandService.getDemandsCount(Arrays.asList(category11), Arrays.asList(locality11));
 
-        Assert.assertThat(demandsCount, Is.is(2L));
+        assertThat(demandsCount, Is.is(2L));
     }
 
 
@@ -481,7 +484,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                         Arrays.asList(locality11),
                         ResultCriteria.EMPTY_CRITERIA);
 
-        Assert.assertThat(demandsByCategoriesAndLocalities.size(), Is.is(3));
+        assertThat(demandsByCategoriesAndLocalities.size(), Is.is(3));
         checkDemandExists(demandsByCategoriesAndLocalities, 1);
         checkDemandExists(demandsByCategoriesAndLocalities, 5);
         checkDemandExists(demandsByCategoriesAndLocalities, 6);
@@ -502,6 +505,19 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
         Assert.assertEquals("Number of client demands with offer [" + client2.toString() + "]", 0L,
                 demandService.getClientDemandsWithOfferCount(client2));
+    }
+
+    @Test
+    public void testActivateDemands() throws Exception {
+        final Demand newDemand = demandService.getById(1L);
+        this.demandService.activateDemand(newDemand);
+        assertThat(newDemand.getStatus(), is(DemandStatus.ACTIVE));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testActivateDemandsForAlreadyActivatedDemand() throws Exception {
+        final Demand activatedDemand = demandService.getById(2L);
+        this.demandService.activateDemand(activatedDemand);
     }
 
     //------------------------------ HELPER METHODS --------------------------------------------------------------------

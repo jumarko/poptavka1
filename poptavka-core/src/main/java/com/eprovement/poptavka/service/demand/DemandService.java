@@ -237,4 +237,13 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     List<Demand> getClientDemandsWithOffer(Client client);
 
+    /**
+     * Activates given demand.
+     * This means that {@link Demand#status} will be set to
+     * {@link com.eprovement.poptavka.domain.enums.DemandStatus#ACTIVE}.
+     * @param demand demand which will be activated. must not be in active state.
+     * @throws IllegalArgumentException if given demand is null or it has already been activated
+     */
+    void activateDemand(Demand demand) throws IllegalArgumentException;
+
 }

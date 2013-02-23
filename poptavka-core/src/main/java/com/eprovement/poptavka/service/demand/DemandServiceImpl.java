@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -23,6 +24,7 @@ import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -288,6 +290,15 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         LOGGER.debug("action=get_client_demands_with_offer_count status=finish client{} demands_count_size={}",
                 client, demands);
         return demands;
+    }
+
+    @Override
+    @Transactional
+    public void activateDemand(Demand demand) throws IllegalArgumentException {
+        Validate.notNull(demand, "demand for activation cannot be null!");
+        Validate.isTrue(demand.getStatus() != DemandStatus.ACTIVE, "demand=" + demand + " has already been activated!");
+        demand.setStatus(DemandStatus.ACTIVE);
+        update(demand);
     }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
