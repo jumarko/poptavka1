@@ -192,15 +192,13 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
 
     public void onRequestFinishOffer(long offerId, long userMessageId) {
         supplierDemandsService.finishOffer(offerId, userMessageId, Storage.getUser().getUserId(),
-                new SecuredAsyncCallback<MessageDetail>(eventBus) {
+                Storage.MSGS.finishedOfferMessage(), new SecuredAsyncCallback<MessageDetail>(eventBus) {
 
                     @Override
                     public void onSuccess(MessageDetail result) {
                         // TODO RELEASE ivlcek - call feedback popup
                         //calling reponse finnish offer will call feedback popup
                         eventBus.responseFinnishOffer();
-                        //why is here called addConversationMessage? User can send
-                        //message when clicked finnish offer btn?
                         eventBus.addConversationMessage(result);
                     }
                 });

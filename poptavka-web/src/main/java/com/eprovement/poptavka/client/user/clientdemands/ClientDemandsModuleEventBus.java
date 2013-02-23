@@ -223,7 +223,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestCloseDemand(long id);
+    void requestCloseDemand(long demandId, long latestUserMessageId);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestAcceptOffer(long offerid, long latestUserMessageId);

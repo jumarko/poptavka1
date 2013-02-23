@@ -594,5 +594,6 @@ public interface LocalizableMessages extends Messages {
     /* Generated Messages */
     String acceptedOfferMessage();
     String finishedOfferMessage();
+    String closeDemandMessage();
 
 }

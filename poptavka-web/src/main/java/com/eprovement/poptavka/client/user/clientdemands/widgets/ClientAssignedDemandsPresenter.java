@@ -342,7 +342,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         view.getCloseBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestCloseDemand(selectedObject.getDemandId());
+                eventBus.requestCloseDemand(selectedObject.getDemandId(), selectedObject.getUserMessageId());
             }
         });
     }

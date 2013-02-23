@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -270,13 +269,14 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
-    public void onRequestCloseDemand(long demandId) {
-        clientDemandsService.closeDemand(demandId, new SecuredAsyncCallback<ArrayList<Void>>(eventBus) {
-            @Override
-            public void onSuccess(ArrayList<Void> result) {
-                eventBus.responseCloseDemand();
-            }
-        });
+    public void onRequestCloseDemand(long demandId, long userMessaggeId) {
+        clientDemandsService.closeDemand(demandId, userMessaggeId, Storage.MSGS.closeDemandMessage(),
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        eventBus.responseCloseDemand();
+                    }
+                });
     }
 
     public void onRequestRateSupplier(final long demandID, final Integer supplierRating, final String supplierMessage) {
@@ -293,10 +293,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
 
     public void onRequestAcceptOffer(long offerId, long latestUserMessageId) {
         GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
-        clientDemandsService.acceptOffer(offerId, latestUserMessageId,
-                new SecuredAsyncCallback<MessageDetail>(eventBus) {
+        clientDemandsService.acceptOffer(offerId, latestUserMessageId, Storage.MSGS.acceptedOfferMessage(),
+                new SecuredAsyncCallback<Void>(eventBus) {
                     @Override
-                    public void onSuccess(MessageDetail result) {
+                    public void onSuccess(Void result) {
                         GWT.log("onRequestAcceptOffer finished");
                         eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
                     }

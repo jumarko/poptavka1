@@ -268,4 +268,13 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      */
     Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
             OfferState pendingState);
+
+    /**
+     * A status message will be sent into conversation between client and supplier.
+     *
+     * @param latestUserMessageId of latest UserMessage
+     * @param user user on whose behalf system sends a status message
+     * @param messageBody localized text of the message
+     */
+    void sendGeneratedMessage(long latestUserMessageId, User user, String messageBody);
 }
