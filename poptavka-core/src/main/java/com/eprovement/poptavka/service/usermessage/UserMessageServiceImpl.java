@@ -62,7 +62,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
      */
     @Override
     @Transactional(readOnly = true)
-    public long getPotentialDemandsCount(BusinessUser supplier) {
+    public int getPotentialDemandsCount(BusinessUser supplier) {
         Preconditions.checkNotNull("Supplier must be specified for finding potential demands", supplier);
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
                 supplier.getId());
@@ -76,7 +76,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         final long potentialDemandsCount = getDao().getPotentialDemandsCount(supplier);
         LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
                 supplier, potentialDemandsCount);
-        return potentialDemandsCount;
+        return (int) potentialDemandsCount;
     }
 
     /**
@@ -203,15 +203,16 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithoutOffer(User user) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConversationsWithoutOffer(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
+
         return getDao().getSupplierConversationsWithOffer(user, pendingState);
     }
 
@@ -219,19 +220,19 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     public int getSupplierConversationsWithoutOfferCount(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConversationsWithoutOfferCount(user);
+        return (int) getDao().getSupplierConversationsWithoutOfferCount(user);
     }
 
     /** {@inheritDoc} */
     @Override
     public int getSupplierConversationsWithOfferCount(User user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConversationsWithOfferCount(user);
+        return (int) getDao().getSupplierConversationsWithOfferCount(user);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<Long, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
             OfferState offerStateAccepted, OfferState offerStateCompleted) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConversationsWithAcceptedOffer(user, offerStateAccepted,
@@ -248,12 +249,12 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     public int getClientConversationsWithoutOfferCount(User user) {
-        return getDao().getClientConversationsWithoutOfferCount(user);
+        return (int) getDao().getClientConversationsWithoutOfferCount(user);
     }
 
     /** {@inheritDoc} */
     @Override
     public int getClientConversationsWithOfferCount(User user, Demand demand) {
-        return getDao().getClientConversationsWithOfferCount(user, demand);
+        return (int) getDao().getClientConversationsWithOfferCount(user, demand);
     }
 }

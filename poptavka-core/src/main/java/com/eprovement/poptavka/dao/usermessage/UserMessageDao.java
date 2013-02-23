@@ -60,40 +60,40 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
     List<UserMessage> getSentItems(User user);
 
     /**
-     * Get's all the user's valid potential demand messages count
+     * Gets all the user's valid potential demand messages count
      * @param supplier the supplier to retreive the demand messages for
      * @return count of <code>UserMesage</code> of the potential demand mesages
      */
     long getPotentialDemandsCount(BusinessUser supplier);
 
     /**
-     * Get's all the user's valid potential demand messages
+     * Gets all the user's valid potential demand messages
      * @param supplier the supplier to retreive the demand messages for
      * @return list of <code>UserMesage</code> of the potential demand mesages
      */
     List<UserMessage> getPotentialDemands(BusinessUser supplier);
 
     /**
-     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
      * supplier's conversations along with the counts of messages in each conversation
      * that are accessible to the supplier where any offer has been made
      *
      * @param user the supplier whose conversations to get
-     * @return map of the latest <code>UserMessage</code> ids and number of
+     * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
-    Map<Long, Integer> getSupplierConversationsWithoutOffer(User user);
+    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user);
 
     /**
-     * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
      * supplier's conversations along with the counts of messages in each conversation
      * that are accessible to the supplier where an offer has been made
      *
      * @param user the supplier whose conversations to get
-     * @return map of the latest <code>UserMessage</code> ids and number of
+     * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
-    Map<Long, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -101,7 +101,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has been made
      */
-    int getSupplierConversationsWithoutOfferCount(User user);
+    long getSupplierConversationsWithoutOfferCount(User user);
 
     /** Retrieves the count of supplier's conversations where an offer has not
      * been made
@@ -109,7 +109,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has not been made
      */
-    int getSupplierConversationsWithOfferCount(User user);
+    long getSupplierConversationsWithOfferCount(User user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
@@ -121,7 +121,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<Long, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
             OfferState offerStateAccepted, OfferState offerStateCompleted);
 
    /**
@@ -143,7 +143,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the client whose conversations to get
      * @return number of client's conversations where an offer has not been made
      */
-    int getClientConversationsWithoutOfferCount(User user);
+    long getClientConversationsWithoutOfferCount(User user);
 
      /** Retrieves the count of client's conversations where an offer has
      * been made for given demand.
@@ -152,5 +152,5 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param demand the demand for which conversations to get
      * @return number of client's conversations where an offer has been made
      */
-    int getClientConversationsWithOfferCount(User user, Demand demand);
+    long getClientConversationsWithOfferCount(User user, Demand demand);
 }

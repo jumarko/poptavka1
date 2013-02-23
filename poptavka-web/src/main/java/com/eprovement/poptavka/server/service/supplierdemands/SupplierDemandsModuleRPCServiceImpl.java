@@ -155,9 +155,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
-        //TODO RELEASE getPotentialDemandsCount could return int
-        return Long.valueOf(userMessageService.getPotentialDemandsCount(
-                businessUser, potentialDemandsCountSearch)).intValue();
+        return (int) userMessageService.getPotentialDemandsCount(businessUser, potentialDemandsCountSearch);
     }
 
     /**
@@ -179,14 +177,14 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long userId, long supplierId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final User user = (User) generalService.find(User.class, userId);
-        final Map<Long, Integer> latestUserMessagesWithCount =
+        final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithoutOffer(user);
         // TODO RELEASE ivlcek - refactor with detail converter
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
 
-        for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
-            UserMessage um = (UserMessage) generalService.find(UserMessage.class, mapEntry.getKey());
+        for (Map.Entry<UserMessage, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
+            UserMessage um = mapEntry.getKey();
             SupplierPotentialDemandDetail detail = new SupplierPotentialDemandDetail();
             // Client part
             detail.setClientId(um.getMessage().getDemand().getClient().getId());
@@ -254,12 +252,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         OfferState pendingState = offerService.getOfferState(OfferStateType.PENDING.getValue());
 
         final User user = (User) generalService.find(User.class, userId);
-        final Map<Long, Integer> latestUserMessagesWithCount =
+        final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithOffer(user, pendingState);
         // TODO RELEASE ivlcek - refactor with detail converter
 
-        for (Map.Entry<Long, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
-            UserMessage latestUserMessage = userMessageService.getById(mapEntry.getKey());
+        for (Map.Entry<UserMessage, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
+            UserMessage latestUserMessage = mapEntry.getKey();
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
@@ -327,17 +325,18 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
         OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
         OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
-        Map<Long, Integer> latestUserMessages =
+        Map<UserMessage, Integer> latestUserMessages =
                 userMessageService.getSupplierConversationsWithAcceptedOffer(
                 supplier.getBusinessUser(), offerAccepted, offerCompleted);
 
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
-        for (Map.Entry<Long, Integer> entryKey : latestUserMessages.entrySet()) {
-            UserMessage latestUserMessage = userMessageService.getById(entryKey.getKey());
+        for (Map.Entry<UserMessage, Integer> entryKey : latestUserMessages.entrySet()) {
+            UserMessage latestUserMessage = entryKey.getKey();
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
+            // TODO RELEASE ivlcek - refactor and create converter, set Rating
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getSupplier().getOveralRating());
