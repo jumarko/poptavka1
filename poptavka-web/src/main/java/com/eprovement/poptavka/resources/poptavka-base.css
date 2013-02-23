@@ -18,7 +18,7 @@ body {
 	height: 100%;
 }
 
-body > div {
+body>div {
 	min-width: 1280px;
 }
 
@@ -44,7 +44,9 @@ body > div {
 	padding: 15px;
 	width: 780px;
 	min-height: 350px;
-	-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 }
 
 .body-full-container {
@@ -75,13 +77,13 @@ body > div {
 }
 
 .header-content {
-    height: 75px;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 20px;
-    top: 18px;
-    z-index: 50;
+	height: 75px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 20px;
+	top: 18px;
+	z-index: 50;
 }
 
 /*
@@ -137,11 +139,11 @@ body > div {
 *
 */
 .home-menu {
-    background: url("images/menu_bg.png") no-repeat top right transparent;
-    float: left;
-    height: 90px;
-    list-style-type: none;
-    padding: 0 55px;
+	background: url("images/menu_bg.png") no-repeat top right transparent;
+	float: left;
+	height: 90px;
+	list-style-type: none;
+	padding: 0 55px;
 }
 
 .home-menu ul {
@@ -186,14 +188,13 @@ body > div {
 *	Logo Styles
 *
 */
-
-.home-logo, .user-logo {
-    background: url(images/logo.png) no-repeat scroll 0 0 transparent;
-    height: 112px;
-    position: absolute;
-    top: 11px;
-    width: 235px;
-    z-index: 150;
+.home-logo,.user-logo {
+	background: url(images/logo.png) no-repeat scroll 0 0 transparent;
+	height: 112px;
+	position: absolute;
+	top: 11px;
+	width: 235px;
+	z-index: 150;
 }
 
 /*
@@ -201,11 +202,11 @@ body > div {
 *
 */
 .search-bar {
-    background: url(images/search_bg.png) no-repeat scroll 0 0 transparent;
-    float: left;
-    height: 76px;
-    margin: 26px 0 0 20px;
-    width: 203px;
+	background: url(images/search_bg.png) no-repeat scroll 0 0 transparent;
+	float: left;
+	height: 76px;
+	margin: 26px 0 0 20px;
+	width: 203px;
 }
 
 .search-view {
@@ -252,17 +253,17 @@ body > div {
 
 .login-button {
 	background: url(images/login_bg.png) no-repeat;
-    height: 42px;
-    text-align: center;
-    width: 134px;
+	height: 42px;
+	text-align: center;
+	width: 134px;
 }
 
 .login-button a {
 	color: #FBFBFB;
-    display: block;
-    font-size: 15px;
-    line-height: 39px;
-    padding: 0 0 5px 35px;
+	display: block;
+	font-size: 15px;
+	line-height: 39px;
+	padding: 0 0 5px 35px;
 }
 
 .login-button a:hover {
@@ -380,11 +381,30 @@ body > div {
 	cursor: pointer;
 }
 
-
 /** Other Styles **/
-.data-grid-container {
-	padding: 20px;
+.data-grid-container table {
+	padding: 0 20px 20px;
 	background: #e4dfcb;
+	border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 5px 5px;
+	-moz-border-radius: 0 0 5px 5px;
+}
+
+.data-grid-container table:first-child {
+	padding: 20px 20px 0;
+	background: #e4dfcb;
+	border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	-moz-border-radius: 5px 5px 0 0;
+}
+
+.data-grid-container table[align="center"] {
+	width: 100%;
+}
+
+.data-grid-container table[align="center"] img {
+	margin: 30px auto !important;
+	display: block;
 }
 
 .detail-info {

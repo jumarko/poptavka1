@@ -76,13 +76,16 @@ public interface Images extends ClientBundle {
 
     //In displaying demands
     @Source("urgency-red.png")
-    ImageResource urgent();
+    ImageResource urgencyRed();
 
     @Source("urgency-orange.png")
-    ImageResource lessUrgent();
+    ImageResource urgencyOrange();
 
     @Source("urgency-green.png")
-    ImageResource normal();
+    ImageResource urgencyGreen();
+
+    @Source("urgency-header.png")
+    ImageResource urgencyHeader();
 
     @Source("new.png")
     ImageResource newDemand();
