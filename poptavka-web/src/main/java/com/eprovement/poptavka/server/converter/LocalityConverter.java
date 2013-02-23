@@ -53,7 +53,7 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
         detail.setDemandsCount(demandService.getDemandsCountQuick(locality));
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(locality));
         detail.setLevel(locality.getLevel());
-        detail.setLeaf(locality.getChildren().isEmpty());
+        detail.setLeaf(locality.isLeaf());
         return detail;
 
     }

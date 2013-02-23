@@ -91,4 +91,13 @@ public abstract class TreeItem extends DomainObject {
         this.rightBound = rightBound;
     }
 
+
+    /**
+     * Computes whether this item is a leaf or not. This should be very quick computation and does not interact
+     * with database.
+     * @return true if this item is a leaf, false otherwise
+     */
+    public boolean isLeaf() {
+        return Math.abs(leftBound - rightBound) == 1;
+    }
 }
