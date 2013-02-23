@@ -16,16 +16,13 @@
 @def selectionBorderWidth  2px;
 
 .dataGridWidget {
-
 }
 
 .dataGridFirstColumn {
 	font-weight: normal;
-	border-left: none;
 }
 
 .dataGridLastColumn {
-
 }
 
 .dataGridLastColumn div img {
@@ -36,7 +33,7 @@
 .dataGridFooter {
 	padding: 3px 15px;
 	text-align: left;
-	color: #4b4a4a;
+	color: #6f6b59;
 	text-shadow: #ddf 1px 1px 0;
 	overflow: hidden;
 	white-space: nowrap;
@@ -55,13 +52,14 @@
 	font-weight: normal;
 	text-shadow: none;
 	border: none;
+	border-left: 1px solid #F9F6EA;
 }
 
 .dataGridCell {
 	padding: 2px 15px;
 	line-height: 30px;
 	overflow: hidden;
-	color: #002e50;
+	color: #6f6b59;
 }
 
 .dataGridFirstColumnFooter {
@@ -72,6 +70,7 @@
 	border-radius: 6px 0 0 0;
 	-moz-border-radius: 6px 0 0 0;
 	-webkit-border-radius: 6px 0 0 0;
+	border-left: 1px solid #d0cbba;
 }
 
 .dataGridLastColumnFooter {
@@ -91,12 +90,13 @@
 	border-radius: 0 6px 0 0;
 	-moz-border-radius: 0 6px 0 0;
 	-webkit-border-radius: 0 6px 0 0;
+	border-right: 1px solid #d0cbba;
 }
 
 .dataGridSortableHeader:hover {
 	text-shadow: 0 0 2px 2px #eeeeee;
 	text-decoration: underline;
-	color: #ffffff;
+	color: #6f6b59;
 }
 
 .dataGridSortedHeaderAscending {
@@ -112,10 +112,10 @@
 }
 
 .dataGridEvenRowCell {
-	border: none;
+    border-top: 1px solid #fefdfa;
+    border-bottom: 1px solid #e9e5d7;
+	border-left: 1px solid #ffffff;
 	border-right: 1px solid #e9e5d7;
-	border-top: 1px solid #fefdfa;
-	border-bottom: 1px solid #e9e5d7;
 }
 
 .dataGridOddRow {
@@ -123,10 +123,10 @@
 }
 
 .dataGridOddRowCell {
-	border: none;
+    border-top: 1px solid #fefdfa;
+    border-bottom: 1px solid #e9e5d7;
+	border-left: 1px solid #ffffff;
 	border-right: 1px solid #e9e5d7;
-	border-top: 1px solid #fefdfa;
-	border-bottom: 1px solid #e9e5d7;
 }
 
 .dataGridHoveredRow {
@@ -135,8 +135,10 @@
 }
 
 .dataGridHoveredRowCell {
-	border: none;
-	border-left: 1px solid #ff0000;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #e9e5d7;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
 }
 
 .dataGridKeyboardSelectedRow {
@@ -144,8 +146,10 @@
 }
 
 .dataGridKeyboardSelectedRowCell {
-	border: none;
-	border-left: 1px solid #e9e5d7;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #e9e5d7;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
 }
 
 .dataGridSelectedRow {
@@ -156,10 +160,23 @@
 }
 
 .dataGridSelectedRowCell {
-	border: none;
+	border-left: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #e9e5d7;
+	color: #6f6b59;
+}
+
+.dataGridFirstColumn {
+	border-left: 1px solid #d1ccbc;
+}
+
+.dataGridLastColumn {
+    border-right: 1px solid #d1ccbc;
+}
+
+.dataGridLastRow {
 	border-bottom: 1px solid #ff0000;
-	border-left: 1px solid #ff0000;
-	color: #000;
 }
 
 /**

@@ -382,6 +382,11 @@ body > div {
 
 
 /** Other Styles **/
+.data-grid-container {
+	padding: 20px;
+	background: #e4dfcb;
+}
+
 .detail-info {
 	width: 100%;
 	border-radius: 5px;
