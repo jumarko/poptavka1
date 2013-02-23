@@ -585,6 +585,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public int getClientClosedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE - implement
@@ -600,6 +601,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         //TODO RELEASE - implement
