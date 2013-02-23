@@ -34,7 +34,7 @@ public class FeedbackPopupView extends Composite {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField Modal popup;
+    @UiField Modal popupFeedback, popupThankYou;
     @UiField HTMLPanel clientPanel, supplierPanel;
     /** SupplierPanel. **/
     @UiField Label supplierName;
@@ -55,7 +55,7 @@ public class FeedbackPopupView extends Composite {
     /**************************************************************************/
     public FeedbackPopupView(int rateWhat) {
         initWidget(uiBinder.createAndBindUi(this));
-        popup.show();
+        popupFeedback.show();
         switch (rateWhat) {
             case CLIENT:
                 clientPanel.setVisible(true);
@@ -114,27 +114,24 @@ public class FeedbackPopupView extends Composite {
     /**************************************************************************/
     /* GETTERS & SETTERS                                                      */
     /**************************************************************************/
+    public Modal getPopupFeedback() {
+        return popupFeedback;
+    }
+
+    public Modal getPopupThankYou() {
+        return popupThankYou;
+    }
+
     public Button getRateBtn() {
         return rateBtn;
     }
 
     public boolean isToogleRating() {
-        if (starBtn1.isDown()) {
-            return true;
-        }
-        if (starBtn2.isDown()) {
-            return true;
-        }
-        if (starBtn3.isDown()) {
-            return true;
-        }
-        if (starBtn4.isDown()) {
-            return true;
-        }
-        if (starBtn5.isDown()) {
-            return true;
-        }
-        return false;
+        return starBtn1.isDown()
+                || starBtn2.isDown()
+                || starBtn3.isDown()
+                || starBtn4.isDown()
+                || starBtn5.isDown();
     }
 
     public int getRating() {
@@ -142,7 +139,11 @@ public class FeedbackPopupView extends Composite {
     }
 
     public String getComment() {
-        return comment + "\nAddition:" + commentArea.getText();
+        if (commentArea.getText().isEmpty()) {
+            return comment;
+        } else {
+            return comment + "\nAddition:" + commentArea.getText();
+        }
     }
 
     public void setSupplierName(String supplierName) {
@@ -157,20 +158,10 @@ public class FeedbackPopupView extends Composite {
     /* Helper methods                                                         */
     /**************************************************************************/
     private void unToggleOtherButtons(ToggleButton button) {
-        if (!button.equals(starBtn1)) {
-            starBtn1.setDown(false);
-        }
-        if (!button.equals(starBtn2)) {
-            starBtn2.setDown(false);
-        }
-        if (!button.equals(starBtn3)) {
-            starBtn3.setDown(false);
-        }
-        if (!button.equals(starBtn4)) {
-            starBtn4.setDown(false);
-        }
-        if (!button.equals(starBtn5)) {
-            starBtn5.setDown(false);
-        }
+        starBtn1.setDown(button.equals(starBtn1));
+        starBtn2.setDown(button.equals(starBtn2));
+        starBtn3.setDown(button.equals(starBtn3));
+        starBtn4.setDown(button.equals(starBtn4));
+        starBtn5.setDown(button.equals(starBtn5));
     }
 }

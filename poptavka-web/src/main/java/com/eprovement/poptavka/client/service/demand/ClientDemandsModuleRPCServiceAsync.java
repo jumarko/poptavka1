@@ -84,8 +84,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void setMessageStarStatus(List<Long> list, boolean newStatus,
             AsyncCallback<Void> callback);
 
-    void closeDemand(long demandId, long latestUserMessageId, String closeDemandMessage, AsyncCallback<Void> callback);
-
     void acceptOffer(long offerId, long latestUserMessageId, String acceptOfferMessage, AsyncCallback<Void> callback);
 
     /**************************************************************************/
@@ -118,6 +116,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void deleteDemand(long demandId, AsyncCallback<Boolean> calback) throws
             RPCException, ApplicationSecurityException;
 
-    void enterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage,
+    void closeDemandAndEnterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage,
             AsyncCallback<Void> calback);
 }

@@ -23,6 +23,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -67,10 +68,14 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private DetailsWrapperPresenter detailSection = null;
+    /** Constants. **/
+    private static final int THANK_YOU_POPUP_DISPLAY_TIME = 3000;
+    /** Class Attributes. **/
+    private DetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
-    private IUniversalDetail selectedObject = null;
+    private IUniversalDetail selectedObject;
+    private FeedbackPopupView ratePopup;
     private long selectedClientAssignedDemandId = -1;
 
     /**************************************************************************/
@@ -164,17 +169,14 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         }
     }
 
-    public void onResponseCloseDemand() {
-        final FeedbackPopupView ratePopup =
-                new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
-        ratePopup.setSupplierName(selectedObject.getSupplierName());
-        ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestRateSupplier(selectedObject.getDemandId(),
-                        Integer.valueOf(ratePopup.getRating()), ratePopup.getComment());
+    public void onResponseFeedback() {
+        ratePopup.getPopupThankYou().show();
+        Timer togglebuttonTimer = new Timer() {
+            public void run() {
+                ratePopup.getPopupThankYou().hide();
             }
-        });
+        };
+        togglebuttonTimer.schedule(THANK_YOU_POPUP_DISPLAY_TIME);
     }
 
     /**
@@ -342,7 +344,15 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         view.getCloseBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestCloseDemand(selectedObject.getDemandId(), selectedObject.getUserMessageId());
+                ratePopup = new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
+                ratePopup.setSupplierName(selectedObject.getSupplierName());
+                ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        eventBus.requestCloseAndRateSupplier(selectedObject.getDemandId(),
+                                Integer.valueOf(ratePopup.getRating()), ratePopup.getComment());
+                    }
+                });
             }
         });
     }

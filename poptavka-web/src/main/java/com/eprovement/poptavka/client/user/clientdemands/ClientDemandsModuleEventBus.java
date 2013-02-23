@@ -211,7 +211,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void selectClientAssignedDemand(ClientOfferedDemandOffersDetail detail);
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void responseCloseDemand();
+    void responseFeedback();
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -221,9 +221,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestCloseDemand(long demandId, long latestUserMessageId);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestAcceptOffer(long offerid, long latestUserMessageId);
@@ -255,7 +252,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
             long parentId, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestRateSupplier(long demandID, Integer rating, String comment);
+    void requestCloseAndRateSupplier(long demandID, Integer rating, String comment);
 
     /**************************************************************************/
     /* Business events for demand's CRUD operations                           */

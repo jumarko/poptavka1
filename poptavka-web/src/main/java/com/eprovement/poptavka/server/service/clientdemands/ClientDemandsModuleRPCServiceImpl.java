@@ -670,26 +670,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**
-     * When demand is finished (when supplier delivered what client asked), client can finally close demand. At the end
-     * of whole process.
-     *
-     * @param demandDetail
-     * @param latestUserMessageId for which a new automatically generated reply message will be sent
-     * @throws RPCException
-     * @throws ApplicationSecurityException W
-     */
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void closeDemand(long demandId, long latestUserMessageId, String closeDemandMessage) throws RPCException,
-        ApplicationSecurityException {
-        Demand demand = generalService.find(Demand.class, demandId);
-        demand.setStatus(DemandStatus.CLOSED);
-        generalService.save(demand);
-        messageService.sendGeneratedMessage(
-                latestUserMessageId, demand.getClient().getBusinessUser(), closeDemandMessage);
-    }
-
-    /**
      * Accept selected offer and decline other offers and change demand state to ASSIGNED.
      *
      * @param offerId to be accepted
@@ -965,10 +945,13 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @throws ApplicationSecurityException
      */
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void enterFeedbackForSupplier(final long demandID, final Integer supplierRating,
+    public void closeDemandAndEnterFeedbackForSupplier(final long demandID, final Integer supplierRating,
         final String supplierMessage)
         throws RPCException, ApplicationSecurityException {
         final Demand demand = generalService.find(Demand.class, demandID);
+        //close demand by updating its status to closed
+        demand.setStatus(DemandStatus.CLOSED);
+        //set demand's rating for supplier
         Rating rating;
         if (demand.getRating() == null) {
             rating = new Rating();

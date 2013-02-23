@@ -10,7 +10,7 @@
              type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:HTMLPanel styleName="{res.detailViews.demandDetailContent}">
-        <b:Modal ui:field="popup">
+        <b:Modal ui:field="popupFeedback">
             <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
                 <h4 class="{res.detailViews.demandDetailSectionHeader}">
                     <ui:msg key="formSupplierInfo">Supplier information</ui:msg>
@@ -67,7 +67,7 @@
                             <b:Hero>
                                 <b:Heading size="2">Good</b:Heading>
                                 <b:Paragraph>
-                                    <ui:msg key="feedbackComment2">Miror problems, slighly misunderstandings, but still first class work</ui:msg>
+                                    <ui:msg key="feedbackComment2">Minor problems, slighly misunderstandings, but still first class work</ui:msg>
                                 </b:Paragraph>
                             </b:Hero>
                         </b:Column>
@@ -118,11 +118,20 @@
                 <g:Anchor ui:field="anchorComment">
                     <ui:msg key="formRateComment">Insert additional rate commment: </ui:msg>
                 </g:Anchor>
-                <b:TextArea placeholder="{msgs.feedbackAdditionalCommentPlaceholder}" ui:field="commentArea" visible="false" />
+                <b:FluidRow>
+                    <b:Column size="12">
+                        <b:TextArea placeholder="{msgs.feedbackAdditionalCommentPlaceholder}" ui:field="commentArea" visible="false" />
+                    </b:Column>
+                </b:FluidRow>
                 <g:Button ui:field="rateBtn">
                     <ui:msg key="commonBtnRate">Rate</ui:msg>
                 </g:Button>
             </g:HTMLPanel>
+        </b:Modal>
+        <b:Modal ui:field="popupThankYou" backdrop="STATIC" keyboard="true" animation="true">
+            <b:Alert type="SUCCESS" close="false">
+                Thank you for your feedback.
+            </b:Alert>
         </b:Modal>
     </g:HTMLPanel>
 </ui:UiBinder>
