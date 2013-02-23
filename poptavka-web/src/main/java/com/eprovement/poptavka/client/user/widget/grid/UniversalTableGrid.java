@@ -212,7 +212,17 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return ((IUniversalDetail) object).getTitle();
+                            IUniversalDetail detail = (IUniversalDetail) object;
+                            if (detail.getMessageCount() > 0) {
+                                StringBuilder title = new StringBuilder();
+                                title.append(detail.getTitle());
+                                title.append(" (");
+                                title.append(detail.getMessageCount());
+                                title.append(")");
+                                return title.toString();
+                            } else {
+                                return detail.getTitle();
+                            }
                         }
                     });
         }

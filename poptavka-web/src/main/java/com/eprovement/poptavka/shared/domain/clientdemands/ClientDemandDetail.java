@@ -115,10 +115,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-//    @Override
-//    public String getTitle() {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
     public Date getCreated() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
