@@ -100,6 +100,10 @@ public interface LayoutResource extends CssResource {
     @ClassName("pager")
     String pager();
 
+    /** CellTree Styles**/
+    @ClassName("cellTree-container")
+    String cellTreeContainer();
+
     /** Footer Module Styles **/
     @ClassName("footer-container")
     String footerContainer();
@@ -108,6 +112,9 @@ public interface LayoutResource extends CssResource {
     String footerToggle();
 
     /** Other Styles **/
+    @ClassName("data-grid-container")
+    String dataGridContainer();
+
     @ClassName("detail-info")
     String detailInfo();
 

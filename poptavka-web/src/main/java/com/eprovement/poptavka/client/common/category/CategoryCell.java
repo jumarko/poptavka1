@@ -12,12 +12,12 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
  */
 public class CategoryCell extends AbstractCell<CategoryDetail> {
 
-    //DisplayCountOfWhat
+    // DisplayCountOfWhat
     public static final int DISPLAY_COUNT_OF_DEMANDS = 0;
     public static final int DISPLAY_COUNT_OF_SUPPLIERS = 1;
     public static final int DISPLAY_COUNT_DISABLED = -1;
-    //Display string Constants
-    public static final String LEFT_BRACE = "<span style=\"float: right; color: #f16600;\">";
+    // Display string Constants
+    public static final String LEFT_BRACE = "<span style=\"float: right;\">";
     public static final String RIGHT_BRACE = "</span>";
     public static final String SPACE = " ";
     //
@@ -31,11 +31,13 @@ public class CategoryCell extends AbstractCell<CategoryDetail> {
     }
 
     @Override
-    public void render(Cell.Context context, CategoryDetail value, SafeHtmlBuilder sb) {
+    public void render(Cell.Context context, CategoryDetail value,
+            SafeHtmlBuilder sb) {
         if (value != null) {
             StringBuilder text = new StringBuilder();
 
-            text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
+            text.append(value.getName().replaceAll("-a-", " a ")
+                    .replaceAll("-", ", "));
             sb.appendEscaped(text.toString());
             switch (displayCountOfWhat) {
                 case DISPLAY_COUNT_OF_DEMANDS:
