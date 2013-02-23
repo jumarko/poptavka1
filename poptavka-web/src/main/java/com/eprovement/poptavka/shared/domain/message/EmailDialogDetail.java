@@ -5,15 +5,16 @@
 package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.client.common.validation.Email;
-import java.io.Serializable;
+
 import javax.validation.constraints.Size;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
  * @author Martin
  */
-public class EmailDialogDetail implements Serializable {
+public class EmailDialogDetail implements IsSerializable {
 
     private String recipient;
     private String subject;

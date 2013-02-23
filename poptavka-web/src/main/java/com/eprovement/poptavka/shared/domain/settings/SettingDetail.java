@@ -1,9 +1,11 @@
 package com.eprovement.poptavka.shared.domain.settings;
 
-import java.io.Serializable;
+
 
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +14,8 @@ import java.util.List;
  * @author Beho
  *
  */
-public class SettingDetail implements Serializable {
+public class SettingDetail implements IsSerializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 6224665779446848218L;
 
     public enum Role {
 

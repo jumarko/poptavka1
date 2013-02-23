@@ -4,15 +4,14 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  *
  * @author ivlcek
  */
-public class UnreadMessagesDetail implements Serializable {
+public class UnreadMessagesDetail implements IsSerializable {
 
-    private static final long serialVersionUID = -730374659726198361L;
     private int unreadMessagesCount;
 
     public UnreadMessagesDetail() {

@@ -1,7 +1,8 @@
 package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,12 +14,8 @@ import java.util.Collection;
  * @author Martin Slavkovsky
  *
  */
-public class FullClientDetail implements Serializable {
+public class FullClientDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
     private Long clientId;
     /** BusinessUserDetail. **/
     private BusinessUserDetail userData;

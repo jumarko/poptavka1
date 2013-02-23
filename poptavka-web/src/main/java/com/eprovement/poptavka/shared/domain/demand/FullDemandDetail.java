@@ -7,8 +7,9 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,12 +29,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Beho, Martin Slavkovsky
  */
-public class FullDemandDetail implements Serializable, TableDisplay {
-
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
+public class FullDemandDetail implements IsSerializable, TableDisplay {
 
     //Only fields that can be updated
     public enum DemandField {

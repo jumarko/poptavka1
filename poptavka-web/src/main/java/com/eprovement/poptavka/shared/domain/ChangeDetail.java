@@ -5,7 +5,9 @@
 package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,12 +16,11 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-public class ChangeDetail implements Serializable {
+public class ChangeDetail implements IsSerializable {
 
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private static final long serialVersionUID = -341982467222084345L;
     //Object field's enums
     private DemandField exposerDemandFieldType = null;
     //Original values

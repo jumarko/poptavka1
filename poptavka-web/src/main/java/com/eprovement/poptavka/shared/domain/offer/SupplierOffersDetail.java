@@ -5,23 +5,20 @@
 package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-import java.io.Serializable;
+
 import java.util.Date;
 
 /**
  *
  * @author PC
  */
-public class SupplierOffersDetail implements Serializable, IUniversalDetail {
+public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
 
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -430293874938683629L;
     private long demandId;
     private long offerId;
     private long threadRootId;

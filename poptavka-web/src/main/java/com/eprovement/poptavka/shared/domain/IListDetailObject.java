@@ -4,13 +4,14 @@
  */
 package com.eprovement.poptavka.shared.domain;
 
-import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  *
  * @author mato
  */
-public interface IListDetailObject extends Serializable {
+public interface IListDetailObject extends IsSerializable {
 
     Long getId();
 

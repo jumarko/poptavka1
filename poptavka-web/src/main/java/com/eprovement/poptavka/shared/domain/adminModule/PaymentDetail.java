@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * Represents full detail of domain object <b>OurPaymentDetails</b> used in <i>Administration Module</i>.
@@ -10,12 +10,8 @@ import java.io.Serializable;
  * @author Martin Slavkovsky
  *
  */
-public class PaymentDetail implements Serializable {
+public class PaymentDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
     private Long id;
     private String bankAccount;
     private String bankCode;

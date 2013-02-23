@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * Represents full detail of demandType. Serves for creating new demandType
@@ -9,12 +9,8 @@ import java.io.Serializable;
  * @author Beho
  *
  */
-public class DemandOriginDetail implements Serializable {
+public class DemandOriginDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
     private Long id;
     private String name;
     private String description;

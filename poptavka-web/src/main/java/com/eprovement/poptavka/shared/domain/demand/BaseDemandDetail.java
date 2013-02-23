@@ -1,18 +1,14 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-public class BaseDemandDetail implements Serializable {
+public class BaseDemandDetail implements IsSerializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 7279268325707740135L;
     private DemandDetailType detailType = DemandDetailType.BASE;
 
     private long demandId;

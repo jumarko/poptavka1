@@ -1,17 +1,14 @@
 package com.eprovement.poptavka.shared.domain.message;
 
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.eprovement.poptavka.shared.domain.type.MessageType;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class OfferDemandMessage implements Serializable {
+public class OfferDemandMessage implements IsSerializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 2349565802701324033L;
     private int offerCount;
     private int maxOfferCount;
     private String demandTitle;
@@ -184,10 +181,6 @@ public class OfferDemandMessage implements Serializable {
 
     public void setSenderId(long senderId) {
         this.senderId = senderId;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
     public void setUserMessageId(Long userMessageId) {

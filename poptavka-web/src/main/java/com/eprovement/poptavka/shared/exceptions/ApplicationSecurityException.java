@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.shared.exceptions;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * Exception representing unauthorized access to the resource, e.g.:
@@ -14,7 +14,7 @@ import java.io.Serializable;
  *
  * @see com.eprovement.poptavka.application.security.RpcExceptionAspect
  */
-public class ApplicationSecurityException extends RuntimeException implements Serializable {
+public class ApplicationSecurityException extends RuntimeException implements IsSerializable {
 
     public ApplicationSecurityException() {
         // for GWT serialization

@@ -1,15 +1,12 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 
-public class ServiceDetail implements Serializable {
+public class ServiceDetail implements IsSerializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1325587667656361089L;
     private long id;
     private String title;
     private String description;

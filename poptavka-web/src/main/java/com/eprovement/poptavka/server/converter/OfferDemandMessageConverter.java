@@ -18,9 +18,7 @@ public final class OfferDemandMessageConverter extends AbstractConverter<UserMes
         detail.setMessageId(userMessage.getId());
         detail.setBody(userMessage.getMessage().getBody());
         detail.setCreated(convertDate(userMessage.getMessage().getCreated()));
-//        m.setFirstBornId(serialVersionUID);
         detail.setMessageState(userMessage.getMessage().getMessageState().name());
-//        m.setNexSiblingId(serialVersionUID);
         detail.setParentId(userMessage.getMessage().getParent() == null ? detail.getThreadRootId()
                 : userMessage.getMessage().getParent().getId());
         detail.setSenderId(userMessage.getMessage().getSender().getId());

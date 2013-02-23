@@ -1,17 +1,15 @@
 package com.eprovement.poptavka.shared.domain;
 
-import java.io.Serializable;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class AddressDetail implements Serializable {
+public class AddressDetail implements IsSerializable {
 
     private static final int ZIP_SIZE = 4;
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = 803719527031189460L;
     @NotEmpty(message = "{addressNotBlankCountry}")
     private String country;
     @NotEmpty(message = "{addressNotBlankRegion}")

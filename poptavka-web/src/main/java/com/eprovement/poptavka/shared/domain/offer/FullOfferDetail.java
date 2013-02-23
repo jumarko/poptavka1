@@ -7,8 +7,9 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-import java.io.Serializable;
+
 import java.util.Date;
 
 /**
@@ -16,12 +17,8 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public class FullOfferDetail implements Serializable, TableDisplay, IUniversalDetail {
+public class FullOfferDetail implements IsSerializable, TableDisplay, IUniversalDetail {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -563380651738612866L;
     // TODO remove dipsplayed
     private int messageCount;
     private MessageDetail messageDetail = new MessageDetail();

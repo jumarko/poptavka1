@@ -2,12 +2,14 @@ package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -15,13 +17,11 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Beho
  *
  */
-public class BusinessUserDetail extends UserDetail implements Serializable {
+public class BusinessUserDetail extends UserDetail implements IsSerializable {
 
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /** Generated serialVersionUID. **/
-    private static final long serialVersionUID = 6224665779446848218L;
 
     /** Enums. **/
     public enum BusinessRole {

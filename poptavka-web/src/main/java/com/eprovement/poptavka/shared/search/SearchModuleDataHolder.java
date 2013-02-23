@@ -2,7 +2,7 @@ package com.eprovement.poptavka.shared.search;
 
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ import java.util.Collection;
  *
  * @author Martin Slavkovsky
  */
-public class SearchModuleDataHolder implements Serializable {
+public class SearchModuleDataHolder implements IsSerializable {
 
     //1. part of search bar ... store string for fulltext search
     private String searchText = "";

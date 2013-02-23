@@ -4,20 +4,17 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-import java.io.Serializable;
+
 import java.util.Date;
 
 /**
  *
  * @author ivan.vlcek
  */
-public class MessageDetail implements Serializable {
+public class MessageDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -928374659233195109L;
     //UserMessage
     private boolean read = false;
     private boolean starred = false;

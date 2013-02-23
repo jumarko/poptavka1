@@ -1,19 +1,14 @@
 package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class DemandMessageDetail extends MessageDetail implements
-        Serializable {
+public class DemandMessageDetail extends MessageDetail implements IsSerializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -6105359783491407143L;
     private String demandTitle;
     //Asi bude robit problem, inde mi uz robilo - nechcelo predat na RPC servisu
     private BigDecimal price;

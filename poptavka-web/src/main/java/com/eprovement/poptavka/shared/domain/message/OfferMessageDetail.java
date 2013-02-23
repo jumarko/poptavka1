@@ -1,17 +1,11 @@
 package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Date;
 
 
-public class OfferMessageDetail extends DemandMessageDetail
-        implements Serializable {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 6942849643003699484L;
+public class OfferMessageDetail extends DemandMessageDetail implements IsSerializable {
     private long supplierId;
     private long offerId;
     private String supplierName;

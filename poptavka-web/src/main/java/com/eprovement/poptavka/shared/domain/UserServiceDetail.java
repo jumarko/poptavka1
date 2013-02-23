@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 /**
@@ -10,12 +10,8 @@ import java.io.Serializable;
  * @author Beho
  *
  */
-public class UserServiceDetail implements Serializable {
+public class UserServiceDetail implements IsSerializable {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -530982467233195456L;
     private ServiceDetail service;
     private UserDetail user;
     private String status;

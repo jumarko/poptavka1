@@ -46,35 +46,6 @@ public final class DemandMessageConverter extends AbstractConverter<UserMessage,
 
     }
 
-    // TODO:
-//    public static MessageDetail fillMessageDetail(MessageDetail detail, Message message) {
-//        detail.setMessageId(message.getId());
-//        detail.setParentId(message.getParent() == null ? -1 : message.getParent().getId());
-//        detail.setSenderId(message.getSender() == null ? -1 : message.getSender().getId());
-//        detail.setThreadRootId(message.getThreadRoot() == null ? -1 : message.getThreadRoot().getId());
-//        detail.setBody(message.getBody());
-//        detail.setCreated(message.getCreated());
-//        //still get annoying nullPE at PotentialDemandMessage
-//        //so that's the reason for this check    -Beho. 29.11.11
-//        if (message.getSent() == null) {
-//            detail.setSent(message.getCreated());
-//        } else {
-//            detail.setSent(message.getSent());
-//        }
-//
-////        m.setFirstBornId(serialVersionUID);
-//        if (message.getMessageState() != null) {
-//            detail.setMessageState(message.getMessageState().name());
-//        }
-//        detail.setMessageType(MessageType.CONVERSATION.name());
-////        m.setNexSiblingId(serialVersionUID);
-//
-//        detail.setSent(message.getSent());
-//        detail.setSubject(message.getSubject());
-//
-//        return detail;
-//    }
-
     @Override
     public UserMessage convertToSource(DemandMessageDetail demandMessageDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
