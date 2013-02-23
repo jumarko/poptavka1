@@ -6,9 +6,13 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.TreeItem;
 import com.eprovement.poptavka.domain.demand.Category;
 import java.util.List;
+
+import com.eprovement.poptavka.service.GeneralService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juraj Martinka
@@ -25,11 +29,15 @@ public class TreeItemServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private TreeItemService treeItemService;
+    @Autowired
+    private GeneralService generalService;
 
 
     @Test
     public void testGetAllLeavesIdsForLocalities() {
-        checkLeaves(Locality.class, 6, new Long[] {211L, 212L, 213L, 214L, 111L, 121L});
+        final Long[] expectedLocalityLeaves = {211L, 212L, 213L, 214L, 111L, 121L};
+        checkLeaves(Locality.class, 6, expectedLocalityLeaves);
+        checkIsLeafForLocality(expectedLocalityLeaves);
     }
 
 
@@ -37,7 +45,9 @@ public class TreeItemServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllLeavesIdsForCategories() {
-        checkLeaves(Category.class, 10, new Long[]{9L, 111L, 112L, 1131L, 1132L, 21L, 22L, 23L, 311L, 312L});
+        final Long[] expectedCategoryLeaves = {9L, 111L, 112L, 1131L, 1132L, 21L, 22L, 23L, 311L, 312L};
+        checkLeaves(Category.class, 10, expectedCategoryLeaves);
+        checkIsLeafForCategories(expectedCategoryLeaves);
     }
 
 
@@ -55,7 +65,31 @@ public class TreeItemServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check all leaves
         for (Long expectedId : expectedIds) {
-            Assert.assertTrue(allLocalitiesLeavesIds.contains(expectedId));
+            assertTrue(allLocalitiesLeavesIds.contains(expectedId));
         }
+    }
+
+
+    private void checkIsLeafForLocality(Long[] expectedLocalityLeavesIds) {
+        for (Long localityId : expectedLocalityLeavesIds) {
+            checkIsLeaf(generalService.find(Locality.class, localityId));
+        }
+    }
+
+    private void checkIsLeafForCategories(Long[] expectedCategoryLeavesIds) {
+        for (Long categoryId : expectedCategoryLeavesIds) {
+            checkIsLeaf(generalService.find(Category.class, categoryId));
+        }
+    }
+
+
+    /**
+     * Checks whether method {@link com.eprovement.poptavka.domain.common.TreeItem#isLeaf()} returns true
+     * for tree item id which is really a leaf.
+     * @param leafTreeIItemId
+     */
+    private void checkIsLeaf(TreeItem treeItem) {
+        assertTrue("TreeItem=" + treeItem + " is expected to be a leaf but TreeItem.isLeaf returned false ",
+                treeItem.isLeaf());
     }
 }
