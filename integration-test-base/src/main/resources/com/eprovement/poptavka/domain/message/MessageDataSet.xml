@@ -212,4 +212,32 @@
     <!--other supplier-->
     <USERMESSAGE ID="503" ISREAD="1" STARRED="0" MESSAGE_ID="501" USER_ID="111111111" ROLETYPE="TO" MESSAGECONTEXT="0" />
 
+    <!--Potential demands sent to the suppliers-->
+    <MESSAGE ID="601"
+             CREATED="2012-07-01"
+             BODY="this message body is attached to demand with id 11"
+             SUBJECT="11: want something from want-something.com."
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             THREADROOT_ID="601"
+             FIRSTBORN_ID="602"
+             DEMAND_ID="11" />
+    <MESSAGE ID="602"
+             CREATED="2012-07-01"
+             BODY="I will deliver you somehting nice."
+             SUBJECT="11: want something from want-something.com."
+             PARENT_ID="601"
+             SENDER_ID="111111111"
+             THREADROOT_ID="601"
+             DEMAND_ID="11"
+             OFFER_ID="13" />
+
+    <MESSAGEUSERROLE ID="600" MESSAGE_ID="601" USER_ID="111111111" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="601" MESSAGE_ID="602" USER_ID="111111112" TYPE="TO"/>
+
+    <USERMESSAGE ID="601" ISREAD="1" STARRED="0" MESSAGE_ID="601" USER_ID="111111111" />
+    <USERMESSAGE ID="602" ISREAD="1" STARRED="0" MESSAGE_ID="601" USER_ID="111111112" />
+    <USERMESSAGE ID="603" ISREAD="1" STARRED="0" MESSAGE_ID="602" USER_ID="111111111" />
+    <USERMESSAGE ID="604" ISREAD="1" STARRED="0" MESSAGE_ID="602" USER_ID="111111112" />
+
 </dataset>

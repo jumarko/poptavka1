@@ -141,7 +141,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetDemandsByLocality() {
-        checkDemandsByLocality(4, 2L);
+        checkDemandsByLocality(5, 2L);
         checkDemandsByLocality(7, 1L);
         checkDemandsByLocality(4, 11L);
         checkDemandsByLocality(0, 0111L);
@@ -149,16 +149,16 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check combination of localities - the result is NOT always the sum of demands related to the localities
         // because duplication of demands in result is not allowed!
-        checkDemandsByLocality(11, 1L, 2L);
-        checkDemandsByLocality(11, 1L, 2L, 11L);
-        checkDemandsByLocality(6, 121L, 2L);
+        checkDemandsByLocality(12, 1L, 2L);
+        checkDemandsByLocality(12, 1L, 2L, 11L);
+        checkDemandsByLocality(7, 121L, 2L);
     }
 
 
     //----------------------------------  Methods for testing additional criteria methods ------------------------------
     @Test
     public void testGetDemandsByLocalityWithNoRestrictions() {
-        checkDemandsByLocalityAdditionalCriteria(4, ResultCriteria.EMPTY_CRITERIA, 2L);
+        checkDemandsByLocalityAdditionalCriteria(5, ResultCriteria.EMPTY_CRITERIA, 2L);
         checkDemandsByLocalityAdditionalCriteria(7, ResultCriteria.EMPTY_CRITERIA, 1L);
         checkDemandsByLocalityAdditionalCriteria(4, ResultCriteria.EMPTY_CRITERIA, 11L);
         checkDemandsByLocalityAdditionalCriteria(0, ResultCriteria.EMPTY_CRITERIA, 0111L);
@@ -166,9 +166,9 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check combination of localities - the result is NOT always the sum of demands related to the localities
         // because duplication of demands in result is not allowed!
-        checkDemandsByLocalityAdditionalCriteria(11, ResultCriteria.EMPTY_CRITERIA, 1L, 2L);
-        checkDemandsByLocalityAdditionalCriteria(11, ResultCriteria.EMPTY_CRITERIA, 1L, 2L, 11L);
-        checkDemandsByLocalityAdditionalCriteria(6, ResultCriteria.EMPTY_CRITERIA, 121L, 2L);
+        checkDemandsByLocalityAdditionalCriteria(12, ResultCriteria.EMPTY_CRITERIA, 1L, 2L);
+        checkDemandsByLocalityAdditionalCriteria(12, ResultCriteria.EMPTY_CRITERIA, 1L, 2L, 12L);
+        checkDemandsByLocalityAdditionalCriteria(7, ResultCriteria.EMPTY_CRITERIA, 121L, 2L);
     }
 
 
@@ -196,7 +196,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                 .firstResult(2)
                 .maxResults(4)
                 .build();
-        checkDemandsByLocalityAdditionalCriteria(2, criteria, 2L);
+        checkDemandsByLocalityAdditionalCriteria(3, criteria, 2L);
         checkDemandsByLocalityAdditionalCriteria(4, criteria, 1L);
         checkDemandsByLocalityAdditionalCriteria(2, criteria, 11L);
         checkDemandsByLocalityAdditionalCriteria(0, criteria, 0111L);
@@ -217,7 +217,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                 .orderByColumns(Arrays.asList("title"))
                 .build();
 
-        final Collection<Demand> loc2Demands = checkDemandsByLocalityAdditionalCriteria(2, criteria, 2L);
+        final Collection<Demand> loc2Demands = checkDemandsByLocalityAdditionalCriteria(3, criteria, 2L);
         checkDemandExists(loc2Demands, 9L);
         checkDemandExists(loc2Demands, 10L);
 
@@ -239,14 +239,14 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         // check combination of localities - the result is NOT always the sum of demands related to the localities
         // because duplication of demands in result is not allowed!
         final Collection<Demand> loc1loc2demands =
-                checkDemandsByLocalityAdditionalCriteria(9, criteria, 1L, 2L);
+                checkDemandsByLocalityAdditionalCriteria(10, criteria, 1L, 2L);
         checkDemandExists(loc1loc2demands, 5L);
         checkDemandExists(loc1loc2demands, 6L);
         checkDemandExists(loc1loc2demands, 7L);
         checkDemandExists(loc1loc2demands, 8L);
 
         final Collection<Demand> loc1loc2loc11Demands =
-                checkDemandsByLocalityAdditionalCriteria(9, criteria, 1L, 2L, 11L);
+                checkDemandsByLocalityAdditionalCriteria(10, criteria, 1L, 2L, 11L);
         checkDemandExists(loc1loc2loc11Demands, 3L);
         checkDemandExists(loc1loc2loc11Demands, 4L);
         checkDemandExists(loc1loc2loc11Demands, 5L);
@@ -257,7 +257,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         checkDemandExists(loc1loc2loc11Demands, 10L);
 
         final Collection<Demand> loc121Loc2Demands =
-                checkDemandsByLocalityAdditionalCriteria(4, criteria, 121L, 2L);
+                checkDemandsByLocalityAdditionalCriteria(5, criteria, 121L, 2L);
         checkDemandExists(loc121Loc2Demands, 8L);
         checkDemandExists(loc121Loc2Demands, 9L);
         checkDemandExists(loc121Loc2Demands, 10L);
@@ -273,7 +273,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertEquals(12, demandsCountForAllLocalities.size());
 
         checkDemandCountForLocality(1L, 7L, demandsCountForAllLocalities);
-        checkDemandCountForLocality(2L, 4L, demandsCountForAllLocalities);
+        checkDemandCountForLocality(2L, 5L, demandsCountForAllLocalities);
         checkDemandCountForLocality(11L, 4L, demandsCountForAllLocalities);
         checkDemandCountForLocality(121L, 2L, demandsCountForAllLocalities);
 
@@ -287,20 +287,20 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Map<Category, Long> demandsCountForAllCategories = this.demandService.getDemandsCountForAllCategories();
         Assert.assertEquals(17, demandsCountForAllCategories.size());
 
-        checkDemandsForCategory(0L, 11L, demandsCountForAllCategories);
-        checkDemandsForCategory(1L, 6L, demandsCountForAllCategories);
+        checkDemandsForCategory(0L, 12L, demandsCountForAllCategories);
+        checkDemandsForCategory(1L, 7L, demandsCountForAllCategories);
         checkDemandsForCategory(2L, 1L, demandsCountForAllCategories);
         checkDemandsForCategory(3L, 3L, demandsCountForAllCategories);
-        checkDemandsForCategory(11L, 5L, demandsCountForAllCategories);
+        checkDemandsForCategory(11L, 6L, demandsCountForAllCategories);
         checkDemandsForCategory(31L, 2L, demandsCountForAllCategories);
         checkDemandsForCategory(312L, 1L, demandsCountForAllCategories);
-        checkDemandsForCategory(1132L, 1L, demandsCountForAllCategories);
+        checkDemandsForCategory(1132L, 2L, demandsCountForAllCategories);
     }
 
     @Test
     public void testGetDemandsCountByLocality() {
         checkDemandCountByLocality(1L, 7);
-        checkDemandCountByLocality(2L, 4);
+        checkDemandCountByLocality(2L, 5);
         checkDemandCountByLocality(11L, 4);
         checkDemandCountByLocality(121L, 2);
 
@@ -312,7 +312,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void getDemandsCountWithoutChildrenByLocality() {
         checkDemandCountWithoutChildrenByLocality(1L, 1);
-        checkDemandCountWithoutChildrenByLocality(2L, 3);
+        checkDemandCountWithoutChildrenByLocality(2L, 4);
         checkDemandCountWithoutChildrenByLocality(21L, 1);
         checkDemandCountWithoutChildrenByLocality(211L, 0);
     }
@@ -320,29 +320,29 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetDemandsByCategory() {
-        checkDemandsByCategory(11, 0L);
-        checkDemandsByCategory(6, 1L);
+        checkDemandsByCategory(12, 0L);
+        checkDemandsByCategory(7, 1L);
         checkDemandsByCategory(1, 2L);
         checkDemandsByCategory(3, 3L);
-        checkDemandsByCategory(5, 11L);
+        checkDemandsByCategory(6, 11L);
         checkDemandsByCategory(2, 31L);
         checkDemandsByCategory(1, 312L);
-        checkDemandsByCategory(1, 1132L);
+        checkDemandsByCategory(2, 1132L);
 
         // check if same demands are not presented twice
-        checkDemandsByCategory(5, 11L, 1132L);
+        checkDemandsByCategory(6, 11L, 1132L);
     }
 
 
     @Test
     public void testGetDemandsCountByCategory() {
-        checkDemandCountByCategory(1L, 6);
+        checkDemandCountByCategory(1L, 7);
         checkDemandCountByCategory(2L, 1);
         checkDemandCountByCategory(3L, 3);
-        checkDemandCountByCategory(11L, 5);
+        checkDemandCountByCategory(11L, 6);
         checkDemandCountByCategory(31L, 2);
         checkDemandCountByCategory(312L, 1);
-        checkDemandCountByCategory(1132L, 1);
+        checkDemandCountByCategory(1132L, 2);
     }
 
 
@@ -360,7 +360,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         checkDemandCountWithoutChildrenByCategory(112L, 2);
         checkDemandCountWithoutChildrenByCategory(311L, 0);
         checkDemandCountWithoutChildrenByCategory(312L, 1);
-        checkDemandCountWithoutChildrenByCategory(1132L, 1);
+        checkDemandCountWithoutChildrenByCategory(1132L, 2);
     }
 
 
@@ -374,7 +374,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllDemands() {
-        Assert.assertEquals(11, this.demandService.getAll().size());
+        Assert.assertEquals(12, this.demandService.getAll().size());
     }
 
     @Test
@@ -386,7 +386,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                         .orderByColumns(new HashMap<String, OrderType>() { {  put("createdDate", OrderType.DESC);  } })
                         .build();
 
-        Assert.assertEquals(11, this.demandService.getAll(resultCriteria).size());
+        Assert.assertEquals(12, this.demandService.getAll(resultCriteria).size());
     }
 
 

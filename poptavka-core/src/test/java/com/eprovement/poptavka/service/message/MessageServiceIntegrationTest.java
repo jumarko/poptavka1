@@ -68,7 +68,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final List<Message> messageThreads = this.messageService.getMessageThreads(this.user,
                 MessageFilter.EMPTY_FILTER);
 
-        Assert.assertEquals(5, messageThreads.size());
+        Assert.assertEquals(6, messageThreads.size());
         checkUserMessageExists(1L, messageThreads);
         checkUserMessageExists(200L, messageThreads);
         checkUserMessageExists(300L, messageThreads);
@@ -88,7 +88,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetAllUserMessages() {
         final List<Message> allUserMessages = this.messageService.getAllMessages(this.user, MessageFilter.EMPTY_FILTER);
-        Assert.assertEquals(11, allUserMessages.size());
+        Assert.assertEquals(13, allUserMessages.size());
         checkUserMessageExists(1L, allUserMessages);
         checkUserMessageExists(2L, allUserMessages);
         checkUserMessageExists(3L, allUserMessages);
@@ -107,7 +107,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.TO).build());
-        Assert.assertEquals(8, allUserReceivedMessages.size());
+        Assert.assertEquals(9, allUserReceivedMessages.size());
         checkUserMessageExists(1L, allUserReceivedMessages);
         checkUserMessageExists(2L, allUserReceivedMessages);
         checkUserMessageExists(4L, allUserReceivedMessages);
@@ -124,7 +124,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.SENDER).build());
-        Assert.assertEquals(3, allUserReceivedMessages.size());
+        Assert.assertEquals(4, allUserReceivedMessages.size());
         checkUserMessageExists(3L, allUserReceivedMessages);
         checkUserMessageExists(301L, allUserReceivedMessages);
         checkUserMessageExists(401L, allUserReceivedMessages);
@@ -183,7 +183,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesAll(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                5, listOfClientDemandMessages.size());
+                6, listOfClientDemandMessages.size());
 
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
@@ -430,12 +430,36 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
 
         long count3 = offerService.getAcceptedOffersCountForSupplier(supplierId);
         Assert.assertEquals("Expected count of accepted offers [count=" + count3
-                + "]for supplier was different", 0L, count3);
+                + "]for supplier was different", 1L, count3);
 
         long count4 = offerService.getAcceptedOffersCountForSupplier(supplierId2);
         Assert.assertEquals("Expected count of accepted offers [count=" + count4
                 + "]for supplier was different", 0L, count4);
 
+    }
+
+    @Test
+    public void testGetSupplierConversationsWithClosedDemands() {
+        User userWithClosedDemands = new User();
+        userWithClosedDemands.setId(111111112L);
+
+        Map<UserMessage, Integer> closedDemandsMap = userMessageService.getSupplierConversationsWithClosedDemands(
+                userWithClosedDemands);
+        long count = closedDemandsMap.size();
+        Assert.assertEquals("Expected count of different conversations with closed demands [count=" + count
+                + "] for user was different", 1L, count);
+
+        for (Map.Entry<UserMessage, Integer> entryKey : closedDemandsMap.entrySet()) {
+            UserMessage latestUserMessage = entryKey.getKey();
+            int countOfSubmessages = entryKey.getValue().intValue();
+            Assert.assertEquals("Expected latestUserMessage id [id=" + latestUserMessage.getId() + "] "
+                    + " for conversation with closed demands for user was different than expected",
+                    604L, latestUserMessage.getId().longValue());
+            Assert.assertEquals("Expected sumbessages count [count=" + countOfSubmessages
+                + "] for latestUserMessage id [id=" + latestUserMessage.getId() + "] "
+                    + " in conversation for closed demands for user was different than expected",
+                    2L, countOfSubmessages);
+        }
     }
 
 
