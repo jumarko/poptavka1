@@ -3,7 +3,6 @@ package com.eprovement.poptavka.service.usermessage;
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;

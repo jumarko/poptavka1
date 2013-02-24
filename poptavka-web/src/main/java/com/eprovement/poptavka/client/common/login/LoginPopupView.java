@@ -90,7 +90,7 @@ public class LoginPopupView extends Composite
             }
             if (role == BusinessRole.ADMIN) {
                 name = "admin@admin.cz";
-                pass = "svnsvn";
+                pass = "klinga004";
             }
         }
 
