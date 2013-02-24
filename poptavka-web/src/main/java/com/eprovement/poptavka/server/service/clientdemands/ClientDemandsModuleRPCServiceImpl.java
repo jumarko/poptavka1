@@ -245,22 +245,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
-        // TODO RELEASE ivlcek, vojto - replace by new SQL that will load demandIds,
-        // latest userMessageId and number of total submessages. Vojto is working on this
-        Iterator it = messageService.getListOfClientDemandMessagesUnread(generalService.find(
-                User.class, userId)).entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            // key is message and val is number
-            Long demandId = (Long) pairs.getKey();
+        for (Map.Entry<Long, Integer> userMessageEntry : messageService.getListOfClientDemandMessagesUnread(
+                generalService.find(User.class, userId)).entrySet()) {
+            // key is a message and val is count of unread submessages
             for (ClientDemandDetail cdd : cdds) {
-                if (cdd.getDemandId() == demandId) {
-                    cdd.setUnreadSubmessagesCount(((Integer) pairs.getValue()).intValue());
+                if (cdd.getDemandId() == userMessageEntry.getKey()) {
+                    cdd.setUnreadSubmessagesCount(((Integer) userMessageEntry.getValue()).intValue());
                     break;
                 }
             }
-            it.remove();
         }
         return cdds;
     }
@@ -323,7 +316,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setDemandId(demandID);
             cdcd.setTitle(userMessage.getMessage().getDemand().getTitle());
             // set Supplier attributes
-            // TODO RELEASE ivlcek - if latest user message is from Client then this line doesn't work with client id
             final Supplier supplier = findSupplier(userMessageEntry.getValue().getSupplier().getId());
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());

@@ -265,7 +265,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // TODO RELASE ivlcek - refactor and create converter, set Rating
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getSupplier().getOveralRating()); //TODO RELEASE - shouldn't be here client's rating???
+            sod.setRating(offer.getDemand().getClient().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             // Client name can be displayed because it contrains only contact person name
@@ -337,12 +337,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELEASE ivlcek - refactor and create converter, set Rating
+            // TODO RELEASE ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setRating(offer.getDemand().getClient().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
-            // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -416,12 +415,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELEASE ivlcek - refactor and create converter, set Rating
+            // TODO RELEASE ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setRating(offer.getDemand().getClient().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
-            // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -579,19 +577,18 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public SupplierOffersDetail getSupplierAssignedDemand(long assignedDemandID) throws RPCException,
         ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
         long supplierID = Storage.getSupplierId();
         Supplier supplier = generalService.find(Supplier.class, supplierID);
+        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
-        // TODO RELEASE ivlcek - load offerState by CODE value
-        supplierOffersSearch.addFilterEqual("state.id", 1);
+        supplierOffersSearch.addFilterEqual("state", offerAccepted);
         supplierOffersSearch.addFilterEqual("demand.id", assignedDemandID);
         Offer offer = (Offer) generalService.searchUnique(supplierOffersSearch);
 
         SupplierOffersDetail sod = new SupplierOffersDetail();
 
-        // TODO RELEASE ivlcek - refactor and create converter, set Rating
+        // TODO LATER ivlcek - refactor and create converter. Finish if we need history link for this
         sod.setSupplierId(offer.getSupplier().getId());
         sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         sod.setClientId(offer.getDemand().getClient().getId());
