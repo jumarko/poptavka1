@@ -28,9 +28,8 @@ import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.address.LocalityService;
-import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
@@ -80,8 +79,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminRPCServiceImpl.class);
     private GeneralService generalService;
     private DemandService demandService;
-    private LocalityService localityService;
-    private CategoryService categoryService;
+    private PotentialDemandService potentialDemandService;
     private Converter<Demand, FullDemandDetail> fullDemandConverter;
     private Converter<Client, ClientDetail> clientConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
@@ -110,13 +108,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Autowired
-    public void setLocalityService(LocalityService localityService) {
-        this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public void setPotentialDemandService(PotentialDemandService potentialDemandService) {
+        this.potentialDemandService = potentialDemandService;
     }
 
     @Autowired
@@ -644,11 +637,18 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void approveDemands(Set<FullDemandDetail> demandsToApprove) throws
             RPCException, ApplicationSecurityException {
+        LOGGER.info("action=approve_demands status=start");
         for (FullDemandDetail demandDetail : demandsToApprove) {
-            Demand demand = generalService.find(Demand.class, demandDetail.getDemandId());
-            demand.setStatus(DemandStatus.ACTIVE);
-            generalService.merge(demand);
+            try {
+                final Demand demand = demandService.getById(demandDetail.getDemandId());
+                demandService.activateDemand(demand);
+                potentialDemandService.sendDemandToPotentialSuppliers(demand);
+            } catch (Exception e) {
+                LOGGER.warn("action=approve_demands status=error demand_id={}", demandDetail.getDemandId(), e);
+            }
+
         }
+        LOGGER.info("action=approve_demands status=start");
     }
 
     /**
