@@ -241,6 +241,13 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user) {
+        Preconditions.checkNotNull("User specified must not be empty.", user);
+        return getDao().getSupplierConversationsWithClosedDemands(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
             User user, Message root) {
         return getDao().getClientConversationsWithoutOffer(user, root);

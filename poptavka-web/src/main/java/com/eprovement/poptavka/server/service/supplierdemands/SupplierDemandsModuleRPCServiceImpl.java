@@ -36,6 +36,7 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDe
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -379,8 +380,16 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public int getSupplierClosedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE - implement
-        return 0;
+        final Supplier supplier = generalService.find(Supplier.class, supplierID);
+        final OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final Search supplierClosedDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        supplierClosedDemandsSearch.setSearchClass(Offer.class);
+        supplierClosedDemandsSearch.addFilterEqual("supplier", supplier);
+        supplierClosedDemandsSearch.addFilterEqual("state", offerCompleted);
+        supplierClosedDemandsSearch.addFilterEqual("demand.status", DemandStatus.CLOSED);
+        supplierClosedDemandsSearch.addField("id",  Field.OP_COUNT);
+        supplierClosedDemandsSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(supplierClosedDemandsSearch)).intValue();
     }
 
     /**
@@ -395,8 +404,46 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<SupplierOffersDetail> getSupplierClosedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE - implement
-        return new ArrayList<SupplierOffersDetail>();
+        Supplier supplier = generalService.find(Supplier.class, supplierID);
+
+        Map<UserMessage, Integer> latestUserMessages =
+                userMessageService.getSupplierConversationsWithClosedDemands(supplier.getBusinessUser());
+
+        List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
+
+        for (Map.Entry<UserMessage, Integer> entryKey : latestUserMessages.entrySet()) {
+            UserMessage latestUserMessage = entryKey.getKey();
+            Offer offer = latestUserMessage.getMessage().getOffer();
+            SupplierOffersDetail sod = new SupplierOffersDetail();
+
+            // TODO RELEASE ivlcek - refactor and create converter, set Rating
+            // supplier part
+            sod.setSupplierId(supplierID);
+            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
+            // client part
+            sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            sod.setClientId(offer.getDemand().getClient().getId());
+            // demand part
+            sod.setDemandId(offer.getDemand().getId());
+            sod.setTitle(offer.getDemand().getTitle());
+            // offer part
+            sod.setPrice(offer.getPrice().toPlainString());
+            sod.setDeliveryDate(offer.getFinishDate());
+            sod.setOfferId(offer.getId());
+            // Message part
+            sod.setReceivedDate(offer.getCreated());
+            sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
+            // set UserMessage attributes
+            sod.setUserMessageId(latestUserMessage.getId());
+            sod.setMessageCount(entryKey.getValue());
+            sod.setIsRead(latestUserMessage.isRead());
+            sod.setIsStarred(latestUserMessage.isStarred());
+
+            listSod.add(sod);
+        }
+        return listSod;
     }
 
     /**************************************************************************/

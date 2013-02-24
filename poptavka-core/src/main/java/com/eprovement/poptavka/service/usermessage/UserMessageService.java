@@ -225,6 +225,17 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
             OfferState offerStateAccepted, OfferState offerStateCompleted);
 
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where where <code>DemandStatus</code> is CLOSED.
+     *
+     * @param user the supplier whose conversations to get
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user);
+
    /**
     * Gets a list of all client's conversation related to their demands where
     * no offer has been made

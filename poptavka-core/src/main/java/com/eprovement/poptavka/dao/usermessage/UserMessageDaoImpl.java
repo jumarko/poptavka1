@@ -7,6 +7,7 @@ package com.eprovement.poptavka.dao.usermessage;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -140,9 +141,27 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         queryParams.put("user", user);
         queryParams.put("statusAccepted", offerStateAccepted);
         queryParams.put("statusCompleted", offerStateCompleted);
+        queryParams.put("pendingCompletionStatus", DemandStatus.PENDINGCOMPLETION);
 
         List<Object[]> unread = runNamedQuery(
                 "getSupplierConversationsWithAcceptedOffer",
+                queryParams);
+        Map<UserMessage, Integer> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((UserMessage) entry[0], ((Long) entry[1]).intValue());
+        }
+        return unreadMap;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+        queryParams.put("closedStatus", DemandStatus.CLOSED);
+
+        List<Object[]> unread = runNamedQuery(
+                "getSupplierConversationsWithClosedDemands",
                 queryParams);
         Map<UserMessage, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {

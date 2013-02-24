@@ -530,7 +530,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientOfferedDemandOffersDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
         User user = generalService.find(User.class, userId);
         OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
         OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
@@ -576,14 +575,20 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      *
      * @param userId user's id
      * @param filter
-     * @return
+     * @return count of closed demands
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public int getClientClosedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE - implement
-        return 0;
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.CLOSED);
+        clientDemandsSearch.addFilterEqual("client", client);
+        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
 
     /**
@@ -598,8 +603,40 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE - implement
-        return new ArrayList<ClientOfferedDemandOffersDetail>();
+        User user = generalService.find(User.class, userId);
+
+        List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
+
+        Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
+                userMessageService.getSupplierConversationsWithClosedDemands(user);
+        for (Map.Entry<UserMessage, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
+            UserMessage userMessage = userMessageEntry.getKey();
+            Offer offer = userMessage.getMessage().getOffer();
+            // TODO RELEASE ivlcek - create converter
+            ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
+            // set UserMessage attributes
+            codod.setIsRead(userMessage.isRead());
+            codod.setIsStarred(userMessage.isStarred());
+            codod.setUserMessageId(userMessage.getId());
+            codod.setMessageCount(userMessageEntry.getValue());
+            codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
+            // set Supplier attributes
+            codod.setSupplierId(offer.getSupplier().getId());
+            codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setRating(offer.getSupplier().getOveralRating());
+            codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
+            // set Offer attributes
+            codod.setOfferId(offer.getId());
+            codod.setPrice(offer.getPrice().toPlainString());
+            codod.setDeliveryDate(offer.getFinishDate());
+            codod.setReceivedDate(offer.getCreated());
+            // set Demand attributes
+            codod.setDemandId(offer.getDemand().getId());
+            codod.setTitle(offer.getDemand().getTitle());
+
+            listCodod.add(codod);
+        }
+        return listCodod;
     }
 
     /**************************************************************************/
