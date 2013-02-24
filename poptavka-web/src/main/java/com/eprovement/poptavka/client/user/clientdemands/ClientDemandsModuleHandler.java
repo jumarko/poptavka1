@@ -270,7 +270,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     }
 
     public void onRequestRateSupplier(final long demandID, final Integer supplierRating, final String supplierMessage) {
-        clientDemandsService.enterFeedbackForSupplier(demandID, supplierRating, supplierMessage,
+        clientDemandsService.closeDemandAndEnterFeedbackForSupplier(demandID, supplierRating, supplierMessage,
                 new SecuredAsyncCallback<Void>(eventBus) {
                     @Override
                     public void onSuccess(Void result) {
