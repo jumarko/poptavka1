@@ -1,81 +1,90 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:h="urn:import:com.eprovement.poptavka.client.root.header">
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:h="urn:import:com.eprovement.poptavka.client.root.header">
 
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:with field='res'
+        type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='text'
+        type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-	<ui:style>
-		.important {
-			font-weight: bold;
-		}
+    <ui:style>
+        .important {
+        font-weight: bold;
+        }
 
-		.username {
-			float: right;
-			margin: 0 10px;
-			color: #000000;
-		}
+        .username {
+        float: right;
+        margin: 0 10px;
+        color: #000000;
+        }
 
-		.newMessageCount {
-			float: right;
-			margin: 0;
-			color: #000000;
-		}
+        .newMessageCount {
+        float: right;
+        margin: 0;
+        color: #000000;
+        }
 
-		.pushButton {
-			float: right;
-			margin: 0 5px 0 10px;
-		}
+        .pushButton {
+        float: right;
+        margin: 0 5px 0 10px;
+        }
 
-		.pushButton:hover {
-			cursor: pointer;
-		}
-	</ui:style>
+        .pushButton:hover {
+        cursor: pointer;
+        }
 
-	<g:HTMLPanel ui:field='headerHolder'>
-		<!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
+        .logout-button {
+        border-top: 1px solid #75be68;
+        padding: 5px 15px !important;
+        }
+    </ui:style>
 
-		<!-- new type -->
-		<!-- Logo -->
-		<!-- <div style="position: absolute; background: url(images/logo.png) no-repeat
-			scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;">
-			</div> -->
-		<!-- end Logo -->
+    <g:HTMLPanel ui:field='headerHolder'>
+        <!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
 
-		<!-- Login Button -->
-		<!--<div class='{style.login}'> -->
-		<g:MenuBar vertical="false" styleName='{res.layout.login}'>
-			<h:MyMenuItem styleName='{res.layout.logoutButton}'>
-				<g:MenuBar vertical="true" styleName='{res.layout.logoutMenuBar}'>
-					<g:MenuItem ui:field="menuLogOut">
-						<ui:msg key="userHeaderLogOut">Log Out</ui:msg>
-					</g:MenuItem>
-					<g:MenuItem ui:field="menuMyProfile">
-						<ui:msg key="userHeaderMyProfile">My profile</ui:msg>
-					</g:MenuItem>
-					<g:MenuItem ui:field="menuHelp">
-						<ui:msg key="userHeaderHelp">Help</ui:msg>
-					</g:MenuItem>
-					<g:MenuItem ui:field="menuCustomerService">
-						<ui:msg key="userHeaderCustomerService">Customer Service</ui:msg>
-					</g:MenuItem>
-				</g:MenuBar>
-			</h:MyMenuItem>
-		</g:MenuBar>
+        <!-- new type -->
+        <!-- Logo -->
+        <!-- <div style="position: absolute; background: url(images/logo.png)
+            no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px;
+            top: 24px;"> </div> -->
+        <!-- end Logo -->
 
-		<div class='{res.layout.loginBar}'>
-			<g:Button ui:field="help" styleName='{res.layout.helpButton}'>
-			</g:Button>
-			<g:Label ui:field="username" styleName='{style.username}'></g:Label>
-			<g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
-			<g:PushButton ui:field='pushButton' enabled='true'
-				styleName='{style.pushButton}'>
-				<g:upFace image='{res.images.envelopeImage}' />
-				<g:upHoveringFace image='{res.images.envelopeHoverImage}' />
-				<g:downFace image='{res.images.envelopeImage}' />
-				<g:downHoveringFace image='{res.images.envelopeImage}' />
-			</g:PushButton>
-		</div>
-	</g:HTMLPanel>
+        <!-- Login Button -->
+        <!--<div class='{style.login}'> -->
+        <g:MenuBar vertical="false" styleName='{res.layout.login}'>
+            <h:MyMenuItem styleName='{res.layout.logoutButton}'>
+                <g:MenuBar vertical="true"
+                    styleName='{res.layout.logoutMenuBar}'>
+                    <g:MenuItem ui:field="username">
+                    </g:MenuItem>
+                    <g:MenuItem ui:field="menuMyProfile">
+                        <ui:msg key="userHeaderMyProfile">My profile</ui:msg>
+                    </g:MenuItem>
+                    <g:MenuItem ui:field="menuHelp">
+                        <ui:msg key="userHeaderHelp">Help</ui:msg>
+                    </g:MenuItem>
+                    <g:MenuItem ui:field="menuCustomerService">
+                        <ui:msg key="userHeaderCustomerService">Customer Service</ui:msg>
+                    </g:MenuItem>
+                    <g:MenuItem ui:field="menuLogOut"
+                        addStyleNames='{style.logout-button}'>
+                        <ui:msg key="userHeaderLogOut">Log Out</ui:msg>
+                    </g:MenuItem>
+                </g:MenuBar>
+            </h:MyMenuItem>
+        </g:MenuBar>
+
+        <div class='{res.layout.loginBar}'>
+            <g:Button ui:field="help" styleName='{res.layout.helpButton}'>
+            </g:Button>
+            <g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
+            <g:PushButton ui:field='pushButton' enabled='true'
+                styleName='{style.pushButton}'>
+                <g:upFace image='{res.images.envelopeImage}' />
+                <g:upHoveringFace image='{res.images.envelopeHoverImage}' />
+                <g:downFace image='{res.images.envelopeImage}' />
+                <g:downHoveringFace image='{res.images.envelopeImage}' />
+            </g:PushButton>
+        </div>
+    </g:HTMLPanel>
 </ui:UiBinder>

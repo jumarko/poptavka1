@@ -9,9 +9,9 @@ public interface IUserHeaderView extends IsWidget {
     public interface IUserHeaderPresenter {
     }
 
-    Label getUsername();
-
     Label getNewMessagesCount();
+
+    MenuItem getUsername();
 
     MenuItem getMenuLogOut();
 

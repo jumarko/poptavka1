@@ -13,53 +13,57 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-@def selectionBorderWidth  2px;
+@
+def selectionBorderWidth   2px ;
 
 .dataGridWidget {
+
 }
 
 .dataGridFirstColumn {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 .dataGridLastColumn {
+
 }
 
 .dataGridLastColumn div img {
-	margin: 0 auto;
-	display: block;
+    margin: 0 auto;
+    display: block;
 }
 
 .dataGridFooter {
-	padding: 3px 15px;
-	text-align: left;
-	color: #6f6b59;
-	text-shadow: #ddf 1px 1px 0;
-	overflow: hidden;
-	white-space: nowrap;
+    padding: 3px 15px;
+    text-align: left;
+    color: #6f6b59;
+    text-shadow: #ddf 1px 1px 0;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-@sprite .dataGridHeader {
-	gwt-image: 'dataGridHeader';
-	background-position: top right;
-	background-color: #f1ecda;
-	padding: 5px 12px 3px 12px;
-	text-align: left;
-	color: #6f6b59;
-	overflow: hidden;
-	white-space: nowrap;
-	font-size: 14px;
-	font-weight: normal;
-	text-shadow: none;
-	border: none;
-	border-left: 1px solid #F9F6EA;
+@
+sprite .dataGridHeader {
+    gwt-image: 'dataGridHeader';
+    background-position: top right;
+    background-color: #f1ecda;
+    padding: 5px 12px 3px 12px;
+    text-align: left;
+    color: #6f6b59;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: normal;
+    text-shadow: none;
+    border: none;
+    border-left: 1px solid #F9F6EA;
 }
 
 .dataGridCell {
-	padding: 2px 15px;
-	line-height: 30px;
-	overflow: hidden;
-	color: #6f6b59;
+    padding: 2px 15px;
+    line-height: 30px;
+    overflow: hidden;
+    color: #6f6b59;
 }
 
 .dataGridFirstColumnFooter {
@@ -67,116 +71,114 @@
 }
 
 .dataGridFirstColumnHeader {
-	border-radius: 6px 0 0 0;
-	-moz-border-radius: 6px 0 0 0;
-	-webkit-border-radius: 6px 0 0 0;
-	border-left: 1px solid #d0cbba;
+    border-radius: 6px 0 0 0;
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-left: 1px solid #d0cbba;
 }
 
 .dataGridLastColumnFooter {
 
 }
 
-@sprite .dataGridSortableHeader {
-	cursor: pointer;
-	cursor: hand;
-	gwt-image: 'dataGridSortableHeader';
-	background-position: top right;
+@
+sprite .dataGridSortableHeader {
+    cursor: pointer;
+    cursor: hand;
+    gwt-image: 'dataGridSortableHeader';
+    background-position: top right;
 }
 
-@sprite .dataGridLastColumnHeader {
-	gwt-image: 'dataGridLastSortableHeader';
-	background-position: top right;
-	border-radius: 0 6px 0 0;
-	-moz-border-radius: 0 6px 0 0;
-	-webkit-border-radius: 0 6px 0 0;
-	border-right: 1px solid #d0cbba;
+@
+sprite .dataGridLastColumnHeader {
+    gwt-image: 'dataGridLastSortableHeader';
+    background-position: top right;
+    border-radius: 0 6px 0 0;
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-right: 1px solid #d0cbba;
 }
 
 .dataGridSortableHeader:hover {
-	text-shadow: 0 0 2px 2px #eeeeee;
-	text-decoration: underline;
-	color: #6f6b59;
+    text-shadow: 0 0 2px 2px #eeeeee;
+    text-decoration: underline;
+    color: #6f6b59;
 }
 
 .dataGridSortedHeaderAscending {
-	gwt-image: 'dataGridSortedHeaderAscending';
+    gwt-image: 'dataGridSortedHeaderAscending';
 }
 
 .dataGridSortedHeaderDescending {
-	gwt-image: 'dataGridSortedHeaderDescending';
+    gwt-image: 'dataGridSortedHeaderDescending';
 }
 
 .dataGridEvenRow {
-	background: #faf7eb;
+    background: #faf7eb;
 }
 
 .dataGridEvenRowCell {
     border-top: 1px solid #fefdfa;
     border-bottom: 1px solid #e9e5d7;
-	border-left: 1px solid #ffffff;
-	border-right: 1px solid #e9e5d7;
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #e9e5d7;
 }
 
 .dataGridOddRow {
-	background: #faf7eb;
+    background: #faf7eb;
 }
 
 .dataGridOddRowCell {
     border-top: 1px solid #fefdfa;
     border-bottom: 1px solid #e9e5d7;
-	border-left: 1px solid #ffffff;
-	border-right: 1px solid #e9e5d7;
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #e9e5d7;
 }
 
 .dataGridHoveredRow {
-	background: #ffffff;
-	opacity: 1;
+    background: #ffffff;
+    opacity: 1;
 }
 
 .dataGridHoveredRowCell {
     border-top: 1px solid #ffffff;
     border-bottom: 1px solid #e9e5d7;
-	border-left: 1px solid #ffffff;
-	border-right: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
 }
 
 .dataGridKeyboardSelectedRow {
-	background: #ffc;
+    background: #ffc;
 }
 
 .dataGridKeyboardSelectedRowCell {
     border-top: 1px solid #ffffff;
     border-bottom: 1px solid #e9e5d7;
-	border-left: 1px solid #ffffff;
-	border-right: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
 }
 
 .dataGridSelectedRow {
-	height: auto;
-	overflow: auto;
-	background: #ffffff;
-	opacity: 1;
+    height: auto;
+    overflow: auto;
+    background: #ffffff;
+    opacity: 1;
 }
 
 .dataGridSelectedRowCell {
-	border-left: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
     border-right: 1px solid #ffffff;
     border-top: 1px solid #ffffff;
     border-bottom: 1px solid #e9e5d7;
-	color: #6f6b59;
+    color: #6f6b59;
 }
 
 .dataGridFirstColumn {
-	border-left: 1px solid #d1ccbc;
+    border-left: 1px solid #d1ccbc;
 }
 
 .dataGridLastColumn {
     border-right: 1px solid #d1ccbc;
-}
-
-.dataGridLastRow {
-	border-bottom: 1px solid #ff0000;
 }
 
 /**

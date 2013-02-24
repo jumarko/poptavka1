@@ -6,206 +6,206 @@
         Purpose of the stylesheet follows.
 */
 .common-detail-container {
-	background: url(images/transparent_bg.png) repeat;
-	float: left;
+    background: url(images/transparent_bg.png) repeat;
+    float: left;
 }
 
 /*  DEMAND DETAIL SECTION  */
 .demandDetailSectionHeader {
-	border-left: 1px solid #E2DFD2;
-	border-right: 1px solid #E2DFD2;
-	border-bottom: 1px solid #bab7ad;
-	background: url(images/header.gif) repeat-x;
-	background-position: top left;
-	padding: 0 21px;
-	margin: 0;
-	height: 53px;
-	line-height: 53px;
-	text-align: left;
-	color: #6f6b59;
-	overflow: hidden;
-	white-space: nowrap;
-	font-size: 14px;
-	font-weight: normal;
-	text-shadow: none;
-	border-radius: 6px 6px 0 0;
-	-moz-border-radius: 6px 6px 0 0;
-	-webkit-border-radius: 6px 6px 0 0;
+    border-left: 1px solid #E2DFD2;
+    border-right: 1px solid #E2DFD2;
+    border-bottom: 1px solid #bab7ad;
+    background: url(images/header.gif) repeat-x;
+    background-position: top left;
+    padding: 0 21px;
+    margin: 0;
+    height: 53px;
+    line-height: 53px;
+    text-align: left;
+    color: #6f6b59;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: normal;
+    text-shadow: none;
+    border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
 }
 
 .demand-detail-content {
-	background: #ffffff;
-	float: left;
-	padding: 15px;
-	border: 1px solid #E2DFD2;
-	border-bottom: 1px solid #b8b5aa;
-	border-top: none;
-	border-radius: 0 0 6px 6px;
+    background: #ffffff;
+    float: left;
+    padding: 15px;
+    border: 1px solid #E2DFD2;
+    border-bottom: 1px solid #b8b5aa;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
     -moz-border-radius: 0 0 6px 6px;
     -webkit-border-radius: 0 0 6px 6px;
 
 }
 .detail-block {
-	float: left;
-	margin: 15px 0 0;
-	padding: 0;
+    float: left;
+    margin: 15px 0 0;
+    padding: 0;
 
 }
 
 .detail-block:first-child {
-	margin: 0;
+    margin: 0;
 }
 
 .detail-block .span12 {
-	min-height: 25px;
+    min-height: 25px;
 }
 
 .detail-block div {
-	float: left;
-	line-height: 20px;
+    float: left;
+    line-height: 20px;
 }
 
 .detail-block .detail-header {
-	background: url(images/detail-block-header.png) no-repeat 19px 13px;
-	color: #237e00;
-	font-size: 17px;
-	font-weight: normal;
-	height: 40px;
-	line-height: 40px;
-	padding: 0 0 0 14px;
-	margin: 0;
+    background: url(images/detail-block-header.png) no-repeat 19px 13px;
+    color: #237e00;
+    font-size: 17px;
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 0 0 14px;
+    margin: 0;
 }
 
 .detail-block .gwt-Label {
-	color: #6f6b59;
+    color: #6f6b59;
 }
 
 .detail-strong {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .detail-block-label {
-	color: #6f6b59;
-	float: left;
-	line-height: 20px;
-	padding: 0;
-	font-weight: normal;
-	width: 108px;
+    color: #6f6b59;
+    float: left;
+    line-height: 20px;
+    padding: 0;
+    font-weight: normal;
+    width: 108px;
 }
 
 .detail-date-label {
-	background: url(images/detail-date-label.png) no-repeat 1px 1px;
-	padding: 0 0 0 24px;
-	color: #6f6b59;
-	font-weight: bold;
+    background: url(images/detail-date-label.png) no-repeat 1px 1px;
+    padding: 0 0 0 24px;
+    color: #6f6b59;
+    font-weight: bold;
 }
 
 .detail-category-label,.detail-locality-label div div {
-	float: left;
+    float: left;
 }
 
 .detail-category-label div div,.detail-locality-label div div {
-	background: #f0ebd8;
-	color: #545040;
-	float: left;
-	line-height: 20px;
-	padding: 10px 16px;
-	margin: 2px 10px 2px 0;
-	border-radius: 4px 4px;
-	-moz-border-radius: 4px 4px;
-	-webkit-border-radius: 4px 4px;
+    background: #f0ebd8;
+    color: #545040;
+    float: left;
+    line-height: 20px;
+    padding: 10px 16px;
+    margin: 2px 10px 2px 0;
+    border-radius: 4px 4px;
+    -moz-border-radius: 4px 4px;
+    -webkit-border-radius: 4px 4px;
 }
 
 /*  conversation DETAIL SECTION  */
 .conversation-container {
-	background: #ffffff;
-	border: 1px solid #009de5;
-	border-radius: 4px;
-	margin: 12px;
+    background: #ffffff;
+    border: 1px solid #009de5;
+    border-radius: 4px;
+    margin: 12px;
 }
 
 .conversation-detail {
-	border-bottom: 1px solid #D4D4D4;
-	padding: 10px 10px 10px 30px;
+    border-bottom: 1px solid #D4D4D4;
+    padding: 10px 10px 10px 30px;
 }
 
 .conversation-detail-green {
-	background: url(images/detail-block-green-circle.png) no-repeat 11px
-		14px;
+    background: url(images/detail-block-green-circle.png) no-repeat 11px
+        14px;
 }
 
 .conversation-detail-red {
-	background: url(images/detail-block-red-circle.png) no-repeat 11px 14px;
+    background: url(images/detail-block-red-circle.png) no-repeat 11px 14px;
 }
 
 .conversation-detail:hover {
-	background-color: #effaff;
-	box-shadow: 0 0 4px #999999;
+    background-color: #effaff;
+    box-shadow: 0 0 4px #999999;
 }
 
 .conversation-detail-header {
-	float: left;
-	font-weight: bold;
+    float: left;
+    font-weight: bold;
 }
 
 .conversation-detail-header-green {
-	color: #2ca500;
+    color: #2ca500;
 }
 
 .conversation-detail-header-red {
-	color: #e50000;
+    color: #e50000;
 }
 
 .conversation-detail-time {
-	color: #006b9f;
-	float: right;
+    color: #006b9f;
+    float: right;
 }
 
 .conversation-detail-content {
-	color: #6a707a;
+    color: #6a707a;
 }
 
 .conversation-left-block {
-	float: left;
-	width: 100%;
+    float: left;
+    width: 100%;
 }
 
 /* the rest will be deleted ... */
 .demandDetailTable {
-	border: 1px solid black;
-	border-collapse: collapse;
-	text-align: left;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
 }
 
 .demandDetailTable th {
-	border: 1px solid black;
-	font-weight: bold;
-	background-color: limegreen;
+    border: 1px solid black;
+    font-weight: bold;
+    background-color: limegreen;
 }
 
 .demandDetailTable td {
-	border: 1px solid black;
+    border: 1px solid black;
 }
 
 /*  SUPPLIER DETAIL SECTION  */
 .supplierDetailSectionHeader th {
-	font-family: fantasy;
-	font-size: xx-large;
-	background-color: red;
+    font-family: fantasy;
+    font-size: xx-large;
+    background-color: red;
 }
 
 .supplierDetailTable {
-	border: 1px solid black;
-	border-collapse: collapse;
-	text-align: left;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
 }
 
 .supplierDetailTable th {
-	border: 1px solid black;
-	font-weight: bold;
-	background-color: lightcoral;
+    border: 1px solid black;
+    font-weight: bold;
+    background-color: lightcoral;
 }
 
 .supplierDetailTable td {
-	border: 1px solid black;
+    border: 1px solid black;
 }
