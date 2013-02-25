@@ -51,13 +51,22 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     String goToHomeWelcomeModule();
 
     /**************************************************************************/
-    /* Parent events                                                          */
+    /* Navigation Parent events */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void initServicesWidget(SimplePanel embedToWidget);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void goToCreateDemandModule();
+
+    @Event(forwardToParent = true)
+    void goToCreateSupplierModule();
+
+    @Event(forwardToParent = true)
+    void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);

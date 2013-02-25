@@ -5,18 +5,13 @@ import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
+import com.eprovement.poptavka.client.user.widget.grid.cell.RootCategoryCell;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -24,7 +19,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import java.util.ArrayList;
-
 
 /**************************************************************************/
 /* Class: Root Category Cell                                                     */
@@ -43,12 +37,13 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /* Attributes                                                             */
     /**************************************************************************/
     @UiField HorizontalPanel categorySection;
-    @UiField Button button;
-    @UiField Button demandCreateBtn;
-    @UiField Button securedButton;
-    @UiField Button sendUsEmailButton;
-
-
+    @UiField Button suppliersBtn, demandsBtn;
+    @UiField Button howItWorksSupplierBtn, howItWorksDemandBtn;
+    @UiField Button registerSupplierBtn, registerDemandBtn;
+    //TODO 25.2.13 Martin - initialize manually because UiBinder is commented
+    Button demandCreateBtn = new Button();
+    Button securedButton = new Button();
+    Button sendUsEmailButton = new Button();
     //
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
             new SingleSelectionModel<CategoryDetail>();
@@ -58,23 +53,10 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /**************************************************************************/
     public HomeWelcomeView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
-        button.setText(firstName);
     }
 
-    /**************************************************************************/
-    /* UiHandlers                                                             */
-    /**************************************************************************/
-    @UiHandler("button")
-    void onClick(ClickEvent e) {
-        Window.alert("Hello!");
-    }
-
-    /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
-    public void setText(String text) {
-        button.setText(text);
-    }
 
     @Override
     public void displayCategories(int columns, ArrayList<CategoryDetail> rootCategories) {
@@ -97,8 +79,6 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
             }
             CellList cellList = null;
             cellList = new CellList<CategoryDetail>(new RootCategoryCell());
-            //TOTO Martin - loading indikator nepomoze, pretoze tieto cellListy sa vytvaraju
-            //tu v case, ked su data uz k dispozicii
             cellList.setLoadingIndicator(new Label(Storage.MSGS.loadingRootCategories()));
             cellList.setRowCount(subSize, true);
             cellList.setSelectionModel(selectionRootModel);
@@ -123,10 +103,6 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
         return selectionRootModel;
     }
 
-    public String getText() {
-        return button.getText();
-    }
-
     @Override
     public Widget getWidgetView() {
         return this;
@@ -137,6 +113,37 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
         simpleService = service;
     }
 
+    /** ANCHOR. **/
+    @Override
+    public Button getSuppliersBtn() {
+        return suppliersBtn;
+    }
+
+    @Override
+    public Button getDemandsBtn() {
+        return demandsBtn;
+    }
+
+    @Override
+    public Button getHowItWorksSupplierBtn() {
+        return howItWorksSupplierBtn;
+    }
+
+    @Override
+    public Button getHowItWorksDemandBtn() {
+        return howItWorksDemandBtn;
+    }
+
+    /** BUTTONS. **/
+    @Override
+    public Button getRegisterSupplierBtn() {
+        return registerSupplierBtn;
+    }
+
+    @Override
+    public Button getRegisterDemandBtn() {
+        return registerDemandBtn;
+    }
 
     @Override
     public HasClickHandlers getCreateDemandButton() {
@@ -151,29 +158,5 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     @Override
     public HasClickHandlers getSendUsEmailButton() {
         return sendUsEmailButton;
-    }
-}
-/**************************************************************************/
-class RootCategoryCell extends AbstractCell<CategoryDetail> {
-
-    @Override
-    public void render(Cell.Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
-
-        StringBuilder text = new StringBuilder();
-
-        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-        text.append(" (");
-        text.append(value.getDemandsCount());
-        text.append(")");
-
-        sb.appendEscaped(text.toString());
     }
 }

@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+    <ui:with field="res"
+             type="com.eprovement.poptavka.resources.StyleResource" />
+
+    <ui:with field="catName" type="java.lang.String" />
+    <ui:with field="catCount" type="java.lang.String" />
+
+    <div class='{res.detailViews.conversationLeftBlock}'>
+        <!--<span class='{pull-left}'>-->
+        <span>
+            <ui:text from='{catName}' />
+        </span>
+        <!--<span class='{pull-rigth}'>-->
+        <span>
+            <ui:text from='{catCount}' />
+        </span>
+    </div>
+</ui:UiBinder>

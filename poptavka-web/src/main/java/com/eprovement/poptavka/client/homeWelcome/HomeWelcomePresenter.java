@@ -26,6 +26,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     private static final int COLUMNS = 4;
     private SimpleRPCServiceAsync simpleService;
 
+    //TODO remove this and all relevant code, if security development is finnished
     @Inject
     void setSimpleService(SimpleRPCServiceAsync service) {
         simpleService = service;
@@ -53,10 +54,22 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToHomeWelcomeModule() {
+        eventBus.getRootCategories();
     }
 
     @Override
     public void bind() {
+        /** ANCHOR. **/
+        addSuppliersBtnClickHandler();
+        addDemandsBtnClickHandler();
+        addHowItWorksSupplierBtnClickHandler();
+        addHowItWorksDemandBtnClickHandler();
+
+        /** BUTTONS. **/
+        addRegisterSupplierBtnClickHandler();
+        addRegisterDemandBtnClickHandler();
+
+        /** OTHERS. **/
         view.getCategorySelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
@@ -144,6 +157,63 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
             }
         });
 
+    }
+
+    /**************************************************************************/
+    /* Bind - helper mehtods                                                  */
+    /**************************************************************************/
+    /** ANCHOR. **/
+    private void addSuppliersBtnClickHandler() {
+        view.getSuppliersBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeSuppliersModule(null);
+            }
+        });
+    }
+
+    private void addDemandsBtnClickHandler() {
+        view.getDemandsBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeDemandsModule(null);
+            }
+        });
+    }
+
+    private void addHowItWorksSupplierBtnClickHandler() {
+        view.getHowItWorksSupplierBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+            }
+        });
+    }
+
+    private void addHowItWorksDemandBtnClickHandler() {
+        view.getHowItWorksDemandBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+            }
+        });
+    }
+
+    /** BUTTONS. **/
+    private void addRegisterSupplierBtnClickHandler() {
+        view.getRegisterSupplierBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateSupplierModule();
+            }
+        });
+    }
+
+    private void addRegisterDemandBtnClickHandler() {
+        view.getRegisterDemandBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateDemandModule();
+            }
+        });
     }
 
     /**************************************************************************/
