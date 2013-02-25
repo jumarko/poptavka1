@@ -9,9 +9,11 @@ import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssig
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsWelcomePresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffersPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierRatingsPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
@@ -173,6 +175,13 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void responseFinnishOffer();
+
+    /**************************************************************************/
+    /* Business events handled by SupplierRatingsPresenter.                   */
+    /**************************************************************************/
+    @Event(handlers = SupplierRatingsPresenter.class)
+    void displaySupplierRatings(List<DemandRatingsDetail> result);
+
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/

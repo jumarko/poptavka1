@@ -41,6 +41,11 @@
                                         <ui:msg key="menuSupplierClosedDemands">Closed demands</ui:msg>
                                     </g:Button>
                                 </li>
+                                <li>
+                                    <g:Button ui:field="supplierRatings">
+                                        <ui:msg key="menuSupplierRatings">Ratings</ui:msg>
+                                    </g:Button>
+                                </li>
                             </ul>
                         </div>
                     </g:HTMLPanel>

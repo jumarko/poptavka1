@@ -26,6 +26,7 @@ import com.eprovement.poptavka.service.demand.RatingService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
@@ -446,8 +447,37 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return listSod;
     }
 
+    //******************** SUPPLIER - My Ratings ******************************/
+    /**
+     * Get ratings of my closed demands.
+     *
+     * @param userId user's id
+     * @param filter
+     * @return
+     */
+    @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public int getSupplierRatingsCount(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        return 0;
+    }
+
+    /**
+     * Get ratings of my all closed demands.
+     *
+     * @param userId user's id
+     * @param searchDefinition
+     * @return
+     */
+    @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public List<DemandRatingsDetail> getSupplierRatings(long userId,
+            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+        return new ArrayList<DemandRatingsDetail>();
+    }
+
     /**************************************************************************/
-    /* Other getter methods                                                         */
+    /* Other getter methods                                                   */
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)

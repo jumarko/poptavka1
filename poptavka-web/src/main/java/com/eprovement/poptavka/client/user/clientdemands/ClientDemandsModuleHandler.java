@@ -6,6 +6,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -48,6 +49,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             case Constants.CLIENT_CLOSED_DEMANDS:
                 getClientClosedDemandsCount(grid, searchDefinition);
                 break;
+            case Constants.CLIENT_RATINGS:
+                getClientRatingsCount(grid, searchDefinition);
+                break;
             default:
                 break;
         }
@@ -72,6 +76,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 break;
             case Constants.CLIENT_CLOSED_DEMANDS:
                 getClientClosedDemands(searchDefinition);
+                break;
+            case Constants.CLIENT_RATINGS:
+                getClientRatings(searchDefinition);
                 break;
             default:
                 break;
@@ -231,6 +238,32 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                     @Override
                     public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
                         eventBus.displayClientAssignedDemands(result);
+                    }
+                });
+    }
+
+    /**************************************************************************/
+    /* Retrieving methods - CLIENT RATINGS                                    */
+    /**************************************************************************/
+    private void getClientRatingsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientRatingsCount(
+                Storage.getUser().getUserId(), searchDefinition,
+                new SecuredAsyncCallback<Integer>(eventBus) {
+                    @Override
+                    public void onSuccess(Integer result) {
+                        GWT.log("getClientRatingsCount: " + result);
+                        grid.getDataProvider().updateRowCount(result, true);
+                    }
+                });
+    }
+
+    private void getClientRatings(SearchDefinition searchDefinition) {
+        clientDemandsService.getClientRatings(
+                Storage.getUser().getUserId(), searchDefinition,
+                new SecuredAsyncCallback<List<DemandRatingsDetail>>(eventBus) {
+                    @Override
+                    public void onSuccess(List<DemandRatingsDetail> result) {
+                        eventBus.displayClientRatings(result);
                     }
                 });
     }

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -44,6 +45,13 @@ public interface SupplierDemandsModuleRPCServiceAsync {
 
     void getSupplierClosedDemands(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierOffersDetail>> callback);
+
+    //SupplierRatings widget
+    void getSupplierRatingsCount(long userID, SearchDefinition searchDefinition,
+            AsyncCallback<Integer> callback);
+
+    void getSupplierRatings(long userID, SearchDefinition searchDefinition,
+            AsyncCallback<List<DemandRatingsDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */

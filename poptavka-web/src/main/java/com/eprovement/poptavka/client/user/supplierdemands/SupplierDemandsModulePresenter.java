@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffersPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierRatingsPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -35,13 +36,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
         Button getSupplierClosedDemandsButton();
 
-        Button getSupplierCreateDemand();
-
-        Button getSupplierCreateSupplier();
-
-        Button getAllDemands();
-
-        Button getAllSuppliers();
+        Button getSupplierRatingsButton();
 
         void setContent(IsWidget contentWidget);
 
@@ -51,6 +46,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     private SupplierDemandsPresenter supplierDemands = null;
     private SupplierOffersPresenter supplierOffers = null;
     private SupplierAssignedDemandsPresenter supplierAssigendDemands = null;
+    private SupplierRatingsPresenter supplierRatings = null;
 
     /**************************************************************************/
     /* General Module events */
@@ -103,6 +99,12 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CLOSED_DEMANDS);
             }
         });
+        view.getSupplierRatingsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_RATINGS);
+            }
+        });
     }
 
     /**************************************************************************/
@@ -138,6 +140,13 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 supplierAssigendDemands = eventBus.addHandler(SupplierAssignedDemandsPresenter.class);
                 supplierAssigendDemands.onInitSupplierClosedDemands(filter);
                 break;
+            case Constants.SUPPLIER_RATINGS:
+                if (supplierRatings != null) {
+                    eventBus.removeHandler(supplierRatings);
+                }
+                supplierRatings = eventBus.addHandler(SupplierRatingsPresenter.class);
+                supplierRatings.onInitSupplierRatings(filter);
+                break;
             default:
                 eventBus.initSupplierDemandsWelcome();
                 break;
@@ -171,6 +180,9 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
                 break;
             case Constants.SUPPLIER_CLOSED_DEMANDS:
                 view.getSupplierClosedDemandsButton().setStyleName("");
+                break;
+            case Constants.SUPPLIER_RATINGS:
+                view.getSupplierRatingsButton().setStyleName("");
                 break;
             default:
                 break;
