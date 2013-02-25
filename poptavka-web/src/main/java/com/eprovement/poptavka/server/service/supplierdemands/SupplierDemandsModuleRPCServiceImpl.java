@@ -266,7 +266,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // TODO RELASE ivlcek - refactor and create converter, set Rating
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getSupplier().getOveralRating()); //TODO RELEASE - shouldn't be here client's rating???
+            sod.setRating(offer.getDemand().getClient().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             // Client name can be displayed because it contrains only contact person name
@@ -338,12 +338,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELEASE ivlcek - refactor and create converter, set Rating
+            // TODO RELEASE ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setRating(offer.getDemand().getClient().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
-            // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -417,12 +416,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELEASE ivlcek - refactor and create converter, set Rating
+            // TODO RELEASE ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getSupplier().getOveralRating());
+            sod.setRating(offer.getDemand().getClient().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
-            // TODO RELEASE - client name should not be displayed to supplier. Maybe just username
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -570,8 +568,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
      * only when PoptavkaUserAuthentication object exist in SecurityContextHolder and we can retrieve userId.
      *
-     * TODO Vojto - call DB servise to retrieve the number of unread messages for given userId
-     *
      * @return UnreadMessagesDetail with number of unread messages and other info to be displayed after users logs in
      * @throws RPCException
      * @throws ApplicationSecurityException
@@ -580,10 +576,15 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
         Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
-        // TODO Vojto - get number of unread messages. UserId is provided from Authentication obejct see above
-
+        Search unreadMessagesSearch = new Search(UserMessage.class);
+        unreadMessagesSearch.addFilterNotNull("message.demand");
+        unreadMessagesSearch.addFilterEqual("isRead", false);
+        unreadMessagesSearch.addFilterEqual("user.id", userId.longValue());
+        unreadMessagesSearch.addField("id", Field.OP_COUNT);
+        unreadMessagesSearch.setResultMode(Search.RESULT_SINGLE);
         UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
-        unreadMessagesDetail.setUnreadMessagesCount(21);
+        unreadMessagesDetail.setUnreadMessagesCount((
+                (Long) generalService.searchUnique(unreadMessagesSearch)).intValue());
         return unreadMessagesDetail;
     }
 
@@ -609,19 +610,18 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public SupplierOffersDetail getSupplierAssignedDemand(long assignedDemandID) throws RPCException,
         ApplicationSecurityException {
-        //TODO Martin - implement when implemented on backend
         long supplierID = Storage.getSupplierId();
         Supplier supplier = generalService.find(Supplier.class, supplierID);
+        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
         Search supplierOffersSearch = new Search(Offer.class);
         supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
-        // TODO RELEASE ivlcek - load offerState by CODE value
-        supplierOffersSearch.addFilterEqual("state.id", 1);
+        supplierOffersSearch.addFilterEqual("state", offerAccepted);
         supplierOffersSearch.addFilterEqual("demand.id", assignedDemandID);
         Offer offer = (Offer) generalService.searchUnique(supplierOffersSearch);
 
         SupplierOffersDetail sod = new SupplierOffersDetail();
 
-        // TODO RELEASE ivlcek - refactor and create converter, set Rating
+        // TODO LATER ivlcek - refactor and create converter. Finish if we need history link for this
         sod.setSupplierId(offer.getSupplier().getId());
         sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         sod.setClientId(offer.getDemand().getClient().getId());

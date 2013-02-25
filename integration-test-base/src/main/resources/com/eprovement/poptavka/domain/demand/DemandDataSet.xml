@@ -35,6 +35,8 @@
             STATUS="ACTIVE" CREATEDDATE="2001-01-01 00:00:01" />
     <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application." PRICE="10000"
             STATUS="ACTIVE" CREATEDDATE="2010-10-01 13:33:34" />
+    <DEMAND ID="11" TYPE_ID="2" TITLE="Demand 11" DESCRIPTION="11: want something from want-something.com." PRICE="10000"
+            STATUS="CLOSED" CREATEDDATE="2010-10-01 13:33:34" />
 
 
     <!--########################################## suppliers for demands ###########################################-->
@@ -55,6 +57,7 @@
     <DEMAND_LOCALITY ID="18" DEMAND_ID="18" LOCALITY_ID="121" />   <!-- "locality121"-->
     <DEMAND_LOCALITY ID="9" DEMAND_ID="9" LOCALITY_ID="21" />   <!-- "locality21"-->
     <DEMAND_LOCALITY ID="10" DEMAND_ID="10" LOCALITY_ID="2" />  <!-- "locality2"-->
+    <DEMAND_LOCALITY ID="11" DEMAND_ID="11" LOCALITY_ID="2" />  <!-- "locality2"-->
 
     <!--########################################## demands for categories ###########################################-->
     <DEMAND_CATEGORY ID="1" DEMAND_ID="1" CATEGORY_ID="0" /> <!-- "Root category" -->
@@ -68,5 +71,6 @@
     <DEMAND_CATEGORY ID="18" DEMAND_ID="18" CATEGORY_ID="112" /> <!-- "Category 112" -->
     <DEMAND_CATEGORY ID="9" DEMAND_ID="9" CATEGORY_ID="312" /> <!-- "Category 312" -->
     <DEMAND_CATEGORY ID="10" DEMAND_ID="10" CATEGORY_ID="1132" /> <!-- "Category 1132" -->
+    <DEMAND_CATEGORY ID="11" DEMAND_ID="11" CATEGORY_ID="1132" /> <!-- "Category 1132" -->
 
 </dataset>

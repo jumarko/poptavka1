@@ -55,7 +55,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
@@ -246,22 +245,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
-        // TODO RELEASE ivlcek, vojto - replace by new SQL that will load demandIds,
-        // latest userMessageId and number of total submessages. Vojto is working on this
-        Iterator it = messageService.getListOfClientDemandMessagesUnread(generalService.find(
-                User.class, userId)).entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            // key is message and val is number
-            Long demandId = (Long) pairs.getKey();
+        for (Map.Entry<Long, Integer> userMessageEntry : messageService.getListOfClientDemandMessagesUnread(
+                generalService.find(User.class, userId)).entrySet()) {
+            // key is a message and val is count of unread submessages
             for (ClientDemandDetail cdd : cdds) {
-                if (cdd.getDemandId() == demandId) {
-                    cdd.setUnreadSubmessagesCount(((Integer) pairs.getValue()).intValue());
+                if (cdd.getDemandId() == userMessageEntry.getKey()) {
+                    cdd.setUnreadSubmessagesCount(((Integer) userMessageEntry.getValue()).intValue());
                     break;
                 }
             }
-            it.remove();
         }
         return cdds;
     }
@@ -324,7 +316,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setDemandId(demandID);
             cdcd.setTitle(userMessage.getMessage().getDemand().getTitle());
             // set Supplier attributes
-            // TODO RELEASE ivlcek - if latest user message is from Client then this line doesn't work with client id
             final Supplier supplier = findSupplier(userMessageEntry.getValue().getSupplier().getId());
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
@@ -841,8 +832,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * authenticated user (see security-web.xml) this method will be called only when PoptavkaUserAuthentication object
      * exist in SecurityContextHolder and we can retrieve userId.
      *
-     * TODO Vojto - call DB servise to retrieve the number of unread messages for given userId
-     *
      * @return UnreadMessagesDetail with number of unread messages and other info to be displayed after users logs in
      * @throws RPCException
      * @throws ApplicationSecurityException
@@ -851,9 +840,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
         Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
-        // TODO Vojto - get number of unread messages. UserId is provided from Authentication obejct see above
+        Search unreadMessagesSearch = new Search(UserMessage.class);
+        unreadMessagesSearch.addFilterNotNull("message.demand");
+        unreadMessagesSearch.addFilterEqual("isRead", false);
+        unreadMessagesSearch.addFilterEqual("user.id", userId.longValue());
+        unreadMessagesSearch.addField("id", Field.OP_COUNT);
+        unreadMessagesSearch.setResultMode(Search.RESULT_SINGLE);
         UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
-        unreadMessagesDetail.setUnreadMessagesCount(99);
+        unreadMessagesDetail.setUnreadMessagesCount((
+                (Long) generalService.searchUnique(unreadMessagesSearch)).intValue());
         return unreadMessagesDetail;
     }
 

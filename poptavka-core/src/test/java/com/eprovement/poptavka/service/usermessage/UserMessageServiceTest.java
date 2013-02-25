@@ -75,7 +75,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(8, inbox.size());
+        Assert.assertEquals(9, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
@@ -91,7 +91,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(8, inbox.size());
+        Assert.assertEquals(9, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
@@ -109,7 +109,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> sentItems = this.userMessageService
                 .getSentItems(this.user);
 
-        Assert.assertEquals(3, sentItems.size());
+        Assert.assertEquals(4, sentItems.size());
         checkUserMessageExists(6L, sentItems);
         checkUserMessageExists(304L, sentItems);
         checkUserMessageExists(404L, sentItems);
@@ -202,7 +202,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithOfferCount() {
         final int supplierConversationsCount = this.userMessageService
                 .getSupplierConversationsWithOfferCount(this.user);
-        Assert.assertEquals(1, supplierConversationsCount);
+        Assert.assertEquals(2, supplierConversationsCount);
     }
 
     @Test
