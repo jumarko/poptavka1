@@ -13,8 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-@
-def selectionBorderWidth   2px ;
+@def selectionBorderWidth   2px ;
 
 .dataGridWidget {
 
@@ -42,8 +41,7 @@ def selectionBorderWidth   2px ;
     white-space: nowrap;
 }
 
-@
-sprite .dataGridHeader {
+@sprite .dataGridHeader {
     gwt-image: 'dataGridHeader';
     background-position: top right;
     background-color: #f1ecda;
@@ -81,16 +79,14 @@ sprite .dataGridHeader {
 
 }
 
-@
-sprite .dataGridSortableHeader {
+@sprite .dataGridSortableHeader {
     cursor: pointer;
     cursor: hand;
     gwt-image: 'dataGridSortableHeader';
     background-position: top right;
 }
 
-@
-sprite .dataGridLastColumnHeader {
+@sprite .dataGridLastColumnHeader {
     gwt-image: 'dataGridLastSortableHeader';
     background-position: top right;
     border-radius: 0 6px 0 0;
