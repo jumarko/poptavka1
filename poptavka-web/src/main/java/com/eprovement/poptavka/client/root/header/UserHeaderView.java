@@ -17,9 +17,10 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
 
 public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
-        implements IUserHeaderView {
+    implements IUserHeaderView {
 
-    private static UserHeaderViewUiBinder uiBinder = GWT.create(UserHeaderViewUiBinder.class);
+    private static UserHeaderViewUiBinder uiBinder = GWT
+            .create(UserHeaderViewUiBinder.class);
 
     interface UserHeaderViewUiBinder extends UiBinder<Widget, UserHeaderView> {
     }
@@ -27,24 +28,24 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     public UserHeaderView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
+
     /** login area **/
     @UiField
     HTMLPanel headerHolder;
-    @UiField
-    Label username;
     @UiField
     PushButton pushButton;
     @UiField
     Label newMessagesCount;
     @UiField
-    MenuItem menuLogOut, menuMyProfile, menuHelp, menuCustomerService;
+    MenuItem username, menuLogOut, menuMyProfile, menuHelp,
+    menuCustomerService;
 
     public UserHeaderView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
     @Override
-    public Label getUsername() {
+    public MenuItem getUsername() {
         return username;
     }
 
@@ -71,6 +72,7 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     /**
      * @return the newMessagesCount
      */
+    @Override
     public Label getNewMessagesCount() {
         return newMessagesCount;
     }
