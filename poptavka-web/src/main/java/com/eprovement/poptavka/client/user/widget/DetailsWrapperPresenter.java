@@ -9,8 +9,6 @@ import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailVie
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
-import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -20,10 +18,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -61,9 +61,11 @@ public class DetailsWrapperPresenter
 
         UserDetailView getSupplierDetail();
 
-        ConversationPanel getConversationPanel();
-
         OfferQuestionWindow getReplyHolder();
+
+        CellList getMessagePanel();
+
+        ListDataProvider getMessageProvider();
 
         HTMLPanel getConversationHolder();
 
@@ -90,14 +92,14 @@ public class DetailsWrapperPresenter
                     switch (view.getReplyHolder().getSelectedResponse()) {
                         case OfferQuestionWindow.RESPONSE_QUESTION:
                             MessageDetail questionMessageToSend =
-                                    view.getConversationPanel().updateSendingMessage(
+                                    view.getReplyHolder().updateSendingMessage(
                                     view.getReplyHolder().getCreatedMessage());
                             questionMessageToSend.setSenderId(Storage.getUser().getUserId());
                             eventBus.sendQuestionMessage(questionMessageToSend);
                             break;
                         case OfferQuestionWindow.RESPONSE_OFFER:
                             OfferMessageDetail offerMessageToSend =
-                                    view.getConversationPanel().updateSendingOfferMessage(
+                                    view.getReplyHolder().updateSendingOfferMessage(
                                     view.getReplyHolder().getCreatedOfferMessage());
                             offerMessageToSend.setSenderId(Storage.getUser().getUserId());
                             eventBus.sendOfferMessage(offerMessageToSend);
@@ -211,7 +213,7 @@ public class DetailsWrapperPresenter
      * @param sentMessage
      */
     public void onAddConversationMessage(MessageDetail sentMessage) {
-        view.getConversationPanel().addMessage(sentMessage);
+        addMessage(sentMessage);
         view.getReplyHolder().setDefaultStyle();
         //Always will be only one item.
         for (IUniversalDetail detail : (Set<IUniversalDetail>) table.getSelectionModel().getSelectedSet()) {
@@ -326,7 +328,7 @@ public class DetailsWrapperPresenter
      * @param chatMessages - demand-related conversation
      */
     public void onResponseConversation(List<MessageDetail> chatMessages) {
-        view.getConversationPanel().setMessageList(chatMessages, true);
+        setMessageList(chatMessages, true);
         view.loadingDivHide(view.getConversationHolder());
     }
 
@@ -363,6 +365,30 @@ public class DetailsWrapperPresenter
             }
         }
         view.getSupplierDetail().clear();
-        view.getConversationPanel().clear();
+        view.getMessageProvider().getList().clear();
+        view.getReplyHolder().clear();
+    }
+
+    /**************************************************************************/
+    /* Conversation Methods                                                   */
+    /**************************************************************************/
+    /**
+     * Display list of messages. Whole conversation panel consists of cellList and
+     * OfferQuestionWidget. If messages count is n, then cellList displays (0,n-1) messages,
+     * and OfferQuestionWidget displays (n-1,n) message with control panels - for
+     * providing question and offer form. This way can be order of those two elements
+     * be changed without any other changes, expect setting right messages ordering on backend.
+     * Message List size is at least always 1.
+     *
+     * @param messages list of messages to be displayed
+     */
+    public void setMessageList(List<MessageDetail> messages, boolean collapsed) {
+        view.getMessageProvider().setList(messages.subList(0, messages.size() - 1));
+        view.getReplyHolder().setMessage(messages.get(messages.size() - 1));
+    }
+
+    public void addMessage(MessageDetail lastMessage) {
+        view.getMessageProvider().getList().add(view.getReplyHolder().getMessage());
+        view.getReplyHolder().setMessage(lastMessage);
     }
 }

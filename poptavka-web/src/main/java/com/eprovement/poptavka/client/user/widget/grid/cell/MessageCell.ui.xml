@@ -18,7 +18,6 @@
 			</span>
 			<span class='{res.detailViews.conversationDetailTime}'>
 				<ui:date from='{sent}' />
-				2012-12-12 16:40
 			</span>
 		</div>
 		<div ui:field='bodySpan' class='{res.detailViews.conversationDetailContent}'>
