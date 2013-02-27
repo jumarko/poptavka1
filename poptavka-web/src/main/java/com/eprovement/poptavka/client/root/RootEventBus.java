@@ -332,6 +332,9 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void initServicesWidget(SimplePanel embedToWidget);
 
+    @Event(forwardToModules = SettingsModule.class)
+    void nofityServicesWidgetListeners();
+
     @Event(handlers = RootHandler.class)
     void getServices();
 

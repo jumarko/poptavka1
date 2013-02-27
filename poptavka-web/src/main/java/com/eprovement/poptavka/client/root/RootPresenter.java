@@ -279,6 +279,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         }
         services = eventBus.addHandler(ServicesSelectorPresenter.class);
         services.initServicesWidget(holderWidget);
+        eventBus.nofityServicesWidgetListeners();
     }
 
 //    private static final int OFFSET_X = 60;

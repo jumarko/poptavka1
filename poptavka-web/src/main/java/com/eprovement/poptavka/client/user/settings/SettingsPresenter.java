@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsView;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
-import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsView;
 import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsView;
@@ -274,11 +273,9 @@ public class SettingsPresenter
      * Update that part of SettingsDetail that belongs to SupplierSettings widget.
      */
     private boolean updateSupplierSettings() {
-        SupplierSettingsView supplierSettings = (SupplierSettingsView) view.getContentPanel().getWidget();
-
         //check if supplierSettings was event loaded
-        if (supplierSettings != null && supplierSettings.isSettingChange()) {
-            settingsDetail = supplierSettings.updateSupplierSettings(settingsDetail);
+        if (supplierPresenter != null && supplierPresenter.isSupplierSettingChanged()) {
+            settingsDetail = supplierPresenter.updateSupplierSettings(settingsDetail);
             return true;
         }
         return false;

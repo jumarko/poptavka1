@@ -122,11 +122,11 @@ public class ChangeDetail implements IsSerializable {
     /* Other methods                                                          */
     /**************************************************************************/
     public void revert() {
-        originalDateValue = dateValue;
-        originalIntegerValue = integerValue;
-        originalStringValue = stringValue;
-        originalBooleanValue = booleanValue;
-        originalListValue = listValue;
+        dateValue = originalDateValue;
+        integerValue = originalIntegerValue;
+        stringValue = originalStringValue;
+        booleanValue = originalBooleanValue;
+        listValue = originalListValue;
     }
 
     @Override

@@ -63,7 +63,7 @@
                                 <li>
                                     <g:HTMLPanel>
                                         <g:Button ui:field="menuSupplierBtn">
-                                            <ui:msg key="menuSettingsClient">Client information</ui:msg>
+                                            <ui:msg key="menuSettingsSupplier">Supplier information</ui:msg>
                                         </g:Button>
                                         <cm:StatusIconLabel styleName='{style.left} {style.header-image}'
                                                             ui:field='infoStatus3' />

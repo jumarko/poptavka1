@@ -95,6 +95,9 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(handlers = UserSettingsPresenter.class)
     void notifyAddressWidgetListeners();
 
+    @Event(handlers = SupplierSettingsPresenter.class)
+    void nofityServicesWidgetListeners();
+
     @Event(handlers = SettingsPresenter.class)
     void setSettings(SettingDetail detail);
 
