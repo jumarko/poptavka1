@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.homeWelcome.interfaces;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -14,7 +14,7 @@ public interface IHomeWelcomeView extends IsWidget {
     public interface IHomeWelcomePresenter {
     }
 
-    HorizontalPanel getCategorySection();
+    FlowPanel getCategorySection();
 
     SingleSelectionModel<CategoryDetail> getCategorySelectionModel();
 

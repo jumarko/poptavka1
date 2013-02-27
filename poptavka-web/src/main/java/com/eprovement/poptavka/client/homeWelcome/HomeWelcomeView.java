@@ -13,7 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -36,7 +36,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField HorizontalPanel categorySection;
+    @UiField FlowPanel categorySection;
     @UiField Button suppliersBtn, demandsBtn;
     @UiField Button howItWorksSupplierBtn, howItWorksDemandBtn;
     @UiField Button registerSupplierBtn, registerDemandBtn;
@@ -94,7 +94,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /* GETTERS                                                                */
     /**************************************************************************/
     @Override
-    public HorizontalPanel getCategorySection() {
+    public FlowPanel getCategorySection() {
         return categorySection;
     }
 

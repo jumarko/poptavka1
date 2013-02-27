@@ -162,7 +162,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     /* Bind - helper mehtods                                                  */
     /**************************************************************************/
-    /** ANCHOR. **/
+    /** BUTTONS. **/
     private void addSuppliersBtnClickHandler() {
         view.getSuppliersBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -197,7 +197,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         });
     }
 
-    /** BUTTONS. **/
     private void addRegisterSupplierBtnClickHandler() {
         view.getRegisterSupplierBtn().addClickHandler(new ClickHandler() {
             @Override
