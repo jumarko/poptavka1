@@ -49,6 +49,11 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     @Autowired
+    public void setGeneralService(GeneralService generalService) {
+        this.generalService = generalService;
+    }
+
+    @Autowired
     public void setLocalityConverter(
             @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
         this.localityConverter = localityConverter;
@@ -76,8 +81,9 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public SettingDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException {
         GWT.log("Getting user settings for user:" + userId);
-        final BusinessUser user = (BusinessUser) generalService.searchUnique(new Search(User.class).addFilterEqual("id",
-                userId));
+//        final BusinessUser user = (BusinessUser) generalService.searchUnique(
+//                new Search(User.class).addFilterEqual("id", userId));
+        final BusinessUser user = (BusinessUser) generalService.find(User.class, userId);
 
         SettingDetail settingsDetail = new SettingDetail();
         settingsDetail.setUserId(userId);

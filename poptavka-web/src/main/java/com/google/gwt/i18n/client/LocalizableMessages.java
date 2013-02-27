@@ -160,6 +160,10 @@ public interface LocalizableMessages extends Messages {
     String menuSupplierAssignedDemands();
     String menuSupplierClosedDemands();
     String menuSupplierRatings();
+    String menuSettingsUser();
+    String menuSettingsClient();
+    String menuSettingsSupplier();
+    String menuSettingsSystem();
 
     /*** ATTRIBUTES ***********************************************************/
     /** HeaderView.ui. **/
@@ -496,13 +500,10 @@ public interface LocalizableMessages extends Messages {
 
     /*** 7 - Settings module view *************************************** 7 ***/
     /** SettingsView.ui. **/
-    String settingsClientInformation();
     String settingsNothingToUpdate();
     String settingsNotificationLeavingPage();
-    String settingsSupplierInformation();
     String settingsToolbarLabel();
     String settingsUpdateButton();
-    String settingsUserInformation();
     String settingsUpdatedOK();
     String settingsUpdatedNotOK();
 
