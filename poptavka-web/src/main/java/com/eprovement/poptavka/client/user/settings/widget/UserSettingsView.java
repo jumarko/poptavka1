@@ -133,15 +133,15 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     @Override
     public void setUserSettings(SettingDetail detail) {
         originalsStorage.clear();
-        companyName.setText(detail.getCompanyName());
-        web.setText(detail.getWebsite());
-        email.setText(detail.getEmail());
-        phone.setText(detail.getPhone());
-        firstName.setText(detail.getFirstName());
-        lastName.setText(detail.getLastName());
-        identificationNumber.setText(detail.getIdentificationNumber());
-        taxNumber.setText(detail.getTaxId());
-        descriptionBox.setText(detail.getDescription());
+        companyName.setText(detail.getUser().getCompanyName());
+        web.setText(detail.getUser().getWebsite());
+        email.setText(detail.getUser().getEmail());
+        phone.setText(detail.getUser().getPhone());
+        firstName.setText(detail.getUser().getFirstName());
+        lastName.setText(detail.getUser().getLastName());
+        identificationNumber.setText(detail.getUser().getIdentificationNumber());
+        taxNumber.setText(detail.getUser().getTaxId());
+        descriptionBox.setText(detail.getUser().getDescription());
         //notifications
         List<Period> periodList = Arrays.asList(Period.values());
         for (NotificationDetail item : detail.getNotifications()) {
@@ -158,20 +158,20 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
             notifications.add(notificationWidget);
         }
 
-        setAddressesContent(detail.getAddresses().get(0));
+        setAddressesContent(detail.getUser().getAddresses().get(0));
     }
 
     @Override
     public SettingDetail updateUserSettings(SettingDetail detail) {
-        detail.setCompanyName(companyName.getText());
-        detail.setWebsite(web.getText());
-        detail.setEmail(email.getText());
-        detail.setPhone(phone.getText());
-        detail.setFirstName(firstName.getText());
-        detail.setLastName(lastName.getText());
-        detail.setIdentificationNumber(identificationNumber.getText());
-        detail.setTaxId(taxNumber.getText());
-        detail.setDescription(descriptionBox.getText());
+        detail.getUser().setCompanyName(companyName.getText());
+        detail.getUser().setWebsite(web.getText());
+        detail.getUser().setEmail(email.getText());
+        detail.getUser().setPhone(phone.getText());
+        detail.getUser().setFirstName(firstName.getText());
+        detail.getUser().setLastName(lastName.getText());
+        detail.getUser().setIdentificationNumber(identificationNumber.getText());
+        detail.getUser().setTaxId(taxNumber.getText());
+        detail.getUser().setDescription(descriptionBox.getText());
         //notifications
         for (int i = 0; i < detail.getNotifications().size(); i++) {
             NotificationItemView notificationWidget = (NotificationItemView) notifications.getWidget(i);
@@ -183,7 +183,7 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
         }
 
         if (getAddress() != null) {
-            detail.setAddresses(Arrays.asList(getAddress()));
+            detail.getUser().setAddresses(Arrays.asList(getAddress()));
         }
         return detail;
     }

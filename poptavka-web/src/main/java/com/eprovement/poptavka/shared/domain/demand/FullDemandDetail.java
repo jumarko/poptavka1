@@ -34,8 +34,28 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     //Only fields that can be updated
     public enum DemandField {
 
-        TITLE, DESCRIPTION, PRICE, END_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE,
-        CATEGORIES, LOCALITIES, DEMAND_STATUS, CREATED, EXCLUDE_SUPPLIER
+        TITLE("title"),
+        DESCRIPTION("description"),
+        PRICE("price"),
+        END_DATE("endDate"),
+        VALID_TO_DATE("validTo"),
+        MAX_OFFERS("maxSuppliers"),
+        MIN_RATING("minRating"),
+        DEMAND_TYPE("type"),
+        CATEGORIES("categories"),
+        LOCALITIES("localities"),
+        DEMAND_STATUS(""),
+        CREATED("createdDate"),
+        EXCLUDE_SUPPLIER("excludedSuppliers");
+        private String value;
+
+        private DemandField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
     private ArrayList<LocalityDetail> localities;
     private ArrayList<CategoryDetail> categories;

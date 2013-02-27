@@ -39,6 +39,7 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -924,7 +925,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     private Demand updateDemandFields(Demand demand, ArrayList<ChangeDetail> changes) {
         for (ChangeDetail change : changes) {
-            switch ((FullDemandDetail.DemandField) change.getField()) {
+            switch (DemandField.valueOf(change.getField())) {
                 case TITLE:
                     demand.setTitle((String) change.getValue());
                     break;

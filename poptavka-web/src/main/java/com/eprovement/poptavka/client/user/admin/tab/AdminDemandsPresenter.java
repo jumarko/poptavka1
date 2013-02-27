@@ -318,7 +318,7 @@ public class AdminDemandsPresenter
     private void manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField demandField,
             long demandId, Object originalValue, Object value) {
         if (!updatedFields.containsKey(demandId)) {
-            ChangeDetail changeDetail = new ChangeDetail(demandField);
+            ChangeDetail changeDetail = new ChangeDetail(demandField.getValue());
             changeDetail.setOriginalValue(originalValue);
             changeDetail.setValue(value);
             if (updatedFields.containsKey(demandId)) {

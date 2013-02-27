@@ -25,6 +25,7 @@ import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
@@ -45,6 +46,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<Address, AddressDetail> addressConverter;
+    private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     @Autowired
     public void setLocalityConverter(
@@ -64,7 +66,12 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         this.addressConverter = addressConverter;
     }
 
-    //TODO Nahradit konverterom???
+    @Autowired
+    public void setBusinessUserConverter(
+            @Qualifier("businessUserConverter") Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
+        this.businessUserConverter = businessUserConverter;
+    }
+
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public SettingDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException {
@@ -74,17 +81,20 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
         SettingDetail settingsDetail = new SettingDetail();
         settingsDetail.setUserId(userId);
+        //user settings
+        settingsDetail.setUser(businessUserConverter.convertToTarget(user));
 
         List<BusinessUserRole> roles = user.getBusinessUserRoles();
         for (BusinessUserRole role : roles) {
+            //client settings
             if (role instanceof Client) {
-                settingsDetail.setEmail(role.getBusinessUser().getEmail());
                 Client client = (Client) role;
                 if (client.getOveralRating() != null) {
                     settingsDetail.setClientRating(client.getOveralRating());
                 }
 
             }
+            //supplier settings
             if (role instanceof Supplier) {
                 Supplier supplier = (Supplier) role;
                 SupplierDetail supplierDetail = new SupplierDetail();
@@ -97,21 +107,8 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             }
 
         }
-        settingsDetail.setFirstName(user.getBusinessUserData().getPersonFirstName());
-        settingsDetail.setLastName(user.getBusinessUserData().getPersonLastName());
-        settingsDetail.setPhone(user.getBusinessUserData().getPhone());
-        settingsDetail.setIdentificationNumber(user.getBusinessUserData().getIdentificationNumber());
-        settingsDetail.setCompanyName(user.getBusinessUserData().getCompanyName());
-        settingsDetail.setDescription(user.getBusinessUserData().getDescription());
-        settingsDetail.setTaxId(user.getBusinessUserData().getTaxId());
-        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-        for (Address address : user.getAddresses()) {
-            addresses.add(addressConverter.convertToTarget(address));
-        }
-        settingsDetail.setAddresses(addresses);
-
-        /** NOTIFICATIONS. **/
-        List<NotificationDetail> notifications = new ArrayList<NotificationDetail>();
+        //system settings
+        ArrayList<NotificationDetail> notifications = new ArrayList<NotificationDetail>();
         for (NotificationItem item : user.getSettings().getNotificationItems()) {
             NotificationDetail targetItem = new NotificationDetail();
             /**/ targetItem.setNotificationIdemId(item.getId());
@@ -122,13 +119,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         }
         settingsDetail.setNotifications(notifications);
 
-        GWT.log("User settings get:" + settingsDetail.getFirstName());
         return settingsDetail;
-    }
-
-    @Autowired
-    public void setGeneralService(GeneralService generalService) {
-        this.generalService = generalService;
     }
 
     /**
@@ -160,7 +151,6 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
         List<BusinessUserRole> roles = user.getBusinessUserRoles();
         for (BusinessUserRole role : roles) {
-            role.getBusinessUser().setEmail(settingsDetail.getEmail());
             if (role instanceof Client) {
                 Client client = (Client) role;
                 client.setOveralRating(settingsDetail.getClientRating());
@@ -178,19 +168,18 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             }
 
         }
-        user.getBusinessUserData().setPersonFirstName(settingsDetail.getFirstName());
-        user.getBusinessUserData().setPersonLastName(settingsDetail.getLastName());
-        user.getBusinessUserData().setPhone(settingsDetail.getPhone());
-        user.getBusinessUserData().setIdentificationNumber(settingsDetail.getIdentificationNumber());
-        user.getBusinessUserData().setCompanyName(settingsDetail.getCompanyName());
-        user.getBusinessUserData().setWebsite(settingsDetail.getWebsite());
-        user.getBusinessUserData().setDescription(settingsDetail.getDescription());
-        user.getBusinessUserData().setTaxId(settingsDetail.getTaxId());
+        user.getBusinessUserData().setPersonFirstName(settingsDetail.getUser().getFirstName());
+        user.getBusinessUserData().setPersonLastName(settingsDetail.getUser().getLastName());
+        user.getBusinessUserData().setPhone(settingsDetail.getUser().getPhone());
+        user.getBusinessUserData().setIdentificationNumber(settingsDetail.getUser().getIdentificationNumber());
+        user.getBusinessUserData().setCompanyName(settingsDetail.getUser().getCompanyName());
+        user.getBusinessUserData().setWebsite(settingsDetail.getUser().getWebsite());
+        user.getBusinessUserData().setDescription(settingsDetail.getUser().getDescription());
+        user.getBusinessUserData().setTaxId(settingsDetail.getUser().getTaxId());
         List<Address> addresses = new ArrayList<Address>();
-        for (AddressDetail addressDetail : settingsDetail.getAddresses()) {
+        for (AddressDetail addressDetail : settingsDetail.getUser().getAddresses()) {
             addresses.add(addressConverter.convertToSource(addressDetail));
         }
-        user.setAddresses(addresses);
 
         /** NOTIFICATIONS. **/
         List<NotificationItem> notificationsItems = new ArrayList<NotificationItem>();

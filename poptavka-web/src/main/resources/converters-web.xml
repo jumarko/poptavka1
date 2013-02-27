@@ -61,9 +61,6 @@
     <bean id="preferenceConverter" class="com.eprovement.poptavka.server.converter.PreferenceConverter" />
     <bean id="problemConverter" class="com.eprovement.poptavka.server.converter.ProblemConverter" />
     <bean id="serviceConverter" class="com.eprovement.poptavka.server.converter.ServiceConverter"/>
-    <bean id="settingsBusinessUserConverter" class="com.eprovement.poptavka.server.converter.SettingsBusinessUserConverter">
-        <constructor-arg ref="addressConverter"/>
-    </bean>
     <bean id="supplierConverter" class="com.eprovement.poptavka.server.converter.SupplierConverter">
         <constructor-arg index="0" ref="categoryConverter"/>
         <constructor-arg index="1" ref="localityConverter"/>
