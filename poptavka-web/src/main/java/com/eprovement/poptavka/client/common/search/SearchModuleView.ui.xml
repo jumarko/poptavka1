@@ -1,131 +1,75 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
-	xmlns:adv="urn:import:com.eprovement.poptavka.client.common.search"
-	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
+             xmlns:adv="urn:import:com.eprovement.poptavka.client.common.search"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-	<ui:style>
-		.important {
-		font-weight: bold;
-		font-style: italic;
-		}
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-		.search-textbox[type="text"] {
-		background: none repeat scroll 0 0
-		transparent;
-		border: medium none;
-		box-shadow: none;
-		color: #0E41AA;
-		height: 40px;
-		line-height: 37px;
-		margin: 0;
-		padding: 8px 15px;
-		width:
-		149px;
-		}
+    <ui:style>
+        .important {
+        font-weight: bold;
+        font-style: italic;
+        }
 
-		.search-button {
-		background: none repeat scroll 0 0 transparent;
-		border: medium none;
-		color: #FFFFFF;
-		cursor: pointer;
-		font-weight: bold;
-		height: 40px;
-		padding: 0;
-		width: 54px;
-		}
+        .search-textbox[type="text"] {
+        background: none repeat scroll 0 0
+        transparent;
+        border: medium none;
+        box-shadow: none;
+        color: #0E41AA;
+        height: 40px;
+        line-height: 37px;
+        margin: 0;
+        padding: 8px 15px;
+        width:
+        149px;
+        }
 
-		.blue-button:hover {
-		cursor:
-		pointer;
-		}
+        .search-button {
+        background: none repeat scroll 0 0 transparent;
+        border: medium none;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-weight: bold;
+        height: 40px;
+        padding: 0;
+        width: 54px;
+        }
 
-		.search-list {
-		background: url(images/advanced-search-dropdown.png) repeat scroll 0 0
-		transparent;
-		color: #002F51;
-		cursor: pointer;
-		height: 23px;
-		left: 743px;
-		position: absolute;
-		top: 80px;
-		width: 137px;
-		}
+        .blue-button:hover {
+        cursor:
+        pointer;
+        }
 
-		.search-list {
-		cursor: pointer;
-		}
+        .advanced-search {
+        background: none repeat scroll 0 0
+        transparent;
+        border: medium none;
+        color: #FFFFFF;
+        cursor: pointer;
+        margin: 0 0 0 24px;
+        padding: 5px 0;
+        width: 89px;
+        }
+    </ui:style>
 
-		.search-list-item {
-		line-height:20px;
-		padding: 0 27px 0
-		5px;
-		width:105px;
-		}
+    <g:HTMLPanel ui:field="container">
+        <div ui:field="searchMenu">
+            <g:HorizontalPanel>
+                <b:TextBox ui:field="searchContent" placeholder="{msgs.searchContent}"
+                           styleName='{style.search-textbox}' />
+                <g:Button ui:field="searchBtn" styleName='{style.search-button}' />
+            </g:HorizontalPanel>
+            <b:Modal ui:field="popupPanel" backdrop="NORMAL" keyboard="true" animation="true" dynamicSafe="true">
+                <adv:AdvanceSearchContentView ui:field="advanceSearchContentView" />
+            </b:Modal>
+        </div>
 
-		.search-list-dropdown table {
-		background: #ffffff;
-		padding:10px;
-		margin:
-		3px 0 0 -9px;
-		line-height:
-		20px;
-		width: 136px;
-		border: 1px solid #C2C8D2;
-		border-radius: 4px;
-		box-shadow: 0 0 3px
-		#DDDDDD;
-		}
-
-		.search-list-dropdown
-		table td:hover {
-		color: #bd0000;
-		cursor:pointer;
-		}
-
-		.advanced-search {
-		background: none repeat scroll 0 0
-		transparent;
-		border: medium none;
-		color: #FFFFFF;
-		cursor: pointer;
-		margin: 0 0 0 24px;
-		padding: 5px 0;
-		width: 89px;
-		}
-	</ui:style>
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
-
-	<g:HTMLPanel ui:field="container">
-		<div ui:field="searchMenu">
-			<g:HorizontalPanel>
-				<b:TextBox ui:field="searchContent" placeholder="{msgs.searchContent}"
-					styleName='{style.search-textbox}' />
-				<g:Button ui:field="searchBtn" styleName='{style.search-button}' />
-			</g:HorizontalPanel>
-			<g:PopupPanel ui:field="popupPanel">
-				<adv:AdvanceSearchContentView ui:field="advanceSearchContentView" />
-			</g:PopupPanel>
-		</div>
-
-		<g:Button ui:field="advSearchBtn" styleName='{style.advanced-search}'>
-			<ui:msg key="searchBtnAdvance">Advanced</ui:msg>
-		</g:Button>
-		<g:MenuBar vertical="false" styleName='{style.search-list}'>
-			<g:MenuItem ui:field="searchWhatItem" styleName='{style.search-list-item}'>
-				<ui:msg key="searchMenuDemand">Demand</ui:msg>
-				<g:MenuBar vertical="true" ui:field="searchWhatList"
-					styleName='{style.search-list-dropdown}'>
-					<g:MenuItem ui:field="demand">
-						<ui:msg key="searchMenuDemand">Demand</ui:msg>
-					</g:MenuItem>
-					<g:MenuItem ui:field="supplier">
-						<ui:msg key="searchMenuSupplier">Supplier</ui:msg>
-					</g:MenuItem>
-				</g:MenuBar>
-			</g:MenuItem>
-		</g:MenuBar>
-	</g:HTMLPanel>
+        <g:Button ui:field="advSearchBtn" styleName='{style.advanced-search}'>
+            <ui:msg key="searchBtnAdvance">Advanced</ui:msg>
+        </g:Button>
+    </g:HTMLPanel>
 </ui:UiBinder>

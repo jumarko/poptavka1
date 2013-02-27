@@ -5,13 +5,11 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersSearchView;
-import com.eprovement.poptavka.client.user.admin.searchViews.AdminInvoicesViewView;
-import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
@@ -19,7 +17,6 @@ import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -28,7 +25,6 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
-import java.util.List;
 
 /*
  * Musi byt mulitple = true, inak advance search views sa nebudu zobrazovat
@@ -44,8 +40,6 @@ public class SearchModulePresenter
         //GETTERS - search bar items
         TextBox getSearchContent();
 
-        int getSearchWhat();
-
         Button getSearchBtn();
 
         Button getAdvSearchBtn();
@@ -53,13 +47,11 @@ public class SearchModulePresenter
         //GETTERS - widgets & panel
         AdvanceSearchContentView getAdvanceSearchContentView();
 
-        PopupPanel getPopupPanel();
+        Modal getPopupPanel();
 
         Widget getWidgetView();
 
         //SETTERS
-        void setFilterSearchContent();
-
         void setAttributeSelectorWidget(IsWidget attributeSearchViewWidget);
     }
 
@@ -68,7 +60,13 @@ public class SearchModulePresenter
         //Setters
         void setCurrentViewTabName();
 
+        void addCustomItemToSearchWhatBox(boolean addOrRemove);
+
         //Getters
+        int getSearchWhat();
+
+        Button getSearchBtn();
+
         TabLayoutPanel getTabLayoutPanel();
 
         HomeDemandsSearchView getDemandsAttributeSelectorWidget();
@@ -121,90 +119,67 @@ public class SearchModulePresenter
     }
 
     /**************************************************************************/
-    /** Business events handled by presenter                                  */
-    /**************************************************************************/
-    public void onResponsePaymentMethods(final List<PaymentMethodDetail> list) {
-        final ListBox box = ((AdminInvoicesViewView) view.getPopupPanel().getWidget()).getPaymentMethodList();
-        box.clear();
-        box.setVisible(true);
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                box.addItem("select method...");
-                for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(), list.get(i).getName());
-                }
-                box.setSelectedIndex(0);
-                GWT.log("PaymentMethodList filled");
-            }
-        });
-    }
-
-    /**************************************************************************/
     /** Additional events used in bind method                                 */
     /**************************************************************************/
+    /**
+     * Full text search.
+     */
     private void addSearchBtnClickHandler() {
         view.getSearchBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                AdvanceSearchContentInterface advSearchContent
-                    = (AdvanceSearchContentInterface) view.getPopupPanel().getWidget();
-                SearchModuleDataHolder filter = advSearchContent.getSearchModuleDataHolder();
-                //if popup was shown, but no filters were set
-                if (filter == null) {
+                if (!view.getSearchContent().getText().isEmpty()) {
+                    SearchModuleDataHolder filter = new SearchModuleDataHolder();
+                    //set search content text for full text search
+                    filter.setSearchText(view.getSearchContent().getText());
+                    forwardToCurrentView(filter);
+                } else {
                     showPopupNoSearchCriteria();
-                    return;
-                }
-                view.setFilterSearchContent();
-                switch (view.getSearchWhat()) {
-                    case 0:
-                        eventBus.goToHomeDemandsModule(filter);
-                        break;
-                    case 1:
-                        eventBus.goToHomeSuppliersModule(filter);
-                        break;
-                    default:
-                        //if current item is available in searchWhat listbox, folowing code is invoked
-                        //if not, processing don't come this far
-                        if (Constants.getClientDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToClientDemandsModule(filter, Storage.getCurrentlyLoadedView());
-                        }
-                        if (Constants.getSupplierDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToSupplierDemandsModule(filter, Storage.getCurrentlyLoadedView());
-                        }
-                        if (Constants.getAdminConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToAdminModule(filter, Storage.getCurrentlyLoadedView());
-                        }
-                        if (Constants.getMessagesConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToMessagesModule(filter, Storage.getCurrentlyLoadedView());
-                        }
-                        break;
                 }
             }
         });
     }
 
-    private void searchBtnClickHandlerInnerClass() {
-        AdvanceSearchContentInterface advSearchContent =
-                (AdvanceSearchContentInterface) view.getPopupPanel().getWidget();
-        //create and fill searching criteria holder - searchModuleDataHolder
-        SearchModuleDataHolder filter = advSearchContent.getSearchModuleDataHolder();
-        //if attributes, categories and localities are not set
-        if (filter == null) {
-            //and if search content is also empty
-            if (view.getSearchContent().getText().isEmpty()) {
-                showPopupNoSearchCriteria();
-                return;
-            } else {
-                //otherwise create empty searching criteria holder
-                filter = new SearchModuleDataHolder();
-                //and set at lease search content text for full text search.
-                filter.setSearchText(view.getSearchContent().getText());
-            }
+    /**
+     * Choose right method for searching in current view.
+     * Appropriate RPC is called and it forwards user to appropriate view.
+     */
+    private void forwardToCurrentView(SearchModuleDataHolder filter) {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.HOME_SUPPLIERS_BY_DEFAULT:
+                eventBus.goToHomeSuppliersModule(filter);
+                break;
+            default:
+                eventBus.goToHomeDemandsModule(filter);
+                break;
         }
-        //choose right method for searching according to search what attribute
-        //Appropriate RPC is called and it forwards user to appropriate view.
-        switch (view.getSearchWhat()) {
+    }
+
+    /**
+     * Advance search.
+     */
+    private void addAdvSearchBtnClickHandler() {
+        view.getAdvanceSearchContentView().getSearchBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                //create and fill searching criteria holder - searchModuleDataHolder
+                SearchModuleDataHolder filter = view.getAdvanceSearchContentView().getSearchModuleDataHolder();
+                if (filter != null) {
+                    view.getPopupPanel().hide();
+                    forwardAccordingToSearchWhat(filter);
+                } else {
+                    showPopupNoSearchCriteria();
+                }
+            }
+        });
+    }
+
+    /**
+     * Choose right method for searching according to search what attribute
+     * Appropriate RPC is called and it forwards user to appropriate view.
+     */
+    private void forwardAccordingToSearchWhat(SearchModuleDataHolder filter) {
+        switch (view.getAdvanceSearchContentView().getSearchWhat()) {
             case 0:
                 eventBus.goToHomeDemandsModule(filter);
                 break;
@@ -234,19 +209,6 @@ public class SearchModulePresenter
         }
     }
 
-    private void addAdvSearchBtnClickHandler() {
-        view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                int left = view.getSearchContent().getElement().getAbsoluteLeft() - 553;
-                int top = view.getSearchContent().getElement().getAbsoluteTop() + 75;
-                view.getPopupPanel().setSize("1030px", "500px");
-                view.getPopupPanel().setPopupPosition(left, top);
-                view.getPopupPanel().show();
-            }
-        });
-    }
-
     private void addTabLayoutPanelBeforeSelectionHandler() {
         view.getAdvanceSearchContentView().getTabLayoutPanel().addBeforeSelectionHandler(
                 new BeforeSelectionHandler<Integer>() {
@@ -263,6 +225,8 @@ public class SearchModulePresenter
                                             CategoryCell.DISPLAY_COUNT_DISABLED,
                                             null);
                                 }
+                                view.getPopupPanel().removeStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
+                                view.getPopupPanel().addStyleName(Storage.RSCS.layout().advancedSearchModal());
                                 break;
                             case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
                                 //If not yet initialized, do it
@@ -274,8 +238,12 @@ public class SearchModulePresenter
                                             CategoryCell.DISPLAY_COUNT_DISABLED,
                                             null);
                                 }
+                                view.getPopupPanel().removeStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
+                                view.getPopupPanel().addStyleName(Storage.RSCS.layout().advancedSearchModal());
                                 break;
                             default:
+                                view.getPopupPanel().removeStyleName(Storage.RSCS.layout().advancedSearchModal());
+                                view.getPopupPanel().addStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
                                 break;
                         }
                     }

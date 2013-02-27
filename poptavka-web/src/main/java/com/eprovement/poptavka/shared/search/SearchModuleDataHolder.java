@@ -67,7 +67,6 @@ public class SearchModuleDataHolder implements IsSerializable {
     public ArrayList<FilterItem> getAttributes() {
         return attributes;
     }
-
     /**************************************************************************/
     /* toString & parse                                                       */
     /**************************************************************************/
@@ -76,6 +75,7 @@ public class SearchModuleDataHolder implements IsSerializable {
     public static final String LIST_BRACKET_LEFT = "[";
     public static final String LIST_BRACKET_RIGHT = "]";
     public static final String LIST_ITEM_SEPARATOR = ",";
+
     /**
      * String format: >> text=;cats=[..,..],locs=[..,..];attrs=[..,..] <<.
      * @return
@@ -83,45 +83,61 @@ public class SearchModuleDataHolder implements IsSerializable {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("text");
-        str.append(VALUE_SEPARATOR);
-        str.append("\"");
-        str.append(searchText);
-        str.append("\"");
-        str.append(ITEM_SEPARATOR);
-        str.append("cats");
-        str.append(VALUE_SEPARATOR);
-        str.append(categories.toString());
-        str.append(ITEM_SEPARATOR);
-        str.append("locs");
-        str.append(VALUE_SEPARATOR);
-        str.append(localities.toString());
-        str.append(ITEM_SEPARATOR);
-        str.append("attrs");
-        str.append(VALUE_SEPARATOR);
-        str.append(attributes.toString());
+        if (!searchText.isEmpty()) {
+            str.append("text");
+            str.append(VALUE_SEPARATOR);
+            str.append("\"");
+            str.append(searchText);
+            str.append("\"");
+            str.append(ITEM_SEPARATOR);
+        }
+        if (!categories.isEmpty()) {
+            str.append("cats");
+            str.append(VALUE_SEPARATOR);
+            str.append(categories.toString());
+            str.append(ITEM_SEPARATOR);
+        }
+        if (!localities.isEmpty()) {
+            str.append("locs");
+            str.append(VALUE_SEPARATOR);
+            str.append(localities.toString());
+            str.append(ITEM_SEPARATOR);
+        }
+        if (!attributes.isEmpty()) {
+            str.append("attrs");
+            str.append(VALUE_SEPARATOR);
+            str.append(attributes.toString());
+        }
         return str.toString();
     }
 
     public String toStringWithIDs() {
         StringBuilder str = new StringBuilder();
-        str.append("text");
-        str.append(VALUE_SEPARATOR);
-        str.append("\"");
-        str.append(searchText);
-        str.append("\"");
-        str.append(ITEM_SEPARATOR);
-        str.append("cats");
-        str.append(VALUE_SEPARATOR);
-        str.append(categoriesIDsToString());
-        str.append(ITEM_SEPARATOR);
-        str.append("locs");
-        str.append(VALUE_SEPARATOR);
-        str.append(localitiesIDsToString());
-        str.append(ITEM_SEPARATOR);
-        str.append("attrs");
-        str.append(VALUE_SEPARATOR);
-        str.append(attributes.toString());
+        if (!searchText.isEmpty()) {
+            str.append("text");
+            str.append(VALUE_SEPARATOR);
+            str.append("\"");
+            str.append(searchText);
+            str.append("\"");
+            str.append(ITEM_SEPARATOR);
+        }
+        if (!categories.isEmpty()) {
+            str.append("cats");
+            str.append(VALUE_SEPARATOR);
+            str.append(categoriesIDsToString());
+            str.append(ITEM_SEPARATOR);
+        }
+        if (!localities.isEmpty()) {
+            str.append("locs");
+            str.append(VALUE_SEPARATOR);
+            str.append(localitiesIDsToString());
+            str.append(ITEM_SEPARATOR);
+        }
+        if (!attributes.isEmpty()) {
+            str.append("attrs");
+            str.append(VALUE_SEPARATOR);
+            str.append(attributes.toString());
+        }
         return str.toString();
     }
 

@@ -7,6 +7,7 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.IntegerBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.datepicker.client.ui.DateBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,7 +17,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.google.gwt.user.datepicker.client.DateBox;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,19 +27,23 @@ public class HomeDemandsSearchView extends Composite implements
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeDemandsSearchView> {
     }
-    @UiField
-    TextBox demandTitle;
-    @UiField
-    IntegerBox priceFrom, priceTo;
-    @UiField
-    ListBox demandTypes, creationDate;
-    @UiField
-    DateBox finnishDateFrom, finnishDateTo;
-    @UiField
-    Button clearBtn;
+    /** UiBinder attributes. **/
+    @UiField TextBox demandTitle;
+    @UiField IntegerBox priceFrom, priceTo;
+    @UiField ListBox demandTypes, creationDate;
+    @UiField DateBox finnishDateFrom, finnishDateTo;
+    @UiField Button clearBtn;
+    /** Search Fields. **/
+    private static final String FIELD_TITLE = "title";
+    private static final String FIELD_DEMAND_TYPE = "type.description";
+    private static final String FIELD_PRICE = "price";
+    private static final String FIELD_CREATED_DATE = "createdDate";
+    private static final String FIELD_END_DATE = "endDate";
 
     public HomeDemandsSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
+        finnishDateFrom.setValue(null);
+        finnishDateTo.setValue(null);
 
         demandTypes.addItem(Storage.MSGS.commonListDefault());
         for (DemandTypeType type : DemandTypeType.values()) {
@@ -56,27 +60,28 @@ public class HomeDemandsSearchView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
-        if (!demandTitle.getText().equals("")) {
-            filters.add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
+        if (!demandTitle.getText().isEmpty()) {
+            filters.add(new FilterItem(FIELD_TITLE, FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
         if (demandTypes.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("type.description", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem(FIELD_DEMAND_TYPE,
+                    FilterItem.OPERATION_EQUALS,
                     demandTypes.getItemText(demandTypes.getSelectedIndex())));
         }
-        if (!priceFrom.getText().equals("")) {
-            filters.add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getValue()));
+        if (!priceFrom.getText().isEmpty()) {
+            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_FROM, priceFrom.getValue()));
         }
-        if (!priceTo.getText().equals("")) {
-            filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getValue()));
+        if (!priceTo.getText().isEmpty()) {
+            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_TO, priceTo.getValue()));
         }
         if (creationDate.getSelectedIndex() != 4) {
-            filters.add(new FilterItem("createdDate", FilterItem.OPERATION_FROM, getCreatedDate()));
+            filters.add(new FilterItem(FIELD_CREATED_DATE, FilterItem.OPERATION_FROM, getCreatedDate()));
         }
         if (finnishDateFrom.getValue() != null) {
-            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
+            filters.add(new FilterItem(FIELD_END_DATE, FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
         }
         if (finnishDateTo.getValue() != null) {
-            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
+            filters.add(new FilterItem(FIELD_END_DATE, FilterItem.OPERATION_TO, finnishDateTo.getValue()));
         }
         return filters;
     }

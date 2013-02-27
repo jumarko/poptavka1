@@ -6,6 +6,9 @@ import org.hibernate.envers.NotAudited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -20,16 +23,27 @@ import org.hibernate.validator.constraints.NotBlank;
  *         Date: 28.1.11
  */
 @Entity
+@Indexed
 @Audited
 public class BusinessUserData extends DomainObject {
 
+    /** Fields that are available for full-text search. */
+    public static final String[] USER_FULLTEXT_FIELDS = new String[]{
+        "companyName", "personFirstName", "personLastName", "description"};
+
+    @Field
+    // companyName is most important - boost twice as much as other fields
+    @Boost(2)
     private String companyName;
+    @Field
     @Column(length = 64)
     @NotBlank
     private String personFirstName;
+    @Field
     @Column(length = 64)
     @NotBlank
     private String personLastName;
+    @Field
     @NotAudited
     private String description;
     @Column(length = 20)

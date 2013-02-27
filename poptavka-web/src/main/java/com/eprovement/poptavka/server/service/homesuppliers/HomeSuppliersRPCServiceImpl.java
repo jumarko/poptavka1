@@ -19,6 +19,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.common.TreeItemService;
 import com.eprovement.poptavka.service.demand.CategoryService;
+import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -26,7 +27,8 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.google.gwt.core.client.GWT;
+import com.googlecode.genericdao.search.Field;
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.Sort;
 import java.util.ArrayList;
@@ -34,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,9 +52,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private LocalityService localityService;
     private CategoryService categoryService;
     private SupplierService supplierService;
+    private FulltextSearchService fulltextSearchService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<ResultCriteria, SearchDefinition> criteriaConverter;
+    private Converter<Filter, FilterItem> filterConverter;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -81,6 +84,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     @Autowired
+    public void setFulltextSearchService(FulltextSearchService fulltextSearchService) {
+        this.fulltextSearchService = fulltextSearchService;
+    }
+
+    @Autowired
     public void setSupplierConverter(
             @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
         this.supplierConverter = supplierConverter;
@@ -98,6 +106,12 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         this.criteriaConverter = criteriaConverter;
     }
 
+    @Autowired
+    public void setFilterConverter(
+            @Qualifier("filterConverter") Converter<Filter, FilterItem> filterConverter) {
+        this.filterConverter = filterConverter;
+    }
+
     /**************************************************************************/
     /*  Categories                                                            */
     /**************************************************************************/
@@ -105,19 +119,6 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     public CategoryDetail getCategory(long categoryID) throws RPCException {
         return categoryConverter.convertToTarget(categoryService.getById(categoryID));
     }
-
-//    @Override
-//    public List<Integer> getCategoryParentsWithIndexes(Long category) throws RPCException {
-//        System.out.println("Getting parent categories");
-//        Category cat = categoryService.getById(category);
-//        List<Integer> parentsWithIdxs = new ArrayList<Integer>();
-//        while (cat != null) {
-//            parentsWithIdxs.add(getCategoriesByItsLevel(cat.getLevel(), cat.getParent()).indexOf(cat));
-//            cat = cat.getParent();
-//        }
-//        Collections.reverse(parentsWithIdxs);
-//        return parentsWithIdxs;
-//    }
 
     /**************************************************************************/
     /*  Suppliers                                                             */
@@ -143,12 +144,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     @Override
     public long getSuppliersCount(SearchDefinition definition) throws RPCException {
-        //TODO LATER Martin implement fulltext search
         if (definition == null || definition.getFilter() == null) {
-            return supplierService.getCount();
+            //general
+            return getSuppliersGeneralCount();
         } else {
-            if (definition.getFilter().getAttributes().isEmpty()) {
-                return filterWithoutAttributesCount(definition);
+            //fulltext
+            if (!definition.getFilter().getSearchText().isEmpty()) {
+                return fullTextSearchCount(definition);
+                //criteria search
             } else {
                 return filterWithAttributesCount(definition);
             }
@@ -171,22 +174,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     @Override
     public List<FullSupplierDetail> getSuppliers(SearchDefinition definition) throws RPCException {
-        //TODO LATER Martin implement fulltext search
-        if (definition.getFilter() == null) {
-            Search search = new Search(Supplier.class);
-            search.setFirstResult(definition.getFirstResult());
-            search.setMaxResults(definition.getMaxResult());
-            for (String column : definition.getOrderColumns().keySet()) {
-                if (definition.getOrderColumns().get(column) == OrderType.ASC) {
-                    search.addSort(Sort.asc(column));
-                } else {
-                    search.addSort(Sort.desc(column));
-                }
-            }
-            return supplierConverter.convertToTargetList(generalService.search(search));
+        if (definition == null || definition.getFilter() == null) {
+            //general
+            return getSuppliersGeneral(definition);
         } else {
-            if (definition.getFilter().getAttributes().isEmpty()) {
-                return filterWithoutAttributes(definition);
+            //fulltext
+            if (!definition.getFilter().getSearchText().isEmpty()) {
+                return fullTextSearch(definition);
+                //criteria search
             } else {
                 return filterWithAttributes(definition);
             }
@@ -194,179 +189,155 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     /**************************************************************************/
-    /*  Get category suppliers                                                */
+    /*  Get suppliers in generall                                             */
     /**************************************************************************/
     /**
-     * This mehtod is used when <b>category filtering</b> is required. Get
-     * suppliers count of given categories.
+     * Get all supplier's count.
      *
-     * @param categories - define categories to filter throught
-     * @return suppliers count of given categories
+     * @return supplier's count
      */
-    private Long getCategorySuppliersCount(List<CategoryDetail> categories) {
-        List<Category> cats = new ArrayList<Category>();
-        for (CategoryDetail catDetail : categories) {
-            cats.add(categoryService.getById(catDetail.getId()));
-        }
-        return supplierService.getSuppliersCount(cats.toArray(new Category[cats.size()]));
+    private Long getSuppliersGeneralCount() {
+        return supplierService.getCount();
     }
 
     /**
-     * This method is used when <b>category filtering</b> is required. Get
-     * suppliers data of given categories
+     * Get suppliers limited by FirstResult and MaxResult attributes.
      *
-     * @param categories - define categories to filter through
-     * @param maxResult - define how many data will be retrieved
-     * @param orderColumns - define ordering (attribute, type)
-     * @return supplier details list of given categories
+     * @param definition holder for FirstResult and MaxResult attributes
+     * @return suppliers
      */
-    private List<FullSupplierDetail> getSortedCategorySuppliers(SearchDefinition searchDefinition) {
-        List<Category> cats = new ArrayList<Category>();
-        for (CategoryDetail catDetail : searchDefinition.getFilter().getCategories()) {
-            cats.add(categoryService.getById(catDetail.getId()));
+    private List<FullSupplierDetail> getSuppliersGeneral(SearchDefinition definition) {
+        Search search = new Search(Supplier.class);
+        search.setFirstResult(definition.getFirstResult());
+        search.setMaxResults(definition.getMaxResult());
+        for (String column : definition.getOrderColumns().keySet()) {
+            if (definition.getOrderColumns().get(column) == OrderType.ASC) {
+                search.addSort(Sort.asc(column));
+            } else {
+                search.addSort(Sort.desc(column));
+            }
         }
-        return supplierConverter.convertToTargetList(supplierService.getSuppliers(
-                criteriaConverter.convertToSource(searchDefinition), cats.toArray(new Category[cats.size()])));
+        return supplierConverter.convertToTargetList(generalService.search(search));
     }
 
     /**************************************************************************/
-    /*  Get category locality suppliers                                       */
+    /*  Get suppliers in fulltext search                                      */
     /**************************************************************************/
     /**
-     * This mehtod is used when both <b>category & locality filtering</b> is
-     * required. Get suppliers count of given categories & localities.
+     * Get suppliers count by full text search.
      *
-     * @param categories- define categories to filter throught
-     * @param localities - define localities to filter throught
-     * @return suppliers count of given categories & localities
-     */
-    private Long getCategoryLocalitySuppliersCount(List<CategoryDetail> categories, List<LocalityDetail> localities) {
-        List<Category> cats = new ArrayList<Category>();
-        for (CategoryDetail catDetail : categories) {
-            cats.add(categoryService.getById(catDetail.getId()));
-        }
-        List<Locality> locs = new ArrayList<Locality>();
-        for (LocalityDetail locDetail : localities) {
-            locs.add(localityService.getLocality(locDetail.getId()));
-        }
-        return supplierService.getSuppliersCount(cats, locs);
-    }
-
-    /**
-     * This method is used when both <b>categories & localities filtering</b> is
-     * required. Get suppliers data of given categories & localities
-     *
-     * @param searchDefinition search filters
-     * @return supplier details list of given categories & localities
-     */
-    private List<FullSupplierDetail> getSortedCategoryLocalitySuppliers(SearchDefinition searchDefinition) {
-        List<Category> cats = new ArrayList<Category>();
-        for (CategoryDetail catDetail : searchDefinition.getFilter().getCategories()) {
-            cats.add(categoryService.getById(catDetail.getId()));
-        }
-        List<Locality> locs = new ArrayList<Locality>();
-        for (LocalityDetail catDetail : searchDefinition.getFilter().getLocalities()) {
-            locs.add(localityService.getLocality(catDetail.getId()));
-        }
-        return supplierConverter.convertToTargetList(supplierService.getSuppliers(
-                criteriaConverter.convertToSource(searchDefinition), cats, locs));
-    }
-
-    /**************************************************************************/
-    /*  Fileter methods                                                       */
-    /**************************************************************************/
-    /**
-     * This method decide which backend method used to retrieve data. Method is
-     * used when <b>no additional attributes filtering</b> is required,
-     * therefore there is no need to use backend methods which use
-     * <i>general.Search</i> for retrieving data.
-     *
-     * @param definition - define filtering criteria, which helps this method to
-     * make decision
+     * @param searchText - text to be searched
      * @return suppliers count
+     * @throws RPCException
      */
-    private long filterWithoutAttributesCount(SearchDefinition definition) {
-        //1 0
-        if (!definition.getFilter().getCategories().isEmpty()
-                && definition.getFilter().getLocalities().isEmpty()) {
-            return getCategorySuppliersCount(definition.getFilter().getCategories());
-        }
-        //1 1  --> perform join if filtering by category and locality was used
-        if (!definition.getFilter().getCategories().isEmpty()
-                && !definition.getFilter().getLocalities().isEmpty()) {
-            return getCategoryLocalitySuppliersCount(
-                    definition.getFilter().getCategories(),
-                    definition.getFilter().getLocalities());
-        }
-        return -1L;
+    public long fullTextSearchCount(SearchDefinition definition) throws RPCException {
+        final List<BusinessUserData> foundUsers = this.fulltextSearchService.search(
+                BusinessUserData.class, BusinessUserData.USER_FULLTEXT_FIELDS, definition.getFilter().getSearchText());
+
+        Search search = new Search(Supplier.class);
+        search.addFilterIn("businessUser.businessUserData", foundUsers);
+        search.setFirstResult(definition.getFirstResult());
+        search.setMaxResults(definition.getMaxResult());
+        search.addField("id", Field.OP_COUNT);
+        search.setResultMode(Search.RESULT_SINGLE);
+
+        return (Long) generalService.searchUnique(search);
     }
 
     /**
-     * This method decide which backend method used to retrieve data. Method is
-     * used when <b>additional attributes filtering</b> is required, therefore
-     * there is need to use backend methods which use <i>general.Search</i> for
-     * retrieving data.
+     * Get suppliers by full text search.
      *
-     * @param definition - define filtering criteria, which helps this method to
-     * make decision
+     * @param searchText - text to be search
+     * @return suppliers
+     * @throws RPCException
+     */
+    public List<FullSupplierDetail> fullTextSearch(SearchDefinition definition) throws RPCException {
+        final List<BusinessUserData> foundUsers = this.fulltextSearchService.search(
+                BusinessUserData.class, BusinessUserData.USER_FULLTEXT_FIELDS, definition.getFilter().getSearchText());
+
+        Search search = new Search(Supplier.class);
+        search.addFilterIn("businessUser.businessUserData", foundUsers);
+        search.setFirstResult(definition.getFirstResult());
+        search.setMaxResults(definition.getMaxResult());
+
+        return supplierConverter.convertToTargetList(generalService.search(search));
+    }
+
+    /**************************************************************************/
+    /*  Get suppliers in search by representer be seraching criteria          */
+    /**************************************************************************/
+    /**
+     * This method decide which method is used to create Search object for retrieve counts.
+     *
+     * @param definition - define filtering criteria
      * @return suppliers count
      */
     private long filterWithAttributesCount(SearchDefinition definition) {
+        //0 0
+        if (definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getSupplierFilter(definition);
+            search.addField("id", Field.OP_COUNT);
+            search.setResultMode(Search.RESULT_SINGLE);
+            return (Long) this.generalService.searchUnique(search);
+        }
         //1 0
         if (!definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
             Search search = this.getCategoryFilter(definition);
-            return (long) generalService.searchAndCount(search).getTotalCount();
+            search.addField("id", Field.OP_COUNT);
+            search.setResultMode(Search.RESULT_SINGLE);
+            return (Long) generalService.searchUnique(search);
+        }
+        //0 1
+        if (definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getLocalityFilter(definition);
+            search.addField("id", Field.OP_COUNT);
+            search.setResultMode(Search.RESULT_SINGLE);
+            return (Long) generalService.searchUnique(search);
         }
         //1 1  --> perform join if filtering by category and locality was used
         if (!definition.getFilter().getCategories().isEmpty()
                 && !definition.getFilter().getLocalities().isEmpty()) {
-            return generalService.searchAndCount(getCategoryFilter(definition)).getTotalCount()
-                    + generalService.searchAndCount(getLocalityFilter(definition)).getTotalCount();
+            Search searchCat = this.getCategoryFilter(definition);
+            searchCat.addField("id", Field.OP_COUNT);
+            searchCat.setResultMode(Search.RESULT_SINGLE);
+
+            Search searchLoc = this.getLocalityFilter(definition);
+            searchLoc.addField("id", Field.OP_COUNT);
+            searchLoc.setResultMode(Search.RESULT_SINGLE);
+
+            return (Long) generalService.searchUnique(searchCat)
+                    + (Long) generalService.searchUnique(searchLoc);
         }
         return -1L;
     }
 
     /**
-     * This method decide which backend method used to retrieve data. Method is
-     * used when <b>no additional attributes filtering</b> is required,
-     * therefore there is no need to use backend methods which use
-     * <i>general.Search</i> for retrieving data.
+     * This method decide which method is used to create Search object for retrieve data.
      *
-     * @param detail - define filtering criteria, which helps this method to
-     * make decision
-     * @return supplier detail list
-     */
-    private List<FullSupplierDetail> filterWithoutAttributes(SearchDefinition searchDefinition) {
-        //1 0
-        if (!searchDefinition.getFilter().getCategories().isEmpty()
-                && searchDefinition.getFilter().getLocalities().isEmpty()) {
-            return getSortedCategorySuppliers(searchDefinition);
-        }
-        //1 1  --> perform join if filtering by category and locality was used
-        if (!searchDefinition.getFilter().getCategories().isEmpty()
-                && !searchDefinition.getFilter().getLocalities().isEmpty()) {
-            return getSortedCategoryLocalitySuppliers(searchDefinition);
-        }
-        return null;
-    }
-
-    /**
-     * This method decide which backend method used to retrieve data. Method is
-     * used when <b>additional attributes filtering</b> is required, therefore
-     * there is need to use backend methods which use <i>general.Search</i> for
-     * retrieving data.
-     *
-     * @param detail - define filtering criteria, which helps this method to
-     * make decision
-     * @return supplier detail list
+     * @param definition define filtering criteria
+     * @return suppliers
      */
     private List<FullSupplierDetail> filterWithAttributes(SearchDefinition definition) {
+        //0 0
+        if (definition.getFilter().getCategories().isEmpty()
+                && definition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getSupplierFilter(definition);
+            return supplierConverter.convertToTargetList(this.generalService.search(search));
+        }
         //1 0
         if (!definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
             Search search = this.getCategoryFilter(definition);
             return this.createSupplierDetailListCat(this.generalService.search(search));
+        }
+        //0 1
+        if (definition.getFilter().getCategories().isEmpty()
+                && !definition.getFilter().getLocalities().isEmpty()) {
+            Search search = this.getLocalityFilter(definition);
+            return this.createSupplierDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
         if (!definition.getFilter().getCategories().isEmpty()
@@ -392,10 +363,22 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         return null;
     }
 
+    /**************************************************************************/
+    /*  Helper methods used in "Get suppliers in search" methods              */
+    /**************************************************************************/
+    /**
+     * Create Search object for searching in categories and supplier's attributes.
+     *
+     * @param definition - represents searching criteria
+     * @return
+     */
     private Search getCategoryFilter(SearchDefinition definition) {
         Search categorySearch = new Search(SupplierCategory.class);
+        categorySearch.setFirstResult(definition.getFirstResult());
+        categorySearch.setMaxResults(definition.getMaxResult());
+
         List<Category> allSubCategories = new ArrayList<Category>();
-        //nemusi byt foreach pretoze homeSuppliers ma vzdy len jednu kategoriu
+
         for (CategoryDetail cat : definition.getFilter().getCategories()) {
             allSubCategories = Arrays.asList(getAllSubCategories(cat.getId()));
         }
@@ -408,8 +391,17 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         return this.getSortSearch(categorySearch, definition.getOrderColumns(), "supplier");
     }
 
+    /**
+     * Create Search object for searching in localities and supplier's attributes.
+     *
+     * @param definition - represents searching criteria
+     * @return
+     */
     private Search getLocalityFilter(SearchDefinition definition) {
         Search localitySearch = new Search(SupplierLocality.class);
+        localitySearch.setFirstResult(definition.getFirstResult());
+        localitySearch.setMaxResults(definition.getMaxResult());
+
         List<Locality> allSubLocalities = new ArrayList<Locality>();
         for (LocalityDetail loc : definition.getFilter().getLocalities()) {
             allSubLocalities = Arrays.asList(
@@ -424,26 +416,19 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         return this.getSortSearch(localitySearch, definition.getOrderColumns(), "supplier");
     }
 
+    /**
+     * Create Search object for searching in supplier's attributes.
+     *
+     * @param definition - represents searching criteria
+     * @return
+     */
     private Search getSupplierFilter(SearchDefinition definition) {
-        Boolean filterApplied = false;
         Search search = new Search(Supplier.class);
-        for (FilterItem item : definition.getFilter().getAttributes()) {
-            if (item.getValue().equals("companyName")) {
-                Collection<BusinessUserData> data = generalService.search(
-                        this.filter(new Search(BusinessUserData.class), "", item));
-                search.addFilterIn("businessUser.businessUserData", data);
-            } else if (item.getValue().equals("description")) {
-                Collection<BusinessUserData> descsData = new ArrayList<BusinessUserData>();
-                String[] descs = item.getValue().toString().split("\\s+");
+        search.setFirstResult(definition.getFirstResult());
+        search.setMaxResults(definition.getMaxResult());
 
-                for (int i = 0; i < descs.length; i++) {
-                    descsData.addAll(generalService.search(
-                            this.filter(new Search(BusinessUserData.class), "", item)));
-                }
-                search.addFilterIn("businessUser.businessUserData", descsData);
-            } else {
-                this.filter(search, "", item);
-            }
+        for (FilterItem item : definition.getFilter().getAttributes()) {
+            search.addFilter(filterConverter.convertToSource(item));
         }
         return this.getSortSearch(search, definition.getOrderColumns(), "supplier");
     }
@@ -461,47 +446,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         return search;
     }
 
-    /**
-     * This method adds new item to object Search accoriding to given inputs.
-     * This object Search is then used in backend methods using
-     * generalService.Search.
-     *
-     * @param search - object Search to which new item will be added
-     * @param prefix - in some cases a prefix have to be defined (when category
-     * or locality filtering is required)
-     * @param item - define that new attribute to add
-     * @return update Search object
-     */
-    private Search filter(Search search, String prefix, FilterItem item) {
-        prefix += ".";
-        switch (item.getOperation()) {
-            case FilterItem.OPERATION_EQUALS:
-                search.addFilterEqual(prefix + item.getItem(), item.getValue());
-                break;
-            case FilterItem.OPERATION_LIKE:
-                search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
-                break;
-            case FilterItem.OPERATION_IN:
-                search.addFilterIn(prefix + item.getItem(), item.getValue());
-                break;
-            case FilterItem.OPERATION_FROM:
-                search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
-                break;
-            case FilterItem.OPERATION_TO:
-                search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
-                break;
-            default:
-                break;
-        }
-        return search;
-    }
-
+    /**************************************************************************/
+    /*  Helper methods - List convertions                                     */
+    /**************************************************************************/
     private ArrayList<FullSupplierDetail> createSupplierDetailListCat(Collection<SupplierCategory> suppliersCat) {
         ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
         for (SupplierCategory supplierCat : suppliersCat) {
             userDetails.add(supplierConverter.convertToTarget(supplierCat.getSupplier()));
         }
-        GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
     }
 
@@ -510,10 +462,12 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         for (SupplierLocality supplierLoc : suppliersLoc) {
             userDetails.add(supplierConverter.convertToTarget(supplierLoc.getSupplier()));
         }
-        GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
     }
 
+    /**************************************************************************/
+    /*  Helper methods - others                                               */
+    /**************************************************************************/
     private Category[] getAllSubCategories(Long id) {
         final Category cat = this.generalService.find(Category.class, id);
         final List<Category> allSubCategories = this.treeItemService.getAllDescendants(cat, Category.class);
@@ -526,23 +480,5 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         final List<Locality> allSubLocalites = this.treeItemService.getAllDescendants(loc, Locality.class);
         allSubLocalites.add(loc);
         return allSubLocalites.toArray(new Locality[allSubLocalites.size()]);
-    }
-
-    /**
-     * Gets categories of given level and given parent.
-     * @param level
-     * @param parent
-     * @return
-     *
-     */
-    private List<Category> getCategoriesByItsLevel(int level, Category parent) {
-        if (level == 1) {
-            return categoryService.getRootCategories();
-        } else {
-            Search search = new Search(Category.class);
-            search.addFilterEqual("level", level);
-            search.addFilterEqual("parent", parent);
-            return generalService.search(search);
-        }
     }
 }

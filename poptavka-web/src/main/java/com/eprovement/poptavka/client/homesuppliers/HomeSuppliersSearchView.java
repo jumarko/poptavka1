@@ -22,12 +22,17 @@ public class HomeSuppliersSearchView extends Composite implements
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeSuppliersSearchView> {
     }
+    /** UiBinder attributes. **/
     @UiField
     TextBox companyName, supplierDescription;
     @UiField
     IntegerBox ratingFrom, ratingTo;
     @UiField
     Button clearBtn;
+    /** Search Fields. **/
+    private static final String FIELD_NAME = "businessUser.businessUserData.companyName";
+    private static final String FIELD_DESCRIPTION = "description";
+    private static final String FIELD_RATING = "overalRating";
 
     public HomeSuppliersSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -38,18 +43,18 @@ public class HomeSuppliersSearchView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
-        if (!companyName.getText().equals("")) {
-            filters.add(new FilterItem("name", FilterItem.OPERATION_LIKE, companyName.getText()));
+        if (!companyName.getText().isEmpty()) {
+            filters.add(new FilterItem(FIELD_NAME, FilterItem.OPERATION_LIKE, companyName.getText()));
         }
-        if (!supplierDescription.getText().equals("")) {
-            filters.add(new FilterItem("description", FilterItem.OPERATION_LIKE,
+        if (!supplierDescription.getText().isEmpty()) {
+            filters.add(new FilterItem(FIELD_DESCRIPTION, FilterItem.OPERATION_LIKE,
                     supplierDescription.getText()));
         }
         if (!ratingFrom.getText().equals("0")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getValue()));
+            filters.add(new FilterItem(FIELD_RATING, FilterItem.OPERATION_FROM, ratingFrom.getValue()));
         }
         if (!ratingTo.getText().equals("100")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingTo.getValue()));
+            filters.add(new FilterItem(FIELD_RATING, FilterItem.OPERATION_TO, ratingTo.getValue()));
         }
         return filters;
     }

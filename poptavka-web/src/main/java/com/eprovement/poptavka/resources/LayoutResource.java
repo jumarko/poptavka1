@@ -71,6 +71,12 @@ public interface LayoutResource extends CssResource {
     @ClassName("search-view")
     String searchView();
 
+    @ClassName("advanced-search-modal")
+    String advancedSearchModal();
+
+    @ClassName("advanced-search-small-modal")
+    String advancedSearchSmallModal();
+
     /** Login Styles **/
     @ClassName("login")
     String login();
