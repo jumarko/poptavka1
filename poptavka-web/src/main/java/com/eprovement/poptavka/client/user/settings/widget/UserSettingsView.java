@@ -5,9 +5,7 @@
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.address.AddressSelectorView;
-import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
@@ -24,11 +22,9 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,10 +50,6 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     TextBox companyName, web, email, phone, firstName, lastName, identificationNumber, taxNumber, status;
     @UiField
     TextArea descriptionBox;
-    @UiField
-    VerticalPanel notifications;
-//    @UiField
-//    DisclosurePanel disclosureAddress;
     @UiField
     SimplePanel addressHolder;
     /** Class attributes. **/
@@ -142,54 +134,10 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
         identificationNumber.setText(detail.getUser().getIdentificationNumber());
         taxNumber.setText(detail.getUser().getTaxId());
         descriptionBox.setText(detail.getUser().getDescription());
-        //notifications
-        List<Period> periodList = Arrays.asList(Period.values());
-        for (NotificationDetail item : detail.getNotifications()) {
-            NotificationItemView notificationWidget = new NotificationItemView();
-            notificationWidget.getEnabled().setValue(item.isEnabled());
-            notificationWidget.getName().setText(item.getName());
-            notificationWidget.getPeriod().setSelectedIndex(periodList.indexOf(item.getPeriod()));
-            notificationWidget.getStatus().addChangeHandler(new ChangeHandler() {
-                @Override
-                public void onChange(ChangeEvent event) {
-                    updateStatus();
-                }
-            });
-            notifications.add(notificationWidget);
-        }
-
-        setAddressesContent(detail.getUser().getAddresses().get(0));
     }
 
     @Override
-    public SettingDetail updateUserSettings(SettingDetail detail) {
-        detail.getUser().setCompanyName(companyName.getText());
-        detail.getUser().setWebsite(web.getText());
-        detail.getUser().setEmail(email.getText());
-        detail.getUser().setPhone(phone.getText());
-        detail.getUser().setFirstName(firstName.getText());
-        detail.getUser().setLastName(lastName.getText());
-        detail.getUser().setIdentificationNumber(identificationNumber.getText());
-        detail.getUser().setTaxId(taxNumber.getText());
-        detail.getUser().setDescription(descriptionBox.getText());
-        //notifications
-        for (int i = 0; i < detail.getNotifications().size(); i++) {
-            NotificationItemView notificationWidget = (NotificationItemView) notifications.getWidget(i);
-            NotificationDetail notificationDetail = detail.getNotifications().get(i);
-
-            notificationDetail.setEnabled(notificationWidget.getEnabled().getValue());
-            notificationDetail.setName(notificationWidget.getName().getText());
-            notificationDetail.setPeriod(Period.values()[notificationWidget.getPeriod().getSelectedIndex()]);
-        }
-
-        if (getAddress() != null) {
-            detail.getUser().setAddresses(Arrays.asList(getAddress()));
-        }
-        return detail;
-    }
-
-//    @Override
-    public void setAddressesContent(AddressDetail detail) {
+    public void setAddressSettings(AddressDetail detail) {
         //set data
 //        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
         AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
@@ -246,21 +194,28 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
         addressWidget.getStreetTextBox().addDomHandler(change, ChangeEvent.getType());
     }
 
-//    @Override
-//    public void setAddressesHeader(String address) {
-//        SafeHtmlBuilder header = new SafeHtmlBuilder();
-//        buildHeaderBold(header, Storage.MSGS.address());
-//        header.appendEscaped(address);
-//        ((HTML) disclosureAddress.getHeader()).setHTML(header.toSafeHtml());
-//    }
+    @Override
+    public SettingDetail updateUserSettings(SettingDetail detail) {
+        detail.getUser().setCompanyName(companyName.getText());
+        detail.getUser().setWebsite(web.getText());
+        detail.getUser().setEmail(email.getText());
+        detail.getUser().setPhone(phone.getText());
+        detail.getUser().setFirstName(firstName.getText());
+        detail.getUser().setLastName(lastName.getText());
+        detail.getUser().setIdentificationNumber(identificationNumber.getText());
+        detail.getUser().setTaxId(taxNumber.getText());
+        detail.getUser().setDescription(descriptionBox.getText());
+
+        if (getAddress() != null) {
+            detail.getUser().setAddresses(Arrays.asList(getAddress()));
+        }
+        return detail;
+    }
+
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
-    /** PANELS. **/
-//    @Override
-//    public DisclosurePanel getDisclosureAddress() {
-//        return disclosureAddress;
-//    }
     /** OTHERS. **/
     @Override
     public AddressDetail getAddress() {
@@ -285,13 +240,6 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
 
     @Override
     public boolean isSettingChange() {
-        /** Notifications. **/
-        //Check if any notification has changed
-        for (int i = 0; i < notifications.getWidgetCount(); i++) {
-            if (((NotificationItemView) notifications.getWidget(i)).isNotificationChange()) {
-                return true;
-            }
-        }
         /** Others. **/
         //if notificatoin has not changes, check if anything elsa has.
         return !originalsStorage.isEmpty();
@@ -305,12 +253,6 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
-//    private void buildHeaderBold(SafeHtmlBuilder header, String headerStart) {
-//        header.appendHtmlConstant("<strong>");
-//        header.appendEscaped(headerStart);
-//        header.appendEscaped(": ");
-//        header.appendHtmlConstant("</strong>");
-//    }
     private void updateStatus() {
 //        status.setText(originalsStorage.toString());
         DomEvent.fireNativeEvent(Document.get().createChangeEvent(), status);

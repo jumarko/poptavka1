@@ -323,6 +323,9 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void initAddressWidget(SimplePanel embedToWidget);
 
+    @Event(forwardToModules = SettingsModule.class)
+    void notifyAddressWidgetListeners();
+
     /**************************************************************************/
     /* SERVICE SELECTOR WIDGET.                                               */
     /**************************************************************************/

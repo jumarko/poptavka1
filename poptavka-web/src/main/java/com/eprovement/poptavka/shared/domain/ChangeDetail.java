@@ -87,6 +87,8 @@ public class ChangeDetail implements IsSerializable {
             this.dateValue = (Date) value;
         } else if (value instanceof Number) {
             this.integerValue = (Number) value;
+        } else if (value instanceof Boolean) {
+            this.booleanValue = (Boolean) value;
         } else if (value instanceof List) {
             this.listValue = new ArrayList<IListDetailObject>(
                     (List<IListDetailObject>) value); //make a copy
@@ -100,6 +102,8 @@ public class ChangeDetail implements IsSerializable {
             return dateValue;
         } else if (integerValue != null) {
             return integerValue;
+        } else if (booleanValue != null) {
+            return booleanValue;
         } else if (listValue != null) {
             return listValue;
         } else {

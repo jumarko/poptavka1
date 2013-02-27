@@ -1,0 +1,70 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+             ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+             ui:generateLocales='default'>
+
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
+    <ui:style>
+        .tabIndex1 { z-index: 1;}
+        .tabIndex2 { z-index: 2;}
+        .tabIndex3 { z-index: 3;}
+        .tabIndex4 { z-index: 4;}
+        .tabIndex5 { z-index: 5; padding: 0 35px 0 25px;}
+
+        .selectorLayout {width: 980px; height: 350px;}
+
+        .header {
+        font-size: 110%;
+        font-weight: bold;
+        color: #555;
+        }
+
+        .label {
+        font-weight: bold;
+        }
+
+        .decorationPanel {
+        width: 100%;
+        }
+
+        .titleBox {
+        width: 100%;
+        height: 55px;
+        }
+
+        .descriptionBox {
+        width: 100%;
+        height: 150px;
+        }
+
+        .priceBox,.categoryBox,.expirationBox,.endDateBox,.clientID,.maxOffers,.minRating,.demandType,.demandStatus
+        {
+
+        }
+    </ui:style>
+
+    <g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
+        <g:ScrollPanel>
+            <b:FluidContainer>
+                <b:FluidRow>
+                    <b:Column size="12">
+                        <b:Label>
+                            <ui:msg key='userSettingsNotifications'>Notifications:</ui:msg>
+                        </b:Label>
+                    </b:Column>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="12">
+                        <g:VerticalPanel ui:field="notifications" />
+                    </b:Column>
+                </b:FluidRow>
+            </b:FluidContainer>
+        </g:ScrollPanel>
+    </g:DecoratorPanel>
+
+</ui:UiBinder>

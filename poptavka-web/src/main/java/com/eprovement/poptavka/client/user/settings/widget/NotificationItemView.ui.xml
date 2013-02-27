@@ -13,12 +13,15 @@
         .label {
         font-weight: bold;
         }
+        .bgc {
+        background: #FFF000;
+        }
     </ui:style>
 
-    <g:HTMLPanel>
-        <table style="width: 100%;">
-            <tr>
-                <td class='{style.label}'>
+    <g:HTMLPanel ui:field="panel">
+        <b:FluidContainer>
+            <b:FluidRow>
+                <b:Column size="5">
                     <g:Label ui:field="name" />
                 </td>
                 <td>
@@ -26,10 +29,14 @@
                 </td>
                 <td>
                     <g:ListBox ui:field="period" visibleItemCount='1' />
-                </td>
-            </tr>
-        </table>
-        <g:TextBox ui:field="status" visible='false' />
+                </b:Column>
+                <b:Column size="1">
+                    <g:Anchor ui:field="revert" visible="false">
+                        <ui:msg key="commonBtnRevert">Revert</ui:msg>
+                    </g:Anchor>
+                </b:Column>
+            </b:FluidRow>
+        </b:FluidContainer>
     </g:HTMLPanel>
 
 </ui:UiBinder>

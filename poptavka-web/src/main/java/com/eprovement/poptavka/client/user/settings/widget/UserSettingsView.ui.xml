@@ -192,31 +192,6 @@
                         </tr>
                     </table>
                 </g:HTMLPanel>
-
-                <g:HTMLPanel>
-                    <table>
-                        <tr>
-                            <td class='{style.label}'>
-                                <g:DecoratorPanel>
-                                    <g:HTMLPanel>
-                                        <table style="width: 100%;">
-                                            <tr>
-                                                <td>
-                                                    <ui:msg key='userSettingsNotifications'>Notifications:</ui:msg>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <g:VerticalPanel ui:field="notifications" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </g:HTMLPanel>
-                                </g:DecoratorPanel>
-                            </td>
-                        </tr>
-                    </table>
-                </g:HTMLPanel>
             </g:HorizontalPanel>
         </g:ScrollPanel>
     </g:DecoratorPanel>

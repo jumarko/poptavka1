@@ -5,52 +5,43 @@
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
-import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter.UserSettingsViewInterface;
-import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter.SystemSettingsViewInterface;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.ArrayList;
 
 /**
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = UserSettingsView.class, multiple = true)
-public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterface, SettingsEventBus> {
+@Presenter(view = SystemSettingsView.class, multiple = true)
+public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInterface, SettingsEventBus> {
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
     /**************************************************************************/
-    public interface UserSettingsViewInterface extends LazyView {
+    public interface SystemSettingsViewInterface extends LazyView {
 
-        void setUserSettings(SettingDetail detail);
+        void setSystemSettings(SettingDetail detail);
 
-        void setAddressSettings(AddressDetail detail);
+        void setChangeHandler(ChangeHandler changeHandler);
 
-        SettingDetail updateUserSettings(SettingDetail detail);
-
-        SimplePanel getAddressHolder();
-
-        //Others
-        AddressDetail getAddress();
-
-        TextBox getStatus();
-
-        boolean isSettingChange();
+        SettingDetail updateSystemSettings(SettingDetail detail);
 
         Widget getWidgetView();
     }
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    private static final int MAX_DESC_CHARS = 50;
-    //
+    //history of changes
+    private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
     private SettingDetail settingsDetail;
 
     /**************************************************************************/
@@ -58,39 +49,50 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
     /**************************************************************************/
     @Override
     public void bindView() {
-        addDisclosureAddressHandlers();
-    }
-
-    /**************************************************************************/
-    /* BIND - Helper methods                                                  */
-    /**************************************************************************/
-    private void addDisclosureAddressHandlers() {
-        view.getStatus().addChangeHandler(new ChangeHandler() {
+        view.setChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                eventBus.updateUserStatus(view.isSettingChange());
+                NotificationItemView source = (NotificationItemView) event.getSource();
+                manageUpdatedField(source.getEnabledChangeDetail());
+                manageUpdatedField(source.getPeriodChangeDetail());
+                eventBus.updateSystemStatus(isSystemSettingsCHanged());
             }
         });
+    }
+
+    private void manageUpdatedField(ChangeDetail changeMonitor) {
+        if (!changeMonitor.getOriginalValue().equals(changeMonitor.getValue())) {
+            //if contains already - remove before adding new
+            if (updatedFields.contains(changeMonitor)) {
+                updatedFields.remove(changeMonitor);
+            }
+            updatedFields.add(changeMonitor);
+        } else {
+            updatedFields.remove(changeMonitor);
+        }
     }
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
-    public void initUserSettings(SimplePanel holder) {
+    public void initSystemSettings(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
-        eventBus.initAddressWidget(view.getAddressHolder());
     }
 
     /**************************************************************************/
     /* METHODS                                                                */
     /**************************************************************************/
-    public void onSetUserSettings(SettingDetail detail) {
+    public void onSetSystemSettings(SettingDetail detail) {
         this.settingsDetail = detail;
-        view.setUserSettings(detail);
+        view.setSystemSettings(detail);
         eventBus.loadingHide();
     }
 
-    public void onNotifyAddressWidgetListeners() {
-        view.setAddressSettings(settingsDetail.getUser().getAddresses().get(0));
+    public SettingDetail updateSystemSettings(SettingDetail detail) {
+        return view.updateSystemSettings(detail);
+    }
+
+    public boolean isSystemSettingsCHanged() {
+        return !updatedFields.isEmpty();
     }
 }

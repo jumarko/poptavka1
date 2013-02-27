@@ -245,6 +245,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         }
         addressSelector = eventBus.addHandler(AddressSelectorPresenter.class);
         addressSelector.initAddressWidget(holderPanel);
+        eventBus.notifyAddressWidgetListeners();
     }
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {

@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresent
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsView;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsView;
+import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsView;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -32,6 +33,7 @@ public class SettingsPresenter
     private UserSettingsPresenter userPresenter = null;
     private ClientSettingsPresenter clientPresenter = null;
     private SupplierSettingsPresenter supplierPresenter = null;
+    private SystemSettingsPresenter systemPresenter = null;
     //
     private SettingDetail settingsDetail;
 
@@ -145,6 +147,7 @@ public class SettingsPresenter
         view.getMenuSystemBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                initSystemSettings(view.getContentPanel());
             }
         });
     }
@@ -175,7 +178,6 @@ public class SettingsPresenter
         this.settingsDetail = detail;
         //set userSettings widget because it is loaded on startup
         initUserSettings(view.getContentPanel());
-        eventBus.setUserSettings(detail);
     }
 
     public void onResponseUpdateSettings(Boolean updated) {
@@ -199,12 +201,17 @@ public class SettingsPresenter
         view.updateSupplierStatus(isChange);
     }
 
+    public void onUpdateSystemStatus(boolean isChange) {
+        view.updateSystemStatus(isChange);
+    }
+
     /**************************************************************************/
     /* Init Methods                                                           */
     /**************************************************************************/
     public void initUserSettings(SimplePanel holder) {
         if (userPresenter == null) {
             userPresenter = eventBus.addHandler(UserSettingsPresenter.class);
+            userPresenter.onSetUserSettings(settingsDetail);
         }
         userPresenter.initUserSettings(holder);
     }
@@ -212,6 +219,7 @@ public class SettingsPresenter
     public void initClientSettings(SimplePanel holder) {
         if (clientPresenter == null) {
             clientPresenter = eventBus.addHandler(ClientSettingsPresenter.class);
+            clientPresenter.onSetClientSettings(settingsDetail);
         }
         clientPresenter.initUserSettings(holder);
     }
@@ -219,8 +227,17 @@ public class SettingsPresenter
     public void initSupplierSettings(SimplePanel holder) {
         if (supplierPresenter == null) {
             supplierPresenter = eventBus.addHandler(SupplierSettingsPresenter.class);
+            supplierPresenter.onSetSupplierSettings(settingsDetail);
         }
         supplierPresenter.initUserSettings(holder);
+    }
+
+    public void initSystemSettings(SimplePanel holder) {
+        if (systemPresenter == null) {
+            systemPresenter = eventBus.addHandler(SystemSettingsPresenter.class);
+            systemPresenter.onSetSystemSettings(settingsDetail);
+        }
+        systemPresenter.initSystemSettings(holder);
     }
 
     /**************************************************************************/
@@ -267,11 +284,24 @@ public class SettingsPresenter
         return false;
     }
 
+    /**
+     * Update that part of SettingsDetail that belongs to SystemSettings widget.
+     */
+    private boolean updateSystemSettings() {
+        //check if supplierSettings was event loaded
+        if (systemPresenter != null && systemPresenter.isSystemSettingsCHanged()) {
+            settingsDetail = systemPresenter.updateSystemSettings(settingsDetail);
+            return true;
+        }
+        return false;
+    }
+
     private void updateProfile() {
         eventBus.loadingShow(Storage.MSGS.progressUpdatingProfile());
         boolean update = updateUserSettings();
         update = update || updateClientSettings();
         update = update || updateSupplierSettings();
+        update = update || updateSystemSettings();
         if (update) {
             eventBus.requestUpdateSettings(settingsDetail);
         } else {
