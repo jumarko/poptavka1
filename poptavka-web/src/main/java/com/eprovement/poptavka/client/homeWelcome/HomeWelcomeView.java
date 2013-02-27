@@ -1,10 +1,8 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
-import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RootCategoryCell;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.core.client.GWT;
@@ -14,10 +12,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.inject.Inject;
 import java.util.ArrayList;
 
 /**************************************************************************/
@@ -25,17 +21,14 @@ import java.util.ArrayList;
 public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter> implements IHomeWelcomeView {
 
     private static HomeWelcomeViewUiBinder uiBinder = GWT.create(HomeWelcomeViewUiBinder.class);
-    private SimpleRPCServiceAsync simpleService;
 
     interface HomeWelcomeViewUiBinder extends UiBinder<Widget, HomeWelcomeView> {
     }
 
-    public HomeWelcomeView() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    @UiField(provided = true) CellList<CategoryDetail> categoryList;
     @UiField FlowPanel categorySection;
     @UiField Button suppliersBtn, demandsBtn;
     @UiField Button howItWorksSupplierBtn, howItWorksDemandBtn;
@@ -46,12 +39,20 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     Button sendUsEmailButton = new Button();
     //
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
-            new SingleSelectionModel<CategoryDetail>();
+            new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    public HomeWelcomeView() {
+        categoryList = new CellList<CategoryDetail>(new RootCategoryCell());
+        categoryList.setSelectionModel(selectionRootModel);
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
     public HomeWelcomeView(String firstName) {
+        categoryList = new CellList<CategoryDetail>(new RootCategoryCell());
+        categoryList.setSelectionModel(selectionRootModel);
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -59,35 +60,8 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /**************************************************************************/
 
     @Override
-    public void displayCategories(int columns, ArrayList<CategoryDetail> rootCategories) {
-        if (rootCategories.isEmpty()) {
-            categorySection.clear();
-            return;
-        }
-        categorySection.clear();
-        int size = rootCategories.size();
-        int subSize = 0;
-        int startIdx = 0;
-        if (size < columns) {
-            columns = size;
-        }
-        while (columns != 0) {
-            if (size % columns == 0) {
-                subSize = size / columns;
-            } else {
-                subSize = size / columns + 1;
-            }
-            CellList cellList = null;
-            cellList = new CellList<CategoryDetail>(new RootCategoryCell());
-            cellList.setLoadingIndicator(new Label(Storage.MSGS.loadingRootCategories()));
-            cellList.setRowCount(subSize, true);
-            cellList.setSelectionModel(selectionRootModel);
-            cellList.setRowData(rootCategories.subList(startIdx, startIdx + subSize));
-            categorySection.add(cellList);
-            startIdx += subSize;
-            size -= subSize;
-            columns--;
-        }
+    public void displayCategories(ArrayList<CategoryDetail> rootCategories) {
+        categoryList.setRowData(rootCategories);
     }
 
     /**************************************************************************/
@@ -106,11 +80,6 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     @Override
     public Widget getWidgetView() {
         return this;
-    }
-
-    @Inject
-    void setSimpleService(SimpleRPCServiceAsync service) {
-        simpleService = service;
     }
 
     /** ANCHOR. **/

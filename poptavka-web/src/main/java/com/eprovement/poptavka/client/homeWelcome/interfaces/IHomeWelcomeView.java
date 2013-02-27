@@ -18,7 +18,7 @@ public interface IHomeWelcomeView extends IsWidget {
 
     SingleSelectionModel<CategoryDetail> getCategorySelectionModel();
 
-    void displayCategories(int columns, ArrayList<CategoryDetail> categories);
+    void displayCategories(ArrayList<CategoryDetail> categories);
 
     Widget getWidgetView();
 

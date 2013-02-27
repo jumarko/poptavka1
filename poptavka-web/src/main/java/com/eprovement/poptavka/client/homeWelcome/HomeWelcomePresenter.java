@@ -23,7 +23,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         IHomeWelcomePresenter, NavigationConfirmationInterface {
 
     //columns number of root chategories in parent widget
-    private static final int COLUMNS = 4;
     private SimpleRPCServiceAsync simpleService;
 
     //TODO remove this and all relevant code, if security development is finnished
@@ -70,18 +69,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         addRegisterDemandBtnClickHandler();
 
         /** OTHERS. **/
-        view.getCategorySelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
-
-                if (selected != null) {
-                    SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
-                    searchDataHolder.getCategories().add(selected);
-                    eventBus.goToHomeDemandsModule(searchDataHolder);
-                }
-            }
-        });
+        addCategorySelectionModelHandler();
 
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
             @Override
@@ -215,6 +203,22 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         });
     }
 
+    /** OTHERS. **/
+    private void addCategorySelectionModelHandler() {
+        view.getCategorySelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
+
+                if (selected != null) {
+                    SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
+                    searchDataHolder.getCategories().add(selected);
+                    eventBus.goToHomeDemandsModule(searchDataHolder);
+                }
+            }
+        });
+    }
+
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
@@ -224,7 +228,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
      * @param rootCategories - root categories to be displayed
      */
     public void onDisplayCategories(ArrayList<CategoryDetail> rootCategories) {
-        view.displayCategories(COLUMNS, rootCategories);
+        view.displayCategories(rootCategories);
     }
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
