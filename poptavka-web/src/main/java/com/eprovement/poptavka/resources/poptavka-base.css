@@ -32,7 +32,7 @@ body>div {
 
 .body-container {
     position: relative;
-    margin: 0 0 0 340px;
+    margin: 0 auto;
     width: 975px;
     height: 100%;
 }
