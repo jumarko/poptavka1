@@ -76,7 +76,8 @@ public class CategorySelectorView extends Composite
                 cellBrowserSelectionModel,
                 categorySelectorPresenter.getCategoryService(),
                 categorySelectorPresenter.getEventBus(),
-                checkboxes, displayCountsOfWhat), null);
+                checkboxes, displayCountsOfWhat,
+                null), null);
         cellBrowser.setSize("950px", "350px");
         cellBrowser.setAnimationEnabled(true);
         cellBrowserHolder.setWidget(cellBrowser);

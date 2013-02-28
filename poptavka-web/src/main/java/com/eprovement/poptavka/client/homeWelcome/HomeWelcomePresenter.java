@@ -6,7 +6,6 @@ import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IH
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -40,8 +39,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     public void onForward() {
         eventBus.setUpSearchBar(null);
-        //Martin Temporary commented - not to load categories at application startup
-        //eventBus.getRootCategories();
+        view.getCategorySelectionModel().clear();
     }
 
     @Override
@@ -211,9 +209,8 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
                 CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
 
                 if (selected != null) {
-                    SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
-                    searchDataHolder.getCategories().add(selected);
-                    eventBus.goToHomeDemandsModule(searchDataHolder);
+                    int idx = view.getDataProvider().getList().indexOf(selected);
+                    eventBus.goToHomeDemandsModuleFromWelcome(idx, selected);
                 }
             }
         });

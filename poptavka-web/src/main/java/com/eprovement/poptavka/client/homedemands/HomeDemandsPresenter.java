@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.common.category.HasCellTreeLoadingHandlers;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homesuppliers.TreeItem;
@@ -43,7 +44,7 @@ import java.util.List;
 @Presenter(view = HomeDemandsView.class)
 public class HomeDemandsPresenter
         extends LazyPresenter<HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus>
-        implements NavigationConfirmationInterface {
+        implements NavigationConfirmationInterface, HasCellTreeLoadingHandlers {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -97,6 +98,7 @@ public class HomeDemandsPresenter
      * If lastOpened == null -> the last item is leaf
      */
     private TreeNode lastOpened = null;
+    private CategoryDetail selectCategory;
     //FLAGS
     //--------------------------------------------------------------------------
     private long selectedDemand = -1;
@@ -168,8 +170,27 @@ public class HomeDemandsPresenter
 
         //widget initialization
         //----------------------------------------------------------------------
-        restoreFiltering(searchModuleDataHolder);
+        setFilteringLabel(searchModuleDataHolder);
         deselectCellTree(); //fire event which retrieve data
+    }
+
+    /**
+     * Category index must be passed as argument because at the time we want to
+     * select selected category, no categories are loaded from backend yet.
+     * @param categoryIdx
+     * @param category
+     */
+    public void onGoToHomeDemandsModuleFromWelcome(final int categoryIdx, CategoryDetail category) {
+        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
+        onGoToHomeDemandsModule(null);
+        lastOpened = view.getCellTree().getRootTreeNode();
+        selectCategory = category;
+        //If categories are loaded, open selected category's node
+        //categoryLoadingHandler won't fire in this case
+        if (lastOpened.getChildCount() > 0) {
+            openNode(getIndex(lastOpened, category));
+        }
+
     }
 
     /**
@@ -184,7 +205,7 @@ public class HomeDemandsPresenter
     public void onSetModuleByHistory(SearchModuleDataHolder filterHolder,
             LinkedList<TreeItem> historyTree, CategoryDetail categoryDetail, int page, long demandID) {
         calledFromHistory = true;
-        restoreFiltering(filterHolder);
+        setFilteringLabel(filterHolder);
         restoreCellTreeOpenedNodes(historyTree, categoryDetail);
         restoreCellTreeSelectionAndTableData(categoryDetail, page);
         restoreTableSelection(demandID);
@@ -200,7 +221,7 @@ public class HomeDemandsPresenter
      * - if null - hides filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_DEFAULT
      * - if not null - display filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_SEARCH
      */
-    private void restoreFiltering(SearchModuleDataHolder filterHolder) {
+    private void setFilteringLabel(SearchModuleDataHolder filterHolder) {
         //FILTER
         //----------------------------------------------------------------------
         if (filterHolder == null) {
@@ -208,21 +229,6 @@ public class HomeDemandsPresenter
             view.getFilterLabel().setText("");
             view.getFilterLabelPanel().setVisible(false);
         } else {
-            //HOME_DEMANDS_BY_WELCOME
-            //TODO RELEASE Martin - cannot work this way. While searching one category
-            //can be olso choosen. When implementing home module, refactor this.
-//            if (filterHolder.getSearchText().isEmpty()
-//                    && filterHolder.getLocalities().isEmpty()
-//                    && filterHolder.getAttributes().isEmpty()
-//                    && filterHolder.getCategories().size() == 1) {
-//                Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
-//                //select given category
-//                view.getSelectionCategoryModel().setSelected(filterHolder.getCategories().get(0), true);
-//                //open appropiate node
-//                openNode(getIndex(view.getCellTree().getRootTreeNode(), filterHolder.getCategories().get(0)));
-//                view.getFilterLabel().setText("");
-//                view.getFilterLabelPanel().setVisible(false);
-//            } else {
             //HOME_DEMANDS_BY_SEARCH
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
             //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
@@ -230,8 +236,6 @@ public class HomeDemandsPresenter
             //TODO RELEASE Martin i18n
             view.getFilterLabel().setText("Results satisfying searching criteria:" + filterHolder.toString());
             view.getFilterLabelPanel().setVisible(true);
-//            }
-
         }
         searchDataHolder = filterHolder;
     }
@@ -401,14 +405,34 @@ public class HomeDemandsPresenter
     @Override
     public void bindView() {
         dataGridRangeChangeHandler();
-        cellTreeLoadingStateChangeHandler();
         cellTreeOpenHandler();
         selectionCategoryChangeHandler();
         dataGridSelectioModelChangeHandler();
     }
 
+    /**
+     * Open node's child according to temporary opened hierarchy. Must be done this
+     * way, because, cellTree's nodes are retrieved asynchronously, therefore sometimes
+     * we are trying to open something that doesn't have nodes yet, because they are
+     * not retrieved yet. Therefore way, until retrieving process ends and that open wanted node.
+     */
+    @Override
+    public LoadingStateChangeEvent.Handler getCategoryLoadingHandler() {
+        return new LoadingStateChangeEvent.Handler() {
+            @Override
+            public void onLoadingStateChanged(LoadingStateChangeEvent event) {
+                if (!temporaryOpenedHierarchy.isEmpty()) {
+                    selectedEvent = true;
+                    lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+                } else {
+                    openNode(getIndex(lastOpened, selectCategory));
+                }
+            }
+        };
+    }
+
     /**************************************************************************/
-    /* Bind Handlers                                                          */
+    /* Bind events - helper methods                                           */
     /**************************************************************************/
     /**
      * Handle table range change by creating token for new range/page.
@@ -420,24 +444,6 @@ public class HomeDemandsPresenter
                 createTokenForHistory();
             }
         });
-    }
-
-    /**
-     * Open node's child according to temporary opened hierarchy. Must be done this
-     * way, because, cellTree's nodes are retrieved asynchronously, therefore sometimes
-     * we are trying to open something that doesn't have nodes yet, because they are
-     * not retrieved yet. Therefore way, until retrieving process ends and that open wanted node.
-     */
-    private void cellTreeLoadingStateChangeHandler() {
-        view.getCellTree().addHandler(new LoadingStateChangeEvent.Handler() {
-            @Override
-            public void onLoadingStateChanged(LoadingStateChangeEvent event) {
-                if (!temporaryOpenedHierarchy.isEmpty()) {
-                    selectedEvent = true;
-                    lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
-                }
-            }
-        }, LoadingStateChangeEvent.TYPE);
     }
 
     /**
@@ -752,9 +758,8 @@ public class HomeDemandsPresenter
      */
     private TreeNode openNode(int indexToOpen) {
         //If selecting same level, but different node, close originals
-        closeAllNodes(lastOpened);
-
-        if (lastOpened != null) {
+        if (lastOpened != null && indexToOpen != -1) {
+            closeAllNodes(lastOpened);
             return lastOpened.setChildOpen(indexToOpen, true);
         }
         return null;

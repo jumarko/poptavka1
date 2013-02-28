@@ -57,6 +57,9 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
+    void goToHomeDemandsModuleFromWelcome(int categoryIdx, CategoryDetail category);
+
+    @Event(forwardToParent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)

@@ -62,6 +62,9 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     @Event(handlers = HomeDemandsPresenter.class, navigationEvent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filterHolder);
 
+    @Event(handlers = HomeDemandsPresenter.class, navigationEvent = true)
+    void goToHomeDemandsModuleFromWelcome(int categoryIdx, CategoryDetail category);
+
     /**************************************************************************/
     /* History events                                                          */
     /**************************************************************************/

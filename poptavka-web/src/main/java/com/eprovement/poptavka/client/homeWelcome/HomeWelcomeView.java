@@ -13,6 +13,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     Button securedButton = new Button();
     Button sendUsEmailButton = new Button();
     //
+    private ListDataProvider dataProvider = new ListDataProvider();
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
 
@@ -47,6 +49,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     public HomeWelcomeView() {
         categoryList = new CellList<CategoryDetail>(new RootCategoryCell());
         categoryList.setSelectionModel(selectionRootModel);
+        dataProvider.addDataDisplay(categoryList);
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -61,7 +64,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
 
     @Override
     public void displayCategories(ArrayList<CategoryDetail> rootCategories) {
-        categoryList.setRowData(rootCategories);
+        dataProvider.setList(rootCategories);
     }
 
     /**************************************************************************/
@@ -75,6 +78,11 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     @Override
     public SingleSelectionModel<CategoryDetail> getCategorySelectionModel() {
         return selectionRootModel;
+    }
+
+    @Override
+    public ListDataProvider getDataProvider() {
+        return dataProvider;
     }
 
     @Override

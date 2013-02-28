@@ -6,7 +6,6 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.i18n.client.ValidationMessages;
-import com.google.gwt.user.cellview.client.CellTree;
 
 /**
  * Global controller for events such as loading and stuff like that.
@@ -199,19 +198,6 @@ public final class Storage {
         setAppCalledByURL(null);
         setDemandId(-1L);
         setCurrentlyLoadedView(-1);
-    }
-    /**************************************************************************/
-    /* Workarount to access tree from its data provider.                      */
-    /* Need to fire event when data have been loaded.                         */
-    /**************************************************************************/
-    private static CellTree tree = null;
-
-    public static CellTree getTree() {
-        return tree;
-    }
-
-    public static void setTree(CellTree tree) {
-        Storage.tree = tree;
     }
 
     /**

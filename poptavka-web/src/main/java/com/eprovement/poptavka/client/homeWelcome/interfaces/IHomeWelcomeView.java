@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 
@@ -17,6 +18,8 @@ public interface IHomeWelcomeView extends IsWidget {
     FlowPanel getCategorySection();
 
     SingleSelectionModel<CategoryDetail> getCategorySelectionModel();
+
+    ListDataProvider getDataProvider();
 
     void displayCategories(ArrayList<CategoryDetail> categories);
 

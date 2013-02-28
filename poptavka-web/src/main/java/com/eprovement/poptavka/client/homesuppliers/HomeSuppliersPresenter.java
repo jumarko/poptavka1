@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
+import com.eprovement.poptavka.client.common.category.HasCellTreeLoadingHandlers;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
@@ -47,7 +48,7 @@ import java.util.List;
 @Presenter(view = HomeSuppliersView.class)
 public class HomeSuppliersPresenter
         extends LazyPresenter<HomeSuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus>
-        implements NavigationConfirmationInterface {
+        implements NavigationConfirmationInterface, HasCellTreeLoadingHandlers {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -387,14 +388,32 @@ public class HomeSuppliersPresenter
     @Override
     public void bindView() {
         dataGridRangeChangeHandler();
-        cellTreeLoadingStateChangeHandler();
         cellTreeOpenHandler();
         selectionCategoryChangeHandler();
         dataGridSelectioModelChangeHandler();
     }
 
+    /**
+     * Open node's child according to temporary opened hierarchy. Must be done this
+     * way, because, cellTree's nodes are retrieved asynchronously, therefore sometimes
+     * we are trying to open something that doesn't have nodes yet, because they are
+     * not retrieved yet. Therefore way, until retrieving process ends and that open wanted node.
+     */
+    @Override
+    public LoadingStateChangeEvent.Handler getCategoryLoadingHandler() {
+        return new LoadingStateChangeEvent.Handler() {
+            @Override
+            public void onLoadingStateChanged(LoadingStateChangeEvent event) {
+                if (!temporaryOpenedHierarchy.isEmpty()) {
+                    selectedEvent = true;
+                    lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
+                }
+            }
+        };
+    }
+
     /**************************************************************************/
-    /* Bind Handlers                                                          */
+    /* Bind events - helper methods                                           */
     /**************************************************************************/
     /**
      * Handle table range change by creating token for new range/page.
@@ -406,24 +425,6 @@ public class HomeSuppliersPresenter
                 createTokenForHistory();
             }
         });
-    }
-
-    /**
-     * Open node's child according to temporary opened hierarchy. Must be done this
-     * way, because, cellTree's nodes are retrieved asynchronously, therefore sometimes
-     * we are trying to open something that doesn't have nodes yet, because they are
-     * not retrieved yet. Therefore way, until retrieving process ends and that open wanted node.
-     */
-    private void cellTreeLoadingStateChangeHandler() {
-        view.getCellTree().addHandler(new LoadingStateChangeEvent.Handler() {
-            @Override
-            public void onLoadingStateChanged(LoadingStateChangeEvent event) {
-                if (!temporaryOpenedHierarchy.isEmpty()) {
-                    selectedEvent = true;
-                    lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
-                }
-            }
-        }, LoadingStateChangeEvent.TYPE);
     }
 
     /**

@@ -125,8 +125,8 @@ public class HomeSuppliersView extends OverflowComposite
                 homeSuppliersPresenter.getCategoryService(),
                 homeSuppliersPresenter.getEventBus(),
                 Constants.WITHOUT_CHECK_BOXES,
-                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS), null, resource);
-        Storage.setTree(cellTree);
+                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
+                homeSuppliersPresenter.getCategoryLoadingHandler()), null, resource);
         cellTree.setAnimationEnabled(true);
     }
 

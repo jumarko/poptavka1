@@ -120,8 +120,8 @@ public class HomeDemandsView extends OverflowComposite
                 homeDemandsPresenter.getCategoryService(),
                 homeDemandsPresenter.getEventBus(),
                 Constants.WITHOUT_CHECK_BOXES,
-                CategoryCell.DISPLAY_COUNT_OF_DEMANDS), null, resource);
-        Storage.setTree(cellTree);
+                CategoryCell.DISPLAY_COUNT_OF_DEMANDS,
+                homeDemandsPresenter.getCategoryLoadingHandler()), null, resource);
         cellTree.setAnimationEnabled(true);
     }
 
