@@ -1,75 +1,55 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with field='res'
+        type='com.eprovement.poptavka.resources.StyleResource' />
 
-	<ui:style>
-		.important {
-			font-weight: bold;
-		}
-		
-		.footer-block {
-			display: block;
-			padding: 10px;
-			color: #000000;
-		}
-		
-		.footer-block a {
-			color: #000000;
-		}
-		
-		.fl {
-			float: left;
-		}
-		
-		.fr {
-			float: right;
-		}
-		
-		.footerButton {
-			background: none;
-			border: none;
-			float: right;
-			color: #000000;
-			padding: 10px;
-			text-shadow: 0 0 1px #bbbbbb;
-		}
-		
-		.footerButton:hover {
-			text-decoration: underline;
-			cursor: pointer;
-		}
-		
-		.separator {
-			background: none;
-			border: none;
-			float: right;
-			color: #000000;
-			padding: 10px 0;
-			text-shadow: 0 0 1px #bbbbbb;
-		}
-	</ui:style>
+    <ui:style>
+        .footer-block {
+        display: block;
+        padding: 10px;
+        color: #443b19;
+        }
 
-	<g:HTMLPanel styleName='{res.layout.fullSize} {res.layout.footerContainer}'>
-		<div
-			style="margin: 0 auto; width: 472px; position: relative; padding: 0 10px;">
-                        <g:Label styleName='{style.fl} {style.footer-block}'>
-                                <ui:msg key="footerCompanyName">2012 © eProvement s.r.o.</ui:msg>
-                        </g:Label>
-			<div style="float: right; color: #000000; padding: 10px; text-shadow: 0 0 1px #bbbbbb;">
-                                <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
-			</div>
-			<div class='{style.separator}'>|</div>
-			<g:Button ui:field="contactUs" styleName='{style.footerButton}'>
-                                <ui:msg key='footerContactUs'>Contact us</ui:msg>
-                        </g:Button>
-			<div class='{style.separator}'>|</div>
-			<div style="float: right; color: #000000; padding: 10px; text-shadow: 0 0 1px #bbbbbb;">
-                                <ui:msg key='footerAboutUs'>About us</ui:msg>
-			</div>
+        .footerButton {
+        background: none;
+        border: none;
+        float: right;
+        color: #827a5e;
+        padding: 10px;
+        }
 
-		</div>
-	</g:HTMLPanel>
+        .footerButton:hover {
+        text-decoration: underline;
+        cursor: pointer;
+        color: #237e00;
+        }
 
+        .separator {
+        background: none;
+        border: none;
+        float: right;
+        color: #827a5e;
+        padding: 10px 0;
+        }
+    </ui:style>
+
+    <g:HTMLPanel styleName='{res.layout.fullSize}'>
+        <g:HTMLPanel styleName='{res.layout.footerContainer}'>
+            <g:Label styleName='pull-left {style.footer-block}'>
+                <ui:msg key="footerCompanyName">2013 © eProvement s.r.o.</ui:msg>
+            </g:Label>
+            <g:Button styleName='{style.footerButton}'>
+                <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
+            </g:Button>
+            <div class='{style.separator}'>|</div>
+            <g:Button ui:field="contactUs" styleName='{style.footerButton}'>
+                <ui:msg key='footerContactUs'>Contact us</ui:msg>
+            </g:Button>
+            <div class='{style.separator}'>|</div>
+            <g:Button styleName='{style.footerButton}'>
+                <ui:msg key='footerAboutUs'>About us</ui:msg>
+            </g:Button>
+        </g:HTMLPanel>
+    </g:HTMLPanel>
 </ui:UiBinder>
