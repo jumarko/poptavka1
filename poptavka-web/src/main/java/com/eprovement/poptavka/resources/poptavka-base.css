@@ -298,6 +298,13 @@ body>div {
     cursor: pointer;
 }
 
+.logout-button-act {
+    background: url(images/logout_hover.png) no-repeat;
+    width: 44px;
+    height: 49px;
+    cursor: pointer;
+}
+
 .logout-menu-bar {
     background: url(images/logout-menubar.png) no-repeat scroll 0 0 transparent;
     border: medium none;

@@ -90,6 +90,9 @@ public interface LayoutResource extends CssResource {
     @ClassName("logout-button")
     String logoutButton();
 
+    @ClassName("logout-button-act")
+    String logoutButtonAct();
+
     @ClassName("logout-menu-bar")
     String logoutMenuBar();
 
