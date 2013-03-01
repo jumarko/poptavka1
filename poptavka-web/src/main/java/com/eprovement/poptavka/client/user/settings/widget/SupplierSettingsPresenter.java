@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
-import com.eprovement.poptavka.client.common.ChangeMonitor;
+import com.eprovement.poptavka.client.common.ListChangeMonitor;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
@@ -80,6 +80,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         Button getEditLocBtn();
 
         //Others
+        void commit();
+
         ServicesSelectorView getServiceWidget();
 
         Anchor getRevert();
@@ -96,8 +98,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     private ChangeHandler changeDetail  = new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                if (event.getSource() instanceof ChangeMonitor) {
-                    listChangedMonitorsManager((ChangeMonitor) event.getSource());
+                if (event.getSource() instanceof ListChangeMonitor) {
+                    listChangedMonitorsManager((ListChangeMonitor) event.getSource());
                 } else {
                     serviceChangeMonitorManager((ServicesSelectorView) event.getSource());
                 }
@@ -150,30 +152,23 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         }
                     }
                 });
-        view.setChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                if (event.getSource() instanceof ListChangeMonitor) {
-                    listChangedMonitorsManager((ListChangeMonitor) event.getSource());
-                } else {
-                    serviceChangeMonitorManager((ServicesSelectorView) event.getSource());
-                }
-
-                eventBus.updateSupplierStatus(isSupplierSettingChanged());
-            }
-        });
+        view.setChangeHandler(changeDetail);
         view.getRevert().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 view.getServicePanel().removeStyleName(Storage.RSCS.common().changed());
                 view.getRevert().setVisible(false);
-                view.getServiceWidget().setService(settingsDetail.getSupplier().getServices().get(0));
+                if (settingsDetail.getSupplier() != null
+                        && settingsDetail.getSupplier().getServices() != null
+                        && !settingsDetail.getSupplier().getServices().isEmpty()) {
+                    view.getServiceWidget().setService(settingsDetail.getSupplier().getServices().get(0));
+                }
                 eventBus.updateSupplierStatus(binded);
             }
         });
     }
 
-    private void listChangedMonitorsManager(ChangeMonitor source) {
+    private void listChangedMonitorsManager(ListChangeMonitor source) {
         source.getChangeDetail().setValue(source.getValue());
         if (source.isModified()) {
             //if contains already - remove before adding new
@@ -184,12 +179,11 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         } else {
             updatedFields.remove(source.getChangeDetail());
         }
-        eventBus.updateSystemStatus(isSupplierSettingChanged());
     }
 
     private void serviceChangeMonitorManager(ServicesSelectorView source) {
-        settingChanged = source.isChanged();
-        eventBus.updateSystemStatus(settingChanged);
+        serviceChanged = source.isChanged();
+        eventBus.updateSupplierStatus(serviceChanged);
     }
 
     /**************************************************************************/
@@ -209,15 +203,12 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     }
 
     public void onNofityServicesWidgetListeners() {
-        if (!settingsDetail.getSupplier().getServices().isEmpty()) {
+        if (settingsDetail.getSupplier() != null
+                && settingsDetail.getSupplier().getServices() != null
+                && !settingsDetail.getSupplier().getServices().isEmpty()) {
             view.getServiceWidget().setService(settingsDetail.getSupplier().getServices().get(0));
         }
-        view.getServiceWidget().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                eventBus.updateSupplierStatus(isSupplierSettingChanged());
-            }
-        });
+        view.getServiceWidget().addChangeHandler(changeDetail);
     }
 
     public SettingDetail updateSupplierSettings(SettingDetail settingDetail) {
@@ -225,6 +216,6 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     }
 
     public boolean isSupplierSettingChanged() {
-        return settingChanged || !updatedFields.isEmpty();
+        return serviceChanged || !updatedFields.isEmpty();
     }
 }

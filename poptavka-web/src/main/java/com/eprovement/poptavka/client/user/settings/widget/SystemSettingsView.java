@@ -37,7 +37,8 @@ public class SystemSettingsView extends Composite implements SystemSettingsPrese
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField VerticalPanel notifications;
+    @UiField
+    VerticalPanel notifications;
     /** Class attributes. **/
     private ClickHandler clickHandler;
     private ChangeHandler changeHandler;
@@ -48,6 +49,17 @@ public class SystemSettingsView extends Composite implements SystemSettingsPrese
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    /**************************************************************************/
+    /* Change monitoring methods                                              */
+    /**************************************************************************/
+    @Override
+    public void commit() {
+        for (int i = 0; i < notifications.getWidgetCount(); i++) {
+            NotificationItemView notificationWidget = (NotificationItemView) notifications.getWidget(i);
+            notificationWidget.commit();
+        }
     }
 
     /**************************************************************************/

@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
@@ -98,7 +99,7 @@ public class AddressSelectorView extends Composite
 
     @Override
     public void fireEvent(GwtEvent<?> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // nothing by default
     }
 
     /**************************************************************************/
@@ -132,11 +133,11 @@ public class AddressSelectorView extends Composite
     @Override
     public AddressDetail createAddress() {
         AddressDetail address = new AddressDetail();
-        address.setCountry("United States");
+        address.setCountry(Constants.COUNTRY);
         address.setRegion(region);
         address.setCity(city);
         address.setCityId(cityId);
-        address.setDistrict("");
+        address.setDistrict(Constants.DISTRICT);
         address.setStreet((String) streetMonitor.getValue());
         address.setZipCode((String) zipcodeMonitor.getValue());
 
@@ -169,10 +170,7 @@ public class AddressSelectorView extends Composite
     //--------------------------------------------------------------------------
     @Override
     public boolean isValid() {
-        boolean valid = cityMonitor.isValid();
-        valid = zipcodeMonitor.isValid() && valid;
-        valid = streetMonitor.isValid() && valid;
-        return valid;
+        return cityMonitor.isValid() && zipcodeMonitor.isValid() && streetMonitor.isValid();
     }
 
     @Override

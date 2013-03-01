@@ -33,6 +33,8 @@ import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 /**
+ * Widget validates and monitors changes of wrapped widget.
+ * This widget support only CellList as inner widget.
  *
  * @author Martin Slavkovsky
  */
@@ -175,6 +177,10 @@ public class ListChangeMonitor<T> extends Composite implements HasWidgets, HasCh
         } else {
             return !changeDetail.getOriginalValue().equals(getInputWidgetText());
         }
+    }
+
+    public ChangeDetail getChangeDetail() {
+        return changeDetail;
     }
 
     /** Change operations. **/

@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.ListChangeMonitor;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
@@ -47,12 +48,18 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField IntegerBox supplierRating;
-    @UiField SimplePanel servicePanel;
-    @UiField Anchor revert;
-    @UiField(provided = true) CellList categories, localities;
-    @UiField(provided = true) ListChangeMonitor categoriesMonitor, localitiesMonitor;
-    @UiField Button editCatBtn, editLocBtn;
+    @UiField
+    IntegerBox supplierRating;
+    @UiField
+    SimplePanel servicePanel;
+    @UiField
+    Anchor revert;
+    @UiField(provided = true)
+    CellList categories, localities;
+    @UiField(provided = true)
+    ListChangeMonitor categoriesMonitor, localitiesMonitor;
+    @UiField
+    Button editCatBtn, editLocBtn;
     //
     private PopupPanel selectorPopup;
 
@@ -92,13 +99,25 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     }
 
     /**************************************************************************/
+    /* Change monitoring methods                                              */
+    /**************************************************************************/
+    @Override
+    public void commit() {
+        categoriesMonitor.commit();
+        localitiesMonitor.commit();
+        revert.setVisible(false);
+        servicePanel.removeStyleName(Storage.RSCS.common().changed());
+        //Sets also original value
+        getServiceWidget().setService(getServiceWidget().getSelectedService());
+    }
+
+    /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override
     public void setChangeHandler(ChangeHandler handler) {
         categoriesMonitor.addChangeHandler(handler);
         localitiesMonitor.addChangeHandler(handler);
-        getServiceWidget().addChangeHandler(handler);
     }
 
     @Override
@@ -106,9 +125,10 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
         if (detail.getSupplier() != null
                 && detail.getSupplier().getOverallRating() != null) {
             supplierRating.setValue(detail.getSupplier().getOverallRating());
+            this.categoriesMonitor.setBothValues(detail.getSupplier().getCategories());
+            this.localitiesMonitor.setBothValues(detail.getSupplier().getLocalities());
         }
-        this.categoriesMonitor.setBothValues(detail.getSupplier().getCategories());
-        this.localitiesMonitor.setBothValues(detail.getSupplier().getLocalities());
+
     }
 
     @Override

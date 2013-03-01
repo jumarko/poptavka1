@@ -27,6 +27,8 @@ public class ClientSettingsPresenter extends LazyPresenter<ClientSettingsViewInt
     /**************************************************************************/
     public interface ClientSettingsViewInterface extends LazyView {
 
+        void commit();
+
         void setClientSettings(SettingDetail detail);
 
         SettingDetail updateClientSettings(SettingDetail detail);

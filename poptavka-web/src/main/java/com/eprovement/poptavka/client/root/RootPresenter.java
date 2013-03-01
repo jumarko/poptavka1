@@ -282,36 +282,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         eventBus.nofityServicesWidgetListeners();
     }
 
-//    private static final int OFFSET_X = 60;
-//    private static final int OFFSET_Y = 35;
-//    private void createLoadingPopup(String loadingMessage, Widget anchor) {
-//        popup = new PopupPanel(false, true);
-//        popup.setGlassEnabled(true);
-//        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
-//        popup.setWidget(new LoadingPopup(loadingMessage));
-//        int top = anchor.getAbsoluteTop() + (anchor.getOffsetHeight() / 2);
-//        int left = anchor.getAbsoluteLeft() + (anchor.getOffsetWidth() / 2)
-//                - OFFSET_X;
-//        popup.showRelativeTo(anchor);
-//        GWT.log("AbsoluteLeft: " + anchor.getAbsoluteLeft() + " OffsetWidth: "
-//                + (anchor.getOffsetWidth()));
-//        GWT.log("AbsoluteTop: " + anchor.getAbsoluteTop() + " Offsetheight: "
-//                + (anchor.getOffsetHeight()));
-//
-//        GWT.log("L: " + left + " T: " + top);
-//
-//        popup.show();
-//    }
-//
-//    private void createLoadingPopup(String loadingMessage) {
-//        popup = new PopupPanel(false, true);
-//        popup.setGlassEnabled(true);
-//        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
-//        popup.setWidget(new LoadingPopup(loadingMessage));
-//        popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X,
-//                (Window.getClientHeight() / 2) - OFFSET_Y);
-//        popup.show();
-//    }
     // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
         final DialogBox userInfoPanel = new DialogBox(false, false);

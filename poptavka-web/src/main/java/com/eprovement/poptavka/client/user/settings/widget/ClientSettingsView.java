@@ -42,6 +42,14 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     }
 
     /**************************************************************************/
+    /* Change monitoring methods                                              */
+    /**************************************************************************/
+    @Override
+    public void commit() {
+        // nothing for now - no updatable field for client settings for now
+    }
+
+    /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override

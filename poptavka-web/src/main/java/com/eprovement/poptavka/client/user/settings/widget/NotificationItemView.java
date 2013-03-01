@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
-import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -42,15 +41,15 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField FluidRow panel;
+    @UiField HTMLPanel panel;
     @UiField Anchor revert;
     @UiField Label name;
     @UiField CheckBox enabled;
     @UiField(provided = true) ListBox period;
-    //
+
     private static final String ENABLED = "enabled";
     private static final String PERIOD = "period";
-    private boolean originaEnabled;
+    private boolean originalEnabled;
     private int originalPeriodIdx;
 
     /**************************************************************************/
@@ -79,6 +78,15 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
     }
 
     /**************************************************************************/
+    /* Change monitoring methods                                              */
+    /**************************************************************************/
+    public void commit() {
+        originalEnabled = enabled.getValue();
+        originalPeriodIdx = period.getSelectedIndex();
+        setChangedStyles(false);
+    }
+
+    /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
     @UiHandler("enabled")
@@ -102,7 +110,7 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
     /**************************************************************************/
     public void revert() {
         if (isNotificationChange()) {
-            enabled.setValue(originaEnabled);
+            enabled.setValue(originalEnabled);
             period.setSelectedIndex(originalPeriodIdx);
             reset();
         }
@@ -117,7 +125,7 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
     /**************************************************************************/
     /** Setters. **/
     public void setEnabledBothValues(boolean value) {
-        originaEnabled = value;
+        originalEnabled = value;
         enabled.setValue(value);
     }
 
@@ -136,10 +144,10 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
 
     private void setChangedStyles(boolean changed) {
         if (changed) {
-            period.setStyleName(Storage.RSCS.common().changed());
+            panel.setStyleName(Storage.RSCS.common().changed());
             revert.setVisible(true);
         } else {
-            period.removeStyleName(Storage.RSCS.common().changed());
+            panel.removeStyleName(Storage.RSCS.common().changed());
             revert.setVisible(false);
         }
     }
@@ -152,7 +160,7 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
     }
 
     public boolean getOriginalEnabled() {
-        return originaEnabled;
+        return originalEnabled;
     }
 
     public boolean getEnabled() {
@@ -169,7 +177,7 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
 
     public ChangeDetail getEnabledChangeDetail() {
         ChangeDetail changeDetail = new ChangeDetail(ENABLED);
-        changeDetail.setOriginalValue(originaEnabled);
+        changeDetail.setOriginalValue(originalEnabled);
         changeDetail.setValue(enabled.getValue());
         return changeDetail;
     }
@@ -182,7 +190,7 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
     }
 
     public boolean isNotificationChange() {
-        return (originaEnabled != enabled.getValue())
+        return (originalEnabled != enabled.getValue())
                 || (originalPeriodIdx != period.getSelectedIndex());
     }
 }

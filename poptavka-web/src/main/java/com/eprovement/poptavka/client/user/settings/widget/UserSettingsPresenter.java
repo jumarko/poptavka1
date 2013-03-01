@@ -45,9 +45,7 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
         //Others
         AddressDetail getAddress();
 
-        void resetFields();
-
-        void revertFields();
+        void commit();
 
         Widget getWidgetView();
     }

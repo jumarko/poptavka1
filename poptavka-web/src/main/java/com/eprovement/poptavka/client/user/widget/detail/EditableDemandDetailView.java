@@ -86,29 +86,24 @@ public class EditableDemandDetailView extends Composite implements
     }
 
     private void initValidationMonitors() {
-        titleMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.TITLE.getValue()));
-        categoriesMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.CATEGORIES.getValue()));
-        localitiesMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.LOCALITIES.getValue()));
-        excludedSuppliersMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.EXCLUDE_SUPPLIER.getValue()));
-        priceMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.PRICE.getValue()));
-        endDateMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.END_DATE.getValue()));
-        validToDateMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO_DATE.getValue()));
-        maxOffersMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.MAX_OFFERS.getValue()));
-        minRatingMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING.getValue()));
-        descriptionMonitor = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION.getValue()));
+        titleMonitor = createDemandChangeMonitor(DemandField.TITLE);
+        categoriesMonitor = createDemandChangeMonitor(DemandField.CATEGORIES);
+        localitiesMonitor = createDemandChangeMonitor(DemandField.LOCALITIES);
+        excludedSuppliersMonitor = createDemandChangeMonitor(DemandField.EXCLUDE_SUPPLIER);
+        priceMonitor = createDemandChangeMonitor(DemandField.PRICE);
+        endDateMonitor = createDemandChangeMonitor(DemandField.END_DATE);
+        validToDateMonitor = createDemandChangeMonitor(DemandField.VALID_TO_DATE);
+        maxOffersMonitor = createDemandChangeMonitor(DemandField.MAX_OFFERS);
+        minRatingMonitor = createDemandChangeMonitor(DemandField.MIN_RATING);
+        descriptionMonitor = createDemandChangeMonitor(DemandField.DESCRIPTION);
         monitors = Arrays.asList(
             titleMonitor, categoriesMonitor, localitiesMonitor, excludedSuppliersMonitor, priceMonitor,
             endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
+    }
+
+    private ChangeMonitor createDemandChangeMonitor(DemandField fieldField) {
+        return new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(fieldField.getValue()));
     }
 
     //Popup

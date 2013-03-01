@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.user.settings;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -43,25 +44,28 @@ public class SettingsView extends Composite implements
     private StatusIconLabel notifyInfoMessage;
 
     /**************************************************************************/
-    /* Initialization */
+    /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        if (Storage.getBusinessUserDetail() != null
+                && !Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.CLIENT)) {
+            infoStatus2.setVisible(false);
+            menuClientBtn.setVisible(false);
+        }
+
         createNotifyPopup();
     }
 
     @Override
     public void initWidgetDefaults() {
         //StatusIconLables
-        infoStatus1.setState(State.ACCEPT_16);
-        infoStatus1.setDescription("No changes made to user settings.");
-        infoStatus2.setState(State.ACCEPT_16);
-        infoStatus2.setDescription("No changes made to client settings.");
-        infoStatus3.setState(State.ACCEPT_16);
-        infoStatus3.setDescription("No changes made to supplier settings.");
-        infoStatus4.setState(State.ACCEPT_16);
-        infoStatus4.setDescription("No changes made to system settings.");
+        setInfoStatusState(false, infoStatus1, Storage.MSGS.settingsUserSettings());
+        setInfoStatusState(false, infoStatus2, Storage.MSGS.settingsClientSettings());
+        setInfoStatusState(false, infoStatus3, Storage.MSGS.settingsSupplierSettings());
+        setInfoStatusState(false, infoStatus4, Storage.MSGS.settingsSystemSettings());
     }
 
     public void createNotifyPopup() {
@@ -99,46 +103,28 @@ public class SettingsView extends Composite implements
 
     @Override
     public void updateUserStatus(boolean isChange) {
-        if (isChange) {
-            infoStatus1.setDescription("User profile has changed.");
-            infoStatus1.setState(State.INFO_16);
-        } else {
-            infoStatus1.setDescription("No changes to user profile.");
-            infoStatus1.setState(State.ACCEPT_16);
-        }
+        setInfoStatusState(isChange, infoStatus1, Storage.MSGS.settingsUserSettings());
     }
 
     @Override
     public void updateClientStatus(boolean isChange) {
-        if (isChange) {
-            infoStatus2.setDescription("Client profile has changed.");
-            infoStatus2.setState(State.INFO_16);
-        } else {
-            infoStatus2.setDescription("No changes to client profile.");
-            infoStatus2.setState(State.ACCEPT_16);
-        }
+        setInfoStatusState(isChange, infoStatus2, Storage.MSGS.settingsClientSettings());
     }
 
     @Override
     public void updateSupplierStatus(boolean isChange) {
-        if (isChange) {
-            infoStatus3.setDescription("Supplier profile has changed.");
-            infoStatus3.setState(State.INFO_16);
-        } else {
-            infoStatus3.setDescription("No changes to supplier profile.");
-            infoStatus3.setState(State.ACCEPT_16);
-        }
+        setInfoStatusState(isChange, infoStatus3, Storage.MSGS.settingsSupplierSettings());
     }
 
     @Override
     public void updateSystemStatus(boolean isChange) {
-        if (isChange) {
-            infoStatus4.setDescription("System profile has changed.");
-            infoStatus4.setState(State.INFO_16);
-        } else {
-            infoStatus4.setDescription("No changes to system profile.");
-            infoStatus4.setState(State.ACCEPT_16);
-        }
+        setInfoStatusState(isChange, infoStatus4, Storage.MSGS.settingsSystemSettings());
+    }
+
+    @Override
+    public void setClientButtonVisibility(boolean visible) {
+        menuSupplierBtn.setVisible(visible);
+        infoStatus3.setVisible(visible);
     }
 
     /**************************************************************************/
@@ -179,5 +165,18 @@ public class SettingsView extends Composite implements
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /*  Helper methods                                                        */
+    /**************************************************************************/
+    private void setInfoStatusState(boolean isChange, StatusIconLabel iconLabel, String message) {
+        if (isChange) {
+            iconLabel.setDescription(message + " has changed.");
+            iconLabel.setState(State.INFO_16);
+        } else {
+            iconLabel.setDescription("No changes to " + message);
+            iconLabel.setState(State.ACCEPT_16);
+        }
     }
 }

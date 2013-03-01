@@ -15,9 +15,6 @@
         .label {
         font-weight: bold;
         }
-        .bgc {
-        background: #FFF000;
-        }
     </ui:style>
 
     <g:HTMLPanel ui:field="panel">

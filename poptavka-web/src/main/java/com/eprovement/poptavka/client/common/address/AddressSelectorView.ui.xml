@@ -23,12 +23,12 @@
 
     <g:HTMLPanel>
         <b:FluidRow>
-            <b:Column size="3">
-                <g:Label styleName='pull-right'>
+            <b:Column size="6">
+                <g:Label>
                     <ui:msg key="formCity">City</ui:msg>*
                 </g:Label>
             </b:Column>
-            <b:Column size="7">
+            <b:Column size="6">
                 <cm:ChangeMonitor ui:field='cityMonitor'>
                     <g:SuggestBox title="suggestBoxCity" styleName="{style.listBoxWidth}"
                               ui:field="cityBox" limit="7" />
@@ -37,12 +37,12 @@
         </b:FluidRow>
 
         <b:FluidRow>
-            <b:Column size="3">
-                <g:Label styleName='pull-right'>
+            <b:Column size="6">
+                <g:Label>
                     <ui:msg key="formZipCode">Zip Code</ui:msg>*
                 </g:Label>
             </b:Column>
-            <b:Column size="7">
+            <b:Column size="6">
                 <cm:ChangeMonitor ui:field='zipcodeMonitor'>
                     <g:TextBox/>
                 </cm:ChangeMonitor>
@@ -50,12 +50,12 @@
         </b:FluidRow>
 
         <b:FluidRow>
-            <b:Column size="3">
-                <g:Label styleName='pull-right'>
+            <b:Column size="6">
+                <g:Label>
                     <ui:msg key="formStreet">Street</ui:msg>*
                 </g:Label>
             </b:Column>
-            <b:Column size="7">
+            <b:Column size="6">
                 <cm:ChangeMonitor ui:field='streetMonitor'>
                     <g:TextBox />
                 </cm:ChangeMonitor>

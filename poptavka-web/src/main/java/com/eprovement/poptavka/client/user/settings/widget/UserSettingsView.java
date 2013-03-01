@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
@@ -60,45 +61,32 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     }
 
     private void initValidationMonitors() {
-        companyNameMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.COMPANY_NAME.getValue()));
-        websiteMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.WEBSITE.getValue()));
-        emailMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.EMAIL.getValue()));
-        phoneMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.PHONE.getValue()));
-        descriptionMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.DESCRIPTION.getValue()));
-        firstNameMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.FIRST_NAME.getValue()));
-        lastNameMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.LAST_NAME.getValue()));
-        identifNumberMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.IDENTIF_NUMBER.getValue()));
-        taxNumberMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.TAX_ID.getValue()));
-        descriptionMonitor = new ChangeMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, new ChangeDetail(BusinessUserDetail.UserField.DESCRIPTION.getValue()));
+        companyNameMonitor = createBusinessUserChangeMonitor(UserField.COMPANY_NAME);
+        websiteMonitor = createBusinessUserChangeMonitor(UserField.WEBSITE);
+        emailMonitor = createBusinessUserChangeMonitor(UserField.EMAIL);
+        phoneMonitor = createBusinessUserChangeMonitor(UserField.PHONE);
+        descriptionMonitor = createBusinessUserChangeMonitor(UserField.DESCRIPTION);
+        firstNameMonitor = createBusinessUserChangeMonitor(UserField.FIRST_NAME);
+        lastNameMonitor = createBusinessUserChangeMonitor(UserField.LAST_NAME);
+        identifNumberMonitor = createBusinessUserChangeMonitor(UserField.IDENTIF_NUMBER);
+        taxNumberMonitor = createBusinessUserChangeMonitor(UserField.TAX_ID);
+        descriptionMonitor = createBusinessUserChangeMonitor(UserField.DESCRIPTION);
         monitors = Arrays.asList(
                 companyNameMonitor, websiteMonitor, emailMonitor, phoneMonitor, descriptionMonitor,
                 firstNameMonitor, lastNameMonitor, identifNumberMonitor, taxNumberMonitor);
     }
 
-    /**************************************************************************/
-    /* METHODS                                                                */
-    /**************************************************************************/
-    @Override
-    public void resetFields() {
-        for (ChangeMonitor monitor : monitors) {
-            monitor.reset();
-        }
+    private ChangeMonitor createBusinessUserChangeMonitor(UserField fieldField) {
+        return new ChangeMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, new ChangeDetail(fieldField.getValue()));
     }
-
+    /**************************************************************************/
+    /* Change monitoring methods                                              */
+    /**************************************************************************/
     @Override
-    public void revertFields() {
+    public void commit() {
         for (ChangeMonitor monitor : monitors) {
-            monitor.revert();
+            monitor.commit();
         }
     }
 

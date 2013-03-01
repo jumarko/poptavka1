@@ -506,6 +506,10 @@ public interface LocalizableMessages extends Messages {
     String settingsUpdateButton();
     String settingsUpdatedOK();
     String settingsUpdatedNotOK();
+    String settingsUserSettings();
+    String settingsClientSettings();
+    String settingsSupplierSettings();
+    String settingsSystemSettings();
 
     /** Notifications. **/
     String notifyImmediately();

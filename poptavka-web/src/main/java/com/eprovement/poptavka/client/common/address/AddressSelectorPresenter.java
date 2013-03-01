@@ -90,15 +90,15 @@ public class AddressSelectorPresenter
             public void onChange(ChangeEvent event) {
                 view.getZipcodeMonitor().setValue("");
                 view.getStreetMonitor().setValue("");
-                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), view.getZipcodeMonitor().getWidget());
-                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), view.getStreetMonitor().getWidget());
+                fireEvent(view.getZipcodeMonitor());
+                fireEvent(view.getStreetMonitor());
             }
         });
         view.getZipcodeMonitor().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
                 view.getStreetMonitor().setValue("");
-                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), view.getStreetMonitor().getWidget());
+                fireEvent(view.getStreetMonitor());
             }
         });
         view.setChangeHandler(new ChangeHandler() {
@@ -124,5 +124,12 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     public void initAddressWidget(SimplePanel embedWidget) {
         embedWidget.setWidget(view.getWidgetView());
+    }
+
+    /**************************************************************************/
+    /* HELPER METHODS                                                         */
+    /**************************************************************************/
+    private void fireEvent(ChangeMonitor changeMonitor) {
+        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), changeMonitor);
     }
 }

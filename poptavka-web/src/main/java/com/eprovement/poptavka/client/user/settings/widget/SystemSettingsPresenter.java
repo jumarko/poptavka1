@@ -35,6 +35,8 @@ public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInt
 
         SettingDetail updateSystemSettings(SettingDetail detail);
 
+        void commit();
+
         Widget getWidgetView();
     }
     /**************************************************************************/
@@ -42,7 +44,6 @@ public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInt
     /**************************************************************************/
     //history of changes
     private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
-    private SettingDetail settingsDetail;
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -60,15 +61,15 @@ public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInt
         });
     }
 
-    private void manageUpdatedField(ChangeDetail changeMonitor) {
-        if (!changeMonitor.getOriginalValue().equals(changeMonitor.getValue())) {
+    private void manageUpdatedField(ChangeDetail changeDetail) {
+        if (!changeDetail.getOriginalValue().equals(changeDetail.getValue())) {
             //if contains already - remove before adding new
-            if (updatedFields.contains(changeMonitor)) {
-                updatedFields.remove(changeMonitor);
+            if (updatedFields.contains(changeDetail)) {
+                updatedFields.remove(changeDetail);
             }
-            updatedFields.add(changeMonitor);
+            updatedFields.add(changeDetail);
         } else {
-            updatedFields.remove(changeMonitor);
+            updatedFields.remove(changeDetail);
         }
     }
 
@@ -83,7 +84,6 @@ public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInt
     /* METHODS                                                                */
     /**************************************************************************/
     public void onSetSystemSettings(SettingDetail detail) {
-        this.settingsDetail = detail;
         view.setSystemSettings(detail);
         eventBus.loadingHide();
     }
