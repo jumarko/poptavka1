@@ -1,14 +1,28 @@
 package com.eprovement.poptavka.shared.domain;
 
-
+import com.google.gwt.user.client.rpc.IsSerializable;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import com.google.gwt.user.client.rpc.IsSerializable;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class AddressDetail implements IsSerializable {
 
+    public enum AddressField {
+
+        CITY("city"),
+        STREET("street"),
+        ZIP_CODE("zipCode");
+
+        private String value;
+
+        private AddressField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
     private static final int ZIP_SIZE = 4;
     @NotEmpty(message = "{addressNotBlankCountry}")
     private String country;

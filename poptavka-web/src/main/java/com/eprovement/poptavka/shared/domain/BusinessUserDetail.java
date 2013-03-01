@@ -22,8 +22,30 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-
     /** Enums. **/
+    public enum UserField {
+
+        COMPANY_NAME("companyName"),
+        IDENTIF_NUMBER("identificationNumber"),
+        FIRST_NAME("personFirstName"),
+        LAST_NAME("personLastName"),
+        EMAIL("email"),
+        PHONE("phone"),
+        DESCRIPTION("description"),
+        TAX_ID("taxId"),
+        WEBSITE("website");
+
+        private String value;
+
+        private UserField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     public enum BusinessRole {
 
         CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIN
@@ -37,9 +59,9 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     @NotBlank(message = "{userNotBlankIdentifNumber}")
     private String identificationNumber;
     @NotBlank(message = "{userNotBlankFirstName}")
-    private String firstName;
+    private String personFirstName;
     @NotBlank(message = "{userNotBlankLastName}")
-    private String lastName;
+    private String personLastName;
     @Pattern(regexp = "[0-9]+", message = "{userPatternPhone}")
     @NotBlank(message = "{userNotBlankPhone}")
     private String phone;
@@ -48,9 +70,8 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     private String description;
     @NotBlank(message = "{userNotBlankTaxNumber}")
     private String taxId;
-    @Pattern(regexp =
-        "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
-        message = "{userPatternWebsite}")
+    @Pattern(regexp = "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
+    message = "{userPatternWebsite}")
     private String website;
     /** Class lists. **/
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();
@@ -88,20 +109,20 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         this.supplierId = supplierId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getPersonFirstName() {
+        return personFirstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPersonFirstName(String firstName) {
+        this.personFirstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPersonLastName() {
+        return personLastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPersonLastName(String lastName) {
+        this.personLastName = lastName;
     }
 
     public String getPhone() {
@@ -221,8 +242,8 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         str.append("supplierId=" + supplierId);
         str.append(", companyName=" + companyName);
         str.append(", identificationNumber=" + identificationNumber);
-        str.append(", firstName=" + firstName);
-        str.append(", lastName=" + lastName);
+        str.append(", firstName=" + personFirstName);
+        str.append(", lastName=" + personLastName);
         str.append(", phone=" + phone);
         str.append(", description=" + description);
         str.append(", taxId=" + taxId);

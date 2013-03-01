@@ -10,7 +10,6 @@ import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsView;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
-import com.eprovement.poptavka.client.user.settings.widget.UserSettingsView;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -246,10 +245,8 @@ public class SettingsPresenter
      * Update that part of SettingsDetail that belongs to UserSettings widget.
      */
     private boolean updateUserSettings() {
-        UserSettingsView userSettings = (UserSettingsView) view.getContentPanel().getWidget();
-
-        if (userSettings != null && userSettings.isSettingChange()) {
-            settingsDetail = userSettings.updateUserSettings(settingsDetail);
+        if (userPresenter != null && userPresenter.isSettingChanged()) {
+            settingsDetail = userPresenter.updateUserSettings(settingsDetail);
             return true;
         }
         return false;

@@ -73,8 +73,8 @@ public class AdminClientInfoView extends Composite implements AdminClientsPresen
             }
             verification.setSelectedIndex(j);
             //Contact
-            firstName.setText(detail.getUserDetail().getFirstName());
-            lastName.setText(detail.getUserDetail().getLastName());
+            firstName.setText(detail.getUserDetail().getPersonFirstName());
+            lastName.setText(detail.getUserDetail().getPersonLastName());
             email.setText(detail.getUserDetail().getEmail());
             phone.setText(detail.getUserDetail().getPhone());
 
@@ -99,8 +99,8 @@ public class AdminClientInfoView extends Composite implements AdminClientsPresen
         // Update the client object.
         clientInfo.getUserDetail().setCompanyName(companyName.getText());
         clientInfo.getUserDetail().setDescription(descriptionBox.getText());
-        clientInfo.getUserDetail().setFirstName(firstName.getText());
-        clientInfo.getUserDetail().setLastName(lastName.getText());
+        clientInfo.getUserDetail().setPersonFirstName(firstName.getText());
+        clientInfo.getUserDetail().setPersonLastName(lastName.getText());
         clientInfo.setVerification(verification.getItemText(verification.getSelectedIndex()));
         clientInfo.getUserDetail().setEmail(email.getText());
         clientInfo.getUserDetail().setPhone(phone.getText());

@@ -190,8 +190,8 @@ public class UserRegistrationFormView extends Composite
         BusinessUserDetail user = new BusinessUserDetail();
         user.setEmail((String) email.getValue());
         user.setPassword((String) password.getValue());
-        user.setFirstName((String) firstName.getValue());
-        user.setLastName((String) lastName.getValue());
+        user.setPersonFirstName((String) firstName.getValue());
+        user.setPersonLastName((String) lastName.getValue());
         user.setPhone((String) phone.getValue());
         user.setCompanyName((String) companyName.getValue());
         user.setDescription((String) description.getValue());

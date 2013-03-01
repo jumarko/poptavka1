@@ -89,7 +89,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         reset();
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
-                holder.getWidget().getTitle(), getValue(), Default.class);
+                changeDetail.getField(), getValue(), Default.class);
         for (ConstraintViolation<T> violation : violations) {
             setValidationStyles(false, violation.getMessage());
         }
@@ -184,7 +184,12 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     }
 
     public boolean isModified() {
-        return !changeDetail.getOriginalValue().equals(getInputWidgetText());
+        //If DB data will be correct, this can be avoided
+        if (changeDetail.getOriginalValue() == null) {
+            return true;
+        } else {
+            return !changeDetail.getOriginalValue().equals(getInputWidgetText());
+        }
     }
 
     /** Change operations. **/

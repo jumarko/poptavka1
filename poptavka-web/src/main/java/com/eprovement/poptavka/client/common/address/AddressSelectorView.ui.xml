@@ -1,60 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:b='urn:import:com.github.gwtbootstrap.client.ui'>
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b='urn:import:com.github.gwtbootstrap.client.ui'
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
 
-	<ui:style>
-		.error {
-		font-size:10px;
-		color: red;
-		}
-		.listBoxWidth {
-		width:200px;
-		}
-		.text-left {
-		text-align: right;
-		}
-	</ui:style>
+    <ui:style>
+        .error {
+        font-size:10px;
+        color: red;
+        }
+        .listBoxWidth {
+        width:200px;
+        }
+        .text-left {
+        text-align: right;
+        }
+    </ui:style>
 
-	<g:HTMLPanel>
-		<b:FluidRow>
-			<b:Column size="3">
-				<g:Label styleName='pull-right'>
-					<ui:msg key="formCity">City</ui:msg>*
-				</g:Label>
-			</b:Column>
-			<b:Column size="7">
-				<g:SuggestBox title="suggestBoxCity" styleName="{style.listBoxWidth}"
-					ui:field="cityBox" limit="7" />
-				<g:Label styleName="{style.error}" ui:field="cityErrorLabel" />
-			</b:Column>
-		</b:FluidRow>
+    <g:HTMLPanel>
+        <b:FluidRow>
+            <b:Column size="3">
+                <g:Label styleName='pull-right'>
+                    <ui:msg key="formCity">City</ui:msg>*
+                </g:Label>
+            </b:Column>
+            <b:Column size="7">
+                <cm:ChangeMonitor ui:field='cityMonitor'>
+                    <g:SuggestBox title="suggestBoxCity" styleName="{style.listBoxWidth}"
+                              ui:field="cityBox" limit="7" />
+                </cm:ChangeMonitor>
+            </b:Column>
+        </b:FluidRow>
 
-		<b:FluidRow>
-			<b:Column size="3">
-				<g:Label styleName='pull-right'>
-					<ui:msg key="formZipCode">Zip Code</ui:msg>*
-				</g:Label>
-			</b:Column>
-			<b:Column size="7">
-				<g:TextBox title="textBoxZipcode" ui:field="zipCode" />
-				<g:Label styleName="{style.error}" ui:field="zipErrorLabel" />
-			</b:Column>
-		</b:FluidRow>
+        <b:FluidRow>
+            <b:Column size="3">
+                <g:Label styleName='pull-right'>
+                    <ui:msg key="formZipCode">Zip Code</ui:msg>*
+                </g:Label>
+            </b:Column>
+            <b:Column size="7">
+                <cm:ChangeMonitor ui:field='zipcodeMonitor'>
+                    <g:TextBox/>
+                </cm:ChangeMonitor>
+            </b:Column>
+        </b:FluidRow>
 
-		<b:FluidRow>
-			<b:Column size="3">
-				<g:Label styleName='pull-right'>
-					<ui:msg key="formStreet">Street</ui:msg>*
-				</g:Label>
-			</b:Column>
-			<b:Column size="7">
-				<g:TextBox title="textBoxStreet" ui:field="street" />
-				<g:Label styleName="{style.error}" ui:field="streetErrorLabel" />
-			</b:Column>
-		</b:FluidRow>		
-	</g:HTMLPanel>
+        <b:FluidRow>
+            <b:Column size="3">
+                <g:Label styleName='pull-right'>
+                    <ui:msg key="formStreet">Street</ui:msg>*
+                </g:Label>
+            </b:Column>
+            <b:Column size="7">
+                <cm:ChangeMonitor ui:field='streetMonitor'>
+                    <g:TextBox />
+                </cm:ChangeMonitor>
+            </b:Column>
+        </b:FluidRow>
+    </g:HTMLPanel>
 </ui:UiBinder>

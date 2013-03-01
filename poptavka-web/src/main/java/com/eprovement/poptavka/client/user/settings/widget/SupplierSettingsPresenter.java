@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter.SupplierSettingsViewInterface;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -22,6 +23,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -79,6 +81,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
         //Others
         ServicesSelectorView getServiceWidget();
+
+        Anchor getRevert();
 
         Widget getWidgetView();
     }

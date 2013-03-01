@@ -19,6 +19,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IntegerBox;
@@ -173,6 +174,11 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     @Override
     public ServicesSelectorView getServiceWidget() {
         return (ServicesSelectorView) servicePanel.getWidget();
+    }
+
+    @Override
+    public Anchor getRevert() {
+        return revert;
     }
 
     @Override

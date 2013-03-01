@@ -154,7 +154,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
 
                     @Override
                     public String getValue(Object object) {
-                        return ((ClientDetail) object).getUserDetail().getFirstName();
+                        return ((ClientDetail) object).getUserDetail().getPersonFirstName();
                     }
                 });
 
@@ -165,7 +165,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
 
                     @Override
                     public String getValue(Object object) {
-                        return ((ClientDetail) object).getUserDetail().getLastName();
+                        return ((ClientDetail) object).getUserDetail().getPersonLastName();
                     }
                 });
 

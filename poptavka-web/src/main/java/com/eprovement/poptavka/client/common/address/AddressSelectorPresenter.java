@@ -1,35 +1,22 @@
 package com.eprovement.poptavka.client.common.address;
 
-import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
-
+import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.ValidationMessages;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
-import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
+import java.util.ArrayList;
 
 @Presenter(view = AddressSelectorView.class, multiple = true)
 public class AddressSelectorPresenter
@@ -57,18 +44,20 @@ public class AddressSelectorPresenter
 
         void setCityId(Long cityId);
 
-        void eraseAddressBoxes();
+        void setChangeHandler(ChangeHandler changeHandler);
 
         //Getters
         SuggestBox getCitySuggestBox();
 
-        TextBox getStreetTextBox();
+        ChangeMonitor getCityMonitor();
 
-        TextBox getZipCodeTextBox();
+        ChangeMonitor getStreetMonitor();
 
-        Label getCityErrorLabel();
+        ChangeMonitor getZipcodeMonitor();
 
         boolean isValid();
+
+        boolean isAddressChanged();
 
         AddressDetail createAddress();
 
@@ -77,9 +66,8 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    public static final ValidationMessages MSGSV = GWT.create(ValidationMessages.class);
-    //in case of removeing letters in suggestbox, popup is closed at each time -> dont't call
-    private String citySuggestSelected = null;
+    //history of changes
+    private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -97,57 +85,35 @@ public class AddressSelectorPresenter
     }
 
     private void addCityHandlers() {
-        /** FOCUS. **/
-        view.getCitySuggestBox().addDomHandler(new FocusHandler() {
+        view.getCityMonitor().addChangeHandler(new ChangeHandler() {
             @Override
-            public void onFocus(FocusEvent event) {
-                citySuggestSelected = view.getCitySuggestBox().getText();
-                MySuggestDisplay display = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
-                display.setLoadingPopupPosition(view.getCitySuggestBox());
-                //show actual suggest list and remove error style if any
-                if (view.getCitySuggestBox().getText().isEmpty()) {
-                    display.showShortCitiesInfo(Constants.MIN_CHARS_TO_SEARCH);
-                }
-                view.getCitySuggestBox().showSuggestionList();
-                view.getCitySuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());
-                view.getCityErrorLabel().setText("");
+            public void onChange(ChangeEvent event) {
+                view.getZipcodeMonitor().setValue("");
+                view.getStreetMonitor().setValue("");
+                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), view.getZipcodeMonitor().getWidget());
+                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), view.getStreetMonitor().getWidget());
             }
-        }, FocusEvent.getType());
-        /** VALUE CHANGE. **/
-        view.getCitySuggestBox().addHandler(new ValueChangeHandler<String>() {
+        });
+        view.getZipcodeMonitor().addChangeHandler(new ChangeHandler() {
             @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                //if suggestbox content changed, reset flag to force user through validation
-                //to select some locality again
-                citySuggestSelected = null;
+            public void onChange(ChangeEvent event) {
+                view.getStreetMonitor().setValue("");
+                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), view.getStreetMonitor().getWidget());
             }
-        }, ValueChangeEvent.getType());
-        /** CLOSE POPUP. **/
-        getCitySuggestionPopup().getPopupPanel().addHandler(new CloseHandler<PopupPanel>() {
+        });
+        view.setChangeHandler(new ChangeHandler() {
             @Override
-            public void onClose(CloseEvent event) {
-                //validate suggest box if suggest list popup is closed
-                if (citySuggestSelected == null
-                        || !citySuggestSelected.equals(view.getCitySuggestBox().getText())) {
-                    view.getCitySuggestBox().setStyleName(Storage.RSCS.common().errorField());
-                    view.getCityErrorLabel().setText(MSGSV.cityNotMatch());
-                }
-            }
-        }, CloseEvent.getType());
-        /** SELECTION. **/
-        view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
-            @Override
-            public void onSelection(SelectionEvent<Suggestion> event) {
-                //set locality after selecting item from suggest list popup
-                if (!view.getCitySuggestBox().getText().isEmpty()) {
-                    view.eraseAddressBoxes();
-                    LocalitySuggestionDetail suggestion = (LocalitySuggestionDetail) event.getSelectedItem();
-                    citySuggestSelected = suggestion.getDisplayString();
-                    view.setState(suggestion.getStateName());
-                    view.setCity(suggestion.getCityName());
-                    view.setCityId(suggestion.getCityId());
-                    view.getCitySuggestBox().setStyleName(Storage.RSCS.common().emptyStyle());
-                    view.getCityErrorLabel().setText("");
+            public void onChange(ChangeEvent event) {
+                ChangeMonitor source = (ChangeMonitor) event.getSource();
+                source.getChangeDetail().setValue(source.getValue());
+                if (source.isModified()) {
+                    //if contains already - remove before adding new
+                    if (updatedFields.contains(source.getChangeDetail())) {
+                        updatedFields.remove(source.getChangeDetail());
+                    }
+                    updatedFields.add(source.getChangeDetail());
+                } else {
+                    updatedFields.remove(source.getChangeDetail());
                 }
             }
         });

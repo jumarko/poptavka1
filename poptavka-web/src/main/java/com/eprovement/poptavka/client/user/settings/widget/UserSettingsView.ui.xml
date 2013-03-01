@@ -3,6 +3,7 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
              ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
              ui:generateLocales='default'>
 
@@ -68,7 +69,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='companyName' />
+                                <cm:ChangeMonitor ui:field='companyNameMonitor'>
+                                    <g:TextBox />
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -80,7 +83,9 @@
                         </b:FluidRow>
                         <b:FluidRow>
                             <b:Column size="12">
-                                <g:TextArea ui:field='descriptionBox' width="450px" height="100px"/>
+                                <cm:ChangeMonitor ui:field='descriptionMonitor'>
+                                    <g:TextArea width="450px" height="100px"/>
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -93,7 +98,6 @@
                         <b:FluidRow>
                             <b:Column size="12">
                                 <g:SimplePanel ui:field="addressHolder"/>
-                                <g:TextBox ui:field="status" visible="false" />
                             </b:Column>
                         </b:FluidRow>
                     </b:Column>
@@ -112,7 +116,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='web' />
+                                <cm:ChangeMonitor ui:field='websiteMonitor'>
+                                    <g:TextBox />
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -122,7 +128,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='email' enabled='false'/>
+                                <cm:ChangeMonitor ui:field='emailMonitor'>
+                                    <g:TextBox enabled='false'/>
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -132,7 +140,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='phone' />
+                                <cm:ChangeMonitor ui:field='phoneMonitor'>
+                                    <g:TextBox />
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -142,7 +152,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='firstName' />
+                                <cm:ChangeMonitor ui:field='firstNameMonitor'>
+                                    <g:TextBox />
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -152,7 +164,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='lastName' />
+                                <cm:ChangeMonitor ui:field='lastNameMonitor'>
+                                    <g:TextBox />
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -169,7 +183,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='identificationNumber' />
+                                <cm:ChangeMonitor ui:field='identifNumberMonitor'>
+                                    <g:TextBox />
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
@@ -179,7 +195,9 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <g:TextBox ui:field='taxNumber' />
+                                <cm:ChangeMonitor ui:field='taxNumberMonitor'>
+                                    <g:TextBox/>
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                     </b:Column>

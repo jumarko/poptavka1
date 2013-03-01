@@ -174,8 +174,8 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             }
 
         }
-        user.getBusinessUserData().setPersonFirstName(settingsDetail.getUser().getFirstName());
-        user.getBusinessUserData().setPersonLastName(settingsDetail.getUser().getLastName());
+        user.getBusinessUserData().setPersonFirstName(settingsDetail.getUser().getPersonFirstName());
+        user.getBusinessUserData().setPersonLastName(settingsDetail.getUser().getPersonLastName());
         user.getBusinessUserData().setPhone(settingsDetail.getUser().getPhone());
         user.getBusinessUserData().setIdentificationNumber(settingsDetail.getUser().getIdentificationNumber());
         user.getBusinessUserData().setCompanyName(settingsDetail.getUser().getCompanyName());
