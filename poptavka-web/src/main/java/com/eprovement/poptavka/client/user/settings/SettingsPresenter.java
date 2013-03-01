@@ -6,7 +6,6 @@ import com.mvp4g.client.annotation.Presenter;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
-import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsView;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
@@ -256,11 +255,9 @@ public class SettingsPresenter
      * Update that part of SettingsDetail that belongs to ClientSettings widget.
      */
     private boolean updateClientSettings() {
-        ClientSettingsView clientSettings = (ClientSettingsView) view.getContentPanel().getWidget();
-
         //check if clientSettings was event loaded
-        if (clientSettings != null && clientSettings.isSettingChange()) {
-            settingsDetail = clientSettings.updateClientSettings(settingsDetail);
+        if (clientPresenter != null && clientPresenter.isClientSettingChanged()) {
+            settingsDetail = clientPresenter.updateClientSettings(settingsDetail);
             return true;
         }
         return false;
