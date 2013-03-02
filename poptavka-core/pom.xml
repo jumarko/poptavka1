@@ -81,10 +81,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jpamodelgen</artifactId>
-        </dependency>
         <!-- This first dependency includes all the JPA implementations for the DAOs -->
         <dependency>
             <groupId>com.googlecode.genericdao</groupId>
