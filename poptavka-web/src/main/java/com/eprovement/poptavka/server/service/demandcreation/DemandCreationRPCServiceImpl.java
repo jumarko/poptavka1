@@ -14,11 +14,13 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -46,6 +48,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private DemandService demandService;
     private LocalityService localityService;
     private ClientService clientService;
+    private MessageService messageService;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
@@ -65,6 +68,11 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    @Autowired
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     @Autowired
@@ -123,6 +131,15 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         demand.setCategories(categoryConverter.convertToSourceList(detail.getCategories()));
 
         final Demand newDemandFromDB = demandService.create(demand);
+
+        // create demand thread root message
+        Message demandMessage = messageService.newThreadRoot(clientService.getById(cliendId).getBusinessUser());
+        demandMessage.setDemand(demand);
+        demandMessage.setBody(demand.getDescription());
+        demandMessage.setSubject(demand.getTitle());
+        demandMessage.setThreadRoot(demandMessage);
+        messageService.update(demandMessage);
+
         return demandConverter.convertToTarget(newDemandFromDB);
     }
 
