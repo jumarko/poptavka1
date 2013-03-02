@@ -425,7 +425,9 @@ public class HomeDemandsPresenter
                     selectedEvent = true;
                     lastOpened.setChildOpen(temporaryOpenedHierarchy.removeFirst().getIndex(), true);
                 } else {
-                    openNode(getIndex(lastOpened, selectCategory));
+                    if (selectCategory != null) {
+                        openNode(getIndex(lastOpened, selectCategory));
+                    }
                 }
             }
         };
