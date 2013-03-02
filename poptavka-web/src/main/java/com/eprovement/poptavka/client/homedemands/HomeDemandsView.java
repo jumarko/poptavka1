@@ -12,6 +12,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.celltree.CustomCellTree;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
@@ -21,8 +22,6 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.StyleInjector;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
@@ -91,8 +90,6 @@ public class HomeDemandsView extends OverflowComposite
     @UiField DecoratorPanel filterLabelPanel;
     @UiField DemandDetailView demandDetail;
     @UiField Button offerBtn;
-    private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -151,32 +148,18 @@ public class HomeDemandsView extends OverflowComposite
 
         // Date of creation
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.columnCreatedDate(),
+        dataGrid.addColumn(new CreatedDateCell(), Storage.MSGS.columnCreatedDate(),
                 true, Constants.COL_WIDTH_DATE,
-                //TODO LATER Martin - use ClicableDateCell, but modify to only CreatedDateCell
-                new UniversalAsyncGrid.GetValue<String>() {
+                new UniversalAsyncGrid.GetValue<Date>() {
                     @Override
-                    public String getValue(Object object) {
-                        FullDemandDetail demandDetail = (FullDemandDetail) object;
-                        if (demandDetail.getCreated() == null) {
-                            return Storage.MSGS.commonNotDefined();
-                        } else {
-                            Date now = new Date();
-                            long millis = now.getTime() - demandDetail.getCreated().getTime();
-                            if (millis < Constants.DAY_LENGTH) {
-                                return formatter.format(demandDetail.getCreated());
-                            } else if (Constants.DAY_LENGTH <= millis && millis < 2 * Constants.DAY_LENGTH) {
-                                return Storage.MSGS.creationDateYesterday();
-                            } else {
-                                return formatter.format(demandDetail.getCreated());
-                            }
-                        }
+                    public Date getValue(Object object) {
+                        return ((FullDemandDetail) object).getCreated();
                     }
                 });
 
         // Demand Info
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.columnDemandTitle(),
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDemandTitle(),
                 true, Constants.COL_WIDTH_TITLE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -187,7 +170,7 @@ public class HomeDemandsView extends OverflowComposite
 
         // Locality
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), bundle.columnLocality(), false, LOCALITY_COL_WIDTH,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnLocality(), false, LOCALITY_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {

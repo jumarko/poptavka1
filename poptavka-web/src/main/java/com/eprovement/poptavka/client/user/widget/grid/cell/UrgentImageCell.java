@@ -1,35 +1,64 @@
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
+import com.eprovement.poptavka.client.common.DateUtils;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.github.gwtbootstrap.client.ui.constants.Placement;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
+import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.Date;
 
 /**
- * Provides urgency images.
+ * Provides urgency images for header and column.
+ * If Header image is required, just pass null value to date, otherwise urgency
+ * images are returned.
  *
  * @author Martin Slavkovsky
  */
 public class UrgentImageCell extends AbstractCell<Date> {
 
-    private static ImageResourceRenderer renderer;
-    private static final int DAY_URGENT = 4;
-    private static final int DAY_URGENT_LESS = 8;
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** Constants. **/
     private static final ImageResource HEADER = Storage.RSCS.images().urgencyHeader();
-    private static final ImageResource URGENT = Storage.RSCS.images().urgencyRed();
-    private static final ImageResource URGENT_LESS = Storage.RSCS.images().urgencyOrange();
+    private static final ImageResource HIGHT = Storage.RSCS.images().urgencyRed();
+    private static final ImageResource HIGHTER = Storage.RSCS.images().urgencyOrange();
     private static final ImageResource NORMAL = Storage.RSCS.images().urgencyGreen();
+    /** Renderers. **/
+    private static ImageResourceRenderer imageRenderer;
+    private SafeHtmlRenderer<Date> dateRenderer = new AbstractSafeHtmlRenderer<Date>() {
+        @Override
+        public SafeHtml render(Date value) {
+            int daysBetween = CalendarUtil.getDaysBetween(value, DateUtils.getNowDate());
+            if (daysBetween < Constants.DAYS_URGENCY_HIGHT) {
+                return imageRenderer.render(HIGHT);
+            }
+            if (daysBetween <= Constants.DAYS_URGENCY_HIGHTER) {
+                return imageRenderer.render(HIGHTER);
+            }
+            return imageRenderer.render(NORMAL);
+        }
+    };
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
     public UrgentImageCell() {
-        if (renderer == null) {
-            renderer = new ImageResourceRenderer();
+        if (imageRenderer == null) {
+            imageRenderer = new ImageResourceRenderer();
         }
     }
 
+    /**************************************************************************/
+    /* Override methods                                                       */
+    /**************************************************************************/
     @Override
     public void render(Context context, Date value, SafeHtmlBuilder sb) {
         /*
@@ -37,19 +66,19 @@ public class UrgentImageCell extends AbstractCell<Date> {
          * The result will be used in header.
          */
         if (value == null) {
-            renderUrgencyHeader(context, value, sb);
+            renderUrgencyHeader(sb);
             /*
              * Otherwise provide appropriate urgency image according to given date.
              */
         } else {
-            renderUrgencyColumnCell(context, value, sb);
+            renderUrgencyColumnCell(value, sb);
         }
     }
 
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
-    private void renderUrgencyHeader(Context context, Date value, SafeHtmlBuilder sb) {
+    private void renderUrgencyHeader(SafeHtmlBuilder sb) {
         StringBuilder sbs = new StringBuilder();
         //TODO RELEASE Jaro - make it look goot like in design. Thanks.
         sbs.append("<a href=\"#\" ");
@@ -60,23 +89,11 @@ public class UrgentImageCell extends AbstractCell<Date> {
         sbs.append("title=\"" + Storage.MSGS.tooltipUrgency() + "\" ");
         sbs.append(">");
         sb.appendHtmlConstant(sbs.toString());
-        sb.append(renderer.render(HEADER));
+        sb.append(imageRenderer.render(HEADER));
         sb.appendHtmlConstant("</a>");
     }
 
-    private void renderUrgencyColumnCell(Context context, Date value, SafeHtmlBuilder sb) {
-        long diffMilliseconds = value.getTime() - (new Date()).getTime();
-        long diffDays = diffMilliseconds / Constants.DAY_LENGTH;
-
-        //(0-4 days) hight
-        if ((int) diffDays <= DAY_URGENT) {
-            sb.append(renderer.render(URGENT));
-            //(5-8 days) medium
-        } else if ((int) diffDays <= DAY_URGENT_LESS) {
-            sb.append(renderer.render(URGENT_LESS));
-            //(9-infinity days) low
-        } else {
-            sb.append(renderer.render(NORMAL));
-        }
+    private void renderUrgencyColumnCell(Date value, SafeHtmlBuilder sb) {
+        sb.append(dateRenderer.render(value));
     }
 }

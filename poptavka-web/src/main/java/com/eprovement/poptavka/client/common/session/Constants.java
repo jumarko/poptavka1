@@ -206,8 +206,7 @@ public final class Constants {
     public static final int RATE_3 = 0;
     public static final int RATE_4 = -1;
     public static final int RATE_5 = -2;
-    /**************************************************************************/
-    /* Other Constants                                                        */
-    /**************************************************************************/
-    public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
+
+    public static final int DAYS_URGENCY_HIGHT = 4;
+    public static final int DAYS_URGENCY_HIGHTER = 8;
 }
