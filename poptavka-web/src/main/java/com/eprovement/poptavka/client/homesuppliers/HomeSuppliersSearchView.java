@@ -75,6 +75,11 @@ public class HomeSuppliersSearchView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         companyName.setText("");
         supplierDescription.setText("");
         ratingFrom.setText("0");

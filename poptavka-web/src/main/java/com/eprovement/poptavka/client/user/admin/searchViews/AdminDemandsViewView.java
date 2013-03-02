@@ -117,6 +117,11 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         demandIdFrom.setText("");
         demandIdTo.setText("");
         clientIdFrom.setText("");

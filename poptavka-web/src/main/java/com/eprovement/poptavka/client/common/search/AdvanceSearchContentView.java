@@ -60,7 +60,7 @@ public class AdvanceSearchContentView extends Composite
     /**************************************************************************/
     public AdvanceSearchContentView() {
         initWidget(uiBinder.createAndBindUi(this));
-        setAdvanceContentTabsVisibility(true, false, false);
+        bindHandlers();
         mainPanel.setSize("1030px", "500px");
         //searchWhat is default set to display demands attribute selector,
         //therefore hide suppliers attribute selector
@@ -68,8 +68,8 @@ public class AdvanceSearchContentView extends Composite
         StyleResource.INSTANCE.advancedSearchTabPanel().ensureInjected();
     }
 
-    @Override
-    public void onLoad() {
+    public void bindHandlers() {
+        setAdvanceContentTabsVisibility(true, false, false);
         demand.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
@@ -94,6 +94,19 @@ public class AdvanceSearchContentView extends Composite
                 searchWhatItem.setText(custom.getText());
             }
         });
+    }
+
+    /**
+     * Clear all tab widgets' fields.
+     */
+    public void resetWidgets() {
+        demandsAttributeSelectorWidget.clear();
+        suppliersAttributeSelectorWidget.clear();
+        if (attributeSelectorWidgetPanel.getWidget() != null) {
+            ((SearchModulesViewInterface) attributeSelectorWidgetPanel.getWidget()).clear();
+        }
+        categorySelectorWidgetPanel.clear();
+        localitySelectorWidgetPanel.clear();
     }
 
     /**************************************************************************/
@@ -220,9 +233,9 @@ public class AdvanceSearchContentView extends Composite
     }
 
     /**************************************************************************/
-    /*  Helsper methods                                                       */
+    /*  Helper methods                                                       */
     /**************************************************************************/
-    private void setAdvanceContentTabsVisibility(
+    public void setAdvanceContentTabsVisibility(
             boolean demandsTabVisible, boolean suppliersTabVisible, boolean currentViewTabVisible) {
         mainPanel.getTabWidget(AdvanceSearchContentView.DEMANDS_SELECTOR_WIDGET)
                 .getParent().setVisible(demandsTabVisible);
@@ -248,6 +261,7 @@ public class AdvanceSearchContentView extends Composite
                 searchWhatList.removeItem(custom);
             }
             searchWhatItem.setText(demand.getText());
+            setAdvanceContentTabsVisibility(true, false, false);
             mainPanel.selectTab(0);
         }
     }

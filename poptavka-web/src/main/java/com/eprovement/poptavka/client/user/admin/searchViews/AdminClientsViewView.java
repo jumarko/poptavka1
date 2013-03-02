@@ -89,6 +89,11 @@ public class AdminClientsViewView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         idFrom.setText("");
         idTo.setText("");
         companyName.setText("");

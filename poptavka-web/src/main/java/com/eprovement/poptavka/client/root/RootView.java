@@ -11,12 +11,10 @@ import com.eprovement.poptavka.client.common.search.SearchModuleView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
-import com.google.gwt.i18n.client.LocalizableMessages;
 
 public class RootView extends ReverseCompositeView<IRootPresenter> implements
         IRootView {
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
     @UiField
     SimplePanel logo, header, body, menu, searchBar, footer;
@@ -83,7 +81,8 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     @Override
     public void setUpSearchBar(IsWidget advanceSearchWidget) {
         SearchModuleView searchBarView = (SearchModuleView) searchBar.getWidget();
-        searchBarView.getSearchContent().setText(null); //placeholder will set default -- null, or "" ???
+        searchBarView.getSearchContent().setText(null);
         searchBarView.setAttributeSelectorWidget(advanceSearchWidget);
+        searchBarView.getAdvanceSearchContentView().resetWidgets();
     }
 }

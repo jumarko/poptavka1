@@ -90,6 +90,8 @@ public class SearchModulePresenter
 
         ArrayList<FilterItem> getFilter();
 
+        void clear();
+
         Widget getWidgetView();
     }
 
