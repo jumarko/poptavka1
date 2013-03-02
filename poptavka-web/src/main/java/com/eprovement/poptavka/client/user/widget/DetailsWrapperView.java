@@ -1,17 +1,19 @@
 package com.eprovement.poptavka.client.user.widget;
 
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
-import com.eprovement.poptavka.client.user.widget.messaging.ConversationPanel;
-import com.eprovement.poptavka.client.user.widget.messaging.OfferQuestionWindow;
+import com.eprovement.poptavka.client.user.widget.grid.cell.MessageCell;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 
 /**
  * TODOS:
@@ -32,20 +34,29 @@ public class DetailsWrapperView extends Composite
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attribute. **/
-    @UiField TabLayoutPanel container;
-    @UiField SimplePanel demandDetailHolder;
-    @UiField UserDetailView userDetail;
-    @UiField ConversationPanel conversationPanel;
-    @UiField OfferQuestionWindow replyHolder;
-    @UiField HTMLPanel conversationHolder;
+    @UiField
+    TabLayoutPanel container;
+    @UiField
+    SimplePanel demandDetailHolder;
+    @UiField
+    UserDetailView userDetail;
+    @UiField(provided = true)
+    CellList messageList;
+    @UiField
+    OfferQuestionWindow replyHolder;
+    @UiField
+    HTMLPanel conversationHolder;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
+    private ListDataProvider messageProvider = new ListDataProvider(MessageDetail.KEY_PROVIDER);
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
+        messageList = new CellList<MessageDetail>(new MessageCell());
+        messageProvider.addDataDisplay(messageList);
         initWidget(uiBinder.createAndBindUi(this));
         StyleResource.INSTANCE.detailTabPanel().ensureInjected();
     }
@@ -89,8 +100,13 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public ConversationPanel getConversationPanel() {
-        return conversationPanel;
+    public CellList getMessagePanel() {
+        return messageList;
+    }
+
+    @Override
+    public ListDataProvider getMessageProvider() {
+        return messageProvider;
     }
 
     @Override

@@ -1,11 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:h="urn:import:com.eprovement.poptavka.client.root.header">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:h="urn:import:com.eprovement.poptavka.client.root.header">
 
     <ui:with field='res'
-        type='com.eprovement.poptavka.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text'
-        type='com.google.gwt.i18n.client.LocalizableMessages' />
+             type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>
         .important {
@@ -37,6 +37,10 @@
         border-top: 1px solid #75be68;
         padding: 5px 15px !important;
         }
+
+        .logout-button-act {
+        background: url(images/logout_hover.png) no-repeat;
+        }
     </ui:style>
 
     <g:HTMLPanel ui:field='headerHolder'>
@@ -45,16 +49,15 @@
         <!-- new type -->
         <!-- Logo -->
         <!-- <div style="position: absolute; background: url(images/logo.png)
-            no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px;
-            top: 24px;"> </div> -->
+        no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px;
+        top: 24px;"> </div> -->
         <!-- end Logo -->
 
         <!-- Login Button -->
         <!--<div class='{style.login}'> -->
-        <g:MenuBar vertical="false" styleName='{res.layout.login}'>
-            <h:MyMenuItem styleName='{res.layout.logoutButton}'>
-                <g:MenuBar vertical="true"
-                    styleName='{res.layout.logoutMenuBar}'>
+        <g:MenuBar ui:field="logoutMenuBarBtn" vertical="false" styleName='{res.layout.login}'>
+            <h:MyMenuItem ui:field="logoutMenuItemBtn" styleName='{res.layout.logoutButton}'>
+                <g:MenuBar vertical="true" styleName='{res.layout.logoutMenuBar}'>
                     <g:MenuItem ui:field="username">
                     </g:MenuItem>
                     <g:MenuItem ui:field="menuMyProfile">
@@ -67,7 +70,7 @@
                         <ui:msg key="userHeaderCustomerService">Customer Service</ui:msg>
                     </g:MenuItem>
                     <g:MenuItem ui:field="menuLogOut"
-                        addStyleNames='{style.logout-button}'>
+                                addStyleNames='{style.logout-button}'>
                         <ui:msg key="userHeaderLogOut">Log Out</ui:msg>
                     </g:MenuItem>
                 </g:MenuBar>
@@ -79,7 +82,7 @@
             </g:Button>
             <g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
             <g:PushButton ui:field='pushButton' enabled='true'
-                styleName='{style.pushButton}'>
+                          styleName='{style.pushButton}'>
                 <g:upFace image='{res.images.envelopeImage}' />
                 <g:upHoveringFace image='{res.images.envelopeHoverImage}' />
                 <g:downFace image='{res.images.envelopeImage}' />

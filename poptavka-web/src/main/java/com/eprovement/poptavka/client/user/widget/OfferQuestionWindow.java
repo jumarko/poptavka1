@@ -1,5 +1,6 @@
-package com.eprovement.poptavka.client.user.widget.messaging;
+package com.eprovement.poptavka.client.user.widget;
 
+import com.eprovement.poptavka.client.common.BigDecimalBox;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -8,6 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -15,10 +17,8 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import java.math.BigDecimal;
 
 /**
  * Mixed widget for sending offer as well for asking questions.
@@ -43,12 +43,15 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     @UiField Anchor offerReplyBtn, questionReplyBtn;
     @UiField Anchor submitBtn, cancelBtn;
     @UiField TextArea replyTextArea;
-    @UiField TextBox priceBox;
+    @UiField BigDecimalBox priceBox;
     @UiField DateBox dateBox;
-    @UiField DivElement header, messageBody, offerBody;
+    @UiField DivElement header, messageBody, offerBody, messagePanel;
     @UiField Label errorLabelText, errorLabelPrice, errorLabelDate;
+    @UiField Label sender, sent, body;
     /** Class attributes. **/
     private int selectedResponse;
+    private MessageDetail replyToMessage;
+    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -126,13 +129,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
 
     public OfferMessageDetail getCreatedOfferMessage() {
         OfferMessageDetail offerMessageDetailImpl = new OfferMessageDetail();
-        Long price = null;
-        try {
-            price = Long.parseLong(priceBox.getValue());
-        } catch (Exception ex) {
-            price = 0L;
-        }
-        offerMessageDetailImpl.setPrice(BigDecimal.valueOf(price));
+        offerMessageDetailImpl.setPrice(priceBox.getValue());
         offerMessageDetailImpl.setOfferFinishDate(dateBox.getValue());
         offerMessageDetailImpl.setBody(replyTextArea.getText());
         return offerMessageDetailImpl;
@@ -169,8 +166,8 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
                 errorCount++;
             }
             try {
-                Long.valueOf(priceBox.getValue());
-            } catch (Exception ex) {
+                priceBox.getValue();
+            } catch (NumberFormatException ex) {
                 priceBox.addStyleName(Storage.RSCS.common().errorField());
                 errorLabelPrice.setText(Storage.VMSGS.messageInvalidPrice());
                 errorCount++;
@@ -186,5 +183,61 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
 
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /* Conversation Methods                                                   */
+    /**************************************************************************/
+    public MessageDetail getMessage() {
+        return replyToMessage;
+    }
+
+    public void setMessage(MessageDetail message) {
+        String cssBall;
+        String cssColor;
+        if (Storage.getUser().getUserId() == message.getSenderId()) {
+            cssBall = Storage.RSCS.detailViews().conversationDetailRed();
+            cssColor = Storage.RSCS.detailViews().conversationDetailHeaderRed();
+        } else {
+            cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
+            cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
+        }
+        messagePanel.addClassName(cssBall);
+        sender.addStyleName(cssColor);
+
+        messagePanel.getStyle().setDisplay(Display.BLOCK);
+        this.replyToMessage = message;
+        sender.setText(message.getSenderName());
+        sent.setText(formatter.format(message.getSent()));
+        body.setText(message.getBody());
+    }
+
+    /**
+     * Received the message being sent and fills it with necessary attributes, from stored message.
+     *
+     * @param MessageDetail message being sent
+     * @return updated message
+     */
+    public OfferMessageDetail updateSendingOfferMessage(OfferMessageDetail messageDetail) {
+        messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
+        messageDetail.setParentId(replyToMessage.getMessageId());
+        messageDetail.setSupplierId(Storage.getBusinessUserDetail().getSupplierId());
+        return messageDetail;
+    }
+
+    /**
+     * Received the message being sent and fills it with necessary attributes, from stored message.
+     *
+     * @param MessageDetail message being sent
+     * @return updated message
+     */
+    public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
+        messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
+        messageDetail.setParentId(replyToMessage.getMessageId());
+        return messageDetail;
+    }
+
+    public void clear() {
+        messagePanel.getStyle().setDisplay(Display.NONE);
     }
 }

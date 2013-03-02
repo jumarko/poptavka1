@@ -12,12 +12,12 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView.IUserHeaderPresenter;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.user.client.Command;
 import java.util.logging.Logger;
 
 @Presenter(view = UserHeaderView.class)
@@ -31,13 +31,13 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
 
     @Override
     public void bind() {
-        view.getMenuLogOut().setCommand(new Command() {
+        view.getMenuLogOut().setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
                 onLogout(Constants.HOME_WELCOME_MODULE);
             }
         });
-        view.getMenuMyProfile().setCommand(new Command() {
+        view.getMenuMyProfile().setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
                 eventBus.userMenuStyleChange(Constants.USER_SETTINGS_MODULE);
@@ -45,14 +45,14 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
             }
         });
 
-        view.getMenuHelp().setCommand(new Command() {
+        view.getMenuHelp().setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
                 Window.alert("Implement Help Command in UserHeaderMenuCommands class");
             }
         });
 
-        view.getMenuCustomerService().setCommand(new Command() {
+        view.getMenuCustomerService().setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
                 Window.alert("Implement Cutom Service Command in UserHeaderMenuCommands class.");

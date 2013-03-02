@@ -103,6 +103,11 @@ public class BigDecimalBox extends BigDecimalBoxBase {
         return getElement().cast();
     }
 
+    /**
+     * Get valid BigDecimal value otherwise throw NumberFormatException.
+     * @return
+     */
+    @Override
     public BigDecimal getValue() {
         return super.getValue();
     }
