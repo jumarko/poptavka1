@@ -653,6 +653,15 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public long getThreadRootMessageId(FullDemandDetail demandDetial) throws
+            RPCException, ApplicationSecurityException {
+        Demand demand = demandService.getById(demandDetial.getDemandId());
+        Message message = messageService.getThreadRootMessage(demand);
+        return message.getId();
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void approveDemands(Set<FullDemandDetail> demandsToApprove) throws
             RPCException, ApplicationSecurityException {
         LOGGER.info("action=approve_demands status=start");

@@ -103,6 +103,8 @@ public interface AdminRPCService extends RemoteService {
     List<FullDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition) throws RPCException,
             ApplicationSecurityException;
 
+    long getThreadRootMessageId(FullDemandDetail demandDetail) throws RPCException, ApplicationSecurityException;
+
     void approveDemands(Set<FullDemandDetail> demandsToApprove) throws RPCException, ApplicationSecurityException;
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------

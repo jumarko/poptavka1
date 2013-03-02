@@ -15,6 +15,7 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminPermissionsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminPreferencesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminProblemsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminSuppliersPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -101,6 +102,12 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
             List<LocalityDetail> categoriesToSet);
+
+    @Event(forwardToParent = true)
+    void requestDetailWrapperPresenter();
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     @Event(forwardToParent = true)
     void atAccount();
@@ -315,4 +322,10 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(handlers = AdminHandler.class)
     void requestApproveDemands(UniversalAsyncGrid grid, Set<FullDemandDetail> demandsToApprove);
+
+    @Event(handlers = AdminHandler.class)
+    void requestThreadRootId(FullDemandDetail demandDetail);
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void responseThreadRootId(long id);
 }

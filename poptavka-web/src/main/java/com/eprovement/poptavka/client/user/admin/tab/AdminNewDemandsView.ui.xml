@@ -7,7 +7,7 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:DockLayoutPanel unit="PX">
+    <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
         <g:north size="65">
             <g:HorizontalPanel ui:field="toolBar" styleName="{res.layout.toolbarItemsBlock}">
                 <g:DecoratorPanel ui:field="filterLabelPanel">
@@ -19,20 +19,16 @@
                 <u:UniversalPagerWidget ui:field='pager'/>
             </g:HorizontalPanel>
         </g:north>
+        <g:east size="400">
+            <g:ScrollPanel>
+                <g:SimplePanel ui:field="detailPanel" />
+            </g:ScrollPanel>
+        </g:east>
+        <g:east size="25">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:east>
         <g:center>
-            <b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
-                <b:FluidRow>
-                    <b:Column size="7">
-                        <u:UniversalAsyncGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}' />
-                    </b:Column>
-                    <b:Column size="5">
-                        <g:HTMLPanel styleName='{res.layout.detailInfo}'>
-                            <g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
-                            <d:DemandDetailView ui:field="demandDetail" visible="false"/>
-                        </g:HTMLPanel>
-                    </b:Column>
-                </b:FluidRow>
-            </b:FluidContainer>
+            <u:UniversalAsyncGrid ui:field="dataGrid" />
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>

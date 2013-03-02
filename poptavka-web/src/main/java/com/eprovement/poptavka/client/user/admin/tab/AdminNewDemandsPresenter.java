@@ -4,12 +4,14 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
@@ -19,6 +21,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -27,6 +30,7 @@ import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,11 +66,6 @@ public class AdminNewDemandsPresenter
 
         SimplePager getPager();
 
-        //Detail
-        void displayDemandDetail(FullDemandDetail fullDemandDetail);
-
-        void hideDemandDetail();
-
         //Filter
         DecoratorPanel getFilterLabelPanel();
 
@@ -76,13 +75,21 @@ public class AdminNewDemandsPresenter
         Button getApproveBtn();
 
         //Other
+        void loadingDivShow(Widget holderWidget);
+
+        void loadingDivHide(Widget holderWidget);
+
+        SimplePanel getDetailPanel();
+
         Widget getWidgetView();
     }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** Class attributes. **/
+    private DetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
+    private FullDemandDetail selectedObject;
     private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
@@ -136,6 +143,7 @@ public class AdminNewDemandsPresenter
     @Override
     public void bindView() {
         addCheckHeaderUpdater();
+        addTableSelectionModelClickHandler();
         fieldUpdaterHandlers();
         selectioModelChangeHandler();
         approveDemandsButtonClickHandler();
@@ -156,6 +164,31 @@ public class AdminNewDemandsPresenter
         });
     }
 
+    public void addTableSelectionModelClickHandler() {
+        view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                //init details
+                if (view.getSelectionModel().getSelectedSet().size() > 1) {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                } else {
+                    if (!view.getSelectionModel().getSelectedSet().isEmpty()) {
+                        FullDemandDetail selected = new ArrayList<FullDemandDetail>(
+                                view.getSelectionModel().getSelectedSet()).get(0);
+                        selectedObject = selected;
+                        if (detailSection == null) {
+                            eventBus.requestDetailWrapperPresenter();
+                        } else {
+                            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(
+                                    Style.Display.BLOCK);
+
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     public void fieldUpdaterHandlers() {
         textFieldUpdater = new FieldUpdater<FullDemandDetail, String>() {
             @Override
@@ -171,7 +204,7 @@ public class AdminNewDemandsPresenter
     private void fieldUpdaterHandlersInner(FullDemandDetail object) {
         MultiSelectionModel selectionModel = view.getSelectionModel();
         selectionModel.setSelected(object, true);
-        view.displayDemandDetail(object);
+//        view.displayDemandDetail(object);
     }
 
     /**
@@ -198,6 +231,23 @@ public class AdminNewDemandsPresenter
     /**************************************************************************/
     /* Additional methods                                                     */
     /**************************************************************************/
+    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
+        if (this.detailSection == null) {
+            this.detailSection = detailSection;
+            this.detailSection.initDetailWrapper(null, view.getDetailPanel());
+            if (selectedObject != null) {
+                eventBus.requestThreadRootId(selectedObject);
+            }
+        }
+        view.loadingDivHide(view.getDetailPanel());
+    }
+
+    public void onResponseThreadRootId(long threadRootId) {
+        detailSection.initDetails(
+                selectedObject.getDemandId(),
+                threadRootId);
+    }
+
     /**
      * Display demands of selected category.
      * @param list

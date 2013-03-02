@@ -86,6 +86,8 @@ public interface AdminRPCServiceAsync {
 
     void getAdminNewDemands(SearchDefinition searchDefinition, AsyncCallback<List<FullDemandDetail>> callback);
 
+    void getThreadRootMessageId(FullDemandDetail demandDetial, AsyncCallback<Long> callback);
+
     void approveDemands(Set<FullDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------

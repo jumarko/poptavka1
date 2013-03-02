@@ -2,7 +2,7 @@ package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -50,9 +51,9 @@ public class AdminNewDemandsView extends Composite
     @UiField(provided = true) UniversalPagerWidget pager;
     @UiField HorizontalPanel toolBar;
     @UiField Button approveBtn;
-    @UiField Label bannerLabel, filterLabel;
+    @UiField Label filterLabel;
     @UiField DecoratorPanel filterLabelPanel;
-    @UiField DemandDetailView demandDetail;
+    @UiField SimplePanel detailPanel;
 
     /** Class attributes. **/
     private Header checkHeader;
@@ -64,6 +65,7 @@ public class AdminNewDemandsView extends Composite
             new String[]{
                 "createdDate", "title", "locality", "endDate"
             });
+    private LoadingDiv loadingDiv = new LoadingDiv();
     /** Constants. **/
     private static final String LOCALITY_COL_WIDTH = "150px";
 
@@ -162,17 +164,20 @@ public class AdminNewDemandsView extends Composite
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override
-    public void displayDemandDetail(FullDemandDetail fullDemandDetail) {
-        bannerLabel.setVisible(false);
-        demandDetail.setVisible(true);
-
-        demandDetail.setDemanDetail(fullDemandDetail);
+    public void loadingDivShow(Widget holderWidget) {
+        GWT.log("  - loading div created");
+        if (loadingDiv == null) {
+            loadingDiv = new LoadingDiv();
+        }
+        holderWidget.getElement().appendChild(loadingDiv.getElement());
     }
 
     @Override
-    public void hideDemandDetail() {
-        bannerLabel.setVisible(true);
-        demandDetail.setVisible(false);
+    public void loadingDivHide(Widget holderWidget) {
+        GWT.log("  - loading div removed");
+        if (holderWidget.getElement().isOrHasChild(loadingDiv.getElement())) {
+            holderWidget.getElement().removeChild(loadingDiv.getElement());
+        }
     }
 
     /**************************************************************************/
@@ -191,6 +196,11 @@ public class AdminNewDemandsView extends Composite
     @Override
     public SimplePager getPager() {
         return pager.getPager();
+    }
+
+    @Override
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
     }
 
     @Override

@@ -410,6 +410,16 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 });
     }
 
+    public void onRequestThreadRootId(FullDemandDetail demandDetail) {
+        adminService.getThreadRootMessageId(demandDetail, new SecuredAsyncCallback<Long>(eventBus) {
+
+            @Override
+            public void onSuccess(Long result) {
+                eventBus.responseThreadRootId(result);
+            }
+        });
+    }
+
     public void onRequestApproveDemands(final UniversalAsyncGrid grid, Set<FullDemandDetail> demandsToApprove) {
         adminService.approveDemands(demandsToApprove, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
