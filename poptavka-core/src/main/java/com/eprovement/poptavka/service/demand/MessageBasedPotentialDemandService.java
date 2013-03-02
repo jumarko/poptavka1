@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -68,9 +67,10 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
         throws MessageException {
         LOGGER.debug("Action=demand_send_to_supplier status=start demand=" + demand);
 
-        Message message = composePotentialDemandMessage(demand, potentialSupplier);
+        Message message = composePotentialDemandMessage(demand, potentialSupplier,
+                messageService.getThreadRootMessage(demand));
 
-        message = messageService.create(message);
+        message = messageService.update(message);
 
         messageService.send(message);
 
@@ -80,18 +80,13 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
 
-    private Message composePotentialDemandMessage(Demand demand, PotentialSupplier potentialSupplier)
+    private Message composePotentialDemandMessage(Demand demand, PotentialSupplier potentialSupplier,
+            Message message)
         throws MessageException {
-        final Message message = new Message();
         // TODO Vojto there should be some intro message for the user
         message.setMessageState(MessageState.COMPOSED);
-        message.setBody(demand.getDescription() + " Description might be empty");
-        message.setCreated(new Date());
-        message.setDemand(demand);
-        message.setLastModified(new Date());
-        message.setSender(demand.getClient().getBusinessUser());
+        message.setBody(demand.getDescription());
         message.setSubject(demand.getTitle());
-        message.setThreadRoot(message);
 
         final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
 
