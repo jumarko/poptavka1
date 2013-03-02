@@ -1,9 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login"
-    xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
     <ui:with field='res'
-        type='com.eprovement.poptavka.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:style>
         .important {
         font-weight: bold;
@@ -16,38 +18,36 @@
         }
 
         .homepage-container {
-        postion:relative;
-        height: 800px;
-        color: #6F6B59;
+        padding: 0;
+        width:980px;
         }
 
         .banner1 {
-        background:
-        url(images/homepage/banner1_bg.png) no-repeat;
+        background:url(images/homepage/banner1_bg.png)
+        no-repeat;
         display: block;
         float: left;
         height: 315px;
-        margin: -28px 18px 0 4px;
+        margin: -13px 18px 0 19px;
         width: 462px;
         position: relative;
         }
         .banner2 {
-        background:
-        url(images/homepage/banner2_bg.png) no-repeat;
+        background:url(images/homepage/banner2_bg.png) no-repeat;
         display: block;
         float: left;
         height: 315px;
-        margin:-28px 0 0;
+        margin:-13px 0 0;
         width: 462px;
         position: relative;
         }
+
         .banner3 {
-        background:
-        url(images/homepage/banner3.png) no-repeat;
+        background: url(images/homepage/banner3.png) no-repeat;
         display: block;
         float: left;
         height: 252px;
-        margin: 19px 0 0 -15px;
+        margin: 19px 0 0;
         width: 980px;
         }
 
@@ -128,68 +128,80 @@
         .banner-button:focus {
         border:none;
         }
+
+        .category-list {
+        float: left;
+        width: 100%;
+        padding: 20px 0;
+        background: #d9cda1;
+        border-radius: 0 0 5px 5px;
+        }
     </ui:style>
 
     <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
-        <g:HTMLPanel addStyleNames='{res.layout.bodyContent}'>
-            <g:HTMLPanel addStyleNames='{style.hidden}'>
-                <g:HorizontalPanel ui:field="categorySection" />
-                <h1>secured button calling secured RPC</h1>
-                <g:Button ui:field="demandCreateBtn">Call Simple Service with
-                    Default
-                    LoginPopupPresenter</g:Button>
-                <g:Button ui:field="securedButton">securedButton to invoke
-                    Acccess
-                    Denied
-                    403 error</g:Button>
-                <g:Button ui:field="sendUsEmailButton">Send us an email</g:Button>
-
-                <g:Button styleName="{style.important}"
-                    ui:field="button" />
+        <g:HTMLPanel
+            addStyleNames='{res.layout.bodyContent} {style.homepage-container}'>
+            <!--TODO leave for development -->
+            <!-- <g:HTMLPanel addStyleNames='{style.hidden}'> <h1>secured
+            button calling secured RPC</h1> <g:Button ui:field="demandCreateBtn">Call
+            Simple Service with Default LoginPopupPresenter</g:Button> <g:Button ui:field="securedButton">securedButton
+            to invoke Acccess Denied 403 error</g:Button> <g:Button ui:field="sendUsEmailButton">Send
+            us an email</g:Button> <g:Button styleName="{style.important}" ui:field="button"
+            /> </g:HTMLPanel> -->
+            <g:HTMLPanel styleName="{style.banner1}">
+                <b:Heading size="4" styleName="{style.header}">Jsem
+                    Dodavatel
+                </b:Heading>
+                <g:Label styleName="{style.subheader}">a hledám nové zákazky!</g:Label>
+                <g:Label styleName="{style.banner-content}">
+                    Je težké hledat nové zakázky.
+                    U nás jsou stovky poptávek na jednom
+                    místě. Nechte
+                    zákazníky, aby vás oslovily.
+                </g:Label>
+                <g:Button ui:field="suppliersBtn"
+                          addStyleNames="{style.banner-link} {style.banner-link1-position}">
+                    Katalog dodavatelů
+                </g:Button>
+                <g:Button ui:field="howItWorksSupplierBtn"
+                          addStyleNames="{style.banner-link} {style.banner-link2-position}">
+                    Jak to funguje?
+                </g:Button>
+                <g:Button ui:field="registerSupplierBtn"
+                          addStyleNames="{style.banner-button}">
+                    Registrovat dodavatele
+                </g:Button>
             </g:HTMLPanel>
-
-            <g:HTMLPanel addStyleNames='{style.homepage-container}'>
-                <g:HTMLPanel styleName="{style.banner1}">
-                    <b:Heading size="4" styleName="{style.header}">Jsem
-                        Dodavatel</b:Heading>
-                    <g:Label styleName="{style.subheader}">a hledám nové zákazky!</g:Label>
-                    <g:Label styleName="{style.banner-content}">
-                        Je težké hledat nové
-                        zakázky. U nás jsou stovky poptávek na jednom
-                        místě. Nechte zákazníky, aby vás oslovily.
-                    </g:Label>
-                    <g:Button
-                        addStyleNames="{style.banner-link} {style.banner-link1-position}">
-                        Katalog dodavatelů</g:Button>
-                    <g:Button
-                        addStyleNames="{style.banner-link} {style.banner-link2-position}">
-                        Jak to funguje?</g:Button>
-                    <g:Button addStyleNames="{style.banner-button}">Registrovat
-                        dodavatele</g:Button>
-                </g:HTMLPanel>
-                <g:HTMLPanel styleName="{style.banner2}">
-                    <b:Heading size="4" styleName="{style.header}">Zadat
-                        Poptávku</b:Heading>
-                    <g:Label styleName="{style.subheader}">a oslovit profíky v
-                        oboru!</g:Label>
-                    <g:Label styleName="{style.banner-content}">
-                        Najděte vhodného
-                        dodavatele pro Vaši poptávku ZDARMA. Máme více
-                        jak:
-                        169 087 prověřených dodavatelů
-                    </g:Label>
-                    <g:Button
-                        addStyleNames="{style.banner-link} {style.banner-link1-position}">
-                        Katalog poptávek</g:Button>
-                    <g:Button
-                        addStyleNames="{style.banner-link} {style.banner-link2-position}">
-                        Jak to funguje?</g:Button>
-                    <g:Button addStyleNames="{style.banner-button}">Registrovat
-                        poptávku</g:Button>
-                </g:HTMLPanel>
-                <g:HTMLPanel styleName="{style.banner3}"></g:HTMLPanel>
+            <g:HTMLPanel styleName="{style.banner2}">
+                <b:Heading size="4" styleName="{style.header}">Zadat
+                    Poptávku
+                </b:Heading>
+                <g:Label styleName="{style.subheader}">a oslovit profíky v
+                    oboru!
+                </g:Label>
+                <g:Label styleName="{style.banner-content}">
+                    Najděte vhodného dodavatele
+                    pro Vaši poptávku ZDARMA. Máme více
+                    jak: 169 087
+                    prověřených dodavatelů
+                </g:Label>
+                <g:Button ui:field="demandsBtn"
+                          addStyleNames="{style.banner-link} {style.banner-link1-position}">
+                    Katalog poptávek
+                </g:Button>
+                <g:Button ui:field="howItWorksDemandBtn"
+                          addStyleNames="{style.banner-link} {style.banner-link2-position}">
+                    Jak to funguje?
+                </g:Button>
+                <g:Button ui:field="registerDemandBtn"
+                          addStyleNames="{style.banner-button}">
+                    Registrovat poptávku
+                </g:Button>
             </g:HTMLPanel>
+            <g:HTMLPanel styleName="{style.banner3}"></g:HTMLPanel>
+            <g:FlowPanel ui:field="categorySection" styleName="{style.category-list}" >
+                <c:CellList ui:field="categoryList" />
+            </g:FlowPanel>
         </g:HTMLPanel>
-
     </g:ScrollPanel>
 </ui:UiBinder>

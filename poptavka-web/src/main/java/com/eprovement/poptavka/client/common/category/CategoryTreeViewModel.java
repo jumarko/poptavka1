@@ -11,6 +11,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
@@ -32,6 +33,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
             DefaultSelectionEventManager.createCheckboxManager();
     private CategoryRPCServiceAsync categoryService;
     private EventBusWithLookup eventBus;
+    private LoadingStateChangeEvent.Handler categoryLoadingHandler;
     //Holds constant values of this class.
     private int checkboxesUsage = -1;
     //Holds constanst values from CategoryCell class.
@@ -44,12 +46,14 @@ public class CategoryTreeViewModel implements TreeViewModel {
             CategoryRPCServiceAsync categoryService,
             EventBusWithLookup eventBus,
             final int checkboxesUsage,
-            final int displayCountOfWhat) {
+            final int displayCountOfWhat,
+            LoadingStateChangeEvent.Handler categoryLoadingHandler) {
         this.selectionModel = selectionModel;
         this.categoryService = categoryService;
         this.eventBus = eventBus;
         this.checkboxesUsage = checkboxesUsage;
         this.displayCountOfWhat = displayCountOfWhat;
+        this.categoryLoadingHandler = categoryLoadingHandler;
 
         List<HasCell<CategoryDetail, ?>> hasCells = new ArrayList<HasCell<CategoryDetail, ?>>();
         hasCells.add(new HasCell<CategoryDetail, Boolean>() {
@@ -143,16 +147,15 @@ public class CategoryTreeViewModel implements TreeViewModel {
     @Override
     public <T> NodeInfo<?> getNodeInfo(T value) {
         CategoryDetail detail = (CategoryDetail) value;
+        CategoryDataProvider dataProvider = new CategoryDataProvider(
+                detail, categoryService, eventBus, categoryLoadingHandler, categoryLoadingHandler);
         switch (checkboxesUsage) {
             case Constants.WITH_CHECK_BOXES:
-                CategoryDataProvider dataProvider = new CategoryDataProvider(detail, categoryService, eventBus);
                 return new DefaultNodeInfo(dataProvider, categoryCell, selectionModel, selectionManager, null);
             case Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS:
-                CategoryDataProvider dataProvider1 = new CategoryDataProvider(detail, categoryService, eventBus);
-                return new DefaultNodeInfo(dataProvider1, categoryCell, selectionModel, selectionManager, null);
+                return new DefaultNodeInfo(dataProvider, categoryCell, selectionModel, selectionManager, null);
             default:
-                CategoryDataProvider dataProvider2 = new CategoryDataProvider(detail, categoryService, eventBus);
-                return new DefaultNodeInfo(dataProvider2, new CategoryCell(displayCountOfWhat), selectionModel, null);
+                return new DefaultNodeInfo(dataProvider, new CategoryCell(displayCountOfWhat), selectionModel, null);
         }
     }
 

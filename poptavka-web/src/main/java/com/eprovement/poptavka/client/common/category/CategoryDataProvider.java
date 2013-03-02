@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.common.category;
 
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.exceptions.SecurityDialogBoxes;
@@ -22,12 +21,15 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
     private CategoryRPCServiceAsync categoryService;
     private EventBusWithLookup eventBus;
     private CategoryDetail categoryDetail;
+    private LoadingStateChangeEvent.Handler categoryLoadingHandler;
 
     public CategoryDataProvider(CategoryDetail locCode, CategoryRPCServiceAsync categoryService,
-            EventBusWithLookup eventBus) {
+            EventBusWithLookup eventBus, LoadingStateChangeEvent.Handler rootHandler,
+            LoadingStateChangeEvent.Handler categoryLoadingHandler) {
         this.categoryDetail = locCode;
         this.categoryService = categoryService;
         this.eventBus = eventBus;
+        this.categoryLoadingHandler = categoryLoadingHandler;
     }
 
     @Override
@@ -38,9 +40,7 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                 public void onSuccess(List<CategoryDetail> result) {
                     updateRowCount(result.size(), true);
                     updateRowData(0, result);
-                    if (Storage.getTree() != null) {
-                        Storage.getTree().fireEvent(new LoadingStateChangeEvent(LoadingState.LOADED));
-                    }
+                    categoryLoadingHandler.onLoadingStateChanged(new LoadingStateChangeEvent(LoadingState.LOADED));
                 }
 
                 @Override
@@ -56,9 +56,8 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                         public void onSuccess(List<CategoryDetail> result) {
                             updateRowCount(result.size(), true);
                             updateRowData(0, result);
-                            if (Storage.getTree() != null) {
-                                Storage.getTree().fireEvent(new LoadingStateChangeEvent(LoadingState.LOADED));
-                            }
+                            categoryLoadingHandler.onLoadingStateChanged(
+                                    new LoadingStateChangeEvent(LoadingState.LOADED));
                         }
 
                         @Override

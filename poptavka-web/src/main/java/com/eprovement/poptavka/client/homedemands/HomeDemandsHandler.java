@@ -40,7 +40,6 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         homeDemandsService.getDemandsCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
-//                grid.createAsyncDataProvider(result.intValue());
                 grid.getDataProvider().updateRowCount(result.intValue(), true);
             }
         });

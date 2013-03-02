@@ -1,0 +1,71 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+    <ui:with field="res"
+             type="com.eprovement.poptavka.resources.StyleResource" />
+
+    <ui:with field="catName" type="java.lang.String" />
+    <ui:with field="catCount" type="java.lang.String" />
+
+    <ui:style>
+    .category-cell {
+    margin: 0 7px;
+    float: left;
+    width: 310px;
+    height: 37px;
+    display: block;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    }
+
+    .category-cell:hover {
+    background: #ffffff;
+    }
+
+    .category-cell:hover .category-name, .category-cell:hover .category-count {
+    color: #199204;
+    }
+
+    .category-cell:hover .category-count {
+    border: 1px solid #dcdcdc;
+    background: none;
+    }
+
+    .category-name {
+    float: left;
+    line-height: 37px;
+    padding: 0 0 0 8px;
+    }
+
+    .category-count {
+    background: #989071;
+    margin: 5px 5px 5px 0;
+    padding: 0 10px 0 0;
+    float: right;
+    height: 25px;
+    line-height: 25px;
+    text-align: right;
+    width: 50px;
+    color: #ffffff;
+    border: 1px solid #989071;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    }
+
+
+
+    </ui:style>
+
+    <div class='{res.detailViews.conversationLeftBlock} {style.category-cell}'>
+        <!--<span class='{pull-left}'>-->
+        <span class='{style.category-name}'>
+            <ui:text from='{catName}' />
+        </span>
+        <!--<span class='{pull-rigth}'>-->
+        <span class='{style.category-count}'>
+            <ui:text from='{catCount}' />
+        </span>
+    </div>
+</ui:UiBinder>

@@ -6,7 +6,6 @@ import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IH
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -23,9 +22,9 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         IHomeWelcomePresenter, NavigationConfirmationInterface {
 
     //columns number of root chategories in parent widget
-    private static final int COLUMNS = 4;
     private SimpleRPCServiceAsync simpleService;
 
+    //TODO remove this and all relevant code, if security development is finnished
     @Inject
     void setSimpleService(SimpleRPCServiceAsync service) {
         simpleService = service;
@@ -40,8 +39,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     public void onForward() {
         eventBus.setUpSearchBar(null);
-        //Martin Temporary commented - not to load categories at application startup
-        //eventBus.getRootCategories();
+        view.getCategorySelectionModel().clear();
     }
 
     @Override
@@ -53,22 +51,23 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToHomeWelcomeModule() {
+        eventBus.getRootCategories();
     }
 
     @Override
     public void bind() {
-        view.getCategorySelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
+        /** ANCHOR. **/
+        addSuppliersBtnClickHandler();
+        addDemandsBtnClickHandler();
+        addHowItWorksSupplierBtnClickHandler();
+        addHowItWorksDemandBtnClickHandler();
 
-                if (selected != null) {
-                    SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
-                    searchDataHolder.getCategories().add(selected);
-                    eventBus.goToHomeDemandsModule(searchDataHolder);
-                }
-            }
-        });
+        /** BUTTONS. **/
+        addRegisterSupplierBtnClickHandler();
+        addRegisterDemandBtnClickHandler();
+
+        /** OTHERS. **/
+        addCategorySelectionModelHandler();
 
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
             @Override
@@ -147,6 +146,77 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     }
 
     /**************************************************************************/
+    /* Bind - helper mehtods                                                  */
+    /**************************************************************************/
+    /** BUTTONS. **/
+    private void addSuppliersBtnClickHandler() {
+        view.getSuppliersBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeSuppliersModule(null);
+            }
+        });
+    }
+
+    private void addDemandsBtnClickHandler() {
+        view.getDemandsBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeDemandsModule(null);
+            }
+        });
+    }
+
+    private void addHowItWorksSupplierBtnClickHandler() {
+        view.getHowItWorksSupplierBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+            }
+        });
+    }
+
+    private void addHowItWorksDemandBtnClickHandler() {
+        view.getHowItWorksDemandBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+            }
+        });
+    }
+
+    private void addRegisterSupplierBtnClickHandler() {
+        view.getRegisterSupplierBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateSupplierModule();
+            }
+        });
+    }
+
+    private void addRegisterDemandBtnClickHandler() {
+        view.getRegisterDemandBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateDemandModule();
+            }
+        });
+    }
+
+    /** OTHERS. **/
+    private void addCategorySelectionModelHandler() {
+        view.getCategorySelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
+
+                if (selected != null) {
+                    int idx = view.getDataProvider().getList().indexOf(selected);
+                    eventBus.goToHomeDemandsModuleFromWelcome(idx, selected);
+                }
+            }
+        });
+    }
+
+    /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
     /**
@@ -155,7 +225,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
      * @param rootCategories - root categories to be displayed
      */
     public void onDisplayCategories(ArrayList<CategoryDetail> rootCategories) {
-        view.displayCategories(COLUMNS, rootCategories);
+        view.displayCategories(rootCategories);
     }
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
