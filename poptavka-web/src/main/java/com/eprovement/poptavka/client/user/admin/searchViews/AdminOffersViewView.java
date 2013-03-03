@@ -148,6 +148,11 @@ public class AdminOffersViewView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         offerIdFrom.setText("");
         offerIdTo.setText("");
         demandIdFrom.setText("");

@@ -143,10 +143,6 @@ public class HomeSuppliersPresenter
 
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
-        //This sets content of tab: current view attribute selector (fourth tab) in popup.
-        //However supplier attribute selector is already loaded by default in second tab,
-        //another setting in fourth tab is not needed
-        eventBus.setUpSearchBar(null);
     }
 
     @Override
@@ -163,6 +159,9 @@ public class HomeSuppliersPresenter
      *                               - it's also used as pointer to differ root and child sections
      */
     public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
+        if (searchModuleDataHolder == null) {
+            eventBus.setUpSearchBar(null);
+        }
         //flags initialization
         //----------------------------------------------------------------------
         calledFromHistory = false;

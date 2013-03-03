@@ -116,6 +116,11 @@ public class AdminInvoicesViewView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         idFrom.setText("");
         idTo.setText("");
         invoiceNumberFrom.setText("");

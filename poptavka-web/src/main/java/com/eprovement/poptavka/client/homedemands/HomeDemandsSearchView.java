@@ -106,6 +106,11 @@ public class HomeDemandsSearchView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         demandTitle.setText("");
         demandTypes.setSelectedIndex(0);
         priceFrom.setText("");

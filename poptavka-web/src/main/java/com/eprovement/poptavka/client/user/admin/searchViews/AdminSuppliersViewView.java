@@ -123,6 +123,11 @@ public class AdminSuppliersViewView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         supplierName.setText("");
         supplierDescription.setText("");
         ratingFrom.setText("0");

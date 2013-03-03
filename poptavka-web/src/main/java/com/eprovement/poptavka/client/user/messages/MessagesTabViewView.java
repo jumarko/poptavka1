@@ -46,6 +46,11 @@ public class MessagesTabViewView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         sender.setText("");
         subject.setText("");
         body.setText("");

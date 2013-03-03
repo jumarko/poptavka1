@@ -162,6 +162,11 @@ public class AdminMessagesViewView extends Composite implements
 
     @UiHandler("clearBtn")
     void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    @Override
+    public void clear() {
         messageIdFrom.setText("");
         messageIdTo.setText("");
         demandIdFrom.setText("");
