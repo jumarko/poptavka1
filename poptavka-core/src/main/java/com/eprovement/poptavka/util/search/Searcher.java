@@ -53,7 +53,7 @@ public final class Searcher {
             return result;
         }
         Validate.notNull(search, "Search cannot be null");
-        Validate.notNull(search.getClass(), "Search class cannot be null");
+        Validate.notNull(search.getSearchClass(), "Search class cannot be null");
         filterCollection(search, haystack, result);
         sortList(search, result);
         result = trim(search, result);

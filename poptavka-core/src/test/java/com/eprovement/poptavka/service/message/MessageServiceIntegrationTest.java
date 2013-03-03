@@ -19,12 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+
+import com.googlecode.genericdao.search.Search;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Juraj Martinka
@@ -146,8 +151,9 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         checkUserMessageExists(4L, potentialDemandConversation);
 
         // the same test but returns UserMessage instead of Messages
+        // -> search definition is empty since we don't want to apply any further search criteria
         final List<UserMessage> potentialDemandConversationUserMessages =
-                this.messageService.getConversationUserMessages(threadRoot, supplier);
+                this.messageService.getConversationUserMessages(threadRoot, supplier, null);
 
         Assert.assertEquals(4, potentialDemandConversationUserMessages.size());
         // check if all expected messages are in conversation
@@ -155,6 +161,30 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         checkUserMessageExistsUserMessage(3L, potentialDemandConversationUserMessages);
         checkUserMessageExistsUserMessage(5L, potentialDemandConversationUserMessages);
         checkUserMessageExistsUserMessage(7L, potentialDemandConversationUserMessages);
+    }
+
+    @Test
+    public void testGetConversationUserMessageBySearchDefinition() throws Exception {
+        final Message threadRoot = this.messageService.getById(1L);
+        final User supplier = this.generalService.find(User.class, 111111112L);
+
+        // sort from the most recent one
+        final Search searchDefinition = new Search(UserMessage.class);
+        searchDefinition.addSort("message.created", true);
+
+        final List<UserMessage> potentialDemandConversationUserMessages =
+                this.messageService.getConversationUserMessages(threadRoot, supplier, searchDefinition);
+
+        Assert.assertEquals(4, potentialDemandConversationUserMessages.size());
+        // check if all expected messages are in conversation
+        assertThat("Unxpected UserMessage by order specified in Search definition",
+                potentialDemandConversationUserMessages.get(0).getMessage().getId(), is(2L));
+        assertThat("Unxpected UserMessage by order specified in Search definition",
+                potentialDemandConversationUserMessages.get(1).getMessage().getId(), is(4L));
+        assertThat("Unxpected UserMessage by order specified in Search definition",
+                potentialDemandConversationUserMessages.get(2).getMessage().getId(), is(1L));
+        assertThat("Unxpected UserMessage by order specified in Search definition",
+                potentialDemandConversationUserMessages.get(3).getMessage().getId(), is(3L));
     }
 
     @Test

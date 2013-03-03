@@ -14,11 +14,15 @@ import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.util.search.Searcher;
 import com.eprovement.poptavka.util.strings.ToStringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.googlecode.genericdao.search.Search;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,8 +146,16 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public List<UserMessage> getConversationUserMessages(Message threadRoot, User supplierUser) {
-        return getDao().getConversationUserMessages(threadRoot, supplierUser);
+    public List<UserMessage> getConversationUserMessages(Message threadRoot, User supplierUser, Search search) {
+
+        final List<UserMessage> allConversionMessages = getDao().getConversationUserMessages(threadRoot, supplierUser);
+        if (search == null) {
+            return allConversionMessages;
+        }
+
+        // search class must always be UserMessage - do not allow any other setting!
+        search.setSearchClass(UserMessage.class);
+        return Searcher.searchCollection(allConversionMessages, search);
     }
 
     /**
