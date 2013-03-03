@@ -28,8 +28,8 @@ public class UrgentImageCell extends AbstractCell<Date> {
     /**************************************************************************/
     /** Constants. **/
     private static final ImageResource HEADER = Storage.RSCS.images().urgencyHeader();
-    private static final ImageResource HIGHT = Storage.RSCS.images().urgencyRed();
-    private static final ImageResource HIGHTER = Storage.RSCS.images().urgencyOrange();
+    private static final ImageResource HIGH = Storage.RSCS.images().urgencyRed();
+    private static final ImageResource HIGHER = Storage.RSCS.images().urgencyOrange();
     private static final ImageResource NORMAL = Storage.RSCS.images().urgencyGreen();
     /** Renderers. **/
     private static ImageResourceRenderer imageRenderer;
@@ -38,10 +38,10 @@ public class UrgentImageCell extends AbstractCell<Date> {
         public SafeHtml render(Date value) {
             int daysBetween = CalendarUtil.getDaysBetween(value, DateUtils.getNowDate());
             if (daysBetween < Constants.DAYS_URGENCY_HIGHT) {
-                return imageRenderer.render(HIGHT);
+                return imageRenderer.render(HIGH);
             }
             if (daysBetween <= Constants.DAYS_URGENCY_HIGHTER) {
-                return imageRenderer.render(HIGHTER);
+                return imageRenderer.render(HIGHER);
             }
             return imageRenderer.render(NORMAL);
         }

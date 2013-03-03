@@ -13,7 +13,6 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -61,7 +60,6 @@ public class AdminNewDemandsView extends Composite
     private Column<FullDemandDetail, String> demnadTitleColumn;
     private Column<FullDemandDetail, String> localityColumn;
     private MultiSelectionModel selectionModel;
-    private final DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
     private static final List<String> GRID_COLUMNS = Arrays.asList(
             new String[]{
                 "createdDate", "title", "locality", "endDate"

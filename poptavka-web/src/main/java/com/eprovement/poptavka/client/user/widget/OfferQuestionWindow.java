@@ -9,7 +9,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -51,7 +50,6 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /** Class attributes. **/
     private int selectedResponse;
     private MessageDetail replyToMessage;
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -208,7 +206,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         messagePanel.getStyle().setDisplay(Display.BLOCK);
         this.replyToMessage = message;
         sender.setText(message.getSenderName());
-        sent.setText(formatter.format(message.getSent()));
+        sent.setText(Storage.FORMATTER.format(message.getSent()));
         body.setText(message.getBody());
     }
 

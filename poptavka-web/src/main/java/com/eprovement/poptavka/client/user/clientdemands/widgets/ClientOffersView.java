@@ -11,7 +11,6 @@ import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDeta
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -56,8 +55,6 @@ public class ClientOffersView extends Composite
     @UiField SimplePanel wrapperPanel;
     @UiField Label demandTableNameLabel, offerTableNameLabel;
     @UiField HorizontalPanel demandHeader, offerHeader, offerToolBar;
-    /** Class Attributes. **/
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -163,7 +160,7 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return formatter.format(((ClientDemandDetail) object).getEndDate());
+                        return Storage.FORMATTER.format(((ClientDemandDetail) object).getEndDate());
                     }
                 });
 
@@ -174,7 +171,7 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return formatter.format(((ClientDemandDetail) object).getValidToDate());
+                        return Storage.FORMATTER.format(((ClientDemandDetail) object).getValidToDate());
                     }
                 });
     }

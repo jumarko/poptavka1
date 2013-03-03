@@ -13,7 +13,6 @@ import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -66,7 +65,6 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
     //detail WrapperPanel
     @UiField SimplePanel wrapperPanel;
     @UiField Label demandTitlelabel;
@@ -183,7 +181,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return formatter.format(((ClientDemandDetail) object).getEndDate());
+                        return Storage.FORMATTER.format(((ClientDemandDetail) object).getEndDate());
                     }
                 });
 
@@ -194,7 +192,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return formatter.format(((ClientDemandDetail) object).getValidToDate());
+                        return Storage.FORMATTER.format(((ClientDemandDetail) object).getValidToDate());
                     }
                 });
     }
@@ -243,7 +241,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return formatter.format(((ClientDemandConversationDetail) object).getMessageSent());
+                        return Storage.FORMATTER.format(((ClientDemandConversationDetail) object).getMessageSent());
                     }
                 });
     }
