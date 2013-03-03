@@ -108,12 +108,6 @@ public class EmailDialogPopupView extends PopupPanel
     public void createView() {
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-        // set values from Storage object if user is logged in
-        if (Storage.getUser() != null) {
-            // user is logged in so we can retrieve his email address
-            emailFrom.setText(Storage.getUser().getEmail());
-            reEmailFrom.setText(Storage.getUser().getEmail());
-        }
         // set values for subjectListBox
         subject = new ListBox();
         subject.insertItem(MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
@@ -124,6 +118,12 @@ public class EmailDialogPopupView extends PopupPanel
 
         //create widget
         setWidget(uiBinder.createAndBindUi(this));
+        // set values from Storage object if user is logged in
+        if (Storage.getUser() != null) {
+            // user is logged in so we can retrieve his email address
+            emailFrom.setText(Storage.getUser().getEmail());
+            reEmailFrom.setText(Storage.getUser().getEmail());
+        }
         //validation
         this.driver.initialize(this);
         this.driver.edit(emailDialogDetail);
