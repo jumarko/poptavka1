@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.home.createDemand;
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.github.gwtbootstrap.client.ui.FluidContainer;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -13,8 +14,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,24 +34,14 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /* Attributes                                                             */
     /**************************************************************************/
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
-    @UiField
-    SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5;
-    @UiField
-    TabLayoutPanel mainPanel;
-    @UiField
-    DockLayoutPanel userFormPanel;
-    @UiField
-    Button loginBtn, registerBtn;
-    @UiField
-    Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4, nextButtonTab5;
-    @UiField
-    Button backButtonTab1, backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
-    @UiField
-    HTML headerLabelTab1, headerLabelTab2, headerLabelTab3, headerLabelTab4, headerLabelTab5;
-    @UiField
-    HTMLPanel buttonsPanelTab1;
-    @UiField
-    Label infoLabel1;
+    @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5;
+    @UiField FluidContainer panel1;
+    @UiField DockLayoutPanel panel2;
+    @UiField TabLayoutPanel mainPanel;
+    @UiField Button loginBtn, registerBtn;
+    @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4, nextButtonTab5;
+    @UiField Button backButtonTab1, backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
+    @UiField HTML headerLabelTab1, headerLabelTab2, headerLabelTab3, headerLabelTab4, headerLabelTab5;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -105,18 +94,16 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         recalculateTabNumbers();
     }
 
+    @Override
     public void setLoginLayout() {
-        loginBtn.setVisible(true);
-        registerBtn.setVisible(true);
-        buttonsPanelTab1.setVisible(false);
-        infoLabel1.setText(Storage.MSGS.demandCreationInfoLabel1());
+        panel2.setVisible(false);
+        panel1.setVisible(true);
     }
 
+    @Override
     public void setRegisterLayout() {
-        loginBtn.setVisible(false);
-        registerBtn.setVisible(false);
-        buttonsPanelTab1.setVisible(true);
-        infoLabel1.setText(Storage.MSGS.demandCreationInfoLabel12());
+        panel1.setVisible(false);
+        panel2.setVisible(true);
     }
 
     /**************************************************************************/
