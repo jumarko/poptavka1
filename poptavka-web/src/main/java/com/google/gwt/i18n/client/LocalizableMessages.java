@@ -426,7 +426,7 @@ public interface LocalizableMessages extends Messages {
 
     /** FormDemandAdvView.ui. **/
     String formDemandAdvDemandAttractive();
-    String formDemandAdvDemandClassic();
+    String formDemandAdvDemandNormal();
     String formDemandAdvExcludeBtn();
     String formDemandAdvExcludedList();
     String formDemandAdvMinRating();

@@ -42,39 +42,41 @@ public class FormDemandBasicView extends Composite
 
     interface FormDemandBasicUiBinder extends UiBinder<Widget, FormDemandBasicView> {
     }
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField TextBox title;
+    @UiField BigDecimalBox price;
+    @UiField TextArea description;
+    @UiField DateBox endDate;
+    @UiField @Ignore Label errorLabelTitle, errorLabelPrice, errorLabelEndDate, errorLabelDesc;
+
+    /** Class attributes. **/
     ArrayList<HasValue> widgets = new ArrayList<HasValue>();
     HashMap<DemandField, Object> map = new HashMap<DemandField, Object>();
-    @UiField
-    TextBox title;
-    @UiField
-    BigDecimalBox price;
-    @UiField
-    TextArea description;
-    @UiField
-    DateBox endDate;
-    @UiField
-    DateBox validToDate;
-    @UiField
-    @Ignore
-    Label errorLabelTitle, errorLabelPrice, errorLabelEndDate, errorLabelExpDate, errorLabelDesc;
-
+    //Validation
     interface Driver extends SimpleBeanEditorDriver<FullDemandDetail, FormDemandBasicView> {
     }
     private FormDemandBasicView.Driver driver = GWT.create(FormDemandBasicView.Driver.class);
     private Validator validator = null;
     private FullDemandDetail fullDemandDetail = new FullDemandDetail();
-    //Constants
+
+    /** Constants. **/
     private final static String NORMAL_STYLE = StyleResource.INSTANCE.common().emptyStyle();
     private final static String ERROR_STYLE = StyleResource.INSTANCE.common().errorField();
     private final static int TITLE = 0;
     private final static int PRICE = 1;
     private final static int END_DATE = 2;
-    private final static int EXP_DATE = 3;
-    private final static int DESCRIPTION = 4;
+    private final static int DESCRIPTION = 3;
     //place for uploadFiles button
     //place for addNextAttachment button
     private Set<Integer> valid = new HashSet<Integer>();
 
+    /**************************************************************************/
+    /* Initializatiob                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -85,7 +87,6 @@ public class FormDemandBasicView extends Composite
         widgets.add(title);
         widgets.add(description);
         widgets.add(endDate);
-        widgets.add(validToDate);
 
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         endDate.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -93,13 +94,6 @@ public class FormDemandBasicView extends Composite
             @Override
             public void onClose(CloseEvent event) {
                 validateEndDate();
-            }
-        }, CloseEvent.getType());
-        validToDate.setFormat(new DateBox.DefaultFormat(dateFormat));
-        validToDate.getDatePicker().getParent().addHandler(new CloseHandler<PopupPanel>() {
-            @Override
-            public void onClose(CloseEvent event) {
-                validateValidToDate();
             }
         }, CloseEvent.getType());
     }
@@ -127,13 +121,6 @@ public class FormDemandBasicView extends Composite
         this.displayErrors(END_DATE, violations);
     }
 
-    public void validateValidToDate() {
-        FullDemandDetail demandDetail = driver.flush();
-        Set<ConstraintViolation<FullDemandDetail>> violations = validator.validateValue(
-                FullDemandDetail.class, "validToDate", demandDetail.getValidToDate(), Default.class);
-        this.displayErrors(EXP_DATE, violations);
-    }
-
     @UiHandler("description")
     public void validateDescription(BlurEvent e) {
         FullDemandDetail demandDetail = driver.flush();
@@ -152,7 +139,6 @@ public class FormDemandBasicView extends Composite
         validateTitle(null);
         validatePrice(null);
         validateEndDate();
-        validateValidToDate();
         validateDescription(null);
         return valid.isEmpty();
     }
@@ -163,12 +149,11 @@ public class FormDemandBasicView extends Composite
         map.put(DemandField.TITLE, title.getText());
         map.put(DemandField.DESCRIPTION, description.getValue());
         try {
-            map.put(DemandField.PRICE, price.getText());
+            map.put(DemandField.PRICE, price.getValue());
         } catch (Exception ex) {
             Window.alert("Exception: " + ex.getMessage());
         }
         map.put(DemandField.END_DATE, endDate.getValue());
-        map.put(DemandField.VALID_TO_DATE, validToDate.getValue());
 
         GWT.log("Filling map with basic values ... DONE");
         return map;
@@ -204,10 +189,6 @@ public class FormDemandBasicView extends Composite
             case END_DATE:
                 this.endDate.setStyleName(style);
                 this.errorLabelEndDate.setText(errorMessage);
-                break;
-            case EXP_DATE:
-                this.validToDate.setStyleName(style);
-                this.errorLabelExpDate.setText(errorMessage);
                 break;
             case DESCRIPTION:
                 this.description.setStyleName(style);

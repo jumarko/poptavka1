@@ -57,6 +57,21 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
             return value;
         }
     }
+
+    public enum DemandType {
+
+        NORMAL("normal"),
+        ATTRACTIVE("attractive");
+        private String value;
+
+        private DemandType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
     private ArrayList<LocalityDetail> localities;
     private ArrayList<CategoryDetail> categories;
     private long clientId;
@@ -116,15 +131,16 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     public void setBasicInfo(HashMap<DemandField, Object> map) {
         this.setTitle((String) map.get(DemandField.TITLE));
         this.setDescription((String) map.get(DemandField.DESCRIPTION));
-        this.setPrice(new BigDecimal((String) map.get(DemandField.PRICE)));
+        this.setPrice((BigDecimal) map.get(DemandField.PRICE));
         this.setEndDate((Date) map.get(DemandField.END_DATE));
-        this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
     }
 
     public void setAdvInfo(HashMap<DemandField, Object> map) {
-        this.maxOffers = (Integer) map.get(DemandField.MAX_OFFERS);
-        this.minRating = (Integer) map.get(DemandField.MIN_RATING);
-        this.demandType = (String) map.get(DemandField.DEMAND_TYPE);
+        this.setMaxOffers((Integer) map.get(DemandField.MAX_OFFERS));
+        //Temporary disabled + TODO excluded suppliers
+//        this.setMinRating((Integer) map.get(DemandField.MIN_RATING));
+        this.setDemandType((String) map.get(DemandField.DEMAND_TYPE));
+        this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
     }
     //---------------------------- GETTERS AND SETTERS --------------------
 
