@@ -1,31 +1,32 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-	<!-- injecting style resources -->
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
+    <!-- injecting style resources -->
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-	<ui:style>
-		.control-label {
-		margin: 5px 0 0 25px;
-		padding: 0 0 0 4px;		
-		display: block;
-		}
-		.red-label {
-		background: url(images/label-red.png) no-repeat 0 4px;
-		}
-		.green-label {
-		background: url(images/label-green.png) no-repeat 0 4px;
-		}
-	</ui:style>
+    <ui:style>
+        .control-label {
+        display: block;
+        left: 345px;
+        padding: 0 0 0 4px;
+        position: absolute;
+        top: 4px;
+        }
+        .red-label {
+        background: url(images/error-label.png) no-repeat;
+        }
+        .green-label {
+        background: url(images/label-green.png) no-repeat 0 4px;
+        }
+    </ui:style>
 
-	<b:ControlGroup ui:field="controlGroup">
-		<b:Controls>
-			<g:SimplePanel ui:field="holder" styleName='pull-left' />
-			<g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='{style.control-label} {style.red-label} pull-left'>
-				<b:Label ui:field="errorLabel" type="IMPORTANT" />
-			</g:HTMLPanel>
-		</b:Controls>
-	</b:ControlGroup>
+    <b:ControlGroup ui:field="controlGroup">
+        <b:Controls>
+            <g:SimplePanel ui:field="holder" />
+            <g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='{style.control-label}'>
+                <b:Label ui:field="errorLabel" type="IMPORTANT" />
+            </g:HTMLPanel>
+        </b:Controls>
+    </b:ControlGroup>
 </ui:UiBinder>

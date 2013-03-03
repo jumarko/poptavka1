@@ -71,15 +71,13 @@
     display: inline;
 }
 
-.user {
-/*    height: 800px;
+.user { /*    height: 800px;
     width: 1300px*/
     height: 100%;
     width: 100%;
 }
 
-.user_content {
-/*    height: 500px;
+.user_content { /*    height: 500px;
     width: 1050px;*/
     height: 100%;
     width: 100%;
@@ -97,4 +95,69 @@
 
 .changed {
     background-color: #00FF00 !important;
+}
+
+/* Common buttons */
+.button-left-small {
+    background: url(images/button-left-small.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 43px;
+    width: 101px;
+    padding: 0 0 4px 10px;
+    margin-right: 10px;
+}
+
+.button-left-medium {
+    background: url(images/button-left-medium.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 166px;
+}
+
+.button-left-large {
+    background: url(images/button-left-large.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 236px;
+}
+
+.button-right-small {
+    background: url(images/button-right-small.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 43px;
+    width: 101px;
+    padding: 0 10px 4px 0;
+}
+
+.button-right-medium {
+    background: url(images/button-right-medium.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 166px;
+}
+
+.button-right-large {
+    background: url(images/button-right-large.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 236px;
+
 }

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
+    xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <!-- injecting style resources -->
-    <ui:with field='res'
-        type='com.eprovement.poptavka.resources.StyleResource' />
-    <ui:with field='text'
-        type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>
         .tabIndex1 {z-index: 1;}
@@ -15,13 +13,10 @@
         .tabIndex3 {z-index: 3;}
         .tabIndex4 {z-index: 4;}
         .tabIndex5 {z-index: 5;}
-
     </ui:style>
 
-    <g:TabLayoutPanel ui:field='mainPanel'
-        stylePrimaryName='{res.createTabPanel.createTabPanel}'
-        addStyleNames='{res.layout.bodyContainer}' barUnit='PX'
-        barHeight='120'>
+    <g:TabLayoutPanel ui:field='mainPanel' stylePrimaryName='{res.createTabPanel.createTabPanel}'
+        addStyleNames='{res.layout.bodyContainer}' barUnit='PX' barHeight='120'>
         <!--1 -->
         <g:tab>
             <g:customHeader size="30">
@@ -30,56 +25,52 @@
                 </g:HTML>
             </g:customHeader>
             <g:DockLayoutPanel unit="PX" ui:field='userFormPanel'>
-                <g:north size="30">
-                    <g:Label ui:field="infoLabel1">
-                        <ui:msg key="clientCreationInfoLabel1">
-                            Login or register for free to
-                            continue.
-                        </ui:msg>
+                <g:north size="160">
+                    <g:Label ui:field="infoLabel1" styleName='infoLabel1'>
+                        <ui:msg key="clientCreationInfoLabel1">Login or register for free to continue.</ui:msg>
                     </g:Label>
+                </g:north>
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                 </g:north>
                 <g:center>
                     <g:ScrollPanel>
-                        <!-- <b:FluidContainer> <b:FluidRow> <b:Column size="12">
-                            <b:Heading size="4"> <ui:msg key="demandCreationLoginOrRegister">Login or
-                            Register to continue</ui:msg> </b:Heading> </b:Column> </b:FluidRow> -->
-                        <b:FluidContainer>
+                        <!-- <b:FluidContainer> <b:FluidRow> <b:Column size="12"> <b:Heading size="4"> <ui:msg key="demandCreationLoginOrRegister">Login
+                            or Register to continue</ui:msg> </b:Heading> </b:Column> </b:FluidRow> -->
+                        <b:FluidContainer styleName='formContainer'>
                             <b:FluidRow>
                                 <b:Column size="12">
-                                    <g:SimplePanel
-                                        ui:field="contentHolder1" />
+                                    <g:SimplePanel ui:field="contentHolder1" />
                                 </b:Column>
                             </b:FluidRow>
-
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Button ui:field="loginBtn"
-                                        styleName='btn btn-primary'>
+                            <b:FluidRow addStyleNames='buttonsBorderRow'>
+                                <b:Column size="3">
+                                    <g:Button ui:field="loginBtn" styleName='{res.common.buttonLeftMedium}'>
                                         <ui:msg key="commonLoginBtn">Login</ui:msg>
                                     </g:Button>
-                                    <g:Button ui:field="registerBtn"
-                                        styleName='btn'>
-                                        <ui:msg
-                                            key="demandCreationRegisterBtn">Register for
-                                            FREE</ui:msg>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Button ui:field="registerBtn" styleName='{res.common.buttonRightMedium}'>
+                                        <ui:msg key="demandCreationRegisterBtn">Register for FREE</ui:msg>
                                     </g:Button>
                                 </b:Column>
                             </b:FluidRow>
                         </b:FluidContainer>
                     </g:ScrollPanel>
                 </g:center>
-                <g:south size="35">
-                    <g:HTMLPanel ui:field="buttonsPanelTab1">
-                        <g:Button ui:field="backButtonTab1"
-                            styleName='btn'>
-                            <i class="icon-arrow-left"></i>
-                            <ui:msg key='commonBtnBack'>Back</ui:msg>
-                        </g:Button>
-                        <g:Button ui:field="nextButtonTab1"
-                            styleName='btn btn-primary'>
-                            <ui:msg key="commonBtnNext">Next</ui:msg>
-                            <i class="icon-arrow-right"></i>
-                        </g:Button>
+                <g:south size="95">
+                    <g:HTMLPanel styleName='formFooter'>
+                        <g:Label>
+                            <ui:msg key="formRequiredFields">* fields are required</ui:msg>
+                        </g:Label>
+                        <g:HTMLPanel ui:field="buttonsPanelTab1" styleName='buttonsContainer'>
+                            <g:Button ui:field="nextButtonTab1" styleName='{res.common.buttonRightSmall}'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="backButtonTab1" styleName='{res.common.buttonLeftSmall}'>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                        </g:HTMLPanel>
                     </g:HTMLPanel>
                 </g:south>
             </g:DockLayoutPanel>
@@ -91,34 +82,32 @@
                     <ui:msg key="demandCreationTab2">Demand Creation</ui:msg>
                 </g:HTML>
             </g:customHeader>
-            <g:DockLayoutPanel unit="PX" height="100%">
-                <g:north size="30">
-                    <g:Label>
-                        <ui:msg key="clientCreationInfoLabel2">
-                            Fill basic demand information
-                            to continue.
-                        </ui:msg>
+            <g:DockLayoutPanel unit="PX">
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="clientCreationInfoLabel2">Fill basic demand information to continue.</ui:msg>
                     </g:Label>
+                </g:north>
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                 </g:north>
                 <g:center>
                     <g:ScrollPanel>
-                        <g:SimplePanel ui:field="contentHolder2" />
+                        <g:HTMLPanel>
+                            <g:SimplePanel ui:field="contentHolder2" styleName='formContainer' />
+                            <g:HTMLPanel styleName='formFooter'>
+                                <g:HTMLPanel styleName='buttonsContainer'>
+                                    <g:Button ui:field="nextButtonTab2" styleName='{res.common.buttonRightSmall}'>
+                                        <ui:msg key="commonBtnNext">Next</ui:msg>
+                                    </g:Button>
+                                    <g:Button ui:field="backButtonTab2" styleName='{res.common.buttonLeftSmall}'>
+                                        <ui:msg key='commonBtnBack'>Back</ui:msg>
+                                    </g:Button>
+                                </g:HTMLPanel>
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
                     </g:ScrollPanel>
                 </g:center>
-                <g:south size="35">
-                    <g:HTMLPanel>
-                        <g:Button ui:field="backButtonTab2"
-                            styleName='btn'>
-                            <i class="icon-arrow-left"></i>
-                            <ui:msg key='commonBtnBack'>Back</ui:msg>
-                        </g:Button>
-                        <g:Button ui:field="nextButtonTab2"
-                            styleName='btn btn-primary'>
-                            <ui:msg key="commonBtnNext">Next</ui:msg>
-                            <i class="icon-arrow-right"></i>
-                        </g:Button>
-                    </g:HTMLPanel>
-                </g:south>
             </g:DockLayoutPanel>
         </g:tab>
         <!--3 -->
@@ -128,34 +117,31 @@
                     <ui:msg key="demandCreationTab3">Category selection</ui:msg>
                 </g:HTML>
             </g:customHeader>
-            <g:DockLayoutPanel unit="PX" height="100%">
-                <g:north size="30">
-                    <g:Label>
-                        <ui:msg key="clientCreationInfoLabel3">
-                            Select the most suitable
-                            category. The more accurate category the
-                            more relevant suppliers will
-                            contact you.
-                        </ui:msg>
+            <g:DockLayoutPanel unit="PX">
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="clientCreationInfoLabel3">Select the most suitable category. The more accurate category the more
+                            relevant suppliers will contact you.</ui:msg>
                     </g:Label>
+                </g:north>
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                 </g:north>
                 <g:center>
                     <g:ScrollPanel>
-                        <g:SimplePanel ui:field="contentHolder3" />
+                        <g:SimplePanel ui:field="contentHolder3" styleName='formContainer' />
                     </g:ScrollPanel>
                 </g:center>
-                <g:south size="35">
-                    <g:HTMLPanel>
-                        <g:Button ui:field="backButtonTab3"
-                            styleName='btn'>
-                            <i class="icon-arrow-left"></i>
-                            <ui:msg key='commonBtnBack'>Back</ui:msg>
-                        </g:Button>
-                        <g:Button ui:field="nextButtonTab3"
-                            styleName='btn btn-primary'>
-                            <ui:msg key="commonBtnNext">Next</ui:msg>
-                            <i class="icon-arrow-right"></i>
-                        </g:Button>
+                <g:south size="95">
+                    <g:HTMLPanel styleName='formFooter'>
+                        <g:HTMLPanel styleName='buttonsContainer'>
+                            <g:Button ui:field="nextButtonTab3" styleName='{res.common.buttonRightSmall}'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="backButtonTab3" styleName='{res.common.buttonLeftSmall}'>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                        </g:HTMLPanel>
                     </g:HTMLPanel>
                 </g:south>
             </g:DockLayoutPanel>
@@ -168,30 +154,26 @@
                 </g:HTML>
             </g:customHeader>
             <g:DockLayoutPanel unit="PX" height="100%">
-                <g:north size="30">
-                    <g:Label>
-                        <ui:msg key="clientCreationInfoLabel4">
-                            Select your Locality.
-                        </ui:msg>
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="clientCreationInfoLabel4">Select your Locality.</ui:msg>
                     </g:Label>
                 </g:north>
                 <g:center>
                     <g:ScrollPanel>
-                        <g:SimplePanel ui:field="contentHolder4" />
+                        <g:SimplePanel ui:field="contentHolder4" styleName='formContainer'/>
                     </g:ScrollPanel>
                 </g:center>
-                <g:south size="35">
-                    <g:HTMLPanel>
-                        <g:Button ui:field="backButtonTab4"
-                            styleName='btn'>
-                            <i class="icon-arrow-left"></i>
-                            <ui:msg key='commonBtnBack'>Back</ui:msg>
-                        </g:Button>
-                        <g:Button ui:field="nextButtonTab4"
-                            styleName='btn btn-primary'>
-                            <ui:msg key="commonBtnNext">Next</ui:msg>
-                            <i class="icon-arrow-right"></i>
-                        </g:Button>
+                <g:south size="95">
+                    <g:HTMLPanel styleName='formFooter'>
+                        <g:HTMLPanel styleName='buttonsContainer'>
+                            <g:Button ui:field="nextButtonTab4" styleName='{res.common.buttonRightSmall}'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                            </g:Button>
+                            <g:Button ui:field="backButtonTab4" styleName='{res.common.buttonLeftSmall}'>
+                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                            </g:Button>
+                        </g:HTMLPanel>
                     </g:HTMLPanel>
                 </g:south>
             </g:DockLayoutPanel>
@@ -204,12 +186,9 @@
                 </g:HTML>
             </g:customHeader>
             <g:DockLayoutPanel unit="PX" height="100%">
-                <g:north size="30">
-                    <g:Label>
-                        <ui:msg key="clientCreationInfoLabel5">
-                            Fill advance demand
-                            information to continue.
-                        </ui:msg>
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="clientCreationInfoLabel5">Fill advance demand information to continue.</ui:msg>
                     </g:Label>
                 </g:north>
                 <g:center>
@@ -217,15 +196,13 @@
                         <g:SimplePanel ui:field="contentHolder5" />
                     </g:ScrollPanel>
                 </g:center>
-                <g:south size="35">
+                <g:south size="95">
                     <g:HTMLPanel>
-                        <g:Button ui:field="backButtonTab5"
-                            styleName='btn'>
+                        <g:Button ui:field="backButtonTab5" styleName='btn'>
                             <i class="icon-arrow-left"></i>
                             <ui:msg key='commonBtnBack'>Back</ui:msg>
                         </g:Button>
-                        <g:Button ui:field="nextButtonTab5"
-                            styleName='btn btn-primary'>
+                        <g:Button ui:field="nextButtonTab5" styleName='btn btn-primary'>
                             <ui:msg key='demandCreationCreateDemandBtn'>Create demand</ui:msg>
                             <i class="icon-save"></i>
                         </g:Button>
