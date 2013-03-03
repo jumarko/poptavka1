@@ -40,7 +40,10 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                 public void onSuccess(List<CategoryDetail> result) {
                     updateRowCount(result.size(), true);
                     updateRowData(0, result);
-                    categoryLoadingHandler.onLoadingStateChanged(new LoadingStateChangeEvent(LoadingState.LOADED));
+                    //Not every widget want to register listener
+                    if (categoryLoadingHandler != null) {
+                        categoryLoadingHandler.onLoadingStateChanged(new LoadingStateChangeEvent(LoadingState.LOADED));
+                    }
                 }
 
                 @Override
@@ -56,8 +59,11 @@ public class CategoryDataProvider extends AsyncDataProvider<CategoryDetail> {
                         public void onSuccess(List<CategoryDetail> result) {
                             updateRowCount(result.size(), true);
                             updateRowData(0, result);
-                            categoryLoadingHandler.onLoadingStateChanged(
-                                    new LoadingStateChangeEvent(LoadingState.LOADED));
+                            //Not every widget want to register listener
+                            if (categoryLoadingHandler != null) {
+                                categoryLoadingHandler.onLoadingStateChanged(
+                                        new LoadingStateChangeEvent(LoadingState.LOADED));
+                            }
                         }
 
                         @Override
