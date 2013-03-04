@@ -102,7 +102,8 @@ public class AdvanceSearchContentView extends Composite
     public void resetWidgets() {
         demandsAttributeSelectorWidget.clear();
         suppliersAttributeSelectorWidget.clear();
-        if (attributeSelectorWidgetPanel.getWidget() != null) {
+        if (attributeSelectorWidgetPanel.getWidget() != null
+                && (attributeSelectorWidgetPanel.getWidget() instanceof SearchModulesViewInterface)) {
             ((SearchModulesViewInterface) attributeSelectorWidgetPanel.getWidget()).clear();
         }
         categorySelectorWidgetPanel.clear();
