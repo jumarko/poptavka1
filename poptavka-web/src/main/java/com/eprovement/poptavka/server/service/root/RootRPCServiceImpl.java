@@ -277,17 +277,23 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService
     public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {
-        Message threadRoot = messageService.getById(threadId);
-
-        User user = this.generalService.find(User.class, userId);
-        List<UserMessage> userMessages = this.messageService
-                .getConversationUserMessages(threadRoot, user);
+        final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId);
         // set all user messages as read
         for (UserMessage userMessage : userMessages) {
             userMessage.setRead(true);
             userMessageService.update(userMessage);
         }
         return userMessageConverter.convertToTargetList(userMessages);
+    }
+
+    private List<UserMessage> getConversationUserMessages(long threadId, long userId) {
+        Message threadRoot = messageService.getById(threadId);
+
+        User user = this.generalService.find(User.class, userId);
+        final Search searchDefinition = new Search(UserMessage.class);
+        searchDefinition.addSort("message.created", true);
+        return this.messageService
+                .getConversationUserMessages(threadRoot, user, searchDefinition);
     }
 
     /**************************************************************************/

@@ -9,6 +9,8 @@ import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericService;
+import com.googlecode.genericdao.search.Search;
+
 import java.util.List;
 import java.util.Map;
 
@@ -89,9 +91,11 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      *
      * @param message
      * @param supplierUser
+     * @param searchDefinition definition for applying additional filters to the list of conversion messages
+     *                         such as sorting, paging, ...
      * @return
      */
-    List<UserMessage> getConversationUserMessages(Message message, User supplierUser);
+    List<UserMessage> getConversationUserMessages(Message message, User supplierUser, Search searchDefinition);
 
     /**
      * Returns message thread root assigned to given demand.

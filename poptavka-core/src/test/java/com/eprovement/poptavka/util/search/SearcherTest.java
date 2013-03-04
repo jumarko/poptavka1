@@ -9,6 +9,7 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
@@ -135,6 +136,17 @@ public class SearcherTest extends DBUnitIntegrationTest {
         checkUserMessageExists(202L, inboxFiltered);
         checkUserMessageExists(302L, inboxFiltered);
         checkUserMessageExists(503L, inboxFiltered);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSearchCollectionFailsForNullSearch() throws Exception {
+        Searcher.searchCollection(Arrays.asList("1"), null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSearchCollectionFailsForNullSearchClass() throws Exception {
+        Searcher.searchCollection(Arrays.asList("1"), new Search());
     }
 
     /**
