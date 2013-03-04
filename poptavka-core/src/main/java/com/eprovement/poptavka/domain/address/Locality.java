@@ -35,15 +35,15 @@ import javax.persistence.NamedQuery;
         @NamedQuery(name = "getLocalitiesByMaxLength",
                 query = "select locality "
                         + " from Locality locality\n"
-                        + "where lenght(locality.name) < :length"
+                        + "where LENGTH(locality.name) < :length"
                         + " and locality.type = :type"
-                        + " and locality.name ilike %:name%"),
+                        + " and locality.name like :name"),
         @NamedQuery(name = "getLocalitiesByMinLength",
                 query = "select locality "
                         + " from Locality locality\n"
-                        + "where lenght(locality.name) >= :length"
+                        + "where LENGTH(locality.name) >= :length"
                         + " and locality.type = :type"
-                        + " and locality.name ilike %:name%")
+                        + " and locality.name like :name")
 })
 public class Locality extends TreeItem implements AdditionalInfoAware {
 
