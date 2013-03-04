@@ -119,7 +119,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
             demand.setMaxSuppliers(detail.getMaxOffers());
         }
         demand.setMinRating(detail.getMinRating());
-        // TODO release - change demand status to NEW before release
         demand.setStatus(DemandStatus.NEW);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getValidToDate());
