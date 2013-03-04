@@ -18,7 +18,7 @@
     font-size: 18px;
     font-weight: lighter;
     line-height: 30px;
-    padding: 23px 30px 0;
+    padding: 23px 30px 20px;
 }
 
 .createTabPanel .buttonsBorderRow {
@@ -31,8 +31,13 @@
     margin-left: 333px;
 }
 
+.createTabPanel .buttonsBorderRow .span4:first-child {
+    margin-left: 245px;
+}
+
 .createTabPanel .formHeader {
     background: #e2ddca;
+    height: 20px;
     border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
@@ -102,6 +107,7 @@
 .createTabPanel .well input[type="password"],
 .createTabPanel .well textarea {
     width: 92%;
+    max-width: 92%;
     background: #f8f4e4;
     border: 1px solid #d2c9a9;
     height: 40px;
