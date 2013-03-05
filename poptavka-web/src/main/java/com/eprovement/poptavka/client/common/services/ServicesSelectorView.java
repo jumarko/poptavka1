@@ -145,6 +145,9 @@ public class ServicesSelectorView extends Composite
     }
 
     public boolean isChanged() {
+        if (originalSelected == null) {
+            return true;
+        }
         return !originalSelected.equals(selected);
     }
 
