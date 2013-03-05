@@ -184,6 +184,8 @@ public final class Constants {
     /* Address selector                                                       */
     /**************************************************************************/
     public static final int MIN_CHARS_TO_SEARCH = 3;
+    public static final String COUNTRY = "United States";
+    public static final String DISTRICT = "";
 
     /**************************************************************************/
     /* Column widths                                                          */

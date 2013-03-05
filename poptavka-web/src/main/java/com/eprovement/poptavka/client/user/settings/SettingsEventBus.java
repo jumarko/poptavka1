@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.user.settings;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
+import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -91,6 +92,12 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
+    @Event(handlers = UserSettingsPresenter.class)
+    void notifyAddressWidgetListeners();
+
+    @Event(handlers = SupplierSettingsPresenter.class)
+    void nofityServicesWidgetListeners();
+
     @Event(handlers = SettingsPresenter.class)
     void setSettings(SettingDetail detail);
 
@@ -106,6 +113,9 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(handlers = SettingsPresenter.class)
     void updateSupplierStatus(boolean isChange);
 
+    @Event(handlers = SettingsPresenter.class)
+    void updateSystemStatus(boolean isChange);
+
     /**************************************************************************/
     /* Business events handled by UserSettingsPresenter.                      */
     /**************************************************************************/
@@ -117,6 +127,9 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
 
     @Event(handlers = SupplierSettingsPresenter.class)
     void setSupplierSettings(SettingDetail detail);
+
+    @Event(handlers = SystemSettingsPresenter.class)
+    void setSystemSettings(SettingDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

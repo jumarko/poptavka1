@@ -157,8 +157,8 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         /** Person is mandatory for person client and for company client as well. **/
         final BusinessUserData businessUserData = new BusinessUserData.Builder().companyName(
                 clientDetail.getCompanyName()).
-                personFirstName(clientDetail.getFirstName()).
-                personLastName(clientDetail.getLastName()).
+                personFirstName(clientDetail.getPersonFirstName()).
+                personLastName(clientDetail.getPersonLastName()).
                 phone(clientDetail.getPhone()).
                 identificationNumber(clientDetail.getIdentificationNumber()).
                 taxId(clientDetail.getTaxId()).website(clientDetail.getWebsite()).build();

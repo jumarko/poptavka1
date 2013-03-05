@@ -39,6 +39,7 @@ import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
@@ -418,7 +419,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
 
     private Demand updateDemandFields(Demand demand, ArrayList<ChangeDetail> changes) {
         for (ChangeDetail change : changes) {
-            switch ((FullDemandDetail.DemandField) change.getField()) {
+            switch (DemandField.valueOf(change.getField())) {
                 case TITLE:
                     demand.setTitle((String) change.getValue());
                     break;

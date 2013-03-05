@@ -4,10 +4,7 @@
  */
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.google.gwt.user.client.rpc.IsSerializable;
-
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,17 +19,19 @@ public class ChangeDetail implements IsSerializable {
     /* Attributes                                                             */
     /**************************************************************************/
     //Object field's enums
-    private DemandField exposerDemandFieldType = null;
+    private String field;
     //Original values
-    private Date originalExposeDateType = null;
-    private Number originalEposeIntegerType = null;
-    private String originalExposeStringType = null;
-    private ArrayList<IListDetailObject> originalExposeListType = null;
+    private Date dateValue;
+    private Number integerValue;
+    private String stringValue;
+    private Boolean booleanValue;
+    private ArrayList<IListDetailObject> listValue;
     //Changed values
-    private Date exposeDateType = null;
-    private Number exposeIntegerType = null;
-    private String exposeStringType = null;
-    private ArrayList<IListDetailObject> exposeListType = null;
+    private Date originalDateValue;
+    private Number originalIntegerValue;
+    private String originalStringValue;
+    private Boolean originalBooleanValue;
+    private ArrayList<IListDetailObject> originalListValue;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -40,10 +39,8 @@ public class ChangeDetail implements IsSerializable {
     public ChangeDetail() {
     }
 
-    public ChangeDetail(Object field) {
-        if (field instanceof DemandField) {
-            this.exposerDemandFieldType = (DemandField) field;
-        }
+    public ChangeDetail(String field) {
+        this.field = field;
     }
 
     /**************************************************************************/
@@ -51,26 +48,30 @@ public class ChangeDetail implements IsSerializable {
     /**************************************************************************/
     public void setOriginalValue(Object value) {
         if (value instanceof String) {
-            this.originalExposeStringType = (String) value;
+            this.originalStringValue = (String) value;
         } else if (value instanceof Date) {
-            this.originalExposeDateType = (Date) value;
+            this.originalDateValue = (Date) value;
         } else if (value instanceof Number) {
-            this.originalEposeIntegerType = (Number) value;
+            this.originalIntegerValue = (Number) value;
+        } else if (value instanceof Boolean) {
+            this.originalBooleanValue = (Boolean) value;
         } else if (value instanceof List) {
-            this.originalExposeListType = new ArrayList<IListDetailObject>(
+            this.originalListValue = new ArrayList<IListDetailObject>(
                     (List<IListDetailObject>) value); //make a copy
         }
     }
 
     public Object getOriginalValue() {
-        if (originalExposeStringType != null) {
-            return originalExposeStringType;
-        } else if (originalExposeDateType != null) {
-            return originalExposeDateType;
-        } else if (originalEposeIntegerType != null) {
-            return originalEposeIntegerType;
-        } else if (originalExposeListType != null) {
-            return originalExposeListType;
+        if (originalStringValue != null) {
+            return originalStringValue;
+        } else if (originalDateValue != null) {
+            return originalDateValue;
+        } else if (originalIntegerValue != null) {
+            return originalIntegerValue;
+        } else if (originalBooleanValue != null) {
+            return originalBooleanValue;
+        } else if (originalListValue != null) {
+            return originalListValue;
         } else {
             return null;
         }
@@ -81,26 +82,30 @@ public class ChangeDetail implements IsSerializable {
     /**************************************************************************/
     public void setValue(Object value) {
         if (value instanceof String) {
-            this.exposeStringType = (String) value;
+            this.stringValue = (String) value;
         } else if (value instanceof Date) {
-            this.exposeDateType = (Date) value;
+            this.dateValue = (Date) value;
         } else if (value instanceof Number) {
-            this.exposeIntegerType = (Number) value;
+            this.integerValue = (Number) value;
+        } else if (value instanceof Boolean) {
+            this.booleanValue = (Boolean) value;
         } else if (value instanceof List) {
-            this.exposeListType = new ArrayList<IListDetailObject>(
+            this.listValue = new ArrayList<IListDetailObject>(
                     (List<IListDetailObject>) value); //make a copy
         }
     }
 
     public Object getValue() {
-        if (exposeStringType != null) {
-            return exposeStringType;
-        } else if (exposeDateType != null) {
-            return exposeDateType;
-        } else if (exposeIntegerType != null) {
-            return exposeIntegerType;
-        } else if (exposeListType != null) {
-            return exposeListType;
+        if (stringValue != null) {
+            return stringValue;
+        } else if (dateValue != null) {
+            return dateValue;
+        } else if (integerValue != null) {
+            return integerValue;
+        } else if (booleanValue != null) {
+            return booleanValue;
+        } else if (listValue != null) {
+            return listValue;
         } else {
             return null;
         }
@@ -109,28 +114,30 @@ public class ChangeDetail implements IsSerializable {
     /**************************************************************************/
     /* Getter/Setter -- field enums                                           */
     /**************************************************************************/
-    public Object getField() {
-        return exposerDemandFieldType;
+    public String getField() {
+        return field;
     }
 
     /**************************************************************************/
     /* Other methods                                                          */
     /**************************************************************************/
     public void revert() {
-        exposeDateType = originalExposeDateType;
-        exposeIntegerType = originalEposeIntegerType;
-        exposeStringType = originalExposeStringType;
-        exposeListType = originalExposeListType;
+        dateValue = originalDateValue;
+        integerValue = originalIntegerValue;
+        stringValue = originalStringValue;
+        booleanValue = originalBooleanValue;
+        listValue = originalListValue;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + (this.exposerDemandFieldType != null ? this.exposerDemandFieldType.hashCode() : 0);
-        hash = 97 * hash + (this.originalExposeDateType != null ? this.originalExposeDateType.hashCode() : 0);
-        hash = 97 * hash + (this.originalEposeIntegerType != null ? this.originalEposeIntegerType.hashCode() : 0);
-        hash = 97 * hash + (this.originalExposeStringType != null ? this.originalExposeStringType.hashCode() : 0);
-        hash = 97 * hash + (this.originalExposeListType != null ? this.originalExposeListType.hashCode() : 0);
+        hash = 97 * hash + (this.field != null ? this.field.hashCode() : 0);
+        hash = 97 * hash + (this.originalDateValue != null ? this.originalDateValue.hashCode() : 0);
+        hash = 97 * hash + (this.originalIntegerValue != null ? this.originalIntegerValue.hashCode() : 0);
+        hash = 97 * hash + (this.originalStringValue != null ? this.originalStringValue.hashCode() : 0);
+        hash = 97 * hash + (this.originalBooleanValue != null ? this.originalBooleanValue.hashCode() : 0);
+        hash = 97 * hash + (this.originalListValue != null ? this.originalListValue.hashCode() : 0);
         return hash;
     }
 
@@ -143,7 +150,7 @@ public class ChangeDetail implements IsSerializable {
             return false;
         }
         final ChangeDetail other = (ChangeDetail) obj;
-        if (this.exposerDemandFieldType != null && !this.exposerDemandFieldType.equals(other.exposerDemandFieldType)) {
+        if (this.field != null && !this.field.equals(other.field)) {
             return false;
         }
         return true;

@@ -9,6 +9,12 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -17,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 
 public class ServicesSelectorView extends Composite
-        implements ServicesSelectorPresenter.SupplierServiceInterface, ProvidesValidate {
+        implements ServicesSelectorPresenter.SupplierServiceInterface, ProvidesValidate, HasChangeHandlers {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -34,6 +40,7 @@ public class ServicesSelectorView extends Composite
     @UiField(provided = true)
     UniversalGrid table;
     /** Class attributes. **/
+    private ServiceDetail originalSelected;
     private ServiceDetail selected;
 
     /**************************************************************************/
@@ -63,6 +70,7 @@ public class ServicesSelectorView extends Composite
             public void update(int index, ServiceDetail object, Boolean value) {
                 if (value) {
                     selected = object;
+                    DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getWidget());
                 }
             }
         });
@@ -98,11 +106,24 @@ public class ServicesSelectorView extends Composite
     }
 
     /**************************************************************************/
+    /* HasChangeHandlers                                                      */
+    /**************************************************************************/
+    @Override
+    public HandlerRegistration addChangeHandler(ChangeHandler handler) {
+        return addDomHandler(handler, ChangeEvent.getType());
+    }
+
+    /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
     @Override
     public void setServices(ArrayList<ServiceDetail> services) {
         table.getDataProvider().setList(services);
+    }
+
+    public void setService(ServiceDetail service) {
+        originalSelected = service;
+        selected = service;
     }
 
     /**************************************************************************/
@@ -121,6 +142,10 @@ public class ServicesSelectorView extends Composite
     @Override
     public boolean isValid() {
         return table != null;
+    }
+
+    public boolean isChanged() {
+        return !originalSelected.equals(selected);
     }
 
     @Override

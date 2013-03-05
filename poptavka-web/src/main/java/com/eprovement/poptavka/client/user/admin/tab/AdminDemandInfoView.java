@@ -49,12 +49,18 @@ public class AdminDemandInfoView extends Composite {
             UiBinder<Widget, AdminDemandInfoView> {
     }
     // demand detail input fields
-    @UiField(provided = true) ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox;
-    @UiField(provided = true) ChangeMonitor maxOffers, minRating, demandStatus, demandType, categoryList;
-    @UiField(provided = true) ChangeMonitor localityList, excludedSupplierList;
-    @UiField(provided = true) CellList categoryCellList, localityCellList, excludedSupplierCellList;
-    @UiField TextBox clientID;
-    @UiField Button editCatBtn, editLocBtn, editExcludedSupplierBtn, createButton, updateButton;
+    @UiField(provided = true)
+    ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox;
+    @UiField(provided = true)
+    ChangeMonitor maxOffers, minRating, demandStatus, demandType, categoryList;
+    @UiField(provided = true)
+    ChangeMonitor localityList, excludedSupplierList;
+    @UiField(provided = true)
+    CellList categoryCellList, localityCellList, excludedSupplierCellList;
+    @UiField
+    TextBox clientID;
+    @UiField
+    Button editCatBtn, editLocBtn, editExcludedSupplierBtn, createButton, updateButton;
     private FullDemandDetail demandInfo;
     private PopupPanel selectorWidgetPopup;
 
@@ -96,32 +102,32 @@ public class AdminDemandInfoView extends Composite {
 
     public AdminDemandInfoView() {
         titleBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.TITLE));
+                FullDemandDetail.class, new ChangeDetail(DemandField.TITLE.getValue()));
         descriptionBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION));
+                FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION.getValue()));
         endDateBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.END_DATE));
+                FullDemandDetail.class, new ChangeDetail(DemandField.END_DATE.getValue()));
         expirationBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO_DATE));
+                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO_DATE.getValue()));
         priceBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.PRICE));
+                FullDemandDetail.class, new ChangeDetail(DemandField.PRICE.getValue()));
         maxOffers = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.MAX_OFFERS));
+                FullDemandDetail.class, new ChangeDetail(DemandField.MAX_OFFERS.getValue()));
         minRating = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING));
+                FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING.getValue()));
         excludedSupplierCellList = new CellList<FullSupplierDetail>(new SupplierCell());
         excludedSupplierList = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.EXCLUDE_SUPPLIER));
+                FullDemandDetail.class, new ChangeDetail(DemandField.EXCLUDE_SUPPLIER.getValue()));
         demandStatus = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_STATUS));
+                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_STATUS.getValue()));
         demandType = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_TYPE));
+                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_TYPE.getValue()));
         categoryCellList = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         categoryList = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.CATEGORIES));
+                FullDemandDetail.class, new ChangeDetail(DemandField.CATEGORIES.getValue()));
         localityCellList = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         localityList = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.LOCALITIES));
+                FullDemandDetail.class, new ChangeDetail(DemandField.LOCALITIES.getValue()));
         //
         initWidget(uiBinder.createAndBindUi(this));
         //
@@ -155,34 +161,6 @@ public class AdminDemandInfoView extends Composite {
         selectorWidgetPopup.hide();
     }
 
-//    public FullDemandDetail getUpdatedDemandDetail() {
-//        if (demandInfo == null) {
-//            return null;
-//        }
-//        boolean t = priceBox.getValue() == null;
-//        if (t) {
-//            GWT.log("d" + t + "max offer");
-//        }
-//        GWT.log("d" + t + "max offer");
-//        GWT.log("d" + priceBox.getValue().equals("") + "price ");
-//
-//        // Update the contact.
-//        demandInfo.setTitle((String) titleBox.getValue());
-//        demandInfo.setDescription((String) descriptionBox.getValue());
-//        demandInfo.setPrice(BigDecimal.valueOf(Double.valueOf(currencyFormat.parse((String) priceBox.getValue()))));
-//        demandInfo.setEndDate((Date) endDateBox.getValue());
-//        demandInfo.setValidToDate((Date) expirationBox.getValue());
-//        demandInfo.setClientId(Long.valueOf((String) clientID.getValue()));
-//        demandInfo.setMaxOffers(Integer.valueOf((String) maxOffers.getValue()));
-//        demandInfo.setMinRating(Integer.valueOf((String) minRating.getValue()));
-//        demandInfo.setExcludedSuppliers((ArrayList<FullSupplierDetail>)excludedList.getValue());
-//        demandInfo.setDemandType(((String) demandType.getValue()));
-//        demandInfo.setDemandStatus(DemandStatus.valueOf((String) demandStatus.getValue()));
-//        demandInfo.setCategories((ArrayList<CategoryDetail>) categoryList.getValue());
-//        demandInfo.setLocalities((ArrayList<LocalityDetail>) localityList.getValue());
-//
-//        return demandInfo;
-//    }
     public ArrayList<CategoryDetail> getCategories() {
         return (ArrayList<CategoryDetail>) categoryList.getValue();
     }
@@ -271,39 +249,39 @@ public class AdminDemandInfoView extends Composite {
 
     public void setFieldChanges(ArrayList<ChangeDetail> changes) {
         for (ChangeDetail change : changes) {
-            switch ((DemandField) change.getField()) {
+            switch (DemandField.valueOf(change.getField())) {
                 case TITLE:
-                    titleBox.setChanged(change);
+                    titleBox.setChangeDetail(change);
                     break;
                 case DESCRIPTION:
-                    descriptionBox.setChanged(change);
+                    descriptionBox.setChangeDetail(change);
                     break;
                 case PRICE:
-                    priceBox.setChanged(change);
+                    priceBox.setChangeDetail(change);
                     break;
                 case END_DATE:
-                    endDateBox.setChanged(change);
+                    endDateBox.setChangeDetail(change);
                     break;
                 case VALID_TO_DATE:
-                    expirationBox.setChanged(change);
+                    expirationBox.setChangeDetail(change);
                     break;
                 case MAX_OFFERS:
-                    maxOffers.setChanged(change);
+                    maxOffers.setChangeDetail(change);
                     break;
                 case MIN_RATING:
-                    minRating.setChanged(change);
+                    minRating.setChangeDetail(change);
                     break;
                 case DEMAND_STATUS:
-                    demandStatus.setChanged(change);
+                    demandStatus.setChangeDetail(change);
                     break;
                 case CATEGORIES:
-                    categoryList.setChanged(change);
+                    categoryList.setChangeDetail(change);
                     break;
                 case LOCALITIES:
-                    localityList.setChanged(change);
+                    localityList.setChangeDetail(change);
                     break;
                 case EXCLUDE_SUPPLIER:
-                    excludedSupplierList.setChanged(change);
+                    excludedSupplierList.setChangeDetail(change);
                     break;
                 default:
                     break;

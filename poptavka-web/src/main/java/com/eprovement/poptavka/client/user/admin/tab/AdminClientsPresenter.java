@@ -226,11 +226,11 @@ public class AdminClientsPresenter
 
             @Override
             public void update(int index, ClientDetail object, String value) {
-                if (!object.getUserDetail().getLastName().equals(value)) {
+                if (!object.getUserDetail().getPersonLastName().equals(value)) {
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new ClientDetail(object));
                     }
-                    object.getUserDetail().setLastName(value);
+                    object.getUserDetail().setPersonLastName(value);
                     eventBus.addClientToCommit(object);
                 }
             }
@@ -245,11 +245,11 @@ public class AdminClientsPresenter
 
             @Override
             public void update(int index, ClientDetail object, String value) {
-                if (!object.getUserDetail().getFirstName().equals(value)) {
+                if (!object.getUserDetail().getPersonFirstName().equals(value)) {
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new ClientDetail(object));
                     }
-                    object.getUserDetail().setFirstName(value);
+                    object.getUserDetail().setPersonFirstName(value);
                     eventBus.addClientToCommit(object);
                 }
             }

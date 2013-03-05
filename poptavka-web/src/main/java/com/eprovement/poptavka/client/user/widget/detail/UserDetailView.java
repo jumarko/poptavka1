@@ -61,8 +61,8 @@ public class UserDetailView extends Composite {
         //BusinessUserData
         companyName.setText(detail.getUserData().getCompanyName());
         identificationNumber.setText(detail.getUserData().getIdentificationNumber());
-        firstName.setText(detail.getUserData().getFirstName());
-        lastName.setText(detail.getUserData().getLastName());
+        firstName.setText(detail.getUserData().getPersonFirstName());
+        lastName.setText(detail.getUserData().getPersonLastName());
         phone.setText(detail.getUserData().getPhone());
         website.setText(detail.getUserData().getWebsite());
         taxId.setText(detail.getUserData().getTaxId());
@@ -89,8 +89,8 @@ public class UserDetailView extends Composite {
         //BusinessUserData
         companyName.setText(detail.getUserData().getCompanyName());
         identificationNumber.setText(detail.getUserData().getIdentificationNumber());
-        firstName.setText(detail.getUserData().getFirstName());
-        lastName.setText(detail.getUserData().getLastName());
+        firstName.setText(detail.getUserData().getPersonFirstName());
+        lastName.setText(detail.getUserData().getPersonLastName());
         phone.setText(detail.getUserData().getPhone());
         website.setText(detail.getUserData().getWebsite());
         taxId.setText(detail.getUserData().getTaxId());

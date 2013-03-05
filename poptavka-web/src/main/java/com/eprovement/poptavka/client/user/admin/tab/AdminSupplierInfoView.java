@@ -99,8 +99,8 @@ public class AdminSupplierInfoView extends Composite {
         // Update the detail object.
         supplierInfo.getUserData().setCompanyName(companyName.getText());
         supplierInfo.getUserData().setDescription(descriptionBox.getText());
-        supplierInfo.getUserData().setFirstName(firstName.getText());
-        supplierInfo.getUserData().setLastName(lastName.getText());
+        supplierInfo.getUserData().setPersonFirstName(firstName.getText());
+        supplierInfo.getUserData().setPersonLastName(lastName.getText());
         supplierInfo.getUserData().setEmail(email.getText());
         supplierInfo.getUserData().setPhone(phone.getText());
         supplierInfo.getUserData().setVerification(verification.getItemText(verification.getSelectedIndex()));
@@ -168,8 +168,8 @@ public class AdminSupplierInfoView extends Composite {
                 overalRating.setText(Integer.toString(supplier.getUserData().getOverallRating()));
                 descriptionBox.setText(supplier.getUserData().getDescription());
                 //Contact
-                firstName.setText(supplier.getUserData().getFirstName());
-                lastName.setText(supplier.getUserData().getLastName());
+                firstName.setText(supplier.getUserData().getPersonFirstName());
+                lastName.setText(supplier.getUserData().getPersonLastName());
                 email.setText(supplier.getUserData().getEmail());
                 phone.setText(supplier.getUserData().getPhone());
 

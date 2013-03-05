@@ -4,32 +4,23 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.address.AddressSelectorView;
-import com.eprovement.poptavka.domain.enums.Period;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.TextBoxBase;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -50,221 +41,113 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField
-    TextBox companyName, web, email, phone, firstName, lastName, identificationNumber, taxNumber, status;
-    @UiField
-    TextArea descriptionBox;
-    @UiField
-    VerticalPanel notifications;
-//    @UiField
-//    DisclosurePanel disclosureAddress;
-    @UiField
-    SimplePanel addressHolder;
+    @UiField(provided = true) ChangeMonitor companyNameMonitor, websiteMonitor, emailMonitor, phoneMonitor;
+    @UiField(provided = true) ChangeMonitor firstNameMonitor, lastNameMonitor, identifNumberMonitor;
+    @UiField(provided = true) ChangeMonitor descriptionMonitor, taxNumberMonitor;
+    @UiField SimplePanel addressHolder;
     /** Class attributes. **/
-    //Store string between focus and blur events and compare if any changes.
-    private String stringStorage;
-    private String[] stringStorageCity = new String[3];
-    /* If change to some data was made and then that change was reverted to original,
-     * we must detect it. We must restore flag pointing that something has changed.
-     * This list stores original strings if there was made change to that string.
-     * And if that change is reverted there will be match in this list telling us
-     * this that that string was reverted to original, therefore don't remeber it as
-     * there is some change.
-     */
-    private Map<String, String> originalsStorage = new HashMap<String, String>();
-    //
-    private FocusHandler focus = null;
-    private ChangeHandler change = null;
+    private List<ChangeMonitor> monitors;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        initWidget(uiBinder.createAndBindUi(this));
-//        disclosureAddress.setOpen(true);
-//        disclosureAddress.sinkEvents(Event.CLICK);
-        focus = new FocusHandler() {
-            @Override
-            public void onFocus(FocusEvent event) {
-                HasText source = (HasText) event.getSource();
-                stringStorage = source.getText();
-            }
-        };
-        change = new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                TextBoxBase source = (TextBoxBase) event.getSource();
-                //case if there was a change but reverted
-                if (originalsStorage.containsKey(source.getTitle())) {
-                    if (originalsStorage.get(source.getTitle()).equals(source.getText())) {
-                        originalsStorage.remove(source.getTitle());
-                    }
-                } else {
-                    originalsStorage.put(source.getTitle(), stringStorage);
-                }
-                updateStatus();
-            }
-        };
+        initValidationMonitors();
 
-        companyName.addDomHandler(focus, FocusEvent.getType());
-        companyName.addDomHandler(change, ChangeEvent.getType());
-        web.addDomHandler(focus, FocusEvent.getType());
-        web.addDomHandler(change, ChangeEvent.getType());
-        email.addDomHandler(focus, FocusEvent.getType());
-        email.addDomHandler(change, ChangeEvent.getType());
-        phone.addDomHandler(focus, FocusEvent.getType());
-        phone.addDomHandler(change, ChangeEvent.getType());
-        firstName.addDomHandler(focus, FocusEvent.getType());
-        firstName.addDomHandler(change, ChangeEvent.getType());
-        lastName.addDomHandler(focus, FocusEvent.getType());
-        lastName.addDomHandler(change, ChangeEvent.getType());
-        identificationNumber.addDomHandler(focus, FocusEvent.getType());
-        identificationNumber.addDomHandler(change, ChangeEvent.getType());
-        taxNumber.addDomHandler(focus, FocusEvent.getType());
-        taxNumber.addDomHandler(change, ChangeEvent.getType());
-        descriptionBox.addDomHandler(focus, FocusEvent.getType());
-        descriptionBox.addDomHandler(change, ChangeEvent.getType());
+        initWidget(uiBinder.createAndBindUi(this));
+
+        StyleResource.INSTANCE.common().ensureInjected();
+    }
+
+    private void initValidationMonitors() {
+        companyNameMonitor = createBusinessUserChangeMonitor(UserField.COMPANY_NAME);
+        websiteMonitor = createBusinessUserChangeMonitor(UserField.WEBSITE);
+        emailMonitor = createBusinessUserChangeMonitor(UserField.EMAIL);
+        phoneMonitor = createBusinessUserChangeMonitor(UserField.PHONE);
+        descriptionMonitor = createBusinessUserChangeMonitor(UserField.DESCRIPTION);
+        firstNameMonitor = createBusinessUserChangeMonitor(UserField.FIRST_NAME);
+        lastNameMonitor = createBusinessUserChangeMonitor(UserField.LAST_NAME);
+        identifNumberMonitor = createBusinessUserChangeMonitor(UserField.IDENTIF_NUMBER);
+        taxNumberMonitor = createBusinessUserChangeMonitor(UserField.TAX_ID);
+        descriptionMonitor = createBusinessUserChangeMonitor(UserField.DESCRIPTION);
+        monitors = Arrays.asList(
+                companyNameMonitor, websiteMonitor, emailMonitor, phoneMonitor, descriptionMonitor,
+                firstNameMonitor, lastNameMonitor, identifNumberMonitor, taxNumberMonitor);
+    }
+
+    private ChangeMonitor createBusinessUserChangeMonitor(UserField fieldField) {
+        return new ChangeMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, new ChangeDetail(fieldField.getValue()));
+    }
+    /**************************************************************************/
+    /* Change monitoring methods                                              */
+    /**************************************************************************/
+    @Override
+    public void commit() {
+        for (ChangeMonitor monitor : monitors) {
+            monitor.commit();
+        }
     }
 
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override
-    public void setUserSettings(SettingDetail detail) {
-        originalsStorage.clear();
-        companyName.setText(detail.getCompanyName());
-        web.setText(detail.getWebsite());
-        email.setText(detail.getEmail());
-        phone.setText(detail.getPhone());
-        firstName.setText(detail.getFirstName());
-        lastName.setText(detail.getLastName());
-        identificationNumber.setText(detail.getIdentificationNumber());
-        taxNumber.setText(detail.getTaxId());
-        descriptionBox.setText(detail.getDescription());
-        //notifications
-        List<Period> periodList = Arrays.asList(Period.values());
-        for (NotificationDetail item : detail.getNotifications()) {
-            NotificationItemView notificationWidget = new NotificationItemView();
-            notificationWidget.getEnabled().setValue(item.isEnabled());
-            notificationWidget.getName().setText(item.getName());
-            notificationWidget.getPeriod().setSelectedIndex(periodList.indexOf(item.getPeriod()));
-            notificationWidget.getStatus().addChangeHandler(new ChangeHandler() {
-                @Override
-                public void onChange(ChangeEvent event) {
-                    updateStatus();
-                }
-            });
-            notifications.add(notificationWidget);
+    public void setChangeHandler(ChangeHandler handler) {
+        for (ChangeMonitor monitor : monitors) {
+            monitor.addChangeHandler(handler);
         }
+    }
 
-        setAddressesContent(detail.getAddresses().get(0));
+    @Override
+    public void setUserSettings(SettingDetail detail) {
+        companyNameMonitor.setBothValues(detail.getUser().getCompanyName());
+        websiteMonitor.setBothValues(detail.getUser().getWebsite());
+        emailMonitor.setBothValues(detail.getUser().getEmail());
+        phoneMonitor.setBothValues(detail.getUser().getPhone());
+        firstNameMonitor.setBothValues(detail.getUser().getPersonFirstName());
+        lastNameMonitor.setBothValues(detail.getUser().getPersonLastName());
+        identifNumberMonitor.setBothValues(detail.getUser().getIdentificationNumber());
+        taxNumberMonitor.setBothValues(detail.getUser().getTaxId());
+        descriptionMonitor.setBothValues(detail.getUser().getDescription());
+    }
+
+    @Override
+    public void setAddressSettings(AddressDetail detail) {
+        //set data
+        AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
+        if (detail != null) {
+            addressWidget.getCityMonitor().setBothValues(detail.getCity() + ", " + detail.getRegion());
+            addressWidget.getZipcodeMonitor().setBothValues(detail.getZipCode());
+            addressWidget.getStreetMonitor().setBothValues(detail.getStreet());
+        }
     }
 
     @Override
     public SettingDetail updateUserSettings(SettingDetail detail) {
-        detail.setCompanyName(companyName.getText());
-        detail.setWebsite(web.getText());
-        detail.setEmail(email.getText());
-        detail.setPhone(phone.getText());
-        detail.setFirstName(firstName.getText());
-        detail.setLastName(lastName.getText());
-        detail.setIdentificationNumber(identificationNumber.getText());
-        detail.setTaxId(taxNumber.getText());
-        detail.setDescription(descriptionBox.getText());
-        //notifications
-        for (int i = 0; i < detail.getNotifications().size(); i++) {
-            NotificationItemView notificationWidget = (NotificationItemView) notifications.getWidget(i);
-            NotificationDetail notificationDetail = detail.getNotifications().get(i);
-
-            notificationDetail.setEnabled(notificationWidget.getEnabled().getValue());
-            notificationDetail.setName(notificationWidget.getName().getText());
-            notificationDetail.setPeriod(Period.values()[notificationWidget.getPeriod().getSelectedIndex()]);
-        }
+        detail.getUser().setCompanyName((String) companyNameMonitor.getValue());
+        detail.getUser().setWebsite((String) websiteMonitor.getValue());
+        detail.getUser().setEmail((String) emailMonitor.getValue());
+        detail.getUser().setPhone((String) phoneMonitor.getValue());
+        detail.getUser().setPersonFirstName((String) firstNameMonitor.getValue());
+        detail.getUser().setPersonLastName((String) lastNameMonitor.getValue());
+        detail.getUser().setIdentificationNumber((String) identifNumberMonitor.getValue());
+        detail.getUser().setTaxId((String) taxNumberMonitor.getValue());
+        detail.getUser().setDescription((String) descriptionMonitor.getValue());
 
         if (getAddress() != null) {
-            detail.setAddresses(Arrays.asList(getAddress()));
+            detail.getUser().setAddresses(Arrays.asList(getAddress()));
         }
         return detail;
     }
 
-//    @Override
-    public void setAddressesContent(AddressDetail detail) {
-        //set data
-//        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
-        AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
-        if (detail != null) {
-            addressWidget.getCitySuggestBox().setText(detail.getCity() + ", " + detail.getRegion());
-            addressWidget.getZipCodeTextBox().setText(detail.getZipCode());
-            addressWidget.getStreetTextBox().setText(detail.getStreet());
-        }
-        //register handlers
-        addressWidget.getCitySuggestBox().getTextBox().addDomHandler(new FocusHandler() {
-            @Override
-            public void onFocus(FocusEvent event) {
-                AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
-                stringStorageCity[0] = addressWidget.getCitySuggestBox().getText();
-                stringStorageCity[1] = addressWidget.getZipCodeTextBox().getText();
-                stringStorageCity[2] = addressWidget.getStreetTextBox().getText();
-            }
-        }, FocusEvent.getType());
-        addressWidget.getCitySuggestBox().getTextBox().addDomHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
-                TextBoxBase source = (TextBoxBase) event.getSource();
-                for (int i = 0; i < stringStorageCity.length; i++) {
-                    switch (i) {
-                        case 0:
-                            source = addressWidget.getCitySuggestBox().getTextBox();
-                            break;
-                        case 1:
-                            source = addressWidget.getZipCodeTextBox();
-                            break;
-                        case 2:
-                            source = addressWidget.getStreetTextBox();
-                            break;
-                        default:
-                            break;
-                    }
-                    //ak uz je zaznam a novy string sa rovna tomu zaznamu, tak sa zmena vratila
-                    if (originalsStorage.containsKey(source.getTitle())) {
-                        if (originalsStorage.get(source.getTitle()).equals(source.getText())) {
-                            originalsStorage.remove(source.getTitle());
-                        }
-                    } else {
-                        originalsStorage.put(source.getTitle(), stringStorageCity[i]);
-                    }
-                }
-                updateStatus();
-            }
-        }, ChangeEvent.getType());
-
-        addressWidget.getZipCodeTextBox().addDomHandler(focus, FocusEvent.getType());
-        addressWidget.getZipCodeTextBox().addDomHandler(change, ChangeEvent.getType());
-        addressWidget.getStreetTextBox().addDomHandler(focus, FocusEvent.getType());
-        addressWidget.getStreetTextBox().addDomHandler(change, ChangeEvent.getType());
-    }
-
-//    @Override
-//    public void setAddressesHeader(String address) {
-//        SafeHtmlBuilder header = new SafeHtmlBuilder();
-//        buildHeaderBold(header, Storage.MSGS.address());
-//        header.appendEscaped(address);
-//        ((HTML) disclosureAddress.getHeader()).setHTML(header.toSafeHtml());
-//    }
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
-    /** PANELS. **/
-//    @Override
-//    public DisclosurePanel getDisclosureAddress() {
-//        return disclosureAddress;
-//    }
     /** OTHERS. **/
     @Override
     public AddressDetail getAddress() {
-//        SimplePanel addressHolder = (SimplePanel) disclosureAddress.getContent();
         AddressSelectorView addressWidget = (AddressSelectorView) addressHolder.getWidget();
         if (addressWidget == null) {
             return null;
@@ -274,45 +157,12 @@ public class UserSettingsView extends Composite implements UserSettingsPresenter
     }
 
     @Override
-    public TextBox getStatus() {
-        return status;
-    }
-
-    @Override
     public SimplePanel getAddressHolder() {
         return addressHolder;
     }
 
     @Override
-    public boolean isSettingChange() {
-        /** Notifications. **/
-        //Check if any notification has changed
-        for (int i = 0; i < notifications.getWidgetCount(); i++) {
-            if (((NotificationItemView) notifications.getWidget(i)).isNotificationChange()) {
-                return true;
-            }
-        }
-        /** Others. **/
-        //if notificatoin has not changes, check if anything elsa has.
-        return !originalsStorage.isEmpty();
-    }
-
-    @Override
     public Widget getWidgetView() {
         return this;
-    }
-
-    /**************************************************************************/
-    /* Helper methods                                                         */
-    /**************************************************************************/
-//    private void buildHeaderBold(SafeHtmlBuilder header, String headerStart) {
-//        header.appendHtmlConstant("<strong>");
-//        header.appendEscaped(headerStart);
-//        header.appendEscaped(": ");
-//        header.appendHtmlConstant("</strong>");
-//    }
-    private void updateStatus() {
-//        status.setText(originalsStorage.toString());
-        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), status);
     }
 }

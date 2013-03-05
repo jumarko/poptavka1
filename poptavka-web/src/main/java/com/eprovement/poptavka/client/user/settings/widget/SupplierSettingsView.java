@@ -4,25 +4,31 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.client.common.ListChangeMonitor;
+import com.eprovement.poptavka.client.common.category.CategoryCell;
+import com.eprovement.poptavka.client.common.locality.LocalityCell;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -43,17 +49,19 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     /* Attributes                                                             */
     /**************************************************************************/
     @UiField
-    TextBox supplierRating, status;
+    IntegerBox supplierRating;
     @UiField
-    DisclosurePanel categories, localities, services;
+    SimplePanel servicePanel;
+    @UiField
+    Anchor revert;
     @UiField(provided = true)
-    PopupPanel categorySelectorPopup, localitySelectorPopup;
+    CellList categories, localities;
+    @UiField(provided = true)
+    ListChangeMonitor categoriesMonitor, localitiesMonitor;
+    @UiField
+    Button editCatBtn, editLocBtn;
     //
-    private String stringStorage;
-    private List<CategoryDetail> categoriesList;
-    private List<LocalityDetail> localitiesList;
-    private List<ServiceDetail> servicesList;
-    private Map<String, String> originalsStorage = new HashMap<String, String>();
+    private PopupPanel selectorPopup;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -61,107 +69,84 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     @Override
     public void createView() {
         createCategorySelectorPopup();
-        createLocalitySelectorPopup();
+
+        categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
+        localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
+
+        initValidationMonitors();
+
         initWidget(uiBinder.createAndBindUi(this));
         supplierRating.setEnabled(false);
+
+        StyleResource.INSTANCE.common().ensureInjected();
+    }
+
+    private void initValidationMonitors() {
+        categoriesMonitor = new ListChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(FullDemandDetail.DemandField.CATEGORIES.getValue()));
+        localitiesMonitor = new ListChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(FullDemandDetail.DemandField.LOCALITIES.getValue()));
     }
 
     /**************************************************************************/
     /* Initialization - helper methods                                        */
     /**************************************************************************/
     private void createCategorySelectorPopup() {
-        categorySelectorPopup = new PopupPanel(true);
-        categorySelectorPopup.setSize("300px", "300px");
-        categorySelectorPopup.setGlassEnabled(true);
-        categorySelectorPopup.hide();
-    }
-
-    private void createLocalitySelectorPopup() {
-        localitySelectorPopup = new PopupPanel(true);
-        localitySelectorPopup.setSize("300px", "300px");
-        localitySelectorPopup.setGlassEnabled(true);
-        localitySelectorPopup.hide();
+        selectorPopup = new PopupPanel(true);
+        selectorPopup.setSize("300px", "300px");
+        selectorPopup.setGlassEnabled(true);
+        selectorPopup.hide();
     }
 
     /**************************************************************************/
-    /* Methods handled by view                                                */
+    /* Change monitoring methods                                              */
     /**************************************************************************/
-    @Override //.substring(1, list.toString().length() -1)
-    public void initChangeCheking(String originalString) {
-        stringStorage = originalString;
-    }
-
     @Override
-    public void evaluateChanges(String key, String newString) {
-        if (!stringStorage.equals(newString)) {
-            if (originalsStorage.containsKey(key)) {
-                if (originalsStorage.get(key).equals(newString)) {
-                    originalsStorage.remove(newString);
-                }
-            } else {
-                originalsStorage.put(key, stringStorage);
-            }
-        }
-        updateStatus();
+    public void commit() {
+        categoriesMonitor.commit();
+        localitiesMonitor.commit();
+        revert.setVisible(false);
+        servicePanel.removeStyleName(Storage.RSCS.common().changed());
+        //Sets also original value
+        getServiceWidget().setService(getServiceWidget().getSelectedService());
     }
 
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override
+    public void setChangeHandler(ChangeHandler handler) {
+        categoriesMonitor.addChangeHandler(handler);
+        localitiesMonitor.addChangeHandler(handler);
+    }
+
+    @Override
     public void setSupplierSettings(SettingDetail detail) {
-        originalsStorage.clear();
-        if (detail.getSupplier().getOverallRating() != null) {
-            supplierRating.setText(Integer.toString(detail.getSupplier().getOverallRating()));
+        if (detail.getSupplier() != null
+                && detail.getSupplier().getOverallRating() != null) {
+            supplierRating.setValue(detail.getSupplier().getOverallRating());
+            this.categoriesMonitor.setBothValues(detail.getSupplier().getCategories());
+            this.localitiesMonitor.setBothValues(detail.getSupplier().getLocalities());
         }
-        categoriesList = detail.getSupplier().getCategories();
-        setCategoriesHeader(detail.getSupplier().getCategories().toString());
-        localitiesList = detail.getSupplier().getLocalities();
-        setLocalitiesHeader(detail.getSupplier().getLocalities().toString());
-        servicesList = detail.getSupplier().getServices();
-        setServicesHeader(detail.getSupplier().getServices().toString());
+
+    }
+
+    @Override
+    public void setCategories(List<CategoryDetail> categoriesList) {
+        this.categoriesMonitor.setValue(categoriesList);
+    }
+
+    @Override
+    public void setLocalities(List<LocalityDetail> localitiesList) {
+        this.localitiesMonitor.setValue(localitiesList);
     }
 
     @Override
     public SettingDetail updateSupplierSettings(SettingDetail detail) {
-        detail.getSupplier().setCategories(categoriesList);
-        detail.getSupplier().setLocalities(localitiesList);
-        detail.getSupplier().setServices(servicesList);
+        detail.getSupplier().setCategories((List<CategoryDetail>) categoriesMonitor.getValue());
+        detail.getSupplier().setCategories((List<CategoryDetail>) localitiesMonitor.getValue());
+        detail.getSupplier().setServices(Arrays.asList(getServiceWidget().getSelectedService()));
         return detail;
-    }
-
-    /** HEADER. **/
-    @Override
-    public void setCategoriesHeader(String headerText) {
-        ((HasText) categories.getHeader().asWidget()).setText(
-                Storage.MSGS.commonCategoriesLabel() + ": " + headerText);
-    }
-
-    @Override
-    public void setLocalitiesHeader(String headerText) {
-        ((HasText) localities.getHeader().asWidget()).setText(
-                Storage.MSGS.commonLocalitiesLabel() + ": " + headerText);
-    }
-
-    @Override
-    public void setServicesHeader(String headerText) {
-        ((HasText) services.getHeader().asWidget()).setText(
-                Storage.MSGS.commonServicesLabel() + ": " + headerText);
-    }
-
-    @Override
-    public void setCategoriesList(List<CategoryDetail> categoriesList) {
-        this.categoriesList = categoriesList;
-    }
-
-    @Override
-    public void setLocalitiesList(List<LocalityDetail> localitiesList) {
-        this.localitiesList = localitiesList;
-    }
-
-    @Override
-    public void setServicesList(List<ServiceDetail> servicesList) {
-        this.servicesList = servicesList;
     }
 
     /**************************************************************************/
@@ -169,72 +154,55 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     /**************************************************************************/
     /** PANELS. **/
     @Override
-    public DisclosurePanel getCategoriesPanel() {
-        return categories;
+    public PopupPanel getSelectorWidgetPopup() {
+        return selectorPopup;
     }
 
     @Override
-    public DisclosurePanel getLocalitiesPanel() {
-        return localities;
+    public SimplePanel getServicePanel() {
+        return servicePanel;
+    }
+
+    /** BUTTONS. **/
+    @Override
+    public Button getEditCatBtn() {
+        return editCatBtn;
     }
 
     @Override
-    public DisclosurePanel getServicesPanel() {
-        return services;
-    }
-
-    @Override
-    public PopupPanel getCategorySelectorPopup() {
-        return categorySelectorPopup;
-    }
-
-    @Override
-    public PopupPanel getLocalitySelectorPopup() {
-        return localitySelectorPopup;
+    public Button getEditLocBtn() {
+        return editLocBtn;
     }
 
     /** TEXTBOXES. **/
     @Override
-    public TextBox getSupplierRating() {
+    public IntegerBox getSupplierRating() {
         return supplierRating;
-    }
-
-    @Override
-    public TextBox getStatus() {
-        return status;
     }
 
     /** OTHERES. **/
     @Override
     public List<CategoryDetail> getCategories() {
-        return categoriesList;
+        return (List<CategoryDetail>) categoriesMonitor.getValue();
     }
 
     @Override
     public List<LocalityDetail> getLocalities() {
-        return localitiesList;
+        return (List<LocalityDetail>) localitiesMonitor.getValue();
     }
 
     @Override
-    public List<ServiceDetail> getServices() {
-        return servicesList;
+    public ServicesSelectorView getServiceWidget() {
+        return (ServicesSelectorView) servicePanel.getWidget();
     }
 
     @Override
-    public boolean isSettingChange() {
-        return !originalsStorage.isEmpty();
+    public Anchor getRevert() {
+        return revert;
     }
 
     @Override
     public Widget getWidgetView() {
         return this;
-    }
-
-    /**************************************************************************/
-    /* Helper methods                                                         */
-    /**************************************************************************/
-    private void updateStatus() {
-        status.setText(originalsStorage.toString());
-        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), status);
     }
 }

@@ -3,17 +3,16 @@ package com.eprovement.poptavka.client.user.settings;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,41 +32,40 @@ public class SettingsView extends Composite implements
     /* Attributes                                                             */
     /**************************************************************************/
     @UiField
-    StackLayoutPanel stackPanel;
+    Button menuUserBtn, menuClientBtn, menuSupplierBtn, menuSystemBtn;
     @UiField
-    SimplePanel userSettingsPanel, clientSettingsPanel, supplierSettingsPanel;
+    SimplePanel contentPanel;
     @UiField
     Button updateButton;
     @UiField
-    StatusIconLabel userInfoStatus, clientInfoStatus, supplierInfoStatus;
+    StatusIconLabel infoStatus1, infoStatus2, infoStatus3, infoStatus4;
     //
     private PopupPanel notify;
     private StatusIconLabel notifyInfoMessage;
 
     /**************************************************************************/
-    /* Initialization */
+    /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        if (Storage.getBusinessUserDetail() != null
+                && !Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.CLIENT)) {
+            infoStatus2.setVisible(false);
+            menuClientBtn.setVisible(false);
+        }
+
         createNotifyPopup();
     }
 
     @Override
     public void initWidgetDefaults() {
-        //StackLayoutPanel
-        if (stackPanel.getVisibleIndex() == 0) {
-            BeforeSelectionEvent.fire(stackPanel, 0);
-        } else {
-            stackPanel.showWidget(0);
-        }
         //StatusIconLables
-        userInfoStatus.setState(State.ACCEPT_16);
-        userInfoStatus.setDescription("No changes made to user settings.");
-        clientInfoStatus.setState(State.ACCEPT_16);
-        clientInfoStatus.setDescription("No changes made to client settings.");
-        supplierInfoStatus.setState(State.ACCEPT_16);
-        supplierInfoStatus.setDescription("No changes made to supplier settings.");
+        setInfoStatusState(false, infoStatus1, Storage.MSGS.settingsUserSettings());
+        setInfoStatusState(false, infoStatus2, Storage.MSGS.settingsClientSettings());
+        setInfoStatusState(false, infoStatus3, Storage.MSGS.settingsSupplierSettings());
+        setInfoStatusState(false, infoStatus4, Storage.MSGS.settingsSystemSettings());
     }
 
     public void createNotifyPopup() {
@@ -97,6 +95,7 @@ public class SettingsView extends Composite implements
         updateUserStatus(!updated);
         updateClientStatus(!updated);
         updateSupplierStatus(!updated);
+        updateSystemStatus(!updated);
         notifyInfoMessage.setMessage(message);
         notifyInfoMessage.setPassedSmall(updated);
         notify.center();
@@ -104,35 +103,28 @@ public class SettingsView extends Composite implements
 
     @Override
     public void updateUserStatus(boolean isChange) {
-        if (isChange) {
-            userInfoStatus.setDescription("User profile has changed.");
-            userInfoStatus.setState(State.INFO_16);
-        } else {
-            userInfoStatus.setDescription("No changes to user profile.");
-            userInfoStatus.setState(State.ACCEPT_16);
-        }
+        setInfoStatusState(isChange, infoStatus1, Storage.MSGS.settingsUserSettings());
     }
 
     @Override
     public void updateClientStatus(boolean isChange) {
-        if (isChange) {
-            clientInfoStatus.setDescription("Client profile has changed.");
-            clientInfoStatus.setState(State.INFO_16);
-        } else {
-            clientInfoStatus.setDescription("No changes to client profile.");
-            clientInfoStatus.setState(State.ACCEPT_16);
-        }
+        setInfoStatusState(isChange, infoStatus2, Storage.MSGS.settingsClientSettings());
     }
 
     @Override
     public void updateSupplierStatus(boolean isChange) {
-        if (isChange) {
-            supplierInfoStatus.setDescription("Supplier profile has changed.");
-            supplierInfoStatus.setState(State.INFO_16);
-        } else {
-            supplierInfoStatus.setDescription("No changes to supplier profile.");
-            supplierInfoStatus.setState(State.ACCEPT_16);
-        }
+        setInfoStatusState(isChange, infoStatus3, Storage.MSGS.settingsSupplierSettings());
+    }
+
+    @Override
+    public void updateSystemStatus(boolean isChange) {
+        setInfoStatusState(isChange, infoStatus4, Storage.MSGS.settingsSystemSettings());
+    }
+
+    @Override
+    public void setClientButtonVisibility(boolean visible) {
+        menuSupplierBtn.setVisible(visible);
+        infoStatus3.setVisible(visible);
     }
 
     /**************************************************************************/
@@ -140,29 +132,8 @@ public class SettingsView extends Composite implements
     /**************************************************************************/
     /** PANELS. **/
     @Override
-    public StackLayoutPanel getStackPanel() {
-        return stackPanel;
-    }
-
-    @Override
-    public SimplePanel getUserSettingsPanel() {
-        return userSettingsPanel;
-    }
-
-    @Override
-    public SimplePanel getClientSettingsPanel() {
-        return clientSettingsPanel;
-    }
-
-    @Override
-    public SimplePanel getSupplierSettingsPanel() {
-        return supplierSettingsPanel;
-    }
-
-    /** STATUS LABELS. **/
-    @Override
-    public StatusIconLabel getUserInfoStatus() {
-        return userInfoStatus;
+    public SimplePanel getContentPanel() {
+        return contentPanel;
     }
 
     /** BUTTONS. **/
@@ -172,7 +143,40 @@ public class SettingsView extends Composite implements
     }
 
     @Override
+    public Button getMenuUserBtn() {
+        return menuUserBtn;
+    }
+
+    @Override
+    public Button getMenuClientBtn() {
+        return menuClientBtn;
+    }
+
+    @Override
+    public Button getMenuSupplierBtn() {
+        return menuSupplierBtn;
+    }
+
+    @Override
+    public Button getMenuSystemBtn() {
+        return menuSystemBtn;
+    }
+
+    @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /*  Helper methods                                                        */
+    /**************************************************************************/
+    private void setInfoStatusState(boolean isChange, StatusIconLabel iconLabel, String message) {
+        if (isChange) {
+            iconLabel.setDescription(message + " has changed.");
+            iconLabel.setState(State.INFO_16);
+        } else {
+            iconLabel.setDescription("No changes to " + message);
+            iconLabel.setState(State.ACCEPT_16);
+        }
     }
 }
