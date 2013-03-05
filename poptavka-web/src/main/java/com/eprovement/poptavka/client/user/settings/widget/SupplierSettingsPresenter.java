@@ -158,12 +158,13 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             public void onClick(ClickEvent event) {
                 view.getServicePanel().removeStyleName(Storage.RSCS.common().changed());
                 view.getRevert().setVisible(false);
+                serviceChanged = false;
                 if (settingsDetail.getSupplier() != null
                         && settingsDetail.getSupplier().getServices() != null
                         && !settingsDetail.getSupplier().getServices().isEmpty()) {
                     view.getServiceWidget().setService(settingsDetail.getSupplier().getServices().get(0));
                 }
-                eventBus.updateSupplierStatus(binded);
+                eventBus.updateSupplierStatus(isSupplierSettingChanged());
             }
         });
     }
@@ -183,7 +184,17 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
 
     private void serviceChangeMonitorManager(ServicesSelectorView source) {
         serviceChanged = source.isChanged();
-        eventBus.updateSupplierStatus(serviceChanged);
+        onServiceChanged(source.isChanged());
+        eventBus.updateSupplierStatus(isSupplierSettingChanged());
+    }
+
+    private void onServiceChanged(boolean isChange) {
+        view.getRevert().setVisible(isChange);
+        if (isChange) {
+            view.getServicePanel().addStyleName(Storage.RSCS.common().changed());
+        } else {
+            view.getServicePanel().removeStyleName(Storage.RSCS.common().changed());
+        }
     }
 
     /**************************************************************************/

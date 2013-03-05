@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
 
 import com.eprovement.poptavka.client.service.demand.SettingsRPCService;
@@ -80,7 +79,6 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public SettingDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException {
-        GWT.log("Getting user settings for user:" + userId);
         final BusinessUser user = (BusinessUser) generalService.find(User.class, userId);
 
         SettingDetail settingsDetail = new SettingDetail();
