@@ -44,7 +44,7 @@ public class LocalityDataProvider extends AsyncDataProvider<LocalityDetail> {
                 }
             });
         } else {
-            localityService.getLocalities(localityDetail.getId(), new AsyncCallback<List<LocalityDetail>>() {
+            localityService.getSubLocalities(localityDetail.getId(), new AsyncCallback<List<LocalityDetail>>() {
 
                 @Override
                 public void onSuccess(List<LocalityDetail> result) {

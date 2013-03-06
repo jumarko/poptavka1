@@ -29,13 +29,11 @@ public interface LocalityRPCService extends RemoteService {
      * @param locCode
      * @return list locality children list
      */
-    List<LocalityDetail> getLocalities(Long id) throws RPCException;
+    List<LocalityDetail> getSubLocalities(Long id) throws RPCException;
 
     LocalityDetail getLocality(long id) throws RPCException;
 
     List<LocalityDetail> getAllRootLocalities() throws RPCException;
-
-    List<LocalityDetail> getSubLocalities(Long id) throws RPCException;
 
     List<LocalitySuggestionDetail> getCityWithStateSuggestions(String cityLike) throws RPCException;
 

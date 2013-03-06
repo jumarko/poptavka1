@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Configurable
@@ -64,13 +65,8 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
      * Get children of locality specified by LOCALITY_ID.
      */
     @Override
-    public List<LocalityDetail> getLocalities(Long id) throws RPCException {
-        LOGGER.info("Getting children localities ");
-        final Locality locality = localityService.getLocality(id);
-        if (locality != null) {
-            return localityConverter.convertToTargetList(locality.getChildren());
-        }
-        return new ArrayList<LocalityDetail>();
+    public List<LocalityDetail> getSubLocalities(Long id) throws RPCException {
+        return localityConverter.convertToTargetList(localityService.getSubLocalities(id));
     }
 
     @Override
@@ -85,11 +81,6 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public List<LocalityDetail> getAllRootLocalities() throws RPCException {
         return localityConverter.convertToTargetList(localityService.getLocalities(LocalityType.REGION));
-    }
-
-    @Override
-    public List<LocalityDetail> getSubLocalities(Long id) throws RPCException {
-        return localityConverter.convertToTargetList(localityService.getLocality(id).getChildren());
     }
 
     @Override

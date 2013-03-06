@@ -7,6 +7,7 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import org.apache.commons.lang.Validate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -36,15 +37,24 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
 
     @Override
-//    @Cacheable(cacheName = "cache5h")
+    @Cacheable(cacheName = "localityCache")
     public List<Locality> getLocalities(LocalityType localityType) {
         return getDao().getLocalities(localityType, ResultCriteria.EMPTY_CRITERIA);
     }
 
     @Override
-//    @Cacheable(cacheName = "cache5h")
+    @Cacheable(cacheName = "localityCache")
     public List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria) {
         return getDao().getLocalities(localityType, resultCriteria);
+    }
+
+
+    @Override
+    @Cacheable(cacheName = "localityCache")
+    public List<Locality> getSubLocalities(long localityId) {
+        final Locality locality = getLocality(localityId);
+        Validate.isTrue(locality != null, "No locality with id=" + localityId + " has been found!");
+        return locality.getChildren();
     }
 
 

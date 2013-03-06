@@ -18,7 +18,17 @@
            memoryStoreEvictionPolicy="LFU"/>
 
     <cache name="cache5h" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" timeToIdleSeconds="18000"
-               timeToLiveSeconds="18000"
-               memoryStoreEvictionPolicy="LFU"/>
+           timeToLiveSeconds="18000"
+           memoryStoreEvictionPolicy="LFU"/>
 
+
+    <cache name="categoryCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false"
+           timeToIdleSeconds="18000"
+           timeToLiveSeconds="18000"
+           memoryStoreEvictionPolicy="LFU"/>
+
+    <cache name="localityCache" maxElementsInMemory="100000" eternal="false" overflowToDisk="false"
+           timeToIdleSeconds="18000"
+           timeToLiveSeconds="18000"
+           memoryStoreEvictionPolicy="LFU"/>
 </ehcache>
