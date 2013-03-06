@@ -10,7 +10,6 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -27,8 +26,6 @@ import com.eprovement.poptavka.exception.UserNotExistException;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.address.LocalityService;
-import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.UserVerificationService;
@@ -69,9 +66,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class RootRPCServiceImpl extends AutoinjectingRemoteService
         implements RootRPCService {
 
-    //Services
-    private LocalityService localityService;
-    private CategoryService categoryService;
     private ClientService clientService;
     private GeneralService generalService;
     private MessageService messageService;
@@ -91,16 +85,6 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     /* Autowired methods                                                      */
     /**************************************************************************/
-    //Services
-    @Autowired
-    public void setLocalityService(LocalityService localityService) {
-        this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -182,57 +166,6 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         this.serviceConverter = serviceConverter;
     }
 
-    /**************************************************************************/
-    /* Localities methods                                                     */
-    /**************************************************************************/
-    /**
-     * Returns locality list.
-     *
-     * @param type
-     * @return list locality list according to type
-     */
-    @Override
-    public List<LocalityDetail> getLocalities(LocalityType type) throws RPCException {
-        List<Locality> localities = localityService.getLocalities(type);
-        System.out.println(localities.size());
-        return localityConverter.convertToTargetList(localities);
-    }
-
-    /**
-     * Get children of locality specified by LOCALITY_CODE.
-     *
-     * @param locId
-     * @return list locality children list
-     */
-    @Override
-    public List<LocalityDetail> getLocalities(Long locId) throws RPCException {
-        final Locality locality = localityService.getLocality(locId);
-        if (locality != null) {
-            return localityConverter.convertToTargetList(locality.getChildren());
-        }
-        return new ArrayList<LocalityDetail>();
-    }
-
-    /**************************************************************************/
-    /* Categories methods                                                     */
-    /**************************************************************************/
-    @Override
-    public List<CategoryDetail> getCategories() throws RPCException {
-        final List<Category> categories = categoryService.getRootCategories();
-        return categoryConverter.convertToTargetList(categories);
-    }
-
-    @Override
-    public List<CategoryDetail> getCategoryChildren(Long category) throws RPCException {
-        System.out.println("Getting children categories");
-        if (category != null) {
-            final Category cat = categoryService.getById(category);
-            if (cat != null) {
-                return categoryConverter.convertToTargetList(cat.getChildren());
-            }
-        }
-        return new ArrayList<CategoryDetail>();
-    }
 
     /**************************************************************************/
     /* User methods                                                           */
