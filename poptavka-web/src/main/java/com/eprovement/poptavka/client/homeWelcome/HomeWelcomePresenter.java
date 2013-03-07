@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.homeWelcome;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
+import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks;
 import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -171,6 +172,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         view.getHowItWorksSupplierBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.setBody(HowItWorks.createHowItWorksSupplier());
             }
         });
     }
@@ -179,6 +181,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         view.getHowItWorksDemandBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.setBody(HowItWorks.createHowItWorksDemand());
             }
         });
     }

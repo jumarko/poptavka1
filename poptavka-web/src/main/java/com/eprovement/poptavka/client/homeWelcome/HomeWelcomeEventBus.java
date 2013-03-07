@@ -54,6 +54,9 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     /* Navigation Parent events */
     /**************************************************************************/
     @Event(forwardToParent = true)
+    void setBody(IsWidget body);
+
+    @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
