@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * Some type of locality.
@@ -29,6 +31,20 @@ import java.util.List;
  * @see TreeItem
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "getLocalitiesByMaxLength",
+                query = "select locality "
+                        + " from Locality locality\n"
+                        + "where LENGTH(locality.name) < :length"
+                        + " and locality.type = :type"
+                        + " and locality.name like :name"),
+        @NamedQuery(name = "getLocalitiesByMinLength",
+                query = "select locality "
+                        + " from Locality locality\n"
+                        + "where LENGTH(locality.name) >= :length"
+                        + " and locality.type = :type"
+                        + " and locality.name like :name")
+})
 public class Locality extends TreeItem implements AdditionalInfoAware {
 
     private String name;

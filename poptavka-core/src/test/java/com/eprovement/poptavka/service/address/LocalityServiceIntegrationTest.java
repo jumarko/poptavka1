@@ -105,6 +105,53 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertEquals(11, allLocalitiesInCzechRepublic.size());
     }
 
+    @Test
+    public void testGetLocalitiesByMaxLengthExcl() {
+        List<Locality> districts = this.localityService.getLocalitiesByMaxLengthExcl(
+                11, "locality1", LocalityType.DISTRICT);
+        Assert.assertEquals(2, districts.size());
+        checkLocalityIn(districts, "locality11");
+        checkLocalityIn(districts, "locality12");
+        districts = this.localityService.getLocalitiesByMaxLengthExcl(
+                12, "locality1", LocalityType.DISTRICT);
+        Assert.assertEquals(2, districts.size());
+        checkLocalityIn(districts, "locality11");
+        checkLocalityIn(districts, "locality12");
+        districts = this.localityService.getLocalitiesByMaxLengthExcl(
+                10, "locality1", LocalityType.DISTRICT);
+        Assert.assertEquals(0, districts.size());
+        List<Locality> cities = this.localityService.getLocalitiesByMaxLengthExcl(
+                12, "locality21", LocalityType.CITY);
+        Assert.assertEquals(4, cities.size());
+        checkLocalityIn(cities, "locality211");
+        checkLocalityIn(cities, "locality212");
+        checkLocalityIn(cities, "locality213");
+        checkLocalityIn(cities, "locality214");
+    }
+
+    @Test
+    public void testGetLocalitiesByMinLength() {
+        List<Locality> districts = this.localityService.getLocalitiesByMinLength(
+                10, "locality1", LocalityType.DISTRICT);
+        Assert.assertEquals(2, districts.size());
+        checkLocalityIn(districts, "locality11");
+        checkLocalityIn(districts, "locality12");
+        districts = this.localityService.getLocalitiesByMinLength(
+                9, "locality1", LocalityType.DISTRICT);
+        Assert.assertEquals(2, districts.size());
+        checkLocalityIn(districts, "locality11");
+        checkLocalityIn(districts, "locality12");
+        districts = this.localityService.getLocalitiesByMinLength(
+                11, "locality1", LocalityType.DISTRICT);
+        Assert.assertEquals(0, districts.size());
+        List<Locality> cities = this.localityService.getLocalitiesByMinLength(
+                11, "locality21", LocalityType.CITY);
+        Assert.assertEquals(4, cities.size());
+        checkLocalityIn(cities, "locality211");
+        checkLocalityIn(cities, "locality212");
+        checkLocalityIn(cities, "locality213");
+        checkLocalityIn(cities, "locality214");
+    }
 
     //--------------------- HELPER METHODS -----------------------------------------------------------------------------
     private void checkLocalityById(Long localityId, String expectedName) {

@@ -4,6 +4,7 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.LocalityType;
+import java.util.HashMap;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -28,5 +29,35 @@ public class LocalityDaoImpl extends GenericHibernateDao<Locality> implements Lo
         return (Locality) getHibernateSession().createCriteria(Locality.class)
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubString,
+            LocalityType type) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("length", maxLengthExcl);
+        queryParams.put("name", "%" + nameSubString + "%");
+        queryParams.put("type", type);
+        return runNamedQuery(
+                "getLocalitiesByMaxLength",
+                queryParams);
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public List<Locality> getLocalitiesByMinLength(int minLength, String nameSubString,
+            LocalityType type) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("length", minLength);
+        queryParams.put("name", "%" + nameSubString + "%");
+        queryParams.put("type", type);
+        return runNamedQuery(
+                "getLocalitiesByMinLength",
+                queryParams);
     }
 }

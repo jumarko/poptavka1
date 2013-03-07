@@ -70,4 +70,16 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     public void removeById(long id) {
         throw new TreeItemModificationException();
     }
+
+    @Override
+    public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubString,
+            LocalityType type) {
+        return getDao().getLocalitiesByMaxLengthExcl(maxLengthExcl, nameSubString, type);
+    }
+
+    @Override
+    public List<Locality> getLocalitiesByMinLength(int minLength, String nameSubString,
+            LocalityType type) {
+        return getDao().getLocalitiesByMinLength(minLength, nameSubString, type);
+    }
 }
