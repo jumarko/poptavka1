@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.user.widget.detail;
 import com.eprovement.poptavka.client.common.BigDecimalBox;
 import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.IntegerBox;
+import com.eprovement.poptavka.client.common.ListChangeMonitor;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
@@ -44,9 +45,10 @@ public class EditableDemandDetailView extends Composite implements
     /* Attributes                                                               */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) ChangeMonitor titleMonitor, categoriesMonitor, localitiesMonitor, priceMonitor;
+    @UiField(provided = true) ChangeMonitor titleMonitor, priceMonitor;
     @UiField(provided = true) ChangeMonitor excludedSuppliersMonitor, endDateMonitor, validToDateMonitor;
     @UiField(provided = true) ChangeMonitor maxOffersMonitor, minRatingMonitor, descriptionMonitor;
+    @UiField(provided = true) ListChangeMonitor categoriesMonitor, localitiesMonitor;
     @UiField(provided = true) CellList categories, localities, excludedSuppliers;
     @UiField TextBox title;
     @UiField BigDecimalBox price;
@@ -87,8 +89,8 @@ public class EditableDemandDetailView extends Composite implements
 
     private void initValidationMonitors() {
         titleMonitor = createDemandChangeMonitor(DemandField.TITLE);
-        categoriesMonitor = createDemandChangeMonitor(DemandField.CATEGORIES);
-        localitiesMonitor = createDemandChangeMonitor(DemandField.LOCALITIES);
+        categoriesMonitor = createDemandListChangeMonitor(DemandField.CATEGORIES);
+        localitiesMonitor = createDemandListChangeMonitor(DemandField.LOCALITIES);
         excludedSuppliersMonitor = createDemandChangeMonitor(DemandField.EXCLUDE_SUPPLIER);
         priceMonitor = createDemandChangeMonitor(DemandField.PRICE);
         endDateMonitor = createDemandChangeMonitor(DemandField.END_DATE);
@@ -97,12 +99,17 @@ public class EditableDemandDetailView extends Composite implements
         minRatingMonitor = createDemandChangeMonitor(DemandField.MIN_RATING);
         descriptionMonitor = createDemandChangeMonitor(DemandField.DESCRIPTION);
         monitors = Arrays.asList(
-            titleMonitor, categoriesMonitor, localitiesMonitor, excludedSuppliersMonitor, priceMonitor,
-            endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
+                titleMonitor, excludedSuppliersMonitor, priceMonitor,
+                endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
     }
 
     private ChangeMonitor createDemandChangeMonitor(DemandField fieldField) {
         return new ChangeMonitor<FullDemandDetail>(
+                FullDemandDetail.class, new ChangeDetail(fieldField.getValue()));
+    }
+
+    private ListChangeMonitor createDemandListChangeMonitor(DemandField fieldField) {
+        return new ListChangeMonitor<FullDemandDetail>(
                 FullDemandDetail.class, new ChangeDetail(fieldField.getValue()));
     }
 
@@ -122,6 +129,8 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.reset();
         }
+        categoriesMonitor.reset();
+        localitiesMonitor.reset();
     }
 
     @Override
@@ -129,6 +138,8 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.revert();
         }
+        categoriesMonitor.revert();
+        localitiesMonitor.revert();
     }
 
     /**************************************************************************/
@@ -180,6 +191,8 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.addChangeHandler(handler);
         }
+        categoriesMonitor.addChangeHandler(handler);
+        localitiesMonitor.addChangeHandler(handler);
     }
 
     /**
@@ -243,16 +256,11 @@ public class EditableDemandDetailView extends Composite implements
     /** Validation. **/
     @Override
     public boolean isValid() {
-        return titleMonitor.isValid()
-                && categoriesMonitor.isValid()
-                && localitiesMonitor.isValid()
-                && excludedSuppliersMonitor.isValid()
-                && priceMonitor.isValid()
-                && endDateMonitor.isValid()
-                && validToDateMonitor.isValid()
-                && maxOffersMonitor.isValid()
-                && minRatingMonitor.isValid()
-                && descriptionMonitor.isValid();
+        boolean valid = false;
+        for (ChangeMonitor monitor : monitors) {
+            valid = valid || monitor.isValid();
+        }
+        return valid || categoriesMonitor.isValid() || localitiesMonitor.isValid();
     }
 
     /** Widget view. **/
