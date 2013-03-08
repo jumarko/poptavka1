@@ -21,7 +21,6 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
@@ -111,7 +110,6 @@ public class HomeDemandsView extends OverflowComposite
     public void initCellTree() {
         //Workaround for issue: CellTree disappeared when clicking but outside tree nodes
         CellTree.Resources resource = GWT.create(CustomCellTree.class);
-        StyleInjector.injectAtEnd("." + resource.cellTreeStyle().cellTreeTopItem() + " {margin-top: 0px;}");
         cellTree = new CellTree(new CategoryTreeViewModel(
                 selectionCategoryModel,
                 homeDemandsPresenter.getCategoryService(),
@@ -148,18 +146,13 @@ public class HomeDemandsView extends OverflowComposite
 
         // Date of creation
         /**************************************************************************/
-        dataGrid.addColumn(new CreatedDateCell(), Storage.MSGS.columnCreatedDate(),
                 true, Constants.COL_WIDTH_DATE,
-                new UniversalAsyncGrid.GetValue<Date>() {
                     @Override
-                    public Date getValue(Object object) {
-                        return ((FullDemandDetail) object).getCreated();
                     }
                 });
 
         // Demand Info
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDemandTitle(),
                 true, Constants.COL_WIDTH_TITLE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -170,7 +163,6 @@ public class HomeDemandsView extends OverflowComposite
 
         // Locality
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnLocality(), false, LOCALITY_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {

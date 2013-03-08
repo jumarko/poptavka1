@@ -6,13 +6,6 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <ui:style>
-        .control-label {
-        display: block;
-        left: 345px;
-        padding: 0 0 0 4px;
-        position: absolute;
-        top: 4px;
-        }
         .red-label {
         background: url(images/error-label.png) no-repeat;
         }
@@ -24,7 +17,7 @@
     <b:ControlGroup ui:field="controlGroup">
         <b:Controls>
             <g:SimplePanel ui:field="holder" />
-            <g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='{style.control-label}'>
+            <g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='label-container'>
                 <b:Label ui:field="errorLabel" type="IMPORTANT" />
             </g:HTMLPanel>
         </b:Controls>

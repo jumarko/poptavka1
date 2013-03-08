@@ -135,9 +135,19 @@
                     <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                 </g:north>
                 <g:center>
-                    <g:ScrollPanel>
-                        <g:SimplePanel ui:field="contentHolder3" styleName='formContainer' />
-                    </g:ScrollPanel>
+                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
+                        <g:east size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:east>
+                        <g:west size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:west>
+                        <g:center>
+                            <g:ScrollPanel>
+                                <g:SimplePanel ui:field="contentHolder3" />
+                            </g:ScrollPanel>
+                        </g:center>
+                    </g:DockLayoutPanel>
                 </g:center>
                 <g:south size="95">
                     <g:HTMLPanel styleName='formFooter'>

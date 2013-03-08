@@ -60,7 +60,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }
-        contentHolder3.setSize("956px", "350px");
+        contentHolder3.setSize("100%", "100%");
     }
 
     /**************************************************************************/

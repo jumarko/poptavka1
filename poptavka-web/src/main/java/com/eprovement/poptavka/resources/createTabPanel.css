@@ -8,8 +8,9 @@
 .createTabPanel .infoLabel1 {
     color: #6F6B59;
     font-size: 36px;
+    line-height: 115px;
+    padding-top: 25px;
     font-weight: lighter;
-    line-height: 160px;
     text-align: center;
 }
 
@@ -24,7 +25,8 @@
 .createTabPanel .buttonsBorderRow {
     background: url(images/buttons-border.gif) repeat-y 562px;
     height: 106px;
-    padding-top: 44px;
+    padding-top: 45px;
+    margin-top: 45px;
 }
 
 .createTabPanel .buttonsBorderRow .span3:first-child {
@@ -50,7 +52,7 @@
 .createTabPanel .formFooter {
     background: #e2ddca;
     height: 65px;
-    padding : 15px 40px 0;
+    padding: 15px 40px 0;
     border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
     -webkit-border-radius: 0 0 5px 5px;
@@ -82,6 +84,16 @@
     padding: 0 0 8px;
 }
 
+.createTabPanel .well-container {
+    height: 99%;
+    margin: 0;
+    padding: 0;
+}
+
+.createTabPanel .well-container input[type="checkbox"] {
+    margin: 1px 4px 0 0;
+}
+
 .createTabPanel .well h4 {
     margin: 0 0 24px;
     height: 53px;
@@ -103,9 +115,8 @@
     line-height: 40px;
 }
 
-.createTabPanel .well input[type="text"],
-.createTabPanel .well input[type="password"],
-.createTabPanel .well textarea {
+.createTabPanel .well input[type="text"],.createTabPanel .well input[type="password"],.createTabPanel .well textarea
+    {
     width: 92%;
     max-width: 92%;
     background: #f8f4e4;
@@ -132,20 +143,6 @@
     border-radius: 5px 5px 0 0;
 }
 
-.createTabPanel .control-group {
-    position: relative;
-}
-
-.createTabPanel .label {
-    background: url(images/error-label.png) no-repeat;
-    line-height: 32px;
-    min-height: 32px;
-    padding: 0 15px 0 30px;
-    border-radius: 0 5px 5px 0;
-    -moz-border-radius: 0 5px 5px 0;
-    -webkit-border-radius: 0 5px 5px 0;
-}
-
 .createTabPanel .customHeader {
     background: url(images/create-tab-arrow.png) no-repeat right top;
     color: #665D3C;
@@ -164,4 +161,31 @@
 
 .createTabPanel .gwt-TabLayoutPanelTab:first-child .customHeader {
     width: 244px;
+}
+
+/* error control groups */
+.createTabPanel .control-group {
+    position: relative;
+}
+
+.createTabPanel .label {
+    background: url(images/error-label.png) no-repeat;
+    line-height: 16px;
+    min-height: 16px;
+    padding: 0 15px 0 30px;
+    border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+}
+
+.createTabPanel .error .controls .label-container {
+    display: block;
+    padding: 0 0 0 4px;
+    position: absolute;
+    right: 39px;
+    top: -16px;
+}
+
+.createTabPanel .error .controls input {
+    border: 1px solid #f00000;
 }
