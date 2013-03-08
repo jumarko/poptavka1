@@ -63,11 +63,17 @@ public class AdditionalInfoFiller implements JobTask {
     private void setAdditionalInfoForAllItems(Map<? extends AdditionalInfoAware, Long> demandsCountForAllItems,
                                               Map<? extends AdditionalInfoAware, Long> suppliersCountForAllItems) {
 
-        for (Map.Entry<? extends AdditionalInfoAware, Long> demandsCountEntry : demandsCountForAllItems.entrySet()) {
-            final AdditionalInfoAware additionalInfoAware = demandsCountEntry.getKey();
-            setAdditionalInfo(additionalInfoAware, demandsCountEntry.getValue(),
-                    suppliersCountForAllItems.get(additionalInfoAware));
+        try {
+            for (Map.Entry<? extends AdditionalInfoAware, Long> demandsCountEntry
+                    : demandsCountForAllItems.entrySet()) {
+                final AdditionalInfoAware additionalInfoAware = demandsCountEntry.getKey();
+                setAdditionalInfo(additionalInfoAware, demandsCountEntry.getValue(),
+                        suppliersCountForAllItems.get(additionalInfoAware));
+            }
+        } catch (Exception e) {
+            LOGGER.error("additional info filling status=error", e);
         }
+
     }
 
 
