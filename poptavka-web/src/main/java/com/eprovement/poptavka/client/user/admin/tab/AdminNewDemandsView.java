@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -12,7 +13,6 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -60,7 +60,6 @@ public class AdminNewDemandsView extends Composite
     private Column<FullDemandDetail, String> demnadTitleColumn;
     private Column<FullDemandDetail, String> localityColumn;
     private MultiSelectionModel selectionModel;
-    private final DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
     private static final List<String> GRID_COLUMNS = Arrays.asList(
             new String[]{
                 "createdDate", "title", "locality", "endDate"
@@ -115,23 +114,12 @@ public class AdminNewDemandsView extends Composite
 
         // Date of creation
         /**************************************************************************/
-        createdDateColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.columnCreatedDate(),
+        createdDateColumn = dataGrid.addColumn(new CreatedDateCell(), Storage.MSGS.columnCreatedDate(),
                 true, Constants.COL_WIDTH_DATE,
-                new UniversalAsyncGrid.GetValue<String>() {
+                new UniversalAsyncGrid.GetValue<Date>() {
                     @Override
-                    public String getValue(Object object) {
-                        FullDemandDetail demandDetail = (FullDemandDetail) object;
-                        if (demandDetail.getCreated() == null) {
-                            return Storage.MSGS.commonNotDefined();
-                        } else {
-                            Date now = new Date();
-                            long millis = now.getTime() - demandDetail.getCreated().getTime();
-                            if (Constants.DAY_LENGTH <= millis && millis < 2 * Constants.DAY_LENGTH) {
-                                return Storage.MSGS.creationDateYesterday();
-                            } else {
-                                return formatter.format(demandDetail.getCreated());
-                            }
-                        }
+                    public Date getValue(Object object) {
+                        return ((FullDemandDetail) object).getCreated();
                     }
                 });
 

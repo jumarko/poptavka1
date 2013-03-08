@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+    <ui:with field="msgs" type="com.google.gwt.i18n.client.LocalizableMessages" />
+    <ui:with field="imageClass" type="java.lang.String" />
+
+    <ui:style field="cellStyle" type="com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell.UrgencyImageCellStyle">
+        .header {
+        background: url(images/urgency-header.png) no-repeat;
+        }
+        .high {
+        background: url(images/urgency-red.png) no-repeat;
+        }
+        .higher{
+        background: url(images/urgency-higher.png) no-repeat;
+        }
+        .normal {
+        background: url(images/urgency-green.png) no-repeat;
+        }
+    </ui:style>
+
+    <span href="#" rel="tooltip" data-html="true"  title="{msgs.tooltipUrgency}">
+        <div class="image"/>
+    </span>
+</ui:UiBinder>

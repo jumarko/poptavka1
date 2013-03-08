@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.user.widget.grid;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.RowStyles;
@@ -52,7 +51,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private List<String> gridColumns = new ArrayList<String>();
     //Other
     private MultiSelectionModel<IUniversalDetail> selectionModel;
-    private DateTimeFormat formatter = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -264,7 +262,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return formatter.format(((IUniversalDetail) object).getReceivedDate());
+                            return Storage.FORMATTER.format(((IUniversalDetail) object).getReceivedDate());
                         }
                     });
         }
@@ -278,7 +276,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return formatter.format(((IUniversalDetail) object).getDeliveryDate());
+                            return Storage.FORMATTER.format(((IUniversalDetail) object).getDeliveryDate());
                         }
                     });
         }

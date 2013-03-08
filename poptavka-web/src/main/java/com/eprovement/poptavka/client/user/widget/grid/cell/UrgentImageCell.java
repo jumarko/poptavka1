@@ -1,82 +1,82 @@
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
+import com.eprovement.poptavka.client.common.DateUtils;
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
-import com.github.gwtbootstrap.client.ui.constants.Placement;
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.client.ui.ImageResourceRenderer;
+import com.google.gwt.uibinder.client.UiRenderer;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.Date;
 
 /**
- * Provides urgency images.
+ * Provides urgency images for header and column.
+ * If Header image is required, just pass null value to date, otherwise urgency
+ * images are returned.
  *
  * @author Martin Slavkovsky
  */
 public class UrgentImageCell extends AbstractCell<Date> {
 
-    private static ImageResourceRenderer renderer;
-    private static final int DAY_URGENT = 4;
-    private static final int DAY_URGENT_LESS = 8;
-    private static final ImageResource HEADER = Storage.RSCS.images().urgencyHeader();
-    private static final ImageResource URGENT = Storage.RSCS.images().urgencyRed();
-    private static final ImageResource URGENT_LESS = Storage.RSCS.images().urgencyOrange();
-    private static final ImageResource NORMAL = Storage.RSCS.images().urgencyGreen();
+    interface UrgencyImageCellStyle extends CssResource {
 
-    public UrgentImageCell() {
-        if (renderer == null) {
-            renderer = new ImageResourceRenderer();
-        }
+        String header();
+
+        String high();
+
+        String higher();
+
+        String normal();
+    }
+    /**************************************************************************/
+    /* UiRenderer                                                             */
+    /**************************************************************************/
+    private static UrgentImageCell.MyUiRenderer uiRenderer = GWT.create(UrgentImageCell.MyUiRenderer.class);
+
+    interface MyUiRenderer extends UiRenderer {
+
+        UrgencyImageCellStyle getCellStyle();
+
+        void render(SafeHtmlBuilder sb, String imageClass);
     }
 
+    /**************************************************************************/
+    /* Override methods                                                       */
+    /**************************************************************************/
     @Override
     public void render(Context context, Date value, SafeHtmlBuilder sb) {
-        /*
-         * Getting value null tells us to use header image and create tooltip.
-         * The result will be used in header.
-         */
+
         if (value == null) {
-            renderUrgencyHeader(context, value, sb);
-            /*
-             * Otherwise provide appropriate urgency image according to given date.
-             */
+            uiRenderer.render(sb, uiRenderer.getCellStyle().header());
+
         } else {
-            renderUrgencyColumnCell(context, value, sb);
+            uiRenderer.render(sb, getImageClass(value));
         }
     }
 
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
-    private void renderUrgencyHeader(Context context, Date value, SafeHtmlBuilder sb) {
-        StringBuilder sbs = new StringBuilder();
-        //TODO RELEASE Jaro - make it look goot like in design. Thanks.
-        sbs.append("<a href=\"#\" ");
-        sbs.append("placement=\"" + Placement.BOTTOM + "\" ");
-        sbs.append("delay=0");
-        sbs.append("animation=\"true\" ");
-        //            sbs.append("data-toggle=\"tooltip-arrow\" ");
-        sbs.append("title=\"" + Storage.MSGS.tooltipUrgency() + "\" ");
-        sbs.append(">");
-        sb.appendHtmlConstant(sbs.toString());
-        sb.append(renderer.render(HEADER));
-        sb.appendHtmlConstant("</a>");
-    }
-
-    private void renderUrgencyColumnCell(Context context, Date value, SafeHtmlBuilder sb) {
-        long diffMilliseconds = value.getTime() - (new Date()).getTime();
-        long diffDays = diffMilliseconds / Constants.DAY_LENGTH;
-
-        //(0-4 days) hight
-        if ((int) diffDays <= DAY_URGENT) {
-            sb.append(renderer.render(URGENT));
-            //(5-8 days) medium
-        } else if ((int) diffDays <= DAY_URGENT_LESS) {
-            sb.append(renderer.render(URGENT_LESS));
-            //(9-infinity days) low
-        } else {
-            sb.append(renderer.render(NORMAL));
+    /**
+     * Get proper image class from UrgencyImageCellStyle according to give date.
+     * Getting date value null returns header image.
+     * Otherwise return appropriate urgency image according to given date.
+     *
+     * @param value - given date
+     * @return urgency image cell class
+     */
+    private String getImageClass(Date value) {
+        if (value == null) {
+            return uiRenderer.getCellStyle().header();
         }
+        int daysBetween = CalendarUtil.getDaysBetween(value, DateUtils.getNowDate());
+        if (daysBetween < Constants.DAYS_URGENCY_HIGHT) {
+            return uiRenderer.getCellStyle().high();
+        }
+        if (daysBetween <= Constants.DAYS_URGENCY_HIGHTER) {
+            return uiRenderer.getCellStyle().higher();
+        }
+        return uiRenderer.getCellStyle().normal();
     }
 }
