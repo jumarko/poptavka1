@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminDemandsPresenter;
@@ -15,7 +16,6 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminPermissionsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminPreferencesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminProblemsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminSuppliersPresenter;
-import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -102,12 +102,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
             List<LocalityDetail> categoriesToSet);
-
-    @Event(forwardToParent = true)
-    void requestDetailWrapperPresenter();
-
-    @Event(handlers = AdminNewDemandsPresenter.class)
-    void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     @Event(forwardToParent = true)
     void atAccount();
@@ -328,4 +322,51 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(handlers = AdminNewDemandsPresenter.class)
     void responseThreadRootId(long id);
+
+    /**************************************************************************/
+    /* AdminDetailWrapperPresentera.                                          */
+    /**************************************************************************/
+    @Event(handlers = AdminPresenter.class)
+    void requestAdminDetailWrapperPresenter();
+
+    //pozor staci ak sa prezenter zavola raz a uz je aktivny
+    @Event(handlers = {AdminNewDemandsPresenter.class }, passive = true)
+    void responseAdminDetailWrapperPresenter(AdminDetailsWrapperPresenter detailSection);
+
+    /**
+     * Request/Response method pair.
+     * Send <b>Message</b> and notify user.
+     * @param supplierId
+     * @param supplierDetail
+     */
+    @Event(handlers = AdminHandler.class)
+    void requestSendAdminMessage(MessageDetail messageToSend);
+
+    @Event(handlers = AdminDetailsWrapperPresenter.class)
+    void responseSendAdminMessage(MessageDetail messageToSend);
+
+    /**
+     * Request/Response method pair.
+     * Fetch and display <b>Demand</b> detail
+     * @param supplierId
+     * @param supplierDetail
+     */
+    @Event(handlers = AdminHandler.class)
+    void requestDemandDetail(Long demandId);
+
+    @Event(handlers = AdminDetailsWrapperPresenter.class, passive = true)
+    void responseDemandDetail(FullDemandDetail demandDetail);
+
+    /**
+     * Request/Response method pair.
+     * Fetch and display chat(<b>conversation</b>) for admin conversations
+     * @param threadId
+     * @param userId
+     * @param chatMessages
+     */
+    @Event(handlers = AdminHandler.class)
+    void requestConversationForAdmin(Long threadId, Long userId);
+
+    @Event(handlers = AdminDetailsWrapperPresenter.class)
+    void responseConversationForAdmin(List<MessageDetail> chatMessages);
 }

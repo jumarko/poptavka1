@@ -4,7 +4,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
-import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -87,7 +87,7 @@ public class AdminNewDemandsPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     /** Class attributes. **/
-    private DetailsWrapperPresenter detailSection;
+    private AdminDetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
     private FullDemandDetail selectedObject;
     private FieldUpdater textFieldUpdater;
@@ -177,7 +177,7 @@ public class AdminNewDemandsPresenter
                                 view.getSelectionModel().getSelectedSet()).get(0);
                         selectedObject = selected;
                         if (detailSection == null) {
-                            eventBus.requestDetailWrapperPresenter();
+                            eventBus.requestAdminDetailWrapperPresenter();
                         } else {
                             detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(
                                     Style.Display.BLOCK);
@@ -231,10 +231,10 @@ public class AdminNewDemandsPresenter
     /**************************************************************************/
     /* Additional methods                                                     */
     /**************************************************************************/
-    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
+    public void onResponseAdminDetailWrapperPresenter(AdminDetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(null, view.getDetailPanel());
+            this.detailSection.initDetailWrapper(view.getDetailPanel());
             if (selectedObject != null) {
                 eventBus.requestThreadRootId(selectedObject);
             }
@@ -243,7 +243,7 @@ public class AdminNewDemandsPresenter
     }
 
     public void onResponseThreadRootId(long threadRootId) {
-        detailSection.initDetails(
+        detailSection.initAdminDetails(
                 selectedObject.getDemandId(),
                 threadRootId);
     }
