@@ -157,6 +157,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
+        potentialDemandsCountSearch.setSearchClass(Demand.class);
         return (int) userMessageService.getPotentialDemandsCount(businessUser, potentialDemandsCountSearch);
     }
 
