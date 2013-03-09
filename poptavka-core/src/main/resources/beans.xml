@@ -146,9 +146,8 @@
     </bean>
 
     <bean id="potentialDemandsService" class="com.eprovement.poptavka.service.demand.MessageBasedPotentialDemandService">
-        <constructor-arg index="0" ref="generalService"/>
-        <constructor-arg index="1" ref="messageService"/>
-        <constructor-arg index="2" ref="supplierSelection"/>
+        <constructor-arg ref="messageService"/>
+        <constructor-arg ref="supplierSelection"/>
     </bean>
 
     <!-- Other -->

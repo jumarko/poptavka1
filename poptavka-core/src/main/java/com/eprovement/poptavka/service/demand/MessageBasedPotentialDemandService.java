@@ -11,7 +11,6 @@ import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.exception.MessageException;
-import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -19,8 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Implementation of {@link PotentialDemandService} which uses {@link com.eprovement.poptavka.domain.message.Message}-s
@@ -29,20 +29,16 @@ import java.util.Set;
 public class MessageBasedPotentialDemandService implements PotentialDemandService {
 
     /** Default number of max count of suppliers to which the demand is sent. */
-    private static final Integer DEFAULT_MAX_SUPPLIERS = Integer.valueOf(50);
+    private static final Integer DEFAULT_MAX_SUPPLIERS = 50;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageBasedPotentialDemandService.class);
 
-    private final GeneralService generalService;
     private final MessageService messageService;
     private final SuppliersSelection suppliersSelection;
 
 
-    public MessageBasedPotentialDemandService(GeneralService generalService, MessageService messageService,
-                                              SuppliersSelection suppliersSelection) {
-        Validate.notNull(generalService, "generalService cannot be null");
+    public MessageBasedPotentialDemandService(MessageService messageService, SuppliersSelection suppliersSelection) {
         Validate.notNull(messageService, "messageService cannot be null");
         Validate.notNull(suppliersSelection, "suppliersSelection algorithm cannot be null!");
-        this.generalService = generalService;
         this.messageService = messageService;
         this.suppliersSelection = suppliersSelection;
     }
@@ -52,27 +48,27 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
     @Transactional
     public void sendDemandToPotentialSuppliers(Demand demand) throws MessageException {
         LOGGER.info("Action=demand_send_to_suppliers status=start demand=" + demand);
-        fillDefaultValues(demand);
+        Validate.notNull(demand, "demand cannot be null!");
 
-        final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
-        for (PotentialSupplier potentialSupplier : potentialSuppliers) {
-            sendDemandToPotentialSupplier(demand, potentialSupplier);
-        }
+        // update thread root message before sending to potential suppliers
+        final Message threadRootMessage = updateDemandThreadRootMessage(demand,
+                this.suppliersSelection.getPotentialSuppliers(demand));
+        messageService.send(threadRootMessage);
+
         LOGGER.info("Action=demand_send_to_suppliers status=finish demand=" + demand);
     }
+
 
     @Override
     @Transactional
     public void sendDemandToPotentialSupplier(Demand demand, PotentialSupplier potentialSupplier)
         throws MessageException {
         LOGGER.debug("Action=demand_send_to_supplier status=start demand=" + demand);
+        Validate.notNull(demand, "demand cannot be null");
+        Validate.notNull(potentialSupplier, "potential supplier cannot be null");
 
-        Message message = composePotentialDemandMessage(demand, potentialSupplier,
-                messageService.getThreadRootMessage(demand));
-
-        message = messageService.update(message);
-
-        messageService.send(message);
+        final Message threadRootMessage = updateDemandThreadRootMessage(demand, Arrays.asList(potentialSupplier));
+        messageService.createUserMessage(threadRootMessage, potentialSupplier.getSupplier().getBusinessUser());
 
         LOGGER.debug("Action=demand_send_to_supplier status=finish demand=" + demand);
     }
@@ -80,29 +76,36 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
 
-    private Message composePotentialDemandMessage(Demand demand, PotentialSupplier potentialSupplier,
-            Message message)
-        throws MessageException {
-        // TODO Vojto there should be some intro message for the user
-        message.setMessageState(MessageState.COMPOSED);
-        message.setBody(demand.getDescription());
-        message.setSubject(demand.getTitle());
+    /**
+     * Updates thread root message of given {@code demand} adding all {@code potentialSuppliers}.
+     * @param demand demand for which the thread root message will be updated
+     * @param potentialSuppliers all potential suppliers that should be added to the roles of {@code demand}'s
+     *                           thread root message
+     * @return updated thread root message containing all potential suppliers
+     */
+    private Message updateDemandThreadRootMessage(Demand demand, Collection<PotentialSupplier> potentialSuppliers) {
+        Validate.notNull(demand, "demand cannot be null");
 
-        final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
+        fillDefaultValues(demand);
+        Message threadRootMessage = messageService.getThreadRootMessage(demand);
+        Validate.isTrue(threadRootMessage != null, "threadRootMessage cannot be null");
+        Validate.isTrue(threadRootMessage.getRoles() != null, "threadRootMessage.roles cannot be null");
 
-        final MessageUserRole messageUserRole = new MessageUserRole();
-        messageUserRole.setMessage(message);
-        messageUserRole.setUser(potentialSupplier.getSupplier().getBusinessUser());
-        messageUserRole.setType(MessageUserRoleType.TO);
-        messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-        messageUserRoles.add(messageUserRole);
+        final List<MessageUserRole> messageUserRoles = new ArrayList<>();
+        for (PotentialSupplier potentialSupplier : potentialSuppliers) {
+            final MessageUserRole messageUserRole = new MessageUserRole();
+            messageUserRole.setMessage(threadRootMessage);
+            messageUserRole.setUser(potentialSupplier.getSupplier().getBusinessUser());
+            messageUserRole.setType(MessageUserRoleType.BCC);
+            messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
+            messageUserRoles.add(messageUserRole);
+        }
 
-        message.setRoles(messageUserRoles);
-
-        message.setMessageState(MessageState.COMPOSED);
-        return message;
+        threadRootMessage.getRoles().addAll(messageUserRoles);
+        threadRootMessage.setMessageState(MessageState.COMPOSED);
+        threadRootMessage = messageService.update(threadRootMessage);
+        return threadRootMessage;
     }
-
 
     private void fillDefaultValues(Demand demand) {
         if (demand.getMaxSuppliers() == null) {
