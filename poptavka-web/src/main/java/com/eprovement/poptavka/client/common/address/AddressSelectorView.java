@@ -173,10 +173,7 @@ public class AddressSelectorView extends Composite
     //--------------------------------------------------------------------------
     @Override
     public boolean isValid() {
-        boolean valid = cityMonitor.isValid();
-        valid = zipcodeMonitor.isValid() && valid;
-        valid = streetMonitor.isValid() && valid;
-        return valid;
+        return  cityMonitor.isValid() && zipcodeMonitor.isValid() && streetMonitor.isValid();
     }
 
     @Override

@@ -87,21 +87,24 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /**************************************************************************/
     /* Validation                                                             */
     /**************************************************************************/
-    public void validate() {
-        valid = true;
+    private boolean validate() {
+        boolean valid = false;
         reset();
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
                 changeDetail.getField(), getValue(), Default.class);
+        if (violations.isEmpty()) {
+            valid = true;
+        }
         for (ConstraintViolation<T> violation : violations) {
-            valid = false;
             setValidationStyles(false, violation.getMessage());
         }
+        this.valid = valid;
+        return valid;
     }
 
     public boolean isValid() {
-        validate();
-        return valid;
+        return validate();
     }
 
     /**************************************************************************/
