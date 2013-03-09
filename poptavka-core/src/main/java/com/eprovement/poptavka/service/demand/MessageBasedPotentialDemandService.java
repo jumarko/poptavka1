@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,14 +34,17 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageBasedPotentialDemandService.class);
 
     private final MessageService messageService;
+    private final UserMessageService userMessageService;
     private final SuppliersSelection suppliersSelection;
 
 
-    public MessageBasedPotentialDemandService(MessageService messageService, SuppliersSelection suppliersSelection) {
+    public MessageBasedPotentialDemandService(MessageService messageService, SuppliersSelection suppliersSelection,
+                UserMessageService userMessageService) {
         Validate.notNull(messageService, "messageService cannot be null");
         Validate.notNull(suppliersSelection, "suppliersSelection algorithm cannot be null!");
         this.messageService = messageService;
         this.suppliersSelection = suppliersSelection;
+        this.userMessageService = userMessageService;
     }
 
 
@@ -68,7 +72,7 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
         Validate.notNull(potentialSupplier, "potential supplier cannot be null");
 
         final Message threadRootMessage = updateDemandThreadRootMessage(demand, Arrays.asList(potentialSupplier));
-        messageService.createUserMessage(threadRootMessage, potentialSupplier.getSupplier().getBusinessUser());
+        userMessageService.createUserMessage(threadRootMessage, potentialSupplier.getSupplier().getBusinessUser());
 
         LOGGER.debug("Action=demand_send_to_supplier status=finish demand=" + demand);
     }
