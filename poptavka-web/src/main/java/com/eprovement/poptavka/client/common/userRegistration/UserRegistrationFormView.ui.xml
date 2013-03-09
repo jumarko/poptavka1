@@ -41,7 +41,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="email">
-                            <g:TextBox title="email" />
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -53,7 +53,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="password">
-                            <g:PasswordTextBox title="password" />
+                            <g:PasswordTextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -65,7 +65,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="passwordConfirm">
-                            <g:PasswordTextBox title="password" />
+                            <g:PasswordTextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -90,7 +90,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="firstName">
-                            <g:TextBox title="firstName" />
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -103,7 +103,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="lastName">
-                            <g:TextBox title="lastName" />
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -116,7 +116,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="phone">
-                            <g:TextBox title="phone" />
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -154,7 +154,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="companyName">
-                            <g:TextBox title="companyName" />
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -167,7 +167,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="identificationNumber">
-                            <g:TextBox title="identificationNumber" />
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -180,7 +180,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="taxId">
-                            <g:TextBox title="taxId" />
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -219,7 +219,7 @@
                     </b:Column>
                     <b:Column size="7">
                         <vm:ValidationMonitor ui:field="website">
-                            <g:TextBox title="website"/>
+                            <g:TextBox />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
@@ -231,7 +231,7 @@
                     </b:Column>
                     <b:Column size="8">
                         <vm:ValidationMonitor ui:field="description">
-                            <g:TextArea title="description" height="200px" width="300px" />
+                            <g:TextArea height="200px" width="300px" />
                         </vm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>

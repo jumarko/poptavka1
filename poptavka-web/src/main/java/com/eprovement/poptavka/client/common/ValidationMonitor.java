@@ -71,10 +71,11 @@ public class ValidationMonitor<T> extends Composite
     @UiField Label errorLabel;
     @UiField ControlGroup controlGroup;
     /** Class attributes. **/
-    private ArrayList<IListDetailObject> listData = null;
-    private Validator validator = null;
+    private ArrayList<IListDetailObject> listData;
+    private Validator validator;
     private Class<T> beanType;
-    private Boolean valid = null;
+    private String field;
+    private Boolean valid;
     private boolean hideErrorPanel = true;
 
     /**************************************************************************/
@@ -85,8 +86,9 @@ public class ValidationMonitor<T> extends Composite
      * to know Class<T>.
      * @param beanType
      */
-    public ValidationMonitor(Class<T> beanType) {
+    public ValidationMonitor(Class<T> beanType, String field) {
         this.beanType = beanType;
+        this.field = field;
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
         listData = new ArrayList<IListDetailObject>();
         initWidget(uiBinder.createAndBindUi(this));
@@ -107,8 +109,8 @@ public class ValidationMonitor<T> extends Composite
         }
         valid = true;
         //perform new validation
-        Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
-                holder.getWidget().getTitle(), getValue(), Default.class);
+        Set<ConstraintViolation<T>> violations = validator.validateValue(
+                beanType, field, getValue(), Default.class);
         for (ConstraintViolation<T> violation : violations) {
             errorPanel.setVisible(true);
             errorLabel.setText(violation.getMessage());

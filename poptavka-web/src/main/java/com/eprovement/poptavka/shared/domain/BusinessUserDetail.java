@@ -30,6 +30,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         FIRST_NAME("personFirstName"),
         LAST_NAME("personLastName"),
         EMAIL("email"),
+        PASSWORD("password"),
         PHONE("phone"),
         DESCRIPTION("description"),
         TAX_ID("taxId"),

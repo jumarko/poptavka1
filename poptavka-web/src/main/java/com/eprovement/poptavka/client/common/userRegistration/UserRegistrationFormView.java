@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.github.gwtbootstrap.client.ui.RadioButton;
@@ -80,17 +81,28 @@ public class UserRegistrationFormView extends Composite
      * Initialize validation monitors for each field we want to validate.
      */
     private void initValidationMonitors() {
-        firstName = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
-        lastName = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
-        phone = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
-        email = new ValidationMonitor<UserDetail>(UserDetail.class);
-        password = new ValidationMonitor<UserDetail>(UserDetail.class);
-        passwordConfirm = new ValidationMonitor<UserDetail>(UserDetail.class);
-        companyName = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
-        description = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
-        website = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
-        identificationNumber = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
-        taxId = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class);
+        firstName = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.FIRST_NAME.getValue());
+        lastName = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.LAST_NAME.getValue());
+        phone = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.PHONE.getValue());
+        email = new ValidationMonitor<UserDetail>(
+                UserDetail.class, UserField.EMAIL.getValue());
+        password = new ValidationMonitor<UserDetail>(
+                UserDetail.class, UserField.PASSWORD.getValue());
+        passwordConfirm = new ValidationMonitor<UserDetail>(
+                UserDetail.class, UserField.PASSWORD.getValue());
+        companyName = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.COMPANY_NAME.getValue());
+        description = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.DESCRIPTION.getValue());
+        website = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.WEBSITE.getValue());
+        identificationNumber = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.IDENTIF_NUMBER.getValue());
+        taxId = new ValidationMonitor<BusinessUserDetail>(
+                BusinessUserDetail.class, UserField.TAX_ID.getValue());
     }
 
     /**
