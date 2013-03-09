@@ -49,23 +49,24 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
 
     /**
      * Gets a list of localities whose name is shorter than <code>maxlengthExcl</code> and
-     * contains <code>nameSubString</code> and whose type is <code>type</code>
+     * is prefixed with <code>namePrefix</code> and whose type is <code>type</code>
      * @param maxLengthExcl all <code>Locality</code>-ies' names returned must be shorter than the given length
-     * @param nameLike a <code>String</code> that all the localities' names must contain as a substring
+     * @param namePrefix a <code>String</code> that all the localities' names must be prefixed with
      * @param type just <code>Locality</code>-ies of the given type will be returned
      * @return a <code>List<code> of localities satisfying criteria
      */
-    List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubString,
+    List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String namePrefix,
             LocalityType type);
 
     /**
      * Gets a list of localities whose name is the same length or longer than <code>minLength</code> and
-     * contains <code>nameSubString</code> and whose type is <code>type</code>
+     * is prefixed with <code>namePrefix</code> and whose type is <code>type</code>
      * @param minLength all <code>Locality</code>-ies' names returned must be at least of the given length
-     * @param nameLike a <code>String</code> that all the localities' names must contain as a substring
+     * @param namePrefix a <code>String</code> that all the localities' names must be prefixed with
      * @param type just <code>Locality</code>-ies of the given type will be returned
      * @return a <code>List<code> of localities satisfying criteria
      */
-    List<Locality> getLocalitiesByMinLength(int minLength, String nameSubString,
+    List<Locality> getLocalitiesByMinLength(int minLength, String namePrefix,
             LocalityType type);
+
 }

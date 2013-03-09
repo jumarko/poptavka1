@@ -72,14 +72,14 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     }
 
     @Override
-    public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubString,
+    public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String namePrefix,
             LocalityType type) {
-        return getDao().getLocalitiesByMaxLengthExcl(maxLengthExcl, nameSubString, type);
+        return getDao().getLocalitiesByMaxLengthExcl(maxLengthExcl, namePrefix, type);
     }
 
     @Override
-    public List<Locality> getLocalitiesByMinLength(int minLength, String nameSubString,
+    public List<Locality> getLocalitiesByMinLength(int minLength, String namePrefix,
             LocalityType type) {
-        return getDao().getLocalitiesByMinLength(minLength, nameSubString, type);
+        return getDao().getLocalitiesByMinLength(minLength, namePrefix, type);
     }
 }
