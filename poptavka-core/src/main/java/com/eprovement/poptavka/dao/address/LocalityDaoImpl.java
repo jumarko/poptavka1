@@ -4,7 +4,6 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.LocalityType;
-import java.util.ArrayList;
 import java.util.HashMap;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

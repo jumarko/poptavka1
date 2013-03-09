@@ -247,14 +247,6 @@ public interface MessageService extends GenericService<Message, MessageDao> {
     void send(Message message) throws MessageException;
 
     /**
-     * Creates new User message for given {@code user}.
-     *
-     * @param message parent message for which the new message will be created, cannot be null
-     * @param user user for who the new UserMessage will be created, cannot be null
-     */
-    void createUserMessage(Message message, User user);
-
-    /**
      * Gets the child of the message that has been sent the last
      *
      * @param parent

@@ -22,6 +22,7 @@ import com.eprovement.poptavka.util.search.SearcherException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,19 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public UserMessageServiceImpl(UserMessageDao userMessageDao, GeneralService generalService) {
         setDao(userMessageDao);
         this.generalService = generalService;
+    }
+
+    @Override
+    public UserMessage createUserMessage(Message message, User user) {
+        Validate.notNull(message, "message cannot be null!");
+        Validate.notNull(user, "user cannot be null!");
+        final UserMessage userMessage = new UserMessage();
+        userMessage.setRead(false);
+        userMessage.setStarred(false);
+        userMessage.setMessage(message);
+        userMessage.setUser(user);
+        generalService.save(userMessage);
+        return userMessage;
     }
 
     @Override
@@ -264,7 +278,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public int getClientConversationsWithOfferCount(User user, Demand demand) {
         return (int) getDao().getClientConversationsWithOfferCount(user, demand);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public UserMessage getAdminUserMessage(Message message, User user) {
@@ -272,12 +286,6 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         if (userMessage != null) {
             return userMessage;
         }
-        userMessage = new UserMessage();
-        userMessage.setRead(false);
-        userMessage.setStarred(false);
-        userMessage.setMessage(message);
-        userMessage.setUser(user);
-        generalService.save(userMessage);        
-        return userMessage;
+        return createUserMessage(message, user);
     }
 }

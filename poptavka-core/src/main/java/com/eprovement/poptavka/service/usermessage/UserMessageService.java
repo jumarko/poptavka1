@@ -25,6 +25,14 @@ import java.util.Map;
 public interface UserMessageService extends GenericService<UserMessage, UserMessageDao> {
 
     /**
+     * Creates new User message for given {@code user}.
+     *
+     * @param message parent message for which the new message will be created, cannot be null
+     * @param user user for who the new UserMessage will be created, cannot be null
+     */
+    UserMessage createUserMessage(Message message, User user);
+
+    /**
      * Returns a userMessage of given message. UserMessage stores attributes like
      * isRead, isStared
      *
@@ -275,6 +283,6 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @param user The admin user for whom the new <code>UserMessage</code> is to be created
      * @return the newly created (or existing if there was such) <code>UserMessage</code>
      */
-    public UserMessage getAdminUserMessage(Message message, User user);
+    UserMessage getAdminUserMessage(Message message, User user);
 
 }
