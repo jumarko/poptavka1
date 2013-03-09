@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
@@ -216,7 +217,7 @@ public class SupplierCreationPresenter
     }
 
     /**************************************************************************/
-    /* Business events handled by eventbus or RPC                             */
+    /* Business events                                                        */
     /**************************************************************************/
     private void registerSupplier() {
         UserRegistrationFormView accountInfo =
@@ -249,5 +250,16 @@ public class SupplierCreationPresenter
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
         LOGGER.fine(widget.getClass().getName());
         return valid && widget.isValid();
+    }
+
+    /**
+     * Perform some additional action after Address selector widget has loaded.
+     * In this case, disabled change monitoring for Address selector widget.
+     */
+    public void onNotifyAddressWidgetListeners() {
+        UserRegistrationFormView accountInfo =
+                (UserRegistrationFormView) view.getHolderPanel(FIRST_TAB_USER_REGISTRATION).getWidget();
+        AddressSelectorView addressWidget = (AddressSelectorView) accountInfo.getAddressHolder().getWidget();
+        addressWidget.setChangeMonitorsEnabled(false);
     }
 }

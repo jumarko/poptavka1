@@ -113,4 +113,10 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**************************************************************************/
     @Event(handlers = SupplierCreationHandler.class)
     void registerSupplier(FullSupplierDetail newSupplier);
+
+    /**************************************************************************/
+    /* Business events handled by Presenter.                                  */
+    /**************************************************************************/
+    @Event(handlers = SupplierCreationPresenter.class)
+    void notifyAddressWidgetListeners();
 }

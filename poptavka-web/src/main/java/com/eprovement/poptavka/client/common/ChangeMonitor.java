@@ -58,6 +58,8 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     @UiField Anchor revert;
     @UiField Label errorLabel;
     /** Class attributes. **/
+    private boolean enabled = true;
+    private boolean valid = true;
     private Validator validator = null;
     private ChangeDetail changeDetail;
     private Class<T> beanType;
@@ -86,17 +88,20 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /* Validation                                                             */
     /**************************************************************************/
     public void validate() {
+        valid = true;
         reset();
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
                 changeDetail.getField(), getValue(), Default.class);
         for (ConstraintViolation<T> violation : violations) {
+            valid = false;
             setValidationStyles(false, violation.getMessage());
         }
     }
 
     public boolean isValid() {
-        return errorLabel.getText().isEmpty();
+        validate();
+        return valid;
     }
 
     /**************************************************************************/
@@ -161,6 +166,10 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         setInputWidgetText(value);
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public void setChangeDetail(ChangeDetail detail) {
         changeDetail = detail;
         setChangedStyles(true);
@@ -170,6 +179,10 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /** Getters. **/
     public Object getValue() {
         return getInputWidgetText();
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public ChangeDetail getChangeDetail() {
@@ -227,8 +240,10 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
             @Override
             public void onValueChange(ValueChangeEvent<IListDetailObject> event) {
                 validate();
-                setChangedStyles(true);
-                DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getChangeMonitorWidget());
+                if (enabled) {
+                    setChangedStyles(true);
+                    DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getChangeMonitorWidget());
+                }
             }
         }, ValueChangeEvent.getType());
     }
@@ -238,14 +253,16 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
             @Override
             public void onChange(ChangeEvent event) {
                 validate();
-                setChangedStyles(true);
+                if (enabled) {
+                    setChangedStyles(true);
+                }
             }
         }, ChangeEvent.getType());
     }
 
     private void setChangedStyles(boolean isChange) {
         revert.setVisible(isChange);
-        if (isValid()) {
+        if (valid) {
             if (isChange) {
                 holder.getWidget().addStyleName(Storage.RSCS.common().changed());
             } else {

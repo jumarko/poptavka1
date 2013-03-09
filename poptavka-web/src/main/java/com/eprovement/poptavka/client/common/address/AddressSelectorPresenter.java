@@ -46,6 +46,8 @@ public class AddressSelectorPresenter
 
         void setChangeHandler(ChangeHandler changeHandler);
 
+        void setChangeMonitorsEnabled(boolean enabled);
+
         //Getters
         SuggestBox getCitySuggestBox();
 
