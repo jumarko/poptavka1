@@ -62,7 +62,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         implements SupplierDemandsModuleRPCService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierDemandsModuleRPCServiceImpl.class);
-
     //Services
     private GeneralService generalService;
     private UserMessageService userMessageService;
@@ -136,7 +135,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             @Qualifier("searchConverter") Converter<Search, SearchDefinition> searchConverter) {
         this.searchConverter = searchConverter;
     }
-
 
     //************************ SUPPLIER - My Demands **************************/
     /**
@@ -342,7 +340,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // TODO RELEASE ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
-            sod.setRating(offer.getDemand().getClient().getOveralRating());
+            if (offer.getDemand().getClient().getOveralRating() != null) {
+                sod.setRating(offer.getDemand().getClient().getOveralRating());
+            } else {
+                sod.setRating(0);
+            }
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
@@ -388,7 +390,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         supplierClosedDemandsSearch.addFilterEqual("supplier", supplier);
         supplierClosedDemandsSearch.addFilterEqual("state", offerCompleted);
         supplierClosedDemandsSearch.addFilterEqual("demand.status", DemandStatus.CLOSED);
-        supplierClosedDemandsSearch.addField("id",  Field.OP_COUNT);
+        supplierClosedDemandsSearch.addField("id", Field.OP_COUNT);
         supplierClosedDemandsSearch.setResultMode(Search.RESULT_SINGLE);
         return ((Long) generalService.searchUnique(supplierClosedDemandsSearch)).intValue();
     }
@@ -610,7 +612,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public SupplierOffersDetail getSupplierAssignedDemand(long assignedDemandID) throws RPCException,
-        ApplicationSecurityException {
+            ApplicationSecurityException {
         long supplierID = Storage.getSupplierId();
         Supplier supplier = generalService.find(Supplier.class, supplierID);
         OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
