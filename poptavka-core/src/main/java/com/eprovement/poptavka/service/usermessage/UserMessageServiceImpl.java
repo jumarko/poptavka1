@@ -264,4 +264,20 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public int getClientConversationsWithOfferCount(User user, Demand demand) {
         return (int) getDao().getClientConversationsWithOfferCount(user, demand);
     }
+    
+    /** {@inheritDoc} */
+    @Override
+    public UserMessage getAdminUserMessage(Message message, User user) {
+        UserMessage userMessage = getUserMessage(message, user);
+        if (userMessage != null) {
+            return userMessage;
+        }
+        userMessage = new UserMessage();
+        userMessage.setRead(false);
+        userMessage.setStarred(false);
+        userMessage.setMessage(message);
+        userMessage.setUser(user);
+        generalService.save(userMessage);        
+        return userMessage;
+    }
 }
