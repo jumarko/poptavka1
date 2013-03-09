@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
@@ -78,6 +79,7 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     //history of changes
     private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
+    private boolean selectedFromSuggestBox = false;
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -100,6 +102,7 @@ public class AddressSelectorPresenter
         view.getCitySuggestBox().addDomHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
+                selectedFromSuggestBox = false;
                 MySuggestDisplay display = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
                 display.setLoadingPopupPosition(view.getCitySuggestBox());
                 //show actual suggest list and remove error style if any
@@ -113,13 +116,12 @@ public class AddressSelectorPresenter
         view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
             @Override
             public void onSelection(SelectionEvent<Suggestion> event) {
-                //set locality after selecting item from suggest list popup
-                if (!view.getCitySuggestBox().getText().isEmpty()) {
-                    LocalitySuggestionDetail suggestion = (LocalitySuggestionDetail) event.getSelectedItem();
-                    view.setState(suggestion.getStateName());
-                    view.setCity(suggestion.getCityName());
-                    view.setCityId(suggestion.getCityId());
-                }
+                selectedFromSuggestBox = true;
+                LocalitySuggestionDetail suggestion = (LocalitySuggestionDetail) event.getSelectedItem();
+                view.setState(suggestion.getStateName());
+                view.setCity(suggestion.getCityName());
+                view.setCityId(suggestion.getCityId());
+                fireEvent(view.getCityMonitor());
             }
         });
     }
@@ -128,17 +130,22 @@ public class AddressSelectorPresenter
         view.getCityMonitor().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
+                view.getCityMonitor().setValidationStyles(selectedFromSuggestBox,
+                        selectedFromSuggestBox ? "" : Storage.MSGS.addressSelectCityFromSuggestedList());
+
+                //Reset styles not to disturb user with validation messages each time somehting changes
                 view.getZipcodeMonitor().setValue("");
                 view.getStreetMonitor().setValue("");
-                fireEvent(view.getZipcodeMonitor());
-                fireEvent(view.getStreetMonitor());
+                view.getZipcodeMonitor().reset();
+                view.getStreetMonitor().reset();
             }
         });
         view.getZipcodeMonitor().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
+                //Reset styles not to disturb user with validation messages each time somehting changes
+                view.getStreetMonitor().reset();
                 view.getStreetMonitor().setValue("");
-                fireEvent(view.getStreetMonitor());
             }
         });
         view.setChangeHandler(new ChangeHandler() {

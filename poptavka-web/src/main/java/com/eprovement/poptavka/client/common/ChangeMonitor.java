@@ -260,7 +260,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         }, ChangeEvent.getType());
     }
 
-    private void setChangedStyles(boolean isChange) {
+    public void setChangedStyles(boolean isChange) {
         revert.setVisible(isChange);
         if (valid) {
             if (isChange) {
@@ -271,7 +271,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         }
     }
 
-    private void setValidationStyles(boolean isValid, String validationMessage) {
+    public void setValidationStyles(boolean isValid, String validationMessage) {
         errorLabel.setText(validationMessage);
         if (isValid) {
             holder.getWidget().removeStyleName(Storage.RSCS.common().errorField());

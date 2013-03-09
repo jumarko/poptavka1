@@ -382,6 +382,7 @@ public interface LocalizableMessages extends Messages {
     String errorTipTryWaiting();
 
     /** AddressSelectorView.ui. **/
+    String addressSelectCityFromSuggestedList();
     String addressCity();
     String addressCountry();
     String addressDistrict();
