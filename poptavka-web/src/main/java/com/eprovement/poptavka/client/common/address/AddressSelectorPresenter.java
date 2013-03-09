@@ -1,16 +1,24 @@
 package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -76,7 +84,8 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
-        addCityHandlers();
+        addCitySuggestBoxHandler();
+        addMonitorsHandlers();
     }
 
     /**************************************************************************/
@@ -86,7 +95,36 @@ public class AddressSelectorPresenter
         return ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
     }
 
-    private void addCityHandlers() {
+    private void addCitySuggestBoxHandler() {
+        /** FOCUS. **/
+        view.getCitySuggestBox().addDomHandler(new FocusHandler() {
+            @Override
+            public void onFocus(FocusEvent event) {
+                MySuggestDisplay display = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
+                display.setLoadingPopupPosition(view.getCitySuggestBox());
+                //show actual suggest list and remove error style if any
+                if (view.getCitySuggestBox().getText().isEmpty()) {
+                    display.showShortCitiesInfo(Constants.MIN_CHARS_TO_SEARCH);
+                }
+                view.getCitySuggestBox().showSuggestionList();
+            }
+        }, FocusEvent.getType());
+        /** SELECTION. **/
+        view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+            @Override
+            public void onSelection(SelectionEvent<Suggestion> event) {
+                //set locality after selecting item from suggest list popup
+                if (!view.getCitySuggestBox().getText().isEmpty()) {
+                    LocalitySuggestionDetail suggestion = (LocalitySuggestionDetail) event.getSelectedItem();
+                    view.setState(suggestion.getStateName());
+                    view.setCity(suggestion.getCityName());
+                    view.setCityId(suggestion.getCityId());
+                }
+            }
+        });
+    }
+
+    private void addMonitorsHandlers() {
         view.getCityMonitor().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
