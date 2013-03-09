@@ -64,4 +64,7 @@ public interface CommonResource extends CssResource {
 
     @ClassName("button-left-large")
     String buttonLeftLarge();
+
+    @ClassName("selected-items-widget")
+    String selectedItemsWidget();
 }

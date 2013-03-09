@@ -41,19 +41,27 @@ import java.util.List;
  *
  * @author praso, Martin Slavkovsky
  */
-public class HomeDemandsView extends OverflowComposite
-        implements ReverseViewInterface<HomeDemandsPresenter>, HomeDemandsPresenter.HomeDemandsViewInterface {
+public class HomeDemandsView extends OverflowComposite implements ReverseViewInterface<HomeDemandsPresenter>,
+        HomeDemandsPresenter.HomeDemandsViewInterface {
 
-    /**************************************************************************/
-    /* UiBinder                                                               */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /* UiBinder */
+    /**
+     * ***********************************************************************
+     */
     private static HomeDemandsViewUiBinder uiBinder = GWT.create(HomeDemandsViewUiBinder.class);
 
     interface HomeDemandsViewUiBinder extends UiBinder<Widget, HomeDemandsView> {
     }
-    /**************************************************************************/
-    /* Home Supplier presenter                                                */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /* Home Supplier presenter */
+    /**
+     * ***********************************************************************
+     */
     private HomeDemandsPresenter homeDemandsPresenter;
 
     @Override
@@ -65,34 +73,47 @@ public class HomeDemandsView extends OverflowComposite
     public HomeDemandsPresenter getPresenter() {
         return homeDemandsPresenter;
     }
-    /**************************************************************************/
-    /* ATTRIBUTES                                                             */
-    /**************************************************************************/
-    //Table constants
+    /**
+     * ***********************************************************************
+     */
+    /* ATTRIBUTES */
+    /**
+     * ***********************************************************************
+     */
+    // Table constants
     private static final String LOCALITY_COL_WIDTH = "150px";
-    //Table definitions
-    @UiField(provided = true) UniversalAsyncGrid<FullDemandDetail> dataGrid;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "createdDate", "title", "locality", "endDate"
-            });
-    //Pager
-    @UiField(provided = true) UniversalPagerWidget pager;
-    //CellTree
-    @UiField(provided = true) CellTree cellTree;
-    //Using category detail key provider in selection model, allow us to have displayed
-    //alwas only one node. The other are automaticaly closed.
+    // Table definitions
+    @UiField(provided = true)
+    UniversalAsyncGrid<FullDemandDetail> dataGrid;
+    private List<String> gridColumns = Arrays.asList(new String[]{"createdDate", "title", "locality", "endDate"});
+    // Pager
+    @UiField(provided = true)
+    UniversalPagerWidget pager;
+    // CellTree
+    @UiField(provided = true)
+    CellTree cellTree;
+    // Using category detail key provider in selection model, allow us to have
+    // displayed
+    // alwas only one node. The other are automaticaly closed.
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     // Others
-    @UiField Label bannerLabel, filterLabel;
-    @UiField DecoratorPanel filterLabelPanel;
-    @UiField DemandDetailView demandDetail;
-    @UiField Button offerBtn;
+    @UiField
+    Label bannerLabel, filterLabel;
+    @UiField
+    DecoratorPanel filterLabelPanel;
+    @UiField
+    DemandDetailView demandDetail;
+    @UiField
+    Button offerBtn;
 
-    /**************************************************************************/
-    /* INITIALIZATION                                                         */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /* INITIALIZATION */
+    /**
+     * ***********************************************************************
+     */
     @Override
     public void createView() {
         initTableAndPager();
@@ -101,21 +122,19 @@ public class HomeDemandsView extends OverflowComposite
 
         bannerLabel.setVisible(true);
         demandDetail.setVisible(false);
-        //set offerBtn1 enabled to false as default
+        // set offerBtn1 enabled to false as default
         offerBtn.setEnabled(false);
 
         StyleResource.INSTANCE.layout().ensureInjected();
     }
 
     public void initCellTree() {
-        //Workaround for issue: CellTree disappeared when clicking but outside tree nodes
+        // Workaround for issue: CellTree disappeared when clicking but outside
+        // tree nodes
         CellTree.Resources resource = GWT.create(CustomCellTree.class);
-        cellTree = new CellTree(new CategoryTreeViewModel(
-                selectionCategoryModel,
-                homeDemandsPresenter.getCategoryService(),
-                homeDemandsPresenter.getEventBus(),
-                Constants.WITHOUT_CHECK_BOXES,
-                CategoryCell.DISPLAY_COUNT_OF_DEMANDS,
+        cellTree = new CellTree(new CategoryTreeViewModel(selectionCategoryModel,
+                homeDemandsPresenter.getCategoryService(), homeDemandsPresenter.getEventBus(),
+                Constants.WITHOUT_CHECK_BOXES, CategoryCell.DISPLAY_COUNT_OF_DEMANDS,
                 homeDemandsPresenter.getCategoryLoadingHandler()), null, resource);
         cellTree.setAnimationEnabled(true);
     }
@@ -145,48 +164,69 @@ public class HomeDemandsView extends OverflowComposite
     private void initGridColumns() {
 
         // Date of creation
-        /**************************************************************************/
-                true, Constants.COL_WIDTH_DATE,
-                    @Override
-                    }
-                });
+        /**
+         * ***********************************************************************
+         */
+        dataGrid.addColumn(new CreatedDateCell(), Storage.MSGS.columnCreatedDate(), true, Constants.COL_WIDTH_DATE,
+            new UniversalAsyncGrid.GetValue<Date>() {
+                @Override
+                public Date getValue(Object object) {
+                    return ((FullDemandDetail) object).getCreated();
+                }
+            }
+        );
 
         // Demand Info
-        /**************************************************************************/
-                true, Constants.COL_WIDTH_TITLE,
-                new UniversalAsyncGrid.GetValue<String>() {
-                    @Override
-                    public String getValue(Object object) {
-                        return ((FullDemandDetail) object).getTitle();
-                    }
-                });
+        /**
+         * ***********************************************************************
+         */
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDemandTitle(), true, Constants.COL_WIDTH_TITLE,
+            new UniversalAsyncGrid.GetValue<String>() {
+                @Override
+                public String getValue(Object object) {
+                    return ((FullDemandDetail) object).getTitle();
+                }
+            }
+        );
 
         // Locality
-        /**************************************************************************/
-                new UniversalAsyncGrid.GetValue<String>() {
-                    @Override
-                    public String getValue(Object object) {
-                        StringBuilder str = new StringBuilder();
-                        for (LocalityDetail loc : ((FullDemandDetail) object).getLocalities()) {
-                            str.append(loc.getName());
-                            str.append(",\n");
-                        }
-                        if (!str.toString().isEmpty()) {
-                            str.delete(str.length() - 2, str.length());
-                        }
-                        return str.toString();
+        /**
+         * ***********************************************************************
+         */
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnLocality(), false, LOCALITY_COL_WIDTH,
+            new UniversalAsyncGrid.GetValue<String>() {
+                @Override
+                public String getValue(Object object) {
+                    StringBuilder str = new StringBuilder();
+                    for (LocalityDetail loc : ((FullDemandDetail) object).getLocalities()) {
+                        str.append(loc.getName());
+                        str.append(",\n");
                     }
-                });
+                    if (!str.toString().isEmpty()) {
+                        str.delete(str.length() - 2, str.length());
+                    }
+                    return str.toString();
+                }
+            }
+        );
 
         // Urgence
-        /**************************************************************************/
+        /**
+         * ***********************************************************************
+         */
         dataGrid.addUrgentColumn();
     }
 
-    /**************************************************************************/
-    /* GETTERS                                                                */
-    /**************************************************************************/
-    /** CellTree. **/
+    /**
+     * ***********************************************************************
+     */
+    /* GETTERS */
+    /**
+     * ***********************************************************************
+     */
+    /**
+     * CellTree. *
+     */
     @Override
     public CellTree getCellTree() {
         return cellTree;
@@ -197,7 +237,9 @@ public class HomeDemandsView extends OverflowComposite
         return selectionCategoryModel;
     }
 
-    /** Table. **/
+    /**
+     * Table. *
+     */
     @Override
     public UniversalAsyncGrid<FullDemandDetail> getDataGrid() {
         return dataGrid;
@@ -208,7 +250,9 @@ public class HomeDemandsView extends OverflowComposite
         return pager.getPager();
     }
 
-    /** Filter. **/
+    /**
+     * Filter. *
+     */
     @Override
     public DecoratorPanel getFilterLabelPanel() {
         return filterLabelPanel;
@@ -219,21 +263,29 @@ public class HomeDemandsView extends OverflowComposite
         return filterLabel;
     }
 
-    /** Buttons. **/
+    /**
+     * Buttons. *
+     */
     @Override
     public Button getOfferBtn() {
         return offerBtn;
     }
 
-    /** Other. **/
+    /**
+     * Other. *
+     */
     @Override
     public Widget getWidgetView() {
         return this;
     }
 
-    /**************************************************************************/
-    /* SETTERS                                                                */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /* SETTERS */
+    /**
+     * ***********************************************************************
+     */
     @Override
     public void displayDemandDetail(FullDemandDetail fullDemandDetail) {
         bannerLabel.setVisible(false);

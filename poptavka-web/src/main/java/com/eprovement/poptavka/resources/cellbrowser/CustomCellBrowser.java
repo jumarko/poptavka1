@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.resources.cellbrowser;
 
+import com.google.gwt.resources.client.CssResource.NotStrict;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.resources.client.ImageResource.RepeatStyle;
@@ -23,7 +24,7 @@ public interface CustomCellBrowser extends CellBrowser.Resources {
     /**
      * The background used for open items.
      */
-    @Source("cellTreeSelectedBackground.png")
+    @Source("cellBrowserSelectedBackground.png")
     @ImageOptions(repeatStyle = RepeatStyle.Horizontal, flipRtl = true)
     ImageResource cellBrowserOpenBackground();
 
@@ -31,7 +32,7 @@ public interface CustomCellBrowser extends CellBrowser.Resources {
      * The background used for selected items.
      */
     @Override
-    @Source("cellTreeSelectedBackground.png")
+    @Source("cellBrowserSelectedBackground.png")
     @ImageOptions(repeatStyle = RepeatStyle.Horizontal, flipRtl = true)
     ImageResource cellBrowserSelectedBackground();
 
@@ -39,6 +40,7 @@ public interface CustomCellBrowser extends CellBrowser.Resources {
      * The styles used in this widget.
      */
     @Override
+    @NotStrict
     @Source("customCellBrowser.css")
     CellBrowser.Style cellBrowserStyle();
 }

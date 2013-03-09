@@ -176,10 +176,23 @@
                         <ui:msg key="clientCreationInfoLabel4">Select your Locality.</ui:msg>
                     </g:Label>
                 </g:north>
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                </g:north>
                 <g:center>
-                    <g:ScrollPanel>
+                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
+                        <g:east size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:east>
+                        <g:west size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:west>
+                        <g:center>
+                            <g:ScrollPanel>
                         <g:SimplePanel ui:field="contentHolder4" styleName='formContainer' />
                     </g:ScrollPanel>
+                        </g:center>
+                    </g:DockLayoutPanel>                    
                 </g:center>
                 <g:south size="95">
                     <g:HTMLPanel styleName='formFooter'>

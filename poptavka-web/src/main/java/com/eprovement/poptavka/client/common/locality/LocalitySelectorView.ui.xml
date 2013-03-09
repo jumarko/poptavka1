@@ -6,18 +6,34 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
 
-    <g:VerticalPanel>
-        <g:HorizontalPanel>
-            <g:SimplePanel ui:field="cellBrowserHolder"/>
-            <g:HTML ui:field='loader' visible='false' styleName='{res.common.smallLoader}' />
-        </g:HorizontalPanel>
-        <g:HorizontalPanel>
-            <g:VerticalPanel>
-                <g:Label>
-                    <ui:msg key="commonSelected">Selected</ui:msg>:
-                </g:Label>
-                <c:CellList ui:field="cellList"/>
-            </g:VerticalPanel>
-        </g:HorizontalPanel>
-    </g:VerticalPanel>
+    <g:DockLayoutPanel unit="PX" styleName='well well-container'>
+        <g:north size="15">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:north>
+        <g:west size="15">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:west>
+        <g:center>
+            <g:HTMLPanel styleName='pull-left'>
+                <g:SimplePanel ui:field="cellBrowserHolder"/>
+                <g:HTML ui:field='loader' visible='false' styleName='{res.common.smallLoader}' />
+            </g:HTMLPanel>
+        </g:center>
+        <g:south size="40">
+            <g:HTMLPanel styleName='{res.common.selectedItemsWidget}'>
+                <g:HTMLPanel styleName="selected-Label">
+                    <ui:msg key="commonSelected">Selected</ui:msg>
+                </g:HTMLPanel>
+                <g:ScrollPanel styleName='scroll-Container'>
+                    <c:CellList ui:field="cellList"/>
+                </g:ScrollPanel>
+            </g:HTMLPanel>
+        </g:south>
+        <g:east size="15">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:east>
+        <g:south size="10">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:south>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

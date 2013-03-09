@@ -1,5 +1,6 @@
 .cellBrowserWidget {
-
+    width: 100%;
+    height: 100%;
 }
 
 .cellBrowserColumn {
@@ -16,6 +17,7 @@
 }
 
 .cellBrowserEvenItem, .cellBrowserOddItem {
+    background: url(images/cellBrowserBackground.gif) repeat-x top left;
     border-top: 1px solid #d2c9a9;
     color: #222222;
     padding: 8px;
@@ -47,4 +49,13 @@
 
 .cellBrowserOpenItem td, .cellBrowserSelectedItem td {
     color: #f8f4e4;
+}
+
+.cellBrowserWidget .gwt-Anchor {
+    color: #195800;
+    margin: 0 5px;
+}
+
+.cellBrowserWidget td:first-child .gwt-Anchor {
+    margin-left: 10px;
 }

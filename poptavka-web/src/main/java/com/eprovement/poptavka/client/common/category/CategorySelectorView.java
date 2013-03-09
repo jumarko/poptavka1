@@ -79,7 +79,6 @@ public class CategorySelectorView extends Composite
                 categorySelectorPresenter.getEventBus(),
                 checkboxes, displayCountsOfWhat,
                 null), null, resource);
-        cellBrowser.setSize("978px", "100%");
         cellBrowser.setAnimationEnabled(true);
         cellBrowserHolder.setWidget(cellBrowser);
     }
@@ -126,13 +125,11 @@ class ItemCell extends AbstractCell<CategoryDetail> {
         }
 
         // Add category name.
-        sb.appendHtmlConstant("<table><tr><td style='font-size:95%;'>");
+        sb.appendHtmlConstant("<div class=\"selected-Item\">");
         sb.appendEscaped(value.getName());
-        sb.appendHtmlConstant("</td>");
         // Add image for remove.
-        sb.appendHtmlConstant("<td>");
         sb.appendHtmlConstant(AbstractImagePrototype.create(
                 StyleResource.INSTANCE.images().errorIcon()).getHTML());
-        sb.appendHtmlConstant("</td></tr></table>");
+        sb.appendHtmlConstant("</div>");
     }
 }
