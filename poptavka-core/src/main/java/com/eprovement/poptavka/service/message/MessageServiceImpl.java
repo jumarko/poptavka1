@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.googlecode.genericdao.search.Search;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -317,12 +318,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
                     || (role.getType() == MessageUserRoleType.CC)
                     || (role.getType() == MessageUserRoleType.BCC)) {
                 // we got one of the recipients of the message
-                UserMessage userMessage = new UserMessage();
-                userMessage.setRead(false);
-                userMessage.setStarred(false);
-                userMessage.setMessage(message);
-                userMessage.setUser(role.getUser());
-                generalService.save(userMessage);
+                createUserMessage(message, role.getUser());
             }
         }
         message.setMessageState(MessageState.SENT);
@@ -340,6 +336,17 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
             parent = update(parent);
         }
         update(message);
+    }
+
+    public void createUserMessage(Message message, User user) {
+        Validate.notNull(message, "message cannot be null!");
+        Validate.notNull(user, "user cannot be null!");
+        final UserMessage userMessage = new UserMessage();
+        userMessage.setRead(false);
+        userMessage.setStarred(false);
+        userMessage.setMessage(message);
+        userMessage.setUser(user);
+        generalService.save(userMessage);
     }
 
     /**
