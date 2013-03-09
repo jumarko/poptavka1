@@ -71,15 +71,13 @@
     display: inline;
 }
 
-.user {
-/*    height: 800px;
+.user { /*    height: 800px;
     width: 1300px*/
     height: 100%;
     width: 100%;
 }
 
-.user_content {
-/*    height: 500px;
+.user_content { /*    height: 500px;
     width: 1050px;*/
     height: 100%;
     width: 100%;
@@ -97,4 +95,101 @@
 
 .changed {
     background-color: #00FF00 !important;
+}
+
+/* Common buttons */
+.button-left-small {
+    background: url(images/button-left-small.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 43px;
+    width: 101px;
+    padding: 0 0 4px 10px;
+    margin-right: 10px;
+}
+
+.button-left-medium {
+    background: url(images/button-left-medium.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 166px;
+}
+
+.button-left-large {
+    background: url(images/button-left-large.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 236px;
+    padding: 0 0 0 23px;
+}
+
+.button-right-small {
+    background: url(images/button-right-small.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 43px;
+    width: 101px;
+    padding: 0 10px 4px 0;
+}
+
+.button-right-medium {
+    background: url(images/button-right-medium.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 166px;
+}
+
+.button-right-large {
+    background: url(images/button-right-large.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: lighter;
+    height: 50px;
+    width: 236px;
+    padding: 0 23px 0 0;
+}
+
+/* CellBrowser selected item styles  */
+
+.selected-items-widget .selected-Label {
+    float: left;
+    color: #237E00;
+    font-size: 14px;
+    line-height: 34px;
+    padding: 0;
+    margin: 0 15px 0 0;
+}
+
+.selected-items-widget .scroll-Container {
+    height: 36px;
+    width: 92%;
+}
+
+.selected-items-widget .selected-Item {
+    background: #F0EBD8;        
+    color: #706C5C;
+    float: left;
+    margin: 3px;
+    padding: 6px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.selected-items-widget .selected-Item img {
+    margin-left: 5px;    
 }

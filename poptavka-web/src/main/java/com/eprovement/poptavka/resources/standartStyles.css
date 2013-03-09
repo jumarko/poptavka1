@@ -383,9 +383,9 @@ a,a:visited,a:hover {
 }
 
 .gwt-MenuBarPopup {
-	margin: 0px 0px 0px 3px;
-	min-width: 30px;
-	z-index:10500;
+    margin: 0px 0px 0px 3px;
+    min-width: 30px;
+    z-index:10500;
 }
 
 .gwt-MenuBarPopup .menuPopupTopCenter {
@@ -1357,8 +1357,7 @@ td.datePickerMonth {
 }
 
 .gwt-SplitLayoutPanel-HDragger {
-    background: #d0e4f6 url(images/splitPanelThumb.png) center center
-        no-repeat;
+    background: transparent;
     cursor: col-resize;
 }
 

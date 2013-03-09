@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.common.locality;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.resources.cellbrowser.CustomCellBrowser;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell.Context;
@@ -69,12 +70,12 @@ public class LocalitySelectorView extends Composite
 
     @Override
     public void createCellBrowser(int checkboxes, int displayCountsOfWhat) {
+        CellBrowser.Resources resource = GWT.create(CustomCellBrowser.class);
         CellBrowser cellBrowser = new CellBrowser(new LocalityTreeViewModel(
                 cellBrowserSelectionModel,
                 localitySelectorPresenter.getLocalityService(),
                 localitySelectorPresenter.getEventBus(),
-                checkboxes, displayCountsOfWhat), null);
-        cellBrowser.setSize("950px", "350px");
+                checkboxes, displayCountsOfWhat), null, resource);
         cellBrowser.setAnimationEnabled(true);
         cellBrowserHolder.setWidget(cellBrowser);
     }
@@ -121,13 +122,11 @@ class ItemCell extends AbstractCell<LocalityDetail> {
         }
 
         // Add category name.
-        sb.appendHtmlConstant("<table><tr><td style='font-size:95%;'>");
+        sb.appendHtmlConstant("<div class=\"selected-Item\">");
         sb.appendEscaped(value.getName());
-        sb.appendHtmlConstant("</td>");
         // Add image for remove.
-        sb.appendHtmlConstant("<td>");
         sb.appendHtmlConstant(AbstractImagePrototype.create(
                 StyleResource.INSTANCE.images().errorIcon()).getHTML());
-        sb.appendHtmlConstant("</td></tr></table>");
+        sb.appendHtmlConstant("</div>");
     }
 }

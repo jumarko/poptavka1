@@ -3,9 +3,9 @@ package com.eprovement.poptavka.client.common.category;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.resources.cellbrowser.CustomCellBrowser;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -72,13 +72,13 @@ public class CategorySelectorView extends Composite
 
     @Override
     public void createCellBrowser(int checkboxes, int displayCountsOfWhat) {
+        CellBrowser.Resources resource = GWT.create(CustomCellBrowser.class);
         CellBrowser cellBrowser = new CellBrowser(new CategoryTreeViewModel(
                 cellBrowserSelectionModel,
                 categorySelectorPresenter.getCategoryService(),
                 categorySelectorPresenter.getEventBus(),
                 checkboxes, displayCountsOfWhat,
-                null), null);
-        cellBrowser.setSize("950px", "350px");
+                null), null, resource);
         cellBrowser.setAnimationEnabled(true);
         cellBrowserHolder.setWidget(cellBrowser);
     }
@@ -125,13 +125,11 @@ class ItemCell extends AbstractCell<CategoryDetail> {
         }
 
         // Add category name.
-        sb.appendHtmlConstant("<table><tr><td style='font-size:95%;'>");
+        sb.appendHtmlConstant("<div class=\"selected-Item\">");
         sb.appendEscaped(value.getName());
-        sb.appendHtmlConstant("</td>");
         // Add image for remove.
-        sb.appendHtmlConstant("<td>");
         sb.appendHtmlConstant(AbstractImagePrototype.create(
                 StyleResource.INSTANCE.images().errorIcon()).getHTML());
-        sb.appendHtmlConstant("</td></tr></table>");
+        sb.appendHtmlConstant("</div>");
     }
 }

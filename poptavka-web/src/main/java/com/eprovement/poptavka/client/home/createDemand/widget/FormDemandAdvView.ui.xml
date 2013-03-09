@@ -1,63 +1,59 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
     <ui:style>
-        .important {
-            font-weight: bold;
+        .form {
+        padding-top: 20px;
         }
     </ui:style>
 
-    <g:Grid>
-        <g:row>
-            <g:customCell>
-                <g:HTML><ui:msg key="formMaxOffers">Max offers Count</ui:msg></g:HTML>
-            </g:customCell>
-            <g:customCell>
-                <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
-            </g:customCell>
-        </g:row>
-        <!--Temporary disabled-->
-<!--        <g:row>
-            <g:customCell>
-                <g:HTML><ui:msg key="formDemandAdvMinRating">Minimal rating</ui:msg></g:HTML>
-            </g:customCell>
-            <g:customCell>
-                <g:IntegerBox ui:field="minRatingBox">0</g:IntegerBox>
-            </g:customCell>
-        </g:row>-->
-<!--        <g:row>
-            <g:customCell>
-                <g:HTML><ui:msg key="formDemandAdvExcludeSuppliers">Exclude supplier</ui:msg></g:HTML>
-            </g:customCell>
-            <g:customCell>
-                <g:SuggestBox/>
-            </g:customCell>
-            <g:customCell>
-                <g:Button ui:field="excludeBtn"><ui:msg key="formDemandAdvExcludeBtn">Exclude him</ui:msg></g:Button>
-            </g:customCell>
-        </g:row>-->
-<!--        <g:row>
-            <g:customCell>
-                <g:Label width="70"><ui:msg key="formDemandAdvExcludedList">List of excluded suppliers</ui:msg></g:Label>
-            </g:customCell>
-            <g:customCell>
-                <g:ListBox ui:field="excludedList" visibleItemCount="5" width="148px"/>
-            </g:customCell>
-        </g:row>-->
-        <g:row>
-            <g:customCell>
-                <g:HTML><ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg></g:HTML>
-            </g:customCell>
-            <g:customCell>
-                <g:VerticalPanel>
-                    <g:RadioButton name="demandType" ui:field="classicRadio" checked="true" >
-                        <ui:msg key="formDemandAdvDemandClassic">Normal Demand</ui:msg>
-                    </g:RadioButton>
-                    <g:RadioButton name="demandType" ui:field="attractiveRadio" >
-                        <ui:msg key="formDemandAdvDemandAttractive">Attractive Demand</ui:msg>
-                    </g:RadioButton>
-                </g:VerticalPanel>
-            </g:customCell>
-        </g:row>
-    </g:Grid>
+    <b:FluidContainer>
+        <b:FluidRow>
+            <b:Column size="12">
+                <b:WellForm addStyleNames='{style.form}'>
+                    <b:FluidRow>
+                        <b:Column size="6">
+                            <b:FluidRow>
+                                <b:Column size="6">
+                                    <g:Label>
+                                        <ui:msg key="formMaxOffers">Max offers Count</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="6">
+                                    <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>
+                        <b:Column size="6">
+                            <b:FluidRow>
+                                <b:Column size="4">
+                                    <g:Label>
+                                        <ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="4">
+                                    <g:RadioButton name="demandType" ui:field="classicRadio" checked="true">
+                                        <ui:msg key="formDemandAdvDemandClassic">Normal Demand</ui:msg>
+                                    </g:RadioButton>
+                                </b:Column>
+                                <b:Column size="4">
+                                    <g:RadioButton name="demandType" ui:field="attractiveRadio">
+                                        <ui:msg key="formDemandAdvDemandAttractive">Attractive Demand</ui:msg>
+                                    </g:RadioButton>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
+    <!--Temporary disabled -->
+    <!-- <g:row> <g:customCell> <g:HTML><ui:msg key="formDemandAdvMinRating">Minimal rating</ui:msg></g:HTML> </g:customCell>
+        <g:customCell> <g:IntegerBox ui:field="minRatingBox">0</g:IntegerBox> </g:customCell> </g:row> -->
+    <!-- <g:row> <g:customCell> <g:HTML><ui:msg key="formDemandAdvExcludeSuppliers">Exclude supplier</ui:msg></g:HTML> </g:customCell>
+        <g:customCell> <g:SuggestBox/> </g:customCell> <g:customCell> <g:Button ui:field="excludeBtn"><ui:msg key="formDemandAdvExcludeBtn">Exclude
+        him</ui:msg></g:Button> </g:customCell> </g:row> -->
+    <!-- <g:row> <g:customCell> <g:Label width="70"><ui:msg key="formDemandAdvExcludedList">List of excluded suppliers</ui:msg></g:Label>
+        </g:customCell> <g:customCell> <g:ListBox ui:field="excludedList" visibleItemCount="5" width="148px"/> </g:customCell> </g:row> -->
 </ui:UiBinder>

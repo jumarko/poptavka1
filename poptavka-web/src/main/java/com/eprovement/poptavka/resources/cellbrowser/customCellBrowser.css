@@ -1,0 +1,61 @@
+.cellBrowserWidget {
+    width: 100%;
+    height: 100%;
+}
+
+.cellBrowserColumn {
+    background: #f8f4e4;
+    border: 1px solid #d2c9a9;
+    font-size: 12px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.cellBrowserFirstColumn {
+
+}
+
+.cellBrowserEvenItem, .cellBrowserOddItem {
+    background: url(images/cellBrowserBackground.gif) repeat-x top left;
+    border-top: 1px solid #d2c9a9;
+    color: #222222;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.cellBrowserEvenItem:first-child {
+    border-top: none;
+}
+
+.cellBrowserKeyboardSelectedItem {
+}
+
+@sprite .cellBrowserSelectedItem {
+    gwt-image: 'cellBrowserSelectedBackground';
+    background-color: #35a909;
+    color: #d2c9a9;
+    height: auto;
+    overflow: hidden;
+}
+
+@sprite .cellBrowserOpenItem {
+    gwt-image: 'cellBrowserOpenBackground';
+    background-color: #35a909;
+    color: #d2c9a9;
+    height: auto;
+    overflow: hidden;
+}
+
+.cellBrowserOpenItem td, .cellBrowserSelectedItem td {
+    color: #f8f4e4;
+}
+
+.cellBrowserWidget .gwt-Anchor {
+    color: #195800;
+    margin: 0 5px;
+}
+
+.cellBrowserWidget td:first-child .gwt-Anchor {
+    margin-left: 10px;
+}

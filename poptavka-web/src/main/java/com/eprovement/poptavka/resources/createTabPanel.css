@@ -1,40 +1,191 @@
 @CHARSET "UTF-8";
 
 .createTabPanel {
-	height: 100%;
+    height: 100%;
+    width: 1200px;
 }
 
-.createTabPanel .gwt-TabLayoutPanelTab-selected .gwt-TabLayoutPanelTabInner div {
-	background: url(images/create-tab-hover.png) no-repeat top right;
-	cursor: pointer;
+.createTabPanel .infoLabel1 {
+    color: #6F6B59;
+    font-size: 36px;
+    line-height: 115px;
+    padding-top: 25px;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.createTabPanel .infoLabel2 {
+    color: #6F6B59;
+    font-size: 18px;
+    font-weight: lighter;
+    line-height: 30px;
+    padding: 23px 30px 20px;
+}
+
+.createTabPanel .buttonsBorderRow {
+    background: url(images/buttons-border.gif) repeat-y 562px;
+    height: 106px;
+    padding-top: 45px;
+    margin-top: 45px;
+}
+
+.createTabPanel .buttonsBorderRow .span3:first-child {
+    margin-left: 333px;
+}
+
+.createTabPanel .buttonsBorderRow .span4:first-child {
+    margin-left: 245px;
+}
+
+.createTabPanel .formHeader {
+    background: #e2ddca;
+    height: 20px;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+
+.createTabPanel .formContainer {
+    background: #e2ddca;
+}
+
+.createTabPanel .formFooter {
+    background: #e2ddca;
+    height: 65px;
+    padding: 15px 40px 0;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    padding: 15px 40px 0;
+}
+
+.createTabPanel .formFooter .gwt-Label {
+    width: 50%;
+    color: #6f6b59;
+    padding: 15px 0 0;
+    float: left;
+}
+
+.createTabPanel .formFooter .buttonsContainer {
+    width: 218px;
+    float: right;
+}
+
+.createTabPanel .formFooter .buttonsContainer button {
+    float: right;
+}
+
+.createTabPanel .well {
+    background: #ffffff;
+    border: 1px solid #d2cdbb;
+    border-top: none;
+    border-bottom: 1px solid #aca799;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    padding: 0 0 8px;
+}
+
+.createTabPanel .well-container {
+    height: 99%;
+    margin: 0;
+    padding: 0;
+}
+
+.createTabPanel .well-container input[type="checkbox"] {
+    margin: 1px 4px 0 0;
+}
+
+.createTabPanel .well h4 {
+    margin: 0 0 24px;
+    height: 53px;
+    line-height: 53px;
+    padding: 0 25px;
+    background: url(images/header.gif) repeat-x left top;
+    color: #6f6b59;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+
+.createTabPanel .well .gwt-Label {
+    padding: 0 0 0 25px;
+    color: #237e00;
+    font-size: 14px;
+    line-height: 40px;
+}
+
+.createTabPanel .well input[type="text"],.createTabPanel .well input[type="password"],.createTabPanel .well textarea
+    {
+    width: 92%;
+    max-width: 92%;
+    background: #f8f4e4;
+    border: 1px solid #d2c9a9;
+    height: 40px;
+}
+
+.createTabPanel .gwt-TabLayoutPanelTab-selected .customHeader {
+    background: url(images/create-tab-arrow-hover.png) no-repeat top right;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: normal;
 }
 
 .createTabPanel .gwt-TabLayoutPanelContentContainer {
-	background: #ffffff;
-	border: none;
-	border-radius: 0 0 5px 5px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #d4d4d4;
 }
 
 .createTabPanel .gwt-TabLayoutPanelTabs {
-	width: 975px;
-	height: 40px;
-	background: url(images/header.gif) repeat-x top left !important;
-	border-radius: 5px 5px 0 0; 
+    width: 975px;
+    height: 59px;
+    border-radius: 5px 5px 0 0;
 }
 
-.createTabPanel .gwt-TabLayoutPanelTab {
-	background: url(images/create-tab-arrow.png) no-repeat top right;
-	position: relative;
-	color: #ffffff;	
-	height: 39px;
-	line-height: 39px;
-	text-shadow: 1px 1px 1px #cb6300;
-	text-align: center;
-	font-weight: bold;
-	margin-right: -30px;
-	width: 220px;
-}
-.createTabPanel .gwt-TabLayoutPanelTab:first-child {
-	width: 200px;
+.createTabPanel .customHeader {
+    background: url(images/create-tab-arrow.png) no-repeat right top;
+    color: #665D3C;
+    font-size: 16px;
+    font-weight: lighter;
+    height: 59px;
+    line-height: 59px;
+    margin-right: -8px;
+    position: relative;
+    text-align: center;
+    width: 247px;
+    border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
 }
 
+.createTabPanel .gwt-TabLayoutPanelTab:first-child .customHeader {
+    width: 244px;
+}
+
+/* error control groups */
+.createTabPanel .control-group {
+    position: relative;
+}
+
+.createTabPanel .label {
+    background: url(images/error-label.png) no-repeat;
+    line-height: 16px;
+    min-height: 16px;
+    padding: 0 15px 0 30px;
+    border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+}
+
+.createTabPanel .error .controls .label-container {
+    display: block;
+    padding: 0 0 0 4px;
+    position: absolute;
+    right: 39px;
+    top: -16px;
+}
+
+.createTabPanel .error .controls input {
+    border: 1px solid #f00000;
+}

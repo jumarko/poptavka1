@@ -46,4 +46,25 @@ public interface CommonResource extends CssResource {
 
     @ClassName("textBoxAsLabel")
     String textBoxAsLabel();
+
+    @ClassName("button-right-small")
+    String buttonRightSmall();
+
+    @ClassName("button-right-medium")
+    String buttonRightMedium();
+
+    @ClassName("button-right-large")
+    String buttonRightLarge();
+
+    @ClassName("button-left-small")
+    String buttonLeftSmall();
+
+    @ClassName("button-left-medium")
+    String buttonLeftMedium();
+
+    @ClassName("button-left-large")
+    String buttonLeftLarge();
+
+    @ClassName("selected-items-widget")
+    String selectedItemsWidget();
 }

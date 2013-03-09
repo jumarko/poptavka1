@@ -87,8 +87,6 @@ public class FormDemandBasicView extends Composite
         widgets.add(endDate);
         widgets.add(validToDate);
 
-        description.setSize("500px", "150px");
-
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         endDate.setFormat(new DateBox.DefaultFormat(dateFormat));
         endDate.getDatePicker().getParent().addHandler(new CloseHandler<PopupPanel>() {
