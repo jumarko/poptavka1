@@ -323,7 +323,7 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void initAddressWidget(SimplePanel embedToWidget);
 
-    @Event(forwardToModules = SettingsModule.class, passive = true)
+    @Event(forwardToModules = {SupplierCreationModule.class, SettingsModule.class }, passive = true)
     void notifyAddressWidgetListeners();
 
     /**************************************************************************/

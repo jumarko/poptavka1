@@ -1,16 +1,25 @@
 package com.eprovement.poptavka.client.common.address;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -46,6 +55,8 @@ public class AddressSelectorPresenter
 
         void setChangeHandler(ChangeHandler changeHandler);
 
+        void setChangeMonitorsEnabled(boolean enabled);
+
         //Getters
         SuggestBox getCitySuggestBox();
 
@@ -68,13 +79,15 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     //history of changes
     private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
+    private boolean selectedFromSuggestBox = false;
 
     /**************************************************************************/
     /* BIND                                                                   */
     /**************************************************************************/
     @Override
     public void bindView() {
-        addCityHandlers();
+        addCitySuggestBoxHandler();
+        addMonitorsHandlers();
     }
 
     /**************************************************************************/
@@ -84,21 +97,55 @@ public class AddressSelectorPresenter
         return ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
     }
 
-    private void addCityHandlers() {
+    private void addCitySuggestBoxHandler() {
+        /** FOCUS. **/
+        view.getCitySuggestBox().addDomHandler(new FocusHandler() {
+            @Override
+            public void onFocus(FocusEvent event) {
+                selectedFromSuggestBox = false;
+                MySuggestDisplay display = ((MySuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
+                display.setLoadingPopupPosition(view.getCitySuggestBox());
+                //show actual suggest list and remove error style if any
+                if (view.getCitySuggestBox().getText().isEmpty()) {
+                    display.showShortCitiesInfo(Constants.MIN_CHARS_TO_SEARCH);
+                }
+                view.getCitySuggestBox().showSuggestionList();
+            }
+        }, FocusEvent.getType());
+        /** SELECTION. **/
+        view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+            @Override
+            public void onSelection(SelectionEvent<Suggestion> event) {
+                selectedFromSuggestBox = true;
+                LocalitySuggestionDetail suggestion = (LocalitySuggestionDetail) event.getSelectedItem();
+                view.setState(suggestion.getStateName());
+                view.setCity(suggestion.getCityName());
+                view.setCityId(suggestion.getCityId());
+                fireEvent(view.getCityMonitor());
+            }
+        });
+    }
+
+    private void addMonitorsHandlers() {
         view.getCityMonitor().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
+                view.getCityMonitor().setValidationStyles(selectedFromSuggestBox,
+                        selectedFromSuggestBox ? "" : Storage.MSGS.addressSelectCityFromSuggestedList());
+
+                //Reset styles not to disturb user with validation messages each time somehting changes
                 view.getZipcodeMonitor().setValue("");
                 view.getStreetMonitor().setValue("");
-                fireEvent(view.getZipcodeMonitor());
-                fireEvent(view.getStreetMonitor());
+                view.getZipcodeMonitor().reset();
+                view.getStreetMonitor().reset();
             }
         });
         view.getZipcodeMonitor().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
+                //Reset styles not to disturb user with validation messages each time somehting changes
+                view.getStreetMonitor().reset();
                 view.getStreetMonitor().setValue("");
-                fireEvent(view.getStreetMonitor());
             }
         });
         view.setChangeHandler(new ChangeHandler() {

@@ -19,8 +19,6 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.ReverseViewInterface;
-import java.util.Arrays;
-import java.util.List;
 
 public class AddressSelectorView extends Composite
         implements ReverseViewInterface<AddressSelectorPresenter>, AddressSelectorInterface,
@@ -53,7 +51,6 @@ public class AddressSelectorView extends Composite
     @UiField(provided = true) SuggestBox cityBox;
     @UiField(provided = true) ChangeMonitor cityMonitor, streetMonitor, zipcodeMonitor;
     /** Class attributes. **/
-    private List<ChangeMonitor> monitors;
     //Presenter - needed to create CitySuggestOracle
     private AddressSelectorPresenter addressSelectorPresenter;
     //Address attributes - needed to remember suggestBox suggestion which is parsed to these attributes
@@ -84,7 +81,6 @@ public class AddressSelectorView extends Composite
                 AddressDetail.class, new ChangeDetail(AddressDetail.AddressField.ZIP_CODE.getValue()));
         streetMonitor = new ChangeMonitor<AddressDetail>(
                 AddressDetail.class, new ChangeDetail(AddressDetail.AddressField.STREET.getValue()));
-        monitors = Arrays.asList(cityMonitor, zipcodeMonitor, streetMonitor);
     }
 
     /**************************************************************************/
@@ -122,9 +118,16 @@ public class AddressSelectorView extends Composite
 
     @Override
     public void setChangeHandler(ChangeHandler handler) {
-        for (ChangeMonitor monitor : monitors) {
-            monitor.addChangeHandler(handler);
-        }
+        cityMonitor.addChangeHandler(handler);
+        zipcodeMonitor.addChangeHandler(handler);
+        streetMonitor.addChangeHandler(handler);
+    }
+
+    @Override
+    public void setChangeMonitorsEnabled(boolean enabled) {
+        cityMonitor.setEnabled(enabled);
+        zipcodeMonitor.setEnabled(enabled);
+        streetMonitor.setEnabled(enabled);
     }
 
     /**************************************************************************/
@@ -170,14 +173,12 @@ public class AddressSelectorView extends Composite
     //--------------------------------------------------------------------------
     @Override
     public boolean isValid() {
-        return cityMonitor.isValid() && zipcodeMonitor.isValid() && streetMonitor.isValid();
+        return  cityMonitor.isValid() && zipcodeMonitor.isValid() && streetMonitor.isValid();
     }
 
     @Override
     public boolean isAddressChanged() {
-        return cityMonitor.isModified()
-                || zipcodeMonitor.isModified()
-                || streetMonitor.isModified();
+        return cityMonitor.isModified() || zipcodeMonitor.isModified() || streetMonitor.isModified();
     }
 
     @Override
