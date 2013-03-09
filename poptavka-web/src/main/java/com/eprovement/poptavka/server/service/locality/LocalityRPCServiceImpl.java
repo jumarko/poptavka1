@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Configurable
