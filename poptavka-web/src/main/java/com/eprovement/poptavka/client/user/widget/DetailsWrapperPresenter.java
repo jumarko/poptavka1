@@ -27,6 +27,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -328,7 +329,7 @@ public class DetailsWrapperPresenter
      * @param chatMessages - demand-related conversation
      */
     public void onResponseConversation(List<MessageDetail> chatMessages) {
-        setMessageList(chatMessages, true);
+        setMessageList(new LinkedList<MessageDetail>(chatMessages), true);
         view.loadingDivHide(view.getConversationHolder());
     }
 
@@ -373,22 +374,27 @@ public class DetailsWrapperPresenter
     /* Conversation Methods                                                   */
     /**************************************************************************/
     /**
-     * Display list of messages. Whole conversation panel consists of cellList and
-     * OfferQuestionWidget. If messages count is n, then cellList displays (0,n-1) messages,
-     * and OfferQuestionWidget displays (n-1,n) message with control panels - for
-     * providing question and offer form. This way can be order of those two elements
-     * be changed without any other changes, expect setting right messages ordering on backend.
-     * Message List size is at least always 1.
+     * Display list of messages. Whole conversation panel consists of OfferQuestionWidget
+     * and cellList. Where first message is displayed in OfferQuestionWidget and the rest in cellList.
      *
      * @param messages list of messages to be displayed
      */
-    public void setMessageList(List<MessageDetail> messages, boolean collapsed) {
-        view.getMessageProvider().setList(messages.subList(0, messages.size() - 1));
-        view.getReplyHolder().setMessage(messages.get(messages.size() - 1));
+    public void setMessageList(LinkedList<MessageDetail> messages, boolean collapsed) {
+        view.getReplyHolder().setMessage(messages.removeFirst());
+        view.getMessageProvider().setList(messages);
     }
 
+    /**
+     * Adds message to conversation panel. Whole conversation panel consists of OfferQuestionWidget
+     * and cellList. Therefore adding new message involve shifting message from reply widget to list
+     * at the beginning and after that set new given message to reply holder.
+     *
+     * @param lastMessage
+     */
     public void addMessage(MessageDetail lastMessage) {
-        view.getMessageProvider().getList().add(view.getReplyHolder().getMessage());
+        LinkedList linkedList = new LinkedList(view.getMessageProvider().getList());
+        linkedList.addFirst(view.getReplyHolder().getMessage());
+        view.getMessageProvider().setList(linkedList);
         view.getReplyHolder().setMessage(lastMessage);
     }
 }
