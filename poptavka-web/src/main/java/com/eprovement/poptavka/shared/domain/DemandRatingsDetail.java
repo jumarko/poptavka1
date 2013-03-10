@@ -15,14 +15,16 @@ public class DemandRatingsDetail implements IsSerializable {
     private String demandTitle;
     private int ratingClient;
     private int ratingSupplier;
+    private String ratingClientMessage;
+    private String ratingSupplierMessage;
     //KeyProvider
     public static final ProvidesKey<DemandRatingsDetail> KEY_PROVIDER =
             new ProvidesKey<DemandRatingsDetail>() {
-                @Override
-                public Object getKey(DemandRatingsDetail item) {
-                    return item == null ? null : item.getDemandId();
-                }
-            };
+            @Override
+            public Object getKey(DemandRatingsDetail item) {
+                return item == null ? null : item.getDemandId();
+            }
+        };
 
     public long getDemandId() {
         return demandId;
@@ -84,5 +86,33 @@ public class DemandRatingsDetail implements IsSerializable {
         str.append(", ");
         str.append(ratingSupplier);
         return str.toString();
+    }
+
+    /**
+     * @return the ratingClientMessage
+     */
+    public String getRatingClientMessage() {
+        return ratingClientMessage;
+    }
+
+    /**
+     * @param ratingClientMessage the ratingClientMessage to set
+     */
+    public void setRatingClientMessage(String ratingClientMessage) {
+        this.ratingClientMessage = ratingClientMessage;
+    }
+
+    /**
+     * @return the ratingSupplierMessage
+     */
+    public String getRatingSupplierMessage() {
+        return ratingSupplierMessage;
+    }
+
+    /**
+     * @param ratingSupplierMessage the ratingSupplierMessage to set
+     */
+    public void setRatingSupplierMessage(String ratingSupplierMessage) {
+        this.ratingSupplierMessage = ratingSupplierMessage;
     }
 }

@@ -644,7 +644,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public int getClientRatingsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        return 0;
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.CLOSED);
+        clientDemandsSearch.addFilterEqual("client", client);
+        clientDemandsSearch.addFilterNotNull("rating");
+        clientDemandsSearch.addField("id",  Field.OP_COUNT);
+        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
     }
 
     /**
@@ -658,7 +666,28 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<DemandRatingsDetail> getClientRatings(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        return new ArrayList<DemandRatingsDetail>();
+
+        final Client client = findClient(userId);
+        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        clientDemandsSearch.setSearchClass(Demand.class);
+        clientDemandsSearch.addFilterEqual("status", DemandStatus.CLOSED);
+        clientDemandsSearch.addFilterEqual("client", client);
+        clientDemandsSearch.addFilterNotNull("rating");
+        List<Demand> demandsWithRating = generalService.search(clientDemandsSearch);
+
+        ArrayList<DemandRatingsDetail> ratings = new ArrayList<DemandRatingsDetail>();
+
+        for (Demand demand : demandsWithRating) {
+            DemandRatingsDetail drd = new DemandRatingsDetail();
+            drd.setDemandId(demand.getId());
+            drd.setDemandTitle(demand.getTitle());
+            drd.setRatingClient(demand.getRating().getClientRating());
+            drd.setRatingSupplier(demand.getRating().getSupplierRating());
+            drd.setRatingClientMessage(demand.getRating().getClientMessage());
+            drd.setRatingSupplierMessage(demand.getRating().getSupplierMessage());
+            ratings.add(drd);
+        }
+        return ratings;
     }
 
     /**************************************************************************/
