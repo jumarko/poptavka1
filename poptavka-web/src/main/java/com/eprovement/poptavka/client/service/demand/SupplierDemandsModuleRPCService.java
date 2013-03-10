@@ -134,7 +134,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    int getSupplierRatingsCount(long userId,
+    int getSupplierRatingsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**
@@ -144,7 +144,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<DemandRatingsDetail> getSupplierRatings(long userId,
+    List<DemandRatingsDetail> getSupplierRatings(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/

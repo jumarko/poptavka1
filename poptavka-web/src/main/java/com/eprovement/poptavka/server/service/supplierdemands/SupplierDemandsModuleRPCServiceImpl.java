@@ -454,9 +454,19 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public int getSupplierRatingsCount(long userId,
+    public int getSupplierRatingsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        return 0;
+        final Supplier supplier = generalService.find(Supplier.class, supplierID);
+        final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
+        final OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final Search supplierClosedDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        supplierClosedDemandsSearch.setSearchClass(Offer.class);
+        supplierClosedDemandsSearch.addFilterEqual("supplier", supplier);
+        supplierClosedDemandsSearch.addFilterIn("state", offerClosed, offerCompleted);
+        supplierClosedDemandsSearch.addFilterNotNull("demand.rating");
+        supplierClosedDemandsSearch.addField("id", Field.OP_COUNT);
+        supplierClosedDemandsSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(supplierClosedDemandsSearch)).intValue();
     }
 
     /**
@@ -468,9 +478,33 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<DemandRatingsDetail> getSupplierRatings(long userId,
+    public List<DemandRatingsDetail> getSupplierRatings(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        return new ArrayList<DemandRatingsDetail>();
+
+        final Supplier supplier = generalService.find(Supplier.class, supplierID);
+        final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
+        final OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final Search supplierClosedDemandsSearch = searchConverter.convertToSource(searchDefinition);
+        supplierClosedDemandsSearch.setSearchClass(Offer.class);
+        supplierClosedDemandsSearch.addFilterEqual("supplier", supplier);
+        supplierClosedDemandsSearch.addFilterIn("state", offerClosed, offerCompleted);
+        supplierClosedDemandsSearch.addFilterNotNull("demand.rating");
+        List<Offer> offersWithRating = generalService.search(supplierClosedDemandsSearch);
+
+        ArrayList<DemandRatingsDetail> ratings = new ArrayList<DemandRatingsDetail>();
+
+        for (Offer offer : offersWithRating) {
+            DemandRatingsDetail drd = new DemandRatingsDetail();
+            Demand demand = offer.getDemand();
+            drd.setDemandId(demand.getId());
+            drd.setDemandTitle(demand.getTitle());
+            drd.setRatingClient(demand.getRating().getClientRating());
+            drd.setRatingSupplier(demand.getRating().getSupplierRating());
+            drd.setRatingClientMessage(demand.getRating().getClientMessage());
+            drd.setRatingSupplierMessage(demand.getRating().getSupplierMessage());
+            ratings.add(drd);
+        }
+        return ratings;
     }
 
     /**************************************************************************/

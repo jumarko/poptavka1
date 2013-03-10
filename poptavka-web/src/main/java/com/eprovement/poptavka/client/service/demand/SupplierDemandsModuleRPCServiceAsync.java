@@ -47,10 +47,10 @@ public interface SupplierDemandsModuleRPCServiceAsync {
             AsyncCallback<List<SupplierOffersDetail>> callback);
 
     //SupplierRatings widget
-    void getSupplierRatingsCount(long userID, SearchDefinition searchDefinition,
+    void getSupplierRatingsCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Integer> callback);
 
-    void getSupplierRatings(long userID, SearchDefinition searchDefinition,
+    void getSupplierRatings(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<DemandRatingsDetail>> callback);
 
     /**************************************************************************/
