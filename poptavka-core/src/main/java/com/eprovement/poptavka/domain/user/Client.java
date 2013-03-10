@@ -22,7 +22,7 @@ public class Client extends BusinessUserRole {
     private List<Demand> demands;
 
     /** Total rating of supplier for all his "processed" demands .*/
-    private Integer overalRating;
+    private Integer overalRating = Integer.valueOf(0);
 
     @OneToOne(mappedBy = "client")
     @NotAudited

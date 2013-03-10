@@ -340,11 +340,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // TODO RELEASE ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
-            if (offer.getDemand().getClient().getOveralRating() != null) {
-                sod.setRating(offer.getDemand().getClient().getOveralRating());
-            } else {
-                sod.setRating(0);
-            }
+            sod.setRating(offer.getDemand().getClient().getOveralRating());
             sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
