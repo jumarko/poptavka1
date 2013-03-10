@@ -272,6 +272,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
-    void closeDemandAndEnterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage) throws
-            RPCException;
+    void closeDemandAndEnterFeedbackForSupplier(long demandID, long offerID, Integer supplierRating,
+            String supplierMessage) throws RPCException;
 }

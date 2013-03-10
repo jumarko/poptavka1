@@ -9,8 +9,10 @@ public enum OfferStateType {
     /** Special demand at top positions. */
     PENDING("PENDING"),
     DECLINED("DECLINED"),
-    /** Offer was delivered and Demand was successfuly closed. **/
-    COMPLETED("COMPLETED");
+    /** Offer was delivered and Client should accept and close the demand. **/
+    COMPLETED("COMPLETED"),
+    /** Completed offer was accepted by Client and demands was closed. **/
+    CLOSED("CLOSED");
 
     private final String value;
 

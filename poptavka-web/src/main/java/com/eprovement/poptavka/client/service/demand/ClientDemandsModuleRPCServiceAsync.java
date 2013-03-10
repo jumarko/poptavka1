@@ -124,6 +124,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void deleteDemand(long demandId, AsyncCallback<Boolean> calback) throws
             RPCException, ApplicationSecurityException;
 
-    void closeDemandAndEnterFeedbackForSupplier(long demandID, Integer supplierRating, String supplierMessage,
-            AsyncCallback<Void> calback);
+    void closeDemandAndEnterFeedbackForSupplier(long demandID, long offerID, Integer supplierRating,
+            String supplierMessage, AsyncCallback<Void> calback);
 }

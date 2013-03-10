@@ -983,8 +983,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @throws ApplicationSecurityException
      */
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void closeDemandAndEnterFeedbackForSupplier(final long demandID, final Integer supplierRating,
-        final String supplierMessage)
+    public void closeDemandAndEnterFeedbackForSupplier(final long demandID, final long offerID,
+        final Integer supplierRating, final String supplierMessage)
         throws RPCException, ApplicationSecurityException {
         final Demand demand = generalService.find(Demand.class, demandID);
         //close demand by updating its status to closed
@@ -1001,5 +1001,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         generalService.save(rating);
         demand.setRating(rating);
         generalService.save(demand);
+        Offer offer = offerService.getById(offerID);
+        offer.setState(offerService.getOfferState(OfferStateType.CLOSED.getValue()));
+        offerService.update(offer);
     }
 }

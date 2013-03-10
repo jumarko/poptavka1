@@ -380,11 +380,11 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public int getSupplierClosedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Supplier supplier = generalService.find(Supplier.class, supplierID);
-        final OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
         final Search supplierClosedDemandsSearch = searchConverter.convertToSource(searchDefinition);
         supplierClosedDemandsSearch.setSearchClass(Offer.class);
         supplierClosedDemandsSearch.addFilterEqual("supplier", supplier);
-        supplierClosedDemandsSearch.addFilterEqual("state", offerCompleted);
+        supplierClosedDemandsSearch.addFilterEqual("state", offerClosed);
         supplierClosedDemandsSearch.addFilterEqual("demand.status", DemandStatus.CLOSED);
         supplierClosedDemandsSearch.addField("id", Field.OP_COUNT);
         supplierClosedDemandsSearch.setResultMode(Search.RESULT_SINGLE);
