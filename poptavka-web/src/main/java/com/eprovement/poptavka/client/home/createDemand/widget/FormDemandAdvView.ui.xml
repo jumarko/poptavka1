@@ -4,6 +4,7 @@
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
     
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>
         .form {
@@ -61,25 +62,33 @@
                                     <g:Label>
                                         Urgency level:
                                     </g:Label>
-                                    <g:Image resource='{res.images.urgencyHeader}'/>
+                                    <b:Tooltip text='{msgs.urgencyDesc}'>
+                                        <g:Image resource='{res.images.urgencyHeader}'/>
+                                    </b:Tooltip>
                                 </b:Column>
                                 <b:Column size="3">
                                     <g:Label>
                                         Normal
                                     </g:Label>
-                                    <g:Image resource='{res.images.urgencyGreen}'/>
+                                    <b:Tooltip text='{msgs.urgencyNormalDesc}'>
+                                        <g:Image resource='{res.images.urgencyGreen}'/>
+                                    </b:Tooltip>
                                 </b:Column>
                                 <b:Column size="3">
                                     <g:Label>
                                         Higher
                                     </g:Label>
-                                    <g:Image resource='{res.images.urgencyOrange}'/>
+                                    <b:Tooltip text='{msgs.urgencyHigherDesc}'>
+                                        <g:Image resource='{res.images.urgencyOrange}'/>
+                                    </b:Tooltip>
                                 </b:Column>
                                 <b:Column size="3">
                                     <g:Label>
                                         HIGHT
                                     </g:Label>
-                                    <g:Image resource='{res.images.urgencyRed}'/>
+                                    <b:Tooltip text='{msgs.urgencyHighDesc}'>
+                                        <g:Image resource='{res.images.urgencyRed}'/>
+                                    </b:Tooltip>
                                 </b:Column>
                             </b:FluidRow>
                             <b:FluidRow>
@@ -117,28 +126,6 @@
                                 <b:Column size="3">
                                     <g:Label>
                                         15
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Decription:
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Need find supplier within 1 months or more
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Need find supplier within 2 weeks
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Need find supplier within 3 days
                                     </g:Label>
                                 </b:Column>
                             </b:FluidRow>
