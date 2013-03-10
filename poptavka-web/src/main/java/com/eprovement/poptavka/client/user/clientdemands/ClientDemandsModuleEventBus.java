@@ -260,7 +260,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
             long parentId, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestCloseAndRateSupplier(long demandID, Integer rating, String comment);
+    void requestCloseAndRateSupplier(long demandID, long offerID, Integer rating, String comment);
 
     /**************************************************************************/
     /* Business events for demand's CRUD operations                           */

@@ -89,8 +89,8 @@ public class LoginPopupView extends Composite
                 pass = "123123";
             }
             if (role == BusinessRole.ADMIN) {
-                name = "admin@admin.cz";
-                pass = "klinga004";
+                name = "jumarko@gmail.com";
+                pass = "123123";
             }
         }
 

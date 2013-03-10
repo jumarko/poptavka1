@@ -349,7 +349,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
                     @Override
                     public void onClick(ClickEvent event) {
-                        eventBus.requestCloseAndRateSupplier(selectedObject.getDemandId(),
+                        eventBus.requestCloseAndRateSupplier(selectedObject.getDemandId(), selectedObject.getOfferId(),
                                 Integer.valueOf(ratePopup.getRating()), ratePopup.getComment());
                     }
                 });
