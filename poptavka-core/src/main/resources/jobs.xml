@@ -6,7 +6,7 @@
        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd">
 
     <!-- Task scheduling and asynchronous execution -->
-    <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
-    <task:executor id="myExecutor" pool-size="5"/>
-    <task:scheduler id="myScheduler" pool-size="10"/>
+    <task:annotation-driven executor="jobExecutor" scheduler="jobScheduler"/>
+    <task:executor id="jobExecutor" pool-size="5"/>
+    <task:scheduler id="jobScheduler" pool-size="10"/>
 </beans>

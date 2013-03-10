@@ -3,7 +3,7 @@ package com.eprovement.poptavka.service.jobs;
 import com.eprovement.poptavka.domain.common.AdditionalInfo;
 import com.eprovement.poptavka.domain.common.AdditionalInfoAware;
 import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.service.jobs.base.JobTask;
+import com.eprovement.poptavka.service.jobs.base.Job;
 import com.eprovement.poptavka.service.user.SupplierService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @author Juraj Martinka
  *         Date: 3.4.11
  */
-public class AdditionalInfoFiller implements JobTask {
+public class AdditionalInfoFiller implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdditionalInfoFiller.class);
 
@@ -36,7 +36,6 @@ public class AdditionalInfoFiller implements JobTask {
 
     private DemandService demandService;
     private SupplierService supplierService;
-
 
 
     @Scheduled(cron = EVERY_MIDNIGHT)
@@ -55,7 +54,15 @@ public class AdditionalInfoFiller implements JobTask {
         setAdditionalInfoForAllItems(this.demandService.getDemandsCountForAllCategories(),
                 this.supplierService.getSuppliersCountForAllCategories());
         LOGGER.info("Categories additional info filling status=finish duration=["
-                        + (System.currentTimeMillis() - categoriesFillStartTime) + "] ms.");
+                + (System.currentTimeMillis() - categoriesFillStartTime) + "] ms.");
+    }
+
+    @Override
+    public String description() {
+        return "AdditionaInfoFiller is useful for periodical refresh of table AdditionalInfo which contains"
+                + " demands count and suppliers count for localities and categories."
+                + " The freshness of result which end-user see on poptavka UI depends on frequency"
+                + " with which this job is executed.";
     }
 
 

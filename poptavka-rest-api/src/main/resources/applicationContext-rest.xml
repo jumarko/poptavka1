@@ -55,6 +55,10 @@
         <constructor-arg ref="supplierDeserializer" />
     </bean>
 
+    <!--Jobs-->
+    <!--All jobs (that means beans of type com.eprovement.poptavka.service.jobs.base.Job are autowired  to the constructor-->
+    <bean class="com.eprovement.poptavka.rest.jobs.JobsResource" autowire="constructor" />
+
     <!--User-->
     <bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
