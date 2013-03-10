@@ -4,12 +4,12 @@
  */
 package com.eprovement.poptavka.client.common;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.IListDetailObject;
 import com.github.gwtbootstrap.client.ui.ControlGroup;
 import com.github.gwtbootstrap.client.ui.Label;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
-import com.github.gwtbootstrap.client.ui.constants.LabelType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -103,20 +103,25 @@ public class ValidationMonitor<T> extends Composite
     public void validate() {
         //reset for new validation
         if (hideErrorPanel) {
-            errorPanel.setVisible(false);
-            errorLabel.setText("");
-            controlGroup.setType(ControlGroupType.NONE);
+            setValidationStyles(true, "");
         }
         valid = true;
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(
                 beanType, field, getValue(), Default.class);
         for (ConstraintViolation<T> violation : violations) {
-            errorPanel.setVisible(true);
-            errorLabel.setText(violation.getMessage());
-            errorLabel.setType(LabelType.IMPORTANT);
-            controlGroup.setType(ControlGroupType.ERROR);
+            setValidationStyles(false, violation.getMessage());
             valid = false;
+        }
+    }
+
+    public void setValidationStyles(boolean isValid, String validationMessage) {
+        errorPanel.setVisible(!isValid);
+        errorLabel.setText(validationMessage);
+        if (isValid) {
+            controlGroup.setType(ControlGroupType.NONE);
+        } else {
+            controlGroup.setType(ControlGroupType.ERROR);
         }
     }
 
@@ -312,9 +317,9 @@ public class ValidationMonitor<T> extends Composite
         if (holder.getWidget() instanceof TextBoxBase) {
             return ((TextBoxBase) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof IntegerBox) {
-            return ((IntegerBox) holder.getWidget()).getValue();
+            return getIntegerValue();
         } else if (holder.getWidget() instanceof BigDecimalBox) {
-            return ((BigDecimalBox) holder.getWidget()).getValue();
+            return getBigDecimalValue();
         } else if (holder.getWidget() instanceof DateBox) {
             return ((DateBox) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof ListBox) {
@@ -324,6 +329,36 @@ public class ValidationMonitor<T> extends Composite
         } else {
             return null;
         }
+    }
+
+    /**
+     * Get integer value of IntegerBox. Validate if NumberFormatException occurs.
+     * @return
+     */
+    private Object getIntegerValue() {
+        try {
+            ((IntegerBox) holder.getWidget()).getValue();
+        } catch (NumberFormatException ex) {
+            valid = false;
+            setValidationStyles(false, Storage.VMSGS.commonNumberFormat());
+            return ((IntegerBox) holder.getWidget()).getText();
+        }
+        return ((IntegerBox) holder.getWidget()).getValue();
+    }
+
+    /**
+     * Get big decimal value of BigDecimalBox. Validate if NumberFormatException occurs.
+     * @return
+     */
+    private Object getBigDecimalValue() {
+        try {
+            ((BigDecimalBox) holder.getWidget()).getValue();
+        } catch (NumberFormatException ex) {
+            valid = false;
+            setValidationStyles(false, Storage.VMSGS.commonNumberFormat());
+            return ((BigDecimalBox) holder.getWidget()).getText();
+        }
+        return ((BigDecimalBox) holder.getWidget()).getValue();
     }
 
     /**

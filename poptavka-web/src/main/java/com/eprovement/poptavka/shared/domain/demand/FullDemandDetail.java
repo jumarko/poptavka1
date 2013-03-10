@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
@@ -94,6 +93,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     @NotBlank(message = "{demandNotBlankTitle}")
     @Size(min = 5, max = 50, message = "{demandSizeTitle}")
     private String title;
+    @NotNull(message = "{demandNotNullPrice}")
     @Min(value = 0, message = "{demandMinPrice}")
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")
@@ -128,22 +128,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.updateWholeDemand(demand);
     }
 
-    public void setBasicInfo(HashMap<DemandField, Object> map) {
-        this.setTitle((String) map.get(DemandField.TITLE));
-        this.setDescription((String) map.get(DemandField.DESCRIPTION));
-        this.setPrice((BigDecimal) map.get(DemandField.PRICE));
-        this.setEndDate((Date) map.get(DemandField.END_DATE));
-    }
-
-    public void setAdvInfo(HashMap<DemandField, Object> map) {
-        this.setMaxOffers((Integer) map.get(DemandField.MAX_OFFERS));
-        //Temporary disabled + TODO excluded suppliers
-//        this.setMinRating((Integer) map.get(DemandField.MIN_RATING));
-        this.setDemandType((String) map.get(DemandField.DEMAND_TYPE));
-        this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
-    }
     //---------------------------- GETTERS AND SETTERS --------------------
-
     public void updateWholeDemand(FullDemandDetail demand) {
         demandId = demand.getDemandId();
         title = demand.getTitle();

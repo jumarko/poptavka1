@@ -71,10 +71,10 @@ public class UrgentImageCell extends AbstractCell<Date> {
             return uiRenderer.getCellStyle().header();
         }
         int daysBetween = CalendarUtil.getDaysBetween(value, DateUtils.getNowDate());
-        if (daysBetween < Constants.DAYS_URGENCY_HIGHT) {
+        if (daysBetween < Constants.DAYS_URGENCY_HIGH) {
             return uiRenderer.getCellStyle().high();
         }
-        if (daysBetween <= Constants.DAYS_URGENCY_HIGHTER) {
+        if (daysBetween <= Constants.DAYS_URGENCY_HIGHER) {
             return uiRenderer.getCellStyle().higher();
         }
         return uiRenderer.getCellStyle().normal();

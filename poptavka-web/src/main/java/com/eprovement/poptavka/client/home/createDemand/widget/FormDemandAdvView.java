@@ -4,20 +4,16 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class FormDemandAdvView extends Composite
         implements FormDemandAdvPresenter.FormDemandAdvViewInterface, ProvidesValidate {
@@ -37,14 +33,6 @@ public class FormDemandAdvView extends Composite
     @UiField IntegerBox maxOffersBox;
     @UiField RadioButton classicRadio, attractiveRadio;
     @UiField RadioButton urgency1, urgency2, urgency3;
-    //Temporary disabled
-//    @UiField IntegerBox minRatingBox;
-//    @UiField Button excludeBtn;
-//    @UiField ListBox excludedList;
-
-    /** Class attributes. **/
-    ArrayList<HasValue> widgets = new ArrayList<HasValue>();
-    HashMap<DemandField, Object> map = new HashMap<DemandField, Object>();
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -52,10 +40,6 @@ public class FormDemandAdvView extends Composite
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-        //Validation widgets
-        widgets.add(maxOffersBox);
-//        temporary disabled
-//        widgets.add(minRatingBox);
     }
 
     /**************************************************************************/
@@ -68,27 +52,22 @@ public class FormDemandAdvView extends Composite
 
     @Override
     public boolean isValid() {
-        int errorCount = 0;
-        for (HasValue item : widgets) {
-            ((Widget) item).removeStyleName(StyleResource.INSTANCE.common().errorField());
-            if (item.getValue() == null) {
-                ((Widget) item).setStyleName(StyleResource.INSTANCE.common().errorField());
-                errorCount++;
-            }
+        if (maxOffersBox.getValue() == null) {
+            maxOffersBox.setStyleName(StyleResource.INSTANCE.common().errorField());
+            return false;
+        } else {
+            maxOffersBox.removeStyleName(StyleResource.INSTANCE.common().errorField());
+            return true;
         }
-        return errorCount == 0;
     }
 
     @Override
-    public HashMap<DemandField, Object> getValues() {
-        map.put(DemandField.MAX_OFFERS, maxOffersBox.getValue());
-        map.put(DemandField.MIN_RATING, 0);
-        map.put(DemandField.DEMAND_TYPE, getDemandType());
-        map.put(DemandField.VALID_TO_DATE, getValidTo());
-//        Temporary disabled
-//        map.put(DemandField.MIN_RATING, minRatingBox.getValue());
-//        TODO excluded suppliers
-        return map;
+    public FullDemandDetail updateAdvDemandInfo(FullDemandDetail demandToUpdate) {
+        demandToUpdate.setMaxOffers(maxOffersBox.getValue());
+        demandToUpdate.setMinRating(0);
+        demandToUpdate.setDemandType(getDemandType());
+        demandToUpdate.setValidToDate(getValidTo());
+        return demandToUpdate;
     }
 
     /**************************************************************************/
@@ -117,9 +96,9 @@ public class FormDemandAdvView extends Composite
     private Date getValidTo() {
         Date validTo = new Date();
         if (urgency3.getValue()) {
-            CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGHT);
+            CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGH);
         } else if (urgency2.getValue()) {
-            CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGHTER);
+            CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGHER);
         } else {
             CalendarUtil.addMonthsToDate(validTo, Constants.MONTHS_URGENCY_NORMAL);
         }

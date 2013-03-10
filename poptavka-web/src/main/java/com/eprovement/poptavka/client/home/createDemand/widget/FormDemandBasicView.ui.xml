@@ -3,7 +3,8 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
+             xmlns:vm="urn:import:com.eprovement.poptavka.client.common">
 
     <ui:style>
         .clickable {
@@ -47,8 +48,9 @@
                                     </g:Label>
                                 </b:Column>
                                 <b:Column size="8">
-                                    <g:TextBox ui:field="title" />
-                                    <g:Label styleName="{style.error}" ui:field="errorLabelTitle" />
+                                    <vm:ValidationMonitor ui:field="titleMonitor">
+                                        <g:TextBox />
+                                    </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>
                             <b:FluidRow>
@@ -58,8 +60,9 @@
                                     </g:Label>
                                 </b:Column>
                                 <b:Column size="8">
-                                    <cm:BigDecimalBox ui:field="price" />
-                                    <g:Label styleName="{style.error}" ui:field="errorLabelPrice" />
+                                    <vm:ValidationMonitor ui:field="priceMonitor">
+                                        <cm:BigDecimalBox />
+                                    </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>
                             <b:FluidRow>
@@ -69,8 +72,9 @@
                                     </g:Label>
                                 </b:Column>
                                 <b:Column size="8">
-                                    <p1:DateBox ui:field="endDate" />
-                                    <g:Label styleName="{style.error}" ui:field="errorLabelEndDate" />
+                                    <vm:ValidationMonitor ui:field="endDateMonitor">
+                                        <p1:DateBox />
+                                    </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>
                         </b:Column>
@@ -82,8 +86,9 @@
                                     </g:Label>
                                 </b:Column>
                                 <b:Column size="8">
-                                    <g:TextArea ui:field="description" height="186px"/>
-                                    <g:Label styleName="{style.error}" ui:field="errorLabelDesc" />
+                                    <vm:ValidationMonitor ui:field="descriptionMonitor">
+                                        <g:TextArea height="186px"/>
+                                    </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>
                         </b:Column>
@@ -92,8 +97,4 @@
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>
-
-    <!--Temporary disabled -->
-    <!-- <table> <tr> <td> <ui:msg key="formAttachment">Attachment</ui:msg> </td> <td styleName="{style.width}"> <g:FileUpload
-        /> </td> </tr> </table> -->
 </ui:UiBinder>

@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
-import java.util.HashMap;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -8,8 +7,8 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationEventBus;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 
 @Presenter(view = FormDemandBasicView.class, multiple = true)
 public class FormDemandBasicPresenter
@@ -21,7 +20,7 @@ public class FormDemandBasicPresenter
 
         boolean isValid();
 
-        HashMap<DemandField, Object> getValues();
+        FullDemandDetail updateBasicDemandInfo(FullDemandDetail demandToUpdate);
     }
 
     /** Injecting widget. **/

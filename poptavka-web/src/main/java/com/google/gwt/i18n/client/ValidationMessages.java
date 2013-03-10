@@ -24,6 +24,9 @@ package com.google.gwt.i18n.client;
  */
 public interface ValidationMessages extends ConstantsWithLookup {
 
+    @Key("common.number.format")
+    String commonNumberFormat();
+
     /**
      * Translated "Name must be at least {size} characters long.".
      *
@@ -75,14 +78,11 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("demand.size.title")
     String demandSizeTitle();
 
-    @Key("demand.notBlank.price")
-    String demandNotBlankPrice();
+    @Key("demand.notNull.price")
+    String demandNotNullPrice();
 
     @Key("demand.min.price")
     String demandMinPrice();
-
-    @Key("demand.pattern.price")
-    String demandPatternPrice();
 
     @Key("demand.notNull.endDate")
     String demandNotNullEndDate();

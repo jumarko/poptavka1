@@ -148,12 +148,4 @@
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>
-    <!--Temporary disabled -->
-    <!-- <g:row> <g:customCell> <g:HTML><ui:msg key="formDemandAdvMinRating">Minimal rating</ui:msg></g:HTML> </g:customCell>
-        <g:customCell> <g:IntegerBox ui:field="minRatingBox">0</g:IntegerBox> </g:customCell> </g:row> -->
-    <!-- <g:row> <g:customCell> <g:HTML><ui:msg key="formDemandAdvExcludeSuppliers">Exclude supplier</ui:msg></g:HTML> </g:customCell>
-        <g:customCell> <g:SuggestBox/> </g:customCell> <g:customCell> <g:Button ui:field="excludeBtn"><ui:msg key="formDemandAdvExcludeBtn">Exclude
-        him</ui:msg></g:Button> </g:customCell> </g:row> -->
-    <!-- <g:row> <g:customCell> <g:Label width="70"><ui:msg key="formDemandAdvExcludedList">List of excluded suppliers</ui:msg></g:Label>
-        </g:customCell> <g:customCell> <g:ListBox ui:field="excludedList" visibleItemCount="5" width="148px"/> </g:customCell> </g:row> -->
 </ui:UiBinder>

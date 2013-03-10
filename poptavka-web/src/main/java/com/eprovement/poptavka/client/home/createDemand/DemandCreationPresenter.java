@@ -352,10 +352,10 @@ public class DemandCreationPresenter
 
         // Fill in the FullDemandDetail obejct from former holder panels.
         FullDemandDetail demand = new FullDemandDetail();
-        demand.setBasicInfo(basicValues.getValues());
+        demand = basicValues.updateBasicDemandInfo(demand);
+        demand = advValues.updateAdvDemandInfo(demand);
         demand.setLocalities(localityValues.getCellListDataProvider().getList());
         demand.setCategories(categoryValues.getCellListDataProvider().getList());
-        demand.setAdvInfo(advValues.getValues());
         eventBus.createDemand(demand, client.getClientId());
     }
 
