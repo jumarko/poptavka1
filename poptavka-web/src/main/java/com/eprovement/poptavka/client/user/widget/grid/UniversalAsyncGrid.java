@@ -387,6 +387,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             @Override
             public Date getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
+                //TODO Martin 10.3.13 shoudn't be here validTo date?
                 return obj.getEndDate();
             }
         };

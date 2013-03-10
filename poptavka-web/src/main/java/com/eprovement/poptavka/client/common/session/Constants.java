@@ -207,6 +207,7 @@ public final class Constants {
     public static final int RATE_4 = -1;
     public static final int RATE_5 = -2;
 
-    public static final int DAYS_URGENCY_HIGHT = 4;
-    public static final int DAYS_URGENCY_HIGHTER = 8;
+    public static final int DAYS_URGENCY_HIGH = 5;
+    public static final int DAYS_URGENCY_HIGHER = 14;
+    public static final int MONTHS_URGENCY_NORMAL = 1;
 }

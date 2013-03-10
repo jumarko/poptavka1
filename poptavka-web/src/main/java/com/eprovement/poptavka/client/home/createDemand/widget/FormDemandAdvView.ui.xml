@@ -1,6 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+    
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
     <ui:style>
         .form {
         padding-top: 20px;
@@ -43,17 +47,105 @@
                                 </b:Column>
                             </b:FluidRow>
                         </b:Column>
+                        <!-- *************************** URGENCY *************************** -->
+                        <b:Column size="6">
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:Label>
+                                        <ui:msg key="formDemandAdvUrgency">Urgency</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Urgency level:
+                                    </g:Label>
+                                    <g:Image resource='{res.images.urgencyHeader}'/>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Normal
+                                    </g:Label>
+                                    <g:Image resource='{res.images.urgencyGreen}'/>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Higher
+                                    </g:Label>
+                                    <g:Image resource='{res.images.urgencyOrange}'/>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        HIGHT
+                                    </g:Label>
+                                    <g:Image resource='{res.images.urgencyRed}'/>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Selected:
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:RadioButton name="urgency" ui:field="urgency1" checked="true" />
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:RadioButton name="urgency" ui:field="urgency2" />
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:RadioButton name="urgency" ui:field="urgency3" />
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Cost creadits:
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        5
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        10
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        15
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Decription:
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Need find supplier within 1 months or more
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Need find supplier within 2 weeks
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="3">
+                                    <g:Label>
+                                        Need find supplier within 3 days
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>
                     </b:FluidRow>
                 </b:WellForm>
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>
-    <!--Temporary disabled -->
-    <!-- <g:row> <g:customCell> <g:HTML><ui:msg key="formDemandAdvMinRating">Minimal rating</ui:msg></g:HTML> </g:customCell>
-        <g:customCell> <g:IntegerBox ui:field="minRatingBox">0</g:IntegerBox> </g:customCell> </g:row> -->
-    <!-- <g:row> <g:customCell> <g:HTML><ui:msg key="formDemandAdvExcludeSuppliers">Exclude supplier</ui:msg></g:HTML> </g:customCell>
-        <g:customCell> <g:SuggestBox/> </g:customCell> <g:customCell> <g:Button ui:field="excludeBtn"><ui:msg key="formDemandAdvExcludeBtn">Exclude
-        him</ui:msg></g:Button> </g:customCell> </g:row> -->
-    <!-- <g:row> <g:customCell> <g:Label width="70"><ui:msg key="formDemandAdvExcludedList">List of excluded suppliers</ui:msg></g:Label>
-        </g:customCell> <g:customCell> <g:ListBox ui:field="excludedList" visibleItemCount="5" width="148px"/> </g:customCell> </g:row> -->
 </ui:UiBinder>

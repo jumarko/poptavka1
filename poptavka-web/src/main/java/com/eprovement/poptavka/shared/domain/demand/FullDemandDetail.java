@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
@@ -57,6 +56,21 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
             return value;
         }
     }
+
+    public enum DemandType {
+
+        NORMAL("normal"),
+        ATTRACTIVE("attractive");
+        private String value;
+
+        private DemandType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
     private ArrayList<LocalityDetail> localities;
     private ArrayList<CategoryDetail> categories;
     private long clientId;
@@ -79,6 +93,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     @NotBlank(message = "{demandNotBlankTitle}")
     @Size(min = 5, max = 50, message = "{demandSizeTitle}")
     private String title;
+    @NotNull(message = "{demandNotNullPrice}")
     @Min(value = 0, message = "{demandMinPrice}")
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")
@@ -113,21 +128,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.updateWholeDemand(demand);
     }
 
-    public void setBasicInfo(HashMap<DemandField, Object> map) {
-        this.setTitle((String) map.get(DemandField.TITLE));
-        this.setDescription((String) map.get(DemandField.DESCRIPTION));
-        this.setPrice(new BigDecimal((String) map.get(DemandField.PRICE)));
-        this.setEndDate((Date) map.get(DemandField.END_DATE));
-        this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
-    }
-
-    public void setAdvInfo(HashMap<DemandField, Object> map) {
-        this.maxOffers = (Integer) map.get(DemandField.MAX_OFFERS);
-        this.minRating = (Integer) map.get(DemandField.MIN_RATING);
-        this.demandType = (String) map.get(DemandField.DEMAND_TYPE);
-    }
     //---------------------------- GETTERS AND SETTERS --------------------
-
     public void updateWholeDemand(FullDemandDetail demand) {
         demandId = demand.getDemandId();
         title = demand.getTitle();
