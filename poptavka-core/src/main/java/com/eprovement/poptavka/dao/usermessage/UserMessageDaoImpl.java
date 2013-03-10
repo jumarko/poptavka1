@@ -142,6 +142,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         queryParams.put("statusAccepted", offerStateAccepted);
         queryParams.put("statusCompleted", offerStateCompleted);
         queryParams.put("pendingCompletionStatus", DemandStatus.PENDINGCOMPLETION);
+        queryParams.put("assignedStatus", DemandStatus.ASSIGNED);
 
         List<Object[]> unread = runNamedQuery(
                 "getSupplierConversationsWithAcceptedOffer",

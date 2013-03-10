@@ -104,7 +104,7 @@ public class Supplier extends BusinessUserRole {
     private Boolean certified;
 
     /** Total rating of supplier for all his "processed" demands .*/
-    private Integer overalRating;
+    private Integer overalRating = Integer.valueOf(0);
 
 
     public List<Locality> getLocalities() {

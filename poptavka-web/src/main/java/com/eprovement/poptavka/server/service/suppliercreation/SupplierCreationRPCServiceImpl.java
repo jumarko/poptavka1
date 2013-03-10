@@ -103,7 +103,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         setNewSupplierBusinessUserData(supplier.getUserData(), newSupplier);
         newSupplier.getBusinessUser().setEmail(supplier.getUserData().getEmail());
         newSupplier.getBusinessUser().setPassword(supplier.getUserData().getPassword());
-        newSupplier.setOveralRating(Integer.valueOf(0));
 
         setNewSupplierAddresses(supplier.getUserData(), newSupplier);
         setNewSupplierLocalities(supplier, newSupplier);
