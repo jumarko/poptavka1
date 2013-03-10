@@ -82,13 +82,13 @@ public class UserVerificationServiceImpl implements UserVerificationService {
                 user.getEmail(), user);
 
         final ActivationEmail activationEmail = new ActivationEmail();
-        activationEmail.setActivationCode(RandomStringUtils.randomAlphanumeric(ACTIVATION_CODE_LENGTH));
+        activationEmail.setActivationCode(RandomStringUtils.randomNumeric(ACTIVATION_CODE_LENGTH));
         final Date now = new Date();
         activationEmail.setValidTo(new Date(now.getTime() + DEFAULT_VALIDITY_LENGTH_MILLIS));
         saveActivationEmailForUser(user, activationEmail);
 
         LOGGER.info("action=generate_activation_code status=finish email={} validTo={} businuessUser={} ",
-                new Object[]{user.getEmail(), activationEmail.getValidTo(), user});
+                user.getEmail(), activationEmail.getValidTo(), user);
 
         return user.getActivationEmail().getActivationCode();
     }
