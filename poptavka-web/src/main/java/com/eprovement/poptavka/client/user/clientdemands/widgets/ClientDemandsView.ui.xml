@@ -11,36 +11,39 @@
     <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
         <g:north size="65">
             <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
+                <!--Edit demand func buttons-->
+                <g:HTMLPanel ui:field="choiceButtonsPanel" visible="false">
+                    <b:Button ui:field="editDemandButton" type="PRIMARY" icon="EDIT">
+                        <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                    </b:Button>
+                    <b:Button ui:field="deleteDemandButton" type="PRIMARY" icon="TRASH">
+                        <ui:msg key="commonBtnDelete">Delete</ui:msg>
+                    </b:Button>
+                </g:HTMLPanel>
+                <g:HTMLPanel ui:field="editButtonsPanel" visible="false">
+                    <b:Button ui:field="submitButton" type="PRIMARY" icon="SAVE">
+                        <ui:msg key="commonBtnSubmit">Submit</ui:msg>
+                    </b:Button>
+                    <b:Button ui:field="cancelButton" type="PRIMARY" icon="REMOVE">
+                        <ui:msg key="commonBtnCancel">Cancel</ui:msg>
+                    </b:Button>
+                </g:HTMLPanel>
+                <!--demand table header-->
                 <g:HorizontalPanel ui:field="demandHeader">
                     <g:Label>
                         <ui:msg key="clientDemandsTableTitle">Vypis klientovych poptaviek</ui:msg>
                     </g:Label>
                     <s:UniversalPagerWidget ui:field='demandPager' />
                 </g:HorizontalPanel>
+                <!--conversation table header-->
                 <g:HorizontalPanel ui:field="conversationHeader">
                     <b:Button ui:field="backBtn" type="PRIMARY" icon="ARROW_LEFT">
                         <ui:msg key="clientDemandsBackBtn">Spat na vsetky nove poptavky</ui:msg>
                     </b:Button>
                     <g:Label ui:field="demandTitlelabel"/>
-                    <g:HTMLPanel ui:field="choiceButtonsPanel" visible="false">
-                        <b:Button ui:field="editDemandButton" type="PRIMARY" icon="EDIT">
-                            <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                        </b:Button>
-                        <b:Button ui:field="deleteDemandButton" type="PRIMARY" icon="TRASH">
-                            <ui:msg key="commonBtnDelete">Delete</ui:msg>
-                        </b:Button>
-                    </g:HTMLPanel>
-
-                    <g:HTMLPanel ui:field="editButtonsPanel" visible="false">
-                        <b:Button ui:field="submitButton" type="PRIMARY" icon="SAVE">
-                            <ui:msg key="commonBtnSubmit">Submit</ui:msg>
-                        </b:Button>
-                        <b:Button ui:field="cancelButton" type="PRIMARY" icon="REMOVE">
-                            <ui:msg key="commonBtnCancel">Cancel</ui:msg>
-                        </b:Button>
-                    </g:HTMLPanel>
+                    
                     <b:DropdownButton ui:field="actionBox" visible="false"
-                                                          text="{msgs.commonListDefault}">
+                                      text="{msgs.commonListDefault}">
                         <b:NavLink ui:field="actionRead">
                             <ui:msg key="commonListRead">read</ui:msg>
                         </b:NavLink>

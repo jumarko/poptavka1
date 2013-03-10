@@ -239,34 +239,83 @@ public class ClientDemandsPresenter
     }
 
     /**************************************************************************/
-    /* Business events handled by presenter */
+    /* Details Wrapper                                                        */
     /**************************************************************************/
+    /**
+     * Response method to requesting details wrapper instance.
+     * Initialize details wrapper and initialize details tabs according to
+     * selectedDemandObject and selectedConversationObject.
+     * @param detailSection Details wrapper instance.
+     */
     public void onResponseDetailWrapperPresenter(final DetailsWrapperPresenter detailSection) {
-        if (this.detailSection == null) {
-            this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
-            if (selectedConversationObject != null) {
-                this.detailSection.initDetails(
-                        selectedConversationObject.getDemandId(),
-                        selectedConversationObject.getSupplierId(),
-                        selectedConversationObject.getThreadRootId());
-            }
+        if (detailSection == null) {
+            detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
             detailSection.getView().getContainer().addSelectionHandler(
                     new SelectionHandler<Integer>() {
-                        @Override
-                        public void onSelection(SelectionEvent<Integer> event) {
-                            if (detailSection.getView().getContainer().getSelectedIndex() == 0) {
-                                view.getChoiceButtonsPanel().setVisible(true);
-                            } else {
-                                view.getChoiceButtonsPanel().setVisible(false);
-                            }
+                    @Override
+                    public void onSelection(SelectionEvent<Integer> event) {
+                        if (detailSection.getView().getContainer().getSelectedIndex() == 0) {
+                            view.getChoiceButtonsPanel().setVisible(true);
+                        } else {
+                            view.getChoiceButtonsPanel().setVisible(false);
                         }
-                    });
+                    }
+                });
+
+            this.detailSection = detailSection;
+
+            if (selectedDemandObject != null) {
+                initDetailSection(selectedDemandObject);
+            } else if (selectedConversationObject != null) {
+                initDetailSection(selectedConversationObject);
+            }
         }
     }
 
     /**
-     * Response method for onInitSupplierList()
+     * Initialize demand tab in Details sections.
+     * If details wrapper instance doesn't exist yet, create it and in response of
+     * creation initialize demand tab.
+     * If instance already exist, initialize and show demand tab immediately.
+     *
+     * @param demandId
+     */
+    private void initDetailSection(ClientDemandDetail demandDetail) {
+        if (detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
+        } else {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            detailSection.initDetails(demandDetail.getDemandId());
+            view.getChoiceButtonsPanel().setVisible(true);
+        }
+    }
+
+    /**
+     * Initialize demand, supplier and conversation tabs in Details sections.
+     * If details wrapper instance doesn't exist yet, create it and in response of
+     * creation initialize demand, supplier, conversation tabs.
+     * If instance already exist, initialize and show tabs immediately.
+     *
+     * @param demandId
+     */
+    private void initDetailSection(IUniversalDetail conversationDetail) {
+        if (detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
+        } else {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            detailSection.initDetails(
+                    conversationDetail.getDemandId(),
+                    conversationDetail.getSupplierId(),
+                    conversationDetail.getThreadRootId());
+            view.getChoiceButtonsPanel().setVisible(false);
+        }
+    }
+
+    /**************************************************************************/
+    /* Display data                                                           */
+    /**************************************************************************/
+    /**
+     * Display client's "My demands" and select item if requested.
      * @param data
      */
     public void onDisplayClientDemands(List<ClientDemandDetail> data) {
@@ -280,17 +329,31 @@ public class ClientDemandsPresenter
         }
     }
 
+    /**
+     * Display conversations for selected demand and select item if requested.
+     * If no conversations available:
+     * 1) don't display empty conversation table, leave visible demand table
+     * 2) display details wrapper for user to be able to edit demand.
+     *
+     * @param data Conversations for selected demand.
+     */
     public void onDisplayClientDemandConversations(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsDemandConversation");
-        view.setDemandTableVisible(false);
-        view.setConversationTableVisible(true);
-        view.getConversationPager().startLoading();
+        //if no data availbale, leave all as it is and dispaly details wrapper.
+        if (data.isEmpty()) {
+            initDetailSection(selectedDemandObject);
+            //otherwise display conversation table
+        } else {
+            view.setDemandTableVisible(false);
+            view.setConversationTableVisible(true);
+            view.getConversationPager().startLoading();
 
-        view.getConversationGrid().getDataProvider().updateRowData(
-                view.getConversationGrid().getStart(), data);
+            view.getConversationGrid().getDataProvider().updateRowData(
+                    view.getConversationGrid().getStart(), data);
 
-        if (selectedClientDemandConversationId != -1) {
-            eventBus.getClientDemandConversation(selectedClientDemandConversationId);
+            if (selectedClientDemandConversationId != -1) {
+                eventBus.getClientDemandConversation(selectedClientDemandConversationId);
+            }
         }
     }
 
@@ -386,8 +449,10 @@ public class ClientDemandsPresenter
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
                 ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
                         .getSelectionModel()).getSelectedObject();
+                view.getChoiceButtonsPanel().setVisible(false);
                 if (selected != null) {
                     selectedDemandObject = selected;
+                    initDetailSection(selected);
                     Storage.setDemandId(selected.getDemandId());
                     Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
@@ -419,15 +484,7 @@ public class ClientDemandsPresenter
                 } else {
                     IUniversalDetail selected = view.getConversationGrid().getSelectedObjects().get(0);
                     selectedConversationObject = selected;
-                    if (detailSection == null) {
-                        eventBus.requestDetailWrapperPresenter();
-                    } else {
-                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        detailSection.initDetails(
-                                selected.getDemandId(),
-                                selected.getSupplierId(),
-                                selected.getThreadRootId());
-                    }
+                    initDetailSection(selected);
                 }
             }
         });
@@ -472,7 +529,7 @@ public class ClientDemandsPresenter
     private void backBtnClickHandlerInner() {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         if (detailSection != null) {
-            detailSection.reset();
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
         }
         view.getDemandPager().startLoading();
         view.setConversationTableVisible(false);
