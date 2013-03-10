@@ -171,7 +171,10 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Locality locality) {
-        return this.getDao().getDemandsCountQuick(locality);
+        Validate.notNull(locality, "locality cannot be null!");
+        return locality.getAdditionalInfo() != null
+                ? locality.getAdditionalInfo().getDemandsCount()
+                : getDao().getDemandsCountQuick(locality);
     }
 
     /** {@inheritDoc} */
@@ -231,7 +234,10 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Category category) {
-        return this.getDao().getDemandsCountQuick(category);
+        Validate.notNull(category, "category cannot be null!");
+        return category.getAdditionalInfo() != null
+                ? category.getAdditionalInfo().getDemandsCount()
+                : getDao().getDemandsCountQuick(category);
     }
 
     /** {@inheritDoc} */

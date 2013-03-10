@@ -69,4 +69,9 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
     List<Locality> getLocalitiesByMinLength(int minLength, String namePrefix,
             LocalityType type);
 
+    /**
+     * Loads children of locality identified by LOCALITY_ID.
+     * @return all direct children of given locality
+     */
+    List<Locality> getSubLocalities(long localityId);
 }

@@ -1,11 +1,8 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -28,31 +25,6 @@ public interface RootRPCService extends RemoteService {
 
     String URL = "service/root";
 
-    /**************************************************************************/
-    /* Localities methods                                                     */
-    /**************************************************************************/
-    /**
-     * Returns locality list.
-     *
-     * @param type
-     * @return list locality list according to type
-     */
-    List<LocalityDetail> getLocalities(LocalityType type) throws RPCException;
-
-    /**
-     * Returns locality list.
-     *
-     * @param locId id of parent locality
-     * @return list locality children list
-     */
-    List<LocalityDetail> getLocalities(Long locId) throws RPCException;
-
-    /**************************************************************************/
-    /* Categories methods                                                     */
-    /**************************************************************************/
-    List<CategoryDetail> getCategories() throws RPCException;
-
-    List<CategoryDetail> getCategoryChildren(Long category) throws RPCException;
 
     /**************************************************************************/
     /* User methods                                                           */

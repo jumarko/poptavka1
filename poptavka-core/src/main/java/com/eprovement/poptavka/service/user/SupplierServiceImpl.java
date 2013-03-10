@@ -176,7 +176,10 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Locality locality) {
-        return this.getDao().getSuppliersCountQuick(locality);
+        Validate.notNull(locality, "locality cannot be null!");
+        return locality.getAdditionalInfo() != null
+                ? locality.getAdditionalInfo().getSuppliersCount()
+                : getDao().getSuppliersCountQuick(locality);
     }
 
     /**
@@ -260,7 +263,10 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Category category) {
-        return this.getDao().getSuppliersCountQuick(category);
+        Validate.notNull(category, "category cannot be null!");
+        return category.getAdditionalInfo() != null
+                ? category.getAdditionalInfo().getSuppliersCount()
+                : getDao().getSuppliersCountQuick(category);
     }
 
     /**

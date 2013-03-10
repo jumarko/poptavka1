@@ -27,7 +27,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     /** {@inheritDoc} */
     @Override
-    @Cacheable(cacheName = "cache5h")
+    @Cacheable(cacheName = "categoryCache")
     public List<Category> getRootCategories() {
         LOGGER.debug("action=get_root_categories status=start");
         final List<Category> rootCategories = getRootCategories(null);
@@ -37,7 +37,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     /** {@inheritDoc} */
     @Override
-    @Cacheable(cacheName = "cache5h")
+    @Cacheable(cacheName = "categoryCache")
     public List<Category> getRootCategories(ResultCriteria resultCriteria) {
         LOGGER.debug("action=get_root_categories_critiera status=start result_criteria={}", resultCriteria);
         final List<Category> rootCategories = getDao().getRootCategories(resultCriteria);
@@ -48,7 +48,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     /** {@inheritDoc} */
     @Override
-    @Cacheable(cacheName = "cache5h")
+    @Cacheable(cacheName = "categoryCache")
     public Category getCategory(Long id) {
         if (id == null) {
             return null;

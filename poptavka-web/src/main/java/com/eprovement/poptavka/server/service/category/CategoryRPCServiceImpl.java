@@ -38,15 +38,16 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         this.categoryConverter = categoryConverter;
     }
 
+    @Autowired
+    public void setSupplierService(SupplierService supplierService) throws RPCException {
+        this.supplierService = supplierService;
+    }
+
     @Override
     public CategoryDetail getCategory(long id) throws RPCException {
         return categoryConverter.convertToTarget(categoryService.getById(id));
     }
 
-    @Autowired
-    public void setSupplierService(SupplierService supplierService) throws RPCException {
-        this.supplierService = supplierService;
-    }
 
     @Override
     public List<CategoryDetail> getAllRootCategories() throws RPCException {
