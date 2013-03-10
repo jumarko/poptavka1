@@ -2,37 +2,35 @@ package com.eprovement.poptavka.service.user;
 
 import static com.eprovement.poptavka.domain.common.ResultCriteria.EMPTY_CRITERIA;
 
-import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.PotentialSupplier;
-import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
-import com.eprovement.poptavka.domain.user.rights.AccessRole;
-import com.eprovement.poptavka.service.demand.PotentialDemandService;
-import com.eprovement.poptavka.service.demand.SuppliersSelection;
-import com.google.common.base.Preconditions;
-import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.user.SupplierDao;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
-import com.eprovement.poptavka.domain.register.Registers;
-import com.eprovement.poptavka.domain.settings.NotificationItem;
+import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.demand.PotentialSupplier;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.service.demand.PotentialDemandService;
+import com.eprovement.poptavka.service.demand.SuppliersSelection;
+import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
-import com.eprovement.poptavka.util.notification.NotificationUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.googlecode.ehcache.annotations.Cacheable;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Juraj Martinka
@@ -42,7 +40,6 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierServiceImpl.class);
 
-    private final NotificationUtils notificationUtils;
     private final List<AccessRole> supplierAccessRoles;
 
     private DemandService demandService;
@@ -51,11 +48,11 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
 
     public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
-            RegisterService registerService, UserVerificationService userVerificationService) {
-        super(generalService, registerService, userVerificationService);
-        Preconditions.checkNotNull(supplierDao);
+            RegisterService registerService, UserVerificationService userVerificationService,
+            NotificationTypeService notificationTypeService) {
+        super(generalService, registerService, userVerificationService, notificationTypeService);
+        Validate.notNull(supplierDao);
         setDao(supplierDao);
-        this.notificationUtils = new NotificationUtils(registerService);
         this.supplierAccessRoles = Arrays.asList(
                 getRegisterService().getValue(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE, AccessRole.class),
                 getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class));
@@ -92,14 +89,20 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     public Supplier create(Supplier businessUserRole) {
         LOGGER.info("action=create_supplier status=start supplier={}", businessUserRole);
-        createDefaultNotifications(businessUserRole);
-        createDefaultAccessRole(businessUserRole);
         final Supplier createdSupplier = super.create(businessUserRole);
-
         sendPotentialDemandsToNewSupplier(businessUserRole);
-
         LOGGER.info("action=create_supplier status=finish supplier={}", createdSupplier);
         return createdSupplier;
+    }
+
+    @Override
+    protected List<AccessRole> getDefaultAccessRoles() {
+        return supplierAccessRoles;
+    }
+
+    @Override
+    protected List<Notification> getNotifications() {
+        return notificationTypeService.getNotificationsForSupplier();
     }
 
 
@@ -328,41 +331,6 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
                 return newPotentialSupplier.getSupplier().equals(((PotentialSupplier) object).getSupplier());
             }
         });
-    }
-
-
-    private void createDefaultNotifications(Supplier businessUserRole) {
-        final List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
-        notificationItems.add(
-                this.notificationUtils.createInstantNotificationItem(
-                        Registers.Notification.SUPPLIER_NEW_DEMAND, true));
-        notificationItems.add(
-                this.notificationUtils.createInstantNotificationItem(
-                        Registers.Notification.SUPPLIER_NEW_MESSAGE, true));
-        notificationItems.add(
-                this.notificationUtils.createInstantNotificationItem(
-                        Registers.Notification.SUPPLIER_NEW_OPERATOR, true));
-        notificationItems.add(
-                this.notificationUtils.createInstantNotificationItem(
-                        Registers.Notification.SUPPLIER_NEW_INFO, false));
-        notificationItems.add(
-                this.notificationUtils.createInstantNotificationItem(
-                        Registers.Notification.SUPPLIER_OFFER_STATUS_CHANGED, false));
-        LOGGER.info("action=client_create_default_notifications supplier={} notifications={}",
-                businessUserRole, notificationItems);
-        businessUserRole.getBusinessUser().getSettings().setNotificationItems(notificationItems);
-    }
-
-
-    private void createDefaultAccessRole(Supplier businessUserRole) {
-        Validate.notNull(businessUserRole);
-        Preconditions.checkNotNull(businessUserRole.getBusinessUser(), "Supplier.businessUser must not be null!");
-        if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
-            LOGGER.info("action=client_create_default_access_roles client={} roles={}",
-                    businessUserRole, supplierAccessRoles);
-            businessUserRole.getBusinessUser().setAccessRoles(supplierAccessRoles);
-        }
-
     }
 
 }

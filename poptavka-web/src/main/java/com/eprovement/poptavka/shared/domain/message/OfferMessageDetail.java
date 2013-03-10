@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain.message;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.validation.constraints.Future;
@@ -9,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
-public class OfferMessageDetail implements IsSerializable {
+public class OfferMessageDetail extends MessageDetail {
 
     public enum MessageField {
 
@@ -30,10 +29,7 @@ public class OfferMessageDetail implements IsSerializable {
     /**************************************************************************/
     /* Attibutes                                                              */
     /**************************************************************************/
-    private long senderId;
-    private long parentId;
     private long supplierId;
-    private long threadRootId;
     @NotBlank(message = "{messageNotBlankBody}")
     @Size(min = 10, message = "{messageSizeBody}")
     private String body;
@@ -44,39 +40,12 @@ public class OfferMessageDetail implements IsSerializable {
     @Future(message = "{messageFutureFinishDate}")
     private Date finishDate;
 
-    /**************************************************************************/
-    /* Getters & Setters pairs                                                */
-    /**************************************************************************/
-    public long getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(long senderId) {
-        this.senderId = senderId;
-    }
-
-    public long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(long parentId) {
-        this.parentId = parentId;
-    }
-
     public long getSupplierId() {
         return supplierId;
     }
 
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
-    }
-
-    public long getThreadRootId() {
-        return threadRootId;
-    }
-
-    public void setThreadRootId(long threadRootId) {
-        this.threadRootId = threadRootId;
     }
 
     public void setBody(String body) {

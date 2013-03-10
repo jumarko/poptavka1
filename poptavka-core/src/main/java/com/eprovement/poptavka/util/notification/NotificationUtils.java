@@ -27,6 +27,7 @@ public class NotificationUtils {
         final NotificationItem notificationItem = new NotificationItem();
         notificationItem.setNotification(this.registerService.getValue(notificationCode, Notification.class));
         notificationItem.setEnabled(enabled);
+        // TODO: change period
         notificationItem.setPeriod(Period.INSTANTLY);
         return notificationItem;
     }

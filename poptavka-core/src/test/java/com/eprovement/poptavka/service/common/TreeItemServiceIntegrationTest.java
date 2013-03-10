@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
  *         Date: 12.2.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
@@ -86,7 +87,6 @@ public class TreeItemServiceIntegrationTest extends DBUnitIntegrationTest {
     /**
      * Checks whether method {@link com.eprovement.poptavka.domain.common.TreeItem#isLeaf()} returns true
      * for tree item id which is really a leaf.
-     * @param leafTreeIItemId
      */
     private void checkIsLeaf(TreeItem treeItem) {
         assertTrue("TreeItem=" + treeItem + " is expected to be a leaf but TreeItem.isLeaf returned false ",

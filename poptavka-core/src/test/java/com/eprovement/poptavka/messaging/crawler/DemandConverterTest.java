@@ -21,6 +21,7 @@ import org.springframework.core.convert.converter.Converter;
  *         Date: 16.5.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",

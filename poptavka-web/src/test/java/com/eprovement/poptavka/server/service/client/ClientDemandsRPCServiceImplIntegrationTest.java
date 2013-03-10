@@ -44,6 +44,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *         Date: 20.12.10
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",

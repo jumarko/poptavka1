@@ -11,6 +11,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.demand.SuppliersSelection;
+import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,8 @@ public class SupplierServiceImplTest {
     @Before
     public void setUp() {
         final SupplierServiceImpl supplierService = new SupplierServiceImpl(mock(GeneralService.class),
-                mock(SupplierDao.class), mock(RegisterService.class), mock(UserVerificationService.class));
+                mock(SupplierDao.class), mock(RegisterService.class), mock(UserVerificationService.class),
+                mock(NotificationTypeService.class));
 
         this.demandServiceMock = mock(DemandService.class);
         supplierService.setDemandService(demandServiceMock);

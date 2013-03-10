@@ -45,6 +45,19 @@ public interface MessageService extends GenericService<Message, MessageDao> {
     Message newReply(Message inReplyTo, User user);
 
     /**
+     * For given message {@code inReplyTo} and {@code sender} which wants to send reply for {@code inReplyTo}
+     * finds the other user to which the reply will be delivered.
+     * <p>
+     * This implementation finds user by calling {@link com.eprovement.poptavka.domain.message.Message#getParent()}
+     * until the sender is different from {@code sender}.
+     * </p>
+     * @param inReplyTo message for which we want to send reply
+     * @param sender sender who wants to send reply
+     * @return user to whom the reply will be sent
+     */
+    User getUserForReply(Message inReplyTo, User sender);
+
+    /**
      * Load all message threads' roots for specified <code>user</code>.
      * No default ordering is applied! (if <code>resultCriteria</code> is null or ordering is not specified by it).
      *
@@ -234,7 +247,8 @@ public interface MessageService extends GenericService<Message, MessageDao> {
     /**
      * Sends a message to the recipients stored in the message.
      * It creates <code>UserMessage</code>s for all the recipients enabling
-     * them to see the message.
+     * them to see the message as well as send them appropriate notification via email (if they have suitable
+     * notification settings).
      * It also places the message properly within the message tree structure.
      *
      * @param message
@@ -274,12 +288,4 @@ public interface MessageService extends GenericService<Message, MessageDao> {
     Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
             OfferState pendingState);
 
-    /**
-     * A status message will be sent into conversation between client and supplier.
-     *
-     * @param latestUserMessageId of latest UserMessage
-     * @param user user on whose behalf system sends a status message
-     * @param messageBody localized text of the message
-     */
-    void sendGeneratedMessage(long latestUserMessageId, User user, String messageBody);
 }

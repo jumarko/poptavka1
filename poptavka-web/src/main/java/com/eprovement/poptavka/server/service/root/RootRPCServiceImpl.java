@@ -42,6 +42,7 @@ import java.util.Date;
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,6 +62,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     private MessageService messageService;
     private UserMessageService userMessageService;
     private UserVerificationService userVerificationService;
+
     //Converters
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
@@ -242,53 +244,33 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
-        User sender = this.generalService.find(User.class, questionMessageToSend.getSenderId());
-        Message message = messageService.newReply(this.messageService.getById(
-                questionMessageToSend.getParentId()),
-                sender);
-        message.setBody(questionMessageToSend.getBody());
-        message.setSubject(questionMessageToSend.getSubject());
-        messageService.send(message);
-//            Don't undersand create method here?
-//            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(message));
-//            Isn't creating detail object enough?
-//            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(message);
-        MessageDetail messageDetail = messageConverter.convertToTarget(message);
-        // set latest user message
-        UserMessage userMessage = userMessageService.getUserMessage(message, sender);
-        // update isStarred
-        userMessage.setStarred(questionMessageToSend.isStarred());
-        userMessageService.update(userMessage);
-
-        messageDetail.setUserMessageId(userMessage.getId());
-        messageDetail.setRead(userMessage.isRead());
-        messageDetail.setStarred(userMessage.isStarred());
-        return messageDetail;
+        final ReplyMessage replyMessage = sendReplyMessage(questionMessageToSend);
+        return getMessageDetail(replyMessage);
     }
+
 
     @Override
     public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
-        Message message = messageService.newReply(this.messageService.getById(
-                offerMessageToSend.getParentId()),
-                this.generalService.find(User.class, offerMessageToSend.getSenderId()));
-        message.setBody(offerMessageToSend.getBody());
+        final ReplyMessage replyMessage = sendReplyMessage(offerMessageToSend);
         // TODO RELEASE ivlcek - create converter for offer
         // update demand entity
-        Demand demand = message.getDemand();
+        final Demand demand = replyMessage.message.getDemand();
         demand.setStatus(DemandStatus.OFFERED);
         generalService.save(demand);
-        Offer offer = new Offer();
+        replyMessage.message.setOffer(createOfferFromMessage(offerMessageToSend, replyMessage.message));
+        // TODO RELEASE ivlcek - shall I save message here or shall I let send() method do it?
+        return getMessageDetail(replyMessage);
+    }
+
+    private Offer createOfferFromMessage(OfferMessageDetail offerMessageToSend, Message message) {
+        final Offer offer = new Offer();
         offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
         offer.setFinishDate(offerMessageToSend.getFinishDate());
         offer.setPrice(offerMessageToSend.getPrice());
         offer.setState(generalService.find(OfferState.class, 2L));
         offer.setDemand(message.getDemand());
         offer.setCreated(new Date());
-        Offer offerFromDB = generalService.save(offer);
-        message.setOffer(offerFromDB);
-        // TODO RELEASE ivlcek - shall I save message here or shall I let send() method do it?
-        messageService.send(message);
-        return messageConverter.convertToTarget(message);
+        return generalService.save(offer);
     }
 
     /**************************************************************************/
@@ -354,9 +336,60 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     public String resetPassword(long userId) throws RPCException {
         String randomPassword = RandomStringUtils.randomAlphabetic(8);
-        final User user = (User) this.generalService.find(User.class, userId);
+        final User user = this.generalService.find(User.class, userId);
         user.setPassword(randomPassword);
         generalService.save(user);
         return randomPassword;
+    }
+
+
+    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+
+    /**
+     * Sends new reply to the sender of original message.
+     * @param replyMessageToSend message envelope containing information about message to be send
+     * @return message representing reply which has been sent
+     */
+    private ReplyMessage sendReplyMessage(MessageDetail replyMessageToSend) {
+        final User sender = this.generalService.find(User.class, replyMessageToSend.getSenderId());
+        final Message originalMessage = this.messageService.getById(replyMessageToSend.getParentId());
+        final Message replyMessage = messageService.newReply(originalMessage, sender);
+        replyMessage.setBody(replyMessageToSend.getBody());
+        replyMessage.setSubject(replyMessageToSend.getSubject());
+        messageService.send(replyMessage);
+
+        // update isStarred for latest user message
+        final UserMessage replyUserMessage = updateIsStarredForUserMessage(replyMessageToSend.isStarred(),
+                sender, replyMessage);
+
+        return new ReplyMessage(replyMessage, replyUserMessage);
+    }
+
+    private static final class ReplyMessage {
+        private final Message message;
+        private final UserMessage userMessage;
+
+        private ReplyMessage(Message message, UserMessage userMessage) {
+            Validate.notNull(message, "message cannot be null!");
+            Validate.notNull(userMessage, "userMessage cannot be null!");
+            this.message = message;
+            this.userMessage = userMessage;
+        }
+    }
+
+
+    private UserMessage updateIsStarredForUserMessage(boolean starred, User sender, Message newMessage) {
+        final UserMessage userMessage = userMessageService.getUserMessage(newMessage, sender);
+        userMessage.setStarred(starred);
+        userMessageService.update(userMessage);
+        return userMessage;
+    }
+
+    private MessageDetail getMessageDetail(ReplyMessage replyMessage) {
+        final MessageDetail messageDetail = messageConverter.convertToTarget(replyMessage.message);
+        messageDetail.setUserMessageId(replyMessage.userMessage.getId());
+        messageDetail.setRead(replyMessage.userMessage.isRead());
+        messageDetail.setStarred(replyMessage.userMessage.isStarred());
+        return messageDetail;
     }
 }

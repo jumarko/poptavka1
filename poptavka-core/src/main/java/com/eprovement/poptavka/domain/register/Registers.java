@@ -6,24 +6,27 @@ package com.eprovement.poptavka.domain.register;
 public final class Registers {
 
 
-    public static final class Notification {
-        // NONREGISTERED
-        public static final String NONREGISTERED_CLIENT = "nonregistered.client";
-        public static final String NONREGISTERED_SUPPLIER = "nonregistered.supplier";
 
-        // CLIENT
-        public static final String SUPPLIER_NEW_MESSAGE = "new.message.supplier";
-        public static final String SUPPLIER_NEW_DEMAND = "new.demand";
-        public static final String SUPPLIER_NEW_INFO = "new.info";
-        public static final String SUPPLIER_NEW_OPERATOR = "new.operator";
-        public static final String SUPPLIER_OFFER_STATUS_CHANGED = "offer.status.changed";
+    public static enum Notification {
 
-        // CLIENT
-        public static final String CLIENT_NEW_MESSAGE = "new.message.client";
-        public static final String CLIENT_NEW_INFO = "new.info.client";
-        public static final String CLIENT_NEW_OFFER = "new.offer";
-        public static final String CLIENT_DEMAND_STATUS_CHANGED = "demand.status.changed";
-        public static final String CLIENT_NEW_OPERATOR = "new.operator.client";
+        NEW_MESSAGE("new.message"),
+        NEW_INFO ("new.info"),
+        NEW_MESSAGE_OPERATOR("new.message.operator"),
+
+        NEW_DEMAND("new.demand"),
+        OFFER_STATUS_CHANGED("offer.status.changed"),
+        NEW_OFFER("new.offer"),
+        DEMAND_STATUS_CHANGED("demand.status.changed");
+
+        private final String code;
+
+        private Notification(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
     }
 
 

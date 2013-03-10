@@ -4,27 +4,25 @@ import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.user.BusinessUserData;
-import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.service.user.ClientService;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Juraj Martinka
  *         Date: 24.4.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
@@ -37,22 +35,10 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
     private LocalityService localityService;
 
     @Autowired
-    private ClientService clientService;
-
-    @Autowired
     private DemandService demandService;
 
     @Autowired
     private CategoryService categoryService;
-
-
-    private Client exampleClient;
-
-
-    @Before
-    public void setUp() {
-        this.exampleClient = createExampleClient();
-    }
 
 
     //--------------------------------  METHODS FOR TESTING filtering based on <code>ResultCriteria</code> -------------
@@ -67,7 +53,6 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetAllWithMaxResults() {
         // restrict number of demands - no ordering is guaranteed!
-        final int maxDemands = 5;
         final List<Demand> allDemandsMaxResults = this.demandService.getAll(new ResultCriteria.Builder()
                 .maxResults(5)
                 .build());
@@ -148,18 +133,7 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
     }
 
 
-
-
-
     //----------------------------------  HELPER METHODS ---------------------------------------------------------------
-
-    private Client createExampleClient() {
-        final Client client = new Client();
-        client.getBusinessUser().setBusinessUserData(
-                new BusinessUserData.Builder().personFirstName("Elv\u00edra").personLastName("Vytret\u00e1").build());
-        return client;
-    }
-
 
     private void checkDemandExistence(final Long id, Collection<Demand> allDemands) {
         Assert.assertTrue(CollectionUtils.exists(allDemands, new Predicate() {

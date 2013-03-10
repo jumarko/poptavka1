@@ -11,8 +11,8 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
-import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import com.eprovement.poptavka.service.notification.NotificationService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.eprovement.poptavka.util.strings.ToStringUtils;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.googlecode.genericdao.search.Search;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,15 +36,17 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageServiceImpl.class);
 
-    private GeneralService generalService;
     private UserMessageService userMessageService;
+    private final NotificationService notificationService;
 
-    public MessageServiceImpl(MessageDao messageDao,
-            GeneralService generalService,
-            UserMessageService userMessageService) {
+    public MessageServiceImpl(MessageDao messageDao, UserMessageService userMessageService,
+                              NotificationService notificationService) {
+        Validate.notNull(messageDao, "messageDao cannot be null!");
+        Validate.notNull(userMessageService, "userMessageService cannot be null!");
+        Validate.notNull(notificationService, "notificationService cannot be null!");
         setDao(messageDao);
-        this.generalService = generalService;
         this.userMessageService = userMessageService;
+        this.notificationService = notificationService;
     }
 
     /** {@inheritDoc} */
@@ -73,8 +76,8 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
-    public Message newReply(Message inReplyTo, User user) {
-        Message message = this.newThreadRoot(user);
+    public Message newReply(Message inReplyTo, User sender) {
+        Message message = this.newThreadRoot(sender);
         message.setParent(inReplyTo);
         message.setThreadRoot(inReplyTo.getThreadRoot());
         if (inReplyTo.getDemand() != null) {
@@ -95,19 +98,27 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         }
         MessageUserRole messageUserRole = new MessageUserRole();
         messageUserRole.setMessage(message);
-        Message addresseeMessage = inReplyTo;
-        while (addresseeMessage.getParent() != null
-                && !addresseeMessage.equals(addresseeMessage.getParent())
-                && addresseeMessage.getSender().equals(user)) {
-            addresseeMessage = addresseeMessage.getParent();
-        }
-        messageUserRole.setUser(addresseeMessage.getSender());
+        final User otherUser = getUserForReply(inReplyTo, sender);
+        messageUserRole.setUser(otherUser);
         messageUserRole.setType(MessageUserRoleType.TO);
-        List<MessageUserRole> messageUserRoles = new ArrayList();
+        List<MessageUserRole> messageUserRoles = new ArrayList<>();
         messageUserRoles.add(messageUserRole);
         message.setRoles(messageUserRoles);
         update(message);
         return message;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserForReply(Message inReplyTo, User sender) {
+        Validate.notNull(inReplyTo, "");
+        Message addresseeMessage = inReplyTo;
+        while (addresseeMessage.getParent() != null
+                && !addresseeMessage.equals(addresseeMessage.getParent())
+                && addresseeMessage.getSender().equals(sender)) {
+            addresseeMessage = addresseeMessage.getParent();
+        }
+        return addresseeMessage.getSender();
     }
 
 
@@ -232,7 +243,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Override
     @Transactional(readOnly = true)
     public List<Message> getAllDescendants(Message message) {
-        List<Message> messages = new ArrayList();
+        List<Message> messages = new ArrayList<>();
         messages.add(message);
         return getAllDescendants(messages);
 
@@ -254,7 +265,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Transactional(readOnly = true)
     public int getAllDescendantsCount(Message message) {
-        List<Message> messages = new ArrayList();
+        List<Message> messages = new ArrayList<>();
         messages.add(message);
         return getAllDescendantsCount(messages);
     }
@@ -273,7 +284,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Transactional(readOnly = true)
     @Override
     public int getAllDescendantsCount(Message message, User user) {
-        List<Message> messages = new ArrayList();
+        List<Message> messages = new ArrayList<>();
         messages.add(message);
         return getAllDescendantsCount(messages, user);
     }
@@ -298,7 +309,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Transactional(readOnly = true)
     @Override
     public int getUnreadDescendantsCount(Message message, User user) {
-        List<Message> messages = new ArrayList();
+        List<Message> messages = new ArrayList<>();
         messages.add(message);
         return getUnreadDescendantsCount(messages, user);
     }
@@ -317,13 +328,14 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
                     || (role.getType() == MessageUserRoleType.CC)
                     || (role.getType() == MessageUserRoleType.BCC)) {
                 // we got one of the recipients of the message
-                userMessageService.createUserMessage(message, role.getUser());
+                final UserMessage userMessage = userMessageService.createUserMessage(message, role.getUser());
+                notificationService.notifyUserNewMessage(userMessage);
             }
         }
         message.setMessageState(MessageState.SENT);
         message.setLastModified(new Date());
         message.setSent(new Date());
-        // placing the message in the tree structre
+        // placing the message in the tree structure
         if (message.getParent() != null) {
             Message parent = message.getParent();
             if (parent.getFirstBorn() == null) {
@@ -332,23 +344,9 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
                 this.getLastChild(parent).setNextSibling(message);
             }
             parent.setMessageState(MessageState.REPLY_RECEIVED);
-            parent = update(parent);
+            update(parent);
         }
         update(message);
-    }
-
-    /**
-     * A status message will be sent into conversation between client and supplier.
-     *
-     * @param latestUserMessageId of latest UserMessage
-     * @param user user on whose behalf system sends a status message
-     * @param messageBody localized text of the message
-     */
-    public void sendGeneratedMessage(long latestUserMessageId, User user, String messageBody) {
-        UserMessage latestUserMessage = userMessageService.getById(latestUserMessageId);
-        Message message = newReply(latestUserMessage.getMessage(), user);
-        message.setBody(messageBody);
-        send(message);
     }
 
 }

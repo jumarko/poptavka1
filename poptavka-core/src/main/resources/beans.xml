@@ -37,7 +37,7 @@
 
     <bean id="userMessageDao" class="com.eprovement.poptavka.dao.usermessage.UserMessageDaoImpl" />
 
-    <bean id="OfferDao" class="com.eprovement.poptavka.dao.offer.OfferDaoImpl" />
+    <bean id="offerDao" class="com.eprovement.poptavka.dao.offer.OfferDaoImpl" />
 
 
     <!-- Service -->
@@ -59,6 +59,7 @@
         <constructor-arg ref="generalService" />
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
+        <constructor-arg ref="notificationTypeService" />
         <property name="dao" ref="clientDao"/>
     </bean>
 
@@ -99,6 +100,7 @@
         <constructor-arg ref="supplierDao" />
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
+        <constructor-arg ref="notificationTypeService" />
         <property name="demandService" ref="demandService" />
         <property name="potentialDemandService" ref="potentialDemandsService" />
         <property name="suppliersSelection" ref="supplierSelection" />
@@ -106,8 +108,8 @@
 
     <bean id="messageService" class="com.eprovement.poptavka.service.message.MessageServiceImpl">
         <constructor-arg ref="messageDao" />
-        <constructor-arg ref="generalService" />
         <constructor-arg ref="userMessageService" />
+        <constructor-arg ref="notificationService"/>
     </bean>
 
     <bean id="userMessageService" class="com.eprovement.poptavka.service.usermessage.UserMessageServiceImpl">
@@ -116,7 +118,7 @@
     </bean>
 
     <bean id="offerService" class="com.eprovement.poptavka.service.offer.OfferServiceImpl">
-        <constructor-arg ref="OfferDao" />
+        <constructor-arg ref="offerDao" />
         <property name="registerService" ref="registerService" />
     </bean>
 
@@ -124,8 +126,19 @@
         <constructor-arg ref="demandConverter" />
         <constructor-arg ref="demandService" />
     </bean>
-    
-    <bean id="notificationItemService" class="com.eprovement.poptavka.service.message.settings.NotificationItemServiceImpl" />
+
+    <bean id="notificationTypeService" class="com.eprovement.poptavka.service.notification.NotificationTypeServiceImpl" >
+        <constructor-arg ref="generalService"/>
+    </bean>
+    <bean id="notificationItemService" class="com.eprovement.poptavka.service.notification.NotificationItemServiceImpl" />
+    <bean id="notificationSender" class="com.eprovement.poptavka.service.notification.MailNotificationSender">
+        <constructor-arg index="0" ref="mailService"/>
+        <constructor-arg index="1" value="${mail.noreply.address}"/>
+    </bean>
+    <bean id="notificationService" class="com.eprovement.poptavka.service.notification.NotificationServiceImpl">
+        <constructor-arg index="0" ref="registerService"/>
+        <constructor-arg index="1" ref="notificationSender"/>
+    </bean>
 
     <bean id="userVerificationService" class="com.eprovement.poptavka.service.user.UserVerificationServiceImpl">
         <constructor-arg ref="generalService" />
@@ -143,6 +156,7 @@
         <constructor-arg ref="messageService"/>
         <constructor-arg ref="userMessageService"/>
         <constructor-arg ref="supplierSelection"/>
+        <constructor-arg ref="notificationService"/>
     </bean>
 
     <!-- Other -->
