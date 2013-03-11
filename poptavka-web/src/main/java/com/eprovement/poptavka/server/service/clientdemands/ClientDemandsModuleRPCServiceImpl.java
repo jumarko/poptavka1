@@ -670,7 +670,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final Client client = findClient(userId);
         final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
         clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterEqual("status", DemandStatus.CLOSED);
+        clientDemandsSearch.addFilterIn("status", DemandStatus.CLOSED, DemandStatus.PENDINGCOMPLETION);
         clientDemandsSearch.addFilterEqual("client", client);
         clientDemandsSearch.addFilterNotNull("rating");
         List<Demand> demandsWithRating = generalService.search(clientDemandsSearch);
@@ -1033,5 +1033,36 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Offer offer = offerService.getById(offerID);
         offer.setState(offerService.getOfferState(OfferStateType.CLOSED.getValue()));
         offerService.update(offer);
+        recalculateSupplierOveralRating(offer.getSupplier());
+    }
+
+    /**
+     * Recalculate overall <code>Supplier</code> rating from all ratings posted by <code>Client</code>-s.
+     *
+     * @param supplier whose overalRating will be recalculated.
+     */
+    private void recalculateSupplierOveralRating(Supplier supplier) {
+        if (supplier == null) {
+            throw new IllegalArgumentException("Passed Supplier object is null");
+        }
+        final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
+        final OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final Search offersWithRatingSearch = new Search(Offer.class);
+        offersWithRatingSearch.addFilterIn("state", offerClosed, offerCompleted);
+        offersWithRatingSearch.addFilterEqual("supplier", supplier);
+        offersWithRatingSearch.addFilterNotNull("demand.rating");
+        List<Offer> offersWithRating = generalService.search(offersWithRatingSearch);
+
+        int numberOfRatings = 0;
+        int ratingSum = 0;
+        for (Offer offer : offersWithRating) {
+            if (offer.getDemand().getRating().getClientRating() != null) {
+                ratingSum = ratingSum + offer.getDemand().getRating().getClientRating().intValue();
+                numberOfRatings++;
+            }
+        }
+        Double ratingScore = (double) ratingSum / numberOfRatings;
+        supplier.setOveralRating(Integer.valueOf(ratingScore.intValue()));
+        generalService.save(supplier);
     }
 }
