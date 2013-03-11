@@ -195,6 +195,18 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
      * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier
+     *
+     * @param user the supplier whose conversations to get
+     * @param search defines how to filter, sort and trim the result
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user, Search search);
+
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
      * that are accessible to the supplier where an offer has been made
      *
      * @param user the supplier whose conversations to get
@@ -202,6 +214,18 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * messages in each conversation
      */
     Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
+
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where an offer has been made
+     *
+     * @param user the supplier whose conversations to get
+     * @param search defines how to filter, sort and trim the result
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState, Search search);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -236,6 +260,20 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
      * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where an offer is in state ACCEPTED or COMPLETED.
+     *
+     * @param user the supplier whose conversations to get
+     * @param queryName
+     * @param search defines how to filter, sort and trim the result
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+            OfferState offerStateAccepted, OfferState offerStateCompleted, Search search);
+
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
      * that are accessible to the supplier where where <code>DemandStatus</code> is CLOSED.
      *
      * @param user the supplier whose conversations to get
@@ -243,6 +281,18 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * messages in each conversation
      */
     Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user);
+
+    /**
+     * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
+     * supplier's conversations along with the counts of messages in each conversation
+     * that are accessible to the supplier where where <code>DemandStatus</code> is CLOSED.
+     *
+     * @param user the supplier whose conversations to get
+     * @param search defines how to filter, sort and trim the result
+     * @return map of the latest <code>UserMessage</code> ids and number of
+     * messages in each conversation
+     */
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, Search search);
 
    /**
     * Gets a list of all client's conversation related to their demands where
@@ -256,6 +306,20 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     */
     Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
             User user, Message root);
+
+   /**
+    * Gets a list of all client's conversation related to their demands where
+    * no offer has been made
+    *
+    * @param user The client whose demands to get
+     * @param search defines how to filter, sort and trim the result
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>User</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
+            User user, Message root, Search search);
 
     /** Retrieves the count of client's conversations where an offer has not
      * been made
