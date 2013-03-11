@@ -48,7 +48,9 @@
                                 </b:Column>
                             </b:FluidRow>
                         </b:Column>
-                        <!-- *************************** URGENCY *************************** -->
+                    </b:FluidRow>
+                    <!-- *************************** URGENCY *************************** -->
+                    <b:FluidRow>
                         <b:Column size="6">
                             <b:FluidRow>
                                 <b:Column size="12">
@@ -129,7 +131,7 @@
                                     </g:Label>
                                 </b:Column>
                             </b:FluidRow>
-                        </b:Column>
+                        </b:Column>                    
                     </b:FluidRow>
                 </b:WellForm>
             </b:Column>
