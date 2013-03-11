@@ -11,4 +11,7 @@ import com.google.gwt.resources.client.CssResource;
 public interface CreateTabPanel extends CssResource {
     @ClassName("createTabPanel")
     String createTabPanel();
+
+    @ClassName("fourStepTabPanel")
+    String fourStepTabPanel();
 }

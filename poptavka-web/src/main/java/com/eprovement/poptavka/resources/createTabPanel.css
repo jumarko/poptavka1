@@ -153,14 +153,10 @@
     margin-right: -8px;
     position: relative;
     text-align: center;
-    width: 247px;
+    width: 246px;
     border-radius: 5px 0 0 5px;
     -moz-border-radius: 5px 0 0 5px;
     -webkit-border-radius: 5px 0 0 5px;
-}
-
-.createTabPanel .gwt-TabLayoutPanelTab:first-child .customHeader {
-    width: 244px;
 }
 
 /* error control groups */
@@ -178,7 +174,7 @@
     -webkit-border-radius: 0 5px 0 0;
 }
 
-.createTabPanel .error .controls .label-container {
+.createTabPanel .controls .label-container {
     display: block;
     padding: 0 0 0 4px;
     position: absolute;
@@ -188,4 +184,8 @@
 
 .createTabPanel .error .controls input {
     border: 1px solid #f00000;
+}
+
+.fourStepTabPanel .customHeader  {
+    width: 305px;    
 }

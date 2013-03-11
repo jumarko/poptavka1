@@ -8,41 +8,27 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
-        }
-        .listBoxWidth {
-        width:200px;
-        }
-        .text-left {
-        text-align: right;
-        }
-    </ui:style>
-
     <g:HTMLPanel>
         <b:FluidRow>
-            <b:Column size="6">
+            <b:Column size="4">
                 <g:Label>
                     <ui:msg key="formCity">City</ui:msg>*
                 </g:Label>
             </b:Column>
-            <b:Column size="6">
+            <b:Column size="8">
                 <cm:ChangeMonitor ui:field='cityMonitor'>
-                    <g:SuggestBox title="suggestBoxCity" styleName="{style.listBoxWidth}"
-                              ui:field="cityBox" limit="7" />
+                    <g:SuggestBox title="suggestBoxCity" ui:field="cityBox" limit="7" />
                 </cm:ChangeMonitor>
             </b:Column>
         </b:FluidRow>
 
         <b:FluidRow>
-            <b:Column size="6">
+            <b:Column size="4">
                 <g:Label>
                     <ui:msg key="formZipCode">Zip Code</ui:msg>*
                 </g:Label>
             </b:Column>
-            <b:Column size="6">
+            <b:Column size="8">
                 <cm:ChangeMonitor ui:field='zipcodeMonitor'>
                     <g:TextBox/>
                 </cm:ChangeMonitor>
@@ -50,12 +36,12 @@
         </b:FluidRow>
 
         <b:FluidRow>
-            <b:Column size="6">
+            <b:Column size="4">
                 <g:Label>
                     <ui:msg key="formStreet">Street</ui:msg>*
                 </g:Label>
             </b:Column>
-            <b:Column size="6">
+            <b:Column size="8">
                 <cm:ChangeMonitor ui:field='streetMonitor'>
                     <g:TextBox />
                 </cm:ChangeMonitor>
