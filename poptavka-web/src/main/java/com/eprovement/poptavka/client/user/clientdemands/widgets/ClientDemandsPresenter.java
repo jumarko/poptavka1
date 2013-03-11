@@ -248,7 +248,7 @@ public class ClientDemandsPresenter
      * @param detailSection Details wrapper instance.
      */
     public void onResponseDetailWrapperPresenter(final DetailsWrapperPresenter detailSection) {
-        if (detailSection == null) {
+        if (detailSection != null) {
             detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
             detailSection.getView().getContainer().addSelectionHandler(
                     new SelectionHandler<Integer>() {
@@ -264,10 +264,10 @@ public class ClientDemandsPresenter
 
             this.detailSection = detailSection;
 
-            if (selectedDemandObject != null) {
-                initDetailSection(selectedDemandObject);
-            } else if (selectedConversationObject != null) {
+            if (selectedConversationObject != null) {
                 initDetailSection(selectedConversationObject);
+            } else if (selectedDemandObject != null) {
+                initDetailSection(selectedDemandObject);
             }
         }
     }
@@ -340,10 +340,7 @@ public class ClientDemandsPresenter
     public void onDisplayClientDemandConversations(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsDemandConversation");
         //if no data availbale, leave all as it is and dispaly details wrapper.
-        if (data.isEmpty()) {
-            initDetailSection(selectedDemandObject);
-            //otherwise display conversation table
-        } else {
+        if (!data.isEmpty()) {
             view.setDemandTableVisible(false);
             view.setConversationTableVisible(true);
             view.getConversationPager().startLoading();
@@ -531,6 +528,9 @@ public class ClientDemandsPresenter
         if (detailSection != null) {
             detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
         }
+        selectedDemandObject = null;
+        selectedConversationObject = null;
+        view.getConversationGrid().getSelectionModel().clear();
         view.getDemandPager().startLoading();
         view.setConversationTableVisible(false);
         view.setDemandTableVisible(true);
