@@ -3,6 +3,7 @@ package com.eprovement.poptavka.util.search;
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
@@ -11,9 +12,13 @@ import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections.map.LinkedMap;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -138,6 +143,36 @@ public class SearcherTest extends DBUnitIntegrationTest {
         checkUserMessageExists(503L, inboxFiltered);
     }
 
+    @Test
+    public void testSearchMapByKeys() throws SearcherException {
+        Map<Message, Integer> messageCounts = new HashMap(); 
+        
+        Message message = new Message();
+        message.setSubject("z");
+        message.setId(1L);
+        messageCounts.put(message, 1);
+
+        Message message2 = new Message();
+        message2.setSubject("c");
+        message2.setId(2L);
+        messageCounts.put(message2, 5);
+
+        Message message3 = new Message();
+        message3.setSubject("w");
+        message3.setId(3L);
+        messageCounts.put(message3, 77);
+        
+        Search search = new Search(Message.class);
+        search.addSortDesc("subject");
+        
+        LinkedHashMap<Message, Integer> sorted = Searcher.searchMapByKeys(messageCounts, search);
+        
+        List<Message> sortedKeys = new ArrayList(sorted.keySet());
+        checkUserMessageSubjectAndCount(sortedKeys, 0, "z", sorted, 1);
+        checkUserMessageSubjectAndCount(sortedKeys, 1, "w", sorted, 77);
+        checkUserMessageSubjectAndCount(sortedKeys, 2, "c", sorted, 5);
+        
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSearchCollectionFailsForNullSearch() throws Exception {
@@ -182,5 +217,22 @@ public class SearcherTest extends DBUnitIntegrationTest {
             allUserMessages.get(index).getId().equals(userMessageId)
         );
     }
+    
+    private void checkUserMessageSubjectAndCount(List<Message> messageList, int index, String expectedSubject,
+            Map<Message, Integer> messageMap, Integer expectedCount) {
+        Assert.assertTrue(
+            "Mesage with subject=" + expectedSubject + " expected to be in"
+            + " the list [" + messageList + "] at index ["
+            + index + "] is not there.",
+            messageList.get(index).getSubject().equals(expectedSubject)
+        );
+        Assert.assertEquals(
+            "Mesage with subject=" + expectedSubject + " should have a corresponding"
+            + " count of " + expectedCount + " but instead it's "
+            + index + "] is not there.",
+            expectedCount, messageMap.get(messageList.get(index))
+        );
+    }
+
 
 }

@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
@@ -58,6 +60,31 @@ public final class Searcher {
         sortList(search, result);
         result = trim(search, result);
 
+        return result;
+    }
+
+    /**
+     * Applies a given <code>search</code> on the <code>haystack</code>'s keys and preserves
+     * the key-value mapping.
+     *
+     * Filtering currently does not support nesting and it only joins
+     * the filters with and
+     *
+     * @param haystack the collection whose keys should be searched (filtered, sorted
+     * and trimmed)
+     * @param search search object that specifies parameters of the desired
+     * search
+     * @return a <code>LinkedMap</code> that is a result of filtering, sorting and trimming of
+     * <code>haystack</code> as directed by <code>search</code>
+     */
+    public static <K, V> LinkedHashMap<K, V> searchMapByKeys(Map<K, V> haystack,
+            Search search) {
+        List<K> keys = new LinkedList(haystack.keySet());
+        keys = searchCollection(keys, search);
+        LinkedHashMap<K, V> result = new LinkedHashMap();
+        for (K key : keys) {
+            result.put(key, haystack.get(key));
+        }
         return result;
     }
 
