@@ -14,7 +14,6 @@ import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
 import com.eprovement.poptavka.service.register.RegisterService;
@@ -22,7 +21,6 @@ import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -79,8 +77,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
             LOGGER.info("Action=demand_create demand={} creating new client={}", demand.getClient().getId());
             this.clientService.create(demand.getClient());
         }
-
-        createSuppliersIfNecessary(demand);
 
         final Demand createdDemand = super.create(demand);
         LOGGER.info("Action=demand_create status=finish demand={}", demand);
@@ -325,18 +321,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private boolean isNewClient(Demand demand) {
         return demand.getClient().getId() == null;
     }
-
-    private void createSuppliersIfNecessary(Demand demand) {
-        if (CollectionUtils.isNotEmpty(demand.getSuppliers())) {
-            for (Supplier supplier : demand.getSuppliers()) {
-                if (supplier.getId() == null) {
-                    LOGGER.info("Action=demand_create creating new supplier=" + supplier.getId());
-                    this.supplierService.create(supplier);
-                }
-            }
-        }
-    }
-
 
 
 }

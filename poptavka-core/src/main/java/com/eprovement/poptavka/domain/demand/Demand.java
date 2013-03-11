@@ -184,15 +184,6 @@ public class Demand extends DomainObject {
     private List<Category> categories;
 
     @ManyToMany
-    @NotAudited
-    @JoinTable(
-        name = "DEMAND_SUPPLIER",
-        joinColumns = @JoinColumn(name = "DEMAND_ID"),
-        inverseJoinColumns = @JoinColumn(name = "SUPPLIER_ID")
-    )
-    private List<Supplier> suppliers;
-
-    @ManyToMany
     @JoinTable(
         name = "DEMAND_EXCLUDED_SUPPLIER",
         joinColumns = @JoinColumn(name = "DEMAND_ID"),
@@ -334,22 +325,6 @@ public class Demand extends DomainObject {
 
     public void setCategories(List<Category> category) {
         this.categories = category;
-    }
-
-    public void addSupplier(Supplier supplier) {
-        this.suppliers.add(supplier);
-    }
-
-    public void removeSupplier(Supplier supplier) {
-        this.suppliers.remove(supplier);
-    }
-
-    public List<Supplier> getSuppliers() {
-        return suppliers;
-    }
-
-    public void setSuppliers(List<Supplier> suppliers) {
-        this.suppliers = suppliers;
     }
 
     public void addExcludedSupplier(Supplier supplier) {

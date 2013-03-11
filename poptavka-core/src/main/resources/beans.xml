@@ -21,8 +21,6 @@
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
-    <bean id="ratingDao" class="com.eprovement.poptavka.dao.demand.RatingDaoImpl" />
-
     <bean id="auditDao" class="com.eprovement.poptavka.dao.audit.AuditDaoImpl" />
 
     <bean id="treeItemDao" class="com.eprovement.poptavka.dao.common.TreeItemDaoImpl" />
@@ -77,10 +75,6 @@
 
     <bean id="supplierSelection" class="com.eprovement.poptavka.service.demand.NaiveSuppliersSelection">
         <property name="supplierService" ref="supplierService" />
-    </bean>
-
-    <bean id="ratingService" class="com.eprovement.poptavka.service.demand.RatingServiceImpl">
-        <constructor-arg ref="ratingDao" />
     </bean>
 
     <bean id="categoryService" class="com.eprovement.poptavka.service.demand.CategoryServiceImpl">

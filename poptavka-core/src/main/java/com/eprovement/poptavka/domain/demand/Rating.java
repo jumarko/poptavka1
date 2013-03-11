@@ -3,8 +3,6 @@ package com.eprovement.poptavka.domain.demand;
 import com.eprovement.poptavka.domain.common.DomainObject;
 
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 /**
  * The rating of supply of some demand.
@@ -18,15 +16,6 @@ import javax.persistence.NamedQuery;
  *         Date: 12.2.11
  */
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "getAvgRatingForClient",
-    query = "select avg(demand.rating.clientRating) from Demand as demand\n"
-            + "where demand.client = :client group by demand.client"),
-    @NamedQuery(name = "getAvgRatingForSupplier",
-    query = "select avg(demand.rating.supplierRating) from Demand as demand"
-            + " join demand.suppliers as supplier\n"
-            + "where supplier = :supplier group by supplier")
-})
 public class Rating extends DomainObject {
 
     // rating in percents - % - 100 -> 100%

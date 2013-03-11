@@ -22,7 +22,6 @@ import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.demand.RatingService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
@@ -66,7 +65,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     private GeneralService generalService;
     private UserMessageService userMessageService;
     private MessageService messageService;
-    private RatingService ratingService;
     private OfferService offerService;
     //Converters
     private Converter<Demand, FullDemandDetail> demandConverter;
@@ -89,10 +87,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         this.userMessageService = userMessageService;
     }
 
-    @Autowired
-    public void setRatingService(RatingService ratingService) {
-        this.ratingService = ratingService;
-    }
 
     @Autowired
     public void setMessageService(MessageService messageService) {

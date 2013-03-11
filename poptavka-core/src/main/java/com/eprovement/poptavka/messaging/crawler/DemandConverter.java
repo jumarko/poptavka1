@@ -13,7 +13,6 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -124,8 +123,6 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
             for (BusinessUserRole businessUserRole : userByEmail.getBusinessUserRoles()) {
                 if (businessUserRole.getClass() == Client.class) {
                     domainDemand.setClient((Client) businessUserRole);
-                } else if (businessUserRole.getClass() == Supplier.class) {
-                    domainDemand.setSuppliers(Arrays.asList((Supplier) businessUserRole));
                 }
             }
         }
@@ -145,31 +142,11 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
                 client.getBusinessUser().setAccessRoles(generalService.findAll(AccessRole.class));
             }
             domainDemand.setClient(client);
-        } else if (CollectionUtils.isEmpty(domainDemand.getSuppliers())) {
-            final Supplier supplier = new Supplier();
-            if (userByEmail != null) {
-                supplier.setBusinessUser(userByEmail);
-            }
-            if (StringUtils.isBlank(supplier.getBusinessUser().getEmail())) {
-                supplier.getBusinessUser().setEmail(userEmail);
-            }
-            if (StringUtils.isBlank(supplier.getBusinessUser().getPassword())) {
-                supplier.getBusinessUser().setPassword("supplierForCrawledDemand");
-            }
-            if (CollectionUtils.isEmpty(supplier.getBusinessUser().getAccessRoles())) {
-                supplier.getBusinessUser().setAccessRoles(generalService.findAll(AccessRole.class));
-            }
-            domainDemand.setSuppliers(Arrays.asList(supplier));
         }
     }
 
     private void setVerification(com.eprovement.poptavka.domain.demand.Demand domainDemand) {
         domainDemand.getClient().setVerification(Verification.EXTERNAL);
-        if (CollectionUtils.isNotEmpty(domainDemand.getSuppliers())) {
-            for (Supplier supplier : domainDemand.getSuppliers()) {
-                supplier.setVerification(Verification.EXTERNAL);
-            }
-        }
     }
 
     private void setDemandType(Demand sourceDemand, com.eprovement.poptavka.domain.demand.Demand domainDemand) {
