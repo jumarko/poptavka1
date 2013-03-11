@@ -325,6 +325,10 @@ public interface LocalizableMessages extends Messages {
     String urgentHigh();
     String urgentLess();
     String urgentNormal();
+    String urgencyDesc();
+    String urgencyHighDesc();
+    String urgencyHigherDesc();
+    String urgencyNormalDesc();
 
     /** Explanation texts for DemandStatus icon column. **/
     String demandStatusActive();
