@@ -71,7 +71,6 @@ public class SupplierCreationView extends OverflowComposite
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }
-        contentHolder2.setSize("956px", "350px");
     }
 
     /**************************************************************************/

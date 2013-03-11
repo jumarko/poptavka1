@@ -1,248 +1,235 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             xmlns:c="urn:import:com.google.gwt.user.cellview.client" xmlns:vm="urn:import:com.eprovement.poptavka.client.common"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:vm="urn:import:com.eprovement.poptavka.client.common" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <!-- injecting style resources -->
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:style>
         .error {
         font-size:10px;
         color: red;
         }
-        .tab-panel-inputs {
-        padding-top: 20px;
-        width:940px;
-        }
-        .text-left {
-        text-align: right;
-        }
     </ui:style>
-    <g:HTMLPanel styleName='{style.tab-panel-inputs}'>
-        <b:FluidContainer>
-            <b:WellForm >
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:HTMLPanel></g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="7">
-                        <b:Heading size="4">
-                            <ui:msg key="formAccountInfo">Account Info</ui:msg>
-                        </b:Heading>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formEmail">E-mail</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="email">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formPassword">Password</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="password">
-                            <g:PasswordTextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formPasswordConfirm">Password Again</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="passwordConfirm">
-                            <g:PasswordTextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
-            </b:WellForm>
-            <b:WellForm >
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:HTMLPanel></g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="7">
-                        <b:Heading size="4">
-                            <ui:msg key="regSupFormContactPerson">Contact Person</ui:msg>
-                        </b:Heading>
-                    </b:Column>
-                </b:FluidRow>
+    
+    <b:FluidContainer>
+        <b:FluidRow>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key="formAccountInfo">Account Info</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formEmail">E-mail</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="email">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formPassword">Password</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="password">
+                                <g:PasswordTextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formPasswordConfirm">Password Again</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="passwordConfirm">
+                                <g:PasswordTextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
 
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formFirstName">Name</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="firstName">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key="regSupFormContactPerson">Contact Person</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
 
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formLastName">Last Name</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="lastName">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formFirstName">Name</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="firstName">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
 
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formPhone">Phone</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="phone">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
-            </b:WellForm>
-            <b:WellForm >
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <b:RadioButton name="type" ui:field="personRadio" checked="true">
-                            <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
-                        </b:RadioButton>
-                    </b:Column>
-                    <b:Column size="3">
-                        <b:RadioButton name="type" ui:field="companyRadio">
-                            <ui:msg key="formUserRegCompany">Company</ui:msg>
-                        </b:RadioButton>
-                    </b:Column>
-                </b:FluidRow>
-                <!--            <b:FluidRow>
-                <b:Column size="12">-->
-                <b:FluidRow ui:field="companyInfoRow">
-                    <b:Column size="3">
-                        <g:HTMLPanel></g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="7">
-                        <b:Heading size="4">
-                            <ui:msg key="formCompanyInfo">Company Info</ui:msg>
-                        </b:Heading>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow ui:field="companyNameRow">
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formCompanyName">Company Name</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="companyName">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formLastName">Last Name</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="lastName">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
 
-                <b:FluidRow ui:field="identifNumberRow">
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formIdentificationNumber">Identification Number</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="identificationNumber">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formPhone">Phone</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="phone">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
+        </b:FluidRow>
 
-                <b:FluidRow ui:field="taxNumberRow">
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formTaxNumber">Tax Number</ui:msg>*
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="taxId">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
-            
-            </b:WellForm>
-            <b:WellForm>
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:HTMLPanel></g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="7">
-                        <b:Heading size="4">
-                            <ui:msg key="formAddress">Address</ui:msg>
-                        </b:Heading>
-                    </b:Column>
-                </b:FluidRow>
+        <b:WellForm>
+            <b:FluidRow>
+                <b:Column size="4">
+                    <b:RadioButton name="type" ui:field="personRadio" checked="true">
+                        <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
+                    </b:RadioButton>
+                </b:Column>
+                <b:Column size="4">
+                    <b:RadioButton name="type" ui:field="companyRadio">
+                        <ui:msg key="formUserRegCompany">Company</ui:msg>
+                    </b:RadioButton>
+                </b:Column>
+            </b:FluidRow>
+        </b:WellForm>
 
-                <g:SimplePanel ui:field="addressHolder" />
-            </b:WellForm>
-            <b:WellForm>
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:HTMLPanel></g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="7">
-                        <b:Heading size="4">
-                            <ui:msg key="formAditionalInfo">Aditional info</ui:msg>
-                        </b:Heading>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formWebsite">Your Website</ui:msg>
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="7">
-                        <vm:ValidationMonitor ui:field="website">
-                            <g:TextBox />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="3">
-                        <g:Label styleName='pull-right'>
-                            <ui:msg key="formDescription">Description:</ui:msg>
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="8">
-                        <vm:ValidationMonitor ui:field="description">
-                            <g:TextArea height="200px" width="300px" />
-                        </vm:ValidationMonitor>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <g:Label>
-                            <ui:msg key="formRequiredFields">* fields are required</ui:msg>
-                        </g:Label>
-                    </b:Column>
-                </b:FluidRow>
-            </b:WellForm>
-        </b:FluidContainer>
-    </g:HTMLPanel>
+        <b:FluidRow>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow ui:field="companyInfoRow">
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key="formCompanyInfo">Company Info</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow ui:field="companyNameRow">
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formCompanyName">Company Name</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="companyName">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+
+                    <b:FluidRow ui:field="identifNumberRow">
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formIdentificationNumber">Identification Number</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="identificationNumber">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+
+                    <b:FluidRow ui:field="taxNumberRow">
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formTaxNumber">Tax Number</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="taxId">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
+        </b:FluidRow>
+
+        <b:FluidRow>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key="formAddress">Address</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+
+                    <g:SimplePanel ui:field="addressHolder" />
+                </b:WellForm>
+            </b:Column>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key="formAditionalInfo">Aditional info</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formWebsite">Your Website</ui:msg>
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="website">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formDescription">Description:</ui:msg>
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="description">
+                                <g:TextArea height="80px" width="92%" />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

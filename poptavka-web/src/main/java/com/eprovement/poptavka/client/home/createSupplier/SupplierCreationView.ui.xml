@@ -5,168 +5,211 @@
              xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
     <!-- injecting style resources -->
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>
-        .tabIndex1 { z-index: 1; width: 240px;}
-        .tabIndex2 { z-index:
-        2; width: 230px;}
-        .tabIndex3 { z-index: 3; width: 230px;}
-        .tabIndex4 {
-        z-index: 4; width: 250px;}
-        .tabIndex5 { z-index: 5; width: 220px;}
-
-        .selectorLayout {width: 980px; height: 350px;}
+        .tabIndex1 { z-index: 1; }
+        .tabIndex2 { z-index: 2; }
+        .tabIndex3 { z-index: 3; }
+        .tabIndex4 { z-index: 4; }
+        .tabIndex5 { z-index: 5; }
     </ui:style>
-
-    <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-        <g:TabLayoutPanel ui:field='mainPanel'
-                          styleName='{res.createTabPanel.createTabPanel}' barUnit='PX'
-                          barHeight='50'>
-            <!--1-->
-            <g:tab>
-                <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{style.tabIndex5}">
-                        1.
-                        <ui:msg key="supplierCreationTab1">User registration</ui:msg>
-                    </g:HTML>
-                </g:customHeader>
-                <g:DockLayoutPanel unit="PX" height="100%">
-                    <g:north size="30">
+    
+    <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.fourStepTabPanel}' 
+                      addStyleNames='{res.layout.bodyContainer}' barUnit='PX' barHeight='120'>
+        <!--1-->
+        <g:tab>
+            <g:customHeader size="30">
+                <g:HTML addStyleNames="{style.tabIndex5} customHeader">
+                    1.
+                    <ui:msg key="supplierCreationTab1">User registration</ui:msg>
+                </g:HTML>
+            </g:customHeader>
+            <g:DockLayoutPanel unit="PX" styleName='{res.layout.fullSize}'>
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="supplierCreationInfoLabel1">
+                            Please fill in your account Information: your company information if applicable, your address and 
+                            description of your activities you want to offer to potential customers
+                        </ui:msg>
+                    </g:Label>
+                </g:north>
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                </g:north>
+                <g:center>
+                    <g:ScrollPanel>
+                        <g:SimplePanel ui:field="contentHolder1" styleName='formContainer' />
+                    </g:ScrollPanel>
+                </g:center>
+                <g:south size="95">
+                    <g:HTMLPanel styleName='formFooter'>
                         <g:Label>
-                            <ui:msg key="supplierCreationInfoLabel1">
-                                Please fill in your account Information: your company information if applicable, your address and 
-                                description of your activities you want to offer to potential customers
-                            </ui:msg>
+                            <ui:msg key="formRequiredFields">* fields are required</ui:msg>
                         </g:Label>
-                    </g:north>
-                    <g:center>
-                        <g:ScrollPanel>
-                            <g:SimplePanel ui:field="contentHolder1" />
-                        </g:ScrollPanel>
-                    </g:center>
-                    <g:south size="35">
-                        <g:HTMLPanel>
-                            <g:Button ui:field="nextButtonTab1" styleName='btn btn-primary'>
-                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                                <i class="icon-arrow-right"></i>
+                        <g:HTMLPanel styleName='buttonsContainer'>                                
+                            <g:Button ui:field="nextButtonTab1" styleName='{res.common.buttonRightSmall}'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>                          
                             </g:Button>
                         </g:HTMLPanel>
-                    </g:south>
-                </g:DockLayoutPanel>
-            </g:tab>
-            <!--2-->
-            <g:tab>
-                <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{style.tabIndex2}">
-                        2.
-                        <ui:msg key="supplierCreationTab2">Category selection</ui:msg>
-                    </g:HTML>
-                </g:customHeader>
-                <g:DockLayoutPanel unit="PX" height="100%">
-                    <g:north size="30">
-                        <g:Label>
-                            <ui:msg key="supplierCreationInfoLabel2">
-                                Select the most suitable categories so that we can notify you when new project/demand has been posted.
-                            </ui:msg>
-                        </g:Label>
-                    </g:north>
-                    <g:center>
-                        <g:ScrollPanel>
-                            <g:SimplePanel ui:field="contentHolder2" />
-                        </g:ScrollPanel>
-                    </g:center>
-                    <g:south size="35">
-                        <g:HTMLPanel>
-                            <g:Button ui:field="backButtonTab2" styleName='btn'>
-                                <i class="icon-arrow-left"></i>
+                    </g:HTMLPanel>
+                </g:south>
+            </g:DockLayoutPanel>
+        </g:tab>
+        <!--2-->
+        <g:tab>
+            <g:customHeader size="30">
+                <g:HTML addStyleNames="{style.tabIndex4} customHeader">
+                    2.
+                    <ui:msg key="supplierCreationTab2">Category selection</ui:msg>
+                </g:HTML>
+            </g:customHeader>
+            <g:DockLayoutPanel unit="PX" height="100%">
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="supplierCreationInfoLabel2">
+                            Select the most suitable categories so that we can notify you when new project/demand has been posted.
+                        </ui:msg>
+                    </g:Label>
+                </g:north>
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                </g:north>
+                <g:center>
+                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
+                        <g:east size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:east>
+                        <g:west size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:west>
+                        <g:center>
+                            <g:ScrollPanel>
+                                <g:SimplePanel ui:field="contentHolder2" styleName='formContainer'/>
+                            </g:ScrollPanel>
+                        </g:center>
+                    </g:DockLayoutPanel>
+                </g:center>
+                <g:south size="95">
+                    <g:HTMLPanel styleName='formFooter'>
+                        <g:HTMLPanel styleName='buttonsContainer'>
+                            <g:Button ui:field="nextButtonTab2" styleName='{res.common.buttonRightSmall}'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>                                
+                            </g:Button>
+                            <g:Button ui:field="backButtonTab2" styleName='{res.common.buttonLeftSmall}'>
                                 <ui:msg key="commonBtnBack">Back</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="nextButtonTab2" styleName='btn btn-primary'>
-                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                                <i class="icon-arrow-right"></i>
-                            </g:Button>
+                            </g:Button>                            
                         </g:HTMLPanel>
-                    </g:south>
-                </g:DockLayoutPanel>
-            </g:tab>
-            <!--3-->
-            <g:tab>
-                <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{style.tabIndex3}">
-                        3.
-                        <ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
-                    </g:HTML>
-                </g:customHeader>
-                <g:DockLayoutPanel unit="PX" height="100%">
-                    <g:north size="50">
-                        <g:Label>
-                            <ui:msg key="supplierCreationInfoLabel3">
-                                Select the most suitable localities so that we can notify you when new project/demand has been posted in your preferred localities.
-                            </ui:msg>
-                        </g:Label>
-                    </g:north>
-                    <g:south size="35">
-                        <g:HTMLPanel>
-                            <g:Button ui:field="backButtonTab3" styleName='btn'>
-                                <i class="icon-arrow-left"></i>
+                    </g:HTMLPanel>
+                </g:south>
+            </g:DockLayoutPanel>
+        </g:tab>
+        <!--3-->
+        <g:tab>
+            <g:customHeader size="30">
+                <g:HTML addStyleNames="{style.tabIndex3} customHeader">
+                    3.
+                    <ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
+                </g:HTML>
+            </g:customHeader>
+            <g:DockLayoutPanel unit="PX" height="100%">
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="supplierCreationInfoLabel3">
+                            Select the most suitable localities so that we can notify you when new project/demand has been posted in your preferred localities.
+                        </ui:msg>
+                    </g:Label>
+                </g:north>
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                </g:north>   
+                <g:center>
+                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
+                        <g:east size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:east>
+                        <g:west size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:west>
+                        <g:center>
+                            <g:SimplePanel ui:field="contentHolder3" styleName='formContainer' />
+                        </g:center>
+                    </g:DockLayoutPanel>
+                </g:center>
+                <g:south size="95">
+                    <g:HTMLPanel styleName='formFooter'>
+                        <g:HTMLPanel styleName='buttonsContainer'>
+                            <g:Button ui:field="nextButtonTab3" styleName='{res.common.buttonRightSmall}'>
+                                <ui:msg key="commonBtnNext">Next</ui:msg>                                
+                            </g:Button>
+                            <g:Button ui:field="backButtonTab3" styleName='{res.common.buttonLeftSmall}'>
                                 <ui:msg key="commonBtnBack">Back</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="nextButtonTab3" styleName='btn btn-primary'>
-                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                                <i class="icon-arrow-right"></i>
-                            </g:Button>
+                            </g:Button>                            
                         </g:HTMLPanel>
-                    </g:south>
-                    <g:center>
-                        <g:ScrollPanel>
-                            <g:SimplePanel ui:field="contentHolder3" />
-                        </g:ScrollPanel>
-                    </g:center>
-                </g:DockLayoutPanel>
-            </g:tab>
-            <!--4-->
-            <g:tab>
-                <g:customHeader size="30">
-                    <g:HTML stylePrimaryName="{style.tabIndex4}">
-                        4.
-                        <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
-                    </g:HTML>
-                </g:customHeader>
-                <g:DockLayoutPanel unit="PX" height="100%">
-                    <g:north size="30">
-                        <g:Label>
-                            <ui:msg key="supplierCreationInfoLabel4">
-                                Select service you are interested in.
-                            </ui:msg>
-                        </g:Label>
-                    </g:north>
-                    <g:south size="35">
-                        <g:HTMLPanel>
-                            <g:Button ui:field="backButtonTab4" styleName='btn'>
-                                <i class="icon-arrow-left"></i>
-                                <ui:msg key="commonBtnBack">Back</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="registerBtn" styleName='btn btn-primary'>
-                                <ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
-                            </g:Button>
-                        </g:HTMLPanel>
-                    </g:south>
-                    <g:center>
-                        <g:HTMLPanel>
-                            <g:SimplePanel ui:field="contentHolder4" />
-                            <g:HorizontalPanel ui:field="agreementPanel">
-                                <g:CheckBox ui:field="agreedCheck" />
-                                <g:Anchor ui:field="conditionLink">
-                                    <ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
-                                </g:Anchor>
-                            </g:HorizontalPanel>
-                        </g:HTMLPanel>
-                    </g:center>
-                </g:DockLayoutPanel>
-            </g:tab>
-        </g:TabLayoutPanel>
-    </g:HTMLPanel>
+                    </g:HTMLPanel>
+                </g:south>
+            </g:DockLayoutPanel>
+        </g:tab>
+        <!--4-->
+        <g:tab>
+            <g:customHeader size="30">
+                <g:HTML addStyleNames="{style.tabIndex2} customHeader">
+                    4.
+                    <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
+                </g:HTML>
+            </g:customHeader>
+            <g:DockLayoutPanel unit="PX" height="100%">
+                <g:north size="70">
+                    <g:Label styleName='infoLabel2'>
+                        <ui:msg key="supplierCreationInfoLabel4">
+                            Select service you are interested in.
+                        </ui:msg>
+                    </g:Label>
+                </g:north>        
+                <g:north size="20">
+                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                </g:north>
+                <g:center>
+                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
+                        <g:east size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:east>
+                        <g:west size="20">
+                            <g:HTMLPanel></g:HTMLPanel>
+                        </g:west>
+                        <g:center>
+                            <g:ScrollPanel styleName='well'>
+                                <g:HTMLPanel>
+                                    <g:SimplePanel ui:field="contentHolder4" />
+                                    <g:HorizontalPanel ui:field="agreementPanel" >
+                                        <g:CheckBox ui:field="agreedCheck" />
+                                        <g:Anchor ui:field="conditionLink">
+                                            <ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
+                                        </g:Anchor>
+                                    </g:HorizontalPanel>
+                                </g:HTMLPanel>
+                            </g:ScrollPanel>                            
+                        </g:center>
+                    </g:DockLayoutPanel>
+                </g:center>
+                <g:south size="220">
+                    <b:FluidContainer>
+                        <b:FluidRow addStyleNames='buttonsBorderRow'>
+                            <b:Column size="4">
+                                <g:Button ui:field="backButtonTab4" styleName='{res.common.buttonLeftLarge}'>                            
+                                    <ui:msg key="commonBtnBack">Back</ui:msg>
+                                </g:Button>
+                            </b:Column>
+                            <b:Column size="4">
+                                <g:Button ui:field="registerBtn" styleName='{res.common.buttonRightLarge}'>
+                                    <ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
+                                </g:Button>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:FluidContainer>
+                </g:south>
+            </g:DockLayoutPanel>
+        </g:tab>
+    </g:TabLayoutPanel>
 </ui:UiBinder>
