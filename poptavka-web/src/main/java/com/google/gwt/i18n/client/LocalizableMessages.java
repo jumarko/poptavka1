@@ -54,9 +54,6 @@ public interface LocalizableMessages extends Messages {
     String commonServicesLabel();
     String commonSupplier();
 
-    /** Tooltip labels. **/
-    String tooltipUrgency();
-
     /** Messages actions list box. **/
     String commonListDefault();
     String commonListRead();
@@ -322,13 +319,11 @@ public interface LocalizableMessages extends Messages {
     String progressMessagesLayoutInit();
 
     /** UrgentImageCell.java. **/
-    String urgentHigh();
-    String urgentLess();
-    String urgentNormal();
     String urgencyDesc();
     String urgencyHighDesc();
     String urgencyHigherDesc();
     String urgencyNormalDesc();
+    String urgencyTooltip();
 
     /** Explanation texts for DemandStatus icon column. **/
     String demandStatusActive();
