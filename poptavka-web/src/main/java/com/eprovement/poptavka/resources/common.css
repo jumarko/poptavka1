@@ -193,3 +193,29 @@
 .selected-items-widget .selected-Item img {
     margin-left: 5px;    
 }
+
+/* switch widget styles */
+.switch-left {
+    background: url(images/switch-left.png) no-repeat;
+    width: 108px;
+    height: 40px;    
+}
+
+.switch-right {
+    background: url(images/switch-right.png) no-repeat;
+    width: 108px;
+    height: 40px;    
+}
+
+.switch-left .gwt-Button, .switch-right .gwt-Button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    float: left;
+    font-size: small;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    width: 54px;
+}

@@ -116,15 +116,21 @@
 
         <b:WellForm>
             <b:FluidRow>
-                <b:Column size="4">
+                <b:Column size="2">
                     <b:RadioButton name="type" ui:field="personRadio" checked="true">
                         <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
                     </b:RadioButton>
                 </b:Column>
-                <b:Column size="4">
+                <b:Column size="2">
                     <b:RadioButton name="type" ui:field="companyRadio">
                         <ui:msg key="formUserRegCompany">Company</ui:msg>
                     </b:RadioButton>
+                </b:Column>
+                <b:Column size="8">
+                    <g:HTMLPanel addStyleNames='{res.common.switchLeft}'>
+                        <g:Button></g:Button>
+                        <g:Button></g:Button>
+                    </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>
         </b:WellForm>
