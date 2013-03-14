@@ -37,9 +37,6 @@ public interface UniversalPager extends SimplePager.Resources {
     @Source("pager/previous.png")
     ImageResource simplePagerPreviousPageDisabled();
 
-    @Source("pager/text.png")
-    ImageResource simplePagerText();
-
     /**
      * The styles used in this widget.
      */

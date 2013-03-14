@@ -1,39 +1,59 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 	
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
 	
-	<ui:style>
-	.dropdown-select {
-		background: url(images/dropdown-icon.png) no-repeat top right;
-		width: 65px;
-		height: 32px;
-		margin-left: 10px;
-		cursor: pointer;
-	}
+    <ui:style>
+        .dropdown-select {
+        background: url(images/dropdown-icon.png) no-repeat top right #2b2e31;      
+        border: 1px solid #1A1D1E;        
+        float: left;
+        padding: 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        }
+        
+        .dropdown-select table {
+        display: block;
+        float: left;        
+        }
 	
-	.dropdown-item {
-		height: 32px;
-		line-heihgt: 32px;
-		width: 36px;
-		text-align: center;
-		padding-right: 29px;
-	}
+        .dropdown-item {
+        height: 30px;
+        line-heihgt: 32px;
+        width: 36px;
+        text-align: center;
+        padding: 0 48px 0 5px;
+        color: #d5d5d5;
+        cursor: pointer;
+        }
 	
-	.float05 {
-	float: left;
-	margin-right: 5px;	
-	}
-	</ui:style>
+        .float10 {
+        float: left;
+        margin-left: 10px;
+        }
+        
+        .toolbar-item-pager {
+        background: #2b2e31;
+        border: 1px solid #1A1D1E;        
+        float: left;
+        padding: 2px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        }
+    </ui:style>
 	
-	<g:HTMLPanel styleName='{res.layout.toolbarItem}'>
-		<c:SimplePager ui:field='pager' styleName='{style.float05}' />
-		<g:MenuBar vertical="false" styleName='{style.dropdown-select} {style.float05}'>
-			<g:MenuItem ui:field="pageSize" styleName='{style.dropdown-item}'>
-				<g:MenuBar vertical="true" ui:field="pageSizeList" styleName='{res.layout.popupDropdownContainer}'/>
-			</g:MenuItem>
-		</g:MenuBar>
-	</g:HTMLPanel>
+    <g:HTMLPanel styleName='{res.layout.toolbarItem}'>
+        <c:SimplePager ui:field='pager' styleName='{style.toolbar-item-pager}' />
+        <g:MenuBar vertical="false" styleName='{style.dropdown-select} {style.float10}'>
+            <g:MenuItem ui:field="pageSize" styleName='{style.dropdown-item}'>
+                <g:MenuBar vertical="true" ui:field="pageSizeList" styleName='{res.layout.popupDropdownContainer}'/>
+            </g:MenuItem>
+        </g:MenuBar>
+    </g:HTMLPanel>
 </ui:UiBinder>

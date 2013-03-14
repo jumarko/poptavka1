@@ -10,6 +10,19 @@
         font-size:10px;
         color: red;
         }
+        
+        .form-indent {
+        margin-left: 321px !important;
+        }
+        
+        .left-label {
+        text-align: right;
+        }
+        
+        .right-label {
+        text-align: left;
+        margin-left: -72px;
+        }
     </ui:style>
     
     <b:FluidContainer>
@@ -114,21 +127,21 @@
             </b:Column>
         </b:FluidRow>
 
-        <b:WellForm>
+        <b:WellForm addStyleNames='no-header-form'> 
             <b:FluidRow>
-                <b:Column size="2">
-                    <g:Label>
+                <b:Column size="2" addStyleNames='{style.form-indent}'>
+                    <g:Label addStyleNames='{style.left-label}'>
                         <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
                     </g:Label>
                 </b:Column>
-                <b:Column size="8">
+                <b:Column size="2">
                     <g:HTMLPanel ui:field="companyChoicePanel" addStyleNames='{res.common.switchLeft}'>
                         <g:Button ui:field="personBtn"></g:Button>
                         <g:Button ui:field="companyBtn"></g:Button>
                     </g:HTMLPanel>
                 </b:Column>
                 <b:Column size="2">
-                    <g:Label>
+                    <g:Label addStyleNames='{style.right-label}'>
                         <ui:msg key="formUserRegCompany">Company</ui:msg>
                     </g:Label>
                 </b:Column>
