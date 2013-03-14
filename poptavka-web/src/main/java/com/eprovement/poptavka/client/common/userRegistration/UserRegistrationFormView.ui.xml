@@ -236,7 +236,7 @@
                     <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
-                                <ui:msg key="formDescription">Description:</ui:msg>
+                                <ui:msg key="formDescription">Description:</ui:msg>*
                             </g:Label>
                         </b:Column>
                         <b:Column size="8">
