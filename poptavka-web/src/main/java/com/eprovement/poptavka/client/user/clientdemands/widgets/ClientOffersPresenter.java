@@ -88,12 +88,13 @@ public class ClientOffersPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private DetailsWrapperPresenter detailSection = null;
+    private DetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
-    private IUniversalDetail selectedOfferedDemandOffer = null;
+    private ClientDemandDetail selectedDemandObject;
+    private IUniversalDetail selectedOfferedDemandOfferObject;
     private long selectedClientOfferedDemandId = -1;
     private long selectedClientOfferedDemandOfferId = -1;
-    private FieldUpdater textFieldUpdater = null;
+    private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -207,18 +208,62 @@ public class ClientOffersPresenter
     }
 
     /**************************************************************************/
-    /* Business events handled by presenter */
+    /* Details Wrapper                                                        */
     /**************************************************************************/
-    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
-        if (this.detailSection == null) {
+    /**
+     * Response method to requesting details wrapper instance.
+     * Initialize details wrapper and initialize details tabs according to
+     * selectedDemandObject and selectedConversationObject.
+     * @param detailSection Details wrapper instance.
+     */
+    public void onResponseDetailWrapperPresenter(final DetailsWrapperPresenter detailSection) {
+        if (detailSection != null) {
+            detailSection.initDetailWrapper(view.getOfferGrid(), view.getWrapperPanel());
+
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getOfferGrid(), view.getWrapperPanel());
-            if (selectedOfferedDemandOffer != null) {
-                this.detailSection.initDetails(
-                        selectedOfferedDemandOffer.getDemandId(),
-                        selectedOfferedDemandOffer.getSupplierId(),
-                        selectedOfferedDemandOffer.getThreadRootId());
+
+            if (selectedOfferedDemandOfferObject != null) {
+                initDetailSection(selectedOfferedDemandOfferObject);
+            } else if (selectedDemandObject != null) {
+                initDetailSection(selectedDemandObject);
             }
+        }
+    }
+
+    /**
+     * Initialize demand tab in Details sections.
+     * If details wrapper instance doesn't exist yet, create it and in response of
+     * creation initialize demand tab.
+     * If instance already exist, initialize and show demand tab immediately.
+     *
+     * @param demandId
+     */
+    private void initDetailSection(ClientDemandDetail demandDetail) {
+        if (detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
+        } else {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            detailSection.initDetails(demandDetail.getDemandId());
+        }
+    }
+
+    /**
+     * Initialize demand, supplier and conversation tabs in Details sections.
+     * If details wrapper instance doesn't exist yet, create it and in response of
+     * creation initialize demand, supplier, conversation tabs.
+     * If instance already exist, initialize and show tabs immediately.
+     *
+     * @param demandId
+     */
+    private void initDetailSection(IUniversalDetail conversationDetail) {
+        if (detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
+        } else {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            detailSection.initDetails(
+                    conversationDetail.getDemandId(),
+                    conversationDetail.getSupplierId(),
+                    conversationDetail.getThreadRootId());
         }
     }
 
@@ -240,11 +285,17 @@ public class ClientOffersPresenter
     public void onDisplayClientOfferedDemandOffers(List<IUniversalDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemandOffers");
 
-        view.getOfferGrid().getDataProvider().updateRowData(
-                view.getOfferGrid().getStart(), data);
+        if (!data.isEmpty()) {
+            view.setDemandTableVisible(false);
+            view.setOfferTableVisible(true);
+            view.getOfferPager().startLoading();
 
-        if (selectedClientOfferedDemandOfferId != -1) {
-            eventBus.getClientOfferedDemand(selectedClientOfferedDemandOfferId);
+            view.getOfferGrid().getDataProvider().updateRowData(
+                    view.getOfferGrid().getStart(), data);
+
+            if (selectedClientOfferedDemandOfferId != -1) {
+                eventBus.getClientOfferedDemand(selectedClientOfferedDemandOfferId);
+            }
         }
     }
 
@@ -309,11 +360,10 @@ public class ClientOffersPresenter
                 ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
                         .getSelectionModel()).getSelectedObject();
                 if (selected != null) {
+                    selectedDemandObject = selected;
+                    initDetailSection(selected);
                     Storage.setDemandId(selected.getDemandId());
                     Storage.setThreadRootId(selected.getThreadRootId());
-                    view.setDemandTableVisible(false);
-                    view.setOfferTableVisible(true);
-                    view.getOfferPager().startLoading();
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.getOfferGrid().getDataCount(eventBus, null);
                     eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
@@ -342,16 +392,8 @@ public class ClientOffersPresenter
                     detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 } else {
                     IUniversalDetail selected = view.getOfferGrid().getSelectedObjects().get(0);
-                    selectedOfferedDemandOffer = selected;
-                    if (detailSection == null) {
-                        eventBus.requestDetailWrapperPresenter();
-                    } else {
-                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        detailSection.initDetails(
-                                selected.getDemandId(),
-                                selected.getSupplierId(),
-                                selected.getThreadRootId());
-                    }
+                    selectedOfferedDemandOfferObject = selected;
+                    initDetailSection(selected);
                 }
             }
         });
@@ -402,14 +444,14 @@ public class ClientOffersPresenter
     public void addStarColumnFieldUpdater() {
         view.getOfferGrid().getStarColumn().setFieldUpdater(
                 new FieldUpdater<IUniversalDetail, Boolean>() {
-                    @Override
-                    public void update(int index, IUniversalDetail object, Boolean value) {
-                        object.setIsStarred(!value);
-                        view.getOfferGrid().redraw();
-                        Long[] item = new Long[]{object.getUserMessageId()};
-                        eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
-                    }
-                });
+                @Override
+                public void update(int index, IUniversalDetail object, Boolean value) {
+                    object.setIsStarred(!value);
+                    view.getOfferGrid().redraw();
+                    Long[] item = new Long[]{object.getUserMessageId()};
+                    eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
+                }
+            });
     }
 
     // Buttons
@@ -419,8 +461,11 @@ public class ClientOffersPresenter
             public void onClick(ClickEvent event) {
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
                 if (detailSection != null) {
-                    detailSection.reset();
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 }
+                selectedDemandObject = null;
+                selectedOfferedDemandOfferObject = null;
+                view.getOfferGrid().getSelectionModel().clear();
                 view.getDemandPager().startLoading();
                 view.setOfferTableVisible(false);
                 view.setDemandTableVisible(true);
@@ -433,8 +478,9 @@ public class ClientOffersPresenter
         view.getAcceptBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestAcceptOffer(selectedOfferedDemandOffer.getOfferId(),
-                        selectedOfferedDemandOffer.getUserMessageId());
+                eventBus.requestAcceptOffer(
+                        selectedOfferedDemandOfferObject.getOfferId(),
+                        selectedOfferedDemandOfferObject.getUserMessageId());
             }
         });
     }

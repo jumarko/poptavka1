@@ -2,11 +2,13 @@ package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.eprovement.poptavka.client.common.DateUtils;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiRenderer;
+import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.Date;
 
@@ -19,16 +21,6 @@ import java.util.Date;
  */
 public class UrgentImageCell extends AbstractCell<Date> {
 
-    interface UrgencyImageCellStyle extends CssResource {
-
-        String header();
-
-        String high();
-
-        String higher();
-
-        String normal();
-    }
     /**************************************************************************/
     /* UiRenderer                                                             */
     /**************************************************************************/
@@ -36,47 +28,53 @@ public class UrgentImageCell extends AbstractCell<Date> {
 
     interface MyUiRenderer extends UiRenderer {
 
-        UrgencyImageCellStyle getCellStyle();
-
-        void render(SafeHtmlBuilder sb, String imageClass);
+        void render(SafeHtmlBuilder sb, SafeHtml image, String tooltip);
     }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private static ImageResourceRenderer imageRenderer = new ImageResourceRenderer();
+    private SafeHtml imageResource;
+    private String tooltip;
 
     /**************************************************************************/
     /* Override methods                                                       */
     /**************************************************************************/
     @Override
     public void render(Context context, Date value, SafeHtmlBuilder sb) {
-
-        if (value == null) {
-            uiRenderer.render(sb, uiRenderer.getCellStyle().header());
-
-        } else {
-            uiRenderer.render(sb, getImageClass(value));
-        }
+        setImageResoureAndTooltip(value);
+        uiRenderer.render(sb, imageResource, tooltip);
     }
 
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
     /**
-     * Get proper image class from UrgencyImageCellStyle according to give date.
-     * Getting date value null returns header image.
-     * Otherwise return appropriate urgency image according to given date.
+     * Set proper image resource and its tooltip according to give date.
+     * Getting date value null returns pair header image/tooltip.
+     * Otherwise return appropriate urgency image/tooltip according to given date.
+     * Tooltip is also used as alt value for image.
      *
      * @param value - given date
-     * @return urgency image cell class
      */
-    private String getImageClass(Date value) {
+    private void setImageResoureAndTooltip(Date value) {
         if (value == null) {
-            return uiRenderer.getCellStyle().header();
+            imageResource = imageRenderer.render(Storage.RSCS.images().urgencyHeader());
+            tooltip = Storage.MSGS.urgencyTooltip();
+            return;
         }
         int daysBetween = CalendarUtil.getDaysBetween(value, DateUtils.getNowDate());
         if (daysBetween < Constants.DAYS_URGENCY_HIGH) {
-            return uiRenderer.getCellStyle().high();
+            imageResource = imageRenderer.render(Storage.RSCS.images().urgencyRed());
+            tooltip = Storage.MSGS.urgencyHighDesc();
+            return;
         }
         if (daysBetween <= Constants.DAYS_URGENCY_HIGHER) {
-            return uiRenderer.getCellStyle().higher();
+            imageResource = imageRenderer.render(Storage.RSCS.images().urgencyOrange());
+            tooltip = Storage.MSGS.urgencyHigherDesc();
+            return;
         }
-        return uiRenderer.getCellStyle().normal();
+        imageResource = imageRenderer.render(Storage.RSCS.images().urgencyGreen());
+        tooltip = Storage.MSGS.urgencyNormalDesc();
     }
 }
