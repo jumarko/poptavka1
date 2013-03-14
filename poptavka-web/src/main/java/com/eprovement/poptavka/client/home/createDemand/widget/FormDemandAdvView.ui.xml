@@ -30,23 +30,31 @@
                             </b:FluidRow>
                         </b:Column>
                         <b:Column size="6">
-                            <b:FluidRow>
-                                <b:Column size="4">
-                                    <g:Label>
-                                        <ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="4">
-                                    <g:RadioButton name="demandType" ui:field="classicRadio" checked="true">
-                                        <ui:msg key="formDemandAdvDemandClassic">Normal Demand</ui:msg>
-                                    </g:RadioButton>
-                                </b:Column>
-                                <b:Column size="4">
-                                    <g:RadioButton name="demandType" ui:field="attractiveRadio">
-                                        <ui:msg key="formDemandAdvDemandAttractive">Attractive Demand</ui:msg>
-                                    </g:RadioButton>
-                                </b:Column>
-                            </b:FluidRow>
+                            <b:WellForm>
+                                <b:FluidRow>
+                                    <b:Column size="2">
+                                        <g:Label>
+                                            <ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                    <b:Column size="2">
+                                        <g:Label>
+                                            <ui:msg key="formDemandAdvDemandNormal">Normal</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel ui:field="demandTypeChoicePanel" addStyleNames='{res.common.switchLeft}'>
+                                            <g:Button ui:field="normalBtn"></g:Button>
+                                            <g:Button ui:field="attractiveBtn"></g:Button>
+                                        </g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="2">
+                                        <g:Label>
+                                            <ui:msg key="formDemandAdvDemandAttractive">Attractive</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:WellForm>
                         </b:Column>
                     </b:FluidRow>
                     <!-- *************************** URGENCY *************************** -->
