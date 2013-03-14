@@ -201,11 +201,11 @@ public final class Constants {
     /**************************************************************************/
     /* Other Constants                                                        */
     /**************************************************************************/
-    public static final int RATE_1 = 2;
-    public static final int RATE_2 = 1;
-    public static final int RATE_3 = 0;
-    public static final int RATE_4 = -1;
-    public static final int RATE_5 = -2;
+    public static final int RATE_1 = 100;
+    public static final int RATE_2 = 80;
+    public static final int RATE_3 = 50;
+    public static final int RATE_4 = 10;
+    public static final int RATE_5 = 0;
 
     public static final int DAYS_URGENCY_HIGH = 5;
     public static final int DAYS_URGENCY_HIGHER = 14;

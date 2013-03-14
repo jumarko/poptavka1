@@ -572,23 +572,13 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public MessageDetail finishOffer(long offerId, long userMessageId, long userId, String finishOfferMessage) throws
-            RPCException, ApplicationSecurityException {
+    public void finishOffer(long offerId) throws RPCException, ApplicationSecurityException {
         Offer offer = (Offer) generalService.find(Offer.class, offerId);
-        // change demand status to PENDINGCOMPLETION
         Demand demand = offer.getDemand();
         demand.setStatus(DemandStatus.PENDINGCOMPLETION);
         generalService.merge(demand);
-        // change offer status to COMPLETED
         offer.setState(offerService.getOfferState(OfferStateType.COMPLETED.getValue()));
         generalService.merge(offer);
-
-        UserMessage latestUserMessage = userMessageService.getById(userMessageId);
-        Message message = messageService.newReply(latestUserMessage.getMessage(),
-                this.generalService.find(User.class, userId));
-        message.setBody(finishOfferMessage);
-        messageService.send(message);
-        return messageConverter.convertToTarget(message);
     }
 
     /**

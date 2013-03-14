@@ -435,6 +435,13 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = DetailsWrapperPresenter.class, passive = true)
     void addConversationMessage(MessageDetail sentMessage);
 
+    /**
+     * Send status message i.e. when user clicks on action buttons like Accept Offer, Finish Offer, Close Demand etc.
+     * @param statusMessageBody representing status message text
+     */
+    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
+    void sendStatusMessage(String statusMessageBody);
+
     /**************************************************************************/
     /* User Activatoin                                                        */
     /**************************************************************************/

@@ -397,4 +397,18 @@ public class DetailsWrapperPresenter
         view.getMessageProvider().setList(linkedList);
         view.getReplyHolder().setMessage(lastMessage);
     }
+
+    /**
+     * This message is sent by system without user's interaction. Status message is sent in cases when user clicks
+     * on status buttons like Accept Offer, Finish Offer, Close Demand and so on.
+     *
+     * @param statusMessageBody to create system message
+     */
+    public void onSendStatusMessage(String statusMessageBody) {
+        MessageDetail statusMessage = new MessageDetail();
+        statusMessage.setBody(statusMessageBody);
+        MessageDetail questionMessageToSend = view.getReplyHolder().updateSendingMessage(statusMessage);
+        questionMessageToSend.setSenderId(Storage.getUser().getUserId());
+        eventBus.sendQuestionMessage(questionMessageToSend);
+    }
 }

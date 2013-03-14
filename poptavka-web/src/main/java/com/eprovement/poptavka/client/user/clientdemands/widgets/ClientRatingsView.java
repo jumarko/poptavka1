@@ -90,7 +90,11 @@ public class ClientRatingsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return Integer.toString(((DemandRatingsDetail) object).getRatingClient());
+                        if ((((DemandRatingsDetail) object).getRatingClient()) != null) {
+                            return (((DemandRatingsDetail) object).getRatingClient()).toString();
+                        } else {
+                            return "";
+                        }
                     }
                 });
         // Supplier's rating
@@ -100,7 +104,11 @@ public class ClientRatingsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return Integer.toString(((DemandRatingsDetail) object).getRatingSupplier());
+                        if (((DemandRatingsDetail) object).getRatingSupplier() != null) {
+                            return ((DemandRatingsDetail) object).getRatingSupplier().toString();
+                        } else {
+                            return "";
+                        }
                     }
                 });
 

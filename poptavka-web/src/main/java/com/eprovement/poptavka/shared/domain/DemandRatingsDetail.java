@@ -82,9 +82,9 @@ public class DemandRatingsDetail implements IsSerializable {
         StringBuilder str = new StringBuilder();
         str.append(demandTitle);
         str.append(", ");
-        str.append(ratingClient.intValue());
+        str.append(ratingClient != null ? ratingClient.intValue() : "no ratingClient yet");
         str.append(", ");
-        str.append(ratingSupplier.intValue());
+        str.append(ratingSupplier != null ? ratingSupplier.intValue() : "no ratingSupplier yet");
         return str.toString();
     }
 
