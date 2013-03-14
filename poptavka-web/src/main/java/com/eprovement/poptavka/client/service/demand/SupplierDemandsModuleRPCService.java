@@ -164,8 +164,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
 
-    MessageDetail finishOffer(long offerId, long userMessageId, long userId, String finishOfferMessage)
-        throws RPCException;
+    void finishOffer(long offerId) throws RPCException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 

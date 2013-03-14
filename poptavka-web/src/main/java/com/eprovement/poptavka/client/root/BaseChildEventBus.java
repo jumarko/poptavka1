@@ -15,4 +15,8 @@ public interface BaseChildEventBus {
 
     @Event(forwardToParent = true)
     void sendUsEmail(int subject, String errorId);
+
+    @Event(forwardToParent = true)
+    void sendStatusMessage(String statusMessageBody);
+
 }

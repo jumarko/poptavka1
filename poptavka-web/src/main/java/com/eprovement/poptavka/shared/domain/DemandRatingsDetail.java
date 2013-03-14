@@ -13,8 +13,8 @@ public class DemandRatingsDetail implements IsSerializable {
     private long supplierId;
     private long threadRootId;
     private String demandTitle;
-    private int ratingClient;
-    private int ratingSupplier;
+    private Integer ratingClient;
+    private Integer ratingSupplier;
     private String ratingClientMessage;
     private String ratingSupplierMessage;
     //KeyProvider
@@ -61,19 +61,19 @@ public class DemandRatingsDetail implements IsSerializable {
         this.demandTitle = demandTitle;
     }
 
-    public int getRatingClient() {
+    public Integer getRatingClient() {
         return ratingClient;
     }
 
-    public void setRatingClient(int ratingClient) {
+    public void setRatingClient(Integer ratingClient) {
         this.ratingClient = ratingClient;
     }
 
-    public int getRatingSupplier() {
+    public Integer getRatingSupplier() {
         return ratingSupplier;
     }
 
-    public void setRatingSupplier(int ratingSupplier) {
+    public void setRatingSupplier(Integer ratingSupplier) {
         this.ratingSupplier = ratingSupplier;
     }
 
@@ -82,9 +82,9 @@ public class DemandRatingsDetail implements IsSerializable {
         StringBuilder str = new StringBuilder();
         str.append(demandTitle);
         str.append(", ");
-        str.append(ratingClient);
+        str.append(ratingClient != null ? ratingClient.intValue() : "no ratingClient yet");
         str.append(", ");
-        str.append(ratingSupplier);
+        str.append(ratingSupplier != null ? ratingSupplier.intValue() : "no ratingSupplier yet");
         return str.toString();
     }
 

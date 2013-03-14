@@ -359,9 +359,8 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onClick(ClickEvent event) {
                 //Finnish button is always awaylable of single selections, threfore can use 'get(0)'.
-                eventBus.requestFinishOffer(
-                        view.getDataGrid().getSelectedObjects().get(0).getOfferId(),
-                        view.getDataGrid().getSelectedObjects().get(0).getUserMessageId());
+                eventBus.requestFinishOffer(view.getDataGrid().getSelectedObjects().get(0).getOfferId());
+                eventBus.sendStatusMessage(Storage.MSGS.finishedOfferMessage());
             }
         });
     }

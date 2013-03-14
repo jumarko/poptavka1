@@ -219,18 +219,13 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    public void onRequestFinishOffer(long offerId, long userMessageId) {
-        supplierDemandsService.finishOffer(offerId, userMessageId, Storage.getUser().getUserId(),
-                Storage.MSGS.finishedOfferMessage(), new SecuredAsyncCallback<MessageDetail>(eventBus) {
-
-                    @Override
-                    public void onSuccess(MessageDetail result) {
-                        // TODO RELEASE ivlcek - call feedback popup
-                        //calling reponse finnish offer will call feedback popup
-                        eventBus.responseFinnishOffer();
-                        eventBus.addConversationMessage(result);
-                    }
-                });
+    public void onRequestFinishOffer(long offerId) {
+        supplierDemandsService.finishOffer(offerId, new SecuredAsyncCallback<MessageDetail>(eventBus) {
+            @Override
+            public void onSuccess(MessageDetail result) {
+                eventBus.responseFinnishOffer();
+            }
+        });
     }
     //request? better would be update
 

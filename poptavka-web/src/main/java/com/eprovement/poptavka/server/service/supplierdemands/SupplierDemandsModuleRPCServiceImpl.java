@@ -16,6 +16,7 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
@@ -571,23 +572,13 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public MessageDetail finishOffer(long offerId, long userMessageId, long userId, String finishOfferMessage) throws
-            RPCException, ApplicationSecurityException {
+    public void finishOffer(long offerId) throws RPCException, ApplicationSecurityException {
         Offer offer = (Offer) generalService.find(Offer.class, offerId);
-        // change demand status to PENDINGCOMPLETION
         Demand demand = offer.getDemand();
         demand.setStatus(DemandStatus.PENDINGCOMPLETION);
         generalService.merge(demand);
-        // change offer status to COMPLETED
         offer.setState(offerService.getOfferState(OfferStateType.COMPLETED.getValue()));
         generalService.merge(offer);
-
-        UserMessage latestUserMessage = userMessageService.getById(userMessageId);
-        Message message = messageService.newReply(latestUserMessage.getMessage(),
-                this.generalService.find(User.class, userId));
-        message.setBody(finishOfferMessage);
-        messageService.send(message);
-        return messageConverter.convertToTarget(message);
     }
 
     /**
@@ -700,5 +691,34 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         generalService.save(rating);
         demand.setRating(rating);
         generalService.save(demand);
+        recalculateClientOveralRating(demand.getClient());
+    }
+
+    /**
+     * Recalculate overall <code>Client</code> rating from all ratings posted by <code>Supplier</code>-s.
+     *
+     * @param client whose overalRating will be recalculated.
+     */
+    private void recalculateClientOveralRating(Client client) {
+        if (client == null) {
+            throw new IllegalArgumentException("Passed Client object is null");
+        }
+        final Search demandsWithRatingSearch = new Search(Demand.class);
+        demandsWithRatingSearch.addFilterIn("status", DemandStatus.CLOSED, DemandStatus.PENDINGCOMPLETION);
+        demandsWithRatingSearch.addFilterEqual("client", client);
+        demandsWithRatingSearch.addFilterNotNull("rating");
+        List<Demand> demandsWithRating = generalService.search(demandsWithRatingSearch);
+
+        int numberOfRatings = 0;
+        int ratingSum = 0;
+        for (Demand demand : demandsWithRating) {
+            if (demand.getRating().getClientRating() != null) {
+                ratingSum = ratingSum + demand.getRating().getClientRating().intValue();
+                numberOfRatings++;
+            }
+        }
+        Double ratingScore = (double) ratingSum / numberOfRatings;
+        client.setOveralRating(Integer.valueOf(ratingScore.intValue()));
+        generalService.save(client);
     }
 }
