@@ -17,23 +17,6 @@
 
     <g:HTMLPanel styleName="{css.message.wrapper}">
         <div class="{css.message.message}">
-            <div ui:field="messagePanel" class='{css.detailViews.conversationDetail}'>
-                <div class='{css.detailViews.conversationLeftBlock}'>
-                    <g:Label ui:field='sender' styleName='{css.detailViews.conversationDetailHeader}'/>
-                    <g:Label ui:field='sent' styleName='{css.detailViews.conversationDetailTime}'/>
-                </div>
-                <div class='{css.detailViews.conversationDetailContent}'>
-                    <g:Label ui:field='body' />
-                </div>
-            </div>
-            <div ui:field="header" class="{css.message.messageHeader}">
-                <g:Anchor styleName='{css.message.replyButton}' ui:field="offerReplyBtn">
-                    <ui:msg key="offerResponse">Offer Response</ui:msg>
-                </g:Anchor>
-                <g:Anchor styleName='{css.message.replyButton}' ui:field="questionReplyBtn">
-                    <ui:msg key="questionResponse">Question Response</ui:msg>
-                </g:Anchor>
-            </div>
             <div ui:field="messageBody" style="display: none;">
                 <!-- Message composition content -->
                 <div>
@@ -85,6 +68,23 @@
                         </g:Anchor>
                     </div>
                 </div>
+            </div>
+            <div ui:field="messagePanel" class='{css.detailViews.conversationDetail}'>
+                <div class='{css.detailViews.conversationLeftBlock}'>
+                    <g:Label ui:field='sender' styleName='{css.detailViews.conversationDetailHeader}'/>
+                    <g:Label ui:field='sent' styleName='{css.detailViews.conversationDetailTime}'/>
+                </div>
+                <div class='{css.detailViews.conversationDetailContent}'>
+                    <g:Label ui:field='body' />
+                </div>
+            </div>
+            <div ui:field="header" class="{css.message.messageHeader}">
+                <g:Anchor styleName='{css.message.replyButton}' ui:field="offerReplyBtn">
+                    <ui:msg key="offerResponse">Offer Response</ui:msg>
+                </g:Anchor>
+                <g:Anchor styleName='{css.message.replyButton}' ui:field="questionReplyBtn">
+                    <ui:msg key="questionResponse">Question Response</ui:msg>
+                </g:Anchor>
             </div>
         </div>
     </g:HTMLPanel>
