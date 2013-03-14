@@ -171,7 +171,7 @@ public class FullOfferDetail implements IsSerializable, TableDisplay, IUniversal
 
     @Override
     public Date getValidTo() {
-        return demandDetail.getValidToDate();
+        return demandDetail.getValidTo();
     }
 
     @Override

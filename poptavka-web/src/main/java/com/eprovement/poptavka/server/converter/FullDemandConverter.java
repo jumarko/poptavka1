@@ -55,8 +55,8 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
         detail.setPrice(source.getPrice());
         detail.setCreated(convertDate(source.getCreatedDate()));
         detail.setEndDate(convertDate(source.getEndDate()));
-        detail.setValidToDate(convertDate(source.getValidTo()));
-        detail.setMaxOffers(source.getMaxSuppliers() == null ? 0 : source.getMaxSuppliers());
+        detail.setValidTo(convertDate(source.getValidTo()));
+        detail.setMaxSuppliers(source.getMaxSuppliers() == null ? 0 : source.getMaxSuppliers());
         detail.setMinRating(source.getMinRating() == null ? 0 : source.getMinRating());
         if (source.getClient() != null) {
             detail.setClientRating(source.getClient().getOveralRating() == null

@@ -210,7 +210,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
                     @Override
                     public Date getValue(Object object) {
-                        return ((FullDemandDetail) object).getValidToDate();
+                        return ((FullDemandDetail) object).getValidTo();
                     }
                 });
 

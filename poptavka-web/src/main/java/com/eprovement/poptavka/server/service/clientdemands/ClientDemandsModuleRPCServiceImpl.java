@@ -954,7 +954,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     private Demand updateDemandFields(Demand demand, ArrayList<ChangeDetail> changes) {
         for (ChangeDetail change : changes) {
-            switch (DemandField.valueOf(change.getField())) {
+            switch (DemandField.toDemandField(change.getField())) {
                 case TITLE:
                     demand.setTitle((String) change.getValue());
                     break;
@@ -974,7 +974,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
                     demand.setMaxSuppliers((Integer) change.getValue());
                     break;
                 case MIN_RATING:
-                    demand.setMinRating(Integer.parseInt((String) change.getValue()));
+                    demand.setMinRating((Integer) change.getValue());
                     break;
                 case DEMAND_STATUS:
                     demand.setStatus(DemandStatus.valueOf((String) change.getValue()));

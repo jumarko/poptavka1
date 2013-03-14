@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
+import com.eprovement.poptavka.client.common.ListChangeMonitor;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
@@ -56,6 +57,8 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
         void setCategories(List<CategoryDetail> categories);
 
         void setChangeHandler(ChangeHandler changeHandler);
+
+        void setListChangeHandler(ChangeHandler handler);
 
         boolean isValid();
 
@@ -116,6 +119,22 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
             @Override
             public void onChange(ChangeEvent event) {
                 ChangeMonitor source = (ChangeMonitor) event.getSource();
+                source.getChangeDetail().setValue(source.getValue());
+                if (source.isModified()) {
+                    //if contains already - remove before adding new
+                    if (updatedFields.contains(source.getChangeDetail())) {
+                        updatedFields.remove(source.getChangeDetail());
+                    }
+                    updatedFields.add(source.getChangeDetail());
+                } else {
+                    updatedFields.remove(source.getChangeDetail());
+                }
+            }
+        });
+        view.setListChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                ListChangeMonitor source = (ListChangeMonitor) event.getSource();
                 source.getChangeDetail().setValue(source.getValue());
                 if (source.isModified()) {
                     //if contains already - remove before adding new

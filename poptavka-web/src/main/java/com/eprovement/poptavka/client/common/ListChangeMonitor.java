@@ -59,7 +59,6 @@ public class ListChangeMonitor<T> extends Composite implements HasWidgets, HasCh
     /** Class attributes. **/
     private Validator validator = null;
     private ChangeDetail changeDetail;
-    private boolean initialized = false;
     private Class<T> beanType;
 
     /**************************************************************************/
@@ -157,12 +156,11 @@ public class ListChangeMonitor<T> extends Composite implements HasWidgets, HasCh
     public void setValue(Object value) {
         changeDetail.setValue(value);
         setInputWidgetText(value);
-        if (!initialized && isModified()) {
+        if (isModified()) {
             validate();
             setChangedStyles(true);
             DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getChangeMonitorWidget());
         }
-        initialized = true;
     }
 
     /** Getters. **/
