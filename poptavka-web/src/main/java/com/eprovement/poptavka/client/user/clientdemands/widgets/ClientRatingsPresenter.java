@@ -102,6 +102,7 @@ public class ClientRatingsPresenter extends LazyPresenter<
     private void initWidget(SearchModuleDataHolder filter) {
         eventBus.setUpSearchBar(new Label("Client's ratings attibure's selector will be here."));
         searchDataHolder = filter;
+        eventBus.createTokenForHistory();
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget

@@ -11,7 +11,6 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -31,7 +30,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
@@ -39,7 +37,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Presenter(view = ClientOffersView.class, multiple = true)
 public class ClientOffersPresenter
@@ -100,9 +97,6 @@ public class ClientOffersPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
-        // Range Change Handlers
-        addDemandGridRangeChangeHandler();
-        addOfferGridRangeChangeHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         addOfferGridSelectionModelHandler();
@@ -126,84 +120,12 @@ public class ClientOffersPresenter
 
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
-        eventBus.createTokenForHistory1(0);
+        eventBus.createTokenForHistory();
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
         //init wrapper widget
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-    }
-
-    public void onInitClientOfferedDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
-        //Select Menu - my demands - selected
-        eventBus.selectClientDemandsMenu(Constants.CLIENT_OFFERED_DEMANDS);
-        //
-        //If current page differ to stored one, cancel events that would be fire automatically but with no need
-        if (view.getDemandPager().getPage() != parentTablePage) {
-            view.getDemandGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
-            eventBus.setHistoryStoredForNextOne(false);
-        }
-        view.getDemandPager().setPage(parentTablePage);
-        //Change visibility
-        view.setOfferTableVisible(false);
-        view.setDemandTableVisible(true);
-
-        this.selectedClientOfferedDemandId = -1;
-
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
-                    parentTablePage * view.getDemandGrid().getPageSize(),
-                    view.getDemandGrid().getPageSize(),
-                    filterHolder,
-                    null));
-        }
-
-        eventBus.displayView(view.getWidgetView());
-    }
-
-    public void onInitClientOfferedDemandOffersByHistory(ClientDemandDetail clientDemandDetail,
-            int childTablePage, long childId, SearchModuleDataHolder filterHolder) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
-        //Select Menu - my demands - selected
-        eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
-        //
-        Storage.setDemandId(clientDemandDetail.getDemandId());
-        Storage.setThreadRootId(clientDemandDetail.getThreadRootId());
-        view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
-        view.setDemandTableVisible(false);
-        view.setOfferTableVisible(true);
-        //
-        if (view.getOfferPager().getPage() != childTablePage) {
-            view.getOfferGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
-            eventBus.setHistoryStoredForNextOne(false);
-        }
-        view.getOfferPager().setPage(childTablePage);
-        //if selection differs to the restoring one
-        boolean wasEqual = false;
-        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getOfferGrid().getSelectionModel();
-        for (ClientDemandConversationDetail cdcd : (Set<
-                ClientDemandConversationDetail>) selectionModel.getSelectedSet()) {
-            if (cdcd.getSupplierId() == childId) {
-                wasEqual = true;
-            }
-        }
-        if (wasEqual) {
-            this.selectedClientOfferedDemandOfferId = childId;
-        } else {
-            selectionModel.clear();
-            eventBus.getClientDemandConversation(childId);
-        }
-
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getOfferGrid().getDataCount(eventBus, new SearchDefinition(
-                    childTablePage * view.getOfferGrid().getPageSize(),
-                    view.getOfferGrid().getPageSize(),
-                    filterHolder,
-                    null));
-        }
-
-        eventBus.displayView(view.getWidgetView());
     }
 
     /**************************************************************************/
@@ -316,7 +238,6 @@ public class ClientOffersPresenter
                     view.getOfferPager().startLoading();
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.getOfferGrid().getDataCount(eventBus, null);
-                    eventBus.createTokenForHistory2(selected.getDemandId(), view.getOfferPager().getPage(), -1);
                 }
             }
         });
@@ -374,8 +295,6 @@ public class ClientOffersPresenter
                 MultiSelectionModel selectionModel = view.getOfferGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-//                eventBus.createTokenForHistory2(Storage.getDemandId(),
-//                        view.getOfferPager().getPage(), object.getOfferId());
             }
         };
         view.getOfferGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
@@ -449,32 +368,6 @@ public class ClientOffersPresenter
                 } else {
                     return "";
                 }
-            }
-        });
-    }
-
-    /**************************************************************************/
-    /**
-     * If demand table range change (page changed), create token for new data (different page).
-     */
-    private void addDemandGridRangeChangeHandler() {
-        view.getDemandGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
-            @Override
-            public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory1(view.getDemandPager().getPage());
-            }
-        });
-    }
-
-    /**
-     * If offer table range change (page changed), create token for new data (different page).
-     */
-    private void addOfferGridRangeChangeHandler() {
-        view.getOfferGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
-            @Override
-            public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory2(
-                        Storage.getDemandId(), view.getOfferPager().getPage(), -1);
             }
         });
     }

@@ -46,5 +46,6 @@ public class ClientDemandsWelcomePresenter extends LazyPresenter<
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS_WELCOME);
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
+        eventBus.createTokenForHistory();
     }
 }

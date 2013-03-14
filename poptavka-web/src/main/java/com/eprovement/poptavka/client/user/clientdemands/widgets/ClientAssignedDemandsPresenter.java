@@ -29,14 +29,12 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Presenter(view = ClientAssignedDemandsView.class, multiple = true)
 public class ClientAssignedDemandsPresenter extends LazyPresenter<
@@ -84,7 +82,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     @Override
     public void bindView() {
         // Table handlers
-        addTableRangeChangeHandler();
         addTableSelectionModelClickHandler();
         // Field Updaters
         addCheckHeaderUpdater();
@@ -111,46 +108,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         Storage.setCurrentlyLoadedView(Constants.CLIENT_CLOSED_DEMANDS);
 
         initWidget(filter);
-    }
-
-    public void onInitClientAssignedDemandsByHistory(
-            int parentTablePage, long parentId, SearchModuleDataHolder filterHolder) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
-        //Select Menu - my demands - selected
-        eventBus.selectClientDemandsMenu(Constants.CLIENT_ASSIGNED_DEMANDS);
-        //
-        //If current page differ to stored one, cancel events that would be fire automatically but with no need
-        if (view.getPager().getPage() != parentTablePage) {
-            //cancel range change event in asynch data provider
-            view.getDataGrid().cancelRangeChangedEvent();
-            eventBus.setHistoryStoredForNextOne(false);
-        }
-        view.getPager().setPage(parentTablePage);
-        //if selection differs to the restoring one
-        boolean wasEqual = false;
-        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid().getSelectionModel();
-        for (ClientOfferedDemandOffersDetail offer : (Set<
-                ClientOfferedDemandOffersDetail>) selectionModel.getSelectedSet()) {
-            if (offer.getDemandId() == parentId) {
-                wasEqual = true;
-            }
-        }
-        this.selectedClientAssignedDemandId = parentId;
-        if (parentId != -1 && !wasEqual) {
-            selectionModel.clear();
-            selectedObject = null;
-            eventBus.getClientAssignedDemand(parentId);
-        }
-
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
-                    parentTablePage * view.getDataGrid().getPageSize(),
-                    view.getDataGrid().getPageSize(),
-                    filterHolder,
-                    null));
-        }
-
-        eventBus.displayView(view.getWidgetView());
     }
 
     /**************************************************************************/
@@ -212,7 +169,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     private void initWidget(SearchModuleDataHolder filter) {
         eventBus.setUpSearchBar(new Label("Client's closed projects attibure's selector will be here."));
         searchDataHolder = filter;
-        eventBus.createTokenForHistory1(0);
+        eventBus.createTokenForHistory();
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
@@ -223,19 +180,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
-    /**
-     * Handle table range change by creating token for new range/page.
-     */
-    private void addTableRangeChangeHandler() {
-        view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
-            @Override
-            public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory3(view.getPager().getPage(), selectedObject.getDemandId());
-            }
-        });
-    }
     // Field Updaters
-
     public void addCheckHeaderUpdater() {
         view.getDataGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
@@ -300,9 +245,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 MultiSelectionModel selectionModel = view.getDataGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-//                eventBus.createTokenForHistory3(
-//                        view.getPager().getPage(),
-//                        object.getDemandId());
             }
         };
         view.getDataGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);

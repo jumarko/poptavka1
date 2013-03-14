@@ -80,7 +80,8 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
         //If application is called by URL, log in user and forward him to overview (goToSupplierDemandModule.Welcome)
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             Storage.setAppCalledByURL(false);
-            eventBus.loginFromSession();
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(Constants.NONE);
             return;
         }
 

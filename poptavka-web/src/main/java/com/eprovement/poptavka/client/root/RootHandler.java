@@ -130,7 +130,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * website in new browser tab, which obviously starts the whole app from the begining.
      * If user is not logged in the RPC service will cause the initiation of loginPopupView via SecuredAsyncCallback.
      */
-    public void onLoginFromSession() {
+    public void onLoginFromSession(final int widgetToLoad) {
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
             @Override
             public void onSuccess(UserDetail userDetail) {
@@ -141,7 +141,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                         Storage.setBusinessUserDetail(businessUserDetail);
                         Storage.loadClientAndSupplierIDs();
                         GWT.log("login from session,  user id " + businessUserDetail.getUserId());
-                        forwardUser();
+                        forwardUser(widgetToLoad);
                     }
                 });
 
@@ -178,21 +178,26 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * Set account layout and forward user to appropriate module according to his role.
      * Called by loginFromSession from HistoryConverter.
      */
-    private void forwardUser() {
+    private void forwardUser(int widgetToLoad) {
         //Set account layout
         eventBus.atAccount();
 
         GWT.log("BUSSINESS ROLES ++++ " + Storage.getBusinessUserDetail().getBusinessRoles().toString());
         GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
-        //forward user to welcome view of appropriate module according to his roles
+        //If exact module is known to be loaded, do it
+        if (widgetToLoad == Constants.USER_SETTINGS_MODULE) {
+            eventBus.goToSettingsModule();
+            return;
+        }
+        //otherwise forward user to welcome view of appropriate module according to his roles
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
-            eventBus.goToAdminModule(null, Constants.NONE);
+            eventBus.goToAdminModule(null, widgetToLoad);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER)) {
-            eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+            eventBus.goToSupplierDemandsModule(null, widgetToLoad);
         } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.CLIENT)) {
-            eventBus.goToClientDemandsModule(null, Constants.NONE);
+            eventBus.goToClientDemandsModule(null, widgetToLoad);
         }
     }
 
