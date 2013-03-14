@@ -34,7 +34,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
@@ -131,9 +130,6 @@ public class ClientDemandsPresenter
         addDelteDemandBtnClickHandler();
         addSubmitBtnClickHandler();
         addCancelBtnClickHandler();
-        // Range Change Handlers
-        addDemandGridRangeChangeHandler();
-        addConversationGridRangeChangeHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         addConversationGridSelectionModelHandler();
@@ -156,86 +152,12 @@ public class ClientDemandsPresenter
 
         eventBus.setUpSearchBar(new Label("Client's projects attibure's selector will be here."));
         searchDataHolder = filter;
-        eventBus.createTokenForHistory1(0);
+        eventBus.createTokenForHistory();
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
         //init wrapper widget
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-    }
-
-    public void onInitClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
-        //Select Menu - my demands - selected
-        eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
-        //
-        //If current page differ to stored one, cancel events that would be fire automatically but with no need
-        if (view.getDemandPager().getPage() != parentTablePage) {
-            view.getDemandGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
-            eventBus.setHistoryStoredForNextOne(false);
-        }
-        view.getDemandPager().setPage(parentTablePage);
-        //Change visibility
-        view.setConversationTableVisible(false);
-        view.setDemandTableVisible(true);
-
-        this.selectedClientDemandId = -1;
-
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
-                    parentTablePage * view.getDemandGrid().getPageSize(),
-                    view.getDemandGrid().getPageSize(),
-                    filterHolder,
-                    null));
-        }
-
-        eventBus.displayView(view.getWidgetView());
-    }
-
-    public void onInitClientDemandConversationByHistory(ClientDemandDetail clientDemandDetail,
-            int childTablePage, long childId, SearchModuleDataHolder filterHolder) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
-        //Select Menu - my demands - selected
-        eventBus.selectClientDemandsMenu(Constants.CLIENT_DEMANDS);
-        //
-        Storage.setDemandId(clientDemandDetail.getDemandId());
-        Storage.setThreadRootId(clientDemandDetail.getThreadRootId());
-        view.setDemandTitleLabel(clientDemandDetail.getDemandTitle());
-        view.setDemandTableVisible(false);
-        view.setConversationTableVisible(true);
-        //
-        if (view.getConversationPager().getPage() != childTablePage) {
-            view.getConversationGrid().cancelRangeChangedEvent(); //cancel range change event in asynch data provider
-            eventBus.setHistoryStoredForNextOne(false);
-        }
-        view.getConversationPager().setPage(childTablePage);
-        //if selection differs to the restoring one
-        boolean wasEqual = false;
-        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getConversationGrid().getSelectionModel();
-        //find out if child id is already selected
-        for (ClientDemandConversationDetail cdcd : (Set<
-                ClientDemandConversationDetail>) selectionModel.getSelectedSet()) {
-            if (cdcd.getSupplierId() == childId) {
-                wasEqual = true;
-            }
-        }
-
-        this.selectedClientDemandConversationId = childId;
-        if (childId != -1 && !wasEqual) {
-            selectionModel.clear();
-            selectedConversationObject = null;
-            eventBus.getClientDemandConversation(childId);
-        }
-
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getConversationGrid().getDataCount(eventBus, new SearchDefinition(
-                    childTablePage * view.getConversationGrid().getPageSize(),
-                    view.getConversationGrid().getPageSize(),
-                    filterHolder,
-                    null));
-        }
-
-        eventBus.displayView(view.getWidgetView());
     }
 
     /**************************************************************************/
@@ -454,7 +376,6 @@ public class ClientDemandsPresenter
                     Storage.setThreadRootId(selected.getThreadRootId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.getConversationGrid().getDataCount(eventBus, null);
-                    eventBus.createTokenForHistory2(selected.getDemandId(), view.getConversationPager().getPage(), -1);
                 }
             }
         });
@@ -504,8 +425,6 @@ public class ClientDemandsPresenter
                 MultiSelectionModel selectionModel = view.getConversationGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-//                eventBus.createTokenForHistory2(Storage.getDemandId(),
-//                        view.getConversationPager().getPage(), object.getSupplierId());
             }
         };
         view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
@@ -596,32 +515,6 @@ public class ClientDemandsPresenter
                     return Storage.RSCS.grid().unread();
                 }
                 return "";
-            }
-        });
-    }
-
-    /**************************************************************************/
-    /**
-     * If demand table range change (page changed), create token for new data (different page).
-     */
-    private void addDemandGridRangeChangeHandler() {
-        view.getDemandGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
-            @Override
-            public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory1(view.getDemandPager().getPage());
-            }
-        });
-    }
-
-    /**
-     * If conversation table range change (page changed), create token for new data (different page).
-     */
-    private void addConversationGridRangeChangeHandler() {
-        view.getConversationGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
-            @Override
-            public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory2(
-                        Storage.getDemandId(), view.getConversationPager().getPage(), -1);
             }
         });
     }

@@ -60,9 +60,9 @@
                     <g:Label styleName='{res.detailViews.detailHeader}'>
                         <ui:msg key="formCategories">Category info</ui:msg>
                     </g:Label>
-                    <cm:ChangeMonitor ui:field='categoriesMonitor'>
+                    <cm:ListChangeMonitor ui:field='categoriesMonitor'>
                         <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' title="categories"/>
-                    </cm:ChangeMonitor>
+                    </cm:ListChangeMonitor>
                     <g:Button ui:field="editCatBtn">
                         <ui:msg key="commonBtnEdit">Edit</ui:msg>
                     </g:Button>
@@ -72,9 +72,9 @@
                     <g:Label styleName='{res.detailViews.detailHeader}'>
                         <ui:msg key="formLocalities">Locality info</ui:msg>
                     </g:Label>
-                    <cm:ChangeMonitor ui:field='localitiesMonitor'>
+                    <cm:ListChangeMonitor ui:field='localitiesMonitor'>
                         <c:CellList ui:field="localities" styleName='{res.detailViews.detailLocalityLabel}' title="localities"/>
-                    </cm:ChangeMonitor>
+                    </cm:ListChangeMonitor>
                     <g:Button ui:field="editLocBtn">
                         <ui:msg key="commonBtnEdit">Edit</ui:msg>
                     </g:Button>

@@ -140,10 +140,9 @@ public class ClientDemandsModulePresenter
                 clientDemands.onInitClientDemands(filter);
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:
-                if (clientOffers != null) {
-                    eventBus.removeHandler(clientOffers);
+                if (clientOffers == null) {
+                    clientOffers = eventBus.addHandler(ClientOffersPresenter.class);
                 }
-                clientOffers = eventBus.addHandler(ClientOffersPresenter.class);
                 clientOffers.onInitClientOffers(filter);
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:

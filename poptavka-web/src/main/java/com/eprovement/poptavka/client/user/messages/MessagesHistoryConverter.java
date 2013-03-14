@@ -63,7 +63,7 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
     public void convertFromToken(String historyName, String param, MessagesEventBus eventBus) {
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             // login from session method
-            eventBus.loginFromSession();
+            eventBus.loginFromSession(Constants.NONE);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.settings;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -39,7 +40,8 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             Storage.setAppCalledByURL(false);
             // login from session method
-            eventBus.loginFromSession();
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(Constants.USER_SETTINGS_MODULE);
             return;
         }
         eventBus.goToSettingsModule();

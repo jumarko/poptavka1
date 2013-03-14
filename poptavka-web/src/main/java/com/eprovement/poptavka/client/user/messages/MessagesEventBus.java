@@ -77,7 +77,7 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 
     @Event(forwardToParent = true)
-    void loginFromSession();
+    void loginFromSession(int widgetToLoad);
 
     /**************************************************************************/
     /* Business Initialization events                                         */

@@ -77,14 +77,8 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /**************************************************************************/
     /* History events                                                         */
     /**************************************************************************/
-    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class, name = "token1")
-    String createTokenForHistory1(int parentTablePage);
-
-    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class, name = "token2")
-    String createTokenForHistory2(long parentId, int childTablePage, long childId);
-
-    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class, name = "token3")
-    String createTokenForHistory3(int parentTablePage, long parentId);
+    @Event(historyConverter = ClientDemandsModuleHistoryConverter.class, name = "token")
+    String createTokenForHistory();
 
     /**************************************************************************/
     /* Navigation events.                                                     */
@@ -101,9 +95,8 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     //Init by default
     //--------------------------------------------------------------------------
-    @Event(handlers = ClientDemandsWelcomePresenter.class,
-            historyConverter = ClientDemandsModuleHistoryConverter.class, name = "clientDemands")
-    String initClientDemandsWelcome();
+    @Event(handlers = ClientDemandsWelcomePresenter.class)
+    void initClientDemandsWelcome();
 
     @Event(handlers = ClientDemandsPresenter.class)
     void initClientDemands(SearchModuleDataHolder filter);
@@ -113,25 +106,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void initClientAssignedDemands(SearchModuleDataHolder filter);
-
-    //Init by history
-    //--------------------------------------------------------------------------
-    @Event(handlers = ClientDemandsPresenter.class)
-    void initClientDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder);
-
-    @Event(handlers = ClientDemandsPresenter.class)
-    void initClientDemandConversationByHistory(
-            ClientDemandDetail result, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
-
-    @Event(handlers = ClientOffersPresenter.class)
-    void initClientOfferedDemandsByHistory(int parentTablePage, SearchModuleDataHolder filterHolder);
-
-    @Event(handlers = ClientOffersPresenter.class)
-    void initClientOfferedDemandOffersByHistory(
-            ClientDemandDetail result, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
-
-    @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void initClientAssignedDemandsByHistory(int tablePage, long selectedId, SearchModuleDataHolder filterHolder);
 
     /**************************************************************************/
     /* Navigation Parent events */
@@ -161,7 +135,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 
     @Event(forwardToParent = true)
-    void loginFromSession();
+    void loginFromSession(int widgetToLoad);
 
     /**************************************************************************/
     /* Business events handled by ClientDemandsModulePresenter.               */
@@ -250,14 +224,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void getClientAssignedDemand(long offerID);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getClientDemandAndInitClientDemandConversationByHistory(
-            long parentId, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getClientOfferedDemandAndInitClientOfferedDemandOffersByHistory(
-            long parentId, int childTablePage, long childId, SearchModuleDataHolder filterHolder);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestCloseAndRateSupplier(long demandID, long offerID, Integer rating, String comment);

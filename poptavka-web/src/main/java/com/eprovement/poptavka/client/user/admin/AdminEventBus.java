@@ -112,7 +112,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 
     @Event(forwardToParent = true)
-    void loginFromSession();
+    void loginFromSession(int widgetToLoad);
 
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);

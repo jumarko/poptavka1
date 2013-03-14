@@ -12,7 +12,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
@@ -389,30 +388,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                     @Override
                     public void onSuccess(ClientOfferedDemandOffersDetail result) {
                         eventBus.selectClientAssignedDemand(result);
-                    }
-                });
-    }
-
-    /**************************************************************************/
-    /* Get Detail object for restoring history state                          */
-    /**************************************************************************/
-    public void onGetClientDemandAndInitClientDemandConversationByHistory(
-            long parentId, final int childTablePage, final long childId, final SearchModuleDataHolder filterHolder) {
-        clientDemandsService.getClientDemand(parentId, new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
-            @Override
-            public void onSuccess(ClientDemandDetail result) {
-                eventBus.initClientDemandConversationByHistory(result, childTablePage, childId, filterHolder);
-            }
-        });
-    }
-
-    public void onGetClientOfferedDemandAndInitClientOfferedDemandOffersByHistory(
-            long parentId, final int childTablePage, final long childId, final SearchModuleDataHolder filterHolder) {
-        clientDemandsService.getClientOfferedDemand(parentId,
-                new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(ClientDemandDetail result) {
-                        eventBus.initClientOfferedDemandOffersByHistory(result, childTablePage, childId, filterHolder);
                     }
                 });
     }

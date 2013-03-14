@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.admin;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
@@ -81,7 +82,7 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
     public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             // login from session method
-            eventBus.loginFromSession();
+            eventBus.loginFromSession(Constants.NONE);
         }
 
     }
