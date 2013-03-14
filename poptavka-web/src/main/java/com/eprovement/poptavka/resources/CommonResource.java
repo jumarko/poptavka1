@@ -67,4 +67,10 @@ public interface CommonResource extends CssResource {
 
     @ClassName("selected-items-widget")
     String selectedItemsWidget();
+
+    @ClassName("switch-left")
+    String switchLeft();
+
+    @ClassName("switch-right")
+    String switchRight();
 }
