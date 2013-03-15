@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -9,7 +8,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -71,9 +69,6 @@ public interface RootRPCService extends RemoteService {
     /* Supplier Services methods                                              */
     /**************************************************************************/
     ArrayList<ServiceDetail> getSupplierServices() throws RPCException;
-
-    Boolean updateDemands(long demandId, ArrayList<ChangeDetail> changes) throws
-            RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Registration user methods - Account info                               */
