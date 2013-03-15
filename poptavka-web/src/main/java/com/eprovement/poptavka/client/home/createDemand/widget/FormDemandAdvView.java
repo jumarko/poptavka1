@@ -40,7 +40,7 @@ public class FormDemandAdvView extends Composite
     @UiField Button normalBtn, attractiveBtn;
     @UiField RadioButton urgency1, urgency2, urgency3;
     /** Class attributes. **/
-    private boolean attractiveSelected = false;
+    private boolean attractiveSelected;
 
     /**************************************************************************/
     /* Initialization                                                         */

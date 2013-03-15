@@ -56,7 +56,7 @@ public class UserRegistrationFormView extends Composite
     /** Class attributes. **/
     private List<ValidationMonitor> validationMonitorsPersonalOnly;
     private List<ValidationMonitor> validationMonitorsCompanyOnly;
-    private boolean companySelected = false;
+    private boolean companySelected;
     //Constants
     private static final int SHORT_PASSWORD = 5;
     private static final int LONG_PASSWORD = 8;
