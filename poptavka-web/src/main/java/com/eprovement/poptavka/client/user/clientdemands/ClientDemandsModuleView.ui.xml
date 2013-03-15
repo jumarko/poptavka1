@@ -3,13 +3,13 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <ui:with field='res'
-                 type='com.eprovement.poptavka.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:DockLayoutPanel unit="PX"
-                           styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
-        <g:west size="180">
+                       styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+        <g:west size="240">
             <g:DockLayoutPanel unit="PX">
-                <g:north size="65">
+                <g:north size="49">
                     <g:HTMLPanel>
                         <h2 class='{res.layout.toolbarHeader}'>
                             <ui:msg key="clientDemandsToolbarLabel">Menu Client</ui:msg>
@@ -17,7 +17,7 @@
                     </g:HTMLPanel>
                 </g:north>
                 <g:center>
-                    <g:HTMLPanel>
+                    <g:HTMLPanel styleName='{res.layout.submenuContainer}'>
                         <!-- Client submenu -->
                         <div ui:field="supMenu" style="display: block;">
                             <ul class='{res.layout.submenuList}'>
@@ -52,10 +52,8 @@
                 </g:center>
             </g:DockLayoutPanel>
         </g:west>
-        <g:center>
-            <g:ScrollPanel>
-                <g:SimplePanel ui:field="contentPanel" />
-            </g:ScrollPanel>
+        <g:center>            
+            <g:SimplePanel ui:field="contentPanel" />            
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>

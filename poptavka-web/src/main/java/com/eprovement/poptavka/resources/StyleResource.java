@@ -31,6 +31,7 @@ public interface StyleResource extends ClientBundle {
      *
      * @return CssStyle style
      */
+    @NotStrict
     @Source("poptavka-base.css")
     LayoutResource layout();
 
