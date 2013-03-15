@@ -92,7 +92,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void setMessageStarStatus(List<Long> list, boolean newStatus,
             AsyncCallback<Void> callback);
 
-    void acceptOffer(long offerId, long latestUserMessageId, String acceptOfferMessage, AsyncCallback<Void> callback);
+    void acceptOffer(long offerId, AsyncCallback<Void> callback);
 
     /**************************************************************************/
     /* Messages methods                                                       */

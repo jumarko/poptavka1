@@ -309,21 +309,21 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                     public void onSuccess(Void result) {
                         eventBus.responseFeedback();
                         eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
+                        eventBus.sendStatusMessage(Storage.MSGS.closeDemandMessage());
                     }
                 });
-
     }
 
-    public void onRequestAcceptOffer(long offerId, long latestUserMessageId) {
+    public void onRequestAcceptOffer(long offerId) {
         GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
-        clientDemandsService.acceptOffer(offerId, latestUserMessageId, Storage.MSGS.acceptedOfferMessage(),
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        GWT.log("onRequestAcceptOffer finished");
-                        eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
-                    }
-                });
+        clientDemandsService.acceptOffer(offerId, new SecuredAsyncCallback<Void>(eventBus) {
+                @Override
+                public void onSuccess(Void result) {
+                    GWT.log("onRequestAcceptOffer finished");
+                    eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
+                    eventBus.sendStatusMessage(Storage.MSGS.acceptedOfferMessage());
+                }
+            });
     }
 
     /**************************************************************************/

@@ -48,7 +48,6 @@ public final class MessageConverter extends AbstractConverter<Message, MessageDe
         detail.setCreated(convertDate(source.getCreated()));
         detail.setSent(convertDate(source.getSent()));
 
-
         return detail;
     }
 

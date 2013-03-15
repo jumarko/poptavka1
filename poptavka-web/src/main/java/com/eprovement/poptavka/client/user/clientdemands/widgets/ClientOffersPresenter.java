@@ -398,8 +398,7 @@ public class ClientOffersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.requestAcceptOffer(
-                        selectedOfferedDemandOfferObject.getOfferId(),
-                        selectedOfferedDemandOfferObject.getUserMessageId());
+                        selectedOfferedDemandOfferObject.getOfferId());
             }
         });
     }
