@@ -224,6 +224,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
             @Override
             public void onSuccess(MessageDetail result) {
                 eventBus.responseFinnishOffer();
+                eventBus.sendStatusMessage(Storage.MSGS.finishedOfferMessage());
             }
         });
     }

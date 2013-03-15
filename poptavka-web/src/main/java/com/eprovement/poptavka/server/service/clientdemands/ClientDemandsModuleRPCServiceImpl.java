@@ -768,8 +768,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void acceptOffer(final long offerId, final long latestUserMessageId, String acceptOfferMesage)
-        throws RPCException, ApplicationSecurityException {
+    public void acceptOffer(final long offerId) throws RPCException, ApplicationSecurityException {
         Offer offer = (Offer) this.generalService.find(Offer.class, offerId);
 
         // set offer as accepted
@@ -785,9 +784,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         }
         demand.setStatus(DemandStatus.ASSIGNED);
         generalService.save(demand);
-
-        messageService.sendGeneratedMessage(
-                latestUserMessageId, demand.getClient().getBusinessUser(), acceptOfferMesage);
     }
 
     /**
