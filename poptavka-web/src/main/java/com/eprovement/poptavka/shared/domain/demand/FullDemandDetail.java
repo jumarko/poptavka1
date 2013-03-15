@@ -43,7 +43,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         DEMAND_TYPE("type"),
         CATEGORIES("categories"),
         LOCALITIES("localities"),
-        DEMAND_STATUS(""),
+        DEMAND_STATUS("status"),
         CREATED("createdDate"),
         EXCLUDE_SUPPLIER("excludedSuppliers");
         private String value;
@@ -54,6 +54,15 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
 
         public String getValue() {
             return value;
+        }
+
+        public static DemandField toDemandField(String value) {
+            for (DemandField field : DemandField.values()) {
+                if (field.getValue().equals(value)) {
+                    return field;
+                }
+            }
+            return null;
         }
     }
 
@@ -75,11 +84,11 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     private ArrayList<CategoryDetail> categories;
     private long clientId;
     @Min(value = 0, message = "{demandMinPrice}")
-    private int maxOffers;
+    private int maxSuppliers;
     private int minRating;
     private int clientRating;
     private String demandType;
-    private DemandStatus demandStatus;
+    private DemandStatus status;
     private DemandDetailType detailType = DemandDetailType.BASE;
     private long demandId;
     // messageId = threadRoot
@@ -101,7 +110,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     private Date endDate;
     @NotNull(message = "{demandNotNullValidToDate}")
     @Future(message = "{demandFutureValidToDate}")
-    private Date validToDate;
+    private Date validTo;
     @NotBlank(message = "{demandNotBlankDescription}")
     @Size(min = 20, message = "{demandSizeDescription}")
     private String description;
@@ -136,8 +145,8 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         price = demand.getPrice();
         created = demand.getCreated();
         endDate = demand.getEndDate();
-        validToDate = demand.getValidToDate();
-        maxOffers = demand.getMaxOffers();
+        validTo = demand.getValidTo();
+        maxSuppliers = demand.getMaxSuppliers();
         minRating = demand.getMinRating();
         //categories
         categories = new ArrayList<CategoryDetail>(demand.getCategories());
@@ -145,7 +154,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         //localities
         localities = new ArrayList<LocalityDetail>(demand.getLocalities());
 
-        demandStatus = demand.getDemandStatus();
+        status = demand.getDemandStatus();
         demandType = demand.getDemandType();
         clientId = demand.getClientId();
 
@@ -179,12 +188,12 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.clientId = clientId;
     }
 
-    public int getMaxOffers() {
-        return maxOffers;
+    public int getMaxSuppliers() {
+        return maxSuppliers;
     }
 
-    public void setMaxOffers(int maxOffers) {
-        this.maxOffers = maxOffers;
+    public void setMaxSuppliers(int maxSuppliers) {
+        this.maxSuppliers = maxSuppliers;
     }
 
     public int getMinRating() {
@@ -220,7 +229,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
                 + "\n     Description=" + description
                 + "\n     Price=" + price
                 + "\n     endDate=" + endDate
-                + "\n     validToDate=" + validToDate
+                + "\n     validToDate=" + validTo
                 + "\n     isStarred=" + starred
                 + "\n     detailType=" + detailType
                 + "\n"
@@ -228,19 +237,19 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
                 + "\n     localities=" + localities
                 + "\n     categories=" + categories
                 + "\n     clientId=" + clientId
-                + "\n     maxOffers=" + maxOffers
+                + "\n     maxOffers=" + maxSuppliers
                 + "\n     minRating=" + minRating
                 + "\n     demandType=" + demandType
-                + "\n     demandStatus=" + demandStatus;
+                + "\n     demandStatus=" + status;
     }
 
     @Override
     public DemandStatus getDemandStatus() {
-        return demandStatus;
+        return status;
     }
 
     public void setDemandStatus(DemandStatus demandStatus) {
-        this.demandStatus = demandStatus;
+        this.status = demandStatus;
     }
 
     public DemandDetailType getDetailType() {
@@ -299,12 +308,12 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.endDate = endDate;
     }
 
-    public Date getValidToDate() {
-        return validToDate;
+    public Date getValidTo() {
+        return validTo;
     }
 
-    public void setValidToDate(Date validToDate) {
-        this.validToDate = validToDate;
+    public void setValidTo(Date validToDate) {
+        this.validTo = validToDate;
     }
 
     public String getTitle() {

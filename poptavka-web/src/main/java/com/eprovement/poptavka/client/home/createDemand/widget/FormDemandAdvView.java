@@ -63,10 +63,10 @@ public class FormDemandAdvView extends Composite
 
     @Override
     public FullDemandDetail updateAdvDemandInfo(FullDemandDetail demandToUpdate) {
-        demandToUpdate.setMaxOffers(maxOffersBox.getValue());
+        demandToUpdate.setMaxSuppliers(maxOffersBox.getValue());
         demandToUpdate.setMinRating(0);
         demandToUpdate.setDemandType(getDemandType());
-        demandToUpdate.setValidToDate(getValidTo());
+        demandToUpdate.setValidTo(getValidTo());
         return demandToUpdate;
     }
 

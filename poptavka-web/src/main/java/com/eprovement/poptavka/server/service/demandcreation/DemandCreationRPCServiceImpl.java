@@ -116,12 +116,12 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         demand.setPrice(detail.getPrice());
         // if max suppliers has not been specified, default value is used. @See Demand#DEFAULT_MAX_SUPPLIERS
         if (maxOffersSpecified(detail)) {
-            demand.setMaxSuppliers(detail.getMaxOffers());
+            demand.setMaxSuppliers(detail.getMaxSuppliers());
         }
         demand.setMinRating(detail.getMinRating());
         demand.setStatus(DemandStatus.NEW);
         demand.setEndDate(detail.getEndDate());
-        demand.setValidTo(detail.getValidToDate());
+        demand.setValidTo(detail.getValidTo());
         demand.setClient(this.clientService.getById(cliendId));
 
         /** localities **/
@@ -143,7 +143,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     private boolean maxOffersSpecified(FullDemandDetail detail) {
-        return detail.getMaxOffers() > 0;
+        return detail.getMaxSuppliers() > 0;
     }
 
     /**

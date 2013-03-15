@@ -319,6 +319,9 @@ public class ClientDemandsPresenter
     }
 
     public void onResponseUpdateDemand(boolean result) {
+        view.getChoiceButtonsPanel().setVisible(true);
+        view.getEditButtonsPanel().setVisible(false);
+        detailSection.getEditDemandPresenter().getView().setFieldEnables(false);
         //TODO LATER Martin - make proper notify popup
         Window.alert("Updated succesfully");
     }

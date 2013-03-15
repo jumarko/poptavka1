@@ -250,10 +250,10 @@ public class AdminDemandsPresenter
         view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
-                if (!object.getValidToDate().equals(value)) {
+                if (!object.getValidTo().equals(value)) {
                     manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.VALID_TO_DATE,
-                            object.getDemandId(), object.getValidToDate(), value);
-                    object.setValidToDate(value);
+                            object.getDemandId(), object.getValidTo(), value);
+                    object.setValidTo(value);
                 }
             }
         });

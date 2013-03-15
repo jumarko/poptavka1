@@ -204,9 +204,9 @@ public class AdminDemandInfoView extends Composite {
                 descriptionBox.setBothValues(demand.getDescription());
                 priceBox.setBothValues(currencyFormat.format(demand.getPrice()));
                 endDateBox.setBothValues(demand.getEndDate());
-                expirationBox.setBothValues(demand.getValidToDate());
+                expirationBox.setBothValues(demand.getValidTo());
                 clientID.setValue(String.valueOf(demand.getClientId()));
-                maxOffers.setBothValues(String.valueOf(demand.getMaxOffers()));
+                maxOffers.setBothValues(String.valueOf(demand.getMaxSuppliers()));
                 minRating.setBothValues(String.valueOf(demand.getMinRating()));
                 excludedSupplierList.setBothValues(demand.getExcludedSuppliers());
                 categoryList.setBothValues(demand.getCategories());

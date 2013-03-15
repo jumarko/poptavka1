@@ -151,10 +151,10 @@ public class EditableDemandDetailView extends Composite implements
         titleMonitor.setBothValues(demandDetail.getTitle());
         priceMonitor.setBothValues(demandDetail.getPrice());
         endDateMonitor.setBothValues(demandDetail.getEndDate());
-        validToDateMonitor.setBothValues(demandDetail.getValidToDate());
+        validToDateMonitor.setBothValues(demandDetail.getValidTo());
         categoriesMonitor.setBothValues(demandDetail.getCategories());
         localitiesMonitor.setBothValues(demandDetail.getLocalities());
-        maxOffersMonitor.setBothValues(demandDetail.getMaxOffers());
+        maxOffersMonitor.setBothValues(demandDetail.getMaxSuppliers());
         minRatingMonitor.setBothValues(demandDetail.getMinRating());
         excludedSuppliersMonitor.setBothValues(demandDetail.getExcludedSuppliers());
         descriptionMonitor.setBothValues(demandDetail.getDescription());
@@ -191,6 +191,10 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.addChangeHandler(handler);
         }
+    }
+
+    @Override
+    public void setListChangeHandler(ChangeHandler handler) {
         categoriesMonitor.addChangeHandler(handler);
         localitiesMonitor.addChangeHandler(handler);
     }
@@ -256,11 +260,11 @@ public class EditableDemandDetailView extends Composite implements
     /** Validation. **/
     @Override
     public boolean isValid() {
-        boolean valid = false;
+        boolean valid = true;
         for (ChangeMonitor monitor : monitors) {
-            valid = valid || monitor.isValid();
+            valid = monitor.isValid() && valid;
         }
-        return valid || categoriesMonitor.isValid() || localitiesMonitor.isValid();
+        return valid && categoriesMonitor.isValid() && localitiesMonitor.isValid();
     }
 
     /** Widget view. **/
