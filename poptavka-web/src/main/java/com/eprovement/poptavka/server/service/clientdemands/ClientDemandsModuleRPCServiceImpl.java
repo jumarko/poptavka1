@@ -1052,8 +1052,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         int numberOfRatings = 0;
         int ratingSum = 0;
         for (Offer offer : offersWithRating) {
-            if (offer.getDemand().getRating().getClientRating() != null) {
-                ratingSum = ratingSum + offer.getDemand().getRating().getClientRating().intValue();
+            if (offer.getDemand().getRating().getSupplierRating() != null) {
+                ratingSum = ratingSum + offer.getDemand().getRating().getSupplierRating().intValue();
                 numberOfRatings++;
             }
         }
