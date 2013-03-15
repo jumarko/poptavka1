@@ -2,7 +2,6 @@ package com.eprovement.poptavka.client.user.messages;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -11,18 +10,18 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.user.messages.tab.ComposeMessagePresenter;
 import com.eprovement.poptavka.client.user.messages.tab.MessageListPresenter;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = MessagesPresenter.class, module = MessagesModule.class)
-public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus {
+public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -53,9 +52,8 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
      * @param filter - defines data holder to be displayed in advanced search bar
      * @param loadWidget - prosim doplnit ???
      */
-    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class
-            , navigationEvent = true)
-    String goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
+    @Event(handlers = MessagesPresenter.class, navigationEvent = true)
+    void goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -69,58 +67,53 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
 
-    // TODO ivlcek - method loginFromSession() should be available for every module that can be accessed
-    // just by entering URL into browser
-//    @Event(forwardToParent = true)
-//    void loginFromSession();
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
 
     @Event(forwardToParent = true)
     void loginFromSession(int widgetToLoad);
 
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
+    /**************************************************************************/
+    /* History events                                                         */
+    /**************************************************************************/
+    @Event(historyConverter = MessagesHistoryConverter.class, name = "token")
+    String createTokenForHistory();
+
+    /**************************************************************************/
+    /* Overriden methods of IEventBusData interface. */
+    /* Should be called only from UniversalAsyncGrid. */
+    /**************************************************************************/
+    @Override
+    @Event(handlers = MessagesHandler.class)
+    void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
+
+    @Override
+    @Event(handlers = MessagesHandler.class)
+    void getData(SearchDefinition searchDefinition);
+
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/
-    @Event(handlers = ComposeMessagePresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
-    void initComposeNew();
-
-    @Event(handlers = ComposeMessagePresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
-    void initComposeReply(MessageDetail msgDetail);
-
-    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
+    @Event(handlers = MessageListPresenter.class)
     void initInbox(SearchModuleDataHolder searchDataHolder);
-
-    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
-    void initSent(SearchModuleDataHolder searchDataHolder);
-
-    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
-    void initTrash(SearchModuleDataHolder searchDataHolder);
-
-    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
-    void initDraft(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/
     /* Business events handled by presenters                                  */
     /**************************************************************************/
-    //display widget in content area
     @Event(handlers = MessagesPresenter.class)
-    void displayMain(Widget content);
+    void displayView(IsWidget content);
 
-    @Event(handlers = MessagesPresenter.class)
-    void displayDetail(Widget content);
-
-//    @Event(handlers = MessageListPresenter.class, passive = true)
-//    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
     @Event(handlers = MessageListPresenter.class)
-    void displayMessages(List<UserMessageDetail> messages);
-
-    @Event(handlers = ComposeMessagePresenter.class)
-    void responseUserInfo(BusinessUserDetail userDetail);
-
+    void displayInboxMessages(List<MessageDetail> inboxMessages);
     /**************************************************************************/
-    /* Business events handled by MessagesModuleMessageHandler                      */
+    /* Business events handled by MessagesModuleMessageHandler                */
     /**************************************************************************/
+    @Event(handlers = MessagesHandler.class)
+    void updateUnreadMessagesCount();
+
     /**
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.
@@ -129,42 +122,10 @@ public interface MessagesEventBus extends EventBusWithLookup, BaseChildEventBus 
      */
     @Event(handlers = MessagesHandler.class)
     void sendMessage(MessageDetail messageToSend, String action);
-    //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
-
-    @Event(handlers = MessagesHandler.class)
-    void getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder);
-
-    @Event(handlers = MessagesHandler.class)
-    void getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder);
-
-    @Event(handlers = MessagesHandler.class)
-    void getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = MessagesHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
 
     @Event(handlers = MessagesHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
-
-    @Event(handlers = MessagesHandler.class)
-    void deleteMessages(List<Long> messagesIds);
-
-    @Event(handlers = MessagesHandler.class)
-    void requestUserInfo(Long senderId);
-
-    /*
-     * Request/Response Method pair
-     * DemandDetail for detail section
-     * @param demandId
-     * @param type
-     */
-//    @Event(handlers = MessagesModuleContentHandler.class)
-//    void requestDemandDetail(Long demandId, ViewType type);
-//    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
-//    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
-    @Event(handlers = MessagesHandler.class)
-    void requestConversation(Long threadRootId, Long subRootId);
-
-    @Event(handlers = MessagesHandler.class)
-    void updateUnreadMessagesCount();
 }

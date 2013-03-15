@@ -26,6 +26,8 @@ import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.googlecode.genericdao.search.Field;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -34,7 +36,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,13 +115,31 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         }
     }
 
+    /** Inbox messages.                                                      **/
+    //--------------------------------------------------------------------------
     @Override
-    public List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
+    public Integer getInboxMessagesCount(Long recipientId, SearchDefinition searchDefinition)
         throws RPCException {
-        return this.getMessages(recipientId, searchDataHolder, Arrays.asList(
-                MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
+        User recipient = generalService.find(User.class, recipientId);
+        Search messagesSearch = new Search(UserMessage.class);
+        messagesSearch.addFilterEqual("user", recipient);
+        messagesSearch.addFilterNull("message.demand");
+        messagesSearch.addField("id", Field.OP_COUNT);
+        messagesSearch.setResultMode(Search.RESULT_SINGLE);
+        return ((Long) generalService.searchUnique(messagesSearch)).intValue();
     }
 
+    @Override
+    public List<MessageDetail> getInboxMessages(Long recipientId, SearchDefinition searchDefinition)
+        throws RPCException {
+        User recipient = generalService.find(User.class, recipientId);
+        Search messagesSearch = new Search(UserMessage.class);
+        messagesSearch.addFilterEqual("user", recipient);
+        messagesSearch.addFilterNull("message.demand");
+        return userMessageConverter.convertToTargetList(generalService.search(messagesSearch));
+    }
+
+    //--------------------------------------------------------------------------
     @Override
     public List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
         throws RPCException {

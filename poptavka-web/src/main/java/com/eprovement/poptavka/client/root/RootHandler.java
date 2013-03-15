@@ -188,6 +188,10 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             eventBus.goToSettingsModule();
             return;
         }
+        if (Constants.getMessagesConstants().contains(widgetToLoad)) {
+            eventBus.goToMessagesModule(null, widgetToLoad);
+            return;
+        }
         //otherwise forward user to welcome view of appropriate module according to his roles
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             eventBus.goToAdminModule(null, widgetToLoad);
