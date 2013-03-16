@@ -6,9 +6,11 @@ import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GeneralService;
@@ -460,7 +462,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
 
         long count3 = offerService.getAcceptedOffersCountForSupplier(supplierId);
         Assert.assertEquals("Expected count of accepted offers [count=" + count3
-                + "]for supplier was different", 1L, count3);
+                + "]for supplier was different", 0L, count3);
 
         long count4 = offerService.getAcceptedOffersCountForSupplier(supplierId2);
         Assert.assertEquals("Expected count of accepted offers [count=" + count4
@@ -472,9 +474,10 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithClosedDemands() {
         User userWithClosedDemands = new User();
         userWithClosedDemands.setId(111111112L);
+        OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
 
         Map<UserMessage, Integer> closedDemandsMap = userMessageService.getSupplierConversationsWithClosedDemands(
-                userWithClosedDemands);
+                userWithClosedDemands, offerClosed);
         long count = closedDemandsMap.size();
         Assert.assertEquals("Expected count of different conversations with closed demands [count=" + count
                 + "] for user was different", 1L, count);

@@ -156,10 +156,11 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
         queryParams.put("closedStatus", DemandStatus.CLOSED);
+        queryParams.put("offerStatusClosed", offerClosed);
 
         List<Object[]> unread = runNamedQuery(
                 "getSupplierConversationsWithClosedDemands",
