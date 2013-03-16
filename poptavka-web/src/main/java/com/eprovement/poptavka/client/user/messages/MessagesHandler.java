@@ -1,34 +1,76 @@
 package com.eprovement.poptavka.client.user.messages;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-//import com.eprovement.poptavka.client.service.demand.GeneralRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.MessagesRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 
 import java.util.List;
 
 @EventHandler
 public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
-//    @Inject
-//    private MessageRPCServiceAsync messageService;
     @Inject
     private MessagesRPCServiceAsync messagesService;
-//    @Inject
-//    private GeneralRPCServiceAsync generalService;
     @Inject
     private UserRPCServiceAsync userService;
+
+    /**************************************************************************/
+    /* Overriden methods of IEventBusData interface.                          */
+    /**************************************************************************/
+    public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.MESSAGES_INBOX:
+                getInboxMessagesCount(grid, searchDefinition);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void onGetData(SearchDefinition searchDefinition) {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.CLIENT_DEMANDS:
+                getInboxMessages(searchDefinition);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**************************************************************************/
+    /* INBOX                                                                  */
+    /**************************************************************************/
+    public void getInboxMessagesCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        messagesService.getInboxMessagesCount(Storage.getUser().getUserId(), searchDefinition,
+                new SecuredAsyncCallback<Integer>(eventBus) {
+                @Override
+                public void onSuccess(Integer result) {
+                    grid.getDataProvider().updateRowCount(result, true);
+                }
+            });
+    }
+
+    public void getInboxMessages(SearchDefinition searchDefinition) {
+        messagesService.getInboxMessages(Storage.getUser().getUserId(), searchDefinition,
+                new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
+                @Override
+                public void onSuccess(List<MessageDetail> result) {
+                    eventBus.displayInboxMessages(result);
+                }
+            });
+    }
 
     /**
      * Send message.
@@ -57,44 +99,14 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
         });
     }
 
-    public void onGetInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder) {
-        messagesService.getInboxMessages(recipientId, searchDataHolder,
-                new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<UserMessageDetail> result) {
-                        eventBus.displayMessages(result);
-                    }
-                });
-    }
-
-    public void onGetSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder) {
-        messagesService.getSentMessages(senderId, searchDataHolder,
-                new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<UserMessageDetail> result) {
-                        eventBus.displayMessages(result);
-                    }
-                });
-    }
-
-    public void onGetDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder) {
-        messagesService.getDeletedMessages(userId, searchDataHolder,
-                new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<UserMessageDetail> result) {
-                        eventBus.displayMessages(result);
-                    }
-                });
-    }
-
     public void onRequestConversation(Long threadRootId, Long subRootId) {
         messagesService.getConversationMessages(threadRootId, subRootId,
                 new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(ArrayList<MessageDetail> result) {
+                @Override
+                public void onSuccess(ArrayList<MessageDetail> result) {
 //                        eventBus.responseConversation(result, ViewType.EDITABLE);
-                    }
-                });
+                }
+            });
     }
 
     /**
@@ -132,15 +144,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
             @Override
             public void onSuccess(List<UserMessageDetail> result) {
                 GWT.log("Messages deleted.");
-            }
-        });
-    }
-
-    public void onRequestUserInfo(Long recipientId) {
-        userService.getBusinessUserById(recipientId, new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-            @Override
-            public void onSuccess(BusinessUserDetail result) {
-                eventBus.responseUserInfo(result);
             }
         });
     }

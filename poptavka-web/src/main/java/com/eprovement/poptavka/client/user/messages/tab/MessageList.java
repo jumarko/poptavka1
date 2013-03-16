@@ -1,30 +1,29 @@
 package com.eprovement.poptavka.client.user.messages.tab;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import com.google.gwt.cell.client.ValueUpdater;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SelectionModel;
-
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.github.gwtbootstrap.client.ui.NavLink;
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -37,174 +36,188 @@ public class MessageList extends Composite implements MessageListPresenter.IList
 
     interface MessageListUiBinder extends UiBinder<Widget, MessageList> {
     }
-    //table handling buttons
-    @UiField
-    Button readBtn, unreadBtn, starBtn, unstarBtn, deleteBtn;
-    //DataGridattributes
-    @UiField(provided = true)
-    MessageListGrid<UserMessageDetail> messageGrid;
-    @UiField(provided = true)
-    SimplePager pager;
+    /**************************************************************************/
+    /* Attrinbutes                                                            */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField(provided = true) UniversalAsyncGrid grid;
+    @UiField(provided = true) UniversalPagerWidget pager;
+    @UiField DropdownButton actionBox;
+    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
+    @UiField SimplePanel wrapperPanel;
+    @UiField HorizontalPanel toolBar;
+    @UiField Button replyBtn;
+    /** Class attributes. **/
+    //table related
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "", "sender", "subject", "created"
+            });
+    private MultiSelectionModel selectionModel;
+    //table columns
+    private Column<MessageDetail, Boolean> checkColumn;
+    private Column<MessageDetail, String> senderColumn;
+    private Column<MessageDetail, String> subjectColumn;
+    private Column<MessageDetail, String> dateColumn;
+    //table column width constatnts
+    private static final String COL_WIDTH_SENDER = "100px";
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
-        //demandGrid init
-        messageGrid = new MessageListGrid<UserMessageDetail>(UserMessageDetail.KEY_PROVIDER);
-        // Add a selection model so we can select cells.
-        final SelectionModel<UserMessageDetail> selectionModel =
-                new MultiSelectionModel<UserMessageDetail>(UserMessageDetail.KEY_PROVIDER);
-        messageGrid.setSelectionModel(selectionModel,
-                DefaultSelectionEventManager.<UserMessageDetail>createCheckboxManager());
 
-        //init table
-        initTableColumns(selectionModel);
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(messageGrid);
-
+        initTableAndPager();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-//**** GRID related methods - START
-    private Column<UserMessageDetail, Boolean> starColumn;
-    private Column<UserMessageDetail, String> userCol;
-    private Column<UserMessageDetail, String> subjectCol;
-    private Column<UserMessageDetail, String> creationCol;
+    /**
+     * Initialize this example.
+     */
+    private void initTableAndPager() {
+        // Create a Pager.
+        pager = new UniversalPagerWidget();
+        // Create a Table.
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        grid = new UniversalAsyncGrid<MessageDetail>(gridColumns, pager.getPageSize(), resource);
+        grid.setWidth("100%");
+        grid.setHeight("100%");
+        // Selection Model - must define different from default which is used in UniversalAsyncGrid
+        // Add a selection model so we can select cells.
+        selectionModel = new MultiSelectionModel<MessageDetail>(MessageDetail.KEY_PROVIDER);
+        grid.setSelectionModel(selectionModel, DefaultSelectionEventManager.<MessageDetail>createCheckboxManager());
 
-    @Override
-    public MessageListGrid<UserMessageDetail> getGrid() {
-        return messageGrid;
-    }
+        // Bind pager to demandGrid
+        pager.setDisplay(grid);
 
-    @Override
-    public ListDataProvider<UserMessageDetail> getDataProvider() {
-        return messageGrid.getDataProvider();
-    }
-
-    @Override
-    public Column<UserMessageDetail, String> getCreationCol() {
-        return creationCol;
-    }
-
-    @Override
-    public Column<UserMessageDetail, Boolean> getStarColumn() {
-        return starColumn;
-    }
-
-    @Override
-    public Column<UserMessageDetail, String> getSubjectCol() {
-        return subjectCol;
-    }
-
-    @Override
-    public Column<UserMessageDetail, String> getUserCol() {
-        return userCol;
+        initDemandTableColumns();
     }
 
     /**
-     * Create all columns to the grid and define click actions.
+     * Create all columns to the grid.
      */
-    public void initTableColumns(final SelectionModel<UserMessageDetail> selectionModel) {
-        //init column factory
-        MessageColumnFactory<UserMessageDetail> factory = new MessageColumnFactory<UserMessageDetail>();
-
-// **** definition of all needed FieldUpdaters
-        //TEXT FIELD UPDATER create common demand display fieldUpdater for demand and related conversation display
-
-
-// **** ROW selection column and set it's width to 40px.
-        //contains custom header providing selecting all visible items
-        final Header<Boolean> header = factory.createCheckBoxHeader();
-        //select
-        header.setUpdater(new ValueUpdater<Boolean>() {
-
+    public void initDemandTableColumns() {
+        // CheckBox column header - always create this header
+        Header checkHeader = new Header<Boolean>(new CheckboxCell()) {
             @Override
-            public void update(Boolean value) {
-                List<UserMessageDetail> rows = messageGrid.getVisibleItems();
-                for (UserMessageDetail row : rows) {
-                    selectionModel.setSelected(row, value);
-                }
-
+            public Boolean getValue() {
+                return false;
             }
-        });
-        messageGrid.addColumn(factory.createCheckboxColumn(selectionModel), header);
-        messageGrid.setColumnWidth(messageGrid.getColumn(MessageColumnFactory.COL_ZERO),
-                MessageColumnFactory.WIDTH_40, Unit.PX);
+        };
+        // CheckBox column - always create this column
+        grid.addCheckboxColumn(checkHeader);
 
-// **** Star collumn with defined valueUpdater and custom style
-        starColumn = factory.createStarColumn();
-        //testing if assigning style in MessageColumnFactory works - works well 7.11.11 Beho
-        //but keep here for reference
-        //starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        messageGrid.setColumnWidth(starColumn, MessageColumnFactory.WIDTH_40, Unit.PX);
-        messageGrid.addColumn(starColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        // Sender name column
+        senderColumn = grid.addColumn(grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnSender(),
+                true, COL_WIDTH_SENDER,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        return ((MessageDetail) object).getSenderName();
+                    }
+                });
 
-// **** user column
-        userCol = factory.createUserColumn(messageGrid.getSortHandler());
-//        demandGrid.addColumn(userCol, Storage.MSGS.title());
-        messageGrid.addColumn(userCol, "Od koho");
+        // Subject column
+        subjectColumn = grid.addColumn(
+                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnSubject(),
+                true, Constants.COL_WIDTH_TITLE,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        return ((MessageDetail) object).getSubject();
+                    }
+                });
 
-// **** subject column
-        subjectCol = factory.createSubjectColumn(messageGrid.getSortHandler(), true);
-//        demandGrid.addColumn(subjectCol, Storage.MSGS.client());
-        messageGrid.addColumn(subjectCol, "Predmet");
-
-// **** creationDate column
-        creationCol = factory.createDateColumn(messageGrid.getSortHandler(), MessageColumnFactory.DATE_CREATED);
-        messageGrid.addColumn(creationCol, Storage.MSGS.columnCreatedDate());
-
+        // Creation date column
+        dateColumn = grid.addColumn(
+                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnCreatedDate(),
+                true, Constants.COL_WIDTH_DATE,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        return Storage.FORMATTER.format(((MessageDetail) object).getCreated());
+                    }
+                });
     }
 
-//**** GRID related methods - END
+    /**************************************************************************/
+    /* Getter                                                                 */
+    /**************************************************************************/
+    /** Table related. **/
     @Override
-    public Button getReadBtn() {
-        return readBtn;
-    }
-
-    @Override
-    public Button getUnreadBtn() {
-        return unreadBtn;
-    }
-
-    @Override
-    public Button getStarBtn() {
-        return starBtn;
-    }
-
-    @Override
-    public Button getUnstarBtn() {
-        return unstarBtn;
+    public UniversalAsyncGrid<MessageDetail> getGrid() {
+        return grid;
     }
 
     @Override
-    public Button getDeleteBtn() {
-        return deleteBtn;
+    public MultiSelectionModel<MessageDetail> getSelectionModel() {
+        return selectionModel;
     }
 
     @Override
-    public List<Long> getSelectedIdList() {
-        List<Long> idList = new ArrayList<Long>();
-        Set<UserMessageDetail> set = getSelectedMessageList();
-        Iterator<UserMessageDetail> it = set.iterator();
-        while (it.hasNext()) {
-            idList.add(it.next().getId());
-        }
-        return idList;
+    public UniversalPagerWidget getPager() {
+        return pager;
     }
 
-    @SuppressWarnings("unchecked")
+    /** Columns. **/
     @Override
-    public Set<UserMessageDetail> getSelectedMessageList() {
-        MultiSelectionModel<UserMessageDetail> model =
-                (MultiSelectionModel<UserMessageDetail>) messageGrid.getSelectionModel();
-        return model.getSelectedSet();
+    public Column<MessageDetail, Boolean> getCheckColumn() {
+        return checkColumn;
+    }
+
+    @Override
+    public Column<MessageDetail, String> getSenderColumn() {
+        return senderColumn;
+    }
+
+    @Override
+    public Column<MessageDetail, String> getSubjectColumn() {
+        return subjectColumn;
+    }
+
+    @Override
+    public Column<MessageDetail, String> getDateColumn() {
+        return dateColumn;
+    }
+
+    /** Buttons. **/
+    @Override
+    public Button getReplyBtn() {
+        return replyBtn;
+    }
+
+    /** Action Box. **/
+    @Override
+    public DropdownButton getActionBox() {
+        return actionBox;
+    }
+
+    @Override
+    public NavLink getActionRead() {
+        return actionRead;
+    }
+
+    @Override
+    public NavLink getActionUnread() {
+        return actionUnread;
+    }
+
+    @Override
+    public NavLink getActionStar() {
+        return actionStar;
+    }
+
+    @Override
+    public NavLink getActionUnstar() {
+        return actionUnstar;
+    }
+
+    /** Others. **/
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

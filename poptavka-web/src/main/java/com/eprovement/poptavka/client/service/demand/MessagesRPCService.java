@@ -16,6 +16,7 @@ import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 
 /**
  *
@@ -38,7 +39,11 @@ public interface MessagesRPCService extends RemoteService {
     void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException,
             ApplicationSecurityException;
 
-    List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
+    /** INBOX. **/
+    Integer getInboxMessagesCount(Long recipientId, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
+
+    List<MessageDetail> getInboxMessages(Long recipientId, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
     List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)

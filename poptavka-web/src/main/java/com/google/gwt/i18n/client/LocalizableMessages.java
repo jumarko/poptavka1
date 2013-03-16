@@ -16,6 +16,7 @@ public interface LocalizableMessages extends Messages {
     /*  8 - Client Demands module view                                        */
     /*  9 - Supplier Demands module view                                      */
     /*  10 - Admin module view                                                */
+    /*  11 - Messages module view                                             */
     /*                                                                        */
     /*** 0 - Root module view ******************************************* 0 ***/
     /*** ATTRIBUTES ***********************************************************/
@@ -161,6 +162,7 @@ public interface LocalizableMessages extends Messages {
     String menuSettingsClient();
     String menuSettingsSupplier();
     String menuSettingsSystem();
+    String menuMessagesInbox();
 
     /*** ATTRIBUTES ***********************************************************/
     /** HeaderView.ui. **/
@@ -279,6 +281,7 @@ public interface LocalizableMessages extends Messages {
     String columnRatingClient();
     String columnRatingSupplier();
     String columnReceived();
+    String columnSender();
     String columnSenderID();
     String columnService();
     String columnState();
@@ -555,7 +558,7 @@ public interface LocalizableMessages extends Messages {
     String supplierAssignedDemandsFinnishBtn();
     String supplierAssignedDemandsTableTitle();
 
-    /*** 10 - Admin module view ***************************************** 10 ***/
+    /*** 10 - Admin module view **************************************** 10 ***/
     /** AdminView.ui. **/
     String adminTableAccessRole();
     String adminTableDemand();
@@ -613,4 +616,6 @@ public interface LocalizableMessages extends Messages {
     String finishedOfferMessage();
     String closeDemandMessage();
 
+    /*** 11 - Messages module view ************************************** 11 ***/
+    String messagesToolbarLabel();
 }

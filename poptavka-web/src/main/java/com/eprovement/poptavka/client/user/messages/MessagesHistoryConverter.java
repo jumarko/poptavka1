@@ -3,10 +3,8 @@ package com.eprovement.poptavka.client.user.messages;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**
  * History converter class. Handles history for MessagesModule.
@@ -16,35 +14,18 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 @History(type = HistoryConverterType.DEFAULT, name = "messages")
 public class MessagesHistoryConverter implements HistoryConverter<MessagesEventBus> {
 
-    private static final String MESSAGES_COMPOSE_NEW_TEXT = "messagesComposeNew";
-    private static final String MESSAGES_COMPOSE_REPLY_TEXT = "messagesComposeReply";
+    private static final String MESSAGES_NONE = "messagesWelcome";
     private static final String MESSAGES_INBOX_TEXT = "messagesInbox";
-    private static final String MESSAGES_SENT_TEXT = "messagesSent";
-    private static final String MESSAGES_DRAFT_TEXT = "messagesDraft";
-    private static final String MESSAGES_TRASH_TEXT = "messagesTrash";
-    private static final String MESSAGES_NONE = "messagesWelcome"; //for further usage
 
     /**
-     * Created token(URL) for goToMessagesModule method.
+     * Created token(URL) for messages module.
      *
-     * @param searchDataHolder - Provided by search module. Holds data to filter.
-     * @param loadWidget - Constant from class Constants. Tells which view to load.
-     * @return token string like module/method?param, where param = messagesInbox, ....
+     * @return token string
      */
-    public String onGoToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget) {
-        switch (loadWidget) {
-            case Constants.MESSAGES_COMPOSE_NEW:
-                return MESSAGES_COMPOSE_NEW_TEXT;
-            case Constants.MESSAGES_COMPOSE_REPLY:
-                return MESSAGES_COMPOSE_REPLY_TEXT;
+    public String onCreateTokenForHistory() {
+        switch (Storage.getCurrentlyLoadedView()) {
             case Constants.MESSAGES_INBOX:
                 return MESSAGES_INBOX_TEXT;
-            case Constants.MESSAGES_SENT:
-                return MESSAGES_SENT_TEXT;
-            case Constants.MESSAGES_DRAFT:
-                return MESSAGES_DRAFT_TEXT;
-            case Constants.MESSAGES_TRASH:
-                return MESSAGES_TRASH_TEXT;
             default:
                 return MESSAGES_NONE;
         }
@@ -61,14 +42,33 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
      */
     @Override
     public void convertFromToken(String historyName, String param, MessagesEventBus eventBus) {
+        //If application is called by URL, log in user and forward him to overview (goToClientDemandModule.Welcome)
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            // login from session method
-            eventBus.loginFromSession(Constants.NONE);
+            Storage.setAppCalledByURL(false);
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(getCurrentViewConstant(param));
+            return;
         }
+        eventBus.goToMessagesModule(null, Constants.NONE);
     }
 
     @Override
     public boolean isCrawlable() {
         return false;
+    }
+
+    /**************************************************************************/
+    /* Helper methods.                                                        */
+    /**************************************************************************/
+    /**
+     * Converts history token to current view constant.
+     * @param token
+     * @return
+     */
+    private int getCurrentViewConstant(String token) {
+        if (MESSAGES_INBOX_TEXT.equals(token)) {
+            return Constants.MESSAGES_INBOX;
+        }
+        return Constants.NONE;
     }
 }

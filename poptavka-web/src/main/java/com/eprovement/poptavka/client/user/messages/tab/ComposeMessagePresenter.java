@@ -71,7 +71,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
 
         view.clearMessage();
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayMain(view.getWidgetView());
+//        eventBus.displayMain(view.getWidgetView());
     }
 
     public void onInitComposeReply(MessageDetail msgDetail) {
@@ -81,10 +81,10 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
             messageDetail = msgDetail;
         }
         //Ak forwardnuty z kliku na nejakeho uzivatela, uzivatel sa automaticky nastavy ako recipient
-        eventBus.requestUserInfo(messageDetail.getSenderId());
+//        eventBus.requestUserInfo(messageDetail.getSenderId());
 
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayMain(view.getWidgetView());
+//        eventBus.displayMain(view.getWidgetView());
     }
 
     public void onResponseUserInfo(BusinessUserDetail userDetail) {
