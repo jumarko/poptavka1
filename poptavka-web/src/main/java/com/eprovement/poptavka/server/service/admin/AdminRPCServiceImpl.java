@@ -17,11 +17,13 @@ import com.eprovement.poptavka.domain.invoice.Invoice;
 import com.eprovement.poptavka.domain.invoice.OurPaymentDetails;
 import com.eprovement.poptavka.domain.invoice.PaymentMethod;
 import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.settings.Preference;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Problem;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.domain.user.rights.Permission;
 import com.eprovement.poptavka.server.converter.Converter;
@@ -30,6 +32,8 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.demand.PotentialDemandService;
+import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
@@ -80,6 +84,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminRPCServiceImpl.class);
     private GeneralService generalService;
     private DemandService demandService;
+    private MessageService messageService;
+    private UserMessageService userMessageService;
     private PotentialDemandService potentialDemandService;
     private Converter<Demand, FullDemandDetail> fullDemandConverter;
     private Converter<Client, ClientDetail> clientConverter;
@@ -97,6 +103,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<Search, SearchDefinition> searchConverter;
+    private Converter<UserMessage, MessageDetail> userMessageConverter;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -106,6 +113,16 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
+    }
+
+    @Autowired
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    @Autowired
+    public void setUserMessageService(UserMessageService userMessageService) {
+        this.userMessageService = userMessageService;
     }
 
     @Autowired
@@ -902,5 +919,67 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
         unreadMessagesDetail.setUnreadMessagesCount(99);
         return unreadMessagesDetail;
+    }
+
+    /**
+     * Retrieve conversation between Operator and <code>Client</code> regarding particular demand. If there are no
+     * <oode>UserMessage</code>-s for Operator/Admin empty conversation i.e. empty list is returned. In this case
+     * the Operator/Admin must invoke <code>createConversation</code> that will create a new <code>UserMessage</code>.
+     *
+     * @param demandId which conversation should be loaded
+     * @param userAdminId id of Admin or Operator user
+     * @return List of <code>MessageDetail</code> objects
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public List<MessageDetail> getConversation(long demandId, long userAdminId) throws RPCException,
+        ApplicationSecurityException {
+        Demand demand = demandService.getById(demandId);
+        Message threadRootMessage = messageService.getThreadRootMessage(demand);
+        final List<UserMessage> userMessages = getConversationUserMessages(threadRootMessage.getId(), userAdminId);
+        // set all user messages as read
+        for (UserMessage userMessage : userMessages) {
+            userMessage.setRead(true);
+            generalService.save(userMessage);
+        }
+        return userMessageConverter.convertToTargetList(userMessages);
+    }
+
+    /**
+     * Loads all UserMessages for conversation panel and sets them as read.
+     *
+     * @param threadId if of thread root message for whole conversation
+     * @param userId user which user messages will be retrieved
+     * @return list of <code>UserMessage</code>-s
+     */
+    private List<UserMessage> getConversationUserMessages(long threadId, long userId) {
+        Message threadRoot = messageService.getById(threadId);
+        User user = this.generalService.find(User.class, userId);
+        final Search searchDefinition = new Search(UserMessage.class);
+        searchDefinition.addSort("message.created", true);
+        return this.messageService
+                .getConversationUserMessages(threadRoot, user, searchDefinition);
+    }
+
+    /**
+     * Creates conversation between <code>Client</code> and Admin/Operator user. Conversation is created in such a
+     * way that new <code>UserMessage</code> is created for every <code>User</code> who invokes this method. Thus
+     * enabling the user to write a reply message to <code>Client</code> in order to update <code>Demand</code>
+     * description or title before this demand is approved.
+     *
+     * @param demandId for which the conversation is created
+     * @param userAdminId id of operator or admin user
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public void createConversation(long demandId, long userAdminId) throws RPCException,
+        ApplicationSecurityException {
+        Demand demand = demandService.getById(demandId);
+        Message threadRootMessage = messageService.getThreadRootMessage(demand);
+        userMessageService.getAdminUserMessage(threadRootMessage, generalService.find(User.class, userAdminId));
     }
 }
