@@ -597,11 +597,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         User user = generalService.find(User.class, userId);
+        OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
 
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
         Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getSupplierConversationsWithClosedDemands(user);
+                userMessageService.getSupplierConversationsWithClosedDemands(user, offerClosed);
         for (Map.Entry<UserMessage, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = userMessageEntry.getKey();
             Offer offer = userMessage.getMessage().getOffer();

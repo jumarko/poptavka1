@@ -158,7 +158,9 @@ import javax.persistence.NamedQuery;
                         + " and rootMessage.demand is not null"
                         + " and rootMessage.demand.status = :closedStatus"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null\n"
+                        + " and latestUserMessage.message.nextSibling is null"
+                        + " and latestUserMessage.message.offer is not null"
+                        + " and latestUserMessage.message.offer.state = :offerStatusClosed\n"
                         + "group by latestUserMessage.id"),
             @NamedQuery(name = "getClientConversationsWithoutOffer",
                 query = "select latestUserMessage, supplier,"

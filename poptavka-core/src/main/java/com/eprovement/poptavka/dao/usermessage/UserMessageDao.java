@@ -133,7 +133,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user);
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed);
 
    /**
     * Gets a list of all client's conversation related to their demands where

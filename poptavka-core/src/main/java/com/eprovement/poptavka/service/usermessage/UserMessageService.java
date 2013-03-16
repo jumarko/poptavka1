@@ -280,7 +280,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user);
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -292,7 +292,8 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, Search search);
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed,
+            Search search);
 
    /**
     * Gets a list of all client's conversation related to their demands where

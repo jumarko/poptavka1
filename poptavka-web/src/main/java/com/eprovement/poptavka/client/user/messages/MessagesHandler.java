@@ -41,7 +41,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
     public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.CLIENT_DEMANDS:
+            case Constants.MESSAGES_INBOX:
                 getInboxMessages(searchDefinition);
                 break;
             default:
