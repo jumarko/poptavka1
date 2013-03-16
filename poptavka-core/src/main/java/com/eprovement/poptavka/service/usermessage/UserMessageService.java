@@ -340,7 +340,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
 
     /**
      * Creates a <code>UserMessage</code> for a given <code>Message</code>
-     * and <code>Use</code>. This is to be used when an admin or operator user needs
+     * and <code>User</code>. This is to be used when an admin or operator user needs
      * to work with a message from a conversation in which they haven't been involved in
      * so a <code>UserMessage</code> for them couldn't be created.
      * @param message The <code>Message</code> the admin user needs to work with

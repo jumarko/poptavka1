@@ -150,4 +150,9 @@ public interface AdminRPCService extends RemoteService {
     void updateProblem(ProblemDetail detailObject) throws RPCException, ApplicationSecurityException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
+
+    List<MessageDetail> getConversation(long demandId, long userAdminId) throws RPCException,
+            ApplicationSecurityException;
+
+    void createConversation(long demandId, long userAdminId) throws RPCException, ApplicationSecurityException;
 }

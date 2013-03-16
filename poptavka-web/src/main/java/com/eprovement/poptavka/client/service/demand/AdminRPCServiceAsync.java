@@ -126,4 +126,8 @@ public interface AdminRPCServiceAsync {
     void updateProblem(ProblemDetail detailObject, AsyncCallback<ProblemDetail> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
+
+    void getConversation(long demandId, long userAdminId, AsyncCallback<List<MessageDetail>> callback);
+
+    void createConversation(long demandId, long userAdminId, AsyncCallback<Void> callback);
 }
