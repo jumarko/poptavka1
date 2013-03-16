@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -68,8 +67,6 @@ public interface RootRPCServiceAsync {
      *
      */
     void getBusinessUserByEmail(String email, AsyncCallback<BusinessUserDetail> async);
-
-    void updateDemands(long demandId, ArrayList<ChangeDetail> changes, AsyncCallback<Boolean> callback);
 
     /**************************************************************************/
     /* Registration user methods - Account info                               */
