@@ -16,6 +16,9 @@
                 <g:Button ui:field="approveBtn" visible="false" styleName="btn btn-primary">
                     <ui:msg key="adminCommonBtnApprove">Approve</ui:msg>
                 </g:Button>
+                <g:Button ui:field="createConversationBtn" visible="false" styleName="btn btn-primary">
+                    <ui:msg key="adminCommonBtnCreateConversation">Create conversation</ui:msg>
+                </g:Button>
                 <u:UniversalPagerWidget ui:field='pager'/>
             </g:HorizontalPanel>
         </g:north>

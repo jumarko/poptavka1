@@ -13,9 +13,9 @@ import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiRenderer;
+import java.util.Date;
 
 /**
  * Displays messageDetail as message cell in conversation panel widget's list .
@@ -40,9 +40,8 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
     private static final int HEADER_TEXT_LIMIT = 30;
-    private boolean open = false;
+    private boolean open;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -66,7 +65,7 @@ public class MessageCell extends AbstractCell<MessageDetail> {
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
         }
         renderer.render(sb, cssBall, cssColor, value.getSenderName(),
-                dateFormat.format(value.getSent()), getBodyText(value.getBody()));
+                getSentText(value.getSent()), getBodyText(value.getBody()));
     }
 
     @Override
@@ -84,6 +83,14 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    private String getSentText(Date sent) {
+        if (sent == null) {
+            return "";
+        } else {
+            return Storage.FORMATTER.format(sent);
+        }
+    }
+
     private String getBodyText(String body) {
         if (body.length() < HEADER_TEXT_LIMIT) {
             return body;

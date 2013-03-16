@@ -317,21 +317,30 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(handlers = AdminHandler.class)
     void requestApproveDemands(UniversalAsyncGrid grid, Set<FullDemandDetail> demandsToApprove);
 
-    @Event(handlers = AdminHandler.class)
-    void requestThreadRootId(FullDemandDetail demandDetail);
-
-    @Event(handlers = AdminNewDemandsPresenter.class)
-    void responseThreadRootId(long id);
-
     /**************************************************************************/
     /* AdminDetailWrapperPresentera.                                          */
     /**************************************************************************/
+    /**
+     * Request/Response method pair for admin details wrapper.
+     * @param demandDetail
+     */
     @Event(handlers = AdminPresenter.class)
     void requestAdminDetailWrapperPresenter();
 
     //pozor staci ak sa prezenter zavola raz a uz je aktivny
-    @Event(handlers = {AdminNewDemandsPresenter.class }, passive = true)
+    @Event(handlers = AdminNewDemandsPresenter.class)
     void responseAdminDetailWrapperPresenter(AdminDetailsWrapperPresenter detailSection);
+
+    /**
+     * Request/Response method pair.
+     * Get <b>Thread root message id</b>.
+     * @param demandDetail
+     */
+    @Event(handlers = AdminHandler.class)
+    void requestThreadRootId(long demandId);
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void responseThreadRootId(long threadRootId);
 
     /**
      * Request/Response method pair.
@@ -359,14 +368,39 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     /**
      * Request/Response method pair.
+     * Create conversation and return its threadRootId
+     * @param supplierId
+     * @param supplierDetail
+     */
+    @Event(handlers = AdminHandler.class)
+    void requestCreateConversation(long demandId);
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void responseCreateConversation(long threadRootId);
+
+    /*
+     * Request/Response method pair
+     * Fetch and display chat(conversation) for admin new demands list
+     * @param messageId
+     * @param userMessageId
+     * @param userId
+     */
+    @Event(handlers = AdminHandler.class)
+    void requestConversation(Long threadId);
+
+    @Event(handlers = AdminDetailsWrapperPresenter.class)
+    void responseConversation(List<MessageDetail> chatMessages);
+
+    /**
+     * Request/Response method pair.
      * Fetch and display chat(<b>conversation</b>) for admin conversations
      * @param threadId
      * @param userId
      * @param chatMessages
      */
     @Event(handlers = AdminHandler.class)
-    void requestConversationForAdmin(Long threadId, Long userId);
+    void requestConversationForAdmin(Long userId);
 
-    @Event(handlers = AdminDetailsWrapperPresenter.class)
+    @Event(handlers = AdminNewDemandsPresenter.class)
     void responseConversationForAdmin(List<MessageDetail> chatMessages);
 }

@@ -50,7 +50,7 @@ public class AdminNewDemandsView extends Composite
     @UiField(provided = true) UniversalAsyncGrid dataGrid;
     @UiField(provided = true) UniversalPagerWidget pager;
     @UiField HorizontalPanel toolBar;
-    @UiField Button approveBtn;
+    @UiField Button approveBtn, createConversationBtn;
     @UiField Label filterLabel;
     @UiField DecoratorPanel filterLabelPanel;
     @UiField SimplePanel detailPanel;
@@ -238,6 +238,11 @@ public class AdminNewDemandsView extends Composite
     @Override
     public Button getApproveBtn() {
         return approveBtn;
+    }
+
+    @Override
+    public Button getCreateConversationBtn() {
+        return createConversationBtn;
     }
 
     /** Widget view. **/

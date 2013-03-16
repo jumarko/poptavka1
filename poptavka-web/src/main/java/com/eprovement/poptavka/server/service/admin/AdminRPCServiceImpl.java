@@ -222,6 +222,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         this.messageConverter = messageConverter;
     }
 
+    @Autowired
+    public void setUserMessageConverter(
+            @Qualifier("userMessageConverter") Converter<UserMessage, MessageDetail> userMessageConverter) {
+        this.userMessageConverter = userMessageConverter;
+    }
+
     /**
      * ********************************************************************************************
      * ********************** DEMAND SECTION.
@@ -653,11 +659,18 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public long getThreadRootMessageId(FullDemandDetail demandDetial) throws
+    public long getThreadRootMessageId(long demandId) throws
             RPCException, ApplicationSecurityException {
-        Demand demand = demandService.getById(demandDetial.getDemandId());
+        Demand demand = demandService.getById(demandId);
         Message message = messageService.getThreadRootMessage(demand);
         return message.getId();
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public FullDemandDetail getFullDemandDetail(long demandId) throws
+            RPCException, ApplicationSecurityException {
+        return fullDemandConverter.convertToTarget(generalService.find(Demand.class, demandId));
     }
 
     @Override
@@ -931,6 +944,29 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     /**
+     * Gets all inbox and sent user messages UsereMessage of given user and thread root.
+     * Once loaded, all user messages are set as read, see isRead attribute of UserMessage.
+     *
+     * @param threadId is root message id
+     * @param userId can be either supplier's or client's user Id
+     * @return list of all messages in this thread
+     * @throws RPCException
+     */
+    @Override
+    // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public List<MessageDetail> getConversation(long threadId, long userId) throws
+            RPCException, ApplicationSecurityException {
+        final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId);
+        // set all user messages as read
+        for (UserMessage userMessage : userMessages) {
+            userMessage.setRead(true);
+            userMessageService.update(userMessage);
+        }
+        return userMessageConverter.convertToTargetList(userMessages);
+    }
+
+    /**
      * Retrieve conversation between Operator and <code>Client</code> regarding particular demand. If there are no
      * <oode>UserMessage</code>-s for Operator/Admin empty conversation i.e. empty list is returned. In this case
      * the Operator/Admin must invoke <code>createConversation</code> that will create a new <code>UserMessage</code>.
@@ -943,7 +979,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<MessageDetail> getConversation(long demandId, long userAdminId) throws RPCException,
+    public List<MessageDetail> getConversationForAdmin(long demandId, long userAdminId) throws RPCException,
         ApplicationSecurityException {
         Demand demand = demandService.getById(demandId);
         Message threadRootMessage = messageService.getThreadRootMessage(demand);
@@ -980,15 +1016,33 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *
      * @param demandId for which the conversation is created
      * @param userAdminId id of operator or admin user
+     * @return thread root id
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void createConversation(long demandId, long userAdminId) throws RPCException,
+    public Long createConversation(long demandId, long userAdminId) throws RPCException,
         ApplicationSecurityException {
         Demand demand = demandService.getById(demandId);
         Message threadRootMessage = messageService.getThreadRootMessage(demand);
         userMessageService.getAdminUserMessage(threadRootMessage, generalService.find(User.class, userAdminId));
+        return threadRootMessage.getId();
+    }
+
+    /**
+     * Send message.
+     * @param questionMessageToSend
+     * @return message
+     */
+    @Override
+    public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
+        Message message = messageService.newReply(this.messageService.getById(
+                questionMessageToSend.getParentId()),
+                this.generalService.find(User.class, questionMessageToSend.getSenderId()));
+        message.setBody(questionMessageToSend.getBody());
+        message.setSubject(questionMessageToSend.getSubject());
+        messageService.send(message);
+        return messageConverter.convertToTarget(message);
     }
 }

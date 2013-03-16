@@ -250,10 +250,9 @@ public class AdminPresenter
      * Request AdminEventBus to create AdminDetailWrapperPresenter.
      */
     public void onRequestAdminDetailWrapperPresenter() {
-        if (detailSection != null) {
-            eventBus.removeHandler(detailSection);
+        if (detailSection == null) {
+            detailSection = eventBus.addHandler(AdminDetailsWrapperPresenter.class);
         }
-        detailSection = eventBus.addHandler(AdminDetailsWrapperPresenter.class);
         eventBus.responseAdminDetailWrapperPresenter(detailSection);
     }
 }

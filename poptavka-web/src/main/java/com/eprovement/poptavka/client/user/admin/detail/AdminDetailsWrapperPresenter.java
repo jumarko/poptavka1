@@ -18,6 +18,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.LinkedList;
 import java.util.List;
 
 @Presenter(view = AdminDetailsWrapperView.class, multiple = true)
@@ -107,7 +108,7 @@ public class AdminDetailsWrapperPresenter
      * @param demandId
      * @param threadRootId
      */
-    public void initAdminDetails(long demandId, long threadRootId) {
+    public void initDetails(long demandId, long threadRootId) {
         reset();
         this.demandId = demandId;
         this.threadRootId = threadRootId;
@@ -138,7 +139,7 @@ public class AdminDetailsWrapperPresenter
                 requestDemandDetail(demandId);
                 break;
             case CONVERSATION_TAB:
-                requestConversation(threadRootId, Storage.getUser().getUserId());
+                requestConversation(threadRootId);
                 break;
             default:
                 break;
@@ -177,9 +178,9 @@ public class AdminDetailsWrapperPresenter
      * @param threadRootId - root message i.e. first demand message in the conversation always created by client
      * @param userId - user who's chatting messages we are going to retrieve
      */
-    public void requestConversation(long threadRootId, long userId) {
+    public void requestConversation(long threadRootId) {
         view.loadingDivShow(view.getConversationHolder());
-        eventBus.requestConversationForAdmin(threadRootId, userId);
+        eventBus.requestConversation(threadRootId);
     }
 
     /**************************************************************************/
@@ -200,8 +201,8 @@ public class AdminDetailsWrapperPresenter
      *
      * @param chatMessages - demand-related conversation
      */
-    public void onResponseConversationForAdmin(List<MessageDetail> chatMessages) {
-        setMessageList(chatMessages, true);
+    public void onResponseConversation(List<MessageDetail> chatMessages) {
+        setMessageList(new LinkedList<MessageDetail>(chatMessages), true);
         view.loadingDivHide(view.getConversationHolder());
     }
 
@@ -239,13 +240,9 @@ public class AdminDetailsWrapperPresenter
      *
      * @param messages list of messages to be displayed
      */
-    public void setMessageList(List<MessageDetail> messages, boolean collapsed) {
-        if (messages.size() > 1) {
-            view.getMessageProvider().setList(messages.subList(0, messages.size() - 1));
-            view.getReplyHolder().setMessage(messages.get(messages.size() - 1));
-        } else {
-            view.getReplyHolder().setMessage(messages.get(0));
-        }
+    public void setMessageList(LinkedList<MessageDetail> messages, boolean collapsed) {
+        view.getReplyHolder().setMessage(messages.removeFirst());
+        view.getMessageProvider().setList(messages);
     }
 
     /**

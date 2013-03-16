@@ -143,7 +143,9 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
         messagePanel.getStyle().setDisplay(Display.BLOCK);
         this.replyToMessage = message;
         sender.setText(message.getSenderName());
-        sent.setText(Storage.FORMATTER.format(message.getSent()));
+        if (message.getSent() != null) {
+            sent.setText(Storage.FORMATTER.format(message.getSent()));
+        }
         body.setText(message.getBody());
     }
 

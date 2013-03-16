@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -74,6 +75,8 @@ public class AdminNewDemandsPresenter
         //Buttons
         Button getApproveBtn();
 
+        Button getCreateConversationBtn();
+
         //Other
         void loadingDivShow(Widget holderWidget);
 
@@ -89,7 +92,7 @@ public class AdminNewDemandsPresenter
     /** Class attributes. **/
     private AdminDetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
-    private FullDemandDetail selectedObject;
+    private FullDemandDetail selectedDemandObject;
     private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
@@ -113,7 +116,7 @@ public class AdminNewDemandsPresenter
     }
 
     /**************************************************************************/
-    /* Navigation events                                                      */
+    /* Initialization                                                         */
     /**************************************************************************/
     /**
      * Main Navigation method called either by default application startup or by searching mechanism.
@@ -132,6 +135,63 @@ public class AdminNewDemandsPresenter
     }
 
     /**************************************************************************/
+    /* Initialization - Details Wrapper                                       */
+    /**************************************************************************/
+    /**
+     * Response method to requesting admin details wrapper instance.
+     * Initialize details wrapper and initialize details tabs according to
+     * selectedDemandObject.
+     * @param detailSection Details wrapper instance.
+     */
+    public void onResponseAdminDetailWrapperPresenter(final AdminDetailsWrapperPresenter detailSection) {
+        if (detailSection != null) {
+            detailSection.initDetailWrapper(view.getDetailPanel());
+
+            this.detailSection = detailSection;
+
+            if (selectedDemandObject != null) {
+                initDetailSection(selectedDemandObject);
+            }
+        }
+    }
+
+    /**
+     * Initialize demand tab in Details sections.
+     * If details wrapper instance doesn't exist yet, create it and in response of
+     * creation initialize demand tab.
+     * If instance already exist, initialize and show demand tab immediately.
+     *
+     * @param demandId
+     */
+    private void initDetailSection(FullDemandDetail demandDetail) {
+        if (detailSection == null) {
+            eventBus.requestAdminDetailWrapperPresenter();
+        } else {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            detailSection.initDetails(demandDetail.getDemandId());
+        }
+    }
+
+    /**
+     * Initialize demand, supplier and conversation tabs in Details sections.
+     * If details wrapper instance doesn't exist yet, create it and in response of
+     * creation initialize demand, supplier, conversation tabs.
+     * If instance already exist, initialize and show tabs immediately.
+     *
+     * @param threadRootId
+     */
+    private void initDetailSection(long threadRootId) {
+        if (detailSection == null) {
+            eventBus.requestAdminDetailWrapperPresenter();
+        } else {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            detailSection.initDetails(
+                    selectedDemandObject.getDemandId(),
+                    threadRootId);
+        }
+    }
+
+    /**************************************************************************/
     /* Bind events                                                            */
     /**************************************************************************/
     /**
@@ -146,7 +206,7 @@ public class AdminNewDemandsPresenter
         addTableSelectionModelClickHandler();
         fieldUpdaterHandlers();
         selectioModelChangeHandler();
-        approveDemandsButtonClickHandler();
+        buttonClickHandlers();
     }
 
     /**************************************************************************/
@@ -168,22 +228,19 @@ public class AdminNewDemandsPresenter
         view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                //init details
-                if (view.getSelectionModel().getSelectedSet().size() > 1) {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                } else {
-                    if (!view.getSelectionModel().getSelectedSet().isEmpty()) {
-                        FullDemandDetail selected = new ArrayList<FullDemandDetail>(
-                                view.getSelectionModel().getSelectedSet()).get(0);
-                        selectedObject = selected;
-                        if (detailSection == null) {
-                            eventBus.requestAdminDetailWrapperPresenter();
-                        } else {
-                            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(
-                                    Style.Display.BLOCK);
+                //set actionBox visibility
 
-                        }
-                    }
+                //init details
+                if (getSelectedDemandIds().size() == 1) {
+                    view.getApproveBtn().setVisible(true);
+                    FullDemandDetail selected = view.getSelectionModel().getSelectedSet().iterator().next();
+                    selectedDemandObject = selected;
+                    initDetailSection(selected);
+                    eventBus.requestConversationForAdmin(selected.getDemandId());
+                } else {
+                    view.getApproveBtn().setVisible(false);
+                    view.getCreateConversationBtn().setVisible(false);
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 }
             }
         });
@@ -193,18 +250,14 @@ public class AdminNewDemandsPresenter
         textFieldUpdater = new FieldUpdater<FullDemandDetail, String>() {
             @Override
             public void update(int index, FullDemandDetail object, String value) {
-                fieldUpdaterHandlersInner(object);
+                MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid().getSelectionModel();
+                selectionModel.clear();
+                selectionModel.setSelected(object, true);
             }
         };
         view.getDemnadTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getLocalityColumn().setFieldUpdater(textFieldUpdater);
         view.getCreatedDateColumn().setFieldUpdater(textFieldUpdater);
-    }
-
-    private void fieldUpdaterHandlersInner(FullDemandDetail object) {
-        MultiSelectionModel selectionModel = view.getSelectionModel();
-        selectionModel.setSelected(object, true);
-//        view.displayDemandDetail(object);
     }
 
     /**
@@ -219,11 +272,18 @@ public class AdminNewDemandsPresenter
         });
     }
 
-    private void approveDemandsButtonClickHandler() {
+    private void buttonClickHandlers() {
         view.getApproveBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.requestApproveDemands(view.getDataGrid(), view.getSelectionModel().getSelectedSet());
+            }
+        });
+        view.getCreateConversationBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.requestCreateConversation(
+                        view.getSelectionModel().getSelectedSet().iterator().next().getDemandId());
             }
         });
     }
@@ -231,28 +291,37 @@ public class AdminNewDemandsPresenter
     /**************************************************************************/
     /* Additional methods                                                     */
     /**************************************************************************/
-    public void onResponseAdminDetailWrapperPresenter(AdminDetailsWrapperPresenter detailSection) {
-        if (this.detailSection == null) {
-            this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getDetailPanel());
-            if (selectedObject != null) {
-                eventBus.requestThreadRootId(selectedObject);
-            }
-        }
-        view.loadingDivHide(view.getDetailPanel());
-    }
-
-    public void onResponseThreadRootId(long threadRootId) {
-        detailSection.initAdminDetails(
-                selectedObject.getDemandId(),
-                threadRootId);
-    }
-
     /**
      * Display demands of selected category.
      * @param list
      */
     public void onDisplayAdminNewDemands(List<FullDemandDetail> list) {
         view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
+    }
+
+    public void onResponseCreateConversation(long threadRootId) {
+        initDetailSection(threadRootId);
+    }
+
+    public void onResponseConversationForAdmin(List<MessageDetail> conversation) {
+        if (conversation.isEmpty()) {
+            view.getCreateConversationBtn().setVisible(true);
+            initDetailSection(selectedDemandObject);
+        } else {
+            view.getCreateConversationBtn().setVisible(false);
+            eventBus.requestThreadRootId(selectedDemandObject.getDemandId());
+        }
+    }
+
+    public void onResponseThreadRootId(long threadRootId) {
+        initDetailSection(threadRootId);
+    }
+
+    public List<Long> getSelectedDemandIds() {
+        List<Long> idList = new ArrayList<Long>();
+        for (FullDemandDetail detail : view.getSelectionModel().getSelectedSet()) {
+            idList.add(detail.getDemandId());
+        }
+        return idList;
     }
 }

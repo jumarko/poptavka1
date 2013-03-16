@@ -576,8 +576,10 @@ public interface LocalizableMessages extends Messages {
 
     /** Admin commons. **/
     String adminCommonChangesLabel();
+    String adminCommonBtnApprove();
     String adminCommonBtnCommit();
     String adminCommonBtnCreate();
+    String adminCommonBtnCreateConversation();
     String adminCommonBtnRefresh();
     String adminCommonBtnRollback();
     String adminCommonBtnUpdate();

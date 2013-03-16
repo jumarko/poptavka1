@@ -410,8 +410,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             });
     }
 
-    public void onRequestThreadRootId(FullDemandDetail demandDetail) {
-        adminService.getThreadRootMessageId(demandDetail, new SecuredAsyncCallback<Long>(eventBus) {
+    public void onRequestThreadRootId(long demandId) {
+        adminService.getThreadRootMessageId(demandId, new SecuredAsyncCallback<Long>(eventBus) {
             @Override
             public void onSuccess(Long result) {
                 eventBus.responseThreadRootId(result);
@@ -607,13 +607,50 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     /**
-     * Load conversation between client and supplier related to particular demand / threadRoot
+     * Creates conversation between <code>Client</code> and Admin/Operator user. Conversation is created in such a
+     * way that new <code>UserMessage</code> is created for every <code>User</code> who invokes this method. Thus
+     * enabling the user to write a reply message to <code>Client</code> in order to update <code>Demand</code>
+     * description or title before this demand is approved.
+     *
+     * @param demandId for which the conversation is created
+     * @param userAdminId id of operator or admin user
+     */
+    public void onRequestCreateConversation(long demandId) {
+        adminService.createConversation(demandId, Storage.getUser().getUserId(),
+                new SecuredAsyncCallback<Long>(eventBus) {
+                @Override
+                public void onSuccess(Long result) {
+                    eventBus.responseCreateConversation(result);
+                }
+            });
+    }
+
+    /**
+     * Load conversation between client and supplier related to particular demand.
+     * Only conversations where signed user take part are retrieved.
      *
      * @param threadId
-     * @param userId
+     * @param demandId
      */
-    public void onRequestConversationForAdmin(Long threadId, Long userId) {
-        adminService.getConversationForAdmin(threadId, userId,
+    public void onRequestConversation(Long demandId) {
+        adminService.getConversation(demandId, Storage.getUser().getUserId(),
+                new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
+                @Override
+                public void onSuccess(List<MessageDetail> result) {
+                    eventBus.responseConversation(result);
+                }
+            });
+    }
+
+    /**
+     * Load conversation between client and supplier related to particular demand.
+     * Admin needn't be part of that conversation but he can see it.
+     *
+     * @param threadId
+     * @param demandId
+     */
+    public void onRequestConversationForAdmin(Long demandId) {
+        adminService.getConversationForAdmin(demandId, Storage.getUser().getUserId(),
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
                 @Override
                 public void onSuccess(List<MessageDetail> result) {
@@ -623,13 +660,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     /**
-     * Send message. IMPORTANT: further implementation of other parts will show, if we need more than this method for
-     * chat related stuff
-     *
+     * Send message from Admin.
      * @param messageToSend
      */
     public void onRequestSendAdminMessage(MessageDetail messageToSend) {
-        adminService.sendAdminMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
+        adminService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.responseSendAdminMessage(sentMessage);

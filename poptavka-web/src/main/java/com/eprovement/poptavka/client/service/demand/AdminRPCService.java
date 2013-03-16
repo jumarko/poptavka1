@@ -103,7 +103,9 @@ public interface AdminRPCService extends RemoteService {
     List<FullDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition) throws RPCException,
             ApplicationSecurityException;
 
-    long getThreadRootMessageId(FullDemandDetail demandDetail) throws RPCException, ApplicationSecurityException;
+    long getThreadRootMessageId(long demandId) throws RPCException, ApplicationSecurityException;
+
+    FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException;
 
     void approveDemands(Set<FullDemandDetail> demandsToApprove) throws RPCException, ApplicationSecurityException;
 
@@ -153,8 +155,12 @@ public interface AdminRPCService extends RemoteService {
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
 
-    List<MessageDetail> getConversation(long demandId, long userAdminId) throws RPCException,
+    List<MessageDetail> getConversation(long threadId, long userId) throws RPCException;
+
+    List<MessageDetail> getConversationForAdmin(long demandId, long userAdminId) throws RPCException,
             ApplicationSecurityException;
 
-    void createConversation(long demandId, long userAdminId) throws RPCException, ApplicationSecurityException;
+    Long createConversation(long demandId, long userAdminId) throws RPCException, ApplicationSecurityException;
+
+    MessageDetail sendQuestionMessage(MessageDetail messageToSend) throws RPCException, ApplicationSecurityException;
 }
