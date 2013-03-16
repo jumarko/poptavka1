@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.common.login;
 
 import com.eprovement.poptavka.client.common.login.LoginPopupPresenter.LoginPopupInterface;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Button;
@@ -120,6 +121,7 @@ public class LoginPopupView extends Composite
         icon.setVisible(true);
         emailTextBox.setFocus(true);
         modal.show();
+        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     // TODO prod - delete and user real form

@@ -103,15 +103,14 @@ public interface LayoutResource extends CssResource {
     @ClassName("submenu-header")
     String submenuHeader();
 
+    @ClassName("submenu-container")
+    String submenuContainer();
+
     @ClassName("submenu-list")
     String submenuList();
 
     @ClassName("pager")
     String pager();
-
-    /** CellTree Styles**/
-    @ClassName("cellTree-container")
-    String cellTreeContainer();
 
     /** Footer Module Styles **/
     @ClassName("footer-container")

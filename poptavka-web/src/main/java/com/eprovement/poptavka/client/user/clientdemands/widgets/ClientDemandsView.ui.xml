@@ -61,28 +61,36 @@
                 </g:HorizontalPanel>
             </g:HorizontalPanel>
         </g:north>
-        <g:east size="420">
-            <g:SimplePanel ui:field="wrapperPanel">
-                <g:HTMLPanel>
-                    <div>
-                        <strong>Defail detail panel</strong>
-                        <br />
-                        <br />
-                        <div>
-                            Default content....can contain some advertisements.
-                        </div>
-                    </div>
-                </g:HTMLPanel>
-            </g:SimplePanel>
-        </g:east>
-        <g:east size="25">
+        <g:west size="20">
             <g:HTMLPanel></g:HTMLPanel>
-        </g:east>
+        </g:west>
         <g:center>
-            <g:HTMLPanel>
-                <s:UniversalAsyncGrid ui:field="demandGrid" />
-                <s:UniversalAsyncGrid ui:field="conversationGrid" />
-            </g:HTMLPanel>
+            <b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
+                <b:FluidRow>
+                    <b:Column size="7">
+                        <g:HTMLPanel>
+                            <s:UniversalAsyncGrid ui:field="demandGrid" 
+                            addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
+                            <s:UniversalAsyncGrid ui:field="conversationGrid" 
+                            addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
+                        </g:HTMLPanel>
+                    </b:Column>
+                    <b:Column size="5">
+                        <g:SimplePanel ui:field="wrapperPanel">
+                            <g:HTMLPanel>
+                                <div>
+                                    <strong>Defail detail panel</strong>
+                                    <br />
+                                    <br />
+                                    <div>
+                                        Default content....can contain some advertisements.
+                                    </div>
+                                </div>
+                            </g:HTMLPanel>
+                        </g:SimplePanel>
+                    </b:Column>                    
+                </b:FluidRow>
+            </b:FluidContainer>
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>

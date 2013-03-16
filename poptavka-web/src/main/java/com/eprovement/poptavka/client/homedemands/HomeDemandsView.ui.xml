@@ -20,7 +20,7 @@
                     </g:HTMLPanel>
                 </g:north>
                 <g:center>
-                    <g:HTMLPanel styleName='{res.layout.cellTreeContainer}'>
+                    <g:HTMLPanel styleName='{res.layout.submenuContainer}'>
                         <g:ScrollPanel>
                             <c:CellTree ui:field="cellTree" />
                         </g:ScrollPanel>

@@ -93,12 +93,10 @@ body>div {
 
 }
 
-.toolbar-header {
-    background: url(images/left-header.png) no-repeat 14px 19px;
-    color: #003153;
-    font-family: Arial, sans-serif;
-    font-size: 21px;
-    font-weight: normal;
+.toolbar-header {    
+    color: #030911;
+    font-size: 24px;
+    font-weight: 300;
     line-height: 44px;
     margin: 0;
     padding-left: 29px;
@@ -267,7 +265,7 @@ body>div {
 .login-bar {
     color: #FFFFFF;
     float: right;
-    margin: 37px 0 0;
+    margin: 26px 0 0;
 }
 
 .login-button {
@@ -338,8 +336,8 @@ body>div {
     background: url(images/help-button.png) no-repeat;
     border: none;
     float: right;
-    height: 20px;
-    width: 20px;
+    height: 36px;
+    width: 49px;
 }
 
 /*
@@ -356,40 +354,42 @@ body>div {
     height: 36px;
 }
 
+.submenu-container {
+    width: 100%;
+    height: 100%;
+    background: url("images/left-container_bg.jpg") repeat-y top right;
+    overflow: auto;
+}
+
 .submenu-list {
-    margin: 0px;
-    padding: 0 0 0 10px;
-    list-style: none;
+    background: url(images/left-container-top.jpg) no-repeat top right;
+    list-style: none outside none;
+    margin: 0;
+    padding: 20px 0 0 10px;
 }
 
-.submenu-list a {
-    display: block;
-    background: #1f7b82;
-    padding: 2px 15px;
-    color: #ffffff;
-    border-bottom: 1px solid #07545A;
-}
-
-.submenu-list a:hover {
+.submenu-list .gwt-Button {
+    background: url(images/left-menu_bg.png) no-repeat;
+    width: 222px;
+    height: 39px;
+    display: block;    
+    padding: 0 0 2px 40px;
+    margin-bottom: 10px;
+    color: #443b19;
+    border: none;
     cursor: pointer;
-    background: #15676d;
+    text-align: left;
+}
+
+.submenu-list .gwt-Button:hover {
+    background: url(images/left-menu_hover.png) no-repeat;
+    color: #ffffff;
 }
 
 .pager {
     background: url(images/tab_header.gif) repeat-x;
     color: #ffffff;
     border-bottom: 1px solid #07545a;
-}
-
-/*
-*   CellTree Styles
-*
-*/
-.cellTree-container {
-    width: 100%;
-    height: 100%;
-    background: url(images/celltree_bg.jpg) repeat;
-    overflow: auto;
 }
 
 /*
