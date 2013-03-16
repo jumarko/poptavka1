@@ -1,10 +1,9 @@
-@sprite .pageDetails {
+.pageDetails {
   padding: 4px 8px;
   text-align: center;
-  border: 1px solid #8d8d8d;  
-  gwt-image: 'simplePagerText';
-  background-repeat: repeat-x;
+  border: none;     
   min-width: 70px;
+  color: #d5d5d5;
 }
 
 .button {

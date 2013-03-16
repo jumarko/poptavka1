@@ -8,7 +8,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.github.gwtbootstrap.client.ui.FluidRow;
-import com.github.gwtbootstrap.client.ui.RadioButton;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.github.gwtbootstrap.client.ui.constants.LabelType;
 import com.google.gwt.core.client.GWT;
@@ -20,7 +19,9 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -49,11 +50,13 @@ public class UserRegistrationFormView extends Composite
     @UiField(provided = true) ValidationMonitor phone, email, firstName, lastName, password, passwordConfirm;
     @UiField(provided = true) ValidationMonitor website, companyName, identificationNumber, taxId, description;
     @UiField SimplePanel addressHolder;
-    @UiField RadioButton personRadio, companyRadio;
-    @UiField FluidRow companyInfoRow, companyNameRow, identifNumberRow, taxNumberRow;
+    @UiField HTMLPanel companyChoicePanel;
+    @UiField Button personBtn, companyBtn;
+    @UiField FluidRow companyInfoPanel;
     /** Class attributes. **/
     private List<ValidationMonitor> validationMonitorsPersonalOnly;
     private List<ValidationMonitor> validationMonitorsCompanyOnly;
+    private boolean companySelected;
     //Constants
     private static final int SHORT_PASSWORD = 5;
     private static final int LONG_PASSWORD = 8;
@@ -73,8 +76,7 @@ public class UserRegistrationFormView extends Composite
         validationMonitorsCompanyOnly = Arrays.asList(companyName, identificationNumber, taxId,
                 phone, email, firstName, lastName, password, passwordConfirm, description);
 
-        personRadio.setValue(true, false);
-        setCompanyInputsVisibility(false);
+        setCompanyPanelVisibility(false);
     }
 
     /**
@@ -140,14 +142,16 @@ public class UserRegistrationFormView extends Composite
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
-    @UiHandler("personRadio")
+    @UiHandler("personBtn")
     public void personRadioClickHandler(ClickEvent e) {
-        setCompanyInputsVisibility(false);
+        companySelected = false;
+        setCompanyPanelVisibility(false);
     }
 
-    @UiHandler("companyRadio")
+    @UiHandler("companyBtn")
     public void personCompanyClickHandler(ClickEvent e) {
-        setCompanyInputsVisibility(true);
+        companySelected = true;
+        setCompanyPanelVisibility(true);
     }
 
     /**************************************************************************/
@@ -155,13 +159,17 @@ public class UserRegistrationFormView extends Composite
     /**************************************************************************/
     /**
      * Toggle company info.
-     * @param toggle
+     * @param showCompanyPanel
      */
-    public void setCompanyInputsVisibility(boolean toggle) {
-        companyInfoRow.setVisible(toggle);
-        companyNameRow.setVisible(toggle);
-        identifNumberRow.setVisible(toggle);
-        taxNumberRow.setVisible(toggle);
+    public void setCompanyPanelVisibility(boolean showCompanyPanel) {
+        companyInfoPanel.setVisible(showCompanyPanel);
+        if (showCompanyPanel) {
+            companyChoicePanel.removeStyleName(Storage.RSCS.common().switchLeft());
+            companyChoicePanel.addStyleName(Storage.RSCS.common().switchRight());
+        } else {
+            companyChoicePanel.removeStyleName(Storage.RSCS.common().switchRight());
+            companyChoicePanel.addStyleName(Storage.RSCS.common().switchLeft());
+        }
     }
 
     /**************************************************************************/
@@ -170,7 +178,7 @@ public class UserRegistrationFormView extends Composite
     @Override
     public boolean isValid() {
         boolean valid = true;
-        if (companyRadio.getValue()) {
+        if (companySelected) {
             for (ValidationMonitor box : validationMonitorsCompanyOnly) {
                 valid = box.isValid() && valid;
             }

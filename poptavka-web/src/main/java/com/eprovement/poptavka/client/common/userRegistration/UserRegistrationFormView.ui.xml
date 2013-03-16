@@ -10,6 +10,19 @@
         font-size:10px;
         color: red;
         }
+        
+        .form-indent {
+        margin-left: 321px !important;
+        }
+        
+        .left-label {
+        text-align: right;
+        }
+        
+        .right-label {
+        text-align: left;
+        margin-left: -72px;
+        }
     </ui:style>
     
     <b:FluidContainer>
@@ -114,38 +127,38 @@
             </b:Column>
         </b:FluidRow>
 
-        <b:WellForm>
+        <b:WellForm addStyleNames='no-header-form'> 
             <b:FluidRow>
-                <b:Column size="2">
-                    <b:RadioButton name="type" ui:field="personRadio" checked="true">
+                <b:Column size="2" addStyleNames='{style.form-indent}'>
+                    <g:Label addStyleNames='{style.left-label}'>
                         <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
-                    </b:RadioButton>
+                    </g:Label>
                 </b:Column>
                 <b:Column size="2">
-                    <b:RadioButton name="type" ui:field="companyRadio">
-                        <ui:msg key="formUserRegCompany">Company</ui:msg>
-                    </b:RadioButton>
-                </b:Column>
-                <b:Column size="8">
-                    <g:HTMLPanel addStyleNames='{res.common.switchLeft}'>
-                        <g:Button></g:Button>
-                        <g:Button></g:Button>
+                    <g:HTMLPanel ui:field="companyChoicePanel" addStyleNames='{res.common.switchLeft}'>
+                        <g:Button ui:field="personBtn"></g:Button>
+                        <g:Button ui:field="companyBtn"></g:Button>
                     </g:HTMLPanel>
+                </b:Column>
+                <b:Column size="2">
+                    <g:Label addStyleNames='{style.right-label}'>
+                        <ui:msg key="formUserRegCompany">Company</ui:msg>
+                    </g:Label>
                 </b:Column>
             </b:FluidRow>
         </b:WellForm>
 
-        <b:FluidRow>
+        <b:FluidRow ui:field="companyInfoPanel">
             <b:Column size="6">
                 <b:WellForm>
-                    <b:FluidRow ui:field="companyInfoRow">
+                    <b:FluidRow>
                         <b:Column size="12">
                             <b:Heading size="4">
                                 <ui:msg key="formCompanyInfo">Company Info</ui:msg>
                             </b:Heading>
                         </b:Column>
                     </b:FluidRow>
-                    <b:FluidRow ui:field="companyNameRow">
+                    <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
                                 <ui:msg key="formCompanyName">Company Name</ui:msg>*
@@ -157,8 +170,7 @@
                             </vm:ValidationMonitor>
                         </b:Column>
                     </b:FluidRow>
-
-                    <b:FluidRow ui:field="identifNumberRow">
+                    <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
                                 <ui:msg key="formIdentificationNumber">Identification Number</ui:msg>*
@@ -170,8 +182,7 @@
                             </vm:ValidationMonitor>
                         </b:Column>
                     </b:FluidRow>
-
-                    <b:FluidRow ui:field="taxNumberRow">
+                    <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
                                 <ui:msg key="formTaxNumber">Tax Number</ui:msg>*

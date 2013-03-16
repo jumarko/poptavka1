@@ -83,6 +83,9 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     padding: 0 0 8px;
 }
+.createTabPanel .well.no-header-form {
+    padding-top: 8px;
+}
 
 .createTabPanel .well-container {
     height: 99%;
