@@ -235,9 +235,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
                     view.getActionBox().setVisible(false);
                 }
                 //init details
-                if (view.getDataGrid().getSelectedUserMessageIds().size() > 1) {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                } else {
+                if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
                     IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
                     selectedObject = selected;
                     if (detailSection == null) {
@@ -248,6 +246,8 @@ public class SupplierOffersPresenter extends LazyPresenter<
                                 selected.getDemandId(),
                                 selected.getThreadRootId());
                     }
+                } else {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 }
             }
         });

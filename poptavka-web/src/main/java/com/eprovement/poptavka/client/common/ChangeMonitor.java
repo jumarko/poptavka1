@@ -9,6 +9,8 @@ import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.IListDetailObject;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,6 +30,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.util.Iterator;
@@ -122,12 +125,14 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     @Override
     public void setWidget(Widget w) {
         addChangeHandler(w);
+        addBlurHandler(w);
         holder.setWidget(w);
     }
 
     @Override
     public void add(Widget w) {
         addChangeHandler(w);
+        addBlurHandler(w);
         holder.add(w);
     }
 
@@ -261,6 +266,26 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
                 }
             }
         }, ChangeEvent.getType());
+    }
+
+    /**
+     * When entering input widget and leaving - call validate method in case no data were
+     * provided (text, numbers, etc..). Validation process displays appropriate error message
+     * if validation constraints are met. Each widget input widget has registered blur handler.
+     *
+     * Only input widgets of types TextBoxBase, IntegerBox and BigDecimalBox has registered change handler.
+     *
+     * @param w - input widget
+     */
+    private void addBlurHandler(Widget w) {
+        if (w instanceof ValueBoxBase || w instanceof HasValue) {
+            w.addDomHandler(new BlurHandler() {
+                @Override
+                public void onBlur(BlurEvent event) {
+                    validate();
+                }
+            }, BlurEvent.getType());
+        }
     }
 
     public void setChangedStyles(boolean isChange) {

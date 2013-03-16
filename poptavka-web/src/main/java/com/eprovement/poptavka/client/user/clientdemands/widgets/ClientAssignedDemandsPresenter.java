@@ -216,10 +216,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                     view.getActionBox().setVisible(false);
                 }
                 //init details
-                if (view.getDataGrid().getSelectedUserMessageIds().size() > 1) {
-                    view.getCloseBtn().setVisible(false);
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                } else {
+                if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
                     view.getCloseBtn().setVisible(true);
                     IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
                     selectedObject = selected;
@@ -232,6 +229,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                                 selected.getSupplierId(),
                                 selected.getThreadRootId());
                     }
+                } else {
+                    view.getCloseBtn().setVisible(false);
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 }
             }
         });

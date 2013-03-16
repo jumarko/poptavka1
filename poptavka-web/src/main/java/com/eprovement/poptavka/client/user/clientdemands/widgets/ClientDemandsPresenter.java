@@ -156,8 +156,12 @@ public class ClientDemandsPresenter
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
-        //init wrapper widget
-        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        //request data to demand(parent) table
+        if (view.getDemandGrid().isVisible()) {
+            view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        } else {
+            backBtnClickHandlerInner();
+        }
     }
 
     /**************************************************************************/
@@ -400,12 +404,12 @@ public class ClientDemandsPresenter
                     view.getActionBox().setVisible(false);
                 }
                 //init details
-                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 1) {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                } else {
+                if (view.getConversationGrid().getSelectedUserMessageIds().size() == 1) {
                     IUniversalDetail selected = view.getConversationGrid().getSelectedObjects().get(0);
                     selectedConversationObject = selected;
                     initDetailSection(selected);
+                } else {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 }
             }
         });
