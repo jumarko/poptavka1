@@ -43,7 +43,7 @@ public interface MessagesRPCService extends RemoteService {
     Integer getInboxMessagesCount(Long recipientId, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
-    List<MessageDetail> getInboxMessages(Long recipientId, SearchDefinition searchDefinition)
+    ArrayList<MessageDetail> getInboxMessages(Long recipientId, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
     List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)

@@ -130,7 +130,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public List<MessageDetail> getInboxMessages(Long recipientId, SearchDefinition searchDefinition)
+    public ArrayList<MessageDetail> getInboxMessages(Long recipientId, SearchDefinition searchDefinition)
         throws RPCException {
         User recipient = generalService.find(User.class, recipientId);
         Search messagesSearch = new Search(UserMessage.class);

@@ -1,0 +1,46 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <g:DockLayoutPanel unit="PX" styleName='{res.layout.fullSize}'>
+        <g:north size="53">
+            <b:Heading size='4'
+                       styleName="{res.detailViews.demandDetailSectionHeader}">
+                <ui:msg key="formMessageInfo">Message detail</ui:msg>
+            </b:Heading>
+        </g:north>
+        <g:center>
+            <g:ScrollPanel>
+                <b:FluidContainer
+                    addStyleNames='{res.detailViews.demandDetailContent}'>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                        <b:Column size='12'>
+                            <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
+                                <ui:msg key="formMessageSubject">Subject</ui:msg>
+                            </b:Heading>
+                            <g:Label ui:field="subject" addStyleNames='{res.detailViews.detailStrong}'/>
+                        </b:Column>
+
+                        <b:Column size='12'>
+                            <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
+                                <ui:msg key="formMessageSender">Sender</ui:msg>
+                            </b:Heading>
+                            <g:Label ui:field="sender"/>
+                        </b:Column>
+
+                        <b:Column size='12'>
+                            <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
+                                <ui:msg key="formMessageBody">Body</ui:msg>
+                            </b:Heading>
+                            <g:Label ui:field="body"/>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
+</ui:UiBinder>

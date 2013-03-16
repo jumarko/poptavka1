@@ -73,6 +73,7 @@ public interface LocalizableMessages extends Messages {
     String formDatesInfo();
     String formDemandInfo();
     String formDetailInfo();
+    String formMessageInfo();
     String formInvoiceInfo();
     String formPriceInfo();
     String formRatingInfo();
@@ -115,6 +116,9 @@ public interface LocalizableMessages extends Messages {
     String formLocalities();
     String formMaxOffers();
     String formMaxSuppliers();
+    String formMessageBody();
+    String formMessageSender();
+    String formMessageSubject();
     String formMinSupplierRating();
     String formPassword();
     String formPasswordConfirm();

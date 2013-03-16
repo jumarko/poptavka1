@@ -17,15 +17,18 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.messages.MessagesEventBus;
 import com.eprovement.poptavka.client.user.messages.MessagesTabViewView;
+import com.eprovement.poptavka.client.user.widget.detail.MessageDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import java.util.ArrayList;
+import java.util.Set;
 
 @Presenter(view = MessageList.class)
 public class MessageListPresenter extends LazyPresenter<MessageListPresenter.IListM, MessagesEventBus> {
@@ -63,6 +66,10 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
         NavLink getActionUnstar();
 
         /** Others. **/
+        MessageDetailView getMessageDetailView();
+
+        SimplePanel getWrapperPanel();
+
         Widget getWidgetView();
     }
     /**************************************************************************/
@@ -71,6 +78,7 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     //viewType
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
+    private MessageDetail selectedObject;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -79,6 +87,7 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     public void bindView() {
         addButtonsHandlers();
         addActionBoxChoiceHandlers();
+        addTableSelectionModelClickHandler();
         addTextColumnFieldUpdaters();
     }
 
@@ -94,7 +103,6 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     public void onInitInbox(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.MESSAGES_INBOX);
         //Set visibility
-        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.setUpSearchBar(new MessagesTabViewView());
         searchDataHolder = filter;
         eventBus.createTokenForHistory();
@@ -107,7 +115,7 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     /**************************************************************************/
     /* Display methods                                                        */
     /**************************************************************************/
-    public void onDisplayInboxMessages(List<MessageDetail> inboxMessages) {
+    public void onDisplayInboxMessages(ArrayList<MessageDetail> inboxMessages) {
         view.getGrid().getDataProvider().updateRowData(view.getGrid().getStart(), inboxMessages);
     }
 
@@ -129,6 +137,31 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    public void addTableSelectionModelClickHandler() {
+        view.getGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                Set<MessageDetail> selcetedSet = ((MultiSelectionModel<MessageDetail>) view.getGrid()
+                        .getSelectionModel()).getSelectedSet();
+                //set actionBox visibility
+                if (selcetedSet.size() > 0) {
+                    view.getActionBox().setVisible(true);
+                } else {
+                    view.getActionBox().setVisible(false);
+                }
+                //init details
+                if (selcetedSet.size() == 1) {
+                    MessageDetail selected = selcetedSet.iterator().next();
+                    selectedObject = selected;
+                    view.getMessageDetailView().setVisible(true);
+                    view.getMessageDetailView().setMessageDetail(selected);
+                } else {
+                    view.getMessageDetailView().setVisible(false);
+                }
+            }
+        });
+    }
+
     /** Field updater. **/
     //--------------------------------------------------------------------------
     /**
@@ -136,14 +169,17 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
      * have defined this fieldUpdater.
      */
     public void addTextColumnFieldUpdaters() {
-        textFieldUpdater = new FieldUpdater<ClientDemandConversationDetail, String>() {
+        textFieldUpdater = new FieldUpdater<MessageDetail, String>() {
             @Override
-            public void update(int index, ClientDemandConversationDetail object, String value) {
-                object.setIsRead(true);
+            public void update(int index, MessageDetail object, String value) {
+                object.setRead(true);
 
                 MultiSelectionModel selectionModel = (MultiSelectionModel) view.getGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
+                view.getWrapperPanel().setVisible(false);
+                view.getMessageDetailView().setVisible(true);
+                view.getMessageDetailView().setMessageDetail(object);
             }
         };
         view.getSenderColumn().setFieldUpdater(textFieldUpdater);
