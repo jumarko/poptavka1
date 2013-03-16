@@ -1,9 +1,9 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -118,7 +118,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     /* CRUD operation of demand                                               */
     /**************************************************************************/
-    void updateDemand(long demandId, ArrayList<ChangeDetail> changes, AsyncCallback<Boolean> calback) throws
+    void updateDemand(long demandId, FullDemandDetail updatedDemand, AsyncCallback<Boolean> calback) throws
             RPCException, ApplicationSecurityException;
 
     void deleteDemand(long demandId, AsyncCallback<Boolean> calback) throws

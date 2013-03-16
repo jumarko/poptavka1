@@ -5,10 +5,10 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -16,7 +16,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import java.util.ArrayList;
 import java.util.List;
 
 @EventHandler
@@ -404,8 +403,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         });
     }
 
-    public void onRequestUpdateDemand(long demandId, ArrayList<ChangeDetail> updatedFields) {
-        clientDemandsService.updateDemand(demandId, updatedFields, new SecuredAsyncCallback<Boolean>(eventBus) {
+    public void onRequestUpdateDemand(long demandId, FullDemandDetail updatedDemand) {
+        clientDemandsService.updateDemand(demandId, updatedDemand, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
             public void onSuccess(Boolean result) {
                 eventBus.responseUpdateDemand(result);

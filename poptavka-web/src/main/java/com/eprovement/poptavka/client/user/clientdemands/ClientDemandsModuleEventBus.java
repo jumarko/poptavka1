@@ -13,10 +13,10 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPr
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -27,7 +27,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.ArrayList;
 import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -238,7 +237,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void responseDeleteDemand(boolean result);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestUpdateDemand(long demandId, ArrayList<ChangeDetail> updatedFields);
+    void requestUpdateDemand(long demandId, FullDemandDetail updatedDemand);
 
     @Event(handlers = ClientDemandsPresenter.class)
     void responseUpdateDemand(boolean result);

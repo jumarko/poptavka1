@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
@@ -257,7 +256,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     /* CRUD operation of demand                                               */
     /**************************************************************************/
-    Boolean updateDemand(long demandId, ArrayList<ChangeDetail> changes) throws
+    Boolean updateDemand(long demandId, FullDemandDetail updatedDemand) throws
             RPCException, ApplicationSecurityException;
 
     Boolean deleteDemand(long demandId) throws RPCException, ApplicationSecurityException;

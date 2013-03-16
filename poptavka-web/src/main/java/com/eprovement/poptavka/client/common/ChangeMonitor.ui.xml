@@ -1,23 +1,31 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
+
     <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
+        .red-label {
+        background: url(images/error-label.png) no-repeat;
+        }
+        .green-label {
+        background: url(images/label-green.png) no-repeat 0 4px;
         }
     </ui:style>
 
-    <g:VerticalPanel>
-        <g:HorizontalPanel>
-            <g:SimplePanel ui:field="holder"/>
-            <g:Anchor ui:field="revert">
-                <ui:msg key="commonBtnRevert">Revert</ui:msg>
-            </g:Anchor>
-        </g:HorizontalPanel>
-        <g:Label ui:field="errorLabel" styleName="{style.error}" />
-    </g:VerticalPanel>
+    <b:ControlGroup ui:field="controlGroup">
+        <b:Controls>
+            <g:HorizontalPanel>
+                <g:SimplePanel ui:field="holder"/>
+                <g:Anchor ui:field="revert">
+                    <ui:msg key="commonBtnRevert">Revert</ui:msg>
+                </g:Anchor>
+            </g:HorizontalPanel>
+            <g:HTMLPanel ui:field="errorPanel" visible="false" addStyleNames='label-container'>
+                <b:Label ui:field="errorLabel" type="IMPORTANT" />
+            </g:HTMLPanel>
+        </b:Controls>
+    </b:ControlGroup>
 </ui:UiBinder>

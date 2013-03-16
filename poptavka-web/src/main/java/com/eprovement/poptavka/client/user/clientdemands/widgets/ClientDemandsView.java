@@ -81,6 +81,8 @@ public class ClientDemandsView extends Composite
     public void createView() {
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
+        //for change monitors
+        Storage.RSCS.common().ensureInjected();
 
         initDemandTableAndPager();
         initConversationTableAndPager();
