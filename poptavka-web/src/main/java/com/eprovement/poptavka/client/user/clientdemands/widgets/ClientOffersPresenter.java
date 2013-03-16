@@ -125,8 +125,12 @@ public class ClientOffersPresenter
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
-        //init wrapper widget
-        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        //request data to demand(parent) table
+        if (view.getDemandGrid().isVisible()) {
+            view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        } else {
+            backBtnClickHandlerInner();
+        }
     }
 
     /**************************************************************************/
@@ -309,12 +313,12 @@ public class ClientOffersPresenter
                     view.getActionBox().setVisible(false);
                 }
                 //init details
-                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 1) {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                } else {
+                if (view.getOfferGrid().getSelectedUserMessageIds().size() == 1) {
                     IUniversalDetail selected = view.getOfferGrid().getSelectedObjects().get(0);
                     selectedOfferedDemandOfferObject = selected;
                     initDetailSection(selected);
+                } else {
+                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
                 }
             }
         });
@@ -378,19 +382,23 @@ public class ClientOffersPresenter
         view.getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
-                if (detailSection != null) {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
-                }
-                selectedDemandObject = null;
-                selectedOfferedDemandOfferObject = null;
-                view.getOfferGrid().getSelectionModel().clear();
-                view.getDemandPager().startLoading();
-                view.setOfferTableVisible(false);
-                view.setDemandTableVisible(true);
-                view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+                backBtnClickHandlerInner();
             }
         });
+    }
+
+    private void backBtnClickHandlerInner() {
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
+        if (detailSection != null) {
+            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+        }
+        selectedDemandObject = null;
+        selectedOfferedDemandOfferObject = null;
+        view.getOfferGrid().getSelectionModel().clear();
+        view.getDemandPager().startLoading();
+        view.setOfferTableVisible(false);
+        view.setDemandTableVisible(true);
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
     private void addAcceptOfferButtonHandler() {
