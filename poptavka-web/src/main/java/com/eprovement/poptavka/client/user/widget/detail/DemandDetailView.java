@@ -8,9 +8,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
@@ -20,19 +17,23 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class DemandDetailView extends Composite {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static DemandDetailViewUiBinder uiBinder = GWT.create(DemandDetailViewUiBinder.class);
 
     interface DemandDetailViewUiBinder extends UiBinder<Widget, DemandDetailView> {
     }
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField(provided = true) CellList categories, localities;
+    @UiField Label demandName, price, endDate, validTo, description, clientRating;
+    /** Class attributes. **/
+    private FullDemandDetail demandDetail;
+    /** Constants. **/
     private static final String EMPTY = "";
-    @UiField(provided = true)
-    CellList categories, localities;
-    @UiField
-    Label demandName, price, endDate, validTo, description, clientRating;
-    //i18n
-    private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.formatCurrency());
-    private DateTimeFormat dateFormat = DateTimeFormat.getFormat(Storage.MSGS.formatDate());
 
     /**************************************************************************/
     /* INITIALIZATON                                                          */
@@ -51,16 +52,27 @@ public class DemandDetailView extends Composite {
     /**************************************************************************/
     public void setDemanDetail(FullDemandDetail demandDetail) {
         GWT.log("detail detail" + demandDetail.toString());
+        this.demandDetail = demandDetail;
         demandName.setText(demandDetail.getTitle());
         clientRating.setText(Integer.toString(demandDetail.getClientRating()));
-        price.setText(currencyFormat.format(demandDetail.getPrice()));
-        endDate.setText(dateFormat.format(demandDetail.getEndDate()));
-        validTo.setText(dateFormat.format(demandDetail.getValidTo()));
+        price.setText(Storage.CURRENCY_FORMAT.format(demandDetail.getPrice()));
+        endDate.setText(Storage.FORMATTER.format(demandDetail.getEndDate()));
+        validTo.setText(Storage.FORMATTER.format(demandDetail.getValidTo()));
         categories.setRowData(demandDetail.getCategories());
         localities.setRowData(demandDetail.getLocalities());
         description.setText(demandDetail.getDescription());
     }
 
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    public FullDemandDetail getDemandDetail() {
+        return demandDetail;
+    }
+
+    /**************************************************************************/
+    /* OTHERS                                                                 */
+    /**************************************************************************/
     public void clear() {
         demandName.setText(EMPTY);
         price.setText(EMPTY);

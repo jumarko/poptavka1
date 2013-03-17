@@ -21,8 +21,8 @@
             <g:header>
                 <ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
             </g:header>
-            <g:ScrollPanel>
-                <g:SimplePanel ui:field="demandDetailHolder" />
+            <g:ScrollPanel ui:field="demandDetailHolder">
+                <w:DemandDetailView ui:field="demandDetail" />
             </g:ScrollPanel>
         </g:tab>
         <g:tab>

@@ -70,8 +70,9 @@ public class ClientDemandsView extends Composite
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField HorizontalPanel demandHeader, conversationHeader;
-    @UiField Button backBtn, editDemandButton, deleteDemandButton, submitButton, cancelButton;
-    @UiField HTMLPanel choiceButtonsPanel, editButtonsPanel;
+    @UiField Button backBtn, editDemandButton;
+    @UiField HTMLPanel choiceButtonsPanel;
+    private Button deleteDemandButton = new Button();
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -282,25 +283,10 @@ public class ClientDemandsView extends Composite
         return deleteDemandButton;
     }
 
-    @Override
-    public Button getSubmitButton() {
-        return submitButton;
-    }
-
-    @Override
-    public Button getCancelButton() {
-        return cancelButton;
-    }
-
     /** Html. **/
     @Override
     public HTMLPanel getChoiceButtonsPanel() {
         return choiceButtonsPanel;
-    }
-
-    @Override
-    public HTMLPanel getEditButtonsPanel() {
-        return editButtonsPanel;
     }
 
     /** Action Box. **/

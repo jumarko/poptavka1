@@ -13,7 +13,9 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPr
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -21,6 +23,7 @@ import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDeta
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -72,6 +75,14 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = {ClientDemandsPresenter.class, ClientOffersPresenter.class,
             ClientAssignedDemandsPresenter.class }, passive = true)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
+
+    @Event(forwardToParent = true)
+    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
+        List<CategoryDetail> categoriesToSet);
+
+    @Event(forwardToParent = true)
+    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
+        List<LocalityDetail> localitiesToSet);
 
     /**************************************************************************/
     /* History events                                                         */

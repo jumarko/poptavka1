@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.i18n.client.ValidationMessages;
 
 /**
@@ -43,6 +44,7 @@ public final class Storage {
     public static final ValidationMessages VMSGS = GWT.create(ValidationMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
     public static final DateTimeFormat FORMATTER = DateTimeFormat.getFormat(MSGS.formatDate());
+    public static final NumberFormat CURRENCY_FORMAT = NumberFormat.getFormat(MSGS.formatCurrency());
     public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";
     //local constants
     private static UserDetail userDetail = null;
