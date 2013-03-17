@@ -52,7 +52,7 @@ public class ClientOffersView extends Composite
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField Button backBtn, acceptBtn;
-    @UiField SimplePanel wrapperPanel;
+    @UiField SimplePanel detailPanel;
     @UiField Label demandTableNameLabel, offerTableNameLabel;
     @UiField HorizontalPanel demandHeader, offerHeader, offerToolBar;
 
@@ -243,8 +243,8 @@ public class ClientOffersView extends Composite
 
     //Others
     @Override
-    public SimplePanel getWrapperPanel() {
-        return wrapperPanel;
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
     }
 
     @Override

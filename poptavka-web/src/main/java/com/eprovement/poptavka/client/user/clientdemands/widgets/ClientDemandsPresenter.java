@@ -21,7 +21,6 @@ import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -96,7 +95,7 @@ public class ClientDemandsPresenter
 
         NavLink getActionUnstar();
 
-        SimplePanel getWrapperPanel();
+        SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
 
@@ -172,12 +171,12 @@ public class ClientDemandsPresenter
     /**
      * Response method to requesting details wrapper instance.
      * Initialize details wrapper and initialize details tabs according to
-     * selectedDemandObject and selectedConversationObject.
+     * Some additional actions can be added here.
      * @param detailSection Details wrapper instance.
      */
     public void onResponseDetailWrapperPresenter(final DetailsWrapperPresenter detailSection) {
         if (detailSection != null) {
-            detailSection.initDetailWrapper(view.getConversationGrid(), view.getWrapperPanel());
+            detailSection.initDetailWrapper(view.getConversationGrid(), view.getDetailPanel());
             detailSection.getView().getContainer().addSelectionHandler(
                     new SelectionHandler<Integer>() {
                     @Override
@@ -212,7 +211,7 @@ public class ClientDemandsPresenter
         if (detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
         } else {
-            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            view.getDetailPanel().setVisible(true);
             detailSection.initDetails(demandDetail.getDemandId());
             view.getChoiceButtonsPanel().setVisible(true);
         }
@@ -230,7 +229,7 @@ public class ClientDemandsPresenter
         if (detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
         } else {
-            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            view.getDetailPanel().setVisible(true);
             detailSection.initDetails(
                     conversationDetail.getDemandId(),
                     conversationDetail.getSupplierId(),
@@ -292,12 +291,12 @@ public class ClientDemandsPresenter
         SingleSelectionModel selectionModel = (SingleSelectionModel) view.getDemandGrid().getSelectionModel();
         //init details
         if (selectionModel.getSelectedSet().isEmpty()) {
-            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+            view.getDetailPanel().setVisible(false);
         } else {
             if (detailSection == null) {
                 eventBus.requestDetailWrapperPresenter();
             } else {
-                detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+                view.getDetailPanel().setVisible(true);
                 detailSection.initDetails(selectedDemandObject.getDemandId());
             }
         }
@@ -415,11 +414,10 @@ public class ClientDemandsPresenter
                 }
                 //init details
                 if (view.getConversationGrid().getSelectedUserMessageIds().size() == 1) {
-                    IUniversalDetail selected = view.getConversationGrid().getSelectedObjects().get(0);
-                    selectedConversationObject = selected;
-                    initDetailSection(selected);
+                    selectedConversationObject = view.getConversationGrid().getSelectedObjects().get(0);
+                    initDetailSection(selectedConversationObject);
                 } else {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                    view.getDetailPanel().setVisible(false);
                 }
             }
         });
@@ -462,7 +460,7 @@ public class ClientDemandsPresenter
     private void backBtnClickHandlerInner() {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         if (detailSection != null) {
-            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+            view.getDetailPanel().setVisible(false);
         }
         selectedDemandObject = null;
         selectedConversationObject = null;

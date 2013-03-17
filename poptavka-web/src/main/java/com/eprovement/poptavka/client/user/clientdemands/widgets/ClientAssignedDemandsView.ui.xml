@@ -57,7 +57,7 @@
                         addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
                     </b:Column>
                     <b:Column size="5">
-                        <g:SimplePanel ui:field="wrapperPanel">
+                        <g:SimplePanel ui:field="detailPanel">
                             <g:HTMLPanel>
                                 <div>
                                     <strong>Defail detail panel</strong>
