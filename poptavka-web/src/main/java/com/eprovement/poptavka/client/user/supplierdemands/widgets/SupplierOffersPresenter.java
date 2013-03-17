@@ -94,6 +94,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
     /**************************************************************************/
     public void onInitSupplierOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_OFFERS);
+        eventBus.activateSupplierOffers();
 
         eventBus.setUpSearchBar(new Label("Supplier's contests attibure's selector will be here."));
         searchDataHolder = filter;

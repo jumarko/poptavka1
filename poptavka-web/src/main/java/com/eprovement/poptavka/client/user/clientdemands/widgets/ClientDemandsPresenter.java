@@ -147,6 +147,7 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     public void onInitClientDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+        eventBus.activateClientDemands();
         //Set visibility
         view.setConversationTableVisible(false);
         view.setDemandTableVisible(true);

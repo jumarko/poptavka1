@@ -99,6 +99,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     public void onInitSupplierDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_DEMANDS);
+        eventBus.activateSupplierDemands();
 
         eventBus.setUpSearchBar(new Label("Supplier's projects attibure's selector will be here."));
         searchDataHolder = filter;

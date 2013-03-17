@@ -100,12 +100,14 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     public void onInitSupplierAssignedDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_ASSIGNED_DEMANDS);
+        eventBus.activateSupplierAssignedDemands();
 
         initWidget(filter);
     }
 
     public void onInitSupplierClosedDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_CLOSED_DEMANDS);
+        eventBus.activateSupplierAssignedDemands();
 
         initWidget(filter);
     }

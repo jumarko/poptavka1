@@ -99,6 +99,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
+        eventBus.activateClientAssignedDemands();
 
         initWidget(filter);
     }

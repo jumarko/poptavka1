@@ -118,6 +118,7 @@ public class ClientOffersPresenter
     /**************************************************************************/
     public void onInitClientOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
+        eventBus.activateClientOffers();
 
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
