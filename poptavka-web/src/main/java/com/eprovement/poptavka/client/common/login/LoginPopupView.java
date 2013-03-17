@@ -7,17 +7,16 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.ControlGroup;
-import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.PasswordTextBox;
 import com.github.gwtbootstrap.client.ui.ProgressBar;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
-import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -44,32 +43,21 @@ public class LoginPopupView extends Composite
     /* Attribute                                                              */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField
-    Modal modal;
-    @UiField
-    ListBox list;
-    @UiField
-    TextBox emailTextBox;
-    @UiField
-    PasswordTextBox passwordTextBox;
-    @UiField
-    Alert status;
-    @UiField
-    ProgressBar progressBar;
-    @UiField
-    Icon icon;
-    @UiField
-    Label infoLabel;
-    @UiField
-    Button submitBtn;
-    @UiField
-    Button cancelBtn;
-    @UiField
-    ControlGroup emailControlGroup;
-    @UiField
-    ControlGroup passwordControlGroup;
+    @UiField Modal modal;
+    @UiField ListBox list;
+    @UiField TextBox emailTextBox;
+    @UiField PasswordTextBox passwordTextBox;
+    @UiField Alert status;
+    @UiField ProgressBar progressBar;
+    @UiField Label infoLabel;
+    @UiField Button submitBtn;
+    @UiField Button cancelBtn;
+    @UiField ControlGroup emailControlGroup;
+    @UiField ControlGroup passwordControlGroup;
     /** Class attributes. **/
     private LoginPopupPresenter presenter;
+    /** Constants. **/
+    private static final int ENTER_KEY_CODE = 13;
     /**************************************************************************/
     /* DEVEL ONLY                                                             */
     /**************************************************************************/
@@ -118,7 +106,6 @@ public class LoginPopupView extends Composite
         initWidget(uiBinder.createAndBindUi(this));
         initFastLoginForDevel();
         progressBar.setVisible(false);
-        icon.setVisible(true);
         emailTextBox.setFocus(true);
         modal.show();
         StyleResource.INSTANCE.common().ensureInjected();
@@ -153,6 +140,14 @@ public class LoginPopupView extends Composite
     public void submitBtnHandler(ClickEvent e) {
         progressBar.setVisible(true);
         presenter.doLogin();
+    }
+
+    @UiHandler("passwordTextBox")
+    public void passwordBoxEnterHandler(KeyUpEvent e) {
+        if (e.getNativeKeyCode() == ENTER_KEY_CODE) {
+            progressBar.setVisible(true);
+            presenter.doLogin();
+        }
     }
 
     /**************************************************************************/
@@ -195,7 +190,6 @@ public class LoginPopupView extends Composite
 
     /**
      * Method displays the current status in the login process.
-     * Status consists of status icon and status message.
      *
      * @param message - message to be displayed in LoginPopupView
      */
@@ -205,7 +199,6 @@ public class LoginPopupView extends Composite
         passwordControlGroup.setType(ControlGroupType.NONE);
         status.setType(AlertType.SUCCESS);
         progressBar.setVisible(true);
-        icon.setVisible(false);
         infoLabel.setText(message);
         cancelBtn.setEnabled(false);
         submitBtn.setEnabled(false);
@@ -231,8 +224,6 @@ public class LoginPopupView extends Composite
         passwordControlGroup.setType(ControlGroupType.ERROR);
         status.setType(AlertType.ERROR);
         progressBar.setVisible(false);
-        icon.setVisible(true);
-        icon.setType(IconType.REMOVE_SIGN);
         infoLabel.setText(message);
         cancelBtn.setEnabled(true);
         submitBtn.setEnabled(true);

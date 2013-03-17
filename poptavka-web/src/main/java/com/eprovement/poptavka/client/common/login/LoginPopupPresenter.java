@@ -19,27 +19,20 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.root.RootEventBus;
-import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.i18n.client.LocalizableMessages;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
 
     private static final Logger LOGGER = Logger.getLogger(LoginPopupPresenter.class.getName());
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static final String DEFAULT_SPRING_LOGIN_URL = "j_spring_security_check";
     private static final String DEFAULT_SPRING_LOGOUT_URL = "j_spring_security_logout";
-    private static final int COOKIE_TIMEOUT = 1000 * 60 * 60 * 24;
-    private final short timeout = 1500;
     private int widgetToLoad = Constants.NONE;
-    private MailRPCServiceAsync mailService = null;
     private String springLoginUrl = null;
-    private String logoutUrl = null;
 
     public interface LoginPopupInterface extends LazyView {
 
@@ -64,23 +57,18 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     @Inject
     private RootRPCServiceAsync rootService;
 
-    @Inject
-    void setMailService(MailRPCServiceAsync service) {
-        mailService = service;
-    }
-
     /**
      * Real html login. SHOULD/WILL be used in prod
      */
     public void doLogin() {
         if (view.isValid()) { // both email and password fields are not empty
-            view.setLoadingStatus(MSGS.loggingVerifyAccount());
+            view.setLoadingStatus(Storage.MSGS.loggingVerifyAccount());
             verifyUser();
         }
     }
 
     private void verifyUser() {
-        view.setLoadingProgress(0, MSGS.loggingVerifyAccount());
+        view.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
         // TODO release: check if user is VERIFIED
         // if not then display activation popup
         rootService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
@@ -93,7 +81,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 }
 
                 if (user.isVerified()) {
-                    view.setLoadingProgress(30, MSGS.loggingIn());
+                    view.setLoadingProgress(30, Storage.MSGS.loggingIn());
                     // user has already been verified - it is ready for login
                     loginUser();
                 } else {
@@ -141,7 +129,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                 @Override
                 public void onResponseReceived(final Request request, final Response response) {
-                    view.setLoadingProgress(50, MSGS.loggingLoadProfile());
+                    view.setLoadingProgress(50, Storage.MSGS.loggingLoadProfile());
                     int status = response.getStatusCode();
                     LOGGER.fine("Response status code = " + status);
                     if (status == Response.SC_OK) {
@@ -212,7 +200,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         userService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
             @Override
             public void onSuccess(UserDetail userDetail) {
-                view.setLoadingProgress(70, MSGS.loggingForward());
+                view.setLoadingProgress(70, Storage.MSGS.loggingForward());
                 Storage.setUserDetail(userDetail);
                 userService.getLoggedBusinessUser(new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
                     @Override
