@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
@@ -58,7 +59,11 @@ public class AdminPresenter
 
         SimplePanel getContentPanel();
     }
-    private LoadingDiv loading = null;
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private AdminDetailsWrapperPresenter detailSection;
+    private LoadingDiv loading;
 
     @Override
     public void bindView() {
@@ -239,5 +244,15 @@ public class AdminPresenter
 
     public void onDisplayView(Widget content) {
         view.setContent(content);
+    }
+
+    /**
+     * Request AdminEventBus to create AdminDetailWrapperPresenter.
+     */
+    public void onRequestAdminDetailWrapperPresenter() {
+        if (detailSection == null) {
+            detailSection = eventBus.addHandler(AdminDetailsWrapperPresenter.class);
+        }
+        eventBus.responseAdminDetailWrapperPresenter(detailSection);
     }
 }

@@ -86,6 +86,10 @@ public interface AdminRPCServiceAsync {
 
     void getAdminNewDemands(SearchDefinition searchDefinition, AsyncCallback<List<FullDemandDetail>> callback);
 
+    void getThreadRootMessageId(long demandId, AsyncCallback<Long> callback);
+
+    void getFullDemandDetail(long demandId, AsyncCallback<FullDemandDetail> callback);
+
     void approveDemands(Set<FullDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
@@ -127,7 +131,11 @@ public interface AdminRPCServiceAsync {
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 
-    void getConversation(long demandId, long userAdminId, AsyncCallback<List<MessageDetail>> callback);
+    void getConversation(long threadId, long userId, AsyncCallback<List<MessageDetail>> callback);
 
-    void createConversation(long demandId, long userAdminId, AsyncCallback<Void> callback);
+    void getConversationForAdmin(long demandId, long userAdminId, AsyncCallback<List<MessageDetail>> callback);
+
+    void createConversation(long demandId, long userAdminId, AsyncCallback<Long> callback);
+
+    void sendQuestionMessage(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 }

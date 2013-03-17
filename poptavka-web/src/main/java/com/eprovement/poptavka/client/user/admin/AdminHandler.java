@@ -153,11 +153,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminDemands(SearchDefinition searchDefinition) {
         adminService.getAdminDemands(searchDefinition,
                 new SecuredAsyncCallback<List<FullDemandDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<FullDemandDetail> result) {
-                        eventBus.displayAdminTabDemands(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<FullDemandDetail> result) {
+                    eventBus.displayAdminTabDemands(result);
+                }
+            });
     }
 
     public void onUpdateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes) {
@@ -184,11 +184,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminSuppliers(SearchDefinition searchDefinition) {
         adminService.getAdminSuppliers(searchDefinition,
                 new SecuredAsyncCallback<List<FullSupplierDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<FullSupplierDetail> result) {
-                        eventBus.displayAdminTabSuppliers(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<FullSupplierDetail> result) {
+                    eventBus.displayAdminTabSuppliers(result);
+                }
+            });
     }
 
     public void onUpdateSupplier(FullSupplierDetail supplier) {
@@ -215,11 +215,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminOffers(SearchDefinition searchDefinition) {
         adminService.getAdminOffers(searchDefinition,
                 new SecuredAsyncCallback<List<OfferDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<OfferDetail> result) {
-                        eventBus.displayAdminTabOffers(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<OfferDetail> result) {
+                    eventBus.displayAdminTabOffers(result);
+                }
+            });
     }
 
     public void onUpdateOffer(OfferDetail offer) {
@@ -247,11 +247,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminClients(SearchDefinition searchDefinition) {
         adminService.getAdminClients(searchDefinition,
                 new SecuredAsyncCallback<List<ClientDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ClientDetail> result) {
-                        eventBus.displayAdminTabClients(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<ClientDetail> result) {
+                    eventBus.displayAdminTabClients(result);
+                }
+            });
     }
 
     public void onUpdateClient(ClientDetail client) {
@@ -279,11 +279,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminAccessRoles(SearchDefinition searchDefinition) {
         adminService.getAdminAccessRoles(searchDefinition,
                 new SecuredAsyncCallback<List<AccessRoleDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<AccessRoleDetail> result) {
-                        eventBus.displayAdminTabAccessRoles(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<AccessRoleDetail> result) {
+                    eventBus.displayAdminTabAccessRoles(result);
+                }
+            });
     }
 
     public void onUpdateAccessRole(AccessRoleDetail role) {
@@ -310,11 +310,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminEmailsActivation(SearchDefinition searchDefinition) {
         adminService.getAdminEmailsActivation(searchDefinition,
                 new SecuredAsyncCallback<List<ActivationEmailDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ActivationEmailDetail> result) {
-                        eventBus.displayAdminTabEmailsActivation(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<ActivationEmailDetail> result) {
+                    eventBus.displayAdminTabEmailsActivation(result);
+                }
+            });
     }
 
     public void onUpdateEmailActivation(ActivationEmailDetail client) {
@@ -341,11 +341,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminInvoices(SearchDefinition searchDefinition) {
         adminService.getAdminInvoices(searchDefinition,
                 new SecuredAsyncCallback<List<InvoiceDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<InvoiceDetail> result) {
-                        eventBus.displayAdminTabInvoices(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<InvoiceDetail> result) {
+                    eventBus.displayAdminTabInvoices(result);
+                }
+            });
     }
 
     public void onUpdateInvoice(InvoiceDetail client) {
@@ -372,11 +372,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminMessages(SearchDefinition searchDefinition) {
         adminService.getAdminMessages(searchDefinition,
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<MessageDetail> result) {
-                        eventBus.displayAdminTabMessages(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<MessageDetail> result) {
+                    eventBus.displayAdminTabMessages(result);
+                }
+            });
     }
 
     public void onUpdateMessage(MessageDetail client) {
@@ -403,11 +403,20 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminNewDemands(SearchDefinition searchDefinition) {
         adminService.getAdminNewDemands(searchDefinition,
                 new SecuredAsyncCallback<List<FullDemandDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<FullDemandDetail> result) {
-                        eventBus.displayAdminNewDemands(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<FullDemandDetail> result) {
+                    eventBus.displayAdminNewDemands(result);
+                }
+            });
+    }
+
+    public void onRequestThreadRootId(long demandId) {
+        adminService.getThreadRootMessageId(demandId, new SecuredAsyncCallback<Long>(eventBus) {
+            @Override
+            public void onSuccess(Long result) {
+                eventBus.responseThreadRootId(result);
+            }
+        });
     }
 
     public void onRequestApproveDemands(final UniversalAsyncGrid grid, Set<FullDemandDetail> demandsToApprove) {
@@ -434,11 +443,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminOurPaymentDetails(SearchDefinition searchDefinition) {
         adminService.getAdminOurPaymentDetails(searchDefinition,
                 new SecuredAsyncCallback<List<PaymentDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<PaymentDetail> result) {
-                        eventBus.displayAdminTabOurPaymentDetails(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<PaymentDetail> result) {
+                    eventBus.displayAdminTabOurPaymentDetails(result);
+                }
+            });
     }
 
     public void onUpdateOurPaymentDetail(PaymentDetail client) {
@@ -465,11 +474,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminPaymentMethods(SearchDefinition searchDefinition) {
         adminService.getAdminPaymentMethods(searchDefinition,
                 new SecuredAsyncCallback<List<PaymentMethodDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<PaymentMethodDetail> result) {
-                        eventBus.displayAdminTabPaymentMethods(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<PaymentMethodDetail> result) {
+                    eventBus.displayAdminTabPaymentMethods(result);
+                }
+            });
     }
 
     public void onUpdatePaymentMethod(PaymentMethodDetail paymentMethods) {
@@ -496,11 +505,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminPermissions(SearchDefinition searchDefinition) {
         adminService.getAdminPermissions(searchDefinition,
                 new SecuredAsyncCallback<List<PermissionDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<PermissionDetail> result) {
-                        eventBus.displayAdminTabPermissions(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<PermissionDetail> result) {
+                    eventBus.displayAdminTabPermissions(result);
+                }
+            });
     }
 
     public void onUpdatePermission(PermissionDetail permissions) {
@@ -527,11 +536,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminPreferences(SearchDefinition searchDefinition) {
         adminService.getAdminPreferences(searchDefinition,
                 new SecuredAsyncCallback<List<PreferenceDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<PreferenceDetail> result) {
-                        eventBus.displayAdminTabPreferences(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<PreferenceDetail> result) {
+                    eventBus.displayAdminTabPreferences(result);
+                }
+            });
     }
 
     public void onUpdatePreference(PreferenceDetail client) {
@@ -558,11 +567,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminProblems(SearchDefinition searchDefinition) {
         adminService.getAdminProblems(searchDefinition,
                 new SecuredAsyncCallback<List<ProblemDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ProblemDetail> result) {
-                        eventBus.displayAdminTabProblems(result);
-                    }
-                });
+                @Override
+                public void onSuccess(List<ProblemDetail> result) {
+                    eventBus.displayAdminTabProblems(result);
+                }
+            });
     }
 
     public void onUpdateProblem(ProblemDetail client) {
@@ -581,6 +590,84 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 // empty i.e number of new messages could be retrieved
                 GWT.log("UpdateUnreadMessagesCount retrieved, number=" + result.getUnreadMessagesCount());
                 eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /* DevelDetailWrapper widget methods                                      */
+    /**************************************************************************/
+    public void onRequestDemandDetail(Long demandId) {
+        adminService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+            @Override
+            public void onSuccess(FullDemandDetail result) {
+                eventBus.responseDemandDetail(result);
+            }
+        });
+    }
+
+    /**
+     * Creates conversation between <code>Client</code> and Admin/Operator user. Conversation is created in such a
+     * way that new <code>UserMessage</code> is created for every <code>User</code> who invokes this method. Thus
+     * enabling the user to write a reply message to <code>Client</code> in order to update <code>Demand</code>
+     * description or title before this demand is approved.
+     *
+     * @param demandId for which the conversation is created
+     * @param userAdminId id of operator or admin user
+     */
+    public void onRequestCreateConversation(long demandId) {
+        adminService.createConversation(demandId, Storage.getUser().getUserId(),
+                new SecuredAsyncCallback<Long>(eventBus) {
+                @Override
+                public void onSuccess(Long result) {
+                    eventBus.responseCreateConversation(result);
+                }
+            });
+    }
+
+    /**
+     * Load conversation between client and supplier related to particular demand.
+     * Only conversations where signed user take part are retrieved.
+     *
+     * @param threadId
+     * @param demandId
+     */
+    public void onRequestConversation(Long demandId) {
+        adminService.getConversation(demandId, Storage.getUser().getUserId(),
+                new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
+                @Override
+                public void onSuccess(List<MessageDetail> result) {
+                    eventBus.responseConversation(result);
+                }
+            });
+    }
+
+    /**
+     * Load conversation between client and supplier related to particular demand.
+     * Admin needn't be part of that conversation but he can see it.
+     *
+     * @param threadId
+     * @param demandId
+     */
+    public void onRequestConversationForAdmin(Long demandId) {
+        adminService.getConversationForAdmin(demandId, Storage.getUser().getUserId(),
+                new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
+                @Override
+                public void onSuccess(List<MessageDetail> result) {
+                    eventBus.responseConversationForAdmin(result);
+                }
+            });
+    }
+
+    /**
+     * Send message from Admin.
+     * @param messageToSend
+     */
+    public void onRequestSendAdminMessage(MessageDetail messageToSend) {
+        adminService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
+            @Override
+            public void onSuccess(MessageDetail sentMessage) {
+                eventBus.responseSendAdminMessage(sentMessage);
             }
         });
     }
