@@ -36,7 +36,6 @@
 
                     <b:Alert ui:field='status' type="INFO" close="false" animation="true" addStyleNames='info-block'>
                         <b:ProgressBar ui:field="progressBar" color="SUCCESS" type="ANIMATED" percent="100"/>
-                        <b:Icon ui:field='icon' type="INFO_SIGN" iconSize="LARGE" />
                         <g:Label ui:field='infoLabel'>
                             Enter email and password to login.
                         </g:Label>
