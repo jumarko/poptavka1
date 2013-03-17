@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.github.gwtbootstrap.client.ui.Button;
@@ -326,6 +327,13 @@ public class ClientDemandsPresenter
         view.getChoiceButtonsPanel().setVisible(true);
         view.getEditButtonsPanel().setVisible(false);
         detailSection.getEditDemandPresenter().getView().setFieldEnables(false);
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+        view.getDemandPager().startLoading();
+        view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
+                view.getDemandGrid().getStart(),
+                view.getDemandPager().getPageSize(),
+                searchDataHolder,
+                null));
         //TODO LATER Martin - make proper notify popup
         Window.alert("Updated succesfully");
     }
@@ -375,7 +383,8 @@ public class ClientDemandsPresenter
                 Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
                 ClientDemandDetail selected = (ClientDemandDetail) ((SingleSelectionModel) view.getDemandGrid()
                         .getSelectionModel()).getSelectedObject();
-                view.getChoiceButtonsPanel().setVisible(false);
+                view.getChoiceButtonsPanel().setVisible(true);
+                view.getEditButtonsPanel().setVisible(false);
                 if (selected != null) {
                     selectedDemandObject = selected;
                     initDetailSection(selected);
@@ -494,7 +503,7 @@ public class ClientDemandsPresenter
                 detailSection.getEditDemandPresenter().getView().resetFields();
                 if (detailSection.getEditDemandPresenter().getView().isValid()) {
                     eventBus.requestUpdateDemand(selectedDemandObject.getDemandId(),
-                            detailSection.getEditDemandPresenter().getUpdatedFields());
+                            detailSection.getEditDemandPresenter().updateDemandDetail(new FullDemandDetail()));
                 }
             }
         });

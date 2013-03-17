@@ -15,6 +15,7 @@ import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPre
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,6 +44,8 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
         long getDemandId();
 
         PopupPanel getSelectorWidgetPopup();
+
+        FullDemandDetail updateDemandDetail(FullDemandDetail demandToUpdate);
 
         Button getEditCatBtn();
 
@@ -100,21 +103,21 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
         });
         view.getSelectorWidgetPopup().addCloseHandler(
                 new CloseHandler<PopupPanel>() {
-                    @Override
-                    public void onClose(CloseEvent<PopupPanel> event) {
-                        if (view.getSelectorWidgetPopup()
-                                .getWidget() instanceof CategorySelectorView) {
-                            view.setCategories(
-                                    ((CategorySelectorView) view.getSelectorWidgetPopup().getWidget())
-                                    .getCellListDataProvider().getList());
-                        } else if (view.getSelectorWidgetPopup()
-                                .getWidget() instanceof LocalitySelectorView) {
-                            view.setLocalities(
-                                    ((LocalitySelectorView) view.getSelectorWidgetPopup().getWidget())
-                                    .getCellListDataProvider().getList());
-                        }
+                @Override
+                public void onClose(CloseEvent<PopupPanel> event) {
+                    if (view.getSelectorWidgetPopup()
+                            .getWidget() instanceof CategorySelectorView) {
+                        view.setCategories(
+                                ((CategorySelectorView) view.getSelectorWidgetPopup().getWidget())
+                                .getCellListDataProvider().getList());
+                    } else if (view.getSelectorWidgetPopup()
+                            .getWidget() instanceof LocalitySelectorView) {
+                        view.setLocalities(
+                                ((LocalitySelectorView) view.getSelectorWidgetPopup().getWidget())
+                                .getCellListDataProvider().getList());
                     }
-                });
+                }
+            });
         view.setChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
@@ -155,7 +158,7 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
         }
     }
 
-    public ArrayList<ChangeDetail> getUpdatedFields() {
-        return updatedFields;
+    public FullDemandDetail updateDemandDetail(FullDemandDetail detail) {
+        return view.updateDemandDetail(detail);
     }
 }

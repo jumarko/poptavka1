@@ -6,7 +6,8 @@ package com.eprovement.poptavka.client.common;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
-import com.eprovement.poptavka.shared.domain.IListDetailObject;
+import com.github.gwtbootstrap.client.ui.ControlGroup;
+import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -25,6 +26,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
@@ -32,7 +34,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DateBox;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -59,10 +60,11 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /** UiBinder attributes. **/
     @UiField SimplePanel holder;
     @UiField Anchor revert;
+    @UiField HTMLPanel errorPanel;
     @UiField Label errorLabel;
+    @UiField ControlGroup controlGroup;
     /** Class attributes. **/
     private boolean enabled = true;
-    private boolean valid = true;
     private Validator validator = null;
     private ChangeDetail changeDetail;
     private Class<T> beanType;
@@ -92,7 +94,6 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /**************************************************************************/
     private boolean validate() {
         boolean valid = false;
-        reset();
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
                 changeDetail.getField(), getValue(), Default.class);
@@ -102,7 +103,6 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         for (ConstraintViolation<T> violation : violations) {
             setValidationStyles(false, violation.getMessage());
         }
-        this.valid = valid;
         return valid;
     }
 
@@ -180,7 +180,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
 
     public void setChangeDetail(ChangeDetail detail) {
         changeDetail = detail;
-        setChangedStyles(true);
+        setChangeStyles(true);
         setInputWidgetText(detail.getValue());
     }
 
@@ -216,40 +216,39 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /** Change operations. **/
     public void commit() {
         changeDetail.revert();
-        setChangedStyles(false);
+        setChangeStyles(false);
     }
 
     public void revert() {
-        if (isModified()) {
-            changeDetail.revert();
-            setInputWidgetText(changeDetail.getOriginalValue());
-        }
+        changeDetail.revert();
+        setInputWidgetText(changeDetail.getOriginalValue());
         reset();
     }
 
     public void reset() {
         setValidationStyles(true, "");
-        setChangedStyles(false);
+        setChangeStyles(false);
     }
 
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /** Action hadlers.                                                      **/
+    //--------------------------------------------------------------------------
     private void addChangeHandler(Widget w) {
-        if (w instanceof DateBox) {
-            addChangeHandlerToDateBox(w);
-        } else {
+        if (w instanceof HasChangeHandlers) {
             addChangeHandlerToWidget(w);
+        } else {
+            addChangeHandlerToDateBox(w);
         }
     }
 
     private void addChangeHandlerToDateBox(Widget w) {
-        w.addHandler(new ValueChangeHandler<IListDetailObject>() {
+        w.addHandler(new ValueChangeHandler<Object>() {
             @Override
-            public void onValueChange(ValueChangeEvent<IListDetailObject> event) {
-                validate();
+            public void onValueChange(ValueChangeEvent<Object> event) {
                 if (enabled) {
-                    setChangedStyles(true);
+                    setChangeStyles(true);
                     DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getChangeMonitorWidget());
                 }
             }
@@ -260,9 +259,8 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         w.addDomHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                validate();
                 if (enabled) {
-                    setChangedStyles(true);
+                    setChangeStyles(true);
                 }
             }
         }, ChangeEvent.getType());
@@ -288,26 +286,29 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         }
     }
 
-    public void setChangedStyles(boolean isChange) {
+    /** Style change mehtods.                                                **/
+    //--------------------------------------------------------------------------
+    public void setChangeStyles(boolean isChange) {
         revert.setVisible(isChange);
-        if (valid) {
-            if (isChange) {
-                holder.getWidget().addStyleName(Storage.RSCS.common().changed());
-            } else {
-                holder.getWidget().removeStyleName(Storage.RSCS.common().changed());
-            }
+        if (isChange) {
+            holder.getWidget().addStyleName(Storage.RSCS.common().changed());
+        } else {
+            holder.getWidget().removeStyleName(Storage.RSCS.common().changed());
         }
     }
 
     public void setValidationStyles(boolean isValid, String validationMessage) {
+        errorPanel.setVisible(!isValid);
         errorLabel.setText(validationMessage);
         if (isValid) {
-            holder.getWidget().removeStyleName(Storage.RSCS.common().errorField());
+            controlGroup.setType(ControlGroupType.NONE);
         } else {
-            holder.getWidget().addStyleName(Storage.RSCS.common().errorField());
+            controlGroup.setType(ControlGroupType.ERROR);
         }
     }
 
+    /** Input methods.                                                       **/
+    //--------------------------------------------------------------------------
     private Object getInputWidgetText() {
         if (holder.getWidget() instanceof HasValue) {
             return ((HasValue) holder.getWidget()).getValue();

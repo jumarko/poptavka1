@@ -33,13 +33,11 @@ import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -52,10 +50,8 @@ import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
@@ -926,13 +922,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public Boolean updateDemand(long demandId, ArrayList<ChangeDetail> changes) throws
+    public Boolean updateDemand(long demandId, FullDemandDetail updatedDemand) throws
             RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
-        updateDemandFields(demand, changes);
+        updateDemandFields(demand, updatedDemand);
         updateDemandThreadRootMessage(demand);
         generalService.merge(demand);
-
         return true;
     }
 
@@ -961,52 +956,17 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return true;
     }
 
-    private Demand updateDemandFields(Demand demand, ArrayList<ChangeDetail> changes) {
-        for (ChangeDetail change : changes) {
-            switch (DemandField.toDemandField(change.getField())) {
-                case TITLE:
-                    demand.setTitle((String) change.getValue());
-                    break;
-                case DESCRIPTION:
-                    demand.setDescription((String) change.getValue());
-                    break;
-                case PRICE:
-                    demand.setPrice((BigDecimal) change.getValue());
-                    break;
-                case END_DATE:
-                    demand.setEndDate((Date) change.getValue());
-                    break;
-                case VALID_TO_DATE:
-                    demand.setValidTo((Date) change.getValue());
-                    break;
-                case MAX_OFFERS:
-                    demand.setMaxSuppliers((Integer) change.getValue());
-                    break;
-                case MIN_RATING:
-                    demand.setMinRating((Integer) change.getValue());
-                    break;
-                case DEMAND_STATUS:
-                    demand.setStatus(DemandStatus.valueOf((String) change.getValue()));
-                    break;
-                case CREATED:
-                    demand.setCreatedDate((Date) change.getValue());
-                    break;
-                case CATEGORIES:
-                    demand.setCategories(categoryConverter.convertToSourceList(
-                            (ArrayList<CategoryDetail>) change.getValue()));
-                    break;
-                case LOCALITIES:
-                    demand.setLocalities(localityConverter.convertToSourceList(
-                            (ArrayList<LocalityDetail>) change.getValue()));
-                    break;
-                case EXCLUDE_SUPPLIER:
-                    demand.setExcludedSuppliers(supplierConverter.convertToSourceList(
-                            (ArrayList<FullSupplierDetail>) change.getValue()));
-                    break;
-                default:
-                    break;
-            }
-        }
+    private Demand updateDemandFields(Demand demand, FullDemandDetail updatedDemand) {
+        demand.setTitle(updatedDemand.getTitle());
+        demand.setDescription(updatedDemand.getDescription());
+        demand.setPrice(updatedDemand.getPrice());
+        demand.setEndDate(updatedDemand.getEndDate());
+        demand.setValidTo(updatedDemand.getValidTo());
+        demand.setMaxSuppliers(updatedDemand.getMaxSuppliers());
+        demand.setMinRating(updatedDemand.getMinRating());
+        demand.setCreatedDate(updatedDemand.getCreated());
+        demand.setCategories(categoryConverter.convertToSourceList(updatedDemand.getCategories()));
+        demand.setLocalities(localityConverter.convertToSourceList(updatedDemand.getLocalities()));
         return demand;
     }
 

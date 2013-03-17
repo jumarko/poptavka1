@@ -28,8 +28,10 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class EditableDemandDetailView extends Composite implements
@@ -158,6 +160,20 @@ public class EditableDemandDetailView extends Composite implements
         minRatingMonitor.setBothValues(demandDetail.getMinRating());
         excludedSuppliersMonitor.setBothValues(demandDetail.getExcludedSuppliers());
         descriptionMonitor.setBothValues(demandDetail.getDescription());
+    }
+
+    @Override
+    public FullDemandDetail updateDemandDetail(FullDemandDetail demandToUpdate) {
+        demandToUpdate.setTitle((String) titleMonitor.getValue());
+        demandToUpdate.setPrice((BigDecimal) priceMonitor.getValue());
+        demandToUpdate.setEndDate((Date) endDateMonitor.getValue());
+        demandToUpdate.setValidTo((Date) validToDateMonitor.getValue());
+        demandToUpdate.setCategories((List<CategoryDetail>) categoriesMonitor.getValue());
+        demandToUpdate.setLocalities((List<LocalityDetail>) localitiesMonitor.getValue());
+        demandToUpdate.setMaxSuppliers((Integer) maxOffersMonitor.getValue());
+        demandToUpdate.setMinRating((Integer) minRatingMonitor.getValue());
+        demandToUpdate.setDescription((String) descriptionMonitor.getValue());
+        return demandToUpdate;
     }
 
     public void clear() {
