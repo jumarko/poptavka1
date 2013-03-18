@@ -2,18 +2,23 @@ package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
+import java.util.Date;
 
 public class DemandDetailView extends Composite {
 
@@ -29,7 +34,9 @@ public class DemandDetailView extends Composite {
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) CellList categories, localities;
-    @UiField Label demandName, price, endDate, validTo, description, clientRating;
+    @UiField Label demandName, price, endDate, description, clientRating;
+    @UiField Image urgency;
+    @UiField Tooltip urgencyTooltip;
     /** Class attributes. **/
     private FullDemandDetail demandDetail;
     /** Constants. **/
@@ -57,10 +64,25 @@ public class DemandDetailView extends Composite {
         clientRating.setText(Integer.toString(demandDetail.getClientRating()));
         price.setText(Storage.CURRENCY_FORMAT.format(demandDetail.getPrice()));
         endDate.setText(Storage.FORMATTER.format(demandDetail.getEndDate()));
-        validTo.setText(Storage.FORMATTER.format(demandDetail.getValidTo()));
+        setValidTo(demandDetail.getValidTo());
         categories.setRowData(demandDetail.getCategories());
         localities.setRowData(demandDetail.getLocalities());
         description.setText(demandDetail.getDescription());
+    }
+
+    private void setValidTo(Date validTo) {
+        Date now = new Date();
+        int daysBetween = CalendarUtil.getDaysBetween(now, validTo);
+        if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
+            urgency.setResource(Storage.RSCS.images().urgencyRed());
+            urgencyTooltip.setTitle(Storage.MSGS.urgencyHighDesc());
+        } else if (daysBetween <= Constants.DAYS_URGENCY_HIGHER) {
+            urgency.setResource(Storage.RSCS.images().urgencyOrange());
+            urgencyTooltip .setTitle(Storage.MSGS.urgencyHigherDesc());
+        } else {
+            urgency.setResource(Storage.RSCS.images().urgencyGreen());
+            urgencyTooltip.setTitle(Storage.MSGS.urgencyNormalDesc());
+        }
     }
 
     /**************************************************************************/
@@ -77,7 +99,7 @@ public class DemandDetailView extends Composite {
         demandName.setText(EMPTY);
         price.setText(EMPTY);
         endDate.setText(EMPTY);
-        validTo.setText(EMPTY);
+        urgency.setResource(Storage.RSCS.images().urgencyHeader());
         categories.setRowCount(0);
         localities.setRowCount(0);
         description.setText(EMPTY);

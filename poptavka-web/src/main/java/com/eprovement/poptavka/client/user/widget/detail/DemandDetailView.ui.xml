@@ -52,10 +52,11 @@
                         <b:Column size='12'>
                             <g:Label
                                 styleName='{res.detailViews.detailBlockLabel}'>
-                                <ui:msg key="formValidTo">Valid to: </ui:msg>
+                                <ui:msg key="formUrgency">Urgency: </ui:msg>
                             </g:Label>
-                            <g:Label styleName='{res.detailViews.detailDateLabel}'
-                                ui:field="validTo" />
+                            <b:Tooltip ui:field="urgencyTooltip">
+                                <g:Image ui:field="urgency" />
+                            </b:Tooltip>
                         </b:Column>
                         <b:Column size='12'>
                             <g:Label
