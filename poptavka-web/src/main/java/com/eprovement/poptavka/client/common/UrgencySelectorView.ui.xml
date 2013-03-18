@@ -6,7 +6,7 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <b:FluidContainer>
+    <b:FluidContainer ui:field="fluidContainer">
         <b:FluidRow>
             <b:Column size="6">
                 <b:FluidRow>
@@ -79,6 +79,13 @@
                         <g:Label>
                             15
                         </g:Label>
+                    </b:Column>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="12">
+                        <g:Anchor ui:field="revert" visible="false">
+                            <ui:msg key="commonBtnRevert">Revert</ui:msg>
+                        </g:Anchor>
                     </b:Column>
                 </b:FluidRow>
             </b:Column>                    

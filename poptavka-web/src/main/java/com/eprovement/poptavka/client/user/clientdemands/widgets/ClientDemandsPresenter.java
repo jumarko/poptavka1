@@ -310,9 +310,12 @@ public class ClientDemandsPresenter
         Window.alert("deleted succesfully");
     }
 
-    public void onResponseUpdateDemand(boolean result) {
+    public void onResponseUpdateDemand(FullDemandDetail result) {
         view.getChoiceButtonsPanel().setVisible(true);
+        //reset & refresh view
         detailSection.setEditDemandMode(false, null);
+        detailSection.getView().getDemandDetail().setDemanDetail(result);
+        //refresh grid
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         view.getDemandPager().startLoading();
         view.getDemandGrid().getDataCount(eventBus, new SearchDefinition(
@@ -320,6 +323,7 @@ public class ClientDemandsPresenter
                 view.getDemandPager().getPageSize(),
                 searchDataHolder,
                 null));
+        //notify user
         //TODO LATER Martin - make proper notify popup
         Window.alert("Updated succesfully");
     }

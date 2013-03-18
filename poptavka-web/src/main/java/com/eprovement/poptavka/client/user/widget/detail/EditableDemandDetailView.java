@@ -115,6 +115,7 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.reset();
         }
+        urgencySelector.setChangeStyle(false);
         categoriesMonitor.reset();
         localitiesMonitor.reset();
     }
@@ -124,6 +125,7 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.revert();
         }
+        urgencySelector.revert(null);
         categoriesMonitor.revert();
         localitiesMonitor.revert();
     }

@@ -265,7 +265,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void requestUpdateDemand(long demandId, FullDemandDetail updatedDemand);
 
     @Event(handlers = ClientDemandsPresenter.class)
-    void responseUpdateDemand(boolean result);
+    void responseUpdateDemand(FullDemandDetail result);
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */

@@ -256,7 +256,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     /* CRUD operation of demand                                               */
     /**************************************************************************/
-    Boolean updateDemand(long demandId, FullDemandDetail updatedDemand) throws
+    FullDemandDetail updateDemand(long demandId, FullDemandDetail updatedDemand) throws
             RPCException, ApplicationSecurityException;
 
     Boolean deleteDemand(long demandId) throws RPCException, ApplicationSecurityException;

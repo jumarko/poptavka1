@@ -922,13 +922,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public Boolean updateDemand(long demandId, FullDemandDetail updatedDemand) throws
+    public FullDemandDetail updateDemand(long demandId, FullDemandDetail updatedDemand) throws
             RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
         updateDemandFields(demand, updatedDemand);
         updateDemandThreadRootMessage(demand);
-        generalService.merge(demand);
-        return true;
+        return demandConverter.convertToTarget(generalService.merge(demand));
     }
 
     private Message updateDemandThreadRootMessage(Demand demand) {

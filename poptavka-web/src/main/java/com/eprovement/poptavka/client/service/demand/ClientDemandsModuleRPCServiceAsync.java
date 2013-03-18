@@ -118,7 +118,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     /* CRUD operation of demand                                               */
     /**************************************************************************/
-    void updateDemand(long demandId, FullDemandDetail updatedDemand, AsyncCallback<Boolean> calback) throws
+    void updateDemand(long demandId, FullDemandDetail updatedDemand, AsyncCallback<FullDemandDetail> calback) throws
             RPCException, ApplicationSecurityException;
 
     void deleteDemand(long demandId, AsyncCallback<Boolean> calback) throws

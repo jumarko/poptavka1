@@ -5,9 +5,14 @@
 package com.eprovement.poptavka.client.common;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -32,13 +37,31 @@ public class UrgencySelectorView extends Composite {
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
+    @UiField FluidContainer fluidContainer;
     @UiField RadioButton urgency1, urgency2, urgency3;
+    @UiField Anchor revert;
+    /** Class attributes. **/
+    private Date validToOriginal;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     public UrgencySelectorView() {
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    @UiHandler("revert")
+    public void revert(ClickEvent e) {
+        setValidTo(validToOriginal);
+        setChangeStyle(false);
+    }
+
+    @UiHandler(value = {"urgency1", "urgency2", "urgency3" })
+    public void checkBoxClickHandlers(ClickEvent e) {
+        setChangeStyle(isChanged());
     }
 
     /**************************************************************************/
@@ -51,6 +74,7 @@ public class UrgencySelectorView extends Composite {
      */
     public void setValidTo(Date validTo) {
         Date now = new Date();
+        this.validToOriginal = validTo;
         int daysBetween = CalendarUtil.getDaysBetween(now, validTo);
         if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
             urgency3.setValue(Boolean.TRUE);
@@ -58,6 +82,16 @@ public class UrgencySelectorView extends Composite {
             urgency2.setValue(Boolean.TRUE);
         } else {
             urgency1.setValue(Boolean.TRUE);
+        }
+    }
+
+    public void setChangeStyle(boolean isChange) {
+        if (isChange) {
+            fluidContainer.addStyleName(Storage.RSCS.common().changed());
+            revert.setVisible(true);
+        } else {
+            fluidContainer.removeStyleName(Storage.RSCS.common().changed());
+            revert.setVisible(false);
         }
     }
 
@@ -83,6 +117,10 @@ public class UrgencySelectorView extends Composite {
             CalendarUtil.addMonthsToDate(validTo, Constants.MONTHS_URGENCY_NORMAL);
         }
         return validTo;
+    }
+
+    public boolean isChanged() {
+        return !CalendarUtil.isSameDate(validToOriginal, getValidTo());
     }
 
     /** CheckBoxes. **/
