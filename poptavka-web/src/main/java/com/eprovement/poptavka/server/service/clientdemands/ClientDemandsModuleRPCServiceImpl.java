@@ -926,19 +926,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
         updateDemandFields(demand, updatedDemand);
-        updateDemandThreadRootMessage(demand);
         return demandConverter.convertToTarget(generalService.merge(demand));
-    }
-
-    private Message updateDemandThreadRootMessage(Demand demand) {
-        // update thread root message before sending to potential suppliers
-        Message threadRootMessage = messageService.getThreadRootMessage(demand);
-        if (threadRootMessage == null) {
-            throw new IllegalStateException("Demand must have a thread root message assigned");
-        }
-        threadRootMessage.setBody(demand.getDescription());
-        threadRootMessage.setSubject(demand.getTitle());
-        return messageService.update(threadRootMessage);
     }
 
     @Override
