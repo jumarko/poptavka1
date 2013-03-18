@@ -1,5 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:co="urn:import:com.eprovement.poptavka.client.common"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
     
@@ -60,85 +61,7 @@
                     <!-- *************************** URGENCY *************************** -->
                     <b:FluidRow>
                         <b:Column size="6">
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label>
-                                        <ui:msg key="formDemandAdvUrgency">Urgency</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Urgency level:
-                                    </g:Label>
-                                    <b:Tooltip text='{msgs.urgencyDesc}'>
-                                        <g:Image resource='{res.images.urgencyHeader}'/>
-                                    </b:Tooltip>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Normal
-                                    </g:Label>
-                                    <b:Tooltip text='{msgs.urgencyNormalDesc}'>
-                                        <g:Image resource='{res.images.urgencyGreen}'/>
-                                    </b:Tooltip>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Higher
-                                    </g:Label>
-                                    <b:Tooltip text='{msgs.urgencyHigherDesc}'>
-                                        <g:Image resource='{res.images.urgencyOrange}'/>
-                                    </b:Tooltip>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        HIGHT
-                                    </g:Label>
-                                    <b:Tooltip text='{msgs.urgencyHighDesc}'>
-                                        <g:Image resource='{res.images.urgencyRed}'/>
-                                    </b:Tooltip>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Selected:
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:RadioButton name="urgency" ui:field="urgency1" checked="true" />
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:RadioButton name="urgency" ui:field="urgency2" />
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:RadioButton name="urgency" ui:field="urgency3" />
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        Cost creadits:
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        5
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        10
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="3">
-                                    <g:Label>
-                                        15
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
+                            <co:UrgencySelectorView ui:field="urgencySelector" />
                         </b:Column>                    
                     </b:FluidRow>
                 </b:WellForm>

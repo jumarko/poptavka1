@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
-import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.UrgencySelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
@@ -15,10 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
-import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.CalendarUtil;
-import java.util.Date;
 
 public class FormDemandAdvView extends Composite
         implements FormDemandAdvPresenter.FormDemandAdvViewInterface, ProvidesValidate {
@@ -38,7 +35,7 @@ public class FormDemandAdvView extends Composite
     @UiField HTMLPanel demandTypeChoicePanel;
     @UiField IntegerBox maxOffersBox;
     @UiField Button normalBtn, attractiveBtn;
-    @UiField RadioButton urgency1, urgency2, urgency3;
+    @UiField UrgencySelectorView urgencySelector;
     /** Class attributes. **/
     private boolean attractiveSelected;
 
@@ -107,7 +104,7 @@ public class FormDemandAdvView extends Composite
         demandToUpdate.setMaxSuppliers(maxOffersBox.getValue());
         demandToUpdate.setMinRating(0);
         demandToUpdate.setDemandType(getDemandType());
-        demandToUpdate.setValidTo(getValidTo());
+        demandToUpdate.setValidTo(urgencySelector.getValidTo());
         return demandToUpdate;
     }
 
@@ -124,25 +121,5 @@ public class FormDemandAdvView extends Composite
         } else {
             return FullDemandDetail.DemandType.NORMAL.getValue();
         }
-    }
-
-    /**
-     * Construct valid to date to represent urgency level of demand.
-     * Date is constructed by adding days to current date. For HIGH urgency level
-     * are added less days than to HIGHER or NORMAL. See appropriate constants
-     * in Constants class.
-     *
-     * @return valid to date
-     */
-    private Date getValidTo() {
-        Date validTo = new Date();
-        if (urgency3.getValue()) {
-            CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGH);
-        } else if (urgency2.getValue()) {
-            CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGHER);
-        } else {
-            CalendarUtil.addMonthsToDate(validTo, Constants.MONTHS_URGENCY_NORMAL);
-        }
-        return validTo;
     }
 }

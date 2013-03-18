@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.ListChangeMonitor;
+import com.eprovement.poptavka.client.common.UrgencySelectorView;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -42,11 +43,11 @@ public class EditableDemandDetailView extends Composite implements
     /* Attributes                                                               */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) ChangeMonitor titleMonitor, priceMonitor;
-    @UiField(provided = true) ChangeMonitor endDateMonitor, validToDateMonitor;
+    @UiField(provided = true) ChangeMonitor titleMonitor, priceMonitor, endDateMonitor;
     @UiField(provided = true) ChangeMonitor maxOffersMonitor, minRatingMonitor, descriptionMonitor;
     @UiField(provided = true) ListChangeMonitor categoriesMonitor, localitiesMonitor;
     @UiField(provided = true) CellList categories, localities;
+    @UiField UrgencySelectorView urgencySelector;
     @UiField FluidRow editButtonsPanel;
     @UiField Button editCatBtn, editLocBtn, submitButton, cancelButton;
     /** Class attributes. **/
@@ -81,13 +82,11 @@ public class EditableDemandDetailView extends Composite implements
         localitiesMonitor = createDemandListChangeMonitor(DemandField.LOCALITIES);
         priceMonitor = createDemandChangeMonitor(DemandField.PRICE);
         endDateMonitor = createDemandChangeMonitor(DemandField.END_DATE);
-        validToDateMonitor = createDemandChangeMonitor(DemandField.VALID_TO_DATE);
         maxOffersMonitor = createDemandChangeMonitor(DemandField.MAX_OFFERS);
         minRatingMonitor = createDemandChangeMonitor(DemandField.MIN_RATING);
         descriptionMonitor = createDemandChangeMonitor(DemandField.DESCRIPTION);
         monitors = Arrays.asList(
-                titleMonitor, priceMonitor, endDateMonitor, validToDateMonitor,
-                maxOffersMonitor, minRatingMonitor, descriptionMonitor);
+                titleMonitor, priceMonitor, endDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
     }
 
     private ChangeMonitor createDemandChangeMonitor(DemandField fieldField) {
@@ -138,7 +137,7 @@ public class EditableDemandDetailView extends Composite implements
         titleMonitor.setBothValues(demandDetail.getTitle());
         priceMonitor.setBothValues(demandDetail.getPrice());
         endDateMonitor.setBothValues(demandDetail.getEndDate());
-        validToDateMonitor.setBothValues(demandDetail.getValidTo());
+        urgencySelector.setValidTo(demandDetail.getValidTo());
         categoriesMonitor.setBothValues(demandDetail.getCategories());
         localitiesMonitor.setBothValues(demandDetail.getLocalities());
         maxOffersMonitor.setBothValues(demandDetail.getMaxSuppliers());
@@ -151,7 +150,7 @@ public class EditableDemandDetailView extends Composite implements
         demandToUpdate.setTitle((String) titleMonitor.getValue());
         demandToUpdate.setPrice((BigDecimal) priceMonitor.getValue());
         demandToUpdate.setEndDate((Date) endDateMonitor.getValue());
-        demandToUpdate.setValidTo((Date) validToDateMonitor.getValue());
+        demandToUpdate.setValidTo(urgencySelector.getValidTo());
         demandToUpdate.setCategories((List<CategoryDetail>) categoriesMonitor.getValue());
         demandToUpdate.setLocalities((List<LocalityDetail>) localitiesMonitor.getValue());
         demandToUpdate.setMaxSuppliers((Integer) maxOffersMonitor.getValue());
