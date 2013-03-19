@@ -27,14 +27,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Presenter(view = SupplierDemandsView.class, multiple = true)
 public class SupplierDemandsPresenter extends LazyPresenter<
@@ -81,7 +79,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     @Override
     public void bindView() {
         // Table Change Handlers
-        addTableRangeChangeHandler();
         addTableSelectionModelClickHandler();
         // Field Updaters
         addCheckHeaderUpdater();
@@ -99,6 +96,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     public void onInitSupplierDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_DEMANDS);
         eventBus.activateSupplierDemands();
+        eventBus.createTokenForHistory();
 
         eventBus.setUpSearchBar(new Label("Supplier's projects attibure's selector will be here."));
         searchDataHolder = filter;
@@ -106,49 +104,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-    }
-
-    public void onInitSupplierDemandsByHistory(int tablePage, long selectedId, SearchModuleDataHolder filterHolder) {
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_DEMANDS);
-        //Select Menu - my demands - selected
-        eventBus.selectSupplierDemandsMenu(Constants.SUPPLIER_POTENTIAL_DEMANDS);
-        //
-        //If current page differ to stored one, cancel events that would be fire automatically but with no need
-        if (view.getPager().getPage() != tablePage) {
-            //cancel range change event in asynch data provider
-            view.getDataGrid().cancelRangeChangedEvent();
-            eventBus.setHistoryStoredForNextOne(false);
-        }
-        view.getPager().setPage(tablePage);
-
-        //if selection differs to the restoring one
-        boolean wasEqual = false;
-        MultiSelectionModel selectionModel = (MultiSelectionModel) view.getDataGrid()
-                .getSelectionModel();
-        for (SupplierPotentialDemandDetail detail : (Set<
-                SupplierPotentialDemandDetail>) selectionModel.getSelectedSet()) {
-            if (detail.getDemandId() == selectedId) {
-                wasEqual = true;
-            }
-        }
-        this.selectedSupplierDemandId = selectedId;
-        if (selectedId == -1) {
-            selectionModel.clear();
-        } else {
-            if (!wasEqual) {
-                eventBus.getSupplierDemand(selectedId);
-            }
-        }
-
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
-                    tablePage * view.getDataGrid().getPageSize(),
-                    view.getDataGrid().getPageSize(),
-                    filterHolder,
-                    null));
-        }
-
-        eventBus.displayView(view.getWidgetView());
     }
 
     /**************************************************************************/
@@ -214,16 +169,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
-    public void addTableRangeChangeHandler() {
-        view.getDataGrid().addRangeChangeHandler(new RangeChangeEvent.Handler() {
-            @Override
-            public void onRangeChange(RangeChangeEvent event) {
-                eventBus.createTokenForHistory(view.getPager().getPage(), selectedSupplierDemandId);
-            }
-        });
-    }
     // TableWidget handlers
-
     public void addCheckHeaderUpdater() {
         view.getDataGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
             @Override
@@ -278,10 +224,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
                 MultiSelectionModel selectionModel = view.getDataGrid().getSelectionModel();
                 selectionModel.clear();
                 selectionModel.setSelected(object, true);
-//                eventBus.createTokenForHistory(
-//                        view.getPager().getPage(),
-//                        object.getDemandId());
-//                }
             }
         };
         view.getDataGrid().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
@@ -289,7 +231,6 @@ public class SupplierDemandsPresenter extends LazyPresenter<
         view.getDataGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getUrgencyColumn().setFieldUpdater(textFieldUpdater);
-//        view.getDataGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
     /** RowStyles. **/

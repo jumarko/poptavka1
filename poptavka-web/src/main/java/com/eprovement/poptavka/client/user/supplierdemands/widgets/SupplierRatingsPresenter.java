@@ -61,6 +61,7 @@ public class SupplierRatingsPresenter extends LazyPresenter<
     public void onInitSupplierRatings(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_RATINGS);
+        eventBus.createTokenForHistory();
 
         initWidget(filter);
     }

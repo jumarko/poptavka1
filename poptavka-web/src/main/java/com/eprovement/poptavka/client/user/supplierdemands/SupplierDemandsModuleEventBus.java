@@ -64,7 +64,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* History events                                                         */
     /**************************************************************************/
     @Event(historyConverter = SupplierDemandsModuleHistoryConverter.class, name = "token")
-    String createTokenForHistory(int tablePage, long selectedId);
+    String createTokenForHistory();
 
     /**************************************************************************/
     /* Navigation events.                                                     */
@@ -76,10 +76,8 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
      *
      * @param filter - defines data holder to be displayed in advanced search bar
      */
-    @Event(handlers = SupplierDemandsModulePresenter.class,
-                historyConverter = SupplierDemandsModuleHistoryConverter.class, name = "supplierDemands",
-                navigationEvent = true)
-    String goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
+    @Event(handlers = SupplierDemandsModulePresenter.class, navigationEvent = true)
+    void goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     //Init by default
     //--------------------------------------------------------------------------
@@ -94,17 +92,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(handlers = SupplierDemandsWelcomePresenter.class)
     void initSupplierDemandsWelcome();
-
-    //Init by history
-    //--------------------------------------------------------------------------
-    @Event(handlers = SupplierDemandsPresenter.class)
-    void initSupplierDemandsByHistory(int tablePage, long selectedId, SearchModuleDataHolder filter);
-
-    @Event(handlers = SupplierOffersPresenter.class)
-    void initSupplierOffersByHistory(int tablePage, long selectedId, SearchModuleDataHolder filter);
-
-    @Event(handlers = SupplierAssignedDemandsPresenter.class)
-    void initSupplierAssignedDemandsByHistory(int tablePage, long selectedId, SearchModuleDataHolder filter);
 
     //Activations of presenters
     //--------------------------------------------------------------------------
