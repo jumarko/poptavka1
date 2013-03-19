@@ -67,6 +67,7 @@ public interface LocalizableMessages extends Messages {
     String formAddressInfo();
     String formBankInfo();
     String formClientInfo();
+    String formClientRatingInfo();
     String formCommonInfo();
     String formCompanyInfo();
     String formDatesInfo();
@@ -74,7 +75,9 @@ public interface LocalizableMessages extends Messages {
     String formDetailInfo();
     String formInvoiceInfo();
     String formPriceInfo();
+    String formRatingInfo();
     String formSupplierInfo();
+    String formSupplierRatingInfo();
 
     /** Form labels. **/
     String formAdddress();
@@ -86,6 +89,7 @@ public interface LocalizableMessages extends Messages {
     String formCertified();
     String formCity();
     String formClientRating();
+    String formClientName();
     String formCompanyName();
     String formConstSymbol();
     String formCreationDate();
@@ -119,10 +123,12 @@ public interface LocalizableMessages extends Messages {
     String formPrice();
     String formRating();
     String formRateComment();
+    String formRateInsertComment();
     String formRequiredFields();
     String formServices();
     String formShipmentDate();
     String formStreet();
+    String formSupplierName();
     String formTaxBasis();
     String formTaxNumber();
     String formTitle();
@@ -608,6 +614,12 @@ public interface LocalizableMessages extends Messages {
     /* Feedback popup info */
     String feedbackToClientMessage();
     String feedbackAdditionalCommentPlaceholder();
+    String feedbackNotRated();
+    String feedbackHeading1();
+    String feedbackHeading2();
+    String feedbackHeading3();
+    String feedbackHeading4();
+    String feedbackHeading5();
     String feedbackComment1();
     String feedbackComment2();
     String feedbackComment3();
