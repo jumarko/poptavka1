@@ -20,16 +20,16 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -272,17 +272,10 @@ public class ValidationMonitor<T> extends Composite
      * @param w - input widget
      */
     private void addChangeHandler(Widget w) {
-        if (w instanceof CellList) {
-            w.addHandler(new ValueChangeHandler<IListDetailObject>() {
+        if (w instanceof CellList || w instanceof DateBox) {
+            w.addHandler(new ValueChangeHandler<Object>() {
                 @Override
-                public void onValueChange(ValueChangeEvent<IListDetailObject> event) {
-                    validate();
-                }
-            }, ValueChangeEvent.getType());
-        } else if (w instanceof DateBox) {
-            w.addHandler(new ValueChangeHandler<IListDetailObject>() {
-                @Override
-                public void onValueChange(ValueChangeEvent<IListDetailObject> event) {
+                public void onValueChange(ValueChangeEvent<Object> event) {
                     validate();
                 }
             }, ValueChangeEvent.getType());
@@ -299,11 +292,13 @@ public class ValidationMonitor<T> extends Composite
      * @param w - input widget
      */
     private void addBlurHandler(Widget w) {
-        if (w instanceof TextBoxBase || w instanceof IntegerBox || w instanceof BigDecimalBox) {
+        if (w instanceof TextBoxBase || w instanceof ValueBoxBase) {
             w.addDomHandler(new BlurHandler() {
                 @Override
                 public void onBlur(BlurEvent event) {
-                    validate();
+                    if (preValidate()) {
+                        validate();
+                    }
                 }
             }, BlurEvent.getType());
         }
@@ -314,14 +309,8 @@ public class ValidationMonitor<T> extends Composite
      * @return
      */
     private Object getInputWidgetText() {
-        if (holder.getWidget() instanceof TextBoxBase) {
-            return ((TextBoxBase) holder.getWidget()).getValue();
-        } else if (holder.getWidget() instanceof IntegerBox) {
-            return getIntegerValue();
-        } else if (holder.getWidget() instanceof BigDecimalBox) {
-            return getBigDecimalValue();
-        } else if (holder.getWidget() instanceof DateBox) {
-            return ((DateBox) holder.getWidget()).getValue();
+        if (holder.getWidget() instanceof HasValue) {
+            return ((HasValue) holder.getWidget()).getValue();
         } else if (holder.getWidget() instanceof ListBox) {
             return ((ListBox) holder.getWidget()).getSelectedIndex();
         } else if (holder.getWidget() instanceof CellList) {
@@ -332,53 +321,44 @@ public class ValidationMonitor<T> extends Composite
     }
 
     /**
-     * Get integer value of IntegerBox. Validate if NumberFormatException occurs.
-     * @return
-     */
-    private Object getIntegerValue() {
-        try {
-            ((IntegerBox) holder.getWidget()).getValue();
-        } catch (NumberFormatException ex) {
-            valid = false;
-            setValidationStyles(false, Storage.VMSGS.commonNumberFormat());
-            return ((IntegerBox) holder.getWidget()).getText();
-        }
-        return ((IntegerBox) holder.getWidget()).getValue();
-    }
-
-    /**
-     * Get big decimal value of BigDecimalBox. Validate if NumberFormatException occurs.
-     * @return
-     */
-    private Object getBigDecimalValue() {
-        try {
-            ((BigDecimalBox) holder.getWidget()).getValue();
-        } catch (NumberFormatException ex) {
-            valid = false;
-            setValidationStyles(false, Storage.VMSGS.commonNumberFormat());
-            return ((BigDecimalBox) holder.getWidget()).getText();
-        }
-        return ((BigDecimalBox) holder.getWidget()).getValue();
-    }
-
-    /**
      * Set component's value.
      * @param value
      */
     private void setInputWidgetText(Object value) {
-        if (holder.getWidget() instanceof TextBoxBase) {
-            ((TextBoxBase) holder.getWidget()).setValue((String) value);
-        } else if (holder.getWidget() instanceof IntegerBox) {
-            ((IntegerBox) holder.getWidget()).setValue((Integer) value);
-        } else if (holder.getWidget() instanceof BigDecimalBox) {
-            ((BigDecimalBox) holder.getWidget()).setValue((BigDecimal) value);
-        } else if (holder.getWidget() instanceof DateBox) {
-            ((DateBox) holder.getWidget()).setValue((Date) value);
+        if (holder.getWidget() instanceof HasValue) {
+            ((HasValue) holder.getWidget()).setValue(value);
         } else if (holder.getWidget() instanceof ListBox) {
             ((ListBox) holder.getWidget()).setSelectedIndex((Integer) value);
         } else if (holder.getWidget() instanceof CellList) {
             ((CellList) holder.getWidget()).setRowData((List) value);
             listData = (ArrayList) value;
         }
+    }
+
+    /**
+     * Pre-Check validation. Check validating field for exceptions such as NumberFormatExcpetions, i.e.
+     * If no such case is catch, standard validation can continue, otherwise field is validated immediately
+     * and the rest of validation process is stopped.
+     * @return true if validation can continue, false otherwise
+     */
+    private boolean preValidate() {
+        try {
+            if (holder.getWidget() instanceof BigDecimalBoxBase) {
+                ((BigDecimalBoxBase) holder.getWidget()).getValueOrThrow();
+            } else if (holder.getWidget() instanceof MyIntegerBox) {
+                ((MyIntegerBox) holder.getWidget()).getValueOrThrow();
+            }
+        } catch (ParseException ex) {
+            return validateNumberException();
+        } catch (NumberFormatException ex) {
+            return validateNumberException();
+        }
+        return true;
+    }
+
+    private boolean validateNumberException() {
+        valid = false;
+        setValidationStyles(valid, Storage.VMSGS.commonNumberFormat());
+        return valid;
     }
 }

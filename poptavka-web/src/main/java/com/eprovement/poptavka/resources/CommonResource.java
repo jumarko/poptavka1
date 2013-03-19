@@ -77,4 +77,7 @@ public interface CommonResource extends CssResource {
     /** Login Modal Styles **/
     @ClassName("login-modal")
     String loginModal();
+
+    @ClassName("changeMonitorStyle")
+    String changeMonitorStyle();
 }

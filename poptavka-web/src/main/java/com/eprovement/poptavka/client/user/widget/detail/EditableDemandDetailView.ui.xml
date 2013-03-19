@@ -39,11 +39,10 @@
                             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                                 <ui:msg key="formPrice">Price:</ui:msg>
                             </g:Label>
-                            <b:InputAddOn appendText="$">
-                                <cm:ChangeMonitor ui:field='priceMonitor'>
-                                    <cm:BigDecimalBox />
-                                </cm:ChangeMonitor>
-                            </b:InputAddOn>
+                            <cm:ChangeMonitor ui:field='priceMonitor'>
+                                <cm:BigDecimalBox />
+                            </cm:ChangeMonitor>
+                            <g:Label>$</g:Label>
                         </b:Column>
                     
                         <b:Column size='12'>
@@ -118,7 +117,7 @@
                         
                         <b:Column size='12'>
                             <cm:ChangeMonitor ui:field='maxOffersMonitor'>
-                                <cm:IntegerBox />
+                                <cm:MyIntegerBox />
                             </cm:ChangeMonitor>
                         </b:Column>
 
@@ -129,11 +128,10 @@
                         </b:Column>
                         
                         <b:Column size='12'>
-                            <b:InputAddOn appendText="%">
-                                <cm:ChangeMonitor ui:field='minRatingMonitor'>
-                                    <cm:IntegerBox />
-                                </cm:ChangeMonitor>
-                            </b:InputAddOn>
+                            <cm:ChangeMonitor ui:field='minRatingMonitor'>
+                                <cm:MyIntegerBox />
+                            </cm:ChangeMonitor>
+                            <g:Label>%</g:Label>
                         </b:Column>
                     </b:FluidRow>
 
