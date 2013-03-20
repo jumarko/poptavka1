@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.widget.detail.RatingDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
@@ -38,14 +39,12 @@ public class ClientRatingsView extends Composite
     /** UiBinder attributes. **/
     @UiField(provided = true) UniversalAsyncGrid dataGrid;
     @UiField(provided = true) UniversalPagerWidget pager;
-    @UiField SimplePanel wrapperPanel;
+    @UiField RatingDetailView ratingDetail;
+    @UiField SimplePanel detailPanel;
     @UiField HorizontalPanel toolBar;
     @UiField Label tableNameLabel;
     /** Class attributes. **/
-    private static final List<String> GRID_COLUMNS = Arrays.asList(
-            new String[]{
-                "createdDate", "title", "locality", "endDate"
-            });
+    private static final List<String> GRID_COLUMNS = Arrays.asList(new String[]{"title"});
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -83,35 +82,6 @@ public class ClientRatingsView extends Composite
                         return ((DemandRatingsDetail) object).getDemandTitle();
                     }
                 });
-        // Client's rating
-        /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnRatingClient(),
-                true, Constants.COL_WIDTH_RATING,
-                new UniversalAsyncGrid.GetValue<String>() {
-                    @Override
-                    public String getValue(Object object) {
-                        if ((((DemandRatingsDetail) object).getRatingClient()) != null) {
-                            return (((DemandRatingsDetail) object).getRatingClient()).toString();
-                        } else {
-                            return "";
-                        }
-                    }
-                });
-        // Supplier's rating
-        /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnRatingSupplier(),
-                true, Constants.COL_WIDTH_RATING,
-                new UniversalAsyncGrid.GetValue<String>() {
-                    @Override
-                    public String getValue(Object object) {
-                        if (((DemandRatingsDetail) object).getRatingSupplier() != null) {
-                            return ((DemandRatingsDetail) object).getRatingSupplier().toString();
-                        } else {
-                            return "";
-                        }
-                    }
-                });
-
     }
 
     /**************************************************************************/
@@ -128,8 +98,13 @@ public class ClientRatingsView extends Composite
     }
 
     @Override
-    public SimplePanel getWrapperPanel() {
-        return wrapperPanel;
+    public RatingDetailView getRatingDetail() {
+        return ratingDetail;
+    }
+
+    @Override
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
     }
 
     //Widget view
