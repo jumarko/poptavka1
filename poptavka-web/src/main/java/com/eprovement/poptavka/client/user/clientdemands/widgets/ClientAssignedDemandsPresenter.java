@@ -98,7 +98,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
-        eventBus.activateClientAssignedDemands();
 
         initWidget(filter);
     }
@@ -190,8 +189,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     private void initWidget(SearchModuleDataHolder filter) {
         eventBus.setUpSearchBar(new Label("Client's closed projects attibure's selector will be here."));
-        searchDataHolder = filter;
+        eventBus.activateClientAssignedDemands();
         eventBus.createTokenForHistory();
+        searchDataHolder = filter;
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();

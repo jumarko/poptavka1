@@ -7,14 +7,12 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
-import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
-import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.eprovement.poptavka.client.user.widget.detail.RatingDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -36,16 +34,16 @@ public class SupplierRatingsPresenter extends LazyPresenter<
 
         SimplePager getPager();
 
-        SimplePanel getWrapperPanel();
+        RatingDetailView getRatingDetail();
+
+        SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
     }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private DetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
-    private DemandRatingsDetail selectedObject;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -62,45 +60,6 @@ public class SupplierRatingsPresenter extends LazyPresenter<
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_RATINGS);
         eventBus.createTokenForHistory();
-
-        initWidget(filter);
-    }
-
-    /**************************************************************************/
-    /* Business events handled by presenter */
-    /**************************************************************************/
-    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
-        if (this.detailSection == null) {
-            this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(null, view.getWrapperPanel());
-            this.detailSection.getView().getReplyHolder().setVisible(false);
-            if (selectedObject != null) {
-                this.detailSection.initDetails(
-                        selectedObject.getDemandId(),
-                        selectedObject.getSupplierId(),
-                        selectedObject.getThreadRootId());
-            }
-        }
-    }
-
-    /**
-     * Response method for onInitSupplierList()
-     * @param data
-     */
-    public void onDisplaySupplierRatings(List<IUniversalDetail> data) {
-        GWT.log("++ onResponseSupplierRatings");
-
-        view.getDataGrid().getDataProvider().updateRowData(
-                view.getDataGrid().getStart(), data);
-    }
-
-    /**************************************************************************/
-    /* Business events handled by eventbus or RPC                             */
-    /**************************************************************************/
-    /**************************************************************************/
-    /* Helper methods                                                         */
-    /**************************************************************************/
-    private void initWidget(SearchModuleDataHolder filter) {
         eventBus.setUpSearchBar(new Label("Supplier's ratings attibure's selector will be here."));
         searchDataHolder = filter;
 
@@ -110,19 +69,30 @@ public class SupplierRatingsPresenter extends LazyPresenter<
     }
 
     /**************************************************************************/
+    /* Business events handled by presenter */
+    /**************************************************************************/
+    /**
+     * Response method for onInitSupplierList()
+     * @param data
+     */
+    public void onDisplaySupplierRatings(List<String> data) {
+        GWT.log("++ onResponseSupplierRatings");
+
+        view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), data);
+    }
+
+    /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
     public void addTableSelectionModelClickHandler() {
         view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
                 DemandRatingsDetail selected = (DemandRatingsDetail) ((SingleSelectionModel) view.getDataGrid()
                         .getSelectionModel()).getSelectedObject();
-                detailSection.initDetails(
-                        selected.getDemandId(),
-                        selected.getSupplierId(),
-                        selected.getThreadRootId());
+                view.getDetailPanel().setVisible(false);
+                view.getRatingDetail().setVisible(true);
+                view.getRatingDetail().setDemanRatingDetail(selected);
             }
         });
     }

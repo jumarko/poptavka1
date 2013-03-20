@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -41,7 +40,6 @@ public class FeedbackPopupView extends Composite {
     /** ClientPanel. **/
     @UiField Label clientName;
     /** Rate. **/
-    @UiField Anchor anchorComment;
     @UiField TextArea commentArea;
     @UiField ToggleButton starBtn1, starBtn2, starBtn3, starBtn4, starBtn5;
     @UiField Button rateBtn;
@@ -71,11 +69,6 @@ public class FeedbackPopupView extends Composite {
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
-    @UiHandler("anchorComment")
-    public void anchorCommentClickHandler(ClickEvent e) {
-        commentArea.setVisible(!commentArea.isVisible());
-    }
-
     @UiHandler("starBtn1")
     public void ratingButton1ClickHandler(ClickEvent e) {
         unToggleOtherButtons(starBtn1);
