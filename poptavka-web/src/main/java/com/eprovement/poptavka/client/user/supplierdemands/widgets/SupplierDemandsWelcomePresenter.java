@@ -45,5 +45,6 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
     public void onInitSupplierDemandsWelcome() {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_DEMANDS_WELCOME);
         eventBus.displayView(view.getWidgetView());
+        eventBus.createTokenForHistory();
     }
 }
