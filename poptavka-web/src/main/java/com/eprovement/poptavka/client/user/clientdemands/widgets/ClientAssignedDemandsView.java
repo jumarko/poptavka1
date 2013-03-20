@@ -39,7 +39,7 @@ public class ClientAssignedDemandsView extends Composite
     @UiField(provided = true) UniversalPagerWidget pager;
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
-    @UiField SimplePanel wrapperPanel;
+    @UiField SimplePanel detailPanel;
     @UiField HorizontalPanel toolBar;
     @UiField Label tableNameLabel;
     @UiField Button closeBtn;
@@ -83,8 +83,8 @@ public class ClientAssignedDemandsView extends Composite
     }
 
     @Override
-    public SimplePanel getWrapperPanel() {
-        return wrapperPanel;
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
     }
 
     //Action Box

@@ -19,7 +19,6 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -59,7 +58,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
         Button getCloseBtn();
 
-        SimplePanel getWrapperPanel();
+        SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
     }
@@ -99,6 +98,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
+        eventBus.activateClientAssignedDemands();
 
         initWidget(filter);
     }
@@ -111,18 +111,40 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     }
 
     /**************************************************************************/
-    /* Business events handled by presenter */
+    /* Details Wrapper                                                        */
     /**************************************************************************/
+    /**
+     * Response method to requesting details wrapper instance.
+     * Some additional actions can be added here.
+     * @param detailSection Details wrapper instance.
+     */
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
-        if (this.detailSection == null) {
+        if (detailSection != null) {
+            detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
             this.detailSection = detailSection;
-            this.detailSection.initDetailWrapper(view.getDataGrid(), view.getWrapperPanel());
             if (selectedObject != null) {
-                this.detailSection.initDetails(
-                        selectedObject.getDemandId(),
-                        selectedObject.getSupplierId(),
-                        selectedObject.getThreadRootId());
+                initDetailSection(selectedObject);
             }
+        }
+    }
+
+    /**
+     * Initialize demand & conversation tabs in detail section.
+     * If details wrapper instance doesn't exist yet, create it and in response of
+     * creation initialize requested tabs.
+     * If instance already exist, initialize and show requested tabs immediately.
+     *
+     * @param demandId
+     */
+    private void initDetailSection(IUniversalDetail demandDetail) {
+        if (detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
+        } else {
+            view.getDetailPanel().setVisible(true);
+            detailSection.initDetails(
+                    demandDetail.getDemandId(),
+                    demandDetail.getSupplierId(),
+                    demandDetail.getThreadRootId());
         }
     }
 
@@ -218,20 +240,11 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 //init details
                 if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
                     view.getCloseBtn().setVisible(true);
-                    IUniversalDetail selected = view.getDataGrid().getSelectedObjects().get(0);
-                    selectedObject = selected;
-                    if (detailSection == null) {
-                        eventBus.requestDetailWrapperPresenter();
-                    } else {
-                        detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
-                        detailSection.initDetails(
-                                selected.getDemandId(),
-                                selected.getSupplierId(),
-                                selected.getThreadRootId());
-                    }
+                    selectedObject = view.getDataGrid().getSelectedObjects().get(0);
+                    initDetailSection(selectedObject);
                 } else {
                     view.getCloseBtn().setVisible(false);
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                    view.getDetailPanel().setVisible(false);
                 }
             }
         });

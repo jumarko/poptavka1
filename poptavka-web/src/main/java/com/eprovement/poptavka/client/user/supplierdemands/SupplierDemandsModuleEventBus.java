@@ -106,6 +106,20 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void initSupplierAssignedDemandsByHistory(int tablePage, long selectedId, SearchModuleDataHolder filter);
 
+    //Activations of presenters
+    //--------------------------------------------------------------------------
+    @Event(activate = SupplierDemandsPresenter.class,
+    deactivate = {SupplierOffersPresenter.class, SupplierAssignedDemandsPresenter.class })
+    void activateSupplierDemands();
+
+    @Event(activate = SupplierOffersPresenter.class,
+    deactivate = {SupplierDemandsPresenter.class, SupplierAssignedDemandsPresenter.class })
+    void activateSupplierOffers();
+
+    @Event(activate = SupplierAssignedDemandsPresenter.class,
+    deactivate = {SupplierDemandsPresenter.class, SupplierOffersPresenter.class })
+    void activateSupplierAssignedDemands();
+
     /**************************************************************************/
     /* Parent events */
     /**************************************************************************/

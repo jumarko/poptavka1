@@ -20,7 +20,6 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.RowStyles;
@@ -71,7 +70,7 @@ public class ClientOffersPresenter
         Button getAcceptBtn();
 
         //Other
-        SimplePanel getWrapperPanel();
+        SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
 
@@ -118,6 +117,7 @@ public class ClientOffersPresenter
     /**************************************************************************/
     public void onInitClientOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
+        eventBus.activateClientOffers();
 
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
@@ -138,13 +138,12 @@ public class ClientOffersPresenter
     /**************************************************************************/
     /**
      * Response method to requesting details wrapper instance.
-     * Initialize details wrapper and initialize details tabs according to
-     * selectedDemandObject and selectedConversationObject.
+     * Some additional actions can be added here.
      * @param detailSection Details wrapper instance.
      */
     public void onResponseDetailWrapperPresenter(final DetailsWrapperPresenter detailSection) {
         if (detailSection != null) {
-            detailSection.initDetailWrapper(view.getOfferGrid(), view.getWrapperPanel());
+            detailSection.initDetailWrapper(view.getOfferGrid(), view.getDetailPanel());
 
             this.detailSection = detailSection;
 
@@ -168,7 +167,7 @@ public class ClientOffersPresenter
         if (detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
         } else {
-            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            view.getDetailPanel().setVisible(true);
             detailSection.initDetails(demandDetail.getDemandId());
         }
     }
@@ -185,7 +184,7 @@ public class ClientOffersPresenter
         if (detailSection == null) {
             eventBus.requestDetailWrapperPresenter();
         } else {
-            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            view.getDetailPanel().setVisible(true);
             detailSection.initDetails(
                     conversationDetail.getDemandId(),
                     conversationDetail.getSupplierId(),
@@ -314,11 +313,10 @@ public class ClientOffersPresenter
                 }
                 //init details
                 if (view.getOfferGrid().getSelectedUserMessageIds().size() == 1) {
-                    IUniversalDetail selected = view.getOfferGrid().getSelectedObjects().get(0);
-                    selectedOfferedDemandOfferObject = selected;
-                    initDetailSection(selected);
+                    selectedOfferedDemandOfferObject = view.getOfferGrid().getSelectedObjects().get(0);
+                    initDetailSection(selectedOfferedDemandOfferObject);
                 } else {
-                    detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+                    view.getDetailPanel().setVisible(false);
                 }
             }
         });
@@ -390,7 +388,7 @@ public class ClientOffersPresenter
     private void backBtnClickHandlerInner() {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         if (detailSection != null) {
-            detailSection.getView().getWidgetView().getElement().getStyle().setDisplay(Style.Display.NONE);
+            view.getDetailPanel().setVisible(false);
         }
         selectedDemandObject = null;
         selectedOfferedDemandOfferObject = null;

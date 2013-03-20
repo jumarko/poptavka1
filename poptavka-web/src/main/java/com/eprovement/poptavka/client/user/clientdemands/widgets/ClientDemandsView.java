@@ -65,8 +65,7 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    //detail WrapperPanel
-    @UiField SimplePanel wrapperPanel;
+    @UiField SimplePanel detailPanel;
     @UiField Label demandTitlelabel;
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
@@ -372,8 +371,8 @@ public class ClientDemandsView extends Composite
     }
 
     @Override
-    public SimplePanel getWrapperPanel() {
-        return wrapperPanel;
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
     }
 
     @Override

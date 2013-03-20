@@ -106,6 +106,20 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void initClientAssignedDemands(SearchModuleDataHolder filter);
 
+    //Activations of presenters
+    //--------------------------------------------------------------------------
+    @Event(activate = ClientDemandsPresenter.class,
+    deactivate = {ClientOffersPresenter.class, ClientAssignedDemandsPresenter.class })
+    void activateClientDemands();
+
+    @Event(activate = ClientOffersPresenter.class,
+    deactivate = {ClientDemandsPresenter.class, ClientAssignedDemandsPresenter.class })
+    void activateClientOffers();
+
+    @Event(activate = ClientAssignedDemandsPresenter.class,
+    deactivate = {ClientDemandsPresenter.class, ClientOffersPresenter.class })
+    void activateClientAssignedDemands();
+
     /**************************************************************************/
     /* Navigation Parent events */
     /**************************************************************************/
