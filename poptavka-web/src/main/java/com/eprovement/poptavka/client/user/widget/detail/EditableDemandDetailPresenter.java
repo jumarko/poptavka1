@@ -10,12 +10,14 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter.IEditableDemandDetailView;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,7 +25,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.mvp4g.client.annotation.Presenter;
@@ -37,9 +38,12 @@ import java.util.List;
  * @author mato
  */
 @Presenter(view = EditableDemandDetailView.class, multiple = true)
-public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemandDetailView, RootEventBus> {
+public class EditableDemandDetailPresenter extends
+        LazyPresenter<IEditableDemandDetailView, ClientDemandsModuleEventBus> {
 
     public interface IEditableDemandDetailView extends LazyView, IsWidget {
+
+        FluidRow getEditButtonsPanel();
 
         long getDemandId();
 
@@ -50,6 +54,10 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
         Button getEditCatBtn();
 
         Button getEditLocBtn();
+
+        Button getSubmitButton();
+
+        Button getCancelButton();
 
         ArrayList<CategoryDetail> getCategories();
 
@@ -64,8 +72,6 @@ public class EditableDemandDetailPresenter extends LazyPresenter<IEditableDemand
         void setListChangeHandler(ChangeHandler handler);
 
         boolean isValid();
-
-        void setFieldEnables(boolean enable);
 
         void resetFields();
 

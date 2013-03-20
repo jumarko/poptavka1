@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget;
 
+import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.cell.MessageCell;
 import com.eprovement.poptavka.resources.StyleResource;
@@ -10,6 +11,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,18 +36,13 @@ public class DetailsWrapperView extends Composite
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attribute. **/
-    @UiField
-    TabLayoutPanel container;
-    @UiField
-    SimplePanel demandDetailHolder;
-    @UiField
-    UserDetailView userDetail;
-    @UiField(provided = true)
-    CellList messageList;
-    @UiField
-    OfferQuestionWindow replyHolder;
-    @UiField
-    HTMLPanel conversationHolder;
+    @UiField TabLayoutPanel container;
+    @UiField ScrollPanel demandDetailHolder;
+    @UiField DemandDetailView demandDetail;
+    @UiField UserDetailView userDetail;
+    @UiField(provided = true) CellList messageList;
+    @UiField OfferQuestionWindow replyHolder;
+    @UiField HTMLPanel conversationHolder;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
     private ListDataProvider messageProvider = new ListDataProvider(MessageDetail.KEY_PROVIDER);
@@ -92,6 +89,11 @@ public class DetailsWrapperView extends Composite
     @Override
     public SimplePanel getDemandDetailHolder() {
         return demandDetailHolder;
+    }
+
+    @Override
+    public DemandDetailView getDemandDetail() {
+        return demandDetail;
     }
 
     @Override

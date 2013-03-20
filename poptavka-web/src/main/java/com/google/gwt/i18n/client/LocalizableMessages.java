@@ -128,6 +128,7 @@ public interface LocalizableMessages extends Messages {
     String formTitle();
     String formTo();
     String formTotalPrice();
+    String formUrgency();
     String formValidTo();
     String formVarSymbol();
     String formVat();

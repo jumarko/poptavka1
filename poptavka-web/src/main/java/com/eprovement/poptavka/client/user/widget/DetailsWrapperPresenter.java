@@ -1,11 +1,8 @@
 package com.eprovement.poptavka.client.user.widget;
 
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
-import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter;
-import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
@@ -43,8 +40,7 @@ public class DetailsWrapperPresenter
     public static final int USER_DETAIL_TAB = 1;
     public static final int CONVERSATION_TAB = 2;
     /** Class Attributes. **/
-    private UniversalTableGrid table = null;
-    private EditableDemandDetailPresenter editDemandPresenter = null;
+    private UniversalTableGrid table;
     private long demandId = -1;
     private long supplierId = -1;
     private long threadRootId = -1;
@@ -59,6 +55,8 @@ public class DetailsWrapperPresenter
         TabLayoutPanel getContainer();
 
         SimplePanel getDemandDetailHolder();
+
+        DemandDetailView getDemandDetail();
 
         UserDetailView getSupplierDetail();
 
@@ -224,6 +222,14 @@ public class DetailsWrapperPresenter
         table.redraw();
     }
 
+    public void setEditDemandMode(boolean enable,  Widget editableWidget) {
+        if (enable) {
+            view.getDemandDetailHolder().setWidget(editableWidget);
+        } else {
+            view.getDemandDetailHolder().setWidget(view.getDemandDetail());
+        }
+    }
+
     /**
      * Set all tabs visible and clear tabs' widgets' attributes.
      */
@@ -287,19 +293,7 @@ public class DetailsWrapperPresenter
      * @param demandDetail detail to be displayed
      */
     public void onResponseDemandDetail(FullDemandDetail demandDetail) {
-        if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS
-                || Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {
-            if (editDemandPresenter != null) {
-                eventBus.removeHandler(editDemandPresenter);
-            }
-            editDemandPresenter = eventBus.addHandler(EditableDemandDetailPresenter.class);
-            view.getDemandDetailHolder().setWidget(editDemandPresenter.getView());
-            ((EditableDemandDetailView) editDemandPresenter.getView()).setDemanDetail(demandDetail);
-        } else {
-            DemandDetailView demandDetailWidget = new DemandDetailView();
-            demandDetailWidget.setDemanDetail(demandDetail);
-            view.getDemandDetailHolder().setWidget(demandDetailWidget);
-        }
+        view.getDemandDetail().setDemanDetail(demandDetail);
         view.loadingDivHide(view.getDemandDetailHolder());
     }
 
@@ -334,13 +328,6 @@ public class DetailsWrapperPresenter
     }
 
     /**************************************************************************/
-    /* Getters                                                                */
-    /**************************************************************************/
-    public EditableDemandDetailPresenter getEditDemandPresenter() {
-        return editDemandPresenter;
-    }
-
-    /**************************************************************************/
     /* HELPER methods                                                         */
     /**************************************************************************/
     /**
@@ -357,14 +344,7 @@ public class DetailsWrapperPresenter
      * Clear detail section means reseting widget's attributes of all tabs widgets.
      */
     private void clear() {
-        if (view.getDemandDetailHolder().getWidget() != null) {
-            if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMANDS
-                    || Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {
-                ((EditableDemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
-            } else {
-                ((DemandDetailView) view.getDemandDetailHolder().getWidget()).clear();
-            }
-        }
+        view.getDemandDetail().clear();
         view.getSupplierDetail().clear();
         view.getMessageProvider().getList().clear();
         view.getReplyHolder().clear();

@@ -404,11 +404,12 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     }
 
     public void onRequestUpdateDemand(long demandId, FullDemandDetail updatedDemand) {
-        clientDemandsService.updateDemand(demandId, updatedDemand, new SecuredAsyncCallback<Boolean>(eventBus) {
-            @Override
-            public void onSuccess(Boolean result) {
-                eventBus.responseUpdateDemand(result);
-            }
-        });
+        clientDemandsService.updateDemand(demandId, updatedDemand,
+                new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+                @Override
+                public void onSuccess(FullDemandDetail result) {
+                    eventBus.responseUpdateDemand(result);
+                }
+            });
     }
 }

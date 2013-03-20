@@ -1,31 +1,27 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
-import com.eprovement.poptavka.client.common.BigDecimalBox;
 import com.eprovement.poptavka.client.common.ChangeMonitor;
-import com.eprovement.poptavka.client.common.IntegerBox;
 import com.eprovement.poptavka.client.common.ListChangeMonitor;
+import com.eprovement.poptavka.client.common.UrgencySelectorView;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.locality.LocalityCell;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
-import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.math.BigDecimal;
@@ -47,24 +43,17 @@ public class EditableDemandDetailView extends Composite implements
     /* Attributes                                                               */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) ChangeMonitor titleMonitor, priceMonitor;
-    @UiField(provided = true) ChangeMonitor excludedSuppliersMonitor, endDateMonitor, validToDateMonitor;
+    @UiField(provided = true) ChangeMonitor titleMonitor, priceMonitor, endDateMonitor;
     @UiField(provided = true) ChangeMonitor maxOffersMonitor, minRatingMonitor, descriptionMonitor;
     @UiField(provided = true) ListChangeMonitor categoriesMonitor, localitiesMonitor;
-    @UiField(provided = true) CellList categories, localities, excludedSuppliers;
-    @UiField TextBox title;
-    @UiField BigDecimalBox price;
-    @UiField DateBox endDate, validToDate;
-    @UiField IntegerBox maxOffers, minRating;
-    @UiField TextArea description;
-    @UiField HTMLPanel detail;
-    @UiField Button editCatBtn, editLocBtn;
+    @UiField(provided = true) CellList categories, localities;
+    @UiField UrgencySelectorView urgencySelector;
+    @UiField FluidRow editButtonsPanel;
+    @UiField Button editCatBtn, editLocBtn, submitButton, cancelButton;
     /** Class attributes. **/
     private List<ChangeMonitor> monitors;
     private long demandId;
     private PopupPanel selectorWidgetPopup;
-    /** Constants. **/
-    private static final String EMPTY = "";
 
     /**************************************************************************/
     /* INITIALIZATON                                                          */
@@ -73,17 +62,15 @@ public class EditableDemandDetailView extends Composite implements
     @Override
     public void createView() {
         createSelectorWidgetPopup();
-        //
+
         categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
-        excludedSuppliers = new CellList<FullSupplierDetail>(new SupplierCell());
-        //
+
         initValidationMonitors();
 
         initWidget(uiBinder.createAndBindUi(this));
 
-        detail.setVisible(true);
-        setFieldEnables(false);
+        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.FORMATTER));
 
         StyleResource.INSTANCE.detailViews().ensureInjected();
         StyleResource.INSTANCE.common().ensureInjected();
@@ -93,16 +80,13 @@ public class EditableDemandDetailView extends Composite implements
         titleMonitor = createDemandChangeMonitor(DemandField.TITLE);
         categoriesMonitor = createDemandListChangeMonitor(DemandField.CATEGORIES);
         localitiesMonitor = createDemandListChangeMonitor(DemandField.LOCALITIES);
-        excludedSuppliersMonitor = createDemandChangeMonitor(DemandField.EXCLUDE_SUPPLIER);
         priceMonitor = createDemandChangeMonitor(DemandField.PRICE);
         endDateMonitor = createDemandChangeMonitor(DemandField.END_DATE);
-        validToDateMonitor = createDemandChangeMonitor(DemandField.VALID_TO_DATE);
         maxOffersMonitor = createDemandChangeMonitor(DemandField.MAX_OFFERS);
         minRatingMonitor = createDemandChangeMonitor(DemandField.MIN_RATING);
         descriptionMonitor = createDemandChangeMonitor(DemandField.DESCRIPTION);
         monitors = Arrays.asList(
-                titleMonitor, excludedSuppliersMonitor, priceMonitor,
-                endDateMonitor, validToDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
+                titleMonitor, priceMonitor, endDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
     }
 
     private ChangeMonitor createDemandChangeMonitor(DemandField fieldField) {
@@ -131,6 +115,7 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.reset();
         }
+        urgencySelector.setChangeStyle(false);
         categoriesMonitor.reset();
         localitiesMonitor.reset();
     }
@@ -140,6 +125,7 @@ public class EditableDemandDetailView extends Composite implements
         for (ChangeMonitor monitor : monitors) {
             monitor.revert();
         }
+        urgencySelector.revert(null);
         categoriesMonitor.revert();
         localitiesMonitor.revert();
     }
@@ -153,12 +139,11 @@ public class EditableDemandDetailView extends Composite implements
         titleMonitor.setBothValues(demandDetail.getTitle());
         priceMonitor.setBothValues(demandDetail.getPrice());
         endDateMonitor.setBothValues(demandDetail.getEndDate());
-        validToDateMonitor.setBothValues(demandDetail.getValidTo());
+        urgencySelector.setValidTo(demandDetail.getValidTo());
         categoriesMonitor.setBothValues(demandDetail.getCategories());
         localitiesMonitor.setBothValues(demandDetail.getLocalities());
         maxOffersMonitor.setBothValues(demandDetail.getMaxSuppliers());
         minRatingMonitor.setBothValues(demandDetail.getMinRating());
-        excludedSuppliersMonitor.setBothValues(demandDetail.getExcludedSuppliers());
         descriptionMonitor.setBothValues(demandDetail.getDescription());
     }
 
@@ -167,39 +152,13 @@ public class EditableDemandDetailView extends Composite implements
         demandToUpdate.setTitle((String) titleMonitor.getValue());
         demandToUpdate.setPrice((BigDecimal) priceMonitor.getValue());
         demandToUpdate.setEndDate((Date) endDateMonitor.getValue());
-        demandToUpdate.setValidTo((Date) validToDateMonitor.getValue());
+        demandToUpdate.setValidTo(urgencySelector.getValidTo());
         demandToUpdate.setCategories((List<CategoryDetail>) categoriesMonitor.getValue());
         demandToUpdate.setLocalities((List<LocalityDetail>) localitiesMonitor.getValue());
         demandToUpdate.setMaxSuppliers((Integer) maxOffersMonitor.getValue());
         demandToUpdate.setMinRating((Integer) minRatingMonitor.getValue());
         demandToUpdate.setDescription((String) descriptionMonitor.getValue());
         return demandToUpdate;
-    }
-
-    public void clear() {
-        title.setText(EMPTY);
-        price.setText(EMPTY);
-        endDate.getTextBox().setText(EMPTY);
-        validToDate.getTextBox().setText(EMPTY);
-        categories.setRowCount(0);
-        localities.setRowCount(0);
-        maxOffers.setText(EMPTY);
-        minRating.setText(EMPTY);
-        excludedSuppliers.setRowCount(0);
-        description.setText(EMPTY);
-    }
-
-    @Override
-    public void setFieldEnables(boolean enable) {
-        title.setEnabled(enable);
-        price.setEnabled(enable);
-        endDate.setEnabled(enable);
-        validToDate.setEnabled(enable);
-        maxOffers.setEnabled(enable);
-        minRating.setEnabled(enable);
-        description.setEnabled(enable);
-        editCatBtn.setEnabled(enable);
-        editLocBtn.setEnabled(enable);
     }
 
     @Override
@@ -247,9 +206,20 @@ public class EditableDemandDetailView extends Composite implements
         return editLocBtn;
     }
 
+    @Override
+    public Button getSubmitButton() {
+        return submitButton;
+    }
+
+    @Override
+    public Button getCancelButton() {
+        return cancelButton;
+    }
+
     /** Panels. **/
-    public HTMLPanel getDetail() {
-        return detail;
+    @Override
+    public FluidRow getEditButtonsPanel() {
+        return editButtonsPanel;
     }
 
     @Override

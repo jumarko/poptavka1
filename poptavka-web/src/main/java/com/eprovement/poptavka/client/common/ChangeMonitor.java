@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.common;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.github.gwtbootstrap.client.ui.ControlGroup;
+import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
@@ -24,7 +25,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasValue;
@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.Widget;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -59,11 +60,12 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField SimplePanel holder;
-    @UiField Anchor revert;
-    @UiField HTMLPanel errorPanel;
+    @UiField IconAnchor revert;
+    @UiField HTMLPanel errorPanel, changePanel;
     @UiField Label errorLabel;
     @UiField ControlGroup controlGroup;
     /** Class attributes. **/
+    private Boolean valid;
     private boolean enabled = true;
     private Validator validator = null;
     private ChangeDetail changeDetail;
@@ -77,7 +79,6 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         this.changeDetail = changeDetail;
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
         initWidget(uiBinder.createAndBindUi(this));
-        revert.setVisible(false);
     }
 
     /**************************************************************************/
@@ -93,21 +94,18 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /* Validation                                                             */
     /**************************************************************************/
     private boolean validate() {
-        boolean valid = false;
+        setValidationStyles(true, "");
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
                 changeDetail.getField(), getValue(), Default.class);
-        if (violations.isEmpty()) {
-            valid = true;
-        }
         for (ConstraintViolation<T> violation : violations) {
             setValidationStyles(false, violation.getMessage());
         }
-        return valid;
+        return violations.isEmpty();
     }
 
     public boolean isValid() {
-        return validate();
+        return validate() && valid;
     }
 
     /**************************************************************************/
@@ -186,7 +184,11 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
 
     /** Getters. **/
     public Object getValue() {
-        return getInputWidgetText();
+        if (preValidate()) {
+            return getInputWidgetText();
+        } else {
+            return null;
+        }
     }
 
     public boolean isEnabled() {
@@ -209,7 +211,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         if (changeDetail.getOriginalValue() == null) {
             return true;
         } else {
-            return !changeDetail.getOriginalValue().equals(getInputWidgetText());
+            return !changeDetail.getOriginalValue().equals(getValue());
         }
     }
 
@@ -260,7 +262,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
             @Override
             public void onChange(ChangeEvent event) {
                 if (enabled) {
-                    setChangeStyles(true);
+                    setChangeStyles(isModified());
                 }
             }
         }, ChangeEvent.getType());
@@ -280,7 +282,9 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
             w.addDomHandler(new BlurHandler() {
                 @Override
                 public void onBlur(BlurEvent event) {
-                    validate();
+                    if (preValidate()) {
+                        validate();
+                    }
                 }
             }, BlurEvent.getType());
         }
@@ -289,11 +293,11 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /** Style change mehtods.                                                **/
     //--------------------------------------------------------------------------
     public void setChangeStyles(boolean isChange) {
-        revert.setVisible(isChange);
+        changePanel.setVisible(isChange);
         if (isChange) {
-            holder.getWidget().addStyleName(Storage.RSCS.common().changed());
+            controlGroup.setType(ControlGroupType.SUCCESS);
         } else {
-            holder.getWidget().removeStyleName(Storage.RSCS.common().changed());
+            controlGroup.setType(ControlGroupType.NONE);
         }
     }
 
@@ -301,7 +305,9 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         errorPanel.setVisible(!isValid);
         errorLabel.setText(validationMessage);
         if (isValid) {
-            controlGroup.setType(ControlGroupType.NONE);
+            if (!isModified()) {
+                controlGroup.setType(ControlGroupType.NONE);
+            }
         } else {
             controlGroup.setType(ControlGroupType.ERROR);
         }
@@ -329,5 +335,32 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         } else if (holder.getWidget() instanceof CellList) {
             ((CellList) holder.getWidget()).setRowData((List) value);
         }
+    }
+
+    /**
+     * Pre-Check validation. Check validating field for exceptions such as ParseExcpetions, i.e.
+     * If no such case is catch, standard validation can continue, otherwise field is validated immediately
+     * and the rest of validation process is stopped.
+     * @return true if validation can continue, false otherwise
+     */
+    private boolean preValidate() {
+        try {
+            if (holder.getWidget() instanceof BigDecimalBoxBase) {
+                ((BigDecimalBox) holder.getWidget()).getValueOrThrow();
+            } else if (holder.getWidget() instanceof MyIntegerBox) {
+                ((MyIntegerBox) holder.getWidget()).getValueOrThrow();
+            }
+        } catch (ParseException ex) {
+            return validateNumberException();
+        } catch (NumberFormatException ex) {
+            return validateNumberException();
+        }
+        return true;
+    }
+
+    private boolean validateNumberException() {
+        valid = false;
+        setValidationStyles(valid, Storage.VMSGS.commonNumberFormat());
+        return valid;
     }
 }

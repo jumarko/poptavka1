@@ -93,10 +93,6 @@
     background: transparent;
 }
 
-.changed {
-    background-color: #00FF00 !important;
-}
-
 /* Common buttons */
 .button-left-small {
     background: url(images/button-left-small.png) no-repeat;
@@ -343,4 +339,64 @@
     width: 85px;
     color: #ffffff;
     font-shadow: none;
+}
+
+/* error control groups */
+.changeMonitorStyle .control-group {
+    position: relative;
+}
+
+.changeMonitorStyle .label {
+    background: url(images/error-label.png) no-repeat;
+    line-height: 16px;
+    min-height: 16px;
+    padding: 0 15px 0 30px;
+    border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+}
+
+.changeMonitorStyle .controls .errorLabel-container {
+    display: block;
+    padding: 0 0 0 4px;
+    position: absolute;
+    right: 30px;
+    top: -16px;
+}
+
+.changeMonitorStyle .controls .changeLabel-container {
+    display: block;
+    padding: 0 0 0 4px;
+    position: absolute;
+    right: 5px;
+    top: -16px;
+}
+
+.changeMonitorStyle .error .controls input {
+    border: 1px solid #f00000;
+}
+
+.changeMonitorStyle .control-group .gwt-TextBox {
+    width: 350px;
+}
+
+.changeMonitorStyle .control-group .gwt-TextArea {
+    height: 200px;
+    width: 500px;
+}
+
+.changeMonitorStyle .control-group .gwt-BigDecimalTextBox {
+    width: 322px;
+}
+
+.changeMonitorStyle .control-group .gwt-IntegerTextBox {
+    width: 322px;
+}
+
+.changeMonitorStyle .control-group .gwt-DateBox {
+    width: 350px;
+}
+
+.changed {
+    background-color: #B7F789;
 }

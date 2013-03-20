@@ -3,8 +3,10 @@ package com.eprovement.poptavka.client.common;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.user.client.ui.RootPanel;
 import java.math.BigDecimal;
+import java.text.ParseException;
 
 /**
  * IntegerBox created according to GWT TextBox to be used with integers. Better for validation.
@@ -104,11 +106,23 @@ public class BigDecimalBox extends BigDecimalBoxBase {
     }
 
     /**
-     * Get valid BigDecimal value otherwise throw NumberFormatException.
-     * @return
+     * Set Big decimal value
+     * @param value
+     * @param fireEvents
      */
     @Override
-    public BigDecimal getValue() {
-        return super.getValue();
+    public void setValue(BigDecimal value, boolean fireEvents) {
+        super.setText(value.toString());
+        BigDecimal oldValue = null;
+        try {
+            oldValue = getValueOrThrow();
+        } catch (ParseException ex) {
+            if (fireEvents) {
+                ValueChangeEvent.fire(this, value);
+            }
+        }
+        if (fireEvents) {
+            ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
+        }
     }
 }

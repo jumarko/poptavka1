@@ -301,7 +301,7 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /* CATEGORY SELECTOR WIDGET.                                              */
     /**************************************************************************/
-    // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
+    // TODO Praso - tuto metodu vola sibling module DemandCreationModule, SupplierCreationModule a ClientDemandsModule
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
