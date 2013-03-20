@@ -16,9 +16,6 @@ public interface DetailViews extends CssResource {
     String commonDetailContainer();
 
     /* DEMANDS DETAIL SECTION */
-    @ClassName("demandDetailTable")
-    String demandDetailTable();
-
     @ClassName("detail-block")
     String detailBlock();
 
@@ -53,6 +50,9 @@ public interface DetailViews extends CssResource {
     @ClassName("conversation-detail")
     String conversationDetail();
 
+    @ClassName("conversation-block")
+    String conversationBlock();
+
     @ClassName("conversation-detail-green")
     String conversationDetailGreen();
 
@@ -76,11 +76,4 @@ public interface DetailViews extends CssResource {
 
     @ClassName("conversation-left-block")
     String conversationLeftBlock();
-
-    /* SUPPPLIER DETAIL SECTION */
-    @ClassName("supplierDetailTable")
-    String supplierDetailTable();
-
-    @ClassName("supplierDetailSectionHeader")
-    String supplierDetailSectionHeader();
 }

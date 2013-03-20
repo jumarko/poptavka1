@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 .message {
-    margin: 10px 15px;
+    margin: 0;
 }
 
 .message-opened {
@@ -14,6 +14,9 @@
     cursor: pointer;
     cursor: hand;
     border-radius: 5px;
+    display: block;
+    float: left;    
+    margin-left: 35px;
     -webkit-box-top-left-radius: 7px;
     -webkit-box-top-right-radius: 7px;
     -moz-border-topleft-radius: 7px;
@@ -54,21 +57,47 @@
 }
 
 .reply-button {
-	background: url(images/blue-button.gif) repeat-x #004273;
-	padding: 7px 12px;
-	border: 1px solid #004273;
-	border-radius: 4px;
-	height: 34px;
-	line-height: 34px;
-	color: #ffffff;
-	margin-right: 5px;
-	box-shadow: 0 0 3px #aaaaaa;	
-	cursor: pointer;
+    background: url(images/messages-button.png) repeat-x scroll 0 0 #199204;
+    border: 1px solid #199204;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 15px;
+    font-weight: normal;
+    height: 37px;
+    line-height: 35px;
+    margin: 10px 7px 10px 0;
+    padding: 0 12px;
+    border-radius: 5px 5px 5px 5px;
 }
 
 .reply-button:hover {	
-	color: #ffffff;
-	box-shadow: 0 0 5px #004273;
+    color: #ffffff;
+    box-shadow: 0 0 5px #b6f41e;
+    text-decoration: none;
+}
+
+.close-button {
+    background: url(images/messages-close-button.png) repeat-x #929292;
+    border: 1px solid #818181;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 15px;
+    font-weight: normal;
+    height: 37px;
+    line-height: 35px;
+    margin: 10px 7px 10px 0;
+    padding: 0 12px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.close-button:hover {
+    color: #ffffff;
+    box-shadow: 0 0 5px #cccccc;
+    text-decoration: none;
 }
 
 .reply-text-area {
@@ -91,4 +120,8 @@
 
 .message-unread {
     font-weight:bold;
+}
+
+.response-container {
+    padding: 15px 24px;    
 }

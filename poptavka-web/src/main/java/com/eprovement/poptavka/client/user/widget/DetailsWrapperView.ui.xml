@@ -11,12 +11,9 @@
         .panel {
         min-width: 500px;
         }
-        .relative {
-        position: relative;
-        }
     </ui:style>
     <g:TabLayoutPanel stylePrimaryName='{res.detailTabPanel.detailTabPanel}'
-                      ui:field="container" barUnit="PX" barHeight="40" animationDuration="1000">
+                      ui:field="container" barUnit="PX" barHeight="50" animationDuration="1000">
         <g:tab>
             <g:header>
                 <ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
@@ -38,11 +35,10 @@
                 <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
             </g:header>
             <g:ScrollPanel>
-                <g:HTMLPanel ui:field="conversationHolder"
-                             styleName='{res.detailViews.commonDetailContainer}'>
+                <g:HTMLPanel ui:field="conversationHolder">
                     <g:HTMLPanel styleName='{res.detailViews.conversationContainer}'>
-                        <d:OfferQuestionWindow ui:field="replyHolder" />
-                        <c:CellList ui:field="messageList" styleName="{style.relative}"/>
+                        <d:OfferQuestionWindow ui:field="replyHolder" styleName='{res.detailViews.conversationBlock}'/>
+                        <c:CellList ui:field="messageList" styleName='{res.detailViews.conversationBlock}'/>
                     </g:HTMLPanel>
                 </g:HTMLPanel>
             </g:ScrollPanel>

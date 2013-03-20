@@ -6,8 +6,7 @@
         Purpose of the stylesheet follows.
 */
 .common-detail-container {
-    background: url(images/transparent_bg.png) repeat;
-    float: left;
+
 }
 
 /*  DEMAND DETAIL SECTION  */
@@ -119,23 +118,31 @@
 /*  conversation DETAIL SECTION  */
 .conversation-container {
     background: #ffffff;
-    border: 1px solid #009de5;
-    border-radius: 4px;
-    margin: 12px;
+    border: 1px solid #d0cdc1;
+    border-top: 1px solid #e8e3d2;
+    float: left;
+    border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+}
+
+.conversation-block {
+    display: block;
+    float: left;
+    width: 100%;
 }
 
 .conversation-detail {
-    border-bottom: 1px solid #D4D4D4;
+    border-top: 1px solid #f2efe7;
     padding: 10px 10px 10px 30px;
 }
 
 .conversation-detail-green {
-    background: url(images/detail-block-green-circle.png) no-repeat 11px
-        14px;
+    background: none;
 }
 
 .conversation-detail-red {
-    background: url(images/detail-block-red-circle.png) no-repeat 11px 14px;
+    background: none;
 }
 
 .conversation-detail:hover {
@@ -145,7 +152,7 @@
 
 .conversation-detail-header {
     float: left;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .conversation-detail-header-green {
@@ -153,11 +160,11 @@
 }
 
 .conversation-detail-header-red {
-    color: #e50000;
+    color: #b70000;
 }
 
 .conversation-detail-time {
-    color: #006b9f;
+    color: #bdb9a4;
     float: right;
 }
 
@@ -168,44 +175,4 @@
 .conversation-left-block {
     float: left;
     width: 100%;
-}
-
-/* the rest will be deleted ... */
-.demandDetailTable {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-.demandDetailTable th {
-    border: 1px solid black;
-    font-weight: bold;
-    background-color: limegreen;
-}
-
-.demandDetailTable td {
-    border: 1px solid black;
-}
-
-/*  SUPPLIER DETAIL SECTION  */
-.supplierDetailSectionHeader th {
-    font-family: fantasy;
-    font-size: xx-large;
-    background-color: red;
-}
-
-.supplierDetailTable {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-.supplierDetailTable th {
-    border: 1px solid black;
-    font-weight: bold;
-    background-color: lightcoral;
-}
-
-.supplierDetailTable td {
-    border: 1px solid black;
 }

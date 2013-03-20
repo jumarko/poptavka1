@@ -29,6 +29,9 @@ public interface UserMessageStyle extends CssResource {
     @ClassName("reply-button")
     String replyButton();
 
+    @ClassName("close-button")
+    String closeButton();
+
     @ClassName("messages-mine")
     String messagesMine();
 
@@ -37,4 +40,7 @@ public interface UserMessageStyle extends CssResource {
 
     @ClassName("message-unread")
     String messagesUnread();
+
+    @ClassName("response-container")
+    String responseContainer();
 }
