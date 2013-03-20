@@ -30,10 +30,11 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import java.util.ArrayList;
 import java.util.Set;
 
-@Presenter(view = MessageList.class)
-public class MessageListPresenter extends LazyPresenter<MessageListPresenter.IListM, MessagesEventBus> {
+@Presenter(view = MessageListView.class)
+public class MessageListPresenter extends
+        LazyPresenter<MessageListPresenter.MessageListViewInterface, MessagesEventBus> {
 
-    public interface IListM extends LazyView, IsWidget {
+    public interface MessageListViewInterface extends LazyView, IsWidget {
 
         /** Table related. **/
         UniversalAsyncGrid<MessageDetail> getGrid();
@@ -78,7 +79,6 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     //viewType
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
-    private MessageDetail selectedObject;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -141,18 +141,13 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
         view.getGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Set<MessageDetail> selcetedSet = ((MultiSelectionModel<MessageDetail>) view.getGrid()
+                Set<MessageDetail> selectedSet = ((MultiSelectionModel<MessageDetail>) view.getGrid()
                         .getSelectionModel()).getSelectedSet();
                 //set actionBox visibility
-                if (selcetedSet.size() > 0) {
-                    view.getActionBox().setVisible(true);
-                } else {
-                    view.getActionBox().setVisible(false);
-                }
+                view.getActionBox().setVisible(selectedSet.size() > 0);
                 //init details
-                if (selcetedSet.size() == 1) {
-                    MessageDetail selected = selcetedSet.iterator().next();
-                    selectedObject = selected;
+                if (selectedSet.size() == 1) {
+                    MessageDetail selected = selectedSet.iterator().next();
                     view.getMessageDetailView().setVisible(true);
                     view.getMessageDetailView().setMessageDetail(selected);
                 } else {

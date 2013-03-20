@@ -206,7 +206,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         messagePanel.getStyle().setDisplay(Display.BLOCK);
         this.replyToMessage = message;
         sender.setText(message.getSenderName());
-        sent.setText(Storage.FORMATTER.format(message.getSent()));
+        sent.setText(Storage.DATE_FORMAT.format(message.getSent()));
         body.setText(message.getBody());
     }
 

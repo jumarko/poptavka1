@@ -70,7 +70,7 @@ public class EditableDemandDetailView extends Composite implements
 
         initWidget(uiBinder.createAndBindUi(this));
 
-        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.FORMATTER));
+        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.DATE_FORMAT));
 
         StyleResource.INSTANCE.detailViews().ensureInjected();
         StyleResource.INSTANCE.common().ensureInjected();

@@ -43,7 +43,7 @@ public final class Storage {
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final ValidationMessages VMSGS = GWT.create(ValidationMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
-    public static final DateTimeFormat FORMATTER = DateTimeFormat.getFormat(MSGS.formatDate());
+    public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(MSGS.formatDate());
     public static final NumberFormat CURRENCY_FORMAT = NumberFormat.getFormat(MSGS.formatCurrency());
     public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";
     //local constants

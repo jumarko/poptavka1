@@ -31,11 +31,11 @@ import java.util.List;
  * @author martin slavkovsky
  *
  */
-public class MessageList extends Composite implements MessageListPresenter.IListM {
+public class MessageListView extends Composite implements MessageListPresenter.MessageListViewInterface {
 
     private static MessageListUiBinder uiBinder = GWT.create(MessageListUiBinder.class);
 
-    interface MessageListUiBinder extends UiBinder<Widget, MessageList> {
+    interface MessageListUiBinder extends UiBinder<Widget, MessageListView> {
     }
     /**************************************************************************/
     /* Attrinbutes                                                            */
@@ -140,7 +140,7 @@ public class MessageList extends Composite implements MessageListPresenter.IList
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return Storage.FORMATTER.format(((MessageDetail) object).getCreated());
+                        return Storage.DATE_FORMAT.format(((MessageDetail) object).getCreated());
                     }
                 });
     }

@@ -38,7 +38,7 @@ public class CreatedDateCell extends DateCell {
                 if (CalendarUtil.isSameDate(DateUtils.getYesterdayDate(), demandCreation)) {
                     return SafeHtmlUtils.fromTrustedString(Storage.MSGS.creationDateYesterday());
                 }
-                return SafeHtmlUtils.fromTrustedString(Storage.FORMATTER.format(demandCreation));
+                return SafeHtmlUtils.fromTrustedString(Storage.DATE_FORMAT.format(demandCreation));
             }
         }
     };
