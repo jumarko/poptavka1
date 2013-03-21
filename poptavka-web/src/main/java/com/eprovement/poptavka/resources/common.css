@@ -233,6 +233,7 @@
 .login-modal .modal-body {
     background: #ffffff;
     padding: 20px;
+    max-height: none;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
