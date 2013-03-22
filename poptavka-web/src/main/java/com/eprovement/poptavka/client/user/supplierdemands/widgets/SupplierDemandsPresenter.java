@@ -117,6 +117,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (detailSection != null) {
             detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
+            detailSection.getView().getReplyHolder().allowSendingOffer();
             this.detailSection = detailSection;
             if (selectedObject != null) {
                 initDetailSection(selectedObject);
