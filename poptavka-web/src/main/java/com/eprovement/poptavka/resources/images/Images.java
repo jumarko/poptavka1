@@ -65,14 +65,11 @@ public interface Images extends ClientBundle {
     @Source("loader32.gif")
     ImageResource loadIcon32();
 
-    @Source("goldStar16.png")
-    ImageResource starGold();
+    @Source("star-green.png")
+    ImageResource starGreen();
 
-    @Source("silverStar16.png")
+    @Source("star-silver.png")
     ImageResource starSilver();
-
-    @Source("bronzeStar16.png")
-    ImageResource starBronze();
 
     //In displaying demands
     @Source("urgency-red.png")
