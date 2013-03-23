@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView.IUserMenuPresenter;
@@ -21,11 +20,17 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
 
     interface UserMenuViewUiBinder extends UiBinder<Widget, UserMenuView> {
     }
-    @UiField
-    UListElement menuList;
-    @UiField
-    Button client, supplier, demands, createDemand, suppliers, createSupplier, inbox, administration;
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField UListElement menuList;
+    @UiField Button client, supplier, demands, createDemand, suppliers, createSupplier, inbox, administration;
+
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     public UserMenuView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -121,91 +126,91 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     /* Helper methods.                                                        */
     /**************************************************************************/
     private void clientUserMenuStyleChange() {
-        client.addStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        client.addStyleName(Constants.ACT);
+        supplier.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        inbox.removeStyleName(Constants.ACT);
+        administration.removeStyleName(Constants.ACT);
     }
 
     private void supplierUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.addStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        client.removeStyleName(Constants.ACT);
+        supplier.addStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        inbox.removeStyleName(Constants.ACT);
+        administration.removeStyleName(Constants.ACT);
     }
 
     private void messagesUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.addStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        client.removeStyleName(Constants.ACT);
+        supplier.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        inbox.addStyleName(Constants.ACT);
+        administration.removeStyleName(Constants.ACT);
     }
 
     private void demandsUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.addStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        client.removeStyleName(Constants.ACT);
+        supplier.removeStyleName(Constants.ACT);
+        demands.addStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        inbox.removeStyleName(Constants.ACT);
+        administration.removeStyleName(Constants.ACT);
     }
 
     private void createDemandUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.addStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        client.removeStyleName(Constants.ACT);
+        supplier.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        createDemand.addStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        inbox.removeStyleName(Constants.ACT);
+        administration.removeStyleName(Constants.ACT);
     }
 
     private void suppliersUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.addStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        client.removeStyleName(Constants.ACT);
+        supplier.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
+        suppliers.addStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        inbox.removeStyleName(Constants.ACT);
+        administration.removeStyleName(Constants.ACT);
     }
 
     private void createSupplierUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.addStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        client.removeStyleName(Constants.ACT);
+        supplier.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.addStyleName(Constants.ACT);
+        inbox.removeStyleName(Constants.ACT);
+        administration.removeStyleName(Constants.ACT);
     }
 
     private void administrationUserMenuStyleChange() {
-        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        supplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        inbox.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        administration.addStyleName(StyleResource.INSTANCE.layout().selected());
+        client.removeStyleName(Constants.ACT);
+        supplier.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        inbox.removeStyleName(Constants.ACT);
+        administration.addStyleName(Constants.ACT);
     }
 
     /**

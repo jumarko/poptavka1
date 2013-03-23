@@ -22,7 +22,7 @@
 				<g:SimplePanel ui:field='logo' styleName='{res.layout.homeLogo}' />
 				<g:SimplePanel ui:field='header' styleName='{res.layout.headerContent}' />
 				<g:HTMLPanel styleName='{style.menu-bar-styles}'>
-					<g:SimplePanel ui:field="menu" styleName='{res.layout.homeMenu}' />
+					<g:SimplePanel ui:field="menu" styleName='{res.layout.menu}' />
 					<g:SimplePanel ui:field="searchBar" styleName='{res.layout.searchBar}' />
 				</g:HTMLPanel>
 			</g:HTMLPanel>
