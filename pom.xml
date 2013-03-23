@@ -948,6 +948,7 @@
                         <!--By default following path will be correct in all direct children-->
                         <configLocation>${project.parent.basedir}/checkstyle/custom_checks.xml</configLocation>
                         <consoleOutput>true</consoleOutput>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     </configuration>
                     <executions>
                         <execution>
