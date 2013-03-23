@@ -14,8 +14,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
@@ -45,20 +43,11 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
 
         SimplePager getPager();
 
-        //Action box actions
-        DropdownButton getActionBox();
-
-        NavLink getActionRead();
-
-        NavLink getActionUnread();
-
-        NavLink getActionStar();
-
-        NavLink getActionUnstar();
-
         Button getFinnishBtn();
 
         SimplePanel getDetailPanel();
+
+        SimplePanel getActionBox();
 
         IsWidget getWidgetView();
     }
@@ -83,8 +72,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addColumnFieldUpdaters();
-        // Listbox actions
-        addActionBoxChoiceHandlers();
         // Buttons handlers
         addFinnishButtonHandler();
         // Row styles
@@ -191,6 +178,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         eventBus.activateSupplierAssignedDemands();
         eventBus.createTokenForHistory();
         searchDataHolder = filter;
+        eventBus.initActionBox(view.getActionBox(), view.getDataGrid());
 
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
@@ -231,11 +219,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //set actionBox visibility
-                if (view.getDataGrid().getSelectedUserMessageIds().size() > 0) {
-                    view.getActionBox().setVisible(true);
-                } else {
-                    view.getActionBox().setVisible(false);
-                }
+                view.getActionBox().setVisible(view.getDataGrid().getSelectedUserMessageIds().size() > 0);
                 //init details
                 if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
                     view.getFinnishBtn().setVisible(true);
@@ -275,34 +259,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
                     return Storage.RSCS.grid().unread();
                 }
                 return "";
-            }
-        });
-    }
-
-    // Widget action handlers
-    private void addActionBoxChoiceHandlers() {
-        view.getActionRead().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnread().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-        view.getActionStar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnstar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
             }
         });
     }

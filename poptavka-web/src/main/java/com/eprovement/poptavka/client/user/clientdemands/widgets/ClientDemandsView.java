@@ -10,8 +10,6 @@ import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -65,10 +63,8 @@ public class ClientDemandsView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField SimplePanel detailPanel;
+    @UiField SimplePanel detailPanel, actionBox;
     @UiField Label demandTitlelabel;
-    @UiField DropdownButton actionBox;
-    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField HorizontalPanel demandHeader, conversationHeader;
     @UiField Button backBtn, editDemandButton;
     @UiField HTMLPanel choiceButtonsPanel;
@@ -289,32 +285,6 @@ public class ClientDemandsView extends Composite
         return choiceButtonsPanel;
     }
 
-    /** Action Box. **/
-    @Override
-    public DropdownButton getActionBox() {
-        return actionBox;
-    }
-
-    @Override
-    public NavLink getActionRead() {
-        return actionRead;
-    }
-
-    @Override
-    public NavLink getActionUnread() {
-        return actionUnread;
-    }
-
-    @Override
-    public NavLink getActionStar() {
-        return actionStar;
-    }
-
-    @Override
-    public NavLink getActionUnstar() {
-        return actionUnstar;
-    }
-
     //Pagers
     @Override
     public SimplePager getDemandPager() {
@@ -324,6 +294,11 @@ public class ClientDemandsView extends Composite
     @Override
     public SimplePager getConversationPager() {
         return conversationPager.getPager();
+    }
+
+    @Override
+    public SimplePanel getActionBox() {
+        return actionBox;
     }
 
     // Others

@@ -15,8 +15,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
@@ -53,17 +51,6 @@ public class ClientOffersPresenter
 
         SimplePager getOfferPager();
 
-        //Action box actions
-        DropdownButton getActionBox();
-
-        NavLink getActionRead();
-
-        NavLink getActionUnread();
-
-        NavLink getActionStar();
-
-        NavLink getActionUnstar();
-
         //Buttons
         Button getBackBtn();
 
@@ -71,6 +58,8 @@ public class ClientOffersPresenter
 
         //Other
         SimplePanel getDetailPanel();
+
+        SimplePanel getActionBox();
 
         IsWidget getWidgetView();
 
@@ -107,7 +96,6 @@ public class ClientOffersPresenter
         // Buttons Actions
         addBackButtonHandler();
         addAcceptOfferButtonHandler();
-        addActionBoxChoiceHandlers();
         // Row styles
         addDemandGridRowStyles();
     }
@@ -118,6 +106,7 @@ public class ClientOffersPresenter
     public void onInitClientOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.activateClientOffers();
+        eventBus.initActionBox(view.getActionBox(), view.getOfferGrid());
 
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
@@ -242,35 +231,6 @@ public class ClientOffersPresenter
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
-    /** Action box handers. **/
-    //--------------------------------------------------------------------------
-    private void addActionBoxChoiceHandlers() {
-        view.getActionRead().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnread().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-        view.getActionStar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnstar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getOfferGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-    }
-
     /** SelectionHandlers. **/
     //--------------------------------------------------------------------------
     /**
@@ -306,11 +266,7 @@ public class ClientOffersPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //set actionBox visibility
-                if (view.getOfferGrid().getSelectedUserMessageIds().size() > 0) {
-                    view.getActionBox().setVisible(true);
-                } else {
-                    view.getActionBox().setVisible(false);
-                }
+                view.getActionBox().setVisible(view.getOfferGrid().getSelectedUserMessageIds().size() > 0);
                 //init details
                 if (view.getOfferGrid().getSelectedUserMessageIds().size() == 1) {
                     selectedOfferedDemandOfferObject = view.getOfferGrid().getSelectedObjects().get(0);

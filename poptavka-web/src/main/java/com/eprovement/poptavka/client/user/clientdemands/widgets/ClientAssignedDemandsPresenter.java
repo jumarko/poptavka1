@@ -14,8 +14,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
@@ -45,20 +43,11 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
         SimplePager getPager();
 
-        //Action box actions
-        DropdownButton getActionBox();
-
-        NavLink getActionRead();
-
-        NavLink getActionUnread();
-
-        NavLink getActionStar();
-
-        NavLink getActionUnstar();
-
         Button getCloseBtn();
 
         SimplePanel getDetailPanel();
+
+        SimplePanel getActionBox();
 
         IsWidget getWidgetView();
     }
@@ -86,8 +75,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
-        // Listbox actions
-        addActionBoxChoiceHandlers();
         // buttons handlers
         addCloseButtonHandler();
     }
@@ -192,6 +179,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         eventBus.activateClientAssignedDemands();
         eventBus.createTokenForHistory();
         searchDataHolder = filter;
+        eventBus.initActionBox(view.getActionBox(), view.getDataGrid());
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
@@ -232,11 +220,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //set actionBox visibility
-                if (view.getDataGrid().getSelectedUserMessageIds().size() > 0) {
-                    view.getActionBox().setVisible(true);
-                } else {
-                    view.getActionBox().setVisible(false);
-                }
+                view.getActionBox().setVisible(view.getDataGrid().getSelectedUserMessageIds().size() > 0);
                 //init details
                 if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
                     view.getCloseBtn().setVisible(true);
@@ -265,34 +249,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         view.getDataGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getFinnishDateColumn().setFieldUpdater(textFieldUpdater);
         view.getDataGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
-    }
-
-    // Widget action handlers
-    private void addActionBoxChoiceHandlers() {
-        view.getActionRead().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnread().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-        view.getActionStar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnstar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getDataGrid().getSelectedUserMessageIds(), false);
-            }
-        });
     }
 
     private void addCloseButtonHandler() {

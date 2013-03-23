@@ -8,8 +8,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -49,10 +47,8 @@ public class ClientOffersView extends Composite
     /**************************************************************************/
     /** UiFieds. **/
     @UiField(provided = true) UniversalPagerWidget demandPager, offerPager;
-    @UiField DropdownButton actionBox;
-    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField Button backBtn, acceptBtn;
-    @UiField SimplePanel detailPanel;
+    @UiField SimplePanel detailPanel, actionBox;
     @UiField Label demandTableNameLabel, offerTableNameLabel;
     @UiField HorizontalPanel demandHeader, offerHeader, offerToolBar;
 
@@ -204,32 +200,6 @@ public class ClientOffersView extends Composite
         return offerPager.getPager();
     }
 
-    //Action Box
-    @Override
-    public DropdownButton getActionBox() {
-        return actionBox;
-    }
-
-    @Override
-    public NavLink getActionRead() {
-        return actionRead;
-    }
-
-    @Override
-    public NavLink getActionUnread() {
-        return actionUnread;
-    }
-
-    @Override
-    public NavLink getActionStar() {
-        return actionStar;
-    }
-
-    @Override
-    public NavLink getActionUnstar() {
-        return actionUnstar;
-    }
-
     //Buttons
     @Override
     public Button getBackBtn() {
@@ -245,6 +215,11 @@ public class ClientOffersView extends Composite
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
+    }
+
+    @Override
+    public SimplePanel getActionBox() {
+        return actionBox;
     }
 
     @Override
