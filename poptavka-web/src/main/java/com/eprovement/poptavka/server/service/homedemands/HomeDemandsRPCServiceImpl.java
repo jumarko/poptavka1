@@ -443,10 +443,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private Search getSortSearch(Search search, Map<String, OrderType> orderColumns, String prefix) {
         if (orderColumns != null) {
             for (String item : orderColumns.keySet()) {
+                final String itemProperty = prefix + "." + item;
                 if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    search.addSortAsc(prefix + item, true);
+                    search.addSortAsc(itemProperty, true);
                 } else {
-                    search.addSortDesc(prefix + item, true);
+                    search.addSortDesc(itemProperty, true);
                 }
             }
         }
