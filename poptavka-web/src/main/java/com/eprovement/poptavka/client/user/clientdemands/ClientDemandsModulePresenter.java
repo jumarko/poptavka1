@@ -43,6 +43,8 @@ public class ClientDemandsModulePresenter
 
         SimplePanel getContentPanel();
 
+        void clientMenuStyleChange(int loadedView);
+
         IsWidget getWidgetView();
     }
     private ClientDemandsPresenter clientDemands = null;
@@ -186,26 +188,7 @@ public class ClientDemandsModulePresenter
     /**************************************************************************/
     /* Client Demands MENU                                                    */
     /**************************************************************************/
-    public void onSelectClientDemandsMenu(int loadedWidget) {
-        //TODO Martin null replace with CSS style - e.g. Storage.RSCS.clientDemandsButtonSelected()
-        switch (loadedWidget) {
-            case Constants.CLIENT_DEMANDS:
-                view.getClientNewDemandsButton().setStyleName("");
-                break;
-            case Constants.CLIENT_OFFERED_DEMANDS:
-                view.getClientOffersButton().setStyleName("");
-                break;
-            case Constants.CLIENT_ASSIGNED_DEMANDS:
-                view.getClientAssignedDemandsButton().setStyleName("");
-                break;
-            case Constants.CLIENT_CLOSED_DEMANDS:
-                view.getClientClosedDemandsButton().setStyleName("");
-                break;
-            case Constants.CLIENT_RATINGS:
-                view.getClientRatingsButton().setStyleName("");
-                break;
-            default:
-                break;
-        }
+    public void onClientDemandsMenuStyleChange(int loadedWidget) {
+        view.clientMenuStyleChange(loadedWidget);
     }
 }

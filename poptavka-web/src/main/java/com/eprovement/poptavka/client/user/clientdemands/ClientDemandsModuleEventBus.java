@@ -289,5 +289,5 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Client Demands MENU                                                    */
     /**************************************************************************/
     @Event(handlers = ClientDemandsModulePresenter.class)
-    void selectClientDemandsMenu(int loadedWidget);
+    void clientDemandsMenuStyleChange(int loadedWidget);
 }

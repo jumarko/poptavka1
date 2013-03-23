@@ -1,8 +1,11 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -24,11 +27,113 @@ public class ClientDemandsModuleView extends Composite
     @UiField Button clientNewDemands, clientOffers, clientAssignedDemands, clientClosedDemands, clientRatings;
 
     /**************************************************************************/
-    /* Initialization                                                            */
+    /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    /**************************************************************************/
+    /* UiHanders.                                                             */
+    /**************************************************************************/
+    @UiHandler("clientNewDemands")
+    public void onClickDemands(ClickEvent e) {
+        clientDemandsMenuStyleChange();
+    }
+
+    @UiHandler("clientOffers")
+    public void onClickOffers(ClickEvent e) {
+        clientOffersMenuStyleChange();
+    }
+
+    @UiHandler("clientAssignedDemands")
+    public void onClickAssignedDemands(ClickEvent e) {
+        clientAssignedDemandsMenuStyleChange();
+    }
+
+    @UiHandler("clientClosedDemands")
+    public void onClickClosedDemands(ClickEvent e) {
+        clientClosedDemandsMenuStyleChange();
+    }
+
+    @UiHandler("clientRatings")
+    public void onClickRatings(ClickEvent e) {
+        clientRatingMenuStyleChange();
+    }
+
+    /**************************************************************************/
+    /* Style change methods.                                                  */
+    /**************************************************************************/
+    /**
+     * Loads right styles to menu buttons.
+     * @param loadedWidget - use module constants from class Contants.
+     */
+    @Override
+    public void clientMenuStyleChange(int loadedWidget) {
+        switch (loadedWidget) {
+            case Constants.CLIENT_DEMANDS:
+                clientDemandsMenuStyleChange();
+                break;
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                clientOffersMenuStyleChange();
+                break;
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                clientAssignedDemandsMenuStyleChange();
+                break;
+            case Constants.CLIENT_CLOSED_DEMANDS:
+                clientClosedDemandsMenuStyleChange();
+                break;
+            case Constants.CLIENT_RATINGS:
+                clientRatingMenuStyleChange();
+                break;
+            default:
+                clientDemandsMenuStyleChange();
+                break;
+        }
+    }
+
+    /**************************************************************************/
+    /* Helper methods.                                                        */
+    /**************************************************************************/
+    private void clientDemandsMenuStyleChange() {
+        clientOffers.removeStyleName(Constants.ACT);
+        clientAssignedDemands.removeStyleName(Constants.ACT);
+        clientClosedDemands.removeStyleName(Constants.ACT);
+        clientRatings.removeStyleName(Constants.ACT);
+        clientNewDemands.addStyleName(Constants.ACT);
+    }
+
+    private void clientOffersMenuStyleChange() {
+        clientNewDemands.removeStyleName(Constants.ACT);
+        clientAssignedDemands.removeStyleName(Constants.ACT);
+        clientClosedDemands.removeStyleName(Constants.ACT);
+        clientRatings.removeStyleName(Constants.ACT);
+        clientOffers.addStyleName(Constants.ACT);
+    }
+
+    private void clientAssignedDemandsMenuStyleChange() {
+        clientNewDemands.removeStyleName(Constants.ACT);
+        clientOffers.removeStyleName(Constants.ACT);
+        clientClosedDemands.removeStyleName(Constants.ACT);
+        clientRatings.removeStyleName(Constants.ACT);
+        clientAssignedDemands.addStyleName(Constants.ACT);
+    }
+
+    private void clientClosedDemandsMenuStyleChange() {
+        clientNewDemands.removeStyleName(Constants.ACT);
+        clientOffers.removeStyleName(Constants.ACT);
+        clientAssignedDemands.removeStyleName(Constants.ACT);
+        clientRatings.removeStyleName(Constants.ACT);
+        clientClosedDemands.addStyleName(Constants.ACT);
+    }
+
+    private void clientRatingMenuStyleChange() {
+        clientNewDemands.removeStyleName(Constants.ACT);
+        clientOffers.removeStyleName(Constants.ACT);
+        clientAssignedDemands.removeStyleName(Constants.ACT);
+        clientClosedDemands.removeStyleName(Constants.ACT);
+        clientRatings.addStyleName(Constants.ACT);
     }
 
     /**************************************************************************/

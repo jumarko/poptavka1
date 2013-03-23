@@ -433,7 +433,7 @@ body>div {
     text-align: left;
 }
 
-.submenu-list .gwt-Button:hover {
+.submenu-list .gwt-Button:hover, .gwt-Button.act {
     background: url(images/left-menu_hover.png) no-repeat;
     color: #ffffff;
 }
