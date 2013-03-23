@@ -188,7 +188,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
             CollectionUtils.filter(suppliers, new Predicate() {
                 @Override
                 public boolean evaluate(Object o) {
-                    return demand.getExcludedSuppliers().contains(o);
+                    return ! demand.getExcludedSuppliers().contains(o);
                 }
             });
             LOGGER.debug("action=remove_excluded_suppliers status=finish number_of_excluded_suppliers={}",

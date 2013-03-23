@@ -16,6 +16,8 @@ import java.util.Set;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import org.mockito.Mockito;
@@ -28,6 +30,7 @@ import org.mockito.Mockito;
 public class NaiveSuppliersSelectionTest {
 
     private SuppliersSelection naiveSuppliersSelection = new NaiveSuppliersSelection();
+    private Demand demand;
 
     @Before
     public void setUp() {
@@ -43,6 +46,8 @@ public class NaiveSuppliersSelectionTest {
         suppliers.add(createSupplier(7L, 21));
         suppliers.add(createSupplier(8L, 18));
         suppliers.add(createSupplier(9L, 30));
+        final Supplier excludedSupplier = createSupplier(11L, 30);
+        suppliers.add(excludedSupplier);
         Mockito.when(supplierServiceMock.getSuppliersIncludingParents(anyListOf(Category.class),
                 anyListOf(Locality.class),
                 any(ResultCriteria.class)))
@@ -51,7 +56,14 @@ public class NaiveSuppliersSelectionTest {
 
         ((NaiveSuppliersSelection) this.naiveSuppliersSelection).setSupplierService(supplierServiceMock);
 
-
+        final Demand demand = new Demand();
+        demand.setCategories(Arrays.asList(new Category()));
+        demand.setLocalities(Arrays.asList(new Locality()));
+        demand.setMinRating(25);
+        demand.setMaxSuppliers(5);
+        demand.setClient(new Client());
+        demand.setExcludedSuppliers(Arrays.asList(excludedSupplier));
+        this.demand = demand;
     }
 
     private Supplier createSupplier(Long id, int overallRating) {
@@ -82,15 +94,10 @@ public class NaiveSuppliersSelectionTest {
 
     private void checkGetPotentialSuppliersForDemandWithStatus(DemandStatus demandStatus,
                                                                int expectedPotentialSuppliersCount) {
-        final Demand demand = new Demand();
-        demand.setCategories(Arrays.asList(new Category()));
-        demand.setLocalities(Arrays.asList(new Locality()));
-        demand.setMinRating(25);
-        demand.setMaxSuppliers(5);
         demand.setStatus(demandStatus);
-        demand.setClient(new Client());
         final Set<PotentialSupplier> demandPotentialSuppliers =
                 this.naiveSuppliersSelection.getPotentialSuppliers(demand);
-        org.junit.Assert.assertThat(demandPotentialSuppliers.size(), Is.is(expectedPotentialSuppliersCount));
+
+        assertThat(demandPotentialSuppliers.size(), Is.is(expectedPotentialSuppliersCount));
     }
 }
