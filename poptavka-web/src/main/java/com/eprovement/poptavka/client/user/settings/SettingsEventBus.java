@@ -89,6 +89,9 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(forwardToParent = true)
     void loginFromSession(int widgetToLoad);
 
+    @Event(forwardToParent = true)
+    void setDefaultFooterStyle();
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

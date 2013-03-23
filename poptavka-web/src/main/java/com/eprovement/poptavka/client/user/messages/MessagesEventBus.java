@@ -76,6 +76,9 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
 
+    @Event(forwardToParent = true)
+    void setExtendedFooterStyle();
+
     /**************************************************************************/
     /* History events                                                         */
     /**************************************************************************/

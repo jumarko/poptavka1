@@ -119,6 +119,11 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void setFooter(IsWidget footer);
 
+    @Event(handlers = FooterPresenter.class)
+    void setDefaultFooterStyle();
+
+    @Event(handlers = FooterPresenter.class)
+    void setExtendedFooterStyle();
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

@@ -118,6 +118,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
 
+    @Event(forwardToParent = true)
+    void setExtendedFooterStyle();
+
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/

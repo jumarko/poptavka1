@@ -40,6 +40,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     public void onForward() {
         eventBus.setUpSearchBar(null);
+        eventBus.setDefaultFooterStyle();
         view.getCategorySelectionModel().clear();
     }
 

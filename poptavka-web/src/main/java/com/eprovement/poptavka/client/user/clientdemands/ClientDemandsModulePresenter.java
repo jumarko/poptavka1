@@ -66,6 +66,7 @@ public class ClientDemandsModulePresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setUpSearchBar(null);
+        eventBus.setExtendedFooterStyle();
     }
 
     @Override

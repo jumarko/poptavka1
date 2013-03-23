@@ -63,6 +63,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setUpSearchBar(null);
+        eventBus.setExtendedFooterStyle();
     }
 
     @Override
