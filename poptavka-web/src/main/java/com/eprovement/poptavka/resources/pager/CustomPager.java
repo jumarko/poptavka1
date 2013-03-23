@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.resources;
+package com.eprovement.poptavka.resources.pager;
 
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.Style;

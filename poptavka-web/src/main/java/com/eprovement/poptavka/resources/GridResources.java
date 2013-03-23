@@ -9,6 +9,6 @@ import com.google.gwt.user.cellview.client.DataGrid;
  */
 public interface GridResources extends DataGrid.Resources {
 
-    @Source("MyDataGrid.css")
+    @Source("myDataGrid.css")
     DataGrid.Style cellTreeStyle();
 }

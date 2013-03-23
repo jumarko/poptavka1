@@ -58,7 +58,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     public OfferQuestionWindow() {
-        Storage.RSCS.message().ensureInjected();
+        Storage.RSCS.detailViews().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         offerReplyBtn.setVisible(false);
     }

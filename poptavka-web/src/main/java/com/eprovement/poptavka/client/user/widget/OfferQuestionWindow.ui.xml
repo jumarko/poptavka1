@@ -9,21 +9,14 @@
              field="res">
     </ui:with>
 
-    <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
-        }
-    </ui:style>
-
-    <g:HTMLPanel styleName="{res.message.wrapper}">
-        <g:HTMLPanel styleName="{res.message.message}">
+    <g:HTMLPanel styleName="{res.detailViews.wrapper}">
+        <g:HTMLPanel styleName="{res.detailViews.message}">
             <!-- Message composition content -->
             <b:FluidContainer ui:field="messageBody" visible="false">
                 <b:FluidRow>
                     <b:Column size="12">
-                        <g:TextArea ui:field="replyTextArea" styleName="{res.message.replyTextArea}" />
-                        <g:Label ui:field="errorLabelText" styleName="{style.error}" />
+                        <g:TextArea ui:field="replyTextArea" styleName="{res.detailViews.replyTextArea}" />
+                        <g:Label ui:field="errorLabelText" />
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow ui:field="priceRow">
@@ -34,7 +27,7 @@
                     </b:Column>
                     <b:Column size="6">
                         <bd:BigDecimalBox ui:field="priceBox" />
-                        <g:Label ui:field="errorLabelPrice" styleName="{style.error}" />
+                        <g:Label ui:field="errorLabelPrice" />
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow ui:field="finnishDateRow">
@@ -45,17 +38,17 @@
                     </b:Column>
                     <b:Column size="6">
                         <p1:DateBox ui:field="dateBox" />
-                        <g:Label ui:field="errorLabelDate" styleName="{style.error}" />
+                        <g:Label ui:field="errorLabelDate" />
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow>
                     <b:Column size="12">
-                        <g:Anchor ui:field="submitBtn" styleName='{res.message.replyButton}'>
+                        <g:Anchor ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>
                             <span style="cursor: pointer; cursor: hand;">
                                 <ui:msg key="commonBtnSubmit">Submit</ui:msg>
                             </span>
                         </g:Anchor>
-                        <g:Anchor ui:field="cancelBtn" styleName='{res.message.replyButton}'>
+                        <g:Anchor ui:field="cancelBtn" styleName='{res.detailViews.replyButton}'>
                             <span style="cursor: pointer; cursor: hand;">
                                 <ui:msg key="commonBtnClose">Close</ui:msg>
                             </span>
@@ -72,11 +65,11 @@
                     <g:Label ui:field='body' />
                 </g:HTMLPanel>
             </g:HTMLPanel>
-            <g:HTMLPanel ui:field="header" styleName="{res.message.messageHeader}">
-                <g:Anchor styleName='{res.message.replyButton}' ui:field="offerReplyBtn">
+            <g:HTMLPanel ui:field="header" styleName="{res.detailViews.messageHeader}">
+                <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="offerReplyBtn">
                     <ui:msg key="offerResponse">Offer Response</ui:msg>
                 </g:Anchor>
-                <g:Anchor styleName='{res.message.replyButton}' ui:field="questionReplyBtn">
+                <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
                     <img src="images/messages-reply-icon.png"/>
                     <ui:msg key="questionResponse">Question Response</ui:msg>
                 </g:Anchor>

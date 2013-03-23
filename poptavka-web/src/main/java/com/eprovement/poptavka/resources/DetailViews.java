@@ -76,4 +76,43 @@ public interface DetailViews extends CssResource {
 
     @ClassName("conversation-left-block")
     String conversationLeftBlock();
+
+    @ClassName("message")
+    String message();
+
+    @ClassName("message-opened")
+    String messageOpened();
+
+    @ClassName("message-header")
+    String messageHeader();
+
+    @ClassName("message-body")
+    String messageBody();
+
+    @ClassName("action-button")
+    String actionButton();
+
+    @ClassName("wrapper")
+    String wrapper();
+
+    @ClassName("reply-text-area")
+    String replyTextArea();
+
+    @ClassName("reply-button")
+    String replyButton();
+
+    @ClassName("close-button")
+    String closeButton();
+
+    @ClassName("messages-mine")
+    String messagesMine();
+
+    @ClassName("messages-received")
+    String messagesReceived();
+
+    @ClassName("message-unread")
+    String messagesUnread();
+
+    @ClassName("response-container")
+    String responseContainer();
 }
