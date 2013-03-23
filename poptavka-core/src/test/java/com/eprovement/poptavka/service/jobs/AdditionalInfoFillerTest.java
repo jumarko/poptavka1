@@ -7,7 +7,7 @@ import com.eprovement.poptavka.domain.common.AdditionalInfo;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
-import com.eprovement.poptavka.service.jobs.base.JobTask;
+import com.eprovement.poptavka.service.jobs.base.Job;
 import com.google.common.base.Preconditions;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -34,7 +34,7 @@ public class AdditionalInfoFillerTest extends DBUnitIntegrationTest {
 
     @Autowired
     @Qualifier(value = "additionalInfoFiller")
-    private JobTask additionalInfoFiller;
+    private Job additionalInfoFiller;
 
     @Autowired
     private LocalityService localityService;

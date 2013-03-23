@@ -50,7 +50,12 @@ public final class ResourceUtils {
 
     public static String generateSelfLink(String baseResourceUri, DomainObject domainObject) {
         Validate.notNull(domainObject);
-        Validate.notNull(domainObject.getId());
-        return REST_API_PREFIX + "/" + baseResourceUri + "/" + domainObject.getId();
+        return generateSelfLink(baseResourceUri, Long.toString(domainObject.getId()));
+    }
+
+    public static String generateSelfLink(String baseResourceUri, String id) {
+        Validate.notEmpty(baseResourceUri, " baseResourceUri could not be empty!");
+        Validate.notNull(id, "id cannot be null!");
+        return REST_API_PREFIX + "/" + baseResourceUri + "/" + id;
     }
 }
