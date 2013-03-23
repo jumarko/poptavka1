@@ -4,7 +4,6 @@ package com.eprovement.poptavka.service.demand;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
-import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
@@ -207,7 +206,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
         CollectionUtils.filter(suppliers, new Predicate() {
             @Override
             public boolean evaluate(Object o) {
-                return ! AccessRole.isAdmin( ((Supplier) o).getBusinessUser());
+                return ! AccessRole.isAdmin(((Supplier) o).getBusinessUser());
             }
         });
         LOGGER.debug("action=remove_excluded_suppliers status=finish");
