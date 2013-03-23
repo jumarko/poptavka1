@@ -5,9 +5,12 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.user.SupplierService;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,6 +51,7 @@ public class NaiveSuppliersSelectionTest {
         suppliers.add(createSupplier(9L, 30));
         final Supplier excludedSupplier = createSupplier(11L, 30);
         suppliers.add(excludedSupplier);
+        suppliers.add(createSupplier(10L, 100, CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE));
         Mockito.when(supplierServiceMock.getSuppliersIncludingParents(anyListOf(Category.class),
                 anyListOf(Locality.class),
                 any(ResultCriteria.class)))
@@ -67,9 +71,20 @@ public class NaiveSuppliersSelectionTest {
     }
 
     private Supplier createSupplier(Long id, int overallRating) {
+        return createSupplier(id, overallRating, CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE);
+    }
+
+    private Supplier createSupplier(Long id, int overallRating, String accessRoleCode) {
         final Supplier supplier1 = new Supplier();
         supplier1.setId(id);
         supplier1.setOveralRating(overallRating);
+
+        AccessRole accessRole = new AccessRole();
+        accessRole.setCode(accessRoleCode);
+
+        BusinessUser businessUser = new BusinessUser();
+        businessUser.setAccessRoles(Arrays.asList(accessRole));
+        supplier1.setBusinessUser(businessUser);
         return supplier1;
     }
 

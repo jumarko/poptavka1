@@ -70,7 +70,7 @@ import org.hibernate.validator.constraints.NotEmpty;
                         + " and exists (select l.id from Locality l "
                         + "where l.leftBound >= supplierLocality.locality.leftBound"
                         + " and l.rightBound <= supplierLocality.locality.rightBound"
-                        + " and l.id in (:localityIds))")
+                        + " and l.id in (:localityIds))"),
 })
 @Audited
 public class Supplier extends BusinessUserRole {
