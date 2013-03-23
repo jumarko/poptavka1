@@ -243,6 +243,10 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         MessageDetail messageDetail = messageConverter.convertToTarget(message);
         // set latest user message
         UserMessage userMessage = userMessageService.getUserMessage(message, sender);
+        // update isStarred
+        userMessage.setStarred(questionMessageToSend.isStarred());
+        userMessageService.update(userMessage);
+
         messageDetail.setUserMessageId(userMessage.getId());
         messageDetail.setRead(userMessage.isRead());
         messageDetail.setStarred(userMessage.isStarred());
