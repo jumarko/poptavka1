@@ -1,6 +1,9 @@
 package com.eprovement.poptavka.domain.user.rights;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.user.User;
+import org.apache.commons.lang.Validate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -80,4 +83,33 @@ public class AccessRole extends DomainObject {
         sb.append('}');
         return sb.toString();
     }
+
+
+    public static boolean isAdmin(User user) {
+        return hasAccessRole(user, CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE);
+    }
+
+    public static boolean isUser(User user) {
+        return hasAccessRole(user, CommonAccessRoles.USER_ACCESS_ROLE_CODE);
+    }
+
+    public static boolean isClient(User user) {
+        return hasAccessRole(user, CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE);
+    }
+
+    public static boolean isSupplier(User user) {
+        return hasAccessRole(user, CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE);
+    }
+
+
+    private static boolean hasAccessRole(User user, String accessRoleCode) {
+        Validate.notNull(user, "user cannot be null!");
+        for (AccessRole userAccessRole : user.getAccessRoles()) {
+            if (accessRoleCode.equals(userAccessRole.getCode())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

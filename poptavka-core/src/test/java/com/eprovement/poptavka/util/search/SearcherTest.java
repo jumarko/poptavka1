@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.apache.commons.collections.map.LinkedMap;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -145,8 +144,8 @@ public class SearcherTest extends DBUnitIntegrationTest {
 
     @Test
     public void testSearchMapByKeys() throws SearcherException {
-        Map<Message, Integer> messageCounts = new HashMap(); 
-        
+        Map<Message, Integer> messageCounts = new HashMap();
+
         Message message = new Message();
         message.setSubject("z");
         message.setId(1L);
@@ -161,17 +160,17 @@ public class SearcherTest extends DBUnitIntegrationTest {
         message3.setSubject("w");
         message3.setId(3L);
         messageCounts.put(message3, 77);
-        
+
         Search search = new Search(Message.class);
         search.addSortDesc("subject");
-        
+
         LinkedHashMap<Message, Integer> sorted = Searcher.searchMapByKeys(messageCounts, search);
-        
+
         List<Message> sortedKeys = new ArrayList(sorted.keySet());
         checkUserMessageSubjectAndCount(sortedKeys, 0, "z", sorted, 1);
         checkUserMessageSubjectAndCount(sortedKeys, 1, "w", sorted, 77);
         checkUserMessageSubjectAndCount(sortedKeys, 2, "c", sorted, 5);
-        
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -217,7 +216,7 @@ public class SearcherTest extends DBUnitIntegrationTest {
             allUserMessages.get(index).getId().equals(userMessageId)
         );
     }
-    
+
     private void checkUserMessageSubjectAndCount(List<Message> messageList, int index, String expectedSubject,
             Map<Message, Integer> messageMap, Integer expectedCount) {
         Assert.assertTrue(

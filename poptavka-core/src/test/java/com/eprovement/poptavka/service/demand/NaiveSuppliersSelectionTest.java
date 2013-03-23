@@ -5,9 +5,12 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.user.SupplierService;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,6 +19,8 @@ import java.util.Set;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import org.mockito.Mockito;
@@ -28,6 +33,7 @@ import org.mockito.Mockito;
 public class NaiveSuppliersSelectionTest {
 
     private SuppliersSelection naiveSuppliersSelection = new NaiveSuppliersSelection();
+    private Demand demand;
 
     @Before
     public void setUp() {
@@ -43,6 +49,9 @@ public class NaiveSuppliersSelectionTest {
         suppliers.add(createSupplier(7L, 21));
         suppliers.add(createSupplier(8L, 18));
         suppliers.add(createSupplier(9L, 30));
+        final Supplier excludedSupplier = createSupplier(11L, 30);
+        suppliers.add(excludedSupplier);
+        suppliers.add(createSupplier(10L, 100, CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE));
         Mockito.when(supplierServiceMock.getSuppliersIncludingParents(anyListOf(Category.class),
                 anyListOf(Locality.class),
                 any(ResultCriteria.class)))
@@ -51,13 +60,31 @@ public class NaiveSuppliersSelectionTest {
 
         ((NaiveSuppliersSelection) this.naiveSuppliersSelection).setSupplierService(supplierServiceMock);
 
-
+        final Demand demand = new Demand();
+        demand.setCategories(Arrays.asList(new Category()));
+        demand.setLocalities(Arrays.asList(new Locality()));
+        demand.setMinRating(25);
+        demand.setMaxSuppliers(5);
+        demand.setClient(new Client());
+        demand.setExcludedSuppliers(Arrays.asList(excludedSupplier));
+        this.demand = demand;
     }
 
     private Supplier createSupplier(Long id, int overallRating) {
+        return createSupplier(id, overallRating, CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE);
+    }
+
+    private Supplier createSupplier(Long id, int overallRating, String accessRoleCode) {
         final Supplier supplier1 = new Supplier();
         supplier1.setId(id);
         supplier1.setOveralRating(overallRating);
+
+        AccessRole accessRole = new AccessRole();
+        accessRole.setCode(accessRoleCode);
+
+        BusinessUser businessUser = new BusinessUser();
+        businessUser.setAccessRoles(Arrays.asList(accessRole));
+        supplier1.setBusinessUser(businessUser);
         return supplier1;
     }
 
@@ -82,15 +109,10 @@ public class NaiveSuppliersSelectionTest {
 
     private void checkGetPotentialSuppliersForDemandWithStatus(DemandStatus demandStatus,
                                                                int expectedPotentialSuppliersCount) {
-        final Demand demand = new Demand();
-        demand.setCategories(Arrays.asList(new Category()));
-        demand.setLocalities(Arrays.asList(new Locality()));
-        demand.setMinRating(25);
-        demand.setMaxSuppliers(5);
         demand.setStatus(demandStatus);
-        demand.setClient(new Client());
         final Set<PotentialSupplier> demandPotentialSuppliers =
                 this.naiveSuppliersSelection.getPotentialSuppliers(demand);
-        org.junit.Assert.assertThat(demandPotentialSuppliers.size(), Is.is(expectedPotentialSuppliersCount));
+
+        assertThat(demandPotentialSuppliers.size(), Is.is(expectedPotentialSuppliersCount));
     }
 }

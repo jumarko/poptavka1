@@ -218,6 +218,8 @@ public class DetailsWrapperPresenter
         for (IUniversalDetail detail : (Set<IUniversalDetail>) table.getSelectionModel().getSelectedSet()) {
             detail.setUserMessageId(sentMessage.getUserMessageId());
             detail.setMessageCount(detail.getMessageCount() + 1);
+            detail.setIsRead(sentMessage.isRead());
+            detail.setIsStarred(sentMessage.isStarred());
         }
         table.redraw();
     }

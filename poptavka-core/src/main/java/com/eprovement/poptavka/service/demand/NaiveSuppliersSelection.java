@@ -4,8 +4,10 @@ package com.eprovement.poptavka.service.demand;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
@@ -58,7 +60,6 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
 
 
 
-
         // TODO 1) client city can be used as some indicator
 //        demand.getClient().getBusinessUser().getAddresses().get(0).getCity();
 
@@ -70,6 +71,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
         // exclude unwanted suppliers
         removeExcludedSuppliers(demand, suppliers);
         removeLowRatingSuppliers(demand, suppliers);
+        removeAdminSuppliers(suppliers);
 
 
         // convert to set of PotentialSupplier-s  sorted by rating
@@ -188,12 +190,27 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
             CollectionUtils.filter(suppliers, new Predicate() {
                 @Override
                 public boolean evaluate(Object o) {
-                    return demand.getExcludedSuppliers().contains(o);
+                    return ! demand.getExcludedSuppliers().contains(o);
                 }
             });
             LOGGER.debug("action=remove_excluded_suppliers status=finish number_of_excluded_suppliers={}",
                     demand.getExcludedSuppliers().size());
         }
+    }
+
+    /**
+     * Removes all suppliers with admin acces roles.
+     * @param suppliers
+     */
+    private void removeAdminSuppliers(Set<Supplier> suppliers) {
+        LOGGER.debug("action=remove_admin_suppliers status=start");
+        CollectionUtils.filter(suppliers, new Predicate() {
+            @Override
+            public boolean evaluate(Object o) {
+                return ! AccessRole.isAdmin( ((Supplier) o).getBusinessUser());
+            }
+        });
+        LOGGER.debug("action=remove_excluded_suppliers status=finish");
     }
 
     private boolean sufficientRating(Integer supplierOveralRating, Demand demand) {

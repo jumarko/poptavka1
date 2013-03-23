@@ -229,9 +229,10 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
+        User sender = this.generalService.find(User.class, questionMessageToSend.getSenderId());
         Message message = messageService.newReply(this.messageService.getById(
                 questionMessageToSend.getParentId()),
-                this.generalService.find(User.class, questionMessageToSend.getSenderId()));
+                sender);
         message.setBody(questionMessageToSend.getBody());
         message.setSubject(questionMessageToSend.getSubject());
         messageService.send(message);
@@ -239,7 +240,13 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
 //            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(message));
 //            Isn't creating detail object enough?
 //            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(message);
-        return messageConverter.convertToTarget(message);
+        MessageDetail messageDetail = messageConverter.convertToTarget(message);
+        // set latest user message
+        UserMessage userMessage = userMessageService.getUserMessage(message, sender);
+        messageDetail.setUserMessageId(userMessage.getId());
+        messageDetail.setRead(userMessage.isRead());
+        messageDetail.setStarred(userMessage.isStarred());
+        return messageDetail;
     }
 
     @Override
