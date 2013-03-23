@@ -77,14 +77,14 @@ public interface DetailViews extends CssResource {
     @ClassName("conversation-left-block")
     String conversationLeftBlock();
 
-    @ClassName("message")
-    String message();
+    @ClassName("message-container")
+    String messageContainer();
 
     @ClassName("message-opened")
     String messageOpened();
 
-    @ClassName("message-header")
-    String messageHeader();
+    @ClassName("message-buttons-container")
+    String messageButtonsContainer();
 
     @ClassName("message-body")
     String messageBody();

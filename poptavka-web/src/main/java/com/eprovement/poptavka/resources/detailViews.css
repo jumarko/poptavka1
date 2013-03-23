@@ -46,7 +46,7 @@
 }
 .detail-block {
     float: left;
-    margin: 15px 0 0;
+    margin: 0;
     padding: 0;
 
 }
@@ -57,11 +57,6 @@
 
 .detail-block .span12 {
     min-height: 25px;
-}
-
-.detail-block div {
-    float: left;
-    line-height: 20px;
 }
 
 .detail-block .detail-header {
@@ -77,6 +72,7 @@
 
 .detail-block .gwt-Label {
     color: #6f6b59;
+    line-height: 30px;
 }
 
 .detail-strong {
@@ -120,10 +116,14 @@
     background: #ffffff;
     border: 1px solid #d0cdc1;
     border-top: 1px solid #e8e3d2;
-    float: left;
+    /*float: left; */
     border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     -webkit-border-radius: 0 0 4px 4px;
+}
+
+.conversation-container .container-fluid {
+    padding: 0;
 }
 
 .conversation-block {
@@ -134,14 +134,11 @@
 
 .conversation-detail {
     border-top: 1px solid #f2efe7;
-    padding: 10px 10px 10px 30px;
+    padding: 20px 30px;
+    cursor: pointer;
 }
 
-.conversation-detail-green {
-    background: none;
-}
-
-.conversation-detail-red {
+.conversation-detail-green, .conversation-detail-red {
     background: none;
 }
 
@@ -178,24 +175,32 @@
 }
 
 /* messages */
-
-.message {
+.message-container {
     margin: 0;
+    padding: 20px 30px; 
 }
 
+.message-container .conversation-input {
+    border: 1px solid #d2c9a9;
+    background: #f8f4e4;
+}
+
+.message-container .conversation-input:focus {
+    border: 1px solid #d2c9a9;
+    box-shadow: 0 1px 1px #ddd5b9 inset, 0 0 8px #ddd5b9;
+}
 .message-opened {
     padding-bottom: 2px;
     margin-bottom: 20px;
 }
 
-.message-header {
-    background-color: white;
+.message-buttons-container {    
     cursor: pointer;
     cursor: hand;
     border-radius: 5px;
     display: block;
-    float: left;    
-    margin: 10px 7px 10px 29px;
+    float: left;
+    padding: 10px 7px 10px 29px;
     -webkit-box-top-left-radius: 7px;
     -webkit-box-top-right-radius: 7px;
     -moz-border-topleft-radius: 7px;
@@ -253,7 +258,7 @@
 
 .reply-button:hover {	
     color: #ffffff;
-    box-shadow: 0 0 5px #b6f41e;
+    box-shadow: 0 0 5px #42be0b;
     text-decoration: none;
 }
 
@@ -275,7 +280,7 @@
 
 .close-button:hover {
     color: #ffffff;
-    box-shadow: 0 0 5px #cccccc;
+    box-shadow: 0 0 5px #bbbbbb;
     text-decoration: none;
 }
 
@@ -284,17 +289,21 @@
     max-width: 100%;
     font-family: inherit;
     min-height: 100px;
-    padding: 5px;
+    padding: 5px 15px;
     color: #333333;
     margin-bottom: 10px;
+    border: 1px solid #d2c9a9;
+    background: #f8f4e4;
 }
 
 .messages-mine {
     background-color:#FFFF99;
+    line-height: 20px;
 }
 
 .messages-received {
     background-color:#CCFF99;
+    line-height: 20px;
 }
 
 .message-unread {

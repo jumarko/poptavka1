@@ -15,39 +15,37 @@
         }
     </ui:style>
 
-    <g:HTMLPanel styleName="{res.detailViews.wrapper}">
-        <div class="{res.detailViews.message}">
-            <div ui:field="messagePanel" class='{res.detailViews.conversationDetail}'>
-                <div class='{res.detailViews.conversationLeftBlock}'>
-                    <g:Label ui:field='sender' styleName='{res.detailViews.conversationDetailHeader}'/>
-                    <g:Label ui:field='sent' styleName='{res.detailViews.conversationDetailTime}'/>
-                </div>
-                <div class='{res.detailViews.conversationDetailContent}'>
-                    <g:Label ui:field='body' />
-                </div>
+    <g:HTMLPanel styleName="{res.detailViews.wrapper}">        
+        <div ui:field="messagePanel" class='{res.detailViews.conversationDetail}'>
+            <div class='{res.detailViews.conversationLeftBlock}'>
+                <g:Label ui:field='sender' styleName='{res.detailViews.conversationDetailHeader}'/>
+                <g:Label ui:field='sent' styleName='{res.detailViews.conversationDetailTime}'/>
             </div>
-            <div ui:field="header" class="{res.detailViews.messageHeader}">
-                <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
-                    <ui:msg key="questionResponse">Response</ui:msg>
-                </g:Anchor>
-            </div>
-            <div ui:field="messageBody" style="display: none;">
-                <!-- Message composition content -->
-                <div>
-                    <g:TextArea ui:field="replyTextArea" styleName="{res.detailViews.replyTextArea}" />
-                    <g:Label ui:field="errorLabelText" styleName="{style.error}" />
-                    <g:Anchor ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>
-                        <span style="cursor: pointer; cursor: hand;">
-                            <ui:msg key="commonBtnSubmit">Submit</ui:msg>
-                        </span>
-                    </g:Anchor>
-                    <g:Anchor ui:field="cancelBtn" styleName='{res.detailViews.replyButton}'>
-                        <span style="cursor: pointer; cursor: hand;">
-                            <ui:msg key="commonBtnClose">Close</ui:msg>
-                        </span>
-                    </g:Anchor>
-                </div>
+            <div class='{res.detailViews.conversationDetailContent}'>
+                <g:Label ui:field='body' />
             </div>
         </div>
+        <div ui:field="header" class="{res.detailViews.messageButtonsContainer}">
+            <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
+                <ui:msg key="questionResponse">Response</ui:msg>
+            </g:Anchor>
+        </div>
+        <div ui:field="messageBody" style="display: none;">
+            <!-- Message composition content -->
+            <div>
+                <g:TextArea ui:field="replyTextArea" styleName="{res.detailViews.replyTextArea}" />
+                <g:Label ui:field="errorLabelText" styleName="{style.error}" />
+                <g:Anchor ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>
+                    <span style="cursor: pointer; cursor: hand;">
+                        <ui:msg key="commonBtnSubmit">Submit</ui:msg>
+                    </span>
+                </g:Anchor>
+                <g:Anchor ui:field="cancelBtn" styleName='{res.detailViews.replyButton}'>
+                    <span style="cursor: pointer; cursor: hand;">
+                        <ui:msg key="commonBtnClose">Close</ui:msg>
+                    </span>
+                </g:Anchor>
+            </div>
+        </div>        
     </g:HTMLPanel>
 </ui:UiBinder>

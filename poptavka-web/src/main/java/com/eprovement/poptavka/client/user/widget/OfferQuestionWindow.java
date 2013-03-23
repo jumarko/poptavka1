@@ -205,7 +205,8 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
             cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
         }
-        messagePanel.setStyleName(cssBall);
+        //TODO: Martin refactoring
+        //messagePanel.addStyleName(cssBall);
         sender.addStyleName(cssColor);
 
         messagePanel.setVisible(true);
