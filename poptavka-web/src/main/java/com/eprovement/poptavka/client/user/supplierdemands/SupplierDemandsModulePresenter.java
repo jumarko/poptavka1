@@ -40,6 +40,8 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
         void setContent(IsWidget contentWidget);
 
+        void supplierMenuStyleChange(int loadedWidget);
+
         IsWidget getWidgetView();
     }
 
@@ -167,26 +169,7 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /**************************************************************************/
     /* Client Demands MENU                                                    */
     /**************************************************************************/
-    public void onSelectSupplierDemandsMenu(int loadedWidget) {
-        //TODO RELEASE Martin/Jaro null replace with CSS style - e.g. Storage.RSCS.clientDemandsButtonSelected()
-        switch (loadedWidget) {
-            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
-                view.getSupplierNewDemandsButton().setStyleName("");
-                break;
-            case Constants.SUPPLIER_OFFERS:
-                view.getSupplierOffersButton().setStyleName("");
-                break;
-            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
-                view.getSupplierAssignedDemandsButton().setStyleName("");
-                break;
-            case Constants.SUPPLIER_CLOSED_DEMANDS:
-                view.getSupplierClosedDemandsButton().setStyleName("");
-                break;
-            case Constants.SUPPLIER_RATINGS:
-                view.getSupplierRatingsButton().setStyleName("");
-                break;
-            default:
-                break;
-        }
+    public void onSupplierMenuStyleChange(int loadedWidget) {
+        view.supplierMenuStyleChange(loadedWidget);
     }
 }

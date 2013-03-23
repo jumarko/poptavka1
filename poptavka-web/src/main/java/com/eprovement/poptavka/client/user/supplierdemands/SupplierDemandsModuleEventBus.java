@@ -237,5 +237,5 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* Client Demands MENU                                                    */
     /**************************************************************************/
     @Event(handlers = SupplierDemandsModulePresenter.class)
-    void selectSupplierDemandsMenu(int loadedWidget);
+    void supplierMenuStyleChange(int loadedWidget);
 }
