@@ -33,6 +33,7 @@ import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
@@ -351,6 +352,12 @@ public interface RootEventBus extends EventBusWithLookup {
     void initEmailDialogPopup();
 
     /**************************************************************************/
+    /* ACTION BOX.                                                            */
+    /**************************************************************************/
+    @Event(handlers = RootPresenter.class)
+    void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);
+
+    /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     /**************************************************************************/
@@ -424,6 +431,10 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     @Event(handlers = RootHandler.class)
     void requestReadStatusUpdate(List<Long> userMessageIds, boolean isRead);
+
+    @Event(handlers = RootHandler.class)
+    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
     /**
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.

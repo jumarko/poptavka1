@@ -40,6 +40,8 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 
+    void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
+
     void sendQuestionMessage(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
     void sendOfferMessage(OfferMessageDetail offerMessageToSend, AsyncCallback<MessageDetail> callback);

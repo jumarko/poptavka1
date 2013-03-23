@@ -6,8 +6,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -36,9 +34,7 @@ public class SupplierOffersView extends Composite
     /**************************************************************************/
     @UiField(provided = true) UniversalTableGrid dataGrid;
     @UiField(provided = true) UniversalPagerWidget pager;
-    @UiField DropdownButton actionBox;
-    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
-    @UiField SimplePanel detailPanel;
+    @UiField SimplePanel detailPanel, actionBox;
     @UiField HorizontalPanel toolBar;
     @UiField Label tableNameLabel;
 
@@ -82,35 +78,14 @@ public class SupplierOffersView extends Composite
         return pager.getPager();
     }
 
-    //Action box
-    @Override
-    public DropdownButton getActionBox() {
-        return actionBox;
-    }
-
-    @Override
-    public NavLink getActionRead() {
-        return actionRead;
-    }
-
-    @Override
-    public NavLink getActionUnread() {
-        return actionUnread;
-    }
-
-    @Override
-    public NavLink getActionStar() {
-        return actionStar;
-    }
-
-    @Override
-    public NavLink getActionUnstar() {
-        return actionUnstar;
-    }
-
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
+    }
+
+    @Override
+    public SimplePanel getActionBox() {
+        return actionBox;
     }
 
     //Widget view

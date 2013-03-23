@@ -88,7 +88,7 @@ public class ClientDemandsModuleView extends Composite
                 clientRatingMenuStyleChange();
                 break;
             default:
-                clientDemandsMenuStyleChange();
+                removeMenuStyleChange();
                 break;
         }
     }
@@ -96,6 +96,14 @@ public class ClientDemandsModuleView extends Composite
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
+    private void removeMenuStyleChange() {
+        clientNewDemands.removeStyleName(Constants.ACT);
+        clientOffers.removeStyleName(Constants.ACT);
+        clientAssignedDemands.removeStyleName(Constants.ACT);
+        clientClosedDemands.removeStyleName(Constants.ACT);
+        clientRatings.removeStyleName(Constants.ACT);
+    }
+
     private void clientDemandsMenuStyleChange() {
         clientOffers.removeStyleName(Constants.ACT);
         clientAssignedDemands.removeStyleName(Constants.ACT);

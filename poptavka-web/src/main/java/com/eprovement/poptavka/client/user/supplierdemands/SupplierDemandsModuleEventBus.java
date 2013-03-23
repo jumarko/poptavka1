@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierRatin
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
@@ -20,6 +21,7 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDe
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -139,6 +141,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(forwardToParent = true)
     void setExtendedFooterStyle();
+
+    @Event(forwardToParent = true)
+    void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);
 
     /**************************************************************************/
     /* Business events handled by SupplierDemandsModulePresenter.             */

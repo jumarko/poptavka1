@@ -86,7 +86,7 @@ public class SupplierDemandsModuleView extends Composite
                 supplierRatingMenuStyleChange();
                 break;
             default:
-                supplierDemandsMenuStyleChange();
+                removeMenuStyleChange();
                 break;
         }
     }
@@ -94,6 +94,14 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
+    private void removeMenuStyleChange() {
+        supplierDemands.removeStyleName(Constants.ACT);
+        supplierOffers.removeStyleName(Constants.ACT);
+        supplierAssignedDemands.removeStyleName(Constants.ACT);
+        supplierClosedDemands.removeStyleName(Constants.ACT);
+        supplierRatings.removeStyleName(Constants.ACT);
+    }
+
     private void supplierDemandsMenuStyleChange() {
         supplierOffers.removeStyleName(Constants.ACT);
         supplierAssignedDemands.removeStyleName(Constants.ACT);
