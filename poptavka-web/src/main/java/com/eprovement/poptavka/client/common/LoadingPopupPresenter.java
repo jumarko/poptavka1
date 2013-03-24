@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.root.RootEventBus;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -40,10 +39,6 @@ public class LoadingPopupPresenter
 
     public void show(String message) {
         view.getWidget().show(message);
-    }
-
-    public void show(String message, Widget anchor) {
-        view.getWidget().show(message, anchor);
     }
 
     public void hide() {

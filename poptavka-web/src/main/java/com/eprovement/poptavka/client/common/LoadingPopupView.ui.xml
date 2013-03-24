@@ -1,15 +1,20 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
-    <g:HorizontalPanel>
-        <cm:SimpleIconLabel ui:field='loader' popupEnabled="false" />
-        <g:VerticalPanel>
-            <g:Label ui:field='loadingMessage'></g:Label>
-            <g:Anchor ui:field="reportAnchor" styleName="font-size:1.0em">
-                <ui:msg key="commonBtnReport">report problem</ui:msg>
-            </g:Anchor>
-        </g:VerticalPanel>
-    </g:HorizontalPanel>
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <g:HTMLPanel>
+        <b:Modal ui:field="modal" addStyleNames='{res.common.loginModal}'>
+            <cm:SimpleIconLabel ui:field='loader' popupEnabled="false" />
+            <g:VerticalPanel>
+                <g:Label ui:field='loadingMessage'></g:Label>
+                <g:Anchor ui:field="reportAnchor" styleName="font-size:1.0em">
+                    <ui:msg key="commonBtnReport">report problem</ui:msg>
+                </g:Anchor>
+            </g:VerticalPanel>
+        </b:Modal>
+    </g:HTMLPanel>
 </ui:UiBinder>

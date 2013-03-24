@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -192,13 +191,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             loading = eventBus.addHandler(LoadingPopupPresenter.class);
         }
         loading.show(loadingMessage);
-    }
-
-    public void onLoadingShowWithAnchor(String loadingMessage, Widget anchor) {
-        if (loading == null) {
-            loading = eventBus.addHandler(LoadingPopupPresenter.class);
-        }
-        loading.show(loadingMessage, anchor);
     }
 
     public void onLoadingHide() {
