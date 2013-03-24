@@ -228,7 +228,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
         for (Long userMessageId : userMessageIds) {
-            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
+            UserMessage userMessage = userMessageService.getById(userMessageId);
             userMessage.setStarred(isStarred);
             this.userMessageService.update(userMessage);
         }

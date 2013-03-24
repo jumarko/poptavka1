@@ -193,12 +193,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     //Requesters
     //--------------------------------------------------------------------------
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
-
-    @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
-
-    @Event(handlers = SupplierDemandsModuleHandler.class)
     void requestFinishOffer(long offerId);
 
     @Event(handlers = SupplierDemandsModuleHandler.class)

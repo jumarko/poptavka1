@@ -66,10 +66,6 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
-
-    void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
-
     void finishOffer(long offerId, AsyncCallback<MessageDetail> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
