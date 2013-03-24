@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.common.actionBox.ActionBoxView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
@@ -20,6 +21,7 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -116,6 +118,8 @@ public class ClientDemandsPresenter
         addDemandTableSelectionHandler();
         addConversationGridSelectionModelHandler();
         // Field Updaters
+        addCheckHeaderUpdater();
+        addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
         // RowStyles
         addDemandGridRowStyles();
@@ -378,6 +382,30 @@ public class ClientDemandsPresenter
 
     /** Field updater. **/
     //--------------------------------------------------------------------------
+    public void addCheckHeaderUpdater() {
+        view.getConversationGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
+            @Override
+            public void update(Boolean value) {
+                List<IUniversalDetail> rows = view.getConversationGrid().getVisibleItems();
+                for (IUniversalDetail row : rows) {
+                    ((MultiSelectionModel) view.getConversationGrid()
+                            .getSelectionModel()).setSelected(row, value);
+                }
+            }
+        });
+    }
+
+    public void addStarColumnFieldUpdater() {
+        view.getConversationGrid().getStarColumn().setFieldUpdater(
+                new FieldUpdater<IUniversalDetail, Boolean>() {
+                @Override
+                public void update(int index, IUniversalDetail object, Boolean value) {
+                    object.setIsStarred(!value);
+                    view.getConversationGrid().redrawRow(index);
+                    ((ActionBoxView) view.getActionBox().getWidget()).getActionStar().getScheduledCommand().execute();
+                }
+            });
+    }
     /**
      * Show and loads detail section. Show after clicking on certain columns that
      * have defined this fieldUpdater.

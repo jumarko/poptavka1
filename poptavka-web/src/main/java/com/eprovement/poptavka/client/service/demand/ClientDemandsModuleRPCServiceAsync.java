@@ -86,12 +86,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead,
-            AsyncCallback<Void> callback);
-
-    void setMessageStarStatus(List<Long> list, boolean newStatus,
-            AsyncCallback<Void> callback);
-
     void acceptOffer(long offerId, AsyncCallback<Void> callback);
 
     /**************************************************************************/

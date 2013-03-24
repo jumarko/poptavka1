@@ -61,8 +61,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -722,16 +720,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return messageDetailImpls;
     }
 
-    /**************************************************************************/
-    /* Setter methods                                                         */
-    /**************************************************************************/
-    /**
-     * COMMON. Change 'read' status of sent messages to chosen value
-     */
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
+    private void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
             ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
@@ -740,20 +729,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         }
     }
 
-    /**
-     * COMMON. Change 'star' status of sent messages to chosen value
-     */
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException,
-            ApplicationSecurityException {
-        for (Long userMessageId : userMessageIds) {
-            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
-            userMessage.setStarred(isStarred);
-            this.userMessageService.update(userMessage);
-        }
-    }
-
+    /**************************************************************************/
+    /* Setter methods                                                         */
+    /**************************************************************************/
     /**
      * Accept selected offer and decline other offers and change demand state to ASSIGNED.
      *

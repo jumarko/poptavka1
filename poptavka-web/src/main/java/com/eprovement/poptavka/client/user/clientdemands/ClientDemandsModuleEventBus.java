@@ -229,12 +229,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
     void requestAcceptOffer(long offerid);
 
     @Event(handlers = ClientDemandsModuleHandler.class)

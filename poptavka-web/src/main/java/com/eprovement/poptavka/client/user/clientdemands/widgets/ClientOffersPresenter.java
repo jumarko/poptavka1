@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.common.actionBox.ActionBoxView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
@@ -32,7 +33,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.Arrays;
 import java.util.List;
 
 @Presenter(view = ClientOffersView.class, multiple = true)
@@ -324,9 +324,8 @@ public class ClientOffersPresenter
                 @Override
                 public void update(int index, IUniversalDetail object, Boolean value) {
                     object.setIsStarred(!value);
-                    view.getOfferGrid().redraw();
-                    Long[] item = new Long[]{object.getUserMessageId()};
-                    eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
+                    view.getDemandGrid().redrawRow(index);
+                    ((ActionBoxView) view.getActionBox().getWidget()).getActionStar().getScheduledCommand().execute();
                 }
             });
     }

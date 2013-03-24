@@ -269,37 +269,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Other                                                                  */
     /**************************************************************************/
-    /**
-     * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
-     *
-     * @param selectedIdList list of demands which read status should be changed
-     * @param newStatus of demandList
-     */
-    public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        clientDemandsService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
-            @Override
-            public void onSuccess(Void result) {
-                //Empty by default
-            }
-        });
-    }
-
-    /**
-     * Changes demands star status. Changes are displayed immediately on frontend. No onSuccess code is needed.
-     *
-     * @param userMessageIdList list od demands which star status should be changed
-     * @param newStatus of demandList
-     */
-    public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        clientDemandsService.setMessageStarStatus(userMessageIdList, newStatus,
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        //Empty by default
-                    }
-                });
-    }
-
     public void onRequestCloseAndRateSupplier(final long demandID, final long offerID, final Integer supplierRating,
             final String supplierMessage) {
         clientDemandsService.closeDemandAndEnterFeedbackForSupplier(demandID, offerID, supplierRating, supplierMessage,
