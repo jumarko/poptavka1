@@ -49,8 +49,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierDemandsModulePresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/
@@ -97,6 +95,15 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* Parent events */
     /**************************************************************************/
     @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
+    @Event(forwardToParent = true)
+    void setFooter(SimplePanel footerHolder);
+
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
+    @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
@@ -113,9 +120,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);

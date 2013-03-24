@@ -55,6 +55,8 @@ public class SettingsPresenter
         /** Getters. **/
         SimplePanel getContentPanel();
 
+        SimplePanel getFooterHolder();
+
         Button getUpdateButton();
 
         Button getMenuUserBtn();
@@ -86,6 +88,7 @@ public class SettingsPresenter
      */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
+        eventBus.setFooter(view.getFooterHolder());
         view.initWidgetDefaults();
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();

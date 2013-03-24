@@ -19,10 +19,9 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     interface AdminModuleViewUiBinder extends UiBinder<Widget, AdminView> {
     }
     private static final Logger LOGGER = Logger.getLogger(AdminView.class.getName());
-    @UiField
-    SimplePanel contentPanel;
-    @UiField
-    Button newDemandsBtn;
+    @UiField SimplePanel contentPanel;
+    @UiField Button newDemandsBtn;
+    @UiField SimplePanel footerHolder;
     //TODO LATER Martin - finnish admin interface for other tables
     //Temporary initialzie manually because in uiBinder are those buttons commented
     Button demandsButton = new Button();
@@ -127,5 +126,10 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     @Override
     public SimplePanel getContentPanel() {
         return contentPanel;
+    }
+
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
     }
 }

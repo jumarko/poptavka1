@@ -52,11 +52,18 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModulePresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
+    @Event(forwardToParent = true)
+    void setFooter(SimplePanel footerHolder);
+
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 
@@ -139,9 +146,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);

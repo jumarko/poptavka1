@@ -41,8 +41,6 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(handlers = SettingsPresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -56,6 +54,12 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
+    @Event(forwardToParent = true)
+    void setFooter(SimplePanel footerHolder);
+
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 

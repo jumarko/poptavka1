@@ -34,7 +34,7 @@ public class SettingsView extends Composite implements
     @UiField
     Button menuUserBtn, menuClientBtn, menuSupplierBtn, menuSystemBtn;
     @UiField
-    SimplePanel contentPanel;
+    SimplePanel contentPanel, footerHolder;
     @UiField
     Button updateButton;
     @UiField
@@ -134,6 +134,11 @@ public class SettingsView extends Composite implements
     @Override
     public SimplePanel getContentPanel() {
         return contentPanel;
+    }
+
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
     }
 
     /** BUTTONS. **/

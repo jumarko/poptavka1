@@ -20,7 +20,7 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField SimplePanel contentPanel;
+    @UiField SimplePanel contentPanel, footerHolder;
     @UiField Button supplierDemands, supplierOffers, supplierAssignedDemands, supplierClosedDemands, supplierRatings;
 
     /**************************************************************************/
@@ -148,6 +148,11 @@ public class SupplierDemandsModuleView extends Composite
     @Override
     public Button getSupplierRatingsButton() {
         return supplierRatings;
+    }
+
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
     }
 
     @Override

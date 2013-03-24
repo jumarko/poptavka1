@@ -1,6 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
@@ -93,7 +95,18 @@
                 </g:north>
                 <g:center>
                     <g:ScrollPanel>
-                        <g:SimplePanel ui:field="contentPanel" />
+                        <b:FluidContainer>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:SimplePanel ui:field="contentPanel" />
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:SimplePanel ui:field="footerHolder"/>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:FluidContainer>
                     </g:ScrollPanel>
                 </g:center>
             </g:DockLayoutPanel>

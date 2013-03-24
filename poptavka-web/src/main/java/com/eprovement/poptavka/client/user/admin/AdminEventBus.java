@@ -72,8 +72,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(handlers = AdminPresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -89,6 +87,15 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
+    @Event(forwardToParent = true)
+    void setFooter(SimplePanel footerHolder);
+
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 
@@ -114,9 +121,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(forwardToParent = true)
     void loginFromSession(int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)
     void setExtendedFooterStyle();

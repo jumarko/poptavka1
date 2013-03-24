@@ -21,7 +21,7 @@ public class ClientDemandsModuleView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField SimplePanel contentPanel;
+    @UiField SimplePanel contentPanel, footerHolder;
     @UiField Button clientNewDemands, clientOffers, clientAssignedDemands, clientClosedDemands, clientRatings;
 
     /**************************************************************************/
@@ -145,6 +145,11 @@ public class ClientDemandsModuleView extends Composite
     @Override
     public SimplePanel getContentPanel() {
         return contentPanel;
+    }
+
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
     }
 
     @Override

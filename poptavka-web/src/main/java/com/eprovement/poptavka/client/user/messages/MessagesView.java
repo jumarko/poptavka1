@@ -20,7 +20,7 @@ public class MessagesView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField SimplePanel contentPanel;
+    @UiField SimplePanel contentPanel, footerHolder;
     @UiField Button menuMessagesInboxBtn;
 
     /**************************************************************************/
@@ -39,6 +39,11 @@ public class MessagesView extends Composite
     @Override
     public SimplePanel getContentPanel() {
         return contentPanel;
+    }
+
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
     }
 
     /** Buttons. **/
