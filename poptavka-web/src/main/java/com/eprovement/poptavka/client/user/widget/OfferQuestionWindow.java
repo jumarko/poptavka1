@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.widget;
 
 import com.eprovement.poptavka.client.common.BigDecimalBox;
+import com.eprovement.poptavka.client.common.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -16,9 +17,10 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Mixed widget for sending offer as well for asking questions.
@@ -40,15 +42,12 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     public static final int RESPONSE_QUESTION = 1;
     public static final String EMPTY = "";
     /** UiBinder attributes. **/
+    @UiField(provided = true) ValidationMonitor bodyMonitor, priceMonitor, finishDateMonitor;
     @UiField Anchor offerReplyBtn, questionReplyBtn;
     @UiField Anchor submitBtn, cancelBtn;
-    @UiField TextArea replyTextArea;
-    @UiField BigDecimalBox priceBox;
-    @UiField DateBox dateBox;
     @UiField HTMLPanel header, messagePanel;
     @UiField FluidContainer messageBody;
-    @UiField FluidRow priceRow, finnishDateRow;
-    @UiField Label errorLabelText, errorLabelPrice, errorLabelDate;
+    @UiField FluidRow priceRow, finishDateRow;
     @UiField Label sender, sent, body;
     /** Class attributes. **/
     private int selectedResponse;
@@ -58,10 +57,22 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     public OfferQuestionWindow() {
-        Storage.RSCS.detailViews().ensureInjected();
+        initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
         offerReplyBtn.setVisible(false);
+
+        Storage.RSCS.detailViews().ensureInjected();
     }
+
+    private void initValidationMonitors() {
+        bodyMonitor = new ValidationMonitor<OfferMessageDetail>(
+                OfferMessageDetail.class, OfferMessageDetail.MessageField.BODY.getValue());
+        priceMonitor = new ValidationMonitor<OfferMessageDetail>(
+                OfferMessageDetail.class, OfferMessageDetail.MessageField.PRICE.getValue());
+        finishDateMonitor = new ValidationMonitor<OfferMessageDetail>(
+                OfferMessageDetail.class, OfferMessageDetail.MessageField.FINISH_DATE.getValue());
+    }
+
 
     /**************************************************************************/
     /* UiHandlers                                                             */
@@ -92,7 +103,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         header.setVisible(false);
         messageBody.setVisible(true);
         priceRow.setVisible(true);
-        finnishDateRow.setVisible(true);
+        finishDateRow.setVisible(true);
     }
 
     public void setSendingQuestionStyle() {
@@ -104,17 +115,16 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         header.setVisible(true);
         messageBody.setVisible(false);
         priceRow.setVisible(false);
-        finnishDateRow.setVisible(false);
-        replyTextArea.setText(EMPTY);
+        finishDateRow.setVisible(false);
+        ((BigDecimalBox) priceMonitor.getWidget()).setText(EMPTY);
+        ((DateBox) finishDateMonitor.getWidget()).getTextBox().setText(EMPTY);
+        bodyMonitor.setValue(EMPTY);
     }
 
     private void resetValidationStyles() {
-        replyTextArea.removeStyleName(Storage.RSCS.common().errorField());
-        errorLabelText.setText(EMPTY);
-        priceBox.removeStyleName(Storage.RSCS.common().errorField());
-        errorLabelPrice.setText(EMPTY);
-        dateBox.removeStyleName(Storage.RSCS.common().errorField());
-        errorLabelDate.setText(EMPTY);
+        bodyMonitor.reset();
+        priceMonitor.reset();
+        finishDateMonitor.reset();
     }
 
     public void allowSendingOffer() {
@@ -126,15 +136,15 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     public MessageDetail getCreatedMessage() {
         MessageDetail message = new MessageDetail();
-        message.setBody(replyTextArea.getText());
+        message.setBody((String) bodyMonitor.getValue());
         return message;
     }
 
     public OfferMessageDetail getCreatedOfferMessage() {
         OfferMessageDetail offerMessageDetailImpl = new OfferMessageDetail();
-        offerMessageDetailImpl.setPrice(priceBox.getValue());
-        offerMessageDetailImpl.setOfferFinishDate(dateBox.getValue());
-        offerMessageDetailImpl.setBody(replyTextArea.getText());
+        offerMessageDetailImpl.setPrice((BigDecimal) priceMonitor.getValue());
+        offerMessageDetailImpl.setFinishDate((Date) finishDateMonitor.getValue());
+        offerMessageDetailImpl.setBody((String) bodyMonitor.getValue());
         return offerMessageDetailImpl;
     }
 
@@ -155,33 +165,12 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
 
     @Override
     public boolean isValid() {
-        resetValidationStyles();
-        int errorCount = 0;
-        if (replyTextArea.getText().isEmpty()) {
-            replyTextArea.addStyleName(Storage.RSCS.common().errorField());
-            errorLabelText.setText(Storage.VMSGS.messageNotEmptyBody());
-            errorCount++;
-        }
+        boolean valid = bodyMonitor.isValid();
         if (selectedResponse == RESPONSE_OFFER) {
-            if (priceBox.getText().isEmpty()) {
-                priceBox.addStyleName(Storage.RSCS.common().errorField());
-                errorLabelPrice.setText(Storage.VMSGS.messageNotEmptyPrice());
-                errorCount++;
-            }
-            try {
-                priceBox.getValue();
-            } catch (NumberFormatException ex) {
-                priceBox.addStyleName(Storage.RSCS.common().errorField());
-                errorLabelPrice.setText(Storage.VMSGS.messageInvalidPrice());
-                errorCount++;
-            }
-            if (dateBox.getValue() == null) {
-                priceBox.addStyleName(Storage.RSCS.common().errorField());
-                errorLabelDate.setText(Storage.VMSGS.messageNotEmptyDate());
-                errorCount++;
-            }
+            valid = priceMonitor.isValid() && valid;
+            valid = finishDateMonitor.isValid() && valid;
         }
-        return errorCount == 0;
+        return valid;
     }
 
     public Widget getWidgetView() {

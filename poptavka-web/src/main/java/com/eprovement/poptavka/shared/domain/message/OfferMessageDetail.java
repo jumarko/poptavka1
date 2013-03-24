@@ -1,61 +1,105 @@
 package com.eprovement.poptavka.shared.domain.message;
 
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
 
+public class OfferMessageDetail implements IsSerializable {
 
-public class OfferMessageDetail extends DemandMessageDetail implements IsSerializable {
+    public enum MessageField {
+
+        BODY("body"),
+        PRICE("price"),
+        FINISH_DATE("finishDate");
+
+        private MessageField(String value) {
+            this.value = value;
+        }
+        private String value;
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    /**************************************************************************/
+    /* Attibutes                                                              */
+    /**************************************************************************/
+    private long senderId;
+    private long parentId;
     private long supplierId;
-    private long offerId;
-    private String supplierName;
-    private OfferStateType offerState;
-    private Date offerFinishDate;
+    private long threadRootId;
+    @NotBlank(message = "{messageNotBlankBody}")
+    @Size(min = 10, message = "{messageSizeBody}")
+    private String body;
+    @NotNull(message = "{messageNotNullPrice}")
+    @Min(value = 0, message = "{messageMinPrice}")
+    private BigDecimal price;
+    @NotNull(message = "{messageNotNullFinishDate}")
+    @Future(message = "{messageFutureFinishDate}")
+    private Date finishDate;
 
+    /**************************************************************************/
+    /* Getters & Setters pairs                                                */
+    /**************************************************************************/
+    public long getSenderId() {
+        return senderId;
+    }
 
-    public void setSupplierId(long supplierId) {
-        this.supplierId = supplierId;
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
+    }
+
+    public long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
     }
 
     public long getSupplierId() {
         return supplierId;
     }
 
-    public void setOfferId(long offerId) {
-        this.offerId = offerId;
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
     }
 
-    public long getOfferId() {
-        return offerId;
+    public long getThreadRootId() {
+        return threadRootId;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setThreadRootId(long threadRootId) {
+        this.threadRootId = threadRootId;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public void setOfferState(OfferStateType offerState) {
-        this.offerState = offerState;
+    public String getBody() {
+        return body;
     }
 
-    public String getOfferState() {
-        return offerState.getValue();
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    /**
-     * @return the offerFinishDate
-     */
-    public Date getOfferFinishDate() {
-        return offerFinishDate;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    /**
-     * @param offerFinishDate the offerFinishDate to set
-     */
-    public void setOfferFinishDate(Date offerFinishDate) {
-        this.offerFinishDate = offerFinishDate;
+    public Date getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(Date offerFinishDate) {
+        this.finishDate = offerFinishDate;
     }
 }

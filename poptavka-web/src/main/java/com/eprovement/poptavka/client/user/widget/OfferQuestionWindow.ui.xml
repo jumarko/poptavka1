@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:bd="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
@@ -17,8 +17,9 @@
                     <b:Column size="12">
                         <b:FluidRow>                        
                             <b:Column size="12">
-                                <g:TextArea ui:field="replyTextArea" styleName="{res.detailViews.replyTextArea} conversation-input" />
-                                <g:Label ui:field="errorLabelText" />
+                                <cm:ValidationMonitor ui:field="bodyMonitor">
+                                    <g:TextArea styleName="{res.detailViews.replyTextArea} conversation-input" />
+                                </cm:ValidationMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow ui:field="priceRow">
@@ -28,19 +29,21 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <bd:BigDecimalBox ui:field="priceBox" styleName='conversation-input' />
-                                <g:Label ui:field="errorLabelPrice" />
+                                <cm:ValidationMonitor ui:field="priceMonitor">
+                                    <cm:BigDecimalBox styleName='conversation-input' />
+                                </cm:ValidationMonitor>
                             </b:Column>
                         </b:FluidRow>
-                        <b:FluidRow ui:field="finnishDateRow">
+                        <b:FluidRow ui:field="finishDateRow">
                             <b:Column size="2">
                                 <g:Label>
                                     <ui:msg key="formFinishDate">Finish Date</ui:msg>
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <p1:DateBox ui:field="dateBox" styleName='conversation-input' />
-                                <g:Label ui:field="errorLabelDate" />
+                                <cm:ValidationMonitor ui:field="finishDateMonitor">
+                                    <p1:DateBox styleName='conversation-input' />
+                                </cm:ValidationMonitor>
                             </b:Column>
                         </b:FluidRow>
                     </b:Column>

@@ -279,7 +279,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         generalService.save(demand);
         Offer offer = new Offer();
         offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
-        offer.setFinishDate(offerMessageToSend.getOfferFinishDate());
+        offer.setFinishDate(offerMessageToSend.getFinishDate());
         offer.setPrice(offerMessageToSend.getPrice());
         offer.setState(generalService.find(OfferState.class, 2L));
         offer.setDemand(message.getDemand());
