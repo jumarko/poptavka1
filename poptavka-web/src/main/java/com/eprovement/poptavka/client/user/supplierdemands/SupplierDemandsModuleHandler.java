@@ -187,38 +187,6 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     //*************************************************************************/
     // Other                                                                    */
     //*************************************************************************/
-    /**
-     * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
-     *
-     * @param selectedIdList list of demands which read status should be changed
-     * @param newStatus of demandList
-     */
-    public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        supplierDemandsService.setMessageReadStatus(selectedIdList, newStatus,
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        //Empty by default
-                    }
-                });
-    }
-
-    /**
-     * Changes demands star status. Changes are displayed immediately on frontend. No onSuccess code is needed.
-     *
-     * @param userMessageIdList list od demands which star status should be changed
-     * @param newStatus of demandList
-     */
-    public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        supplierDemandsService.setMessageStarStatus(userMessageIdList, newStatus,
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        //Empty by default
-                    }
-                });
-    }
-
     public void onRequestFinishOffer(long offerId) {
         supplierDemandsService.finishOffer(offerId, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override

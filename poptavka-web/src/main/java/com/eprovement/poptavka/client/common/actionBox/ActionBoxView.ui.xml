@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <g:MenuBar vertical="false">
+        <g:MenuItem>
+            <ui:msg key="commonListDefault">Action</ui:msg>
+            <g:MenuBar vertical="true">
+                <g:MenuItem ui:field="actionRead">
+                    <ui:msg key="commonListRead">read</ui:msg>
+                </g:MenuItem>
+                <g:MenuItem ui:field="actionUnread">
+                    <ui:msg key="commonListUnread">unread</ui:msg>
+                </g:MenuItem>
+                <g:MenuItem ui:field="actionStar">
+                    <ui:msg key="commonListStarred">star</ui:msg>
+                </g:MenuItem>
+                <g:MenuItem ui:field="actionUnstar">
+                    <ui:msg key="listUnstarred">unstar</ui:msg>
+                </g:MenuItem>
+            </g:MenuBar>
+        </g:MenuItem>
+    </g:MenuBar>
+</ui:UiBinder>

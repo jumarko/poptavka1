@@ -97,6 +97,22 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     /**
+     * Changes demands star status. Changes are displayed immediately on frontend. No onSuccess code is needed.
+     *
+     * @param userMessageIdList list od demands which star status should be changed
+     * @param newStatus of demandList
+     */
+    public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
+        rootService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
+            @Override
+            public void onSuccess(Void result) {
+                //Empty by default
+            }
+        });
+    }
+
+
+    /**
      * Send message. IMPORTANT: further implementation of other parts will show, if we need more than this method for
      * chat related stuff
      *

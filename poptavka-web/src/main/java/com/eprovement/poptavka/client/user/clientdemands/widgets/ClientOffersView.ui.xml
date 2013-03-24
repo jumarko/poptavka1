@@ -42,21 +42,7 @@
                         <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
                     </g:Button>
                     <g:Label ui:field="offerTableNameLabel" />
-                    <b:DropdownButton ui:field="actionBox" visible="false"
-                                      text="{msgs.commonListDefault}">
-                        <b:NavLink ui:field="actionRead">
-                            <ui:msg key="commonListRead">read</ui:msg>
-                        </b:NavLink>
-                        <b:NavLink ui:field="actionUnread">
-                            <ui:msg key="commonListUnread">unread</ui:msg>
-                        </b:NavLink>
-                        <b:NavLink ui:field="actionStar">
-                            <ui:msg key="commonListStarred">star</ui:msg>
-                        </b:NavLink>
-                        <b:NavLink ui:field="actionUnstar">
-                            <ui:msg key="listUnstarred">unstar</ui:msg>
-                        </b:NavLink>
-                    </b:DropdownButton>
+                    <g:SimplePanel ui:field="actionBox" visible="false" />
                     <s:UniversalPagerWidget ui:field='offerPager' />
                 </g:HorizontalPanel>
             </g:HorizontalPanel>

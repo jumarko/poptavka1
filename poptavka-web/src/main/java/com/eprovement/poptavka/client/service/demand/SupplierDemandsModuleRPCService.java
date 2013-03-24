@@ -160,10 +160,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
-
-    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
-
     void finishOffer(long offerId) throws RPCException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;

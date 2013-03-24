@@ -54,6 +54,8 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
 
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
+
     MessageDetail sendQuestionMessage(MessageDetail messageToSend) throws RPCException;
 
     MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException;

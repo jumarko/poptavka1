@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.root;
 
 import com.eprovement.poptavka.client.common.CommonAccessRoles;
 import com.eprovement.poptavka.client.common.LoadingPopupPresenter;
+import com.eprovement.poptavka.client.common.actionBox.ActionBoxPresenter;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -30,6 +31,7 @@ import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -50,6 +52,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private ActivationCodePopupPresenter activation = null;
     private UserRegistrationFormPresenter accountRegistrationForm = null;
     private ServicesSelectorPresenter services = null;
+    private ActionBoxPresenter actionBox;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -261,6 +264,12 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         }
         activation = eventBus.addHandler(ActivationCodePopupPresenter.class);
         activation.initActivationCodePopup(client, widgetToLoad);
+    }
+
+    public void onInitActionBox(SimplePanel holderWidget, UniversalTableGrid grid) {
+        actionBox = eventBus.addHandler(ActionBoxPresenter.class);
+        holderWidget.setWidget(actionBox.getView());
+        actionBox.initActionBox(grid);
     }
 
     // Inject widgets for user registration

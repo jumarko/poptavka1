@@ -224,6 +224,18 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     /**
+     * COMMON. Change 'star' status of sent messages to chosen value
+     */
+    @Override
+    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
+        for (Long userMessageId : userMessageIds) {
+            UserMessage userMessage = userMessageService.getById(userMessageId);
+            userMessage.setStarred(isStarred);
+            this.userMessageService.update(userMessage);
+        }
+    }
+
+    /**
      * Message sent by supplier about a query to potential demand.
      * @param questionMessageToSend
      * @return message

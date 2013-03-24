@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.common.actionBox.ActionBoxView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
@@ -19,9 +20,8 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -80,19 +80,9 @@ public class ClientDemandsPresenter
 
         Set<ClientDemandConversationDetail> getSelectedMessageList();
 
-        //Action box actions
-        DropdownButton getActionBox();
-
-        NavLink getActionRead();
-
-        NavLink getActionUnread();
-
-        NavLink getActionStar();
-
-        NavLink getActionUnstar();
-
         SimplePanel getDetailPanel();
 
+        SimplePanel getActionBox();
         IsWidget getWidgetView();
 
         // Setters
@@ -128,9 +118,9 @@ public class ClientDemandsPresenter
         addDemandTableSelectionHandler();
         addConversationGridSelectionModelHandler();
         // Field Updaters
+        addCheckHeaderUpdater();
+        addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
-        // Listbox actions
-        addActionBoxChoiceHandlers();
         // RowStyles
         addDemandGridRowStyles();
     }
@@ -141,6 +131,7 @@ public class ClientDemandsPresenter
     public void onInitClientDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         eventBus.activateClientDemands();
+        eventBus.initActionBox(view.getActionBox(), view.getConversationGrid());
         //Set visibility
         view.setConversationTableVisible(false);
         view.setDemandTableVisible(true);
@@ -331,35 +322,6 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
-    /** Action box handers. **/
-    //--------------------------------------------------------------------------
-    private void addActionBoxChoiceHandlers() {
-        view.getActionRead().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnread().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-        view.getActionStar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnstar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getConversationGrid().getSelectedUserMessageIds(), false);
-            }
-        });
-    }
-
     /** SelectionHandlers. **/
     //--------------------------------------------------------------------------
     /**
@@ -396,11 +358,7 @@ public class ClientDemandsPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //set actionBox visibility
-                if (view.getConversationGrid().getSelectedUserMessageIds().size() > 0) {
-                    view.getActionBox().setVisible(true);
-                } else {
-                    view.getActionBox().setVisible(false);
-                }
+                view.getActionBox().setVisible(view.getConversationGrid().getSelectedUserMessageIds().size() > 0);
                 //init details
                 if (view.getConversationGrid().getSelectedUserMessageIds().size() == 1) {
                     selectedConversationObject = view.getConversationGrid().getSelectedObjects().get(0);
@@ -424,6 +382,30 @@ public class ClientDemandsPresenter
 
     /** Field updater. **/
     //--------------------------------------------------------------------------
+    public void addCheckHeaderUpdater() {
+        view.getConversationGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
+            @Override
+            public void update(Boolean value) {
+                List<IUniversalDetail> rows = view.getConversationGrid().getVisibleItems();
+                for (IUniversalDetail row : rows) {
+                    ((MultiSelectionModel) view.getConversationGrid()
+                            .getSelectionModel()).setSelected(row, value);
+                }
+            }
+        });
+    }
+
+    public void addStarColumnFieldUpdater() {
+        view.getConversationGrid().getStarColumn().setFieldUpdater(
+                new FieldUpdater<IUniversalDetail, Boolean>() {
+                @Override
+                public void update(int index, IUniversalDetail object, Boolean value) {
+                    object.setIsStarred(!value);
+                    view.getConversationGrid().redrawRow(index);
+                    ((ActionBoxView) view.getActionBox().getWidget()).getActionStar().getScheduledCommand().execute();
+                }
+            });
+    }
     /**
      * Show and loads detail section. Show after clicking on certain columns that
      * have defined this fieldUpdater.

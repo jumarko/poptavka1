@@ -222,11 +222,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
-            ApplicationSecurityException;
-
-    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException, ApplicationSecurityException;
-
     void acceptOffer(long offerId) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
