@@ -101,7 +101,7 @@ public class JobsResource {
      * @param jobName
      * @param response
      */
-    @RequestMapping(value = "/{jobName}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{jobName}/executions", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void executeJob(@PathVariable String jobName, HttpServletResponse response)  {
         if (! jobs.containsKey(jobName)) {
@@ -113,9 +113,9 @@ public class JobsResource {
     }
 
     /**
-     * Get execution detail of particular job
-     * @param jobName
-     * @return
+     * Get all executions details of particular job.
+     * @param jobName name of job
+     * @return all executions of given job
      */
     @RequestMapping(value = "/{jobName}/executions", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
