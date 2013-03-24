@@ -47,9 +47,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(handlers = DemandCreationPresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -63,6 +60,15 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
+    @Event(forwardToParent = true)
+    void setFooter(SimplePanel footerHolder);
+
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
     @Event(forwardToParent = true, navigationEvent = true)
     void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
@@ -95,9 +101,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(forwardToParent = true)
     void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);

@@ -48,6 +48,7 @@ public class SupplierCreationView extends OverflowComposite
     private List<SimplePanel> holderPanels;
     /** UiBinder attributes. **/
     @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4;
+    @UiField SimplePanel footerHolder;
     @UiField TabLayoutPanel mainPanel;
     @UiField HorizontalPanel agreementPanel;
     @UiField CheckBox agreedCheck;
@@ -105,6 +106,11 @@ public class SupplierCreationView extends OverflowComposite
     @Override
     public SimplePanel getHolderPanel(int order) {
         return holderPanels.get(order);
+    }
+
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
     }
 
     /** BUTTONS. **/

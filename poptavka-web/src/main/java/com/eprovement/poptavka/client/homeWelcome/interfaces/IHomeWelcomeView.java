@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -22,6 +23,8 @@ public interface IHomeWelcomeView extends IsWidget {
     ListDataProvider getDataProvider();
 
     void displayCategories(ArrayList<CategoryDetail> categories);
+
+    SimplePanel getFooterHolder();
 
     Widget getWidgetView();
 

@@ -46,8 +46,6 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     @Event(handlers = SupplierCreationPresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -61,6 +59,15 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
+    @Event(forwardToParent = true)
+    void setFooter(SimplePanel footerHolder);
+
+    @Event(forwardToParent = true)
+    void setUpSearchBar(IsWidget searchView);
+
     @Event(forwardToParent = true)
     void logout(int widgetToLoad);
 
@@ -90,9 +97,6 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
 
     @Event(forwardToParent = true)
     void initServicesWidget(SimplePanel embedToWidget);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);

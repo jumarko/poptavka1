@@ -202,6 +202,7 @@
             <g:FlowPanel ui:field="categorySection" styleName="{style.category-list}" >
                 <c:CellList ui:field="categoryList" />
             </g:FlowPanel>
+            <g:SimplePanel ui:field="footerHolder"/>
         </g:HTMLPanel>
     </g:ScrollPanel>
 </ui:UiBinder>
