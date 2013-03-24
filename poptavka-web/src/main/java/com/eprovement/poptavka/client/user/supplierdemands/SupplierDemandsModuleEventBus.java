@@ -137,6 +137,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(forwardToParent = true)
     void loginFromSession(int widgetToLoad);
 
+    @Event(forwardToParent = true)
+    void setExtendedFooterStyle();
+
     /**************************************************************************/
     /* Business events handled by SupplierDemandsModulePresenter.             */
     /**************************************************************************/
@@ -234,5 +237,5 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* Client Demands MENU                                                    */
     /**************************************************************************/
     @Event(handlers = SupplierDemandsModulePresenter.class)
-    void selectSupplierDemandsMenu(int loadedWidget);
+    void supplierMenuStyleChange(int loadedWidget);
 }

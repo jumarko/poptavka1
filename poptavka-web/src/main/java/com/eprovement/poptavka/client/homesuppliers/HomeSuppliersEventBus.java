@@ -86,6 +86,9 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
 
+    @Event(forwardToParent = true)
+    void setExtendedFooterStyle();
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

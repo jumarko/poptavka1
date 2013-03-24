@@ -80,6 +80,9 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);
 
+    @Event(forwardToParent = true)
+    void setDefaultFooterStyle();
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

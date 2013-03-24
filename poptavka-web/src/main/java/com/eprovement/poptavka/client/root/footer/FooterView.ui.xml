@@ -1,8 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with field='res'
-        type='com.eprovement.poptavka.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
 
     <ui:style>
         .footer-block {
@@ -34,11 +34,14 @@
         }
     </ui:style>
 
-    <g:HTMLPanel styleName='{res.layout.fullSize}'>
-        <g:HTMLPanel styleName='{res.layout.footerContainer}'>
+    <!--Jaro please provide default style-->
+    <g:HTMLPanel styleName='{res.layout.fullSize} {res.layout.footerContainer}'>
+        <g:HTMLPanel styleName=''>
             <g:Label styleName='pull-left {style.footer-block}'>
                 <ui:msg key="footerCompanyName">2013 © eProvement s.r.o.</ui:msg>
             </g:Label>
+        </g:HTMLPanel>
+        <g:HTMLPanel styleName=''>
             <g:Button styleName='{style.footerButton}'>
                 <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
             </g:Button>

@@ -54,8 +54,8 @@ public interface LayoutResource extends CssResource {
     String toolbarButtonBlue();
 
     /** Home Menu Styles **/
-    @ClassName("home-menu")
-    String homeMenu();
+    @ClassName("menu")
+    String menu();
 
     @ClassName("home-logo")
     String homeLogo();
@@ -140,9 +140,6 @@ public interface LayoutResource extends CssResource {
 
     @ClassName("stack-layout-panel-header")
     String stackLayoutPanelHeader();
-
-    @ClassName("selected")
-    String selected();
 
     /** DELETE AFTER THIS LINE **/
 

@@ -4,45 +4,31 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
 
-	<ui:style>
-		.button1 { background: url(images/menu-icons.png) no-repeat 0 0; }
-		.button2 { background: url(images/menu-icons.png) no-repeat 0 -90px; }
-		.button3 { background: url(images/menu-icons.png) no-repeat 0 -180px; }
-		.button4 { background: url(images/menu-icons.png) no-repeat 0 -270px; }
-		.button5 { background: url(images/menu-icons.png) no-repeat 0 -360px; }
-
-		.button1:hover { background: url(images/menu-icons-hover.png) no-repeat 0 0; }
-		.button2:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -90px; }
-		.button3:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -180px; }
-		.button4:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -270px; }
-		.button5:hover { background: url(images/menu-icons-hover.png) no-repeat 0 -360px; }
-	</ui:style>
-
     <g:HTMLPanel>
-        <div ui:field="homeMenu">
+        <div>
             <ul ui:field="menuList">
                 <li>
-                    <g:Button ui:field="home" styleName='{style.button1}'>
+                    <g:Button ui:field="home" styleName='button1'>
                         <ui:msg key="menuHome">Home</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
-                    <g:Button ui:field="demands" styleName='{style.button2}'>
+                    <g:Button ui:field="demands" styleName='button2'>
                         <ui:msg key="menuDemands">Demands</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
-                    <g:Button ui:field="createDemand" styleName='{style.button3}'>
+                    <g:Button ui:field="createDemand" styleName='button3'>
                         <ui:msg key="menuCreateDemand">create Demand</ui:msg>
                     </g:Button>
                 </li>
                 <li>
-                    <g:Button ui:field="suppliers" styleName='{style.button4}'>
+                    <g:Button ui:field="suppliers" styleName='button4'>
                         <ui:msg key="menuSuppliers">Suppliers</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
-                    <g:Button ui:field="createSupplier" styleName='{style.button5}'>
+                    <g:Button ui:field="createSupplier" styleName='button5'>
                         <ui:msg key="menuCreateSupplier">create Supplier</ui:msg>
                     </g:Button>
                 </li>

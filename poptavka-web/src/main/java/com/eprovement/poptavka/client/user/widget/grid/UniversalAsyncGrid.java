@@ -32,7 +32,6 @@ import com.google.gwt.view.client.Range;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represent DataGrid with asynchronous data retrieving.
@@ -117,7 +116,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * are provided by
      * (@link orderColumns) attribute.
      */
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    private HashMap<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     /**
      * Represents table column names. Each widget using this class
      * (UniversalAsyncGrid) must define column names when creating

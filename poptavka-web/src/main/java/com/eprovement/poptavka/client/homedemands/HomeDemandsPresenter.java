@@ -140,6 +140,7 @@ public class HomeDemandsPresenter
 
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
+        eventBus.setExtendedFooterStyle();
     }
 
     @Override

@@ -135,7 +135,7 @@ body>div {
 *	Home Menu Styles
 *
 */
-.home-menu {
+.menu {
     background: url("images/menu_bg.png") no-repeat top right transparent;
     float: left;
     height: 90px;
@@ -143,18 +143,18 @@ body>div {
     padding: 0 55px;
 }
 
-.home-menu ul {
+.menu ul {
     height: 73px;
     padding: 0;
     margin: 0;
 }
 
-.home-menu li {
+.menu li {
     display: block;
     float: left;
 }
 
-.home-menu li button {
+.menu li button {
     width: 95px;
     height: 90px;
     line-height: 15px;
@@ -166,19 +166,71 @@ body>div {
     padding: 30px 5px 0;
 }
 
-.home-menu li button:hover {
+.menu li button:hover {
     border: none;
     text-shadow: 0px 0px 3px #777;
     cursor: pointer;
     text-decoration: none;
 }
 
-.home-menu li button:active {
+.menu li button:active {
     border: none;
 }
+    
+.menu .button1 {
+    background: url(images/menu-icons.png) no-repeat 0 0;
+}
+.menu .button2 {
+    background: url(images/menu-icons.png) no-repeat 0 -90px;
+}
+.menu .button3 {
+    background: url(images/menu-icons.png) no-repeat 0 -180px;
+}
+.menu .button4 {
+    background: url(images/menu-icons.png) no-repeat 0 -270px;
+}
+.menu .button5 {
+    background: url(images/menu-icons.png) no-repeat 0 -360px;
+}
+.menu .button6 {
+    background: url(images/menu-icons.png) no-repeat 0 -450px;
+}
+.menu .button7 {
+    background: url(images/menu-icons.png) no-repeat 0 -540px;
+}
+.menu .button8 {
+    background: url(images/menu-icons.png) no-repeat 0 -630px;
+}
+.menu .button9 {
+    background: url(images/menu-icons.png) no-repeat 0 -720px;
+}
 
-.home-menu li a {
-    color: #f4f4f4;
+.menu .button1:hover, .button1.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 0;
+}
+.menu .button2:hover, .button2.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -90px;
+}
+.menu .button3:hover, .button3.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -180px;
+}
+.menu .button4:hover, .button4.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -270px;
+}
+.menu .button5:hover, .button5.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -360px;
+}
+.menu .button5:hover, .button6.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -450px;
+}
+.menu .button5:hover, .button7.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -540px;
+}
+.menu .button5:hover, .button8.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -630px;
+}
+.menu .button5:hover, .button9.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -720px;
 }
 
 /*
@@ -381,7 +433,7 @@ body>div {
     text-align: left;
 }
 
-.submenu-list .gwt-Button:hover {
+.submenu-list .gwt-Button:hover, .gwt-Button.act {
     background: url(images/left-menu_hover.png) no-repeat;
     color: #ffffff;
 }
@@ -489,8 +541,3 @@ body>div {
     background: url(images/stack-layout-panel-header-hover.gif) repeat-x;
 }
 /** DELETE AFTER THIS LINE **/
-
-/** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/
-.selected {
-    font-weight: bold;
-}

@@ -1,8 +1,11 @@
 package com.eprovement.poptavka.client.user.supplierdemands;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -19,17 +22,118 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField
-    SimplePanel contentPanel;
-    @UiField
-    Button supplierNewDemands, supplierOffers, supplierAssignedDemands, supplierClosedDemands, supplierRatings;
+    @UiField SimplePanel contentPanel;
+    @UiField Button supplierDemands, supplierOffers, supplierAssignedDemands, supplierClosedDemands, supplierRatings;
 
     /**************************************************************************/
-    /* Initialization                                                            */
+    /* Initialization                                                         */
     /**************************************************************************/
+    @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
+    /**************************************************************************/
+    /* UiHanders.                                                             */
+    /**************************************************************************/
+    @UiHandler("supplierDemands")
+    public void onClickDemands(ClickEvent e) {
+        supplierDemandsMenuStyleChange();
+    }
+
+    @UiHandler("supplierOffers")
+    public void onClickOffers(ClickEvent e) {
+        supplierOffersMenuStyleChange();
+    }
+
+    @UiHandler("supplierAssignedDemands")
+    public void onClickAssignedDemands(ClickEvent e) {
+        supplierAssignedDemandsMenuStyleChange();
+    }
+
+    @UiHandler("supplierClosedDemands")
+    public void onClickClosedDemands(ClickEvent e) {
+        supplierClosedDemandsMenuStyleChange();
+    }
+
+    @UiHandler("supplierRatings")
+    public void onClickRatings(ClickEvent e) {
+        supplierRatingMenuStyleChange();
+    }
+
+    /**************************************************************************/
+    /* Style change methods.                                                  */
+    /**************************************************************************/
+    /**
+     * Loads right styles to menu buttons.
+     * @param loadedWidget - use module constants from class Contants.
+     */
+    @Override
+    public void supplierMenuStyleChange(int loadedWidget) {
+        switch (loadedWidget) {
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                supplierDemandsMenuStyleChange();
+                break;
+            case Constants.SUPPLIER_OFFERS:
+                supplierOffersMenuStyleChange();
+                break;
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                supplierAssignedDemandsMenuStyleChange();
+                break;
+            case Constants.SUPPLIER_CLOSED_DEMANDS:
+                supplierClosedDemandsMenuStyleChange();
+                break;
+            case Constants.SUPPLIER_RATINGS:
+                supplierRatingMenuStyleChange();
+                break;
+            default:
+                supplierDemandsMenuStyleChange();
+                break;
+        }
+    }
+
+    /**************************************************************************/
+    /* Helper methods.                                                        */
+    /**************************************************************************/
+    private void supplierDemandsMenuStyleChange() {
+        supplierOffers.removeStyleName(Constants.ACT);
+        supplierAssignedDemands.removeStyleName(Constants.ACT);
+        supplierClosedDemands.removeStyleName(Constants.ACT);
+        supplierRatings.removeStyleName(Constants.ACT);
+        supplierDemands.addStyleName(Constants.ACT);
+    }
+
+    private void supplierOffersMenuStyleChange() {
+        supplierDemands.removeStyleName(Constants.ACT);
+        supplierAssignedDemands.removeStyleName(Constants.ACT);
+        supplierClosedDemands.removeStyleName(Constants.ACT);
+        supplierRatings.removeStyleName(Constants.ACT);
+        supplierOffers.addStyleName(Constants.ACT);
+    }
+
+    private void supplierAssignedDemandsMenuStyleChange() {
+        supplierDemands.removeStyleName(Constants.ACT);
+        supplierOffers.removeStyleName(Constants.ACT);
+        supplierClosedDemands.removeStyleName(Constants.ACT);
+        supplierRatings.removeStyleName(Constants.ACT);
+        supplierAssignedDemands.addStyleName(Constants.ACT);
+    }
+
+    private void supplierClosedDemandsMenuStyleChange() {
+        supplierDemands.removeStyleName(Constants.ACT);
+        supplierOffers.removeStyleName(Constants.ACT);
+        supplierAssignedDemands.removeStyleName(Constants.ACT);
+        supplierRatings.removeStyleName(Constants.ACT);
+        supplierClosedDemands.addStyleName(Constants.ACT);
+    }
+
+    private void supplierRatingMenuStyleChange() {
+        supplierDemands.removeStyleName(Constants.ACT);
+        supplierOffers.removeStyleName(Constants.ACT);
+        supplierAssignedDemands.removeStyleName(Constants.ACT);
+        supplierClosedDemands.removeStyleName(Constants.ACT);
+        supplierRatings.addStyleName(Constants.ACT);
+    }
+
 
     /**************************************************************************/
     /* Setters                                                                */
@@ -44,7 +148,7 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     @Override
     public Button getSupplierNewDemandsButton() {
-        return supplierNewDemands;
+        return supplierDemands;
     }
 
     @Override

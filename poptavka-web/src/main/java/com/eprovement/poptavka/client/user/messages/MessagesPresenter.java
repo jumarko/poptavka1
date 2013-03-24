@@ -64,6 +64,7 @@ public class MessagesPresenter
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
+        eventBus.setExtendedFooterStyle();
     }
 
     @Override

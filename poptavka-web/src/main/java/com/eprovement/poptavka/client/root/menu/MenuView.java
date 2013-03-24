@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView.IMenuPresenter;
@@ -21,14 +20,20 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
 
     interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
     }
-    @UiField
-    UListElement menuList;
-    @UiField
-    Button home, demands, suppliers, createSupplier, createDemand;
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField UListElement menuList;
+    @UiField Button home, demands, suppliers, createSupplier, createDemand;
+
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     public MenuView() {
         initWidget(uiBinder.createAndBindUi(this));
-        home.addStyleName(StyleResource.INSTANCE.layout().selected());
+        home.addStyleName(Constants.ACT);
     }
 
     /**************************************************************************/
@@ -37,7 +42,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     @UiHandler("home")
     public void onClickHome(ClickEvent e) {
         presenter.goToHomeWelcome();
-        homeMenuStyleChange();
+        menuStyleChange();
     }
 
     @UiHandler("demands")
@@ -75,7 +80,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     public void menuStyleChange(int loadedModule) {
         switch (loadedModule) {
             case Constants.HOME_WELCOME_MODULE:
-                homeMenuStyleChange();
+                menuStyleChange();
                 break;
             case Constants.HOME_DEMANDS_MODULE:
                 demandsMenuStyleChange();
@@ -97,43 +102,43 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
-    private void homeMenuStyleChange() {
-        home.addStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+    private void menuStyleChange() {
+        home.addStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
     }
 
     private void demandsMenuStyleChange() {
-        home.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.addStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        home.removeStyleName(Constants.ACT);
+        demands.addStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
     }
 
     private void suppliersMenuStyleChange() {
-        home.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.addStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        home.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        suppliers.addStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
     }
 
     private void createSupplierMenuStyleChange() {
-        home.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.addStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        home.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.addStyleName(Constants.ACT);
+        createDemand.removeStyleName(Constants.ACT);
     }
 
     private void createDemandMenuStyleChange() {
-        home.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.addStyleName(StyleResource.INSTANCE.layout().selected());
+        home.removeStyleName(Constants.ACT);
+        demands.removeStyleName(Constants.ACT);
+        suppliers.removeStyleName(Constants.ACT);
+        createSupplier.removeStyleName(Constants.ACT);
+        createDemand.addStyleName(Constants.ACT);
     }
 }

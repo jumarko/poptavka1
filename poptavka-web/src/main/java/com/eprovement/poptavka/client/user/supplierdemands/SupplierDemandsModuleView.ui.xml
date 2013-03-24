@@ -22,7 +22,7 @@
                         <div ui:field="supplierMenu" style="display: block;">
                             <ul class='{res.layout.submenuList}'>
                                 <li>
-                                    <g:Button ui:field="supplierNewDemands">
+                                    <g:Button ui:field="supplierDemands">
                                         <ui:msg key="menuSupplierDemands">Potential demands</ui:msg>
                                     </g:Button>
                                 </li>
