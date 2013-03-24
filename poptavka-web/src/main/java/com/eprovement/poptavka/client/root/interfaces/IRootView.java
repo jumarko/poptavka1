@@ -19,6 +19,4 @@ public interface IRootView extends IsWidget {
 
     void setBody(IsWidget body);
 
-    void setFooter(IsWidget footer);
-
 }

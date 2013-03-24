@@ -17,7 +17,7 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
 
     private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
     @UiField
-    SimplePanel logo, header, body, menu, searchBar, footer;
+    SimplePanel logo, header, body, menu, searchBar;
 
     interface RootViewUiBinder extends UiBinder<Widget, RootView> {
     }
@@ -51,13 +51,6 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     public void setBody(IsWidget body) {
         GWT.log("Body widget view set");
         this.body.setWidget(body);
-
-    }
-
-    @Override
-    public void setFooter(IsWidget footer) {
-        GWT.log("Footer widget view set");
-        this.footer.setWidget(footer);
 
     }
 

@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.Date;
 
 /**
  * Class needed to access SuggestBox's popup.
@@ -72,7 +73,7 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
         anchor.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventbus.initEmailDialogPopup();
+                eventbus.sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
             }
         });
         vp.add(anchor);

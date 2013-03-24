@@ -21,7 +21,6 @@ import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
 import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
-import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.header.UserHeaderPresenter;
@@ -86,7 +85,7 @@ public interface RootEventBus extends EventBusWithLookup {
      */
     @Start
     @InitHistory
-    @Event(handlers = {RootPresenter.class, FooterPresenter.class })
+    @Event(handlers = RootPresenter.class)
     void start();
 
     /**************************************************************************/
@@ -118,7 +117,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void setBody(IsWidget body);
 
     @Event(handlers = RootPresenter.class)
-    void setFooter(IsWidget footer);
+    void setFooter(SimplePanel footerHolder);
 
     @Event(handlers = FooterPresenter.class)
     void setDefaultFooterStyle();
@@ -187,23 +186,17 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = SearchModule.class)
     void goToSearchModule();
 
+    /**************************************************************************/
+    /* EMAIL DIALOG POPUP.                                                    */
+    /**************************************************************************/
     /**
      * Contact us popup will appear. Parameters will be forwared to method fillContactUsValues().
      *
      * @param subject - predefined subject i.e. report issue that was invoked by user from Error Module
      * @param errorId - the error ID what was genereated for reported issue
      */
-    @Event(handlers = FooterPresenter.class)
+    @Event(handlers = RootPresenter.class)
     void sendUsEmail(int subject, String errorId);
-
-    /**
-     * Contact us popup will will be prefilled with values as subject and errorId.
-     *
-     * @param subject - predefined subject i.e. report issue that was invoked by user from Error Module
-     * @param errorId - the error ID what was genereated for reported issue
-     */
-    @Event(handlers = EmailDialogPopupPresenter.class)
-    void fillContactUsValues(int subject, String errorId);
 
     /**************************************************************************/
     /* Navigation events - Other control sections                             */
@@ -344,12 +337,6 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(handlers = ServicesSelectorPresenter.class)
     void setServices(ArrayList<ServiceDetail> services);
-
-    /**************************************************************************/
-    /* EMAIL DIALOG POPUP.                                                    */
-    /**************************************************************************/
-    @Event(handlers = RootPresenter.class)
-    void initEmailDialogPopup();
 
     /**************************************************************************/
     /* ACTION BOX.                                                            */
