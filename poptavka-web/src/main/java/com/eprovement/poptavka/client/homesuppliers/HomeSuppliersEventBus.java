@@ -14,6 +14,7 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -48,8 +49,6 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     @Event(handlers = HomeSuppliersPresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -79,6 +78,12 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
 
     @Event(forwardToParent = true)
     void loginFromSession(int widgetToLoad);
+
+    @Event(forwardToParent = true)
+    void setBody(IsWidget widget);
+
+    @Event(forwardToParent = true)
+    void setFooter(SimplePanel footerHolder);
 
     @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
