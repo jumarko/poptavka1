@@ -238,6 +238,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setParentId(replyToMessage.getMessageId());
+        messageDetail.setStarred(replyToMessage.isStarred());
         return messageDetail;
     }
 

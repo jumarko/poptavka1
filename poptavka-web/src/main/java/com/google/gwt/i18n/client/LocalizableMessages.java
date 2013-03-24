@@ -360,8 +360,12 @@ public interface LocalizableMessages extends Messages {
     String loggingIn();
     String loggingLoadProfile();
     String loggingVerifyAccount();
-    String wrongLoginMessage();
     String loginUnknownError();
+    String resetPasswordEmail(String userName, String userPassword);
+    String resetPasswordEmailSubject();
+    String resetPasswordInfoStatus();
+    String wrongLoginMessage();
+    String wrongEmailWhenReseting();
 
     /** ErrorView.java. Error messages and their descriptions **/
     String errorMsgAccessDenied();

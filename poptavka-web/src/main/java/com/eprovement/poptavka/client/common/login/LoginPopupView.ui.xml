@@ -2,19 +2,19 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
-    
+
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel>
         <b:Modal ui:field="modal" addStyleNames='{res.common.loginModal}'>
             <b:Form type="HORIZONTAL">
-                
+
                 <g:ListBox ui:field="list"/>
-                
+
                 <g:Label styleName="modal-header">
                     Login
                 </g:Label>
-                
+
                 <b:Fieldset>
                     <b:ControlGroup ui:field="emailControlGroup">
                         <b:ControlLabel>
@@ -24,7 +24,7 @@
                             <b:TextBox ui:field="emailTextBox" placeholder="Email"/>
                         </b:Controls>
                     </b:ControlGroup>
-                
+
                     <b:ControlGroup ui:field="passwordControlGroup">
                         <b:ControlLabel>
                             <ui:msg key="formPassword">Password:</ui:msg>
@@ -40,16 +40,25 @@
                             Enter email and password to login.
                         </g:Label>
                     </b:Alert>
-                </b:Fieldset>                
+                    <g:DisclosurePanel ui:field="forgotPassword" animationEnabled="true" title="Forgot Your Password" width="100%">
+                        <g:header>Forgot Your Password?</g:header>
+                        <g:VerticalPanel>
+                            <b:TextBox ui:field="forgotPasswordEmail" placeholder="Enter Your Email:"/>
+                            <b:Button ui:field="resetPasswordButton" type="PRIMARY" styleName='login-button'>
+                                Reset Password
+                            </b:Button>
+                        </g:VerticalPanel>
+                    </g:DisclosurePanel>
+                </b:Fieldset>
                 <b:Controls>
                     <b:Button ui:field="submitBtn" type="PRIMARY" styleName='login-button'>
                         Login
-                    </b:Button>   
+                    </b:Button>
                     <b:Button ui:field="cancelBtn" styleName='cancel-button'>
                         Cancel
-                    </b:Button>       
-                </b:Controls>                
+                    </b:Button>
+                </b:Controls>
             </b:Form>
-        </b:Modal>             
-    </g:HTMLPanel>       
+        </b:Modal>
+    </g:HTMLPanel>
 </ui:UiBinder>

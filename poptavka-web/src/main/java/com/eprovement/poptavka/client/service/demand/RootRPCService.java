@@ -78,4 +78,6 @@ public interface RootRPCService extends RemoteService {
      * @param email ęmail address to be checked
      */
     boolean checkFreeEmail(String email) throws RPCException;
+
+    String resetPassword(long userId) throws RPCException;
 }

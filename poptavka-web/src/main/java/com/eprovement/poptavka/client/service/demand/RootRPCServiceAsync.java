@@ -73,4 +73,11 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     /** @see UserRPCService#checkFreeEmail(String) */
     void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
+
+    /**
+     * Reset password for user who forgot his password. New random password is saved into database.
+     * @param userId whose password will be reset
+     * @return new random password
+     */
+    void resetPassword(long userId, AsyncCallback<String> callback);
 }
