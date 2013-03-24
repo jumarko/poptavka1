@@ -45,9 +45,6 @@ public interface StyleResource extends ClientBundle {
     @Source("gridTable.css")
     GridTableResources grid();
 
-    //@Source("user-message.css")
-    //UserMessageStyle message();
-
     @NotStrict
     @Source("tabLayout.css")
     TabLayout tabLayout();
