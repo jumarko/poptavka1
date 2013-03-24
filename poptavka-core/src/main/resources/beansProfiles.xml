@@ -5,6 +5,7 @@
 
     <beans profile="prod">
         <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
             <property name="locations">
                 <list>
                     <value>classpath:/crypto.properties</value>
@@ -23,6 +24,7 @@
         <!-- override database properties to use in memory database for testing purposes
 MUST FOLLOW ONLY AFTER IMPORT of "applicationContext.xml" !!! -->
         <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
             <property name="locations">
                 <list>
                     <value>classpath:/crypto.properties</value>
