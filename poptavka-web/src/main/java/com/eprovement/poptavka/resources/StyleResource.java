@@ -42,14 +42,11 @@ public interface StyleResource extends ClientBundle {
     @Source("table.css")
     TableStyle table();
 
-    @Source("GridTable.css")
+    @Source("gridTable.css")
     GridTableResources grid();
 
-    @Source("user-message.css")
-    UserMessageStyle message();
-
     @NotStrict
-    @Source("TabLayout.css")
+    @Source("tabLayout.css")
     TabLayout tabLayout();
 
     @NotStrict

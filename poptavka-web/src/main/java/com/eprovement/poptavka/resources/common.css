@@ -233,6 +233,7 @@
 .login-modal .modal-body {
     background: #ffffff;
     padding: 20px;
+    max-height: none;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -281,9 +282,9 @@
     border: medium none;
     border-radius: 5px 5px 5px 5px;
     color: #000000;
-    height: 27px;
+    min-height: 27px;
     margin: 0;
-    padding: 14px 35px 8px 55px;
+    padding: 17px 35px 8px 60px;
 }
 
 .login-modal .control-group.error .control-label {
@@ -322,8 +323,7 @@
     margin: 18px 15px 0 0;
     text-align: center;
     text-decoration: none;
-    width: 85px;
-    font-shadow: none;
+    width: 85px;    
 }
 
 .login-modal .cancel-button {
@@ -337,10 +337,9 @@
     text-align: center;
     text-decoration: none;
     width: 85px;
-    color: #ffffff;
-    font-shadow: none;
+    color: #ffffff; 
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
-
 /* error control groups */
 .changeMonitorStyle .control-group {
     position: relative;

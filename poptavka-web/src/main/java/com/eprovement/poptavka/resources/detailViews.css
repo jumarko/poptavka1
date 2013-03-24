@@ -6,8 +6,7 @@
         Purpose of the stylesheet follows.
 */
 .common-detail-container {
-    background: url(images/transparent_bg.png) repeat;
-    float: left;
+
 }
 
 /*  DEMAND DETAIL SECTION  */
@@ -47,7 +46,7 @@
 }
 .detail-block {
     float: left;
-    margin: 15px 0 0;
+    margin: 0;
     padding: 0;
 
 }
@@ -58,11 +57,6 @@
 
 .detail-block .span12 {
     min-height: 25px;
-}
-
-.detail-block div {
-    float: left;
-    line-height: 20px;
 }
 
 .detail-block .detail-header {
@@ -78,6 +72,7 @@
 
 .detail-block .gwt-Label {
     color: #6f6b59;
+    line-height: 30px;
 }
 
 .detail-strong {
@@ -119,23 +114,32 @@
 /*  conversation DETAIL SECTION  */
 .conversation-container {
     background: #ffffff;
-    border: 1px solid #009de5;
-    border-radius: 4px;
-    margin: 12px;
+    border: 1px solid #d0cdc1;
+    border-top: 1px solid #e8e3d2;
+    /*float: left; */
+    border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+}
+
+.conversation-container .container-fluid {
+    padding: 0;
+}
+
+.conversation-block {
+    display: block;
+    float: left;
+    width: 100%;
 }
 
 .conversation-detail {
-    border-bottom: 1px solid #D4D4D4;
-    padding: 10px 10px 10px 30px;
+    border-top: 1px solid #f2efe7;
+    padding: 20px 30px;
+    cursor: pointer;
 }
 
-.conversation-detail-green {
-    background: url(images/detail-block-green-circle.png) no-repeat 11px
-        14px;
-}
-
-.conversation-detail-red {
-    background: url(images/detail-block-red-circle.png) no-repeat 11px 14px;
+.conversation-detail-green, .conversation-detail-red {
+    background: none;
 }
 
 .conversation-detail:hover {
@@ -145,7 +149,7 @@
 
 .conversation-detail-header {
     float: left;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .conversation-detail-header-green {
@@ -153,11 +157,11 @@
 }
 
 .conversation-detail-header-red {
-    color: #e50000;
+    color: #b70000;
 }
 
 .conversation-detail-time {
-    color: #006b9f;
+    color: #bdb9a4;
     float: right;
 }
 
@@ -170,42 +174,142 @@
     width: 100%;
 }
 
-/* the rest will be deleted ... */
-.demandDetailTable {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: left;
+/* messages */
+.message-container {
+    margin: 0;
+    padding: 20px 30px; 
 }
 
-.demandDetailTable th {
-    border: 1px solid black;
-    font-weight: bold;
-    background-color: limegreen;
+.message-container .conversation-input {
+    border: 1px solid #d2c9a9;
+    background: #f8f4e4;
 }
 
-.demandDetailTable td {
-    border: 1px solid black;
+.message-container .conversation-input:focus {
+    border: 1px solid #d2c9a9;
+    box-shadow: 0 1px 1px #ddd5b9 inset, 0 0 8px #ddd5b9;
+}
+.message-opened {
+    padding-bottom: 2px;
+    margin-bottom: 20px;
 }
 
-/*  SUPPLIER DETAIL SECTION  */
-.supplierDetailSectionHeader th {
-    font-family: fantasy;
-    font-size: xx-large;
-    background-color: red;
+.message-buttons-container {    
+    cursor: pointer;
+    cursor: hand;
+    border-radius: 5px;
+    display: block;
+    float: left;
+    padding: 10px 7px 10px 29px;
+    -webkit-box-top-left-radius: 7px;
+    -webkit-box-top-right-radius: 7px;
+    -moz-border-topleft-radius: 7px;
+    -moz-border-topright-radius: 7px;
 }
 
-.supplierDetailTable {
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: left;
+.message-body {
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
-.supplierDetailTable th {
-    border: 1px solid black;
-    font-weight: bold;
-    background-color: lightcoral;
+.action-button {
+    backgrount-color: #525252;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.04, rgb(46,
+        45, 46) ), color-stop(0.54, rgb(122, 118, 122) ) );
+    background-image: -moz-linear-gradient(center bottom, rgb(46, 45, 46) 4%,
+        rgb(122, 118, 122) 54% );
+    border-radius: 5px;
+    -webkit-box-radius: 7px;
+    -moz-border-radius: 7px;
+    padding: 2px 5px 2px 5px;
+    color: white;
+    text-decoration: none;
 }
 
-.supplierDetailTable td {
-    border: 1px solid black;
+.action-button:hover {
+    backgrount-color: #bfbfbf;
+    background-image: -webkit-gradient(linear, left bottom, left bottom, color-stop(0.04, rgb(46
+        , 46, 46) ), color-stop(0.54, rgb(122, 118, 122) ) );
+    background-image: -moz-linear-gradient(center center, rgb(46, 46, 46) 4%,
+        rgb(122, 118, 122) 54% );
+}
+
+.wrapper {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.reply-button {
+    background: url(images/messages-button.png) repeat-x scroll 0 0 #199204;
+    border: 1px solid #199204;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 15px;
+    font-weight: normal;
+    height: 37px;
+    line-height: 35px;
+    margin: 0 7px 0 0;
+    padding: 0 12px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.reply-button:hover {	
+    color: #ffffff;
+    box-shadow: 0 0 5px #42be0b;
+    text-decoration: none;
+}
+
+.close-button {
+    background: url(images/messages-close-button.png) repeat-x #929292;
+    border: 1px solid #818181;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 15px;
+    font-weight: normal;
+    height: 37px;
+    line-height: 35px;
+    margin: 0 7px 0 0;
+    padding: 0 12px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.close-button:hover {
+    color: #ffffff;
+    box-shadow: 0 0 5px #bbbbbb;
+    text-decoration: none;
+}
+
+.reply-text-area {
+    width: 100%;
+    max-width: 100%;
+    font-family: inherit;
+    min-height: 100px;
+    padding: 5px 15px;
+    color: #333333;
+    margin-bottom: 10px;
+    border: 1px solid #d2c9a9;
+    background: #f8f4e4;
+}
+
+.messages-mine {
+    background-color:#FFFF99;
+    line-height: 20px;
+}
+
+.messages-received {
+    background-color:#CCFF99;
+    line-height: 20px;
+}
+
+.message-unread {
+    font-weight:bold;
+}
+
+.response-container {
+    padding: 15px 24px;    
 }

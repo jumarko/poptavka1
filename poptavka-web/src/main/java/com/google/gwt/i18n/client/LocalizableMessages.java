@@ -34,12 +34,14 @@ public interface LocalizableMessages extends Messages {
     String commonBtnEdit();
     String commonBtnLogin();
     String commonBtnNext();
+    String commonBtnOffer();
     String commonBtnRate();
     String commonBtnRefresh();
     String commonBtnReport();
     String commonBtnRevert();
     String commonBtnSend();
     String commonBtnSubmit();
+    String commonBtnQuestion();
 
     /** Common labels. **/
     String commonCategoriesLabel();
@@ -221,9 +223,6 @@ public interface LocalizableMessages extends Messages {
     String detailsWrapperTabDemandDetail();
     String detailsWrapperTabSupplierDetail();
     String detailsWrapperTabConversationDetail();
-    /** OfferQuestionWindow.ui. **/
-    String offerResponse();
-    String questionResponse();
 
     /** List creationDate. **/
     String creationDateToday();

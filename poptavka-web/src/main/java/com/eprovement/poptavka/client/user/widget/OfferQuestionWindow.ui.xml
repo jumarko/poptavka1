@@ -2,90 +2,80 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:bd="urn:import:com.eprovement.poptavka.client.common"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <ui:with type="com.eprovement.poptavka.resources.StyleResource"
-             field="css">
+             field="res">
     </ui:with>
 
-    <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
-        }
-    </ui:style>
-
-    <g:HTMLPanel styleName="{css.message.wrapper}">
-        <div class="{css.message.message}">
-            <div ui:field="messageBody" style="display: none;">
-                <!-- Message composition content -->
-                <div>
-                    <g:TextArea ui:field="replyTextArea" styleName="{css.message.replyTextArea}" />
-                    <g:Label ui:field="errorLabelText" styleName="{style.error}" />
-                    <!-- TODO RELEASE: Jaro -->
-                    <div>
-                        <div ui:field="offerBody" style="display: none;">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <ui:msg key="formPrice">Price</ui:msg>
-                                        </td>
-                                        <td>
-                                            <bd:BigDecimalBox ui:field="priceBox" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <g:Label ui:field="errorLabelPrice" styleName="{style.error}" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <ui:msg key="formFinishDate">Finish Date</ui:msg>
-                                        </td>
-                                        <td>
-                                            <p1:DateBox ui:field="dateBox" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <g:Label ui:field="errorLabelDate" styleName="{style.error}" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <g:Anchor ui:field="submitBtn" styleName='{css.message.replyButton}'>
-                            <span style="cursor: pointer; cursor: hand;">
-                                <ui:msg key="commonBtnSubmit">Submit</ui:msg>
-                            </span>
+    <g:HTMLPanel styleName="{res.detailViews.wrapper}">
+        <g:HTMLPanel>
+            <!-- Message composition content -->
+            <b:FluidContainer ui:field="messageBody" visible="false">
+                <b:FluidRow styleName="{res.detailViews.messageContainer}">
+                    <b:Column size="12">
+                        <b:FluidRow>                        
+                            <b:Column size="12">
+                                <g:TextArea ui:field="replyTextArea" styleName="{res.detailViews.replyTextArea} conversation-input" />
+                                <g:Label ui:field="errorLabelText" />
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow ui:field="priceRow">
+                            <b:Column size="2">
+                                <g:Label>
+                                    <ui:msg key="formPrice">Price</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="6">
+                                <bd:BigDecimalBox ui:field="priceBox" styleName='conversation-input' />
+                                <g:Label ui:field="errorLabelPrice" />
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow ui:field="finnishDateRow">
+                            <b:Column size="2">
+                                <g:Label>
+                                    <ui:msg key="formFinishDate">Finish Date</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="6">
+                                <p1:DateBox ui:field="dateBox" styleName='conversation-input' />
+                                <g:Label ui:field="errorLabelDate" />
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:Column>
+                </b:FluidRow>
+                <g:HTMLPanel addStyleNames="{res.detailViews.messageButtonsContainer}">
+                    <b:Column size="12">
+                        <g:Anchor ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>                            
+                            <img src="images/messages-submit-icon.png"/>
+                            <ui:msg key="commonBtnSubmit">Submit</ui:msg>                            
                         </g:Anchor>
-                        <g:Anchor ui:field="cancelBtn" styleName='{css.message.replyButton}'>
-                            <span style="cursor: pointer; cursor: hand;">
-                                <ui:msg key="commonBtnClose">Close</ui:msg>
-                            </span>
+                        <g:Anchor ui:field="cancelBtn" styleName='{res.detailViews.closeButton}'>
+                            <ui:msg key="commonBtnClose">Close</ui:msg>
                         </g:Anchor>
-                    </div>
-                </div>
-            </div>
-            <div ui:field="messagePanel" class='{css.detailViews.conversationDetail}'>
-                <div class='{css.detailViews.conversationLeftBlock}'>
-                    <g:Label ui:field='sender' styleName='{css.detailViews.conversationDetailHeader}'/>
-                    <g:Label ui:field='sent' styleName='{css.detailViews.conversationDetailTime}'/>
-                </div>
-                <div class='{css.detailViews.conversationDetailContent}'>
+                    </b:Column>
+                </g:HTMLPanel>
+            </b:FluidContainer>
+            <g:HTMLPanel ui:field="messagePanel" addStyleNames='{res.detailViews.conversationDetail}'>
+                <g:HTMLPanel styleName='{res.detailViews.conversationLeftBlock}'>
+                    <g:Label ui:field='sender' styleName='{res.detailViews.conversationDetailHeader}'/>
+                    <g:Label ui:field='sent' styleName='{res.detailViews.conversationDetailTime}'/>
+                </g:HTMLPanel>
+                <g:HTMLPanel styleName='{res.detailViews.conversationDetailContent}'>
                     <g:Label ui:field='body' />
-                </div>
-            </div>
-            <div ui:field="header" class="{css.message.messageHeader}">
-                <g:Anchor styleName='{css.message.replyButton}' ui:field="offerReplyBtn">
-                    <ui:msg key="offerResponse">Offer Response</ui:msg>
+                </g:HTMLPanel>
+            </g:HTMLPanel>
+            <g:HTMLPanel ui:field="header" styleName="{res.detailViews.messageButtonsContainer}">
+                <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="offerReplyBtn">
+                    <img src="images/messages-reply-icon.png"/>
+                    <ui:msg key="commonBtnOffer">Offer</ui:msg>
                 </g:Anchor>
-                <g:Anchor styleName='{css.message.replyButton}' ui:field="questionReplyBtn">
-                    <ui:msg key="questionResponse">Question Response</ui:msg>
+                <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
+                    <img src="images/messages-reply-icon.png"/>
+                    <ui:msg key="commonBtnQuestion">Question</ui:msg>
                 </g:Anchor>
-            </div>
-        </div>
+            </g:HTMLPanel>
+        </g:HTMLPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

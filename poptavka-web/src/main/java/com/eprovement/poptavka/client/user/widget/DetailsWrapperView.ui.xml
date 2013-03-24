@@ -3,7 +3,8 @@
              xmlns:c="urn:import:com.google.gwt.user.cellview.client"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget"
-             xmlns:w="urn:import:com.eprovement.poptavka.client.user.widget.detail">
+             xmlns:w="urn:import:com.eprovement.poptavka.client.user.widget.detail"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
@@ -11,12 +12,9 @@
         .panel {
         min-width: 500px;
         }
-        .relative {
-        position: relative;
-        }
     </ui:style>
     <g:TabLayoutPanel stylePrimaryName='{res.detailTabPanel.detailTabPanel}'
-                      ui:field="container" barUnit="PX" barHeight="40" animationDuration="1000">
+                      ui:field="container" barUnit="PX" barHeight="50" animationDuration="1000">
         <g:tab>
             <g:header>
                 <ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
@@ -38,12 +36,19 @@
                 <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
             </g:header>
             <g:ScrollPanel>
-                <g:HTMLPanel ui:field="conversationHolder"
-                             styleName='{res.detailViews.commonDetailContainer}'>
-                    <g:HTMLPanel styleName='{res.detailViews.conversationContainer}'>
-                        <d:OfferQuestionWindow ui:field="replyHolder" />
-                        <c:CellList ui:field="messageList" styleName="{style.relative}"/>
-                    </g:HTMLPanel>
+                <g:HTMLPanel ui:field="conversationHolder" styleName='{res.detailViews.conversationContainer}'>
+                    <b:FluidContainer>
+                        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                            <b:Column size='12'>
+                                <d:OfferQuestionWindow ui:field="replyHolder" styleName='{res.detailViews.conversationBlock}'/>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                            <b:Column size='12'>
+                                <c:CellList ui:field="messageList" styleName='{res.detailViews.conversationBlock}'/>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:FluidContainer>
                 </g:HTMLPanel>
             </g:ScrollPanel>
         </g:tab>

@@ -48,7 +48,7 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     public AdminOfferQuestionWindow() {
-        Storage.RSCS.message().ensureInjected();
+        Storage.RSCS.detailViews().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 

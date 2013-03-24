@@ -21,7 +21,7 @@ public class StarCell extends AbstractCell<Boolean>  {
 
     private static ImageResourceRenderer renderer;
     //constants
-    private static final ImageResource STARRED = Storage.RSCS.images().starGold();
+    private static final ImageResource STARRED = Storage.RSCS.images().starGreen();
     private static final ImageResource STARRED_NOT = Storage.RSCS.images().starSilver();
 
     public StarCell() {

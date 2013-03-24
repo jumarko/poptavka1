@@ -5,9 +5,6 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface Images extends ClientBundle {
 
-    @Source("star.png")
-    ImageResource star();
-
     @Source("zoom-in.gif")
     ImageResource zoomIn();
 
@@ -65,14 +62,14 @@ public interface Images extends ClientBundle {
     @Source("loader32.gif")
     ImageResource loadIcon32();
 
-    @Source("goldStar16.png")
-    ImageResource starGold();
+    @Source("star-green.png")
+    ImageResource starGreen();
 
-    @Source("silverStar16.png")
+    @Source("star-silver.png")
     ImageResource starSilver();
 
-    @Source("bronzeStar16.png")
-    ImageResource starBronze();
+    @Source("star-header.png")
+    ImageResource starHeader();
 
     //In displaying demands
     @Source("urgency-red.png")

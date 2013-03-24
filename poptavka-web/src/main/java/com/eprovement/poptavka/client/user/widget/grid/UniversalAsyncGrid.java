@@ -430,6 +430,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         };
         //set column style
         col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
         addColumn(col);
         setColumnWidth(col, Constants.COL_WIDTH_ICON);
         return col;

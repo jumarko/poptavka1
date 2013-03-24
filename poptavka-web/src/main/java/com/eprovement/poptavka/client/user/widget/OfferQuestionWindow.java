@@ -5,15 +5,16 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.github.gwtbootstrap.client.ui.FluidContainer;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
@@ -44,7 +45,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     @UiField TextArea replyTextArea;
     @UiField BigDecimalBox priceBox;
     @UiField DateBox dateBox;
-    @UiField DivElement header, messageBody, offerBody, messagePanel;
+    @UiField HTMLPanel header, messagePanel;
+    @UiField FluidContainer messageBody;
+    @UiField FluidRow priceRow, finnishDateRow;
     @UiField Label errorLabelText, errorLabelPrice, errorLabelDate;
     @UiField Label sender, sent, body;
     /** Class attributes. **/
@@ -55,7 +58,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     public OfferQuestionWindow() {
-        Storage.RSCS.message().ensureInjected();
+        Storage.RSCS.detailViews().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         offerReplyBtn.setVisible(false);
     }
@@ -86,20 +89,22 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /* SETTER                                                                 */
     /**************************************************************************/
     public void setSendingOfferStyle() {
-        header.getStyle().setDisplay(Display.NONE);
-        messageBody.getStyle().setDisplay(Display.BLOCK);
-        offerBody.getStyle().setDisplay(Display.BLOCK);
+        header.setVisible(false);
+        messageBody.setVisible(true);
+        priceRow.setVisible(true);
+        finnishDateRow.setVisible(true);
     }
 
     public void setSendingQuestionStyle() {
-        header.getStyle().setDisplay(Display.NONE);
-        messageBody.getStyle().setDisplay(Display.BLOCK);
+        header.setVisible(false);
+        messageBody.setVisible(true);
     }
 
     public void setDefaultStyle() {
-        messageBody.getStyle().setDisplay(Display.NONE);
-        offerBody.getStyle().setDisplay(Display.NONE);
-        header.getStyle().setDisplay(Display.BLOCK);
+        header.setVisible(true);
+        messageBody.setVisible(false);
+        priceRow.setVisible(false);
+        finnishDateRow.setVisible(false);
         replyTextArea.setText(EMPTY);
     }
 
@@ -200,10 +205,11 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
             cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
         }
-        messagePanel.addClassName(cssBall);
+        //TODO: Martin refactoring
+        //messagePanel.addStyleName(cssBall);
         sender.addStyleName(cssColor);
 
-        messagePanel.getStyle().setDisplay(Display.BLOCK);
+        messagePanel.setVisible(true);
         this.replyToMessage = message;
         sender.setText(message.getSenderName());
         sent.setText(Storage.FORMATTER.format(message.getSent()));
@@ -236,6 +242,6 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     }
 
     public void clear() {
-        messagePanel.getStyle().setDisplay(Display.NONE);
+        messagePanel.setVisible(false);
     }
 }
