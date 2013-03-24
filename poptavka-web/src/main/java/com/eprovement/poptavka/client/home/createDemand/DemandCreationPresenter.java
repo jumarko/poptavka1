@@ -246,11 +246,16 @@ public class DemandCreationPresenter
     }
 
     public void onForward() {
-        eventBus.setBody(view.getWidgetView());
         LOGGER.info("DemandCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
-        maxSelectedTab = 1;
+        eventBus.setBody(view.getWidgetView());
         eventBus.setUpSearchBar(null);
+        if (Storage.getUser() == null) {
+            eventBus.menuStyleChange(Constants.CREATE_DEMAND);
+        } else {
+            eventBus.userMenuStyleChange(Constants.CREATE_DEMAND);
+        }
+        maxSelectedTab = 1;
     }
 
     @Override

@@ -64,10 +64,12 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);
-        } else {
-            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
+        //If application is called by URL, log in user and forward him to overview (goToClientDemandModule.Welcome)
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+            Storage.setAppCalledByURL(false);
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(Constants.HOME_DEMANDS_MODULE);
+            return;
         }
         if (param == null) {
             //aj tak tu nemam categoryDetail ale iba ID

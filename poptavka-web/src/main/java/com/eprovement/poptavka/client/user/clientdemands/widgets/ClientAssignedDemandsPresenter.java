@@ -85,6 +85,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
+        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_ASSIGNED_DEMANDS);
 
         initWidget(filter);
     }
@@ -92,6 +93,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onInitClientClosedDemands(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_CLOSED_DEMANDS);
+        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_CLOSED_DEMANDS);
 
         initWidget(filter);
     }

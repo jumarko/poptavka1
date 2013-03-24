@@ -75,10 +75,15 @@ public class SupplierCreationPresenter
 
     public void onForward() {
         LOGGER.info("SupplierCreationPresenter loaded");
-        eventBus.setBody(view.getWidgetView());
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
-        maxSelectedTab = 1;
+        eventBus.setBody(view.getWidgetView());
         eventBus.setUpSearchBar(null);
+        if (Storage.getUser() == null) {
+            eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);
+        } else {
+            eventBus.userMenuStyleChange(Constants.CREATE_SUPPLIER);
+        }
+        maxSelectedTab = 1;
     }
 
     @Override

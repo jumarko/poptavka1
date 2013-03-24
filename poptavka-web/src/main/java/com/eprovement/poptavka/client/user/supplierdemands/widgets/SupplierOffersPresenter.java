@@ -74,6 +74,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
     /**************************************************************************/
     public void onInitSupplierOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_OFFERS);
+        eventBus.supplierMenuStyleChange(Constants.SUPPLIER_OFFERS);
         eventBus.activateSupplierOffers();
         eventBus.createTokenForHistory();
         eventBus.initActionBox(view.getActionBox(), view.getDataGrid());

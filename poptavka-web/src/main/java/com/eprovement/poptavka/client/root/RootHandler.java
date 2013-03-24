@@ -200,23 +200,40 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         GWT.log("BUSSINESS ROLES ++++ " + Storage.getBusinessUserDetail().getBusinessRoles().toString());
         GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
         //If exact module is known to be loaded, do it
-        if (widgetToLoad == Constants.USER_SETTINGS_MODULE) {
-            eventBus.goToSettingsModule();
-            return;
-        }
-        if (Constants.getMessagesConstants().contains(widgetToLoad)) {
-            eventBus.goToMessagesModule(null, widgetToLoad);
-            return;
-        }
-        //otherwise forward user to welcome view of appropriate module according to his roles
-        if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
-            eventBus.goToAdminModule(null, widgetToLoad);
-        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.SUPPLIER)) {
-            eventBus.goToSupplierDemandsModule(null, widgetToLoad);
-        } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.CLIENT)) {
-            eventBus.goToClientDemandsModule(null, widgetToLoad);
+        switch (widgetToLoad) {
+            case Constants.USER_SETTINGS_MODULE:
+                eventBus.goToSettingsModule();
+                break;
+            case Constants.HOME_DEMANDS_MODULE:
+                eventBus.goToHomeDemandsModule(null);
+                break;
+            case Constants.HOME_SUPPLIERS_MODULE:
+                eventBus.goToHomeSuppliersModule(null);
+                break;
+            case Constants.CREATE_DEMAND:
+                eventBus.goToCreateDemandModule();
+                break;
+            case Constants.CREATE_SUPPLIER:
+                eventBus.goToCreateSupplierModule();
+                break;
+            case Constants.MESSAGES_INBOX:
+                eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
+                break;
+            case Constants.USER_ADMININSTRATION_MODULE:
+                eventBus.goToAdminModule(null, Constants.NONE);
+                break;
+            default:
+                //otherwise forward user to welcome view of appropriate module according to his roles
+                if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
+                    eventBus.goToAdminModule(null, widgetToLoad);
+                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                    eventBus.goToSupplierDemandsModule(null, widgetToLoad);
+                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.CLIENT)) {
+                    eventBus.goToClientDemandsModule(null, widgetToLoad);
+                }
+                break;
         }
     }
 

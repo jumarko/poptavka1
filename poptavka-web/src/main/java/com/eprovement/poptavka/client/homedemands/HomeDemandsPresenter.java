@@ -140,6 +140,11 @@ public class HomeDemandsPresenter
 
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
+        if (Storage.getUser() == null) {
+            eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);
+        } else {
+            eventBus.userMenuStyleChange(Constants.HOME_DEMANDS_MODULE);
+        }
         eventBus.setExtendedFooterStyle();
     }
 

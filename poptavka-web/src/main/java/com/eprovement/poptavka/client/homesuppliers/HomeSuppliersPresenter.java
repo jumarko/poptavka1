@@ -143,6 +143,11 @@ public class HomeSuppliersPresenter
 
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
+        if (Storage.getUser() == null) {
+            eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
+        } else {
+            eventBus.userMenuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
+        }
         eventBus.setExtendedFooterStyle();
     }
 

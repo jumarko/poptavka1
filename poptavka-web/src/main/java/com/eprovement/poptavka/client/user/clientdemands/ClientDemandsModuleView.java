@@ -2,10 +2,8 @@ package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -32,34 +30,6 @@ public class ClientDemandsModuleView extends Composite
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-    }
-
-    /**************************************************************************/
-    /* UiHanders.                                                             */
-    /**************************************************************************/
-    @UiHandler("clientNewDemands")
-    public void onClickDemands(ClickEvent e) {
-        clientDemandsMenuStyleChange();
-    }
-
-    @UiHandler("clientOffers")
-    public void onClickOffers(ClickEvent e) {
-        clientOffersMenuStyleChange();
-    }
-
-    @UiHandler("clientAssignedDemands")
-    public void onClickAssignedDemands(ClickEvent e) {
-        clientAssignedDemandsMenuStyleChange();
-    }
-
-    @UiHandler("clientClosedDemands")
-    public void onClickClosedDemands(ClickEvent e) {
-        clientClosedDemandsMenuStyleChange();
-    }
-
-    @UiHandler("clientRatings")
-    public void onClickRatings(ClickEvent e) {
-        clientRatingMenuStyleChange();
     }
 
     /**************************************************************************/
