@@ -38,7 +38,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        popupPanel.addStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
+        popupPanel.addStyleName(Storage.RSCS.layout().advancedSearchModal());
         //Aby sa nam nezobrazoval taky ramcek (popup bez widgetu) pri starte modulu
         //Musi to byt takto? Neda sa to urobit krajsie? (len hide nefunguje)
         popupPanel.show();

@@ -438,8 +438,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 @Override
                 public Boolean getValue() {
                     /* Returning null value tells StarCell to use header image.
-                     * Using it this way we can use same class:StartCell for
-                     * providing star images as for hear as for star column items.
+                     * Using it this way we can use same class StarCell for
+                     * providing star images as for header as for star column items.
                      * Otherwise we must create new class image cell providing only header's image. */
                     return null;
                 }
