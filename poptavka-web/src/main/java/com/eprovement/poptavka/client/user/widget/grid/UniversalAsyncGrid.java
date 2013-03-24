@@ -4,7 +4,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CustomImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
-import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
+import com.eprovement.poptavka.client.user.widget.grid.cell.StarImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -399,7 +399,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                     /* Returning null value tells UrgetUmageCell to use header image.
                      * Using it this way we can use same class:UrgentImageCell for
                      * providing urgency images as for hear as for urgency column items.
-                     * Otherwise we must creating new class image cell providing only header's image. */
+                     * Otherwise we must create new class image cell providing only header's image. */
                     return null;
                 }
             };
@@ -421,7 +421,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * @return star column
      */
     public Column<T, Boolean> addStarColumn() {
-        Column<T, Boolean> col = new Column<T, Boolean>(new StarCell()) {
+        //create star column represented by isStarred value
+        Column<T, Boolean> starColumn = new Column<T, Boolean>(new StarImageCell()) {
             @Override
             public Boolean getValue(T object) {
                 IUniversalDetail obj = (IUniversalDetail) object;
@@ -429,11 +430,26 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             }
         };
         //set column style
-        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
-        addColumn(col);
-        setColumnWidth(col, Constants.COL_WIDTH_ICON);
-        return col;
+        starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
+        starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
+        //create star header represented by star image
+        Header starHeader = new Header<Boolean>(new StarImageCell()) {
+
+                @Override
+                public Boolean getValue() {
+                    /* Returning null value tells StarCell to use header image.
+                     * Using it this way we can use same class:StartCell for
+                     * providing star images as for hear as for star column items.
+                     * Otherwise we must create new class image cell providing only header's image. */
+                    return null;
+                }
+            };
+        //set header style
+        starHeader.setHeaderStyleNames(Storage.RSCS.grid().cellTableIconColumn());
+        //put it all together
+        addColumn(starColumn, starHeader);
+        setColumnWidth(starColumn, Constants.COL_WIDTH_ICON);
+        return starColumn;
     }
 
     // ***********************************************************************
