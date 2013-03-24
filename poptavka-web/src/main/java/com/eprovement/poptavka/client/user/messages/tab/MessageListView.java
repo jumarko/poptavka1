@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.widget.detail.MessageDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
@@ -30,11 +31,11 @@ import java.util.List;
  * @author martin slavkovsky
  *
  */
-public class MessageList extends Composite implements MessageListPresenter.IListM {
+public class MessageListView extends Composite implements MessageListPresenter.MessageListViewInterface {
 
     private static MessageListUiBinder uiBinder = GWT.create(MessageListUiBinder.class);
 
-    interface MessageListUiBinder extends UiBinder<Widget, MessageList> {
+    interface MessageListUiBinder extends UiBinder<Widget, MessageListView> {
     }
     /**************************************************************************/
     /* Attrinbutes                                                            */
@@ -45,6 +46,7 @@ public class MessageList extends Composite implements MessageListPresenter.IList
     @UiField DropdownButton actionBox;
     @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
     @UiField SimplePanel wrapperPanel;
+    @UiField MessageDetailView messageDetailView;
     @UiField HorizontalPanel toolBar;
     @UiField Button replyBtn;
     /** Class attributes. **/
@@ -138,7 +140,7 @@ public class MessageList extends Composite implements MessageListPresenter.IList
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return Storage.FORMATTER.format(((MessageDetail) object).getCreated());
+                        return Storage.DATE_FORMAT.format(((MessageDetail) object).getCreated());
                     }
                 });
     }
@@ -216,6 +218,16 @@ public class MessageList extends Composite implements MessageListPresenter.IList
     }
 
     /** Others. **/
+    @Override
+    public MessageDetailView getMessageDetailView() {
+        return messageDetailView;
+    }
+
+    @Override
+    public SimplePanel getWrapperPanel() {
+        return wrapperPanel;
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

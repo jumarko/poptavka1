@@ -27,7 +27,7 @@ public interface MessagesRPCServiceAsync {
             AsyncCallback<Integer> callback);
 
     void getInboxMessages(Long recipientId, SearchDefinition searchDefinition,
-            AsyncCallback<List<MessageDetail>> callback);
+            AsyncCallback<ArrayList<MessageDetail>> callback);
 
     void getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder,
             AsyncCallback<List<UserMessageDetail>> callback);

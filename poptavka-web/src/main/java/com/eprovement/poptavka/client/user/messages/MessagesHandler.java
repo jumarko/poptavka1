@@ -64,9 +64,9 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
     public void getInboxMessages(SearchDefinition searchDefinition) {
         messagesService.getInboxMessages(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
                 @Override
-                public void onSuccess(List<MessageDetail> result) {
+                public void onSuccess(ArrayList<MessageDetail> result) {
                     eventBus.displayInboxMessages(result);
                 }
             });

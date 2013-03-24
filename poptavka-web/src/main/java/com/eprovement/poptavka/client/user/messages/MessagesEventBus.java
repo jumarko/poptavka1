@@ -18,6 +18,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.event.EventBusWithLookup;
+import java.util.ArrayList;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = MessagesPresenter.class, module = MessagesModule.class)
@@ -110,7 +111,7 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
     void displayView(IsWidget content);
 
     @Event(handlers = MessageListPresenter.class)
-    void displayInboxMessages(List<MessageDetail> inboxMessages);
+    void displayInboxMessages(ArrayList<MessageDetail> inboxMessages);
     /**************************************************************************/
     /* Business events handled by MessagesModuleMessageHandler                */
     /**************************************************************************/

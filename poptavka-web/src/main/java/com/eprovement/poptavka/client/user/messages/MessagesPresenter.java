@@ -43,7 +43,6 @@ public class MessagesPresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToMessagesModule(filter, Constants.MESSAGES_INBOX);
-                view.getContentPanel().clear();
             }
         });
     }
@@ -82,17 +81,7 @@ public class MessagesPresenter
     public void onGoToMessagesModule(SearchModuleDataHolder filter, int loadWidget) {
         this.filter = filter;
 
-        //Need for search module. To have one entry point.
-        switch (loadWidget) {
-            case Constants.MESSAGES_INBOX:
-                eventBus.initInbox(filter);
-                break;
-            default:
-                //TODO Welcome or inbox by default???
-                break;
-        }
-
-        view.getWidgetView().setStyleName(Storage.RSCS.common().user());
+        eventBus.initInbox(filter);
     }
 
     /**************************************************************************/

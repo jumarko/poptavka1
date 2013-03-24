@@ -14,7 +14,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 @History(type = HistoryConverterType.DEFAULT, name = "messages")
 public class MessagesHistoryConverter implements HistoryConverter<MessagesEventBus> {
 
-    private static final String MESSAGES_NONE = "messagesWelcome";
     private static final String MESSAGES_INBOX_TEXT = "messagesInbox";
 
     /**
@@ -23,12 +22,7 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
      * @return token string
      */
     public String onCreateTokenForHistory() {
-        switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.MESSAGES_INBOX:
-                return MESSAGES_INBOX_TEXT;
-            default:
-                return MESSAGES_NONE;
-        }
+        return MESSAGES_INBOX_TEXT;
     }
 
     /**
@@ -66,9 +60,6 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
      * @return
      */
     private int getCurrentViewConstant(String token) {
-        if (MESSAGES_INBOX_TEXT.equals(token)) {
-            return Constants.MESSAGES_INBOX;
-        }
-        return Constants.NONE;
+        return Constants.MESSAGES_INBOX;
     }
 }

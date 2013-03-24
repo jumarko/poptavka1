@@ -6,14 +6,13 @@ package com.eprovement.poptavka.shared.domain.message;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-import com.eprovement.poptavka.client.user.messages.tab.MessageTableDisplay;
 
 
 /**
  *
  * @author Martin Slavkovsky
  */
-public class UserMessageDetail implements IsSerializable, MessageTableDisplay {
+public class UserMessageDetail implements IsSerializable {
 
     private Long id;
     private boolean isRead;
@@ -71,7 +70,6 @@ public class UserMessageDetail implements IsSerializable, MessageTableDisplay {
         this.messageDetail = messageDetail;
     }
 
-    @Override
     public String getSenderEmail() {
         return senderEmail;
     }
@@ -80,12 +78,10 @@ public class UserMessageDetail implements IsSerializable, MessageTableDisplay {
         this.senderEmail = senderEmail;
     }
 
-    @Override
     public int getMessageCount() {
         return messageCount;
     }
 
-    @Override
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
     }
