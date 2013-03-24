@@ -217,10 +217,9 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      * Request RootEventBus to create DetailWrapperPresenter.
      */
     public void onRequestDetailWrapperPresenter() {
-        if (detailSection != null) {
-            eventBus.removeHandler(detailSection);
+        if (detailSection == null) {
+            detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
         }
-        detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
         eventBus.responseDetailWrapperPresenter(detailSection);
     }
 
