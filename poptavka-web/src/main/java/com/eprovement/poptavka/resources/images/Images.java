@@ -62,6 +62,9 @@ public interface Images extends ClientBundle {
     @Source("loader32.gif")
     ImageResource loadIcon32();
 
+    @Source("loader-icon33.gif")
+    ImageResource loaderIcon33();
+
     @Source("star-green.png")
     ImageResource starGreen();
 

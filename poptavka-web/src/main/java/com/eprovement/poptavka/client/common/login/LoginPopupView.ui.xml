@@ -6,7 +6,7 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel>
-        <b:Modal ui:field="modal" addStyleNames='{res.common.loginModal}'>
+        <b:Modal ui:field="modal" addStyleNames='{res.modal.loginModal}'>
             <b:Form type="HORIZONTAL">
 
                 <g:ListBox ui:field="list"/>

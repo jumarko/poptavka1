@@ -112,7 +112,7 @@ public class LoginPopupView extends Composite
         progressBar.setVisible(false);
         emailTextBox.setFocus(true);
         modal.show();
-        StyleResource.INSTANCE.common().ensureInjected();
+        StyleResource.INSTANCE.modal().ensureInjected();
     }
 
     // TODO prod - delete and user real form

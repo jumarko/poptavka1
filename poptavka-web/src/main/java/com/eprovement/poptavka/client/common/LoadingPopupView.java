@@ -7,8 +7,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.resources.StyleResource;
 import com.github.gwtbootstrap.client.ui.Modal;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 
@@ -29,7 +27,6 @@ public class LoadingPopupView extends Composite
     @UiField Modal modal;
     @UiField Label loadingMessage;
     @UiField SimpleIconLabel loader;
-    @UiField Anchor reportAnchor;
 
     /**************************************************************************/
     /* INITIALIZATIONS                                                        */
@@ -38,7 +35,8 @@ public class LoadingPopupView extends Composite
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        loader.setImageResource(StyleResource.INSTANCE.images().loadIcon32());
+        loader.setImageResource(StyleResource.INSTANCE.images().loaderIcon33());
+        StyleResource.INSTANCE.modal().ensureInjected();
     }
 
     public void show(String message) {
@@ -53,10 +51,6 @@ public class LoadingPopupView extends Composite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
-    @Override
-    public HasClickHandlers getReportButton() {
-        return reportAnchor;
-    }
 
     @Override
     public LoadingPopupView getWidget() {

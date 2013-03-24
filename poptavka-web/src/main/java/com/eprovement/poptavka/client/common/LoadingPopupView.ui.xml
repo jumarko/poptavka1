@@ -7,14 +7,12 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel>
-        <b:Modal ui:field="modal" addStyleNames='{res.common.loginModal}'>
-            <cm:SimpleIconLabel ui:field='loader' popupEnabled="false" />
-            <g:VerticalPanel>
-                <g:Label ui:field='loadingMessage'></g:Label>
-                <g:Anchor ui:field="reportAnchor" styleName="font-size:1.0em">
-                    <ui:msg key="commonBtnReport">report problem</ui:msg>
-                </g:Anchor>
-            </g:VerticalPanel>
+        <b:Modal ui:field="modal" addStyleNames='{res.modal.loaderModal}'>
+            <g:HTMLPanel styleName='loader-logo'></g:HTMLPanel>
+            <g:Label styleName='loader-logo-label'>Hire professionals for anything you want.</g:Label>
+            <cm:SimpleIconLabel ui:field='loader' popupEnabled="false" styleName='loader-logo-icon' />
+            <g:Label styleName='loader-loading'>Loading</g:Label>
+            <g:Label ui:field='loadingMessage' styleName='loader-message'></g:Label>           
         </b:Modal>
     </g:HTMLPanel>
 </ui:UiBinder>
