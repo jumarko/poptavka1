@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Date;
 
 import com.googlecode.genericdao.search.Search;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -332,5 +333,18 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public boolean checkFreeEmail(String email) throws RPCException {
         return clientService.checkFreeEmail(email);
+    }
+
+    /**
+     * Reset password for user who forgot his password. New random password is saved into database.
+     * @param userId whose password will be reset
+     * @return new random password
+     */
+    public String resetPassword(long userId) throws RPCException {
+        String randomPassword = RandomStringUtils.randomAlphabetic(8);
+        final User user = (User) this.generalService.find(User.class, userId);
+        user.setPassword(randomPassword);
+        generalService.save(user);
+        return randomPassword;
     }
 }

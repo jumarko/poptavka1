@@ -19,9 +19,11 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.http.client.URL;
 
@@ -31,6 +33,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private static final Logger LOGGER = Logger.getLogger(LoginPopupPresenter.class.getName());
     private static final String DEFAULT_SPRING_LOGIN_URL = "j_spring_security_check";
     private static final String DEFAULT_SPRING_LOGOUT_URL = "j_spring_security_logout";
+    private MailRPCServiceAsync mailService;
     private int widgetToLoad = Constants.NONE;
     private String springLoginUrl = null;
 
@@ -50,8 +53,19 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         void setErrorMessage(String message);
 
+        void setInfoMessage(String message);
+
         LoginPopupPresenter getPresenter();
     }
+
+    /**************************************************************************/
+    /* Inject RPC service                                                     */
+    /**************************************************************************/
+    @Inject
+    void setMailService(MailRPCServiceAsync service) {
+        mailService = service;
+    }
+
     @Inject
     private UserRPCServiceAsync userService;
     @Inject
@@ -67,9 +81,42 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         }
     }
 
+    /**
+     * Reset password for account with passed email.
+     * @param email whose password will be reset
+     */
+    public void resetPassword(final String email) {
+        view.setLoadingStatus(Storage.MSGS.loggingVerifyAccount());
+        view.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
+        rootService.getBusinessUserByEmail(email.trim(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+            @Override
+            public void onSuccess(final BusinessUserDetail user) {
+                if (user == null) {
+                    view.setErrorMessage(Storage.MSGS.wrongEmailWhenReseting());
+                    return;
+                }
+                if (user.isVerified()) {
+                    view.setLoadingProgress(30, null);
+                    rootService.resetPassword(user.getUserId(), new SecuredAsyncCallback<String>(eventBus) {
+                        @Override
+                        public void onSuccess(String newPassword) {
+                            sendEmailWithNewPassword(user, newPassword);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            protected void onServiceFailure(Throwable caught, int errorResponse, String errorId) {
+                super.onServiceFailure(caught, errorResponse, errorId);
+                hideView();
+            }
+        });
+    }
+
     private void verifyUser() {
         view.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
-        // TODO release: check if user is VERIFIED
+        // TODO RELEASE: check if user is VERIFIED
         // if not then display activation popup
         rootService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
@@ -260,5 +307,25 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
     public void loadWidget(int widgetId) {
         this.widgetToLoad = widgetId;
+    }
+
+    /**
+     * Send user an email with new password.
+     * @param user whose password was reset
+     * @param newPassword new user's password
+     */
+    private void sendEmailWithNewPassword(final BusinessUserDetail user, final String newPassword) {
+        view.setLoadingProgress(60, null);
+        EmailDialogDetail dialogDetail = new EmailDialogDetail();
+        dialogDetail.setRecipient(user.getEmail());
+        dialogDetail.setMessage(Storage.MSGS.resetPasswordEmail(user.getPersonFirstName(), newPassword));
+        dialogDetail.setSubject(Storage.MSGS.resetPasswordEmailSubject());
+        mailService.sendMail(dialogDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean result) {
+                view.setLoadingProgress(100, null);
+                view.setInfoMessage(Storage.MSGS.resetPasswordInfoStatus());
+            }
+        });
     }
 }

@@ -21,6 +21,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -54,6 +55,9 @@ public class LoginPopupView extends Composite
     @UiField Button cancelBtn;
     @UiField ControlGroup emailControlGroup;
     @UiField ControlGroup passwordControlGroup;
+    @UiField DisclosurePanel forgotPassword;
+    @UiField TextBox forgotPasswordEmail;
+    @UiField Button resetPasswordButton;
     /** Class attributes. **/
     private LoginPopupPresenter presenter;
     /** Constants. **/
@@ -150,6 +154,11 @@ public class LoginPopupView extends Composite
         }
     }
 
+    @UiHandler("resetPasswordButton")
+    public void resetPasswordButtonHandler(ClickEvent e) {
+        presenter.resetPassword(forgotPasswordEmail.getText());
+    }
+
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
@@ -223,6 +232,20 @@ public class LoginPopupView extends Composite
         emailControlGroup.setType(ControlGroupType.ERROR);
         passwordControlGroup.setType(ControlGroupType.ERROR);
         status.setType(AlertType.ERROR);
+        progressBar.setVisible(false);
+        infoLabel.setText(message);
+        cancelBtn.setEnabled(true);
+        submitBtn.setEnabled(true);
+    }
+
+    /**
+     * This method displays info status.
+     */
+    @Override
+    public void setInfoMessage(String message) {
+        emailControlGroup.setType(ControlGroupType.SUCCESS);
+        passwordControlGroup.setType(ControlGroupType.SUCCESS);
+        status.setType(AlertType.SUCCESS);
         progressBar.setVisible(false);
         infoLabel.setText(message);
         cancelBtn.setEnabled(true);
