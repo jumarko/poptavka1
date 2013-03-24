@@ -65,7 +65,6 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     @UiField Label errorLabel;
     @UiField ControlGroup controlGroup;
     /** Class attributes. **/
-    private Boolean valid;
     private boolean enabled = true;
     private Validator validator = null;
     private ChangeDetail changeDetail;
@@ -94,18 +93,21 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     /* Validation                                                             */
     /**************************************************************************/
     private boolean validate() {
-        setValidationStyles(true, "");
-        //perform new validation
-        Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
-                changeDetail.getField(), getValue(), Default.class);
-        for (ConstraintViolation<T> violation : violations) {
-            setValidationStyles(false, violation.getMessage());
+        if (preValidate()) {
+            setValidationStyles(true, "");
+            //perform new validation
+            Set<ConstraintViolation<T>> violations = validator.validateValue(beanType,
+                    changeDetail.getField(), getValue(), Default.class);
+            for (ConstraintViolation<T> violation : violations) {
+                setValidationStyles(false, violation.getMessage());
+            }
+            return violations.isEmpty();
         }
-        return violations.isEmpty();
+        return false;
     }
 
     public boolean isValid() {
-        return validate() && valid;
+        return validate();
     }
 
     /**************************************************************************/
@@ -282,9 +284,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
             w.addDomHandler(new BlurHandler() {
                 @Override
                 public void onBlur(BlurEvent event) {
-                    if (preValidate()) {
-                        validate();
-                    }
+                    validate();
                 }
             }, BlurEvent.getType());
         }
@@ -359,8 +359,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     }
 
     private boolean validateNumberException() {
-        valid = false;
-        setValidationStyles(valid, Storage.VMSGS.commonNumberFormat());
-        return valid;
+        setValidationStyles(false, Storage.VMSGS.commonNumberFormat());
+        return false;
     }
 }
