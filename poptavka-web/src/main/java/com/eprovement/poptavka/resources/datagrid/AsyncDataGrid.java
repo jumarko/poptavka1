@@ -30,7 +30,7 @@ public interface AsyncDataGrid extends DataGrid.Resources {
 
     @Override
     @NotStrict
-    @Source({ DataGrid.Style.DEFAULT_CSS, "AsyncDataGrid.css" })
+    @Source({ DataGrid.Style.DEFAULT_CSS, "asyncDataGrid.css" })
     CustomStyle dataGridStyle();
 
     interface CustomStyle extends DataGrid.Style {

@@ -41,6 +41,6 @@ public interface CustomPager extends SimplePager.Resources {
      * The styles used in this widget.
      */
     @Override
-    @Source("CustomPager.css")
+    @Source("customPager.css")
     Style simplePagerStyle();
 }

@@ -41,6 +41,6 @@ public interface UniversalPager extends SimplePager.Resources {
      * The styles used in this widget.
      */
     @Override
-    @Source("UniversalPager.css")
+    @Source("universalPager.css")
     Style simplePagerStyle();
 }
