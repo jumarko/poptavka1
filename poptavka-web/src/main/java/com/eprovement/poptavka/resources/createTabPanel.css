@@ -49,14 +49,14 @@
     background: #e2ddca;
 }
 
+.createTabPanel .selectionContainer {
+    height: 400px;
+}
+
 .createTabPanel .formFooter {
     background: #e2ddca;
     height: 65px;
-    padding: 15px 40px 0;
-    border-radius: 0 0 5px 5px;
-    -moz-border-radius: 0 0 5px 5px;
-    -webkit-border-radius: 0 0 5px 5px;
-    padding: 15px 40px 0;
+    padding: 15px 40px 0;    
 }
 
 .createTabPanel .formFooter .gwt-Label {
@@ -157,6 +157,7 @@
     position: relative;
     text-align: center;
     width: 246px;
+    cursor: pointer;
     border-radius: 5px 0 0 5px;
     -moz-border-radius: 5px 0 0 5px;
     -webkit-border-radius: 5px 0 0 5px;
