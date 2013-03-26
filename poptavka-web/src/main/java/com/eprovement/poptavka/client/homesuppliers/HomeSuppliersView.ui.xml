@@ -6,10 +6,20 @@
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <ui:with field='res'
-                 type='com.eprovement.poptavka.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <ui:style>
+        .filterLabel {
+            color: #6F6B59;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 30px;
+            padding: 0px 10px 10px;
+        }
+    </ui:style>
 
     <g:DockLayoutPanel unit="PX"
-                           styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+                       styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
         <g:west size="320">
             <g:DockLayoutPanel unit="PX">
                 <g:north size="49">
@@ -35,11 +45,8 @@
             <g:DockLayoutPanel unit="PX">
                 <g:north size="65">
                     <g:HTMLPanel styleName='{res.layout.toolbarItemsBlock}'>
-                        <g:DecoratorPanel ui:field="filterLabelPanel">
-                            <g:Label ui:field="filterLabel" />
-                        </g:DecoratorPanel>
                         <g:Button ui:field="contactBtn"
-                                                          styleName='{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}'>
+                                  styleName='{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}'>
                             <ui:msg key="homeSuppliersContactBtn">Contact</ui:msg>
                         </g:Button>
                         <s:UniversalPagerWidget ui:field="pager" />
@@ -49,6 +56,7 @@
                     <b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
                         <b:FluidRow>
                             <b:Column size="7">
+                                <g:Label ui:field="filterLabel" styleName="{style.filterLabel}"/>
                                 <c:DataGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}'/>
                             </b:Column>
                             <b:Column size="5">

@@ -27,7 +27,6 @@ import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -100,8 +99,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     // Others
     @UiField
     Label bannerLabel, filterLabel;
-    @UiField
-    DecoratorPanel filterLabelPanel;
     @UiField
     DemandDetailView demandDetail;
     @UiField
@@ -253,11 +250,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     /**
      * Filter. *
      */
-    @Override
-    public DecoratorPanel getFilterLabelPanel() {
-        return filterLabelPanel;
-    }
-
     @Override
     public Label getFilterLabel() {
         return filterLabel;

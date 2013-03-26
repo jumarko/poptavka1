@@ -472,6 +472,9 @@ public interface LocalizableMessages extends Messages {
     String formUserRegStrongPassword();
 
     /*** 6 - Search module view ***************************************** 6 ***/
+    /** HomeDemands & HomeSuppliers **/
+    String searchResultInfoLabel();
+
     /** SearchModuleView.ui. **/
     String searchBtnAdvance();
     String searchBtnSearch();
