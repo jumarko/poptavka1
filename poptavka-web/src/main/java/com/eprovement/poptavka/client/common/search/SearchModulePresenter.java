@@ -12,6 +12,8 @@ import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -98,6 +100,7 @@ public class SearchModulePresenter
     @Override
     public void bindView() {
         this.addSearchBtnClickHandler();
+        this.addSearchContentBoxClickHandler();
         this.addAdvSearchBtnClickHandler();
         this.addTabLayoutPanelBeforeSelectionHandler();
     }
@@ -123,23 +126,38 @@ public class SearchModulePresenter
     /**************************************************************************/
     /** Additional events used in bind method                                 */
     /**************************************************************************/
-    /**
-     * Full text search.
-     */
     private void addSearchBtnClickHandler() {
         view.getSearchBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!view.getSearchContent().getText().isEmpty()) {
-                    SearchModuleDataHolder filter = new SearchModuleDataHolder();
-                    //set search content text for full text search
-                    filter.setSearchText(view.getSearchContent().getText());
-                    forwardToCurrentView(filter);
-                } else {
-                    showPopupNoSearchCriteria();
+                executeSearch();
+            }
+        });
+    }
+
+    private void addSearchContentBoxClickHandler() {
+        view.getSearchContent().addKeyUpHandler(new KeyUpHandler() {
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                if (event.getNativeKeyCode() == Constants.ENTER_KEY_CODE) {
+                    executeSearch();
                 }
             }
         });
+    }
+
+    /**
+     * Full text search.
+     */
+    private void executeSearch() {
+        if (!view.getSearchContent().getText().isEmpty()) {
+            SearchModuleDataHolder filter = new SearchModuleDataHolder();
+            //set search content text for full text search
+            filter.setSearchText(view.getSearchContent().getText());
+            forwardToCurrentView(filter);
+        } else {
+            showPopupNoSearchCriteria();
+        }
     }
 
     /**
@@ -214,36 +232,36 @@ public class SearchModulePresenter
     private void addTabLayoutPanelBeforeSelectionHandler() {
         view.getAdvanceSearchContentView().getTabLayoutPanel().addBeforeSelectionHandler(
                 new BeforeSelectionHandler<Integer>() {
-                    @Override
-                    public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
-                        switch (event.getItem()) {
-                            case AdvanceSearchContentView.CATEGORY_SELECTOR_WIDGET:
-                                //If not yet initialized, do it
-                                if (view.getAdvanceSearchContentView()
-                                        .getCategorySelectorPanel().getWidget() == null) {
-                                    eventBus.initCategoryWidget(
-                                            view.getAdvanceSearchContentView().getCategorySelectorPanel(),
-                                            Constants.WITH_CHECK_BOXES,
-                                            CategoryCell.DISPLAY_COUNT_DISABLED,
-                                            null);
-                                }
-                                break;
-                            case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
-                                //If not yet initialized, do it
-                                if (view.getAdvanceSearchContentView()
-                                        .getLocalitySelectorPanel().getWidget() == null) {
-                                    eventBus.initLocalityWidget(
-                                            view.getAdvanceSearchContentView().getLocalitySelectorPanel(),
-                                            Constants.WITH_CHECK_BOXES,
-                                            CategoryCell.DISPLAY_COUNT_DISABLED,
-                                            null);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
+                @Override
+                public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
+                    switch (event.getItem()) {
+                        case AdvanceSearchContentView.CATEGORY_SELECTOR_WIDGET:
+                            //If not yet initialized, do it
+                            if (view.getAdvanceSearchContentView()
+                                    .getCategorySelectorPanel().getWidget() == null) {
+                                eventBus.initCategoryWidget(
+                                        view.getAdvanceSearchContentView().getCategorySelectorPanel(),
+                                        Constants.WITH_CHECK_BOXES,
+                                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                                        null);
+                            }
+                            break;
+                        case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
+                            //If not yet initialized, do it
+                            if (view.getAdvanceSearchContentView()
+                                    .getLocalitySelectorPanel().getWidget() == null) {
+                                eventBus.initLocalityWidget(
+                                        view.getAdvanceSearchContentView().getLocalitySelectorPanel(),
+                                        Constants.WITH_CHECK_BOXES,
+                                        CategoryCell.DISPLAY_COUNT_DISABLED,
+                                        null);
+                            }
+                            break;
+                        default:
+                            break;
                     }
-                });
+                }
+            });
     }
 
     private void showPopupNoSearchCriteria() {
