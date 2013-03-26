@@ -33,11 +33,9 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
         if (param.equals(HOME)) {
             eventBus.goToCreateDemandModule();
-            eventBus.menuStyleChange(Constants.CREATE_DEMAND);
         } else {
             eventBus.setHistoryStoredForNextOne(false);
             eventBus.loginFromSession(Constants.CREATE_DEMAND);
-            eventBus.userMenuStyleChange(Constants.CREATE_DEMAND);
         }
     }
 

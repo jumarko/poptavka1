@@ -99,17 +99,11 @@ public class SupplierCreationPresenter
      */
     public void onGoToCreateSupplierModule() {
         view.getMainPanel().selectTab(FIRST_TAB_USER_REGISTRATION);
-        eventBus.registerTabToken(FIRST_TAB_USER_REGISTRATION);
         eventBus.initUserRegistrationForm(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));
         //remove widgets to force widget to init them again
         view.getHolderPanel(SECOND_TAB_CATEGORY).setWidget(null);
         view.getHolderPanel(THIRD_TAB_LOCALITY).setWidget(null);
         view.getHolderPanel(FOURTH_TAB_SERVICES).setWidget(null);
-    }
-
-    public void onGoToCreateSupplierModuleByHistory(int selectedTab) {
-        eventBus.setHistoryStoredForNextOne(false);
-        view.getMainPanel().selectTab(selectedTab);
     }
 
     /**************************************************************************/
@@ -160,12 +154,8 @@ public class SupplierCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
-            case FIRST_TAB_USER_REGISTRATION:
-                eventBus.registerTabToken(FIRST_TAB_USER_REGISTRATION);
-                break;
             case SECOND_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
-                eventBus.registerTabToken(SECOND_TAB_CATEGORY);
                 if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
                     eventBus.initCategoryWidget(
                             view.getHolderPanel(SECOND_TAB_CATEGORY),
@@ -176,7 +166,6 @@ public class SupplierCreationPresenter
                 break;
             case THIRD_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
-                eventBus.registerTabToken(THIRD_TAB_LOCALITY);
                 if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
                     eventBus.initLocalityWidget(
                             view.getHolderPanel(THIRD_TAB_LOCALITY),
@@ -187,7 +176,6 @@ public class SupplierCreationPresenter
                 break;
             case FOURTH_TAB_SERVICES:
                 LOGGER.info(" -> init Service Form supplierService");
-                eventBus.registerTabToken(FOURTH_TAB_SERVICES);
                 if (view.getHolderPanel(FOURTH_TAB_SERVICES).getWidget() == null) {
                     eventBus.initServicesWidget(view.getHolderPanel(FOURTH_TAB_SERVICES));
                 }
