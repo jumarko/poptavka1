@@ -110,7 +110,7 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
         resetValidationStyles();
         if (replyTextArea.getText().isEmpty()) {
             replyTextArea.addStyleName(Storage.RSCS.common().errorField());
-            errorLabelText.setText(Storage.VMSGS.messageNotEmptyBody());
+            errorLabelText.setText(Storage.VMSGS.messageNotBlankBody());
             return false;
         }
         return true;

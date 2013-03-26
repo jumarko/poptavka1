@@ -24,6 +24,7 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.validation.client.AbstractGwtValidatorFactory;
@@ -43,7 +44,7 @@ public final class SampleValidatorFactory extends AbstractGwtValidatorFactory {
      */
     @GwtValidation(value = {FullClientDetail.class, FullSupplierDetail.class, FullDemandDetail.class,
             AddressDetail.class, EmailDialogDetail.class, LocalityDetail.class, CategoryDetail.class,
-            MessageDetail.class, UserDetail.class, BusinessUserDetail.class },
+            MessageDetail.class, UserDetail.class, BusinessUserDetail.class, OfferMessageDetail.class },
     groups = {Default.class })
     public interface GwtValidator extends Validator {
     }

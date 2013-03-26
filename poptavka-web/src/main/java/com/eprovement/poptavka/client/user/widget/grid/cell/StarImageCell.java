@@ -4,7 +4,6 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
 
@@ -14,31 +13,26 @@ import com.eprovement.poptavka.client.common.session.Storage;
  * Clickable cell displaying star status of message.
  *
  * @author beho
- * @param <C>
  *
  */
-public class StarCell extends AbstractCell<Boolean>  {
+public class StarImageCell extends AbstractCell<Boolean> {
 
-    private static ImageResourceRenderer renderer;
-    //constants
-    private static final ImageResource STARRED = Storage.RSCS.images().starGreen();
-    private static final ImageResource STARRED_NOT = Storage.RSCS.images().starSilver();
+    private static ImageResourceRenderer renderer = new ImageResourceRenderer();
 
-    public StarCell() {
+    public StarImageCell() {
         super("click", "keydown");
-        if (renderer == null) {
-            renderer = new ImageResourceRenderer();
-        }
     }
 
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
             Boolean value, SafeHtmlBuilder sb) {
-        if (value != null) {
+        if (value == null) {
+            sb.append(renderer.render(Storage.RSCS.images().starHeader()));
+        } else {
             if (value) {
-                sb.append(renderer.render(STARRED));
+                sb.append(renderer.render(Storage.RSCS.images().starGreen()));
             } else {
-                sb.append(renderer.render(STARRED_NOT));
+                sb.append(renderer.render(Storage.RSCS.images().starSilver()));
             }
         }
     }
@@ -60,5 +54,4 @@ public class StarCell extends AbstractCell<Boolean>  {
             valueUpdater.update(value);
         }
     }
-
 }

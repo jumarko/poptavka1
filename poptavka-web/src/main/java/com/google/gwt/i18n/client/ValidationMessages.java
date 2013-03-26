@@ -177,15 +177,21 @@ public interface ValidationMessages extends ConstantsWithLookup {
     /**************************************************************************/
     /** Messaging - error messages.                                           */
     /**************************************************************************/
-    @Key("message.not.empty.body")
-    String messageNotEmptyBody();
+    @Key("message.notBlank.body")
+    String messageNotBlankBody();
 
-    @Key("message.not.empty.price")
-    String messageNotEmptyPrice();
+    @Key("message.size.body")
+    String messageSizeBody();
 
-    @Key("message.invalid.price")
-    String messageInvalidPrice();
+    @Key("message.notNull.price")
+    String messageNotNullPrice();
 
-    @Key("message.not.empty.date")
-    String messageNotEmptyDate();
+    @Key("message.min.price")
+    String messageMinPrice();
+
+    @Key("message.notNull.finishDate")
+    String messageNotNullFinishDate();
+
+    @Key("message.future.finishDate")
+    String messageFutureFinishDate();
 }

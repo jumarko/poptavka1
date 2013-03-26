@@ -227,8 +227,6 @@ public class SearchModulePresenter
                                             CategoryCell.DISPLAY_COUNT_DISABLED,
                                             null);
                                 }
-                                view.getPopupPanel().removeStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
-                                view.getPopupPanel().addStyleName(Storage.RSCS.layout().advancedSearchModal());
                                 break;
                             case AdvanceSearchContentView.LOCALITY_SELECTOR_WIDGET:
                                 //If not yet initialized, do it
@@ -240,12 +238,8 @@ public class SearchModulePresenter
                                             CategoryCell.DISPLAY_COUNT_DISABLED,
                                             null);
                                 }
-                                view.getPopupPanel().removeStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
-                                view.getPopupPanel().addStyleName(Storage.RSCS.layout().advancedSearchModal());
                                 break;
                             default:
-                                view.getPopupPanel().removeStyleName(Storage.RSCS.layout().advancedSearchModal());
-                                view.getPopupPanel().addStyleName(Storage.RSCS.layout().advancedSearchSmallModal());
                                 break;
                         }
                     }
