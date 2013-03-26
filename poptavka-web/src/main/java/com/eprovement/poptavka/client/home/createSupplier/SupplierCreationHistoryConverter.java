@@ -30,9 +30,9 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
     @Override
     public void convertFromToken(String methodName, String param, SupplierCreationEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_SUPPLIER_CREATION_MODULE);
+            eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);
         } else {
-            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
+            eventBus.userMenuStyleChange(Constants.CREATE_SUPPLIER);
         }
 
         //if true => URL invocation, because

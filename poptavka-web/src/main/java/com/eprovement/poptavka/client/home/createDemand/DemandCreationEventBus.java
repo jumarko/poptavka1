@@ -56,17 +56,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = DemandCreationPresenter.class)
-    void goToCreateDemandModule();
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void goToCreateDemandModuleByHistory(int selectedTab);
-
-    /**************************************************************************/
-    /* History events                                                         */
-    /**************************************************************************/
-    @Event(historyConverter = DemandCreationHistoryConverter.class, name = "createDemand")
-    String registerTabToken(int tab);
+    @Event(handlers = DemandCreationPresenter.class,
+    historyConverter = DemandCreationHistoryConverter.class, name = "createDemand")
+    String goToCreateDemandModule();
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -86,6 +78,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(forwardToParent = true)
     void loadingHide();
+
+    @Event(forwardToParent = true)
+    void loginFromSession(int widgetToLoad);
 
     @Event(forwardToParent = true)
     void initAddressWidget(SimplePanel embedToWidget);

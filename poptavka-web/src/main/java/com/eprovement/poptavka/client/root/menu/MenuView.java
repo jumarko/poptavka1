@@ -83,10 +83,10 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
             case Constants.HOME_SUPPLIERS_MODULE:
                 suppliersMenuStyleChange();
                 break;
-            case Constants.HOME_DEMAND_CREATION_MODULE:
+            case Constants.CREATE_DEMAND:
                 createDemandMenuStyleChange();
                 break;
-            case Constants.HOME_SUPPLIER_CREATION_MODULE:
+            case Constants.CREATE_SUPPLIER:
                 createSupplierMenuStyleChange();
                 break;
             default:
