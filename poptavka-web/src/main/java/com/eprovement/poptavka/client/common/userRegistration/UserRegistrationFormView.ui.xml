@@ -173,7 +173,7 @@
                     <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
-                                <ui:msg key="formIdentificationNumber">Identification Number</ui:msg>*
+                                <ui:msg key="formVatNumner">Vat Number</ui:msg>*
                             </g:Label>
                         </b:Column>
                         <b:Column size="8">

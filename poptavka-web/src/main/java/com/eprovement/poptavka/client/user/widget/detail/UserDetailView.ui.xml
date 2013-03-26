@@ -160,7 +160,7 @@
 						</b:Column>
 						<b:Column size='12'>
 							<g:Label styleName='{res.detailViews.detailBlockLabel}'>
-								<ui:msg key="formIdentificationNumber">Identification number:</ui:msg>
+								<ui:msg key="formVatNumber">Vat number:</ui:msg>
 							</g:Label>
 							<g:Label ui:field="identificationNumber" />
 						</b:Column>
