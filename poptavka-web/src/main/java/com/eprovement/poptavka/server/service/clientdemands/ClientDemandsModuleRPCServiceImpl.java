@@ -909,16 +909,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public Boolean deleteDemand(long demandId) throws RPCException, ApplicationSecurityException {
+    public FullDemandDetail deleteDemand(long demandId) throws RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
-        //TODO RELEASE - remove object or set status to removed ???
-        //If set status - New status DELETED is needed
-        //demand.setStatus(DemandStatus.DELETED);
-        //if delete object - removal cases foregin key constrain violation
-        //both generalService and demandService
-        //return generalService.remove(demand);
-        //return demandService.remove(demand);
-        return true;
+        demand.setStatus(DemandStatus.CLOSED);
+        return demandConverter.convertToTarget(generalService.merge(demand));
     }
 
     private Demand updateDemandFields(Demand demand, FullDemandDetail updatedDemand) {
