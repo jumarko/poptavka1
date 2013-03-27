@@ -93,6 +93,7 @@
     padding: 0;
 }
 
+
 .createTabPanel .well-container input[type="checkbox"] {
     margin: 1px 4px 0 0;
 }
@@ -118,12 +119,11 @@
     line-height: 40px;
 }
 
-.createTabPanel .well input[type="text"],.createTabPanel .well input[type="password"],.createTabPanel .well textarea
-    {
+.createTabPanel .well input[type="text"],
+.createTabPanel .well input[type="password"],
+.createTabPanel .well textarea {
     width: 92%;
     max-width: 92%;
-    background: #f8f4e4;
-    border: 1px solid #d2c9a9;
     height: 40px;
 }
 
@@ -161,33 +161,6 @@
     border-radius: 5px 0 0 5px;
     -moz-border-radius: 5px 0 0 5px;
     -webkit-border-radius: 5px 0 0 5px;
-}
-
-/* error control groups */
-.createTabPanel .control-group {
-    position: relative;
-}
-
-.createTabPanel .label {
-    background: url(images/error-label.png) no-repeat;
-    line-height: 16px;
-    min-height: 16px;
-    padding: 0 15px 0 30px;
-    border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-}
-
-.createTabPanel .controls .label-container {
-    display: block;
-    padding: 0 0 0 4px;
-    position: absolute;
-    right: 39px;
-    top: -16px;
-}
-
-.createTabPanel .error .controls input {
-    border: 1px solid #f00000;
 }
 
 .fourStepTabPanel .customHeader  {

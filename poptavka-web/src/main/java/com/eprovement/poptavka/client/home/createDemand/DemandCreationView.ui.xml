@@ -18,7 +18,7 @@
     <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
         <g:center>
             <g:TabLayoutPanel ui:field='mainPanel' stylePrimaryName='{res.createTabPanel.createTabPanel}'
-                              addStyleNames='{res.layout.bodyContainer}' barUnit='PX' barHeight='80'>
+                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='80'>
                 <!--1 -->
                 <g:tab>
                     <g:customHeader size="30">
