@@ -551,17 +551,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    @Override
-    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public void finishOffer(long offerId) throws RPCException, ApplicationSecurityException {
-        Offer offer = (Offer) generalService.find(Offer.class, offerId);
-        Demand demand = offer.getDemand();
-        demand.setStatus(DemandStatus.PENDINGCOMPLETION);
-        generalService.merge(demand);
-        offer.setState(offerService.getOfferState(OfferStateType.COMPLETED.getValue()));
-        generalService.merge(offer);
-    }
-
     /**
      * This method will update number of unread messages of logged user.
      * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
@@ -658,7 +647,23 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      * @throws ApplicationSecurityException
      */
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public void enterFeedbackForClient(final long demandID, final Integer clientRating, final String clientMessage)
+    public void finishOfferAndEnterFeedbackForClient(final long demandID, final long offerID,
+        final Integer supplierRating, final String supplierMessage)
+        throws RPCException, ApplicationSecurityException {
+        finishOffer(offerID);
+        enterFeedbackForClient(demandID, supplierRating, supplierMessage);
+    }
+
+    private void finishOffer(long offerId) throws RPCException, ApplicationSecurityException {
+        Offer offer = (Offer) generalService.find(Offer.class, offerId);
+        Demand demand = offer.getDemand();
+        demand.setStatus(DemandStatus.PENDINGCOMPLETION);
+        generalService.merge(demand);
+        offer.setState(offerService.getOfferState(OfferStateType.COMPLETED.getValue()));
+        generalService.merge(offer);
+    }
+
+    private void enterFeedbackForClient(final long demandID, final Integer clientRating, final String clientMessage)
         throws RPCException, ApplicationSecurityException {
         final Demand demand = generalService.find(Demand.class, demandID);
         Rating rating;

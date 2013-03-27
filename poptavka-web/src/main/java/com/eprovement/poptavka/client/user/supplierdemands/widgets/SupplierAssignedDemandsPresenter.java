@@ -22,6 +22,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -57,6 +58,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
+    private FeedbackPopupView ratePopup;
     private IUniversalDetail selectedObject = null;
     private long lastOpenedAssignedDemand = -1;
     private long selectedSupplierAssignedDemandId = -1;
@@ -132,17 +134,15 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         }
     }
 
-    public void onResponseFinnishOffer() {
-        final FeedbackPopupView ratePopup =
-                new FeedbackPopupView(FeedbackPopupView.CLIENT);
-        ratePopup.setClientName(selectedObject.getClientName());
-        ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
+    public void onResponseFeedback() {
+        ratePopup.getPopupThankYou().show();
+        Timer togglebuttonTimer = new Timer() {
             @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestRateClient(selectedObject.getDemandId(), Integer.valueOf(ratePopup.getRating()),
-                        ratePopup.getComment());
+            public void run() {
+                ratePopup.getPopupThankYou().hide();
             }
-        });
+        };
+        togglebuttonTimer.schedule(Constants.THANK_YOU_POPUP_DISPLAY_TIME);
     }
 
     /**
@@ -268,8 +268,15 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
         view.getFinnishBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                //Finnish button is always awaylable of single selections, threfore can use 'get(0)'.
-                eventBus.requestFinishOffer(view.getDataGrid().getSelectedObjects().get(0).getOfferId());
+                ratePopup = new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
+                ratePopup.setSupplierName(selectedObject.getSupplierName());
+                ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        eventBus.requestFinishAndRateClient(selectedObject.getDemandId(), selectedObject.getOfferId(),
+                                Integer.valueOf(ratePopup.getRating()), ratePopup.getComment());
+                    }
+                });
             }
         });
     }

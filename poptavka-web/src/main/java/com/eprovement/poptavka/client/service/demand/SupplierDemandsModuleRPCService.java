@@ -160,8 +160,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void finishOffer(long offerId) throws RPCException;
-
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 
     /**************************************************************************/
@@ -175,13 +173,14 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     SupplierOffersDetail getSupplierAssignedDemand(long demandID) throws RPCException, ApplicationSecurityException;
 
     /**
-     * Suppier enters a new feedback for Client with respect to given demand.
+     * Supplier enters a new feedback for Client with respect to given demand and finnish that demand.
      *
      * @param demandID of Demand to which this feedback is connected
-     * @param clientRating integer number that will be assigned to client
-     * @param clientMessage comment that will be assigned to client
+     * @param rating integer number that will be assigned to client
+     * @param message comment that will be assigned to client
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
-    void enterFeedbackForClient(long demandID, Integer clientRating, String clientMessage) throws RPCException;
+    void finishOfferAndEnterFeedbackForClient(long demandID, long offerID, Integer rating,
+            String message) throws RPCException;
 }
