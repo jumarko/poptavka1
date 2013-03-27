@@ -13,7 +13,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -43,8 +43,8 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     public static final String EMPTY = "";
     /** UiBinder attributes. **/
     @UiField(provided = true) ValidationMonitor bodyMonitor, priceMonitor, finishDateMonitor;
-    @UiField Anchor offerReplyBtn, questionReplyBtn;
-    @UiField Anchor submitBtn, cancelBtn;
+    @UiField Button offerReplyBtn, questionReplyBtn;
+    @UiField Button submitBtn, cancelBtn;
     @UiField HTMLPanel header, messagePanel;
     @UiField FluidContainer messageBody;
     @UiField FluidRow priceRow, finishDateRow;
@@ -109,6 +109,8 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     public void setSendingQuestionStyle() {
         header.setVisible(false);
         messageBody.setVisible(true);
+        priceRow.setVisible(false);
+        finishDateRow.setVisible(false);
     }
 
     public void setDefaultStyle() {
@@ -151,11 +153,11 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* GETTER                                                                 */
     /**************************************************************************/
-    public Anchor getOfferReplyBtn() {
+    public Button getOfferReplyBtn() {
         return offerReplyBtn;
     }
 
-    public Anchor getSubmitBtn() {
+    public Button getSubmitBtn() {
         return submitBtn;
     }
 

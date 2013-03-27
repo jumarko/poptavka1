@@ -443,7 +443,7 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootHandler.class)
     void sendOfferMessage(OfferMessageDetail offerMessageToSend);
 
-    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
+    @Event(handlers = DetailsWrapperPresenter.class)
     void addConversationMessage(MessageDetail sentMessage);
 
     /**
