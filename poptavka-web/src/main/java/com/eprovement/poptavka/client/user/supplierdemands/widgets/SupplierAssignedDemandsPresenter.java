@@ -219,10 +219,13 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //set actionBox visibility
-                view.getActionBox().setVisible(view.getDataGrid().getSelectedUserMessageIds().size() > 0);
+                if (Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS) {
+                    view.getActionBox().setVisible(view.getDataGrid().getSelectedUserMessageIds().size() > 0);
+                }
                 //init details
                 if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
-                    view.getFinnishBtn().setVisible(true);
+                    view.getFinnishBtn().setVisible(
+                            Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS ? true : false);
                     selectedObject = view.getDataGrid().getSelectedObjects().get(0);
                     initDetailSection(selectedObject);
                 } else {
