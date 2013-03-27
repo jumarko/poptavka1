@@ -14,10 +14,12 @@ import com.eprovement.poptavka.client.common.session.Storage;
 @History(type = HistoryConverterType.DEFAULT, name = "demandCreation")
 public class DemandCreationHistoryConverter implements HistoryConverter<DemandCreationEventBus> {
 
-    public String onRegisterTabToken(int tab) {
-        return "tab=" + (tab + 1);
-    }
+    private static final String HOME = "home";
+    private static final String USER = "user";
 
+    public String onGoToCreateDemandModule() {
+        return Storage.getUser() == null ? HOME : USER;
+    }
     /**
      * Called either when browser action <b>back</b> or <b>forward</b> is evocated
      * or by clicking on <b>hyperlink</b> with set token.
@@ -29,27 +31,11 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
      */
     @Override
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_DEMAND_CREATION_MODULE);
-        } else {
-            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
-        }
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+        if (param.equals(HOME)) {
             eventBus.goToCreateDemandModule();
         } else {
-            int tab = Integer.parseInt(param.split("=")[1]);
-            //case when logged at tab 2 and back performed
-            //--> logout and select first tab again
-            if (tab == 1) {
-                eventBus.logout(Constants.CREATE_DEMAND);
-                //case when logged -> back -> forward
-                //---> login and select second tab again
-            } else if (tab == 2 && Storage.getUser() == null) {
-                eventBus.login(Constants.CREATE_DEMAND);
-                //otherwise only select wanted tab
-            } else {
-                eventBus.goToCreateDemandModuleByHistory(tab - 1);
-            }
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(Constants.CREATE_DEMAND);
         }
     }
 

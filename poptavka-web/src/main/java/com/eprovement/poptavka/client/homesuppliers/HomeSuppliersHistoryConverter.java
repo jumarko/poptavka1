@@ -63,10 +63,12 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
-        } else {
-            eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
+        //If application is called by URL, log in user and forward him to overview (goToClientDemandModule.Welcome)
+        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+            Storage.setAppCalledByURL(false);
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(Constants.HOME_SUPPLIERS_MODULE);
+            return;
         }
         if (param == null) {
             //aj tak tu nemam categoryDetail ale iba ID

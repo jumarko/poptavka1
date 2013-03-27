@@ -59,10 +59,12 @@ public class MessagesPresenter
      * particular access role can't access it and loginPopupView will be displayed.
      */
     public void onForward() {
-        eventBus.setBody(view.getWidgetView());
+        //Must be set before any widget start initialize because of autoDisplay feature
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
+        eventBus.setBody(view.getWidgetView());
+        eventBus.userMenuStyleChange(Constants.USER_MESSAGES_MODULE);
         eventBus.setExtendedFooterStyle();
     }
 

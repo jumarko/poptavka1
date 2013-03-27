@@ -41,19 +41,16 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @UiHandler("client")
     public void onClickClient(ClickEvent e) {
         presenter.goToClient();
-        clientUserMenuStyleChange();
     }
 
     @UiHandler("supplier")
     public void onClickSupplier(ClickEvent e) {
         presenter.goToSupplier();
-        supplierUserMenuStyleChange();
     }
 
     @UiHandler("inbox")
     public void onClickMessages(ClickEvent e) {
         presenter.goToMessages();
-        messagesUserMenuStyleChange();
     }
 
     @UiHandler("demands")
@@ -79,7 +76,6 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @UiHandler("administration")
     public void onClickAdministration(ClickEvent e) {
         presenter.goToAdministration();
-        administrationUserMenuStyleChange();
     }
 
     /**************************************************************************/

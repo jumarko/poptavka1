@@ -130,6 +130,7 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     public void onInitClientDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_DEMANDS);
         eventBus.activateClientDemands();
         eventBus.initActionBox(view.getActionBox(), view.getConversationGrid());
         //Set visibility

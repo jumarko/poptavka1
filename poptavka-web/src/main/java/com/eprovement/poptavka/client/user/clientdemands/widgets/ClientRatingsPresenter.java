@@ -60,6 +60,7 @@ public class ClientRatingsPresenter extends LazyPresenter<
     public void onInitClientRatings(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_RATINGS);
+        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_RATINGS);
         eventBus.createTokenForHistory();
         eventBus.setUpSearchBar(new Label("Client's ratings attibure's selector will be here."));
         searchDataHolder = filter;

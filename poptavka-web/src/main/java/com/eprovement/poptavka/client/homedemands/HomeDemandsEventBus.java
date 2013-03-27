@@ -83,6 +83,9 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     void loadingHide();
 
     @Event(forwardToParent = true)
+    void loginFromSession(int widgetToLoad);
+
+    @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView);
 
     @Event(forwardToParent = true)

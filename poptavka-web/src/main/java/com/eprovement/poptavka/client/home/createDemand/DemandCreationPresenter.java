@@ -143,19 +143,14 @@ public class DemandCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
-            case FIRST_TAB_LOGIN_REGISTER_FORM:
-                eventBus.registerTabToken(FIRST_TAB_LOGIN_REGISTER_FORM);
-                break;
             case SECONT_TAB_DEMAND_BASIC_FORM:
                 LOGGER.info(" -> Supplier Info Form");
-                eventBus.registerTabToken(SECONT_TAB_DEMAND_BASIC_FORM);
                 if (view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget() == null) {
                     eventBus.initDemandBasicForm(view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM));
                 }
                 break;
             case THIRD_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
-                eventBus.registerTabToken(THIRD_TAB_CATEGORY);
                 if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
                     eventBus.initCategoryWidget(
                             view.getHolderPanel(THIRD_TAB_CATEGORY),
@@ -166,7 +161,6 @@ public class DemandCreationPresenter
                 break;
             case FOURTH_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
-                eventBus.registerTabToken(FOURTH_TAB_LOCALITY);
                 if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
                     eventBus.initLocalityWidget(
                             view.getHolderPanel(FOURTH_TAB_LOCALITY),
@@ -177,7 +171,6 @@ public class DemandCreationPresenter
                 break;
             case FIFTH_TAB_DEMAND_ADVANCE_FORM:
                 LOGGER.info(" -> init Demand Form supplierService");
-                eventBus.registerTabToken(FIFTH_TAB_DEMAND_ADVANCE_FORM);
                 if (view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).getWidget() == null) {
                     eventBus.initDemandAdvForm(view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM));
                 }
@@ -246,11 +239,16 @@ public class DemandCreationPresenter
     }
 
     public void onForward() {
-        eventBus.setBody(view.getWidgetView());
         LOGGER.info("DemandCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
-        maxSelectedTab = 1;
+        eventBus.setBody(view.getWidgetView());
         eventBus.setUpSearchBar(null);
+        if (Storage.getUser() == null) {
+            eventBus.menuStyleChange(Constants.CREATE_DEMAND);
+        } else {
+            eventBus.userMenuStyleChange(Constants.CREATE_DEMAND);
+        }
+        maxSelectedTab = 1;
     }
 
     @Override
@@ -284,11 +282,6 @@ public class DemandCreationPresenter
         }
     }
 
-    public void onGoToCreateDemandModuleByHistory(int selectedTab) {
-        eventBus.setHistoryStoredForNextOne(false);
-        view.getMainPanel().selectTab(selectedTab);
-    }
-
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
@@ -314,7 +307,6 @@ public class DemandCreationPresenter
     //--------------------------------------------------------------------------
     public void onRestoreDefaultFirstTab() {
         view.getMainPanel().selectTab(FIRST_TAB_LOGIN_REGISTER_FORM);
-        eventBus.registerTabToken(FIRST_TAB_LOGIN_REGISTER_FORM);
         view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM).clear();
         view.setLoginLayout();
     }

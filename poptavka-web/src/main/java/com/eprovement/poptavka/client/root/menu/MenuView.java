@@ -42,31 +42,26 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     @UiHandler("home")
     public void onClickHome(ClickEvent e) {
         presenter.goToHomeWelcome();
-        menuStyleChange();
     }
 
     @UiHandler("demands")
     public void onClickDemands(ClickEvent e) {
         presenter.goToHomeDemands();
-        demandsMenuStyleChange();
     }
 
     @UiHandler("suppliers")
     public void onClickSuppliers(ClickEvent e) {
         presenter.goToHomeSuppliers();
-        suppliersMenuStyleChange();
     }
 
     @UiHandler("createSupplier")
     public void onClickCreateSupplier(ClickEvent e) {
         presenter.goToCreateSupplier();
-        createSupplierMenuStyleChange();
     }
 
     @UiHandler("createDemand")
     public void onClickCreateDemand(ClickEvent e) {
         presenter.goToCreateDemand();
-        createDemandMenuStyleChange();
     }
 
     /**************************************************************************/
@@ -88,10 +83,10 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
             case Constants.HOME_SUPPLIERS_MODULE:
                 suppliersMenuStyleChange();
                 break;
-            case Constants.HOME_DEMAND_CREATION_MODULE:
+            case Constants.CREATE_DEMAND:
                 createDemandMenuStyleChange();
                 break;
-            case Constants.HOME_SUPPLIER_CREATION_MODULE:
+            case Constants.CREATE_SUPPLIER:
                 createSupplierMenuStyleChange();
                 break;
             default:

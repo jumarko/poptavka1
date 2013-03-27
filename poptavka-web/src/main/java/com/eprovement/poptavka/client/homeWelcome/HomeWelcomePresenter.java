@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks;
@@ -40,6 +41,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     public void onForward() {
         eventBus.setUpSearchBar(null);
+        eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
         eventBus.setDefaultFooterStyle();
         view.getCategorySelectionModel().clear();
     }

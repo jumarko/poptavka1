@@ -82,9 +82,12 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
     public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
             // login from session method
-            eventBus.loginFromSession(Constants.NONE);
+            Storage.setAppCalledByURL(false);
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(Constants.ADMIN_NEW_DEMANDS);
+            return;
         }
-
+        eventBus.goToAdminModule(null, Constants.ADMIN_NEW_DEMANDS);
     }
 
     @Override

@@ -2,10 +2,8 @@ package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -31,33 +29,6 @@ public class SupplierDemandsModuleView extends Composite
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-    }
-    /**************************************************************************/
-    /* UiHanders.                                                             */
-    /**************************************************************************/
-    @UiHandler("supplierDemands")
-    public void onClickDemands(ClickEvent e) {
-        supplierDemandsMenuStyleChange();
-    }
-
-    @UiHandler("supplierOffers")
-    public void onClickOffers(ClickEvent e) {
-        supplierOffersMenuStyleChange();
-    }
-
-    @UiHandler("supplierAssignedDemands")
-    public void onClickAssignedDemands(ClickEvent e) {
-        supplierAssignedDemandsMenuStyleChange();
-    }
-
-    @UiHandler("supplierClosedDemands")
-    public void onClickClosedDemands(ClickEvent e) {
-        supplierClosedDemandsMenuStyleChange();
-    }
-
-    @UiHandler("supplierRatings")
-    public void onClickRatings(ClickEvent e) {
-        supplierRatingMenuStyleChange();
     }
 
     /**************************************************************************/

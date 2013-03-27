@@ -14,8 +14,11 @@ import com.eprovement.poptavka.client.common.session.Storage;
 @History(type = HistoryConverterType.DEFAULT, name = "supplierCreation")
 public class SupplierCreationHistoryConverter implements HistoryConverter<SupplierCreationEventBus> {
 
-    public String onRegisterTabToken(int tab) {
-        return "tab=" + (tab + 1);
+    private static final String HOME = "home";
+    private static final String USER = "user";
+
+    public String onGoToCreateSupplierModule() {
+        return Storage.getUser() == null ? HOME : USER;
     }
 
     /**
@@ -29,28 +32,11 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
      */
     @Override
     public void convertFromToken(String methodName, String param, SupplierCreationEventBus eventBus) {
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_SUPPLIER_CREATION_MODULE);
-        } else {
-            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
-        }
-
-        //if true => URL invocation, because
-        //if app is running and module is called, that's module start method is called first
-        //and then start method of root module is called.
-        //If hisotryOnStart is called, it is the opposite.
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
+        if (param.equals(HOME)) {
             eventBus.goToCreateSupplierModule();
         } else {
-            int tab = Integer.parseInt(param.split("=")[1]);
-            //case when supplier registered and back performed
-            //--> forward to supplier creation module again
-            if (tab == 4 && Storage.getUser() != null) {
-                eventBus.goToCreateSupplierModule();
-            //otherwise only select wanted tab
-            } else {
-                eventBus.goToCreateSupplierModuleByHistory(tab - 1);
-            }
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.loginFromSession(Constants.CREATE_SUPPLIER);
         }
     }
 

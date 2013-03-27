@@ -58,13 +58,14 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     }
 
     public void onForward() {
-        eventBus.setBody(view.getWidgetView());
         //Must be set before any widget start initialize because of autoDisplay feature
         Storage.setCurrentlyLoadedView(Constants.USER_SUPPLIER_MODULE);
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
+        eventBus.setBody(view.getWidgetView());
         eventBus.setUpSearchBar(null);
+        eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
         eventBus.setExtendedFooterStyle();
     }
 

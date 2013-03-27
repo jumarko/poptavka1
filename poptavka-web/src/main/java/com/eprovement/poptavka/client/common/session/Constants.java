@@ -42,8 +42,6 @@ public final class Constants {
     public static final int HOME_WELCOME_MODULE = -1;
     public static final int HOME_DEMANDS_MODULE = -2;
     public static final int HOME_SUPPLIERS_MODULE = -3;
-    public static final int HOME_DEMAND_CREATION_MODULE = -4;
-    public static final int HOME_SUPPLIER_CREATION_MODULE = -5;
 
     public static final int USER_CLIENT_MODULE = -10;
     public static final int USER_SUPPLIER_MODULE = -11;
@@ -63,7 +61,7 @@ public final class Constants {
     public static final int HOME_SUPPLIERS_BY_DEFAULT = 90;
     public static final int HOME_SUPPLIERS_BY_SEARCH = 91;
     public static final int HOME_SUPPLIERS_BY_HISTORY = 92;
-    //
+
     public static final int CREATE_SUPPLIER = 1;
     public static final int CREATE_DEMAND = 2;
 

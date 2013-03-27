@@ -54,17 +54,9 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = SupplierCreationPresenter.class, navigationEvent = true)
+    @Event(handlers = SupplierCreationPresenter.class, navigationEvent = true,
+    historyConverter = SupplierCreationHistoryConverter.class, name = "createSupplier")
     void goToCreateSupplierModule();
-
-    @Event(handlers = SupplierCreationPresenter.class, navigationEvent = true)
-    void goToCreateSupplierModuleByHistory(int selectedTab);
-
-    /**************************************************************************/
-    /* History events                                                         */
-    /**************************************************************************/
-    @Event(historyConverter = SupplierCreationHistoryConverter.class, name = "createSupplier")
-    String registerTabToken(int tab);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -78,6 +70,9 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
 
     @Event(forwardToParent = true)
     void loadingHide();
+
+    @Event(forwardToParent = true)
+    void loginFromSession(int widgetToLoad);
 
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
