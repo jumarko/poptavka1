@@ -17,7 +17,6 @@ import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -67,8 +66,6 @@ public class HomeDemandsPresenter
         void hideDemandDetail();
 
         //Filter
-        DecoratorPanel getFilterLabelPanel();
-
         Label getFilterLabel();
 
         //Buttons
@@ -233,15 +230,14 @@ public class HomeDemandsPresenter
         if (filterHolder == null) {
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
             view.getFilterLabel().setText("");
-            view.getFilterLabelPanel().setVisible(false);
+            view.getFilterLabel().setVisible(false);
         } else {
             //HOME_DEMANDS_BY_SEARCH
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
             //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
             //ale ak bude dynamicky (zobrazia searching criteria), tak ano
-            //TODO RELEASE Martin i18n
-            view.getFilterLabel().setText("Results satisfying searching criteria:" + filterHolder.toString());
-            view.getFilterLabelPanel().setVisible(true);
+            view.getFilterLabel().setText(Storage.MSGS.searchResultInfoLabel() + filterHolder.toString());
+            view.getFilterLabel().setVisible(true);
         }
         searchDataHolder = filterHolder;
     }
@@ -535,7 +531,7 @@ public class HomeDemandsPresenter
         //----------------------------------------------------------------------
         if (selected != null) {
             //User selection was made -> reset filtering
-            view.getFilterLabelPanel().setVisible(false);
+            view.getFilterLabel().setVisible(false);
             //open NODES if selection made first
             //-----------------------------------------------------------
             selectedEvent = true; //SELECT CATEGORY event's semafor BEGIN >>>>>>>
@@ -604,7 +600,7 @@ public class HomeDemandsPresenter
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
             } else {
                 //cancel filtering if user selected category from celltree
-                view.getFilterLabelPanel().setVisible(false);
+                view.getFilterLabel().setVisible(false);
                 //Set selected category as filter and pass it to filter through that category
                 SearchModuleDataHolder filterHolder = new SearchModuleDataHolder();
                 filterHolder.getCategories().add(selected);

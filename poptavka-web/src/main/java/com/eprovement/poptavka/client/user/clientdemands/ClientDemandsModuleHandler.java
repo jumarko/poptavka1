@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
@@ -364,10 +365,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /* CRUD operation of demand                                               */
     /**************************************************************************/
     public void onRequestDeleteDemand(long demandId) {
-        clientDemandsService.deleteDemand(demandId, new SecuredAsyncCallback<Boolean>(eventBus) {
+        clientDemandsService.deleteDemand(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
             @Override
-            public void onSuccess(Boolean result) {
-                eventBus.responseDeleteDemand(result);
+            public void onSuccess(FullDemandDetail result) {
+                eventBus.responseDeleteDemand(result.getDemandStatus() == DemandStatus.CLOSED ? true : false);
             }
         });
     }

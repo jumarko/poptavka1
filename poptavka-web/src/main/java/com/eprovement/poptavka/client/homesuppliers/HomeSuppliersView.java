@@ -29,7 +29,6 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -80,7 +79,6 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true) UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField(provided = true) UniversalPagerWidget pager;
     @UiField Label reklama, filterLabel;
-    @UiField DecoratorPanel filterLabelPanel;
     @UiField HTMLPanel detail;
     @UiField UserDetailView userDetailView;
     @UiField Button contactBtn;
@@ -240,11 +238,6 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public Label getFilterLabel() {
         return filterLabel;
-    }
-
-    @Override
-    public DecoratorPanel getFilterLabelPanel() {
-        return filterLabelPanel;
     }
 
     /** Detail. **/

@@ -66,9 +66,8 @@ public class ClientDemandsView extends Composite
     @UiField SimplePanel detailPanel, actionBox;
     @UiField Label demandTitlelabel;
     @UiField HorizontalPanel demandHeader, conversationHeader;
-    @UiField Button backBtn, editDemandButton;
+    @UiField Button backBtn, editDemandButton, deleteDemandButton;
     @UiField HTMLPanel choiceButtonsPanel;
-    private Button deleteDemandButton = new Button();
 
     /**************************************************************************/
     /* Initialization                                                         */

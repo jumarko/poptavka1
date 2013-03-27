@@ -112,7 +112,7 @@
                 </tr>
                 <tr>
                     <td class='{style.label}'>
-                        <ui:msg key='formIdentificationNumber'>Identification number:</ui:msg>
+                        <ui:msg key='formVatNumber'>Vat number:</ui:msg>
                     </td>
                     <td>
                         <g:TextBox ui:field='identifNumber' styleName='{style.demandStatus}' />

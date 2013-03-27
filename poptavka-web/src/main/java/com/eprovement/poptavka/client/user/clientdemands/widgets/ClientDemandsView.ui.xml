@@ -16,10 +16,9 @@
                     <b:Button ui:field="editDemandButton" type="PRIMARY" icon="EDIT">
                         <ui:msg key="commonBtnEdit">Edit</ui:msg>
                     </b:Button>
-                    <!--Temporary disabled-->
-<!--                    <b:Button ui:field="deleteDemandButton" type="PRIMARY" icon="TRASH">
+                    <b:Button ui:field="deleteDemandButton" type="PRIMARY" icon="TRASH">
                         <ui:msg key="commonBtnDelete">Delete</ui:msg>
-                    </b:Button>-->
+                    </b:Button>
                 </g:HTMLPanel>
                 
                 <!--demand table header-->

@@ -146,7 +146,7 @@
                         <b:FluidRow>
                             <b:Column size="6">
                                 <g:Label>
-                                    <ui:msg key='formIdentificationNumber'>Identification number:</ui:msg>
+                                    <ui:msg key='formVatNumber'>Vat number:</ui:msg>
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
