@@ -106,7 +106,6 @@ public class ClientOffersPresenter
     public void onInitClientOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_OFFERED_DEMANDS);
-        eventBus.activateClientOffers();
         eventBus.initActionBox(view.getActionBox(), view.getOfferGrid());
 
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));

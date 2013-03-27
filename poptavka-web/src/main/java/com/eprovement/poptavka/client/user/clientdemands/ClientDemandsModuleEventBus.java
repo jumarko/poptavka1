@@ -72,9 +72,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(forwardToParent = true)
     void requestDetailWrapperPresenter();
 
-    //Pozor, staci prezenter zavolat raz a uz je aktivny
-    @Event(handlers = {ClientDemandsPresenter.class, ClientOffersPresenter.class,
-            ClientAssignedDemandsPresenter.class }, passive = true)
+    @Event(handlers = ClientDemandsModulePresenter.class)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     @Event(forwardToParent = true)
@@ -120,20 +118,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void initClientAssignedDemands(SearchModuleDataHolder filter);
-
-    //Activations of presenters
-    //--------------------------------------------------------------------------
-    @Event(activate = ClientDemandsPresenter.class,
-    deactivate = {ClientOffersPresenter.class, ClientAssignedDemandsPresenter.class })
-    void activateClientDemands();
-
-    @Event(activate = ClientOffersPresenter.class,
-    deactivate = {ClientDemandsPresenter.class, ClientAssignedDemandsPresenter.class })
-    void activateClientOffers();
-
-    @Event(activate = ClientAssignedDemandsPresenter.class,
-    deactivate = {ClientDemandsPresenter.class, ClientOffersPresenter.class })
-    void activateClientAssignedDemands();
 
     /**************************************************************************/
     /* Navigation Parent events */

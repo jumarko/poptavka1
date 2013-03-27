@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssig
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffersPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierRatingsPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -44,7 +45,6 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
         IsWidget getWidgetView();
     }
-
     private SupplierDemandsPresenter supplierDemands = null;
     private SupplierOffersPresenter supplierOffers = null;
     private SupplierAssignedDemandsPresenter supplierAssigendDemands = null;
@@ -59,7 +59,6 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
     public void onForward() {
         //Must be set before any widget start initialize because of autoDisplay feature
-        Storage.setCurrentlyLoadedView(Constants.USER_SUPPLIER_MODULE);
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
@@ -162,6 +161,24 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /**************************************************************************/
     public void onDisplayView(IsWidget content) {
         view.setContent(content);
+    }
+
+    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.SUPPLIER_POTENTIAL_DEMANDS:
+                supplierDemands.onResponseDetailWrapperPresenter(detailSection);
+                break;
+            case Constants.SUPPLIER_OFFERS:
+                supplierOffers.onResponseDetailWrapperPresenter(detailSection);
+                break;
+            case Constants.SUPPLIER_ASSIGNED_DEMANDS:
+                //nothing by default, just let it pass further.
+            case Constants.SUPPLIER_CLOSED_DEMANDS:
+                supplierAssigendDemands.onResponseDetailWrapperPresenter(detailSection);
+                break;
+            default:
+                break;
+        }
     }
 
     /**************************************************************************/
