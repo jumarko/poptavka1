@@ -66,6 +66,7 @@ public class ClientRatingsPresenter extends LazyPresenter<
         searchDataHolder = filter;
 
         eventBus.displayView(view.getWidgetView());
+        eventBus.loadingDivHide();
         //init wrapper widget
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }

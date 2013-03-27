@@ -5,12 +5,13 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.RatingDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -60,8 +61,10 @@ public class ClientRatingsView extends Composite
 
     private void initTable() {
         pager = new UniversalPagerWidget();
-        dataGrid = new UniversalAsyncGrid<DemandRatingsDetail>(DemandRatingsDetail.KEY_PROVIDER, GRID_COLUMNS);
-        dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        dataGrid = new UniversalAsyncGrid<DemandRatingsDetail>(
+                GRID_COLUMNS, pager.getPageSize(), resource);
+        dataGrid.setSelectionModel(new SingleSelectionModel<DemandRatingsDetail>(DemandRatingsDetail.KEY_PROVIDER));
         dataGrid.setPageSize(pager.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
