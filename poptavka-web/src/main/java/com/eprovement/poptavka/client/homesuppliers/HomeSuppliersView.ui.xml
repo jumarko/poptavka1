@@ -61,9 +61,6 @@
                                     <g:center>
                                         <c:DataGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}'/>
                                     </g:center>
-                                    <g:south size="36">
-                                        <g:SimplePanel ui:field="footerHolder"/>
-                                    </g:south>
                                 </g:DockLayoutPanel>
                             </b:Column>
                             <b:Column size="5">
@@ -75,6 +72,9 @@
                         </b:FluidRow>
                     </b:FluidContainer>
                 </g:center>
+                <g:south size="36">
+                    <g:SimplePanel ui:field="footerHolder" styleName='{res.layout.footerDatagridContainer}'/>
+                </g:south>
             </g:DockLayoutPanel>
         </g:center>
     </g:DockLayoutPanel>

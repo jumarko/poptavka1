@@ -456,6 +456,13 @@ body>div {
     width: 510px;
 }
 
+.footer-datagrid-container .footer-container {    
+    background: none;
+    float: right;
+    width: 510px;
+    margin: 0 20px 0 0;
+}
+
 .footer-toggle {
     position: absolute;
     right: 0px;

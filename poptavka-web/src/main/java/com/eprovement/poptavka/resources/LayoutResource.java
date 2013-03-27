@@ -116,6 +116,9 @@ public interface LayoutResource extends CssResource {
     @ClassName("footer-container")
     String footerContainer();
 
+    @ClassName("footer-datagrid-container")
+    String footerDatagridContainer();
+
     @ClassName("footer-toggle")
     String footerToggle();
 
