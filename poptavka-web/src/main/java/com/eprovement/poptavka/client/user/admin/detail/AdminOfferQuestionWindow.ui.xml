@@ -1,51 +1,59 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:bd="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
     <ui:with type="com.eprovement.poptavka.resources.StyleResource"
              field="res">
     </ui:with>
 
-    <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
-        }
-    </ui:style>
-
-    <g:HTMLPanel styleName="{res.detailViews.wrapper}">        
-        <div ui:field="messagePanel" class='{res.detailViews.conversationDetail}'>
-            <div class='{res.detailViews.conversationLeftBlock}'>
-                <g:Label ui:field='sender' styleName='{res.detailViews.conversationDetailHeader}'/>
-                <g:Label ui:field='sent' styleName='{res.detailViews.conversationDetailTime}'/>
-            </div>
-            <div class='{res.detailViews.conversationDetailContent}'>
-                <g:Label ui:field='body' />
-            </div>
-        </div>
-        <div ui:field="header" class="{res.detailViews.messageButtonsContainer}">
-            <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
-                <ui:msg key="questionResponse">Response</ui:msg>
-            </g:Anchor>
-        </div>
-        <div ui:field="messageBody" style="display: none;">
-            <!-- Message composition content -->
-            <div>
-                <g:TextArea ui:field="replyTextArea" styleName="{res.detailViews.replyTextArea}" />
-                <g:Label ui:field="errorLabelText" styleName="{style.error}" />
-                <g:Anchor ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>
-                    <span style="cursor: pointer; cursor: hand;">
-                        <ui:msg key="commonBtnSubmit">Submit</ui:msg>
-                    </span>
-                </g:Anchor>
-                <g:Anchor ui:field="cancelBtn" styleName='{res.detailViews.replyButton}'>
-                    <span style="cursor: pointer; cursor: hand;">
-                        <ui:msg key="commonBtnClose">Close</ui:msg>
-                    </span>
-                </g:Anchor>
-            </div>
-        </div>        
-    </g:HTMLPanel>
+        
+    <b:FluidContainer styleName="{res.detailViews.wrapper}">
+        <!-- Message composition content -->
+        <b:FluidRow ui:field="messageBodyRow" styleName="{res.detailViews.messageContainer}" visible="false">
+            <b:Column size="12">
+                <b:FluidRow>                        
+                    <b:Column size="12">
+                        <cm:ValidationMonitor ui:field="bodyMonitor">
+                            <g:TextArea styleName="{res.detailViews.replyTextArea} conversation-input" />
+                        </cm:ValidationMonitor>
+                    </b:Column>
+                </b:FluidRow>
+            </b:Column>
+        </b:FluidRow>
+        <b:FluidRow ui:field="messageButtonsRow" addStyleNames="{res.detailViews.messageButtonsContainer}" visible="false">
+            <b:Column size="12">
+                <g:Button ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>                            
+                    <img src="images/messages-submit-icon.png"/>
+                    <ui:msg key="commonBtnSubmit">Submit</ui:msg>                            
+                </g:Button>
+                <g:Button ui:field="cancelBtn" styleName='{res.detailViews.closeButton}'>
+                    <ui:msg key="commonBtnClose">Close</ui:msg>
+                </g:Button>
+            </b:Column>
+        </b:FluidRow>
+        <!-- Message display content -->
+        <b:FluidRow ui:field="messagePanel" addStyleNames='{res.detailViews.conversationDetail}'>
+            <b:Column size="12">
+                <g:HTMLPanel styleName='{res.detailViews.conversationLeftBlock}'>
+                    <g:Label ui:field='sender' styleName='{res.detailViews.conversationDetailHeader}'/>
+                    <g:Label ui:field='sent' styleName='{res.detailViews.conversationDetailTime}'/>
+                </g:HTMLPanel>
+                <g:HTMLPanel styleName='{res.detailViews.conversationDetailContent}'>
+                    <g:Label ui:field='body' />
+                </g:HTMLPanel>
+            </b:Column>
+        </b:FluidRow>
+        <!-- Message actions content -->
+        <b:FluidRow ui:field="header" styleName="{res.detailViews.messageButtonsContainer}">
+            <b:Column size="12">
+                <g:Button styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
+                    <img src="images/messages-reply-icon.png"/>
+                    <ui:msg key="commonBtnQuestion">Question</ui:msg>
+                </g:Button>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

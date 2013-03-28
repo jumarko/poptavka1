@@ -145,7 +145,7 @@ public class AdminNewDemandsPresenter
      */
     public void onResponseAdminDetailWrapperPresenter(final AdminDetailsWrapperPresenter detailSection) {
         if (detailSection != null) {
-            detailSection.initDetailWrapper(view.getDetailPanel());
+            detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
 
             this.detailSection = detailSection;
 

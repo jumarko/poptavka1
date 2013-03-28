@@ -2,6 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:c="urn:import:com.google.gwt.user.cellview.client"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail"
              xmlns:ad="urn:import:com.eprovement.poptavka.client.user.admin.detail">
 
@@ -16,7 +17,7 @@
         }
     </ui:style>
     <g:TabLayoutPanel stylePrimaryName='{res.detailTabPanel.detailTabPanel}'
-                      ui:field="container" barUnit="PX" barHeight="40" animationDuration="1000">
+                      ui:field="container" barUnit="PX" barHeight="50" animationDuration="1000">
         <g:tab>
             <g:header>
                 <ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
@@ -30,12 +31,19 @@
                 <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
             </g:header>
             <g:ScrollPanel>
-                <g:HTMLPanel ui:field="conversationHolder"
-                             styleName='{res.detailViews.commonDetailContainer}'>
-                    <g:HTMLPanel styleName='{res.detailViews.conversationContainer}'>
-                        <ad:AdminOfferQuestionWindow ui:field="replyHolder" />
-                        <c:CellList ui:field="messageList" styleName="{style.relative}"/>
-                    </g:HTMLPanel>
+                <g:HTMLPanel ui:field="conversationHolder" styleName='{res.detailViews.conversationContainer}'>
+                    <b:FluidContainer>
+                        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                            <b:Column size='12'>
+                                <ad:AdminOfferQuestionWindow ui:field="replyHolder" styleName='{res.detailViews.conversationBlock}'/>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                            <b:Column size='12'>
+                                <c:CellList ui:field="messageList" styleName='{res.detailViews.conversationBlock}'/>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:FluidContainer>
                 </g:HTMLPanel>
             </g:ScrollPanel>
         </g:tab>

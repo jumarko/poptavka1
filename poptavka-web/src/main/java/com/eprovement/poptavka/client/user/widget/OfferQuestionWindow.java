@@ -187,17 +187,12 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     }
 
     public void setMessage(MessageDetail message) {
-        String cssBall;
         String cssColor;
         if (Storage.getUser().getUserId() == message.getSenderId()) {
-            cssBall = Storage.RSCS.detailViews().conversationDetailRed();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderRed();
         } else {
-            cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
         }
-        //TODO: Martin refactoring
-        //messagePanel.addStyleName(cssBall);
         sender.addStyleName(cssColor);
 
         messagePanel.setVisible(true);

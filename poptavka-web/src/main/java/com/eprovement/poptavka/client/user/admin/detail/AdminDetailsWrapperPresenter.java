@@ -3,6 +3,8 @@ package com.eprovement.poptavka.client.user.admin.detail;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,11 +17,13 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Presenter(view = AdminDetailsWrapperView.class, multiple = true)
 public class AdminDetailsWrapperPresenter
@@ -32,6 +36,7 @@ public class AdminDetailsWrapperPresenter
     public static final int DEMAND_DETAIL_TAB = 0;
     public static final int CONVERSATION_TAB = 1;
     /** Class Attributes. **/
+    private UniversalAsyncGrid table;
     private long demandId = -1;
     private long threadRootId = -1;
 
@@ -96,8 +101,9 @@ public class AdminDetailsWrapperPresenter
      * @param type
      *            type of view, where is this widget loaded
      */
-    public void initDetailWrapper(SimplePanel detailSection) {
+    public void initDetailWrapper(UniversalAsyncGrid grid, SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
+        this.table = grid;
     }
 
     /**
@@ -149,6 +155,25 @@ public class AdminDetailsWrapperPresenter
     /**************************************************************************/
     /* Methods                                                                */
     /**************************************************************************/
+    /**
+     * Sent message is displayed and reply window is enabled again.
+     *
+     * @param sentMessage
+     */
+    public void onAddConversationMessage(MessageDetail sentMessage) {
+        addMessage(sentMessage);
+        view.getReplyHolder().setDefaultStyle();
+        //Always will be only one item.
+        MultiSelectionModel selectionModel = (MultiSelectionModel) table.getSelectionModel();
+        for (IUniversalDetail detail : (Set<IUniversalDetail>) selectionModel.getSelectedSet()) {
+            detail.setUserMessageId(sentMessage.getUserMessageId());
+            detail.setMessageCount(detail.getMessageCount() + 1);
+            detail.setIsRead(sentMessage.isRead());
+            detail.setIsStarred(sentMessage.isStarred());
+        }
+        table.redraw();
+    }
+
     /**
      * Set all tabs visible and clear tabs' widgets' attributes.
      */
@@ -243,6 +268,20 @@ public class AdminDetailsWrapperPresenter
     public void setMessageList(LinkedList<MessageDetail> messages, boolean collapsed) {
         view.getReplyHolder().setMessage(messages.removeFirst());
         view.getMessageProvider().setList(messages);
+    }
+
+    /**
+     * Adds message to conversation panel. Whole conversation panel consists of OfferQuestionWidget
+     * and cellList. Therefore adding new message involve shifting message from reply widget to list
+     * at the beginning and after that set new given message to reply holder.
+     *
+     * @param lastMessage
+     */
+    public void addMessage(MessageDetail lastMessage) {
+        LinkedList linkedList = new LinkedList(view.getMessageProvider().getList());
+        linkedList.addFirst(view.getReplyHolder().getMessage());
+        view.getMessageProvider().setList(linkedList);
+        view.getReplyHolder().setMessage(lastMessage);
     }
 
     /**

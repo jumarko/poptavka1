@@ -1,20 +1,19 @@
 package com.eprovement.poptavka.client.user.admin.detail;
 
+import com.eprovement.poptavka.client.common.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -35,10 +34,9 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
     /** Constants. **/
     public static final String EMPTY = "";
     /** UiBinder attributes. **/
-    @UiField Anchor questionReplyBtn, submitBtn, cancelBtn;
-    @UiField TextArea replyTextArea;
-    @UiField DivElement header, messageBody, messagePanel;
-    @UiField Label errorLabelText;
+    @UiField(provided = true) ValidationMonitor bodyMonitor;
+    @UiField Button questionReplyBtn, submitBtn, cancelBtn;
+    @UiField FluidRow header, messageBodyRow, messageButtonsRow;
     @UiField Label sender, sent, body;
     /** Class attributes. **/
     private int selectedResponse;
@@ -48,8 +46,15 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     public AdminOfferQuestionWindow() {
-        Storage.RSCS.detailViews().ensureInjected();
+        initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
+
+        Storage.RSCS.detailViews().ensureInjected();
+    }
+
+    private void initValidationMonitors() {
+        bodyMonitor = new ValidationMonitor<OfferMessageDetail>(
+                OfferMessageDetail.class, OfferMessageDetail.MessageField.BODY.getValue());
     }
 
     /**************************************************************************/
@@ -70,19 +75,20 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
     /* SETTER                                                                 */
     /**************************************************************************/
     public void setSendingQuestionStyle() {
-        header.getStyle().setDisplay(Display.NONE);
-        messageBody.getStyle().setDisplay(Display.BLOCK);
+        header.setVisible(false);
+        messageBodyRow.setVisible(true);
+        messageButtonsRow.setVisible(true);
     }
 
     public void setDefaultStyle() {
-        messageBody.getStyle().setDisplay(Display.NONE);
-        header.getStyle().setDisplay(Display.BLOCK);
-        replyTextArea.setText(EMPTY);
+        header.setVisible(true);
+        messageBodyRow.setVisible(false);
+        messageButtonsRow.setVisible(false);
+        bodyMonitor.setValue(EMPTY);
     }
 
     private void resetValidationStyles() {
-        replyTextArea.removeStyleName(Storage.RSCS.common().errorField());
-        errorLabelText.setText(EMPTY);
+        bodyMonitor.reset();
     }
 
     /**************************************************************************/
@@ -90,14 +96,14 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
     /**************************************************************************/
     public MessageDetail getCreatedMessage() {
         MessageDetail message = new MessageDetail();
-        message.setBody(replyTextArea.getText());
+        message.setBody((String) bodyMonitor.getValue());
         return message;
     }
 
     /**************************************************************************/
     /* GETTER                                                                 */
     /**************************************************************************/
-    public Anchor getSubmitBtn() {
+    public Button getSubmitBtn() {
         return submitBtn;
     }
 
@@ -107,13 +113,7 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
 
     @Override
     public boolean isValid() {
-        resetValidationStyles();
-        if (replyTextArea.getText().isEmpty()) {
-            replyTextArea.addStyleName(Storage.RSCS.common().errorField());
-            errorLabelText.setText(Storage.VMSGS.messageNotBlankBody());
-            return false;
-        }
-        return true;
+        return bodyMonitor.isValid();
     }
 
     public Widget getWidgetView() {
@@ -128,19 +128,14 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
     }
 
     public void setMessage(MessageDetail message) {
-        String cssBall;
         String cssColor;
         if (Storage.getUser().getUserId() == message.getSenderId()) {
-            cssBall = Storage.RSCS.detailViews().conversationDetailRed();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderRed();
         } else {
-            cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
         }
-        messagePanel.addClassName(cssBall);
         sender.addStyleName(cssColor);
 
-        messagePanel.getStyle().setDisplay(Display.BLOCK);
         this.replyToMessage = message;
         sender.setText(message.getSenderName());
         if (message.getSent() != null) {
@@ -175,6 +170,7 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
     }
 
     public void clear() {
-        messagePanel.getStyle().setDisplay(Display.NONE);
+        messageBodyRow.setVisible(false);
+        messageButtonsRow.setVisible(false);
     }
 }
