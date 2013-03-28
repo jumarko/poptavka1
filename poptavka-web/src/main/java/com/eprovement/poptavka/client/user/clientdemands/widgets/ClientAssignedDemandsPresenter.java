@@ -178,7 +178,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     private void initWidget(SearchModuleDataHolder filter) {
         eventBus.setUpSearchBar(new Label("Client's closed projects attibure's selector will be here."));
-        eventBus.activateClientAssignedDemands();
         eventBus.createTokenForHistory();
         searchDataHolder = filter;
         eventBus.initActionBox(view.getActionBox(), view.getDataGrid());

@@ -177,7 +177,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     private void initWidget(SearchModuleDataHolder filter) {
         eventBus.setUpSearchBar(new Label("Supplier's assigned/closed projects attibure's selector will be here."));
-        eventBus.activateSupplierAssignedDemands();
         eventBus.createTokenForHistory();
         searchDataHolder = filter;
         eventBus.initActionBox(view.getActionBox(), view.getDataGrid());
@@ -220,10 +219,13 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //set actionBox visibility
-                view.getActionBox().setVisible(view.getDataGrid().getSelectedUserMessageIds().size() > 0);
+                if (Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS) {
+                    view.getActionBox().setVisible(view.getDataGrid().getSelectedUserMessageIds().size() > 0);
+                }
                 //init details
                 if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
-                    view.getFinnishBtn().setVisible(true);
+                    view.getFinnishBtn().setVisible(
+                            Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS ? true : false);
                     selectedObject = view.getDataGrid().getSelectedObjects().get(0);
                     initDetailSection(selectedObject);
                 } else {

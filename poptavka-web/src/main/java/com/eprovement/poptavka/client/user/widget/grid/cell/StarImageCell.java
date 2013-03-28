@@ -20,7 +20,7 @@ public class StarImageCell extends AbstractCell<Boolean> {
     private static ImageResourceRenderer renderer = new ImageResourceRenderer();
 
     public StarImageCell() {
-        super("click", "keydown");
+        super("click");
     }
 
     @Override
@@ -41,16 +41,7 @@ public class StarImageCell extends AbstractCell<Boolean> {
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, Boolean value, NativeEvent event,
             ValueUpdater<Boolean> valueUpdater) {
-        if (("click".equals(event.getType())) || ("keydown".equals(event.getType()))) {
-            onEnterKeyDown(context, parent, value, event, valueUpdater);
-        }
-    }
-
-    @Override
-    protected void onEnterKeyDown(
-            com.google.gwt.cell.client.Cell.Context context, Element parent,
-            Boolean value, NativeEvent event, ValueUpdater<Boolean> valueUpdater) {
-        if (valueUpdater != null) {
+        if ("click".equals(event.getType()) && valueUpdater != null) {
             valueUpdater.update(value);
         }
     }

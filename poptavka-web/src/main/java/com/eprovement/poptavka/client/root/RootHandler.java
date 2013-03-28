@@ -132,7 +132,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_OFFERS);
-//                eventBus.addConversationMessage(sentMessage);
+                eventBus.addConversationMessage(sentMessage);
                 GWT.log("Offer message [messageId=" + sentMessage.getMessageId()
                         + "]  has been successfully sent to client");
             }

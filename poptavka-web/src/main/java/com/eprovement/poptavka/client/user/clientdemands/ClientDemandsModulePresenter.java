@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedD
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
@@ -62,7 +63,6 @@ public class ClientDemandsModulePresenter
 
     public void onForward() {
         //Must be set before any widget start initialize because of autoDisplay feature
-        Storage.setCurrentlyLoadedView(Constants.USER_CLIENT_MODULE);
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
@@ -181,6 +181,28 @@ public class ClientDemandsModulePresenter
     /**************************************************************************/
     public void onDisplayView(IsWidget content) {
         view.getContentPanel().setWidget(content);
+    }
+
+    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
+        switch(Storage.getCurrentlyLoadedView()) {
+            case Constants.CLIENT_DEMANDS:
+                //nothing by default, just let it pass further.
+            case Constants.CLIENT_DEMAND_DISCUSSIONS:
+                clientDemands.onResponseDetailWrapperPresenter(detailSection);
+                break;
+            case Constants.CLIENT_OFFERED_DEMANDS:
+                //nothing by default, just let it pass further.
+            case Constants.CLIENT_OFFERED_DEMAND_OFFERS:
+                clientOffers.onResponseDetailWrapperPresenter(detailSection);
+                break;
+            case Constants.CLIENT_ASSIGNED_DEMANDS:
+                //nothing by default, just let it pass further.
+            case Constants.CLIENT_CLOSED_DEMANDS:
+                clientAssigendDemands.onResponseDetailWrapperPresenter(detailSection);
+                break;
+            default:
+                break;
+        }
     }
 
     /**************************************************************************/

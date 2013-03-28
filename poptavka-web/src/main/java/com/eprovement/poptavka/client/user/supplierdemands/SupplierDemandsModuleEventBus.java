@@ -57,9 +57,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(forwardToParent = true)
     void requestDetailWrapperPresenter();
 
-    //Pozor, staci prezenter zavolat raz a uz je aktivny
-    @Event(handlers = {SupplierDemandsPresenter.class, SupplierOffersPresenter.class,
-            SupplierAssignedDemandsPresenter.class }, passive = true)
+    @Event(handlers = SupplierDemandsModulePresenter.class)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     /**************************************************************************/
@@ -94,20 +92,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(handlers = SupplierDemandsWelcomePresenter.class)
     void initSupplierDemandsWelcome();
-
-    //Activations of presenters
-    //--------------------------------------------------------------------------
-    @Event(activate = SupplierDemandsPresenter.class,
-    deactivate = {SupplierOffersPresenter.class, SupplierAssignedDemandsPresenter.class })
-    void activateSupplierDemands();
-
-    @Event(activate = SupplierOffersPresenter.class,
-    deactivate = {SupplierDemandsPresenter.class, SupplierAssignedDemandsPresenter.class })
-    void activateSupplierOffers();
-
-    @Event(activate = SupplierAssignedDemandsPresenter.class,
-    deactivate = {SupplierDemandsPresenter.class, SupplierOffersPresenter.class })
-    void activateSupplierAssignedDemands();
 
     /**************************************************************************/
     /* Parent events */

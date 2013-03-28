@@ -50,13 +50,13 @@
                 </b:FluidRow>
                 <g:HTMLPanel addStyleNames="{res.detailViews.messageButtonsContainer}">
                     <b:Column size="12">
-                        <g:Anchor ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>                            
+                        <g:Button ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>                            
                             <img src="images/messages-submit-icon.png"/>
                             <ui:msg key="commonBtnSubmit">Submit</ui:msg>                            
-                        </g:Anchor>
-                        <g:Anchor ui:field="cancelBtn" styleName='{res.detailViews.closeButton}'>
+                        </g:Button>
+                        <g:Button ui:field="cancelBtn" styleName='{res.detailViews.closeButton}'>
                             <ui:msg key="commonBtnClose">Close</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </b:Column>
                 </g:HTMLPanel>
             </b:FluidContainer>
@@ -70,14 +70,14 @@
                 </g:HTMLPanel>
             </g:HTMLPanel>
             <g:HTMLPanel ui:field="header" styleName="{res.detailViews.messageButtonsContainer}">
-                <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="offerReplyBtn">
+                <g:Button styleName='{res.detailViews.replyButton}' ui:field="offerReplyBtn" visible="false">
                     <img src="images/messages-reply-icon.png"/>
                     <ui:msg key="commonBtnOffer">Offer</ui:msg>
-                </g:Anchor>
-                <g:Anchor styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
+                </g:Button>
+                <g:Button styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
                     <img src="images/messages-reply-icon.png"/>
                     <ui:msg key="commonBtnQuestion">Question</ui:msg>
-                </g:Anchor>
+                </g:Button>
             </g:HTMLPanel>
         </g:HTMLPanel>
     </g:HTMLPanel>
