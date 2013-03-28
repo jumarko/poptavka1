@@ -1,0 +1,175 @@
+/* 
+    Document   : modal
+    Created on : Mar 24, 2013, 1:42:18 PM
+    Author     : Archo
+    Description: Common stylessheet for modal windows (example: Login modal)
+*/
+
+/* Login Modal Styles */
+.login-modal {
+    padding: 10px;
+    width: 520px;
+    background: #000000;
+}
+
+.login-modal .modal-header {
+    font-size: 24px;
+    font-weight: 300;
+    color: #6f6b59;
+    padding: 0px 20px 20px;
+}
+
+.login-modal .modal-body {
+    background: #ffffff;
+    padding: 20px;
+    max-height: none;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.login-modal fieldset {
+    background: #e7e3d6;
+    padding: 20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.login-modal fieldset .control-label {
+    text-align: left;
+    color: #237e00;
+    width: 110px;
+    line-height: 30px;
+}
+
+.login-modal .form-horizontal .controls {
+    margin-left: 130px;
+}
+
+.login-modal fieldset .controls .gwt-TextBox,
+.login-modal fieldset .controls .gwt-PasswordTextBox
+{   
+    color: #000000;
+    width: 310px;
+    height: 40px;
+    background: #f8f4e4;
+    border: 1px solid #d2c9a9;
+    padding: 0 25px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.login-modal fieldset .controls .gwt-TextBox:focus,
+.login-modal fieldset .controls .gwt-PasswordTextBox:focus
+{
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(158, 151, 126, 0.6);
+}
+
+.login-modal .info-block {
+    background: url(images/login-popup/info-icon.gif) no-repeat 15px 8px #DDD8C5;
+    border: medium none;
+    border-radius: 5px 5px 5px 5px;
+    color: #000000;
+    min-height: 27px;
+    margin: 0;
+    padding: 17px 35px 8px 60px;
+}
+
+.login-modal .control-group.error .control-label {
+    color: #d70000;
+    text-shadow: none;
+}
+
+.login-modal .control-group.error .controls .gwt-TextBox,
+.login-modal .control-group.error .controls .gwt-PasswordTextBox
+{   
+    border: 1px solid #d70000;
+}
+.login-modal .control-group.error .controls .gwt-TextBox:focus,
+.login-modal .control-group.error .controls .gwt-PasswordTextBox:focus
+{
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
+}
+
+.login-modal .info-block.alert-error {
+    background: url(images/login-popup/error-icon.gif) no-repeat 15px 8px #dd5b56;
+    border: 1px solid #d70000;
+}
+
+.login-modal .info-block.alert-error .gwt-Label {
+    color: #ffffff;
+    text-shadow: none;
+}
+
+.login-modal .login-button {
+    background: url(images/login-popup/login-button.png) no-repeat scroll 0 0 transparent;
+    display: block;
+    float: right;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin: 18px 15px 0 0;
+    text-align: center;
+    text-decoration: none;
+    width: 85px;    
+}
+
+.login-modal .cancel-button {
+    background: url(images/login-popup/cancel-button.png) no-repeat scroll 0 0 transparent;
+    display: block;
+    float: right;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin: 18px 15px 0 0;
+    text-align: center;
+    text-decoration: none;
+    width: 85px;
+    color: #ffffff; 
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Loader Modal Styles */
+.loader-modal {
+    padding: 10px;
+    margin: -250px 0 0 -120px;
+    width: 200px;
+    background: #000000;
+}
+
+.loader-modal .loader-logo {
+    background: url(images/loader-modal/ws-logo.png) no-repeat;
+    height: 65px;
+    width: 160px;
+    margin: 0 auto;
+}
+
+.loader-modal .loader-logo-label {
+    color: #4c4c4c;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 1px solid #202020;
+}
+
+.loader-modal .loader-logo-icon {
+    height: 33px;
+    margin: 15px auto;
+    width: 33px;
+}
+
+.loader-modal .loader-loading {
+    text-transform: uppercase;    
+    color: #279c07;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 300;
+}
+
+.loader-modal .loader-message {
+    color: #909090;
+    padding: 10px 0 0 0;
+    text-align: center;
+}

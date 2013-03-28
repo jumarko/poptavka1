@@ -74,10 +74,6 @@ public interface CommonResource extends CssResource {
     @ClassName("switch-right")
     String switchRight();
 
-    /** Login Modal Styles **/
-    @ClassName("login-modal")
-    String loginModal();
-
     @ClassName("changeMonitorStyle")
     String changeMonitorStyle();
 }

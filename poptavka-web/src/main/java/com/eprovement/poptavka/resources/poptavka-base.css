@@ -220,16 +220,16 @@ body>div {
 .menu .button5:hover, .button5.act {
     background: url(images/menu-icons-hover.png) no-repeat 0 -360px;
 }
-.menu .button5:hover, .button6.act {
+.menu .button6:hover, .button6.act {
     background: url(images/menu-icons-hover.png) no-repeat 0 -450px;
 }
-.menu .button5:hover, .button7.act {
+.menu .button7:hover, .button7.act {
     background: url(images/menu-icons-hover.png) no-repeat 0 -540px;
 }
-.menu .button5:hover, .button8.act {
+.menu .button8:hover, .button8.act {
     background: url(images/menu-icons-hover.png) no-repeat 0 -630px;
 }
-.menu .button5:hover, .button9.act {
+.menu .button9:hover, .button9.act {
     background: url(images/menu-icons-hover.png) no-repeat 0 -720px;
 }
 

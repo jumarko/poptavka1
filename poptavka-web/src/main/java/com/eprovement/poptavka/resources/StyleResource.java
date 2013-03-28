@@ -39,6 +39,10 @@ public interface StyleResource extends ClientBundle {
     @Source("common.css")
     CommonResource common();
 
+    @NotStrict
+    @Source("modal.css")
+    ModalStyles modal();
+
     @Source("table.css")
     TableStyle table();
 
@@ -56,6 +60,10 @@ public interface StyleResource extends ClientBundle {
     @NotStrict
     @Source("detailTabPanel.css")
     DetailTabPanel detailTabPanel();
+
+    @NotStrict
+    @Source("detailViews.css")
+    DetailViews detailViews();
 
     @NotStrict
     @Source("advancedSearchTabPanel.css")
@@ -81,8 +89,4 @@ public interface StyleResource extends ClientBundle {
 
     @Source("mailBox.css")
     MailBox mailBox();
-
-    @NotStrict
-    @Source("detailViews.css")
-    DetailViews detailViews();
 }
