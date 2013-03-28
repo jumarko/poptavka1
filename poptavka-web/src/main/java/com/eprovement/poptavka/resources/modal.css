@@ -173,3 +173,16 @@
     padding: 10px 0 0 0;
     text-align: center;
 }
+
+/* Advanced search modal styles */ 
+.advanced-search-modal {
+    padding: 10px;
+    width: 1075px;
+    height: 500px;
+    background: #000000;
+}
+
+.advanced-search-modal .modal-body {
+    padding: 0;
+    max-height: 600px;
+}

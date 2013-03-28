@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.common.search;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
@@ -43,6 +44,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         //Musi to byt takto? Neda sa to urobit krajsie? (len hide nefunguje)
         popupPanel.show();
         popupPanel.hide();
+        StyleResource.INSTANCE.modal().ensureInjected();
     }
 
     /**************************************************************************/
