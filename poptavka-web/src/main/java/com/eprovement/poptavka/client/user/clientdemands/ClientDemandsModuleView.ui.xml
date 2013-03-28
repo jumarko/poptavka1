@@ -54,18 +54,10 @@
             </g:DockLayoutPanel>
         </g:west>
         <g:center>            
-            <b:FluidContainer>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <g:SimplePanel ui:field="contentPanel" />
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <g:SimplePanel ui:field="footerHolder"/>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:FluidContainer>
+            <g:SimplePanel ui:field="contentPanel" />                    
         </g:center>
+        <g:south size="36">
+            <g:SimplePanel ui:field="footerHolder" styleName='{res.layout.footerDatagridContainer}'/>
+        </g:south>
     </g:DockLayoutPanel>
 </ui:UiBinder>

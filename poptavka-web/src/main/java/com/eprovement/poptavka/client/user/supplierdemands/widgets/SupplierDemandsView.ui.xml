@@ -7,7 +7,10 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
+    <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
+        <g:west size="20">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:west>
         <g:north size="65">
             <g:HorizontalPanel ui:field="toolBar"
                                styleName='{res.layout.toolbarItemsBlock}'>
@@ -15,10 +18,7 @@
                 <g:SimplePanel ui:field="actionBox" visible="false" />
                 <s:UniversalPagerWidget ui:field='pager' />
             </g:HorizontalPanel>
-        </g:north>
-        <g:west size="20">
-            <g:HTMLPanel></g:HTMLPanel>
-        </g:west>
+        </g:north>        
         <g:center>
             <b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
                 <b:FluidRow>
