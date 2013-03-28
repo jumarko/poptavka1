@@ -66,8 +66,6 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
-    void finishOffer(long offerId, AsyncCallback<MessageDetail> callback);
-
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 
     /**************************************************************************/
@@ -79,7 +77,7 @@ public interface SupplierDemandsModuleRPCServiceAsync {
 
     void getSupplierAssignedDemand(long id, AsyncCallback<SupplierOffersDetail> calback);
 
-    void enterFeedbackForClient(long demandID, Integer clientRating, String clientMessage,
-            AsyncCallback<Void> calback);
+    void finishOfferAndEnterFeedbackForClient(long demandID, long offerID, Integer rating,
+            String message, AsyncCallback<Void> calback);
 
 }

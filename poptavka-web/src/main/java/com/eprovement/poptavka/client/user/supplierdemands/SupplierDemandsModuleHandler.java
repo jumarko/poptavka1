@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCSer
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
@@ -184,34 +183,26 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    //*************************************************************************/
-    // Other                                                                    */
-    //*************************************************************************/
-    public void onRequestFinishOffer(long offerId) {
-        supplierDemandsService.finishOffer(offerId, new SecuredAsyncCallback<MessageDetail>(eventBus) {
-            @Override
-            public void onSuccess(MessageDetail result) {
-                eventBus.responseFinnishOffer();
-                eventBus.sendStatusMessage(Storage.MSGS.finishedOfferMessage());
-            }
-        });
+    /**************************************************************************/
+    /* Other                                                                  */
+    /**************************************************************************/
+    public void onRequestFinishAndRateClient(final long demandID, final long offerID,
+            final Integer rating, final String message) {
+        supplierDemandsService.finishOfferAndEnterFeedbackForClient(demandID, offerID, rating, message,
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        eventBus.responseFeedback();
+                        eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
+                        eventBus.sendStatusMessage(Storage.MSGS.finishedOfferMessage());
+                    }
+                });
     }
+
     //request? better would be update
 
     public void onRequestEditOffer(long id) {
         //TODO RPC
-    }
-
-    public void onRequestRateClient(final long demandID, final Integer clientRating, final String clientMessage) {
-        supplierDemandsService.enterFeedbackForClient(demandID, clientRating, clientMessage,
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        GWT.log("onRequestRateClient finished");
-                        // TODO RELEASE Martin - maybe hide popup and reset userMessageId for selected objec in table
-                        getSupplierAssignedDemands(null);
-                    }
-                });
     }
 
     public void onUpdateUnreadMessagesCount() {

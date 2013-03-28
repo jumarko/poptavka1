@@ -210,6 +210,6 @@ public final class Constants {
     public static final int MONTHS_URGENCY_NORMAL = 1;
 
     public static final String ACT = "act";
-
     public static final int ENTER_KEY_CODE = 13;
+    public static final int THANK_YOU_POPUP_DISPLAY_TIME = 3000;
 }

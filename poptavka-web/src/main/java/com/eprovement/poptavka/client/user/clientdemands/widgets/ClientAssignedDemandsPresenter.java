@@ -54,8 +54,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /** Constants. **/
-    private static final int THANK_YOU_POPUP_DISPLAY_TIME = 3000;
     /** Class Attributes. **/
     private DetailsWrapperPresenter detailSection;
     private SearchModuleDataHolder searchDataHolder;
@@ -139,11 +137,12 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     public void onResponseFeedback() {
         ratePopup.getPopupThankYou().show();
         Timer togglebuttonTimer = new Timer() {
+            @Override
             public void run() {
                 ratePopup.getPopupThankYou().hide();
             }
         };
-        togglebuttonTimer.schedule(THANK_YOU_POPUP_DISPLAY_TIME);
+        togglebuttonTimer.schedule(Constants.THANK_YOU_POPUP_DISPLAY_TIME);
     }
 
     /**
