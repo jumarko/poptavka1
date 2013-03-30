@@ -154,9 +154,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(handlers = AdminMessagesPresenter.class)
     void initMessages(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminNewDemandsPresenter.class)
-    void initNewDemands(SearchModuleDataHolder filter);
-
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void initPaymentMethods(SearchModuleDataHolder filter);
 

@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author praso, Martin Slavkovsky
  */
-@Presenter(view = AdminNewDemandsView.class)
+@Presenter(view = AdminNewDemandsView.class, multiple = true)
 public class AdminNewDemandsPresenter
         extends LazyPresenter<AdminNewDemandsPresenter.AdminNewDemandsViewInterface, AdminEventBus>
         implements NavigationConfirmationInterface {
@@ -123,7 +123,7 @@ public class AdminNewDemandsPresenter
      * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
      *                               - it's also used as pointer to differ root and child sections
      */
-    public void onInitNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
+    public void initNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
         if (searchModuleDataHolder == null) {
             eventBus.setUpSearchBar(null);
         }
@@ -145,7 +145,7 @@ public class AdminNewDemandsPresenter
      */
     public void onResponseAdminDetailWrapperPresenter(final AdminDetailsWrapperPresenter detailSection) {
         if (detailSection != null) {
-            detailSection.initDetailWrapper(view.getDetailPanel());
+            detailSection.initDetailWrapper(view.getDataGrid(), view.getDetailPanel());
 
             this.detailSection = detailSection;
 

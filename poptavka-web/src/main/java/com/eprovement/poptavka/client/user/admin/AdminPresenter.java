@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
+import com.eprovement.poptavka.client.user.admin.tab.AdminNewDemandsPresenter;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -62,6 +63,7 @@ public class AdminPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    private AdminNewDemandsPresenter newDemands;
     private AdminDetailsWrapperPresenter detailSection;
     private LoadingDiv loading;
 
@@ -204,7 +206,7 @@ public class AdminPresenter
                 eventBus.initMessages(filter);
                 break;
             case Constants.ADMIN_NEW_DEMANDS:
-                eventBus.initNewDemands(filter);
+                initNewDemands(filter);
                 break;
             case Constants.ADMIN_OFFERS:
                 eventBus.initOffers(filter);
@@ -253,9 +255,21 @@ public class AdminPresenter
      * Request AdminEventBus to create AdminDetailWrapperPresenter.
      */
     public void onRequestAdminDetailWrapperPresenter() {
-        if (detailSection == null) {
-            detailSection = eventBus.addHandler(AdminDetailsWrapperPresenter.class);
+        if (detailSection != null) {
+            eventBus.removeHandler(detailSection);
         }
+        detailSection = eventBus.addHandler(AdminDetailsWrapperPresenter.class);
         eventBus.responseAdminDetailWrapperPresenter(detailSection);
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void initNewDemands(SearchModuleDataHolder filter) {
+        if (newDemands != null) {
+            eventBus.removeHandler(newDemands);
+        }
+        newDemands = eventBus.addHandler(AdminNewDemandsPresenter.class);
+        newDemands.initNewDemands(filter);
     }
 }
