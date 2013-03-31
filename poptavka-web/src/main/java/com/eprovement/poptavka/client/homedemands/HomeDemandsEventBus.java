@@ -14,8 +14,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -69,37 +67,6 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     @Event(historyConverter = HomeDemandsHistoryConverter.class, name = "token")
     String createTokenForHistory(SearchModuleDataHolder filterHolder,
             LinkedList<TreeItem> categoryDetail, int page, FullDemandDetail demandDetail);
-
-    /**************************************************************************/
-    /* Parent events                                                          */
-    /**************************************************************************/
-    // TODO Praso - GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
-    @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true)
-    void menuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void setExtendedFooterStyle();
 
     /**************************************************************************/
     /* Business events handled by Presenter.                                  */

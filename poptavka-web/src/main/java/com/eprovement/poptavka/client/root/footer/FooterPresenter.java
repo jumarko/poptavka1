@@ -25,15 +25,4 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
             }
         });
     }
-
-    /**************************************************************************/
-    /* Setters                                                                */
-    /**************************************************************************/
-    public void onSetDefaultFooterStyle() {
-        //TODO Jaro - please provide default footer styles
-    }
-
-    public void onSetExtendedFooterStyle() {
-        //TODO Jaro - please provide extended footer styles
-    }
 }

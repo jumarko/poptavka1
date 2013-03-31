@@ -11,7 +11,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -60,26 +59,7 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
-    @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true)
     void logout(int widgetToLoad);
-
-    // TODO praso - odstranit eventy, ktore niesu potrebne a vlozit ich do predka
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
 
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
@@ -97,12 +77,6 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
 
     @Event(forwardToParent = true)
     void initServicesWidget(SimplePanel embedToWidget);
-
-    @Event(forwardToParent = true)
-    void menuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
 
     @Event(forwardToParent = true)
     void initUserRegistrationForm(SimplePanel holderPanel);

@@ -43,7 +43,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
-        eventBus.setDefaultFooterStyle();
         view.getCategorySelectionModel().clear();
     }
 

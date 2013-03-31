@@ -148,7 +148,6 @@ public class HomeSuppliersPresenter
         } else {
             eventBus.userMenuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
         }
-        eventBus.setExtendedFooterStyle();
         eventBus.setFooter(view.getFooterHolder());
     }
 

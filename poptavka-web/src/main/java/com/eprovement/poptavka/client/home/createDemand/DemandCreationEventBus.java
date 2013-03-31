@@ -7,7 +7,6 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -61,32 +60,13 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
-    @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true, navigationEvent = true)
-    void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
+    void atAccount();
 
     @Event(forwardToParent = true)
     void logout(int widgetToLoad);
 
-    @Event(forwardToParent = true)
-    void atAccount();
-
-    // TODO Praso - GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
+    @Event(forwardToParent = true, navigationEvent = true)
+    void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(forwardToParent = true)
     void initAddressWidget(SimplePanel embedToWidget);
@@ -101,12 +81,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(forwardToParent = true)
     void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void menuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
 
     @Event(forwardToParent = true)
     void initUserRegistrationForm(SimplePanel holderPanel);

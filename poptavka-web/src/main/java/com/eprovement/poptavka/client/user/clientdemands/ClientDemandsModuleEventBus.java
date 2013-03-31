@@ -55,21 +55,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /**************************************************************************/
     /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
-    @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
-
     @Event(handlers = ClientDemandsModulePresenter.class)
     void loadingDivShow(String loadingMessage);
 
@@ -89,9 +74,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
         List<LocalityDetail> localitiesToSet);
-
-    @Event(forwardToParent = true)
-    void setExtendedFooterStyle();
 
     /**************************************************************************/
     /* History events                                                         */
@@ -130,6 +112,9 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Navigation Parent events */
     /**************************************************************************/
     @Event(forwardToParent = true)
+    void atAccount();
+
+    @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
@@ -142,16 +127,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void goToCreateSupplierModule();
 
     @Event(forwardToParent = true)
-    void atAccount();
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
 
     @Event(forwardToParent = true)
     void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);

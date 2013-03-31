@@ -72,7 +72,6 @@ public class ClientDemandsModulePresenter
         eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         eventBus.userMenuStyleChange(Constants.USER_CLIENT_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override

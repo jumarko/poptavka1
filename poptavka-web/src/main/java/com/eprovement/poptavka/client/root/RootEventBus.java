@@ -21,7 +21,6 @@ import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
 import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.header.UserHeaderPresenter;
 import com.eprovement.poptavka.client.root.menu.MenuPresenter;
@@ -119,11 +118,6 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void setFooter(SimplePanel footerHolder);
 
-    @Event(handlers = FooterPresenter.class)
-    void setDefaultFooterStyle();
-
-    @Event(handlers = FooterPresenter.class)
-    void setExtendedFooterStyle();
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

@@ -15,7 +15,6 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
@@ -55,21 +54,6 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
-    @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
-
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
     void initAddressWidget(SimplePanel embedToWidget);
 
     @Event(forwardToParent = true)
@@ -83,18 +67,8 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     @Event(forwardToParent = true)
     void initServicesWidget(SimplePanel embedToWidget);
 
-    // TODO ivlcek - method loginFromSession() should be available for every module that can be accessed
-    // just by entering URL into browser
-//    @Event(forwardToParent = true)
-//    void loginFromSession();
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void setDefaultFooterStyle();
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */

@@ -9,7 +9,6 @@ package com.eprovement.poptavka.client.homeWelcome;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -54,12 +53,6 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     /* Navigation Parent events */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void setBody(IsWidget body);
-
-    @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
-
-    @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
@@ -76,15 +69,6 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
 
     @Event(forwardToParent = true)
     void initServicesWidget(SimplePanel embedToWidget);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true)
-    void menuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void setDefaultFooterStyle();
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */

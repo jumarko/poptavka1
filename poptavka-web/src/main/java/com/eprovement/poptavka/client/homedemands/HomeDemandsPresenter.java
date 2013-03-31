@@ -145,7 +145,6 @@ public class HomeDemandsPresenter
         } else {
             eventBus.userMenuStyleChange(Constants.HOME_DEMANDS_MODULE);
         }
-        eventBus.setExtendedFooterStyle();
         eventBus.setFooter(view.getFooterHolder());
     }
 

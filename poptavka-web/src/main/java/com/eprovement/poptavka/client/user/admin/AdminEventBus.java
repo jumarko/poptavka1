@@ -36,7 +36,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
@@ -88,19 +87,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
-    @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
+    void atAccount();
 
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
@@ -111,19 +98,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
             List<LocalityDetail> categoriesToSet);
 
     @Event(forwardToParent = true)
-    void atAccount();
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void setExtendedFooterStyle();
 
     /**************************************************************************/
     /* Business Initialization events                                         */

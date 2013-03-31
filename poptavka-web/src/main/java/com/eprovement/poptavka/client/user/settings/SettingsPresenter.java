@@ -93,7 +93,6 @@ public class SettingsPresenter
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
-        eventBus.setDefaultFooterStyle();
     }
 
     @Override

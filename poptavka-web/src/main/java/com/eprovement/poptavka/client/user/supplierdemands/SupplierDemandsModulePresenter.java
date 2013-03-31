@@ -69,7 +69,6 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
         eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override

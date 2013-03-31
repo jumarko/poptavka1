@@ -68,7 +68,6 @@ public class MessagesPresenter
         eventBus.setBody(view.getWidgetView());
         eventBus.setFooter(view.getFooterHolder());
         eventBus.userMenuStyleChange(Constants.USER_MESSAGES_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override

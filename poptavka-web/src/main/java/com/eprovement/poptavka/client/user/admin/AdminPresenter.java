@@ -170,7 +170,6 @@ public class AdminPresenter
         eventBus.setBody(view.getWidgetView());
         eventBus.setFooter(view.getFooterHolder());
         eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override
