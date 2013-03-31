@@ -49,8 +49,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierDemandsModulePresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
     /**************************************************************************/
     /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/
@@ -94,8 +92,11 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void initSupplierDemandsWelcome();
 
     /**************************************************************************/
-    /* Parent events */
+    /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void atAccount();
+
     @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
@@ -109,22 +110,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void goToCreateSupplierModule();
 
     @Event(forwardToParent = true)
-    void atAccount();
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void setExtendedFooterStyle();
 
     @Event(forwardToParent = true)
     void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);

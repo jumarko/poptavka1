@@ -44,6 +44,8 @@ public class ClientDemandsModulePresenter
 
         SimplePanel getContentPanel();
 
+        SimplePanel getFooterHolder();
+
         void clientMenuStyleChange(int loadedView);
 
         IsWidget getWidgetView();
@@ -67,9 +69,9 @@ public class ClientDemandsModulePresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
+        eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         eventBus.userMenuStyleChange(Constants.USER_CLIENT_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override

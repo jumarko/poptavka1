@@ -29,6 +29,8 @@ public class MessagesPresenter
 
         SimplePanel getContentPanel();
 
+        SimplePanel getFooterHolder();
+
         Button getMessagesInbox();
 
         Widget getWidgetView();
@@ -64,8 +66,8 @@ public class MessagesPresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
+        eventBus.setFooter(view.getFooterHolder());
         eventBus.userMenuStyleChange(Constants.USER_MESSAGES_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override

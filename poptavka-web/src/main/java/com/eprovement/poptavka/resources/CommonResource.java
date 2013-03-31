@@ -76,4 +76,7 @@ public interface CommonResource extends CssResource {
 
     @ClassName("changeMonitorStyle")
     String changeMonitorStyle();
+
+    @ClassName("validation-container")
+    String validationContainer();
 }

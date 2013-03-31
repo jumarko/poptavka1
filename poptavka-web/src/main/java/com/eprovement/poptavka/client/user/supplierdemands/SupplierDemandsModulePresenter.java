@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
@@ -43,6 +44,8 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
 
         void supplierMenuStyleChange(int loadedWidget);
 
+        SimplePanel getFooterHolder();
+
         IsWidget getWidgetView();
     }
     private SupplierDemandsPresenter supplierDemands = null;
@@ -63,9 +66,9 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
+        eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override

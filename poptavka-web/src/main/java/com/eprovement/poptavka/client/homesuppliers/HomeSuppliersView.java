@@ -31,6 +31,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -82,6 +83,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField HTMLPanel detail;
     @UiField UserDetailView userDetailView;
     @UiField Button contactBtn;
+    @UiField SimplePanel footerHolder;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     private List<String> gridColumns = Arrays.asList(
@@ -262,6 +264,11 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     /** Other. **/
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

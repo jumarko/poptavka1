@@ -28,6 +28,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.view.ReverseViewInterface;
@@ -103,6 +104,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     DemandDetailView demandDetail;
     @UiField
     Button offerBtn;
+    @UiField SimplePanel footerHolder;
 
     /**
      * ***********************************************************************
@@ -266,6 +268,11 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     /**
      * Other. *
      */
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

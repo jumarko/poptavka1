@@ -41,9 +41,6 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
     @Event(handlers = MessagesPresenter.class)
     void forward();
 
-    @Event(forwardToParent = true)
-    void setBody(IsWidget widget);
-
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -60,25 +57,10 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
-
-    @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(int numberOfMessages);
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
-
-    @Event(forwardToParent = true)
-    void setExtendedFooterStyle();
 
     /**************************************************************************/
     /* History events                                                         */

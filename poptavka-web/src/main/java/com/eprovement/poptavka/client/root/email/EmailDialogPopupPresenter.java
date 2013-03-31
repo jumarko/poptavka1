@@ -111,7 +111,13 @@ public class EmailDialogPopupPresenter
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onFillContactUsValues(int subjectId, String errorId) {
+    /**
+     * Contact us popup will will be prefilled with values as subject and errorId.
+     *
+     * @param subject - predefined subject i.e. report issue that was invoked by user from Error Module
+     * @param errorId - the error ID what was genereated for reported issue
+     */
+    public void fillContactUsValues(int subjectId, String errorId) {
         this.errorId = errorId;
         this.subjectId = subjectId;
         view.getSubjectListBox().setSelectedIndex(subjectId);

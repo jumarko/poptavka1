@@ -241,7 +241,7 @@
                         </b:Column>
                         <b:Column size="8">
                             <vm:ValidationMonitor ui:field="description">
-                                <g:TextArea height="80px" width="92%" />
+                                <g:TextArea height="110px" width="92%" />
                             </vm:ValidationMonitor>
                         </b:Column>
                     </b:FluidRow>

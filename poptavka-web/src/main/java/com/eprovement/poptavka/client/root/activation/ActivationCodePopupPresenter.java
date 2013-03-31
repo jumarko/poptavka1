@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.Date;
 
 /**
  *
@@ -84,7 +85,7 @@ public class ActivationCodePopupPresenter
             @Override
             public void onClick(ClickEvent event) {
                 //presmerovat na root module kde sa toto zavola
-                eventBus.initEmailDialogPopup();
+                eventBus.sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
             }
         });
     }

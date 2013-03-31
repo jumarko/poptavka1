@@ -59,6 +59,8 @@ public class AdminPresenter
         Button getProblemButton();
 
         SimplePanel getContentPanel();
+
+        SimplePanel getFooterHolder();
     }
     /**************************************************************************/
     /* Attributes                                                             */
@@ -166,8 +168,8 @@ public class AdminPresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
+        eventBus.setFooter(view.getFooterHolder());
         eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
-        eventBus.setExtendedFooterStyle();
     }
 
     @Override

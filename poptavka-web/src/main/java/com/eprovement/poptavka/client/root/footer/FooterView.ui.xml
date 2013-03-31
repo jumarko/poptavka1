@@ -7,7 +7,7 @@
     <ui:style>
         .footer-block {
         display: block;
-        padding: 10px;
+        padding: 8px;
         color: #443b19;
         }
 
@@ -16,7 +16,7 @@
         border: none;
         float: right;
         color: #827a5e;
-        padding: 10px;
+        padding: 8px;
         }
 
         .footerButton:hover {
@@ -30,12 +30,12 @@
         border: none;
         float: right;
         color: #827a5e;
-        padding: 10px 0;
+        padding: 8px 0;
         }
     </ui:style>
 
     <!--Jaro please provide default style-->
-    <g:HTMLPanel styleName='{res.layout.fullSize} {res.layout.footerContainer}'>
+    <g:HTMLPanel styleName='{res.layout.footerContainer}'>
         <g:HTMLPanel styleName=''>
             <g:Label styleName='pull-left {style.footer-block}'>
                 <ui:msg key="footerCompanyName">2013 © eProvement s.r.o.</ui:msg>

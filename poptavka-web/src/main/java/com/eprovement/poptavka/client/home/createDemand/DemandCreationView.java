@@ -12,7 +12,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -35,8 +34,8 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /**************************************************************************/
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
     @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5;
-    @UiField FluidContainer panel1;
-    @UiField DockLayoutPanel panel2;
+    @UiField FluidContainer panel1, panel2;
+    @UiField SimplePanel footerHolder;
     @UiField TabLayoutPanel mainPanel;
     @UiField Button loginBtn, registerBtn;
     @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4, nextButtonTab5;
@@ -118,6 +117,11 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     @Override
     public SimplePanel getHolderPanel(int order) {
         return holderPanels.get(order);
+    }
+
+    @Override
+    public SimplePanel getFooterHolder() {
+        return footerHolder;
     }
 
     /** HEADERS. **/

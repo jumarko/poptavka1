@@ -14,238 +14,277 @@
         .tabIndex4 {z-index: 4;}
         .tabIndex5 {z-index: 5;}
     </ui:style>
-
-    <g:TabLayoutPanel ui:field='mainPanel' stylePrimaryName='{res.createTabPanel.createTabPanel}'
-                      addStyleNames='{res.layout.bodyContainer}' barUnit='PX' barHeight='120'>
-        <!--1 -->
-        <g:tab>
-            <g:customHeader size="30">
-                <g:HTML ui:field="headerLabelTab1" addStyleNames="{style.tabIndex5} customHeader">
-                    <ui:msg key="demandCreationTab1">Contact Info</ui:msg>
-                </g:HTML>
-            </g:customHeader>
-            <g:HTMLPanel>
-                <b:FluidContainer ui:field="panel1">
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <g:Label styleName='infoLabel1'>
-                                <ui:msg key="clientCreationInfoLabel1">Login or register for free to continue.</ui:msg>
-                            </g:Label>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow addStyleNames='buttonsBorderRow'>
-                        <b:Column size="3">
-                            <g:Button ui:field="loginBtn" styleName='{res.common.buttonLeftMedium}'>
-                                <ui:msg key="commonLoginBtn">Login</ui:msg>
-                            </g:Button>
-                        </b:Column>
-                        <b:Column size="3">
-                            <g:Button ui:field="registerBtn" styleName='{res.common.buttonRightMedium}'>
-                                <ui:msg key="demandCreationRegisterBtn">Register for FREE</ui:msg>
-                            </g:Button>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:FluidContainer>
-                <g:DockLayoutPanel unit="PX" ui:field="panel2" styleName='{res.layout.fullSize}'>
-                    <g:north size="70">
-                        <g:Label styleName='infoLabel2'>
-                            <ui:msg key="clientCreationInfoLabel12">
-                                Please fill in your Account Information, company information if
-                                applicable, address and description of your business activities
-                            </ui:msg>
-                        </g:Label>
-                    </g:north>
-                    <g:north size="20">
-                        <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                    </g:north>
-                    <g:center>
-                        <g:ScrollPanel>
-                            <g:SimplePanel ui:field="contentHolder1" styleName='formContainer' />
-                        </g:ScrollPanel>
-                    </g:center>
-                    <g:south size="95">
-                        <g:HTMLPanel styleName='formFooter'>
-                            <g:Label>
-                                <ui:msg key="formRequiredFields">* fields are required</ui:msg>
-                            </g:Label>
-                            <g:HTMLPanel styleName='buttonsContainer'>
-                                <g:Button ui:field="nextButtonTab1" styleName='{res.common.buttonRightSmall}'>
-                                    <ui:msg key="commonBtnNext">Next</ui:msg>
-                                </g:Button>
-                                <g:Button ui:field="backButtonTab1" styleName='{res.common.buttonLeftSmall}'>
-                                    <ui:msg key='commonBtnBack'>Back</ui:msg>
-                                </g:Button>
-                            </g:HTMLPanel>
-                        </g:HTMLPanel>
-                    </g:south>
-                </g:DockLayoutPanel>
-            </g:HTMLPanel>
-        </g:tab>
-        <!--2 -->
-        <g:tab>
-            <g:customHeader size="30">
-                <g:HTML ui:field="headerLabelTab2" addStyleNames="{style.tabIndex4} customHeader">
-                    <ui:msg key="demandCreationTab2">Demand Creation</ui:msg>
-                </g:HTML>
-            </g:customHeader>
-            <g:DockLayoutPanel unit="PX">
-                <g:north size="70">
-                    <g:Label styleName='infoLabel2'>
-                        <ui:msg key="clientCreationInfoLabel2">Fill basic demand information to continue.</ui:msg>
-                    </g:Label>
-                </g:north>
-                <g:north size="20">
-                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                </g:north>
-                <g:center>
+    
+    <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
+        <g:center>
+            <g:TabLayoutPanel ui:field='mainPanel' stylePrimaryName='{res.createTabPanel.createTabPanel}'
+                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='80'>
+                <!--1 -->
+                <g:tab>
+                    <g:customHeader size="30">
+                        <g:HTML ui:field="headerLabelTab1" addStyleNames="{style.tabIndex5} customHeader">
+                            <ui:msg key="demandCreationTab1">Contact Info</ui:msg>
+                        </g:HTML>
+                    </g:customHeader>                        
                     <g:ScrollPanel>
                         <g:HTMLPanel>
-                            <g:SimplePanel ui:field="contentHolder2" styleName='formContainer' />
-                            <g:HTMLPanel styleName='formFooter'>
-                                <g:HTMLPanel styleName='buttonsContainer'>
-                                    <g:Button ui:field="nextButtonTab2" styleName='{res.common.buttonRightSmall}'>
-                                        <ui:msg key="commonBtnNext">Next</ui:msg>
-                                    </g:Button>
-                                    <g:Button ui:field="backButtonTab2" styleName='{res.common.buttonLeftSmall}'>
-                                        <ui:msg key='commonBtnBack'>Back</ui:msg>
-                                    </g:Button>
-                                </g:HTMLPanel>
-                            </g:HTMLPanel>
-                        </g:HTMLPanel>
+                            <b:FluidContainer ui:field="panel1">
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Label styleName='infoLabel1'>
+                                            <ui:msg key="clientCreationInfoLabel1">Login or register for free to continue.</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+                                <b:FluidRow addStyleNames='buttonsBorderRow'>
+                                    <b:Column size="3">
+                                        <g:Button ui:field="loginBtn" styleName='{res.common.buttonLeftMedium}'>
+                                            <ui:msg key="commonLoginBtn">Login</ui:msg>
+                                        </g:Button>
+                                    </b:Column>
+                                    <b:Column size="3">
+                                        <g:Button ui:field="registerBtn" styleName='{res.common.buttonRightMedium}'>
+                                            <ui:msg key="demandCreationRegisterBtn">Register for FREE</ui:msg>
+                                        </g:Button>
+                                    </b:Column>
+                                </b:FluidRow>                                    
+                            </b:FluidContainer>
+                            <b:FluidContainer ui:field="panel2" styleName='{res.layout.fullSize}'>
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Label styleName='infoLabel2'>
+                                            <ui:msg key="clientCreationInfoLabel12">
+                                                Please fill in your Account Information, company information if
+                                                applicable, address and description of your business activities
+                                            </ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+                                <b:FluidRow>                                    
+                                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>                                    
+                                </b:FluidRow>
+                                <b:FluidRow>
+                                    <b:Column size="12">                                    
+                                        <g:SimplePanel ui:field="contentHolder1" styleName='formContainer' />
+                                    </b:Column>
+                                </b:FluidRow>                               
+                                <b:FluidRow>
+                                    <b:Column size="12">   
+                                        <g:HTMLPanel styleName='formFooter'>
+                                            <g:Label>
+                                                <ui:msg key="formRequiredFields">* fields are required</ui:msg>
+                                            </g:Label>
+                                            <g:HTMLPanel styleName='buttonsContainer'>
+                                                <g:Button ui:field="nextButtonTab1" styleName='{res.common.buttonRightSmall}'>
+                                                    <ui:msg key="commonBtnNext">Next</ui:msg>
+                                                </g:Button>
+                                                <g:Button ui:field="backButtonTab1" styleName='{res.common.buttonLeftSmall}'>
+                                                    <ui:msg key='commonBtnBack'>Back</ui:msg>
+                                                </g:Button>
+                                            </g:HTMLPanel>
+                                        </g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>                                
+                            </b:FluidContainer>
+                        </g:HTMLPanel>              
                     </g:ScrollPanel>
-                </g:center>
-            </g:DockLayoutPanel>
-        </g:tab>
-        <!--3 -->
-        <g:tab>
-            <g:customHeader size="30">
-                <g:HTML ui:field="headerLabelTab3" addStyleNames="{style.tabIndex3} customHeader">
-                    <ui:msg key="demandCreationTab3">Category selection</ui:msg>
-                </g:HTML>
-            </g:customHeader>
-            <g:DockLayoutPanel unit="PX">
-                <g:north size="70">
-                    <g:Label styleName='infoLabel2'>
-                        <ui:msg key="clientCreationInfoLabel3">Select the most suitable category. The more accurate category the more
-                            relevant suppliers will contact you.
-                        </ui:msg>
-                    </g:Label>
-                </g:north>
-                <g:north size="20">
-                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                </g:north>
-                <g:center>
-                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
-                        <g:east size="20">
-                            <g:HTMLPanel></g:HTMLPanel>
-                        </g:east>
-                        <g:west size="20">
-                            <g:HTMLPanel></g:HTMLPanel>
-                        </g:west>
-                        <g:center>
-                            <g:ScrollPanel>
-                                <g:SimplePanel ui:field="contentHolder3" />
-                            </g:ScrollPanel>
-                        </g:center>
-                    </g:DockLayoutPanel>
-                </g:center>
-                <g:south size="95">
-                    <g:HTMLPanel styleName='formFooter'>
-                        <g:HTMLPanel styleName='buttonsContainer'>
-                            <g:Button ui:field="nextButtonTab3" styleName='{res.common.buttonRightSmall}'>
-                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="backButtonTab3" styleName='{res.common.buttonLeftSmall}'>
-                                <ui:msg key='commonBtnBack'>Back</ui:msg>
-                            </g:Button>
-                        </g:HTMLPanel>
-                    </g:HTMLPanel>
-                </g:south>
-            </g:DockLayoutPanel>
-        </g:tab>
-        <!--4 -->
-        <g:tab>
-            <g:customHeader size="30">
-                <g:HTML ui:field="headerLabelTab4" addStyleNames="{style.tabIndex2} customHeader">
-                    <ui:msg key="demandCreationTab4">Locality selection</ui:msg>
-                </g:HTML>
-            </g:customHeader>
-            <g:DockLayoutPanel unit="PX" height="100%">
-                <g:north size="70">
-                    <g:Label styleName='infoLabel2'>
-                        <ui:msg key="clientCreationInfoLabel4">Select your Locality.</ui:msg>
-                    </g:Label>
-                </g:north>
-                <g:north size="20">
-                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                </g:north>
-                <g:center>
-                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
-                        <g:east size="20">
-                            <g:HTMLPanel></g:HTMLPanel>
-                        </g:east>
-                        <g:west size="20">
-                            <g:HTMLPanel></g:HTMLPanel>
-                        </g:west>
-                        <g:center>
-                            <g:ScrollPanel>
-                                <g:SimplePanel ui:field="contentHolder4" styleName='formContainer' />
-                            </g:ScrollPanel>
-                        </g:center>
-                    </g:DockLayoutPanel>                    
-                </g:center>
-                <g:south size="95">
-                    <g:HTMLPanel styleName='formFooter'>
-                        <g:HTMLPanel styleName='buttonsContainer'>
-                            <g:Button ui:field="nextButtonTab4" styleName='{res.common.buttonRightSmall}'>
-                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="backButtonTab4" styleName='{res.common.buttonLeftSmall}'>
-                                <ui:msg key='commonBtnBack'>Back</ui:msg>
-                            </g:Button>
-                        </g:HTMLPanel>
-                    </g:HTMLPanel>
-                </g:south>
-            </g:DockLayoutPanel>
-        </g:tab>
-        <!--5 -->
-        <g:tab>
-            <g:customHeader size="30">
-                <g:HTML ui:field="headerLabelTab5" addStyleNames="{style.tabIndex1} customHeader">
-                    <ui:msg key="demandCreationTab5">Demand Advanced Info</ui:msg>
-                </g:HTML>
-            </g:customHeader>
-            <g:DockLayoutPanel unit="PX" height="100%">
-                <g:north size="70">
-                    <g:Label styleName='infoLabel2'>
-                        <ui:msg key="clientCreationInfoLabel5">Fill advance demand information to continue.</ui:msg>
-                    </g:Label>
-                </g:north>
-                <g:north size="20">
-                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                </g:north>                
-                <g:center>
+                </g:tab>
+                <!--2 -->
+                <g:tab>
+                    <g:customHeader size="30">
+                        <g:HTML ui:field="headerLabelTab2" addStyleNames="{style.tabIndex4} customHeader">
+                            <ui:msg key="demandCreationTab2">Demand Creation</ui:msg>
+                        </g:HTML>
+                    </g:customHeader>
                     <g:ScrollPanel>
-                        <g:SimplePanel ui:field="contentHolder5" styleName='formContainer' />
+                        <g:HTMLPanel>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:Label styleName='infoLabel2'>
+                                        <ui:msg key="clientCreationInfoLabel2">Fill basic demand information to continue.</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>                            
+                            <b:FluidRow>
+                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">                             
+                                    <g:HTMLPanel>
+                                        <g:SimplePanel ui:field="contentHolder2" styleName='formContainer' />
+                                        <g:HTMLPanel styleName='formFooter'>
+                                            <g:HTMLPanel styleName='buttonsContainer'>
+                                                <g:Button ui:field="nextButtonTab2" styleName='{res.common.buttonRightSmall}'>
+                                                    <ui:msg key="commonBtnNext">Next</ui:msg>
+                                                </g:Button>
+                                                <g:Button ui:field="backButtonTab2" styleName='{res.common.buttonLeftSmall}'>
+                                                    <ui:msg key='commonBtnBack'>Back</ui:msg>
+                                                </g:Button>
+                                            </g:HTMLPanel>
+                                        </g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </b:Column>
+                            </b:FluidRow>                            
+                        </g:HTMLPanel>
                     </g:ScrollPanel>
-                </g:center>
-                <g:south size="220">
-                    <b:FluidContainer>
-                        <b:FluidRow addStyleNames='buttonsBorderRow'>
-                            <b:Column size="4">
-                                <g:Button ui:field="backButtonTab5" styleName='{res.common.buttonLeftLarge}'>
-                                    <ui:msg key='commonBtnBack'>Back</ui:msg>
-                                </g:Button>
-                            </b:Column>
-                            <b:Column size="4">
-                                <g:Button ui:field="nextButtonTab5" styleName='{res.common.buttonRightLarge}'>
-                                    <ui:msg key='demandCreationCreateDemandBtn'>Create demand</ui:msg>
-                                </g:Button>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:FluidContainer>
-                </g:south>            
-            </g:DockLayoutPanel>
-        </g:tab>
-    </g:TabLayoutPanel>
+                </g:tab>
+                <!--3 -->
+                <g:tab>
+                    <g:customHeader size="30">
+                        <g:HTML ui:field="headerLabelTab3" addStyleNames="{style.tabIndex3} customHeader">
+                            <ui:msg key="demandCreationTab3">Category selection</ui:msg>
+                        </g:HTML>
+                    </g:customHeader>
+                    <g:ScrollPanel>
+                        <g:HTMLPanel>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:Label styleName='infoLabel2'>
+                                        <ui:msg key="clientCreationInfoLabel3">Select the most suitable category. The more accurate category the more
+                                            relevant suppliers will contact you.
+                                        </ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:DockLayoutPanel unit="PX" styleName='formContainer selectionContainer'>
+                                        <g:east size="20">
+                                            <g:HTMLPanel></g:HTMLPanel>
+                                        </g:east>
+                                        <g:west size="20">
+                                            <g:HTMLPanel></g:HTMLPanel>
+                                        </g:west>
+                                        <g:center>
+                                            <g:ScrollPanel>
+                                                <g:SimplePanel ui:field="contentHolder3" />
+                                            </g:ScrollPanel>
+                                        </g:center>
+                                    </g:DockLayoutPanel>
+                                </b:Column>
+                            </b:FluidRow>                        
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:HTMLPanel styleName='formFooter'>
+                                        <g:HTMLPanel styleName='buttonsContainer'>
+                                            <g:Button ui:field="nextButtonTab3" styleName='{res.common.buttonRightSmall}'>
+                                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                            </g:Button>
+                                            <g:Button ui:field="backButtonTab3" styleName='{res.common.buttonLeftSmall}'>
+                                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                                            </g:Button>
+                                        </g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </b:Column>
+                            </b:FluidRow>
+                        </g:HTMLPanel>
+                    </g:ScrollPanel>
+                </g:tab>
+                <!--4 -->
+                <g:tab>
+                    <g:customHeader size="30">
+                        <g:HTML ui:field="headerLabelTab4" addStyleNames="{style.tabIndex2} customHeader">
+                            <ui:msg key="demandCreationTab4">Locality selection</ui:msg>
+                        </g:HTML>
+                    </g:customHeader>
+                    <g:ScrollPanel>
+                        <g:HTMLPanel>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:Label styleName='infoLabel2'>
+                                        <ui:msg key="clientCreationInfoLabel4">Select your Locality.</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>                        
+                            <b:FluidRow>
+                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:DockLayoutPanel unit="PX" styleName='formContainer selectionContainer'>
+                                        <g:east size="20">
+                                            <g:HTMLPanel></g:HTMLPanel>
+                                        </g:east>
+                                        <g:west size="20">
+                                            <g:HTMLPanel></g:HTMLPanel>
+                                        </g:west>
+                                        <g:center>
+                                            <g:ScrollPanel>
+                                                <g:SimplePanel ui:field="contentHolder4" styleName='formContainer' />
+                                            </g:ScrollPanel>
+                                        </g:center>
+                                    </g:DockLayoutPanel>     
+                                </b:Column>
+                            </b:FluidRow>                            
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:HTMLPanel styleName='formFooter'>
+                                        <g:HTMLPanel styleName='buttonsContainer'>
+                                            <g:Button ui:field="nextButtonTab4" styleName='{res.common.buttonRightSmall}'>
+                                                <ui:msg key="commonBtnNext">Next</ui:msg>
+                                            </g:Button>
+                                            <g:Button ui:field="backButtonTab4" styleName='{res.common.buttonLeftSmall}'>
+                                                <ui:msg key='commonBtnBack'>Back</ui:msg>
+                                            </g:Button>
+                                        </g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </b:Column>
+                            </b:FluidRow>                            
+                        </g:HTMLPanel>
+                    </g:ScrollPanel>                    
+                </g:tab>
+                <!--5 -->
+                <g:tab>
+                    <g:customHeader size="30">
+                        <g:HTML ui:field="headerLabelTab5" addStyleNames="{style.tabIndex1} customHeader">
+                            <ui:msg key="demandCreationTab5">Demand Advanced Info</ui:msg>
+                        </g:HTML>
+                    </g:customHeader>
+                    <g:ScrollPanel>
+                        <g:HTMLPanel>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:Label styleName='infoLabel2'>
+                                        <ui:msg key="clientCreationInfoLabel5">Fill advance demand information to continue.</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>                        
+                            <b:FluidRow>
+                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:SimplePanel ui:field="contentHolder5" styleName='formContainer' />
+                                </b:Column>
+                            </b:FluidRow>                            
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <b:FluidContainer>
+                                        <b:FluidRow addStyleNames='buttonsBorderRow'>
+                                            <b:Column size="4">
+                                                <g:Button ui:field="backButtonTab5" styleName='{res.common.buttonLeftLarge}'>
+                                                    <ui:msg key='commonBtnBack'>Back</ui:msg>
+                                                </g:Button>
+                                            </b:Column>
+                                            <b:Column size="4">
+                                                <g:Button ui:field="nextButtonTab5" styleName='{res.common.buttonRightLarge}'>
+                                                    <ui:msg key='demandCreationCreateDemandBtn'>Create demand</ui:msg>
+                                                </g:Button>
+                                            </b:Column>
+                                        </b:FluidRow>
+                                    </b:FluidContainer>
+                                </b:Column>
+                            </b:FluidRow>
+                        </g:HTMLPanel>
+                    </g:ScrollPanel>
+                </g:tab>
+            </g:TabLayoutPanel>                        
+        </g:center>
+        <g:south size="30">            
+            <g:SimplePanel ui:field="footerHolder"/>            
+        </g:south>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

@@ -53,6 +53,8 @@ public class SupplierCreationPresenter
 
         SimplePanel getHolderPanel(int order);
 
+        SimplePanel getFooterHolder();
+
         /** Buttons. **/
         HasClickHandlers getRegisterButton();
 
@@ -77,6 +79,7 @@ public class SupplierCreationPresenter
         LOGGER.info("SupplierCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
         eventBus.setBody(view.getWidgetView());
+        eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         if (Storage.getUser() == null) {
             eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);

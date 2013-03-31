@@ -18,6 +18,7 @@ import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -76,6 +77,8 @@ public class HomeSuppliersPresenter
         Button getContactBtn();
 
         //Other
+        SimplePanel getFooterHolder();
+
         Widget getWidgetView();
     }
     /**************************************************************************/
@@ -145,7 +148,7 @@ public class HomeSuppliersPresenter
         } else {
             eventBus.userMenuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
         }
-        eventBus.setExtendedFooterStyle();
+        eventBus.setFooter(view.getFooterHolder());
     }
 
     @Override

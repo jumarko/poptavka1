@@ -27,6 +27,7 @@ import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormPresenter;
 import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
@@ -81,9 +82,9 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setBody(body);
     }
 
-    public void onSetFooter(IsWidget footer) {
+    public void onSetFooter(SimplePanel footerHolder) {
         GWT.log("Footer widget set");
-        view.setFooter(footer);
+        footerHolder.setWidget(new FooterView());
     }
 
     /**************************************************************************/
@@ -246,8 +247,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
     }
 
-    public void onInitEmailDialogPopup() {
-        eventBus.addHandler(EmailDialogPopupPresenter.class);
+    public void onSendUsEmail(int subject, String errorId) {
+        eventBus.addHandler(EmailDialogPopupPresenter.class).fillContactUsValues(subject, errorId);
     }
 
     public void onInitActivationCodePopup(BusinessUserDetail client, int widgetToLoad) {

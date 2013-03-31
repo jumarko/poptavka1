@@ -57,7 +57,11 @@
                         <b:FluidRow>
                             <b:Column size="7">
                                 <g:Label ui:field="filterLabel" styleName="{style.filterLabel}"/>
-                                <c:DataGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}'/>
+                                <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer}'>                            
+                                    <g:center>
+                                        <c:DataGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}'/>
+                                    </g:center>
+                                </g:DockLayoutPanel>
                             </b:Column>
                             <b:Column size="5">
                                 <g:HTMLPanel ui:field="detail" styleName='{res.layout.detailInfo}'>
@@ -68,6 +72,9 @@
                         </b:FluidRow>
                     </b:FluidContainer>
                 </g:center>
+                <g:south size="36">
+                    <g:SimplePanel ui:field="footerHolder" styleName='{res.layout.footerDatagridContainer}'/>
+                </g:south>
             </g:DockLayoutPanel>
         </g:center>
     </g:DockLayoutPanel>
