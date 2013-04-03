@@ -113,6 +113,7 @@ public class LoginPopupView extends Composite
         emailTextBox.setFocus(true);
         modal.show();
         StyleResource.INSTANCE.modal().ensureInjected();
+        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     // TODO prod - delete and user real form

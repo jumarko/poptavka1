@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.homedemands;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.IntegerBox;
@@ -55,6 +56,8 @@ public class HomeDemandsSearchView extends Composite implements
         creationDate.addItem(Storage.MSGS.creationDateLastMonth());
         creationDate.addItem(Storage.MSGS.creationDateNoLimits());
         creationDate.setSelectedIndex(4);
+
+        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     @Override

@@ -41,15 +41,54 @@
     -webkit-border-radius: 5px;
 }
 
+.advancedSearchTabPanel .container-fluid {
+    background: #E7E3D6;
+    margin: 40px 100px;
+    padding: 25px 25px 10px;
+}
+
 .advancedSearchTabPanel .row-fluid {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.advancedSearchTabPanel .span11 {
+    margin: 0;
 }
 
 .advancedSearchTabPanel .gwt-Label {
-    font-weight: bold;
-    line-height: 30px;
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
+    width: 120px;
+    float: left;
+    padding: 0 15px 0 15px;
 }
 
-.advancedSearchTabPanel .container-fluid {
-    margin-top: 20px;
+.advancedSearchTabPanel input,
+.advancedSearchTabPanel select {
+    width: 560px;
+    height: 40px;
+}
+
+.advancedSearchTabPanel .input-append {
+    float: left;
+    width: 290px;
+}
+
+.advancedSearchTabPanel .input-append input {
+    float: left;
+    width: 270px;
+    margin: 0;
+}
+
+.advancedSearchTabPanel .input-append .append-dollar {
+    background: url(images/advanced-search-dollar-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.advancedSearchTabPanel .input-append .append-date {
+    background: url(images/advanced-search-date-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.advancedSearchTabPanel .clear-button {
+    margin: 5px 40px 0 0;
 }
