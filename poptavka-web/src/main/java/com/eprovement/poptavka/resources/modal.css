@@ -162,8 +162,9 @@
 /* Advanced search modal styles */ 
 .advanced-search-modal {
     padding: 10px;
+    margin: -350px 0 0 -532px;
     width: 1075px;
-    height: 500px;
+    height: 600px;
     background: #000000;
 }
 

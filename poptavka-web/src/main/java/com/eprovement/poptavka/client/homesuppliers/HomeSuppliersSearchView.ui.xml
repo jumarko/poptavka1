@@ -24,7 +24,7 @@
                     <g:Label>
                         <ui:msg key="formCompanyName">Company name:</ui:msg>
                     </g:Label>
-                    <b:TextBox ui:field="companyName" />
+                    <b:TextBox ui:field="companyName" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 
@@ -35,15 +35,13 @@
                 <b:Column size="11">
                     <g:Label>
                         <ui:msg key="formRating">Rating:</ui:msg>
-                    </g:Label>
-                    <g:HTMLPanel>
-                        <ui:msg key="formFromTo2">
-                            from
-                            <b:IntegerBox styleName="{style.rangeBox}" placeholder="0" ui:field="ratingFrom"/>
-                            to
-                            <b:IntegerBox styleName="{style.rangeBox}" placeholder="100" ui:field="ratingTo"/>
-                        </ui:msg>
-                    </g:HTMLPanel>
+                    </g:Label>                                                                   
+                    <g:HTMLPanel styleName="input-append">
+                        <b:IntegerBox styleName="{style.rangeBox} append-star" placeholder="0" ui:field="ratingFrom"/>
+                    </g:HTMLPanel>                            
+                    <g:HTMLPanel styleName="input-append">
+                        <b:IntegerBox styleName="{style.rangeBox} append-star" placeholder="100" ui:field="ratingTo"/>
+                    </g:HTMLPanel>                                            
                 </b:Column>
             </b:FluidRow>
 
@@ -55,7 +53,7 @@
                     <g:Label>
                         <ui:msg key="formDescription">Supplier description:</ui:msg>
                     </g:Label>
-                    <b:TextBox ui:field="supplierDescription" />
+                    <b:TextBox ui:field="supplierDescription" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 

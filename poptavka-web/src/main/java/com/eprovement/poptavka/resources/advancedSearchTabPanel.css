@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 .advancedSearchTabPanel {
-    height: 100%;	
+    height: 100%;
 }
 
 .advancedSearchTabPanel .gwt-TabLayoutPanelTab {
@@ -64,8 +64,8 @@
     padding: 0 15px 0 15px;
 }
 
-.advancedSearchTabPanel input,
-.advancedSearchTabPanel select {
+.advancedSearchTabPanel input.full-width,
+.advancedSearchTabPanel select.full-width {
     width: 560px;
     height: 40px;
 }
@@ -73,11 +73,13 @@
 .advancedSearchTabPanel .input-append {
     float: left;
     width: 290px;
+    height: 40px;
 }
 
 .advancedSearchTabPanel .input-append input {
     float: left;
     width: 270px;
+    height: 40px;
     margin: 0;
 }
 
@@ -89,6 +91,22 @@
     background: url(images/advanced-search-date-icon.png) no-repeat scroll right 7px #F8F4E4
 }
 
+.advancedSearchTabPanel .input-append .append-star {
+    background: url(images/advanced-search-star-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
 .advancedSearchTabPanel .clear-button {
     margin: 5px 40px 0 0;
+}
+
+.advancedSearchTabPanel .well {
+    height: 510px;
+    background: none;
+    margin: 10px 0 0;
+    box-shadow: none;
+    border: none;
+}
+
+.advancedSearchTabPanel .well input[type="checkbox"] {
+    margin: 1px 4px 0 0;
 }

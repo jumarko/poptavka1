@@ -32,7 +32,7 @@
                     <g:Label>
                         <ui:msg key="formTitle">Title</ui:msg>
                     </g:Label>
-                    <b:TextBox ui:field="demandTitle" />
+                    <b:TextBox ui:field="demandTitle" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 
@@ -46,6 +46,8 @@
                     </g:Label>
                     <g:HTMLPanel styleName="input-append">
                         <b:IntegerBox placeholder="{msgs.formFrom}" styleName="{style.priceBox} append-dollar" ui:field="priceFrom" />
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName="input-append">
                         <b:IntegerBox placeholder="{msgs.formTo}" styleName="{style.priceBox} append-dollar" ui:field="priceTo" />
                     </g:HTMLPanel>
                 </b:Column>
@@ -59,7 +61,7 @@
                     <g:Label>
                         <ui:msg key="formDemandType">Demand Type:</ui:msg>
                     </g:Label>
-                    <g:ListBox ui:field="demandTypes" />
+                    <g:ListBox ui:field="demandTypes" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 
@@ -71,7 +73,7 @@
                     <g:Label>
                         <ui:msg key="formCreationDate">Creation date:</ui:msg>
                     </g:Label>
-                    <g:ListBox ui:field="creationDate" />
+                    <g:ListBox ui:field="creationDate" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 
@@ -85,6 +87,8 @@
                     </g:Label>
                     <g:HTMLPanel styleName="input-append">
                         <b2:DateBox placeholder="{msgs.formFrom}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox} append-date" ui:field="finnishDateFrom" />
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName="input-append">
                         <b2:DateBox placeholder="{msgs.formTo}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox} append-date" ui:field="finnishDateTo" />
                     </g:HTMLPanel>
                 </b:Column>
