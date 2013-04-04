@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.common.MyDateBox;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
@@ -8,7 +9,6 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.IntegerBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
-import com.github.gwtbootstrap.datepicker.client.ui.DateBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -32,7 +32,7 @@ public class HomeDemandsSearchView extends Composite implements
     @UiField TextBox demandTitle;
     @UiField IntegerBox priceFrom, priceTo;
     @UiField ListBox demandTypes, creationDate;
-    @UiField DateBox finnishDateFrom, finnishDateTo;
+    @UiField MyDateBox finnishDateFrom, finnishDateTo;
     @UiField Button clearBtn;
     /** Search Fields. **/
     private static final String FIELD_TITLE = "title";
@@ -43,8 +43,8 @@ public class HomeDemandsSearchView extends Composite implements
 
     public HomeDemandsSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
-        finnishDateFrom.setValue(null);
-        finnishDateTo.setValue(null);
+//        finnishDateFrom.setValue(null);
+//        finnishDateTo.setValue(null);
 
         demandTypes.addItem(Storage.MSGS.commonListDefault());
         for (DemandTypeType type : DemandTypeType.values()) {
