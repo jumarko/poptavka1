@@ -115,21 +115,6 @@
     width: 85px;    
 }
 
-.login-modal .cancel-button {
-    background: url(images/login-popup/cancel-button.png) no-repeat scroll 0 0 transparent;
-    display: block;
-    float: right;
-    font-size: 14px;
-    height: 40px;
-    line-height: 40px;
-    margin: 18px 15px 0 0;
-    text-align: center;
-    text-decoration: none;
-    width: 85px;
-    color: #ffffff; 
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-
 /* Loader Modal Styles */
 .loader-modal {
     padding: 10px;
@@ -172,4 +157,18 @@
     color: #909090;
     padding: 10px 0 0 0;
     text-align: center;
+}
+
+/* Advanced search modal styles */ 
+.advanced-search-modal {
+    padding: 10px;
+    margin: -350px 0 0 -532px;
+    width: 1075px;
+    height: 600px;
+    background: #000000;
+}
+
+.advanced-search-modal .modal-body {
+    padding: 0;
+    max-height: 600px;
 }

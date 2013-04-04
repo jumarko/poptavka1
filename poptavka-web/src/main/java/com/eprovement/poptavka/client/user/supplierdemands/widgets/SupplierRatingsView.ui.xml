@@ -22,7 +22,7 @@
 
     </ui:style>
 
-    <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
+    <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
         <g:west size="20">
             <g:HTMLPanel></g:HTMLPanel>
         </g:west>

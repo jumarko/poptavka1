@@ -159,6 +159,26 @@
     padding: 0 23px 0 0;
 }
 
+.button-grey {
+    background: url(images/button-grey.png) no-repeat scroll 0 0 transparent;
+    display: block;
+    float: right;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin: 18px 15px 0 0;
+    text-align: center;
+    text-decoration: none;
+    width: 85px;
+    color: #ffffff; 
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.button-grey:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
 /* CellBrowser selected item styles  */
 
 .selected-items-widget .selected-Label {
@@ -277,6 +297,13 @@
 }
 
 /* Validation styles */
+.validation-container .gwt-Label {
+    padding: 0 0 0 25px;
+    color: #237e00;
+    font-size: 14px;
+    line-height: 40px;
+}
+
 .validation-container .control-group {
     position: relative;
 }
@@ -310,17 +337,20 @@
     top: -16px;
 }
 
-.validation-container .controls input[type="text"],
-.validation-container .controls input[type="password"],
-.validation-container .controls textarea {
+.validation-container input[type="text"],
+.validation-container input[type="password"],
+.validation-container textarea,
+.validation-container select {
     background: none repeat scroll 0 0 #F8F4E4;
     border: 1px solid #D2C9A9;
 }
 
-.validation-container .controls input[type="text"]:focus,
-.validation-container .controls input[type="password"]:focus,
-.validation-container .controls textarea:focus {
+.validation-container input[type="text"]:focus,
+.validation-container input[type="password"]:focus,
+.validation-container textarea:focus,
+.validation-container select:focus {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(158, 151, 126, 0.6);
+    outline: none;
 }
     
 .validation-container .error .controls input[type="text"],

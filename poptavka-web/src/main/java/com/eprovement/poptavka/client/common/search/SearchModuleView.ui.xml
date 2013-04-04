@@ -63,7 +63,8 @@
                            styleName='{style.search-textbox}' />
                 <g:Button ui:field="searchBtn" styleName='{style.search-button}' />
             </g:HorizontalPanel>
-            <b:Modal ui:field="popupPanel" backdrop="NORMAL" keyboard="true" animation="true" dynamicSafe="true">
+            <b:Modal ui:field="popupPanel" backdrop="NORMAL" keyboard="true" animation="true" dynamicSafe="true"
+                     addStyleNames='{res.modal.advancedSearchModal}'>
                 <adv:AdvanceSearchContentView ui:field="advanceSearchContentView" />
             </b:Modal>
         </div>

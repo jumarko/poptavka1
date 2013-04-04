@@ -13,7 +13,10 @@
         }
     </ui:style>
 
-    <g:DockLayoutPanel styleName='{res.layout.fullSize}'>
+    <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
+        <g:west size="20">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:west>
         <g:north size="65">
             <g:HTMLPanel ui:field="toolBar"
                          styleName='{res.layout.toolbarItemsBlock}'>
@@ -27,9 +30,6 @@
                 <s:UniversalPagerWidget ui:field='pager' />
             </g:HTMLPanel>
         </g:north>
-        <g:west size="20">
-            <g:HTMLPanel></g:HTMLPanel>
-        </g:west>
         <g:center>
             <b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
                 <b:FluidRow>

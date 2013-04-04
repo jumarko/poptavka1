@@ -9,11 +9,6 @@
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>
-        .important {
-        font-weight: bold;
-        font-style: italic;
-        }
-
         .priceBox {
         width: 70px;
         margin-right: 10px;
@@ -25,90 +20,86 @@
         margin-right: 10px;
         margin-left: 4px;
         }
-
-        .searchMainContent {
-        width:
-        200px;
-        }
     </ui:style>
 
     <g:HTMLPanel>
-        <b:FluidContainer>
+        <b:FluidContainer addStyleNames='{res.common.validationContainer}'>
             <b:FluidRow>
-                <b:Column size="2">
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
                     <g:Label>
                         <ui:msg key="formTitle">Title</ui:msg>
                     </g:Label>
-                </b:Column>
-                <b:Column size="10">
-                    <b:TextBox ui:field="demandTitle" />
+                    <b:TextBox ui:field="demandTitle" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 
             <b:FluidRow>
-                <b:Column size="2">
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
                     <g:Label>
                         <ui:msg key="formPrice">Price:</ui:msg>
                     </g:Label>
-                </b:Column>
-                <b:Column size="10">
-                    <g:HTMLPanel>
-                        <b:InputAddOn appendText="$">
-                            <b:IntegerBox placeholder="{msgs.formFrom}" styleName="{style.priceBox}" ui:field="priceFrom" />
-                        </b:InputAddOn>
-                        <b:InputAddOn appendText="$">
-                            <b:IntegerBox placeholder="{msgs.formTo}" styleName="{style.priceBox}" ui:field="priceTo" />
-                        </b:InputAddOn>
+                    <g:HTMLPanel styleName="input-append">
+                        <b:IntegerBox placeholder="{msgs.formFrom}" styleName="{style.priceBox} append-dollar" ui:field="priceFrom" />
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName="input-append">
+                        <b:IntegerBox placeholder="{msgs.formTo}" styleName="{style.priceBox} append-dollar" ui:field="priceTo" />
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>
 
             <b:FluidRow>
-                <b:Column size="2">
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
                     <g:Label>
                         <ui:msg key="formDemandType">Demand Type:</ui:msg>
                     </g:Label>
-                </b:Column>
-                <b:Column size="10">
-                    <g:ListBox ui:field="demandTypes" />
+                    <g:ListBox ui:field="demandTypes" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 
             <b:FluidRow>
-                <b:Column size="2">
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
                     <g:Label>
                         <ui:msg key="formCreationDate">Creation date:</ui:msg>
                     </g:Label>
-                </b:Column>
-                <b:Column size="10">
-                    <g:ListBox ui:field="creationDate" />
+                    <g:ListBox ui:field="creationDate" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 
             <b:FluidRow>
-                <b:Column size="2">
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
                     <g:Label>
                         <ui:msg key="formFinnishDate">Finnish date:</ui:msg>
                     </g:Label>
-                </b:Column>
-                <b:Column size="10">
-                    <g:HTMLPanel>
-                        <b:InputAddOn appendIcon="CALENDAR">
-                            <b2:DateBox placeholder="{msgs.formFrom}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox}" ui:field="finnishDateFrom" />
-                        </b:InputAddOn>
-                        <b:InputAddOn appendIcon="CALENDAR">
-                            <b2:DateBox placeholder="{msgs.formTo}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox}" ui:field="finnishDateTo" />
-                        </b:InputAddOn>
+                    <g:HTMLPanel styleName="input-append">
+                        <b2:DateBox placeholder="{msgs.formFrom}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox} append-date" ui:field="finnishDateFrom" />
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName="input-append">
+                        <b2:DateBox placeholder="{msgs.formTo}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox} append-date" ui:field="finnishDateTo" />
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>
 
             <b:FluidRow>
-                <b:Column size="2">
+                <b:Column size="1">
                     <g:HTMLPanel></g:HTMLPanel>
                 </b:Column>
-                <b:Column size="10">
-                    <b:Button ui:field="clearBtn" type="WARNING">
+                <b:Column size="11">
+                    <b:Button ui:field="clearBtn" styleName='{res.common.buttonGrey} clear-button'>
                         <ui:msg key="commonBtnClear">Clear</ui:msg>
                     </b:Button>
                 </b:Column>

@@ -59,7 +59,7 @@
                                 <g:Label ui:field="filterLabel" styleName="{style.filterLabel}"/>
                                 <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer}'>                            
                                     <g:center>
-                                        <c:DataGrid ui:field="dataGrid" styleName='{res.layout.layoutUser}'/>
+                                        <c:DataGrid ui:field="dataGrid" styleName='{res.layout.layoutUser} {res.layout.dataGridContainer}'/>
                                     </g:center>
                                 </g:DockLayoutPanel>
                             </b:Column>

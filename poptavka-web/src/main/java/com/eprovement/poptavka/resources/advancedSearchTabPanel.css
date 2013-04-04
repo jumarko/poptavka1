@@ -1,53 +1,112 @@
 @CHARSET "UTF-8";
 
 .advancedSearchTabPanel {
-	height: 100%;	
+    height: 100%;
 }
 
 .advancedSearchTabPanel .gwt-TabLayoutPanelTab {
-	padding: 0 24px;
-	margin-right: 5px;
-    background: #c8e7ff;
+    padding: 0 24px;
+    margin-right: 5px;
+    background: #0c2d42;
     height: 40px;
     line-height: 40px;
     text-align: center;
-    font-weight: bold;
+    font-weight: normal;    
+    color: #4d7894;
+    border: 1px solid #031d2d;
+    border-bottom: none;
+    cursor: pointer;
     border-radius: 6px 6px 0 0;
-    color: #004173;    
-    border: 1px solid #b3deff;
-	border-bottom: none;
-	cursor: pointer;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
 }
 
 .advancedSearchTabPanel .gwt-TabLayoutPanelTabs {
-	background: url(images/search-panel-top-border.gif) repeat-x left bottom;
-	width: 1010px !important;
-	margin: 10px 10px 0;
+    margin: 10px 10px 0;
 }
 
 .advancedSearchTabPanel .gwt-TabLayoutPanelTab-selected {
-	border: 1px solid #cbcecf;
-	border-bottom: 1px solid #ffffff;
-	background: #ffffff;
+    border: 1px solid #f1ecda;    
+    background: #f1ecda;
+    color: #6f6b59;
 }
 
 .advancedSearchTabPanel .gwt-TabLayoutPanelContentContainer {
-	border: none;
-	padding: 0;
-	margin: 0 10px 10px;
-	border: 1px solid #cbcecf;
-	border-top: none;
-}
-
-.advancedSearchTabPanel .row-fluid {
-	margin-bottom: 10px;
-}
-
-.advancedSearchTabPanel .gwt-Label {
-	font-weight: bold;
-	line-height: 30px;
+    background: url(images/advanced-search-content.gif) repeat-x #ffffff;    
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 .advancedSearchTabPanel .container-fluid {
-	margin-top: 20px;
+    background: #E7E3D6;
+    margin: 40px 100px;
+    padding: 25px 25px 10px;
+}
+
+.advancedSearchTabPanel .row-fluid {
+    margin-bottom: 12px;
+}
+
+.advancedSearchTabPanel .span11 {
+    margin: 0;
+}
+
+.advancedSearchTabPanel .gwt-Label {
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
+    width: 120px;
+    float: left;
+    padding: 0 15px 0 15px;
+}
+
+.advancedSearchTabPanel input.full-width,
+.advancedSearchTabPanel select.full-width {
+    width: 560px;
+    height: 40px;
+}
+
+.advancedSearchTabPanel .input-append {
+    float: left;
+    width: 290px;
+    height: 40px;
+}
+
+.advancedSearchTabPanel .input-append input {
+    float: left;
+    width: 270px;
+    height: 40px;
+    margin: 0;
+}
+
+.advancedSearchTabPanel .input-append .append-dollar {
+    background: url(images/advanced-search-dollar-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.advancedSearchTabPanel .input-append .append-date {
+    background: url(images/advanced-search-date-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.advancedSearchTabPanel .input-append .append-star {
+    background: url(images/advanced-search-star-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.advancedSearchTabPanel .clear-button {
+    margin: 5px 40px 0 0;
+}
+
+.advancedSearchTabPanel .well {
+    height: 510px;
+    background: none;
+    margin: 10px 0 0;
+    box-shadow: none;
+    border: none;
+}
+
+.advancedSearchTabPanel .well input[type="checkbox"] {
+    margin: 1px 4px 0 0;
 }
