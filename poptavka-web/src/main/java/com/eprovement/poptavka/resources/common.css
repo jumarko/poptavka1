@@ -179,6 +179,31 @@
     text-decoration: none;
 }
 
+.button-green {
+    background: url(images/login-popup/login-button.png) no-repeat scroll 0 0 transparent;
+    display: block;
+    color: #ffffff;
+    float: right;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin: 18px 15px 0 0;
+    text-align: center;
+    text-decoration: none;
+    width: 85px;
+    border: none;    
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+button.button-green {
+    padding: 0 8px 0 0;
+}
+
+.button-green:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
 /* CellBrowser selected item styles  */
 
 .selected-items-widget .selected-Label {
