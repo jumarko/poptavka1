@@ -44,6 +44,7 @@ public class DetailsWrapperPresenter
     private long demandId = -1;
     private long supplierId = -1;
     private long threadRootId = -1;
+    private long senderId = -1;
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
@@ -142,11 +143,12 @@ public class DetailsWrapperPresenter
      * @param supplierId
      * @param threadRootId
      */
-    public void initDetails(long demandId, long supplierId, long threadRootId) {
+    public void initDetails(long demandId, long supplierId, long threadRootId, long senderId) {
         reset();
         this.demandId = demandId;
         this.supplierId = supplierId;
         this.threadRootId = threadRootId;
+        this.senderId = senderId;
         view.getContainer().selectTab(CONVERSATION_TAB, false);
         requestActualTabData();
     }
@@ -165,6 +167,8 @@ public class DetailsWrapperPresenter
         view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
         this.demandId = demandId;
         this.threadRootId = threadRootId;
+        // senderId is always taken from Storage when Supplier presenters invoke this method
+        this.senderId = Storage.getUser().getUserId();
         view.getContainer().selectTab(CONVERSATION_TAB, false);
         requestActualTabData();
     }
@@ -196,7 +200,7 @@ public class DetailsWrapperPresenter
                 requestSupplierDetail(supplierId);
                 break;
             case CONVERSATION_TAB:
-                requestConversation(threadRootId, Storage.getUser().getUserId());
+                requestConversation(threadRootId, senderId);
                 break;
             default:
                 break;
@@ -281,9 +285,9 @@ public class DetailsWrapperPresenter
      * @param threadRootId - root message i.e. first demand message in the conversation always created by client
      * @param userId - user who's chatting messages we are going to retrieve
      */
-    public void requestConversation(long threadRootId, long userId) {
+    public void requestConversation(long threadRootId, long senderId) {
         view.loadingDivShow(view.getConversationHolder());
-        eventBus.requestConversation(threadRootId, userId);
+        eventBus.requestConversation(threadRootId, senderId);
     }
 
     /**************************************************************************/

@@ -211,7 +211,8 @@ public class ClientDemandsPresenter
             detailSection.initDetails(
                     conversationDetail.getDemandId(),
                     conversationDetail.getSupplierId(),
-                    conversationDetail.getThreadRootId());
+                    conversationDetail.getThreadRootId(),
+                    conversationDetail.getSenderId());
             view.getChoiceButtonsPanel().setVisible(false);
         }
     }

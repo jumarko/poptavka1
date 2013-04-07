@@ -251,7 +251,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
 
     @Override
     public long getSenderId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.supplierUserId;
     }
 
     @Override

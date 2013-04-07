@@ -130,7 +130,8 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             detailSection.initDetails(
                     demandDetail.getDemandId(),
                     demandDetail.getSupplierId(),
-                    demandDetail.getThreadRootId());
+                    demandDetail.getThreadRootId(),
+                    demandDetail.getSenderId());
         }
     }
 

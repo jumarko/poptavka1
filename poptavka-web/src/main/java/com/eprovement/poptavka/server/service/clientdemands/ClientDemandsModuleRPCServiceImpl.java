@@ -313,6 +313,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set Supplier attributes
             final Supplier supplier = findSupplier(userMessageEntry.getValue().getSupplier().getId());
             cdcd.setSupplierId(supplier.getId());
+            cdcd.setSenderId(supplier.getBusinessUser().getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             cdcd.setSenderId(supplier.getBusinessUser().getId());
 
@@ -451,7 +452,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
             // set demand attributes
-            codod.setTitle(offer.getDemand().getTitle());
+            codod.setTitle(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
 
             listCodod.add(codod);
         }
@@ -548,7 +549,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setReceivedDate(offer.getCreated());
             // set Demand attributes
             codod.setDemandId(offer.getDemand().getId());
-            codod.setTitle(offer.getDemand().getTitle());
+            codod.setTitle(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
 
             listCodod.add(codod);
         }
@@ -754,8 +755,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         // load other offers and set them as declined
         Demand demand = offer.getDemand();
         for (Offer declinedOffer : demand.getOffers()) {
-            declinedOffer.setState(offerService.getOfferState(OfferStateType.ACCEPTED.getValue()));
-            generalService.save(declinedOffer);
+            if (!declinedOffer.equals(offer)) {
+                declinedOffer.setState(offerService.getOfferState(OfferStateType.DECLINED.getValue()));
+                generalService.save(declinedOffer);
+            }
         }
         demand.setStatus(DemandStatus.ASSIGNED);
         generalService.save(demand);
