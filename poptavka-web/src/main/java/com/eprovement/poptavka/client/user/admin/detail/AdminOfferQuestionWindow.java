@@ -150,19 +150,6 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
      * @param MessageDetail message being sent
      * @return updated message
      */
-    public OfferMessageDetail updateSendingOfferMessage(OfferMessageDetail messageDetail) {
-        messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
-        messageDetail.setParentId(replyToMessage.getMessageId());
-        messageDetail.setSupplierId(Storage.getBusinessUserDetail().getSupplierId());
-        return messageDetail;
-    }
-
-    /**
-     * Received the message being sent and fills it with necessary attributes, from stored message.
-     *
-     * @param MessageDetail message being sent
-     * @return updated message
-     */
     public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setParentId(replyToMessage.getMessageId());
