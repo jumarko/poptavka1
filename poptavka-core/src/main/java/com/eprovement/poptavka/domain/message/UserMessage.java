@@ -112,7 +112,6 @@ import javax.persistence.NamedQuery;
                         + " and subUserMessage.user = :user"
                         + " and rootMessage.demand is not null"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is not null"
                         + " and latestUserMessage.message.offer.state = :pendingState\n"
                         + "group by latestUserMessage.id"),
@@ -122,7 +121,6 @@ import javax.persistence.NamedQuery;
                         + "where latestUserMessage.user = :user"
                         + " and latestUserMessage.message.demand is not null"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is not null\n"),
         @NamedQuery(name = "getSupplierConversationsWithoutOfferCount",
                 query = "select count(latestUserMessage.id)\n"
@@ -146,7 +144,6 @@ import javax.persistence.NamedQuery;
                         + " and (rootMessage.demand.status = :pendingCompletionStatus or "
                         + " rootMessage.demand.status = :assignedStatus)"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is not null\n"
                         + " and (latestUserMessage.message.offer.state = :statusAccepted"
                         + " or latestUserMessage.message.offer.state = :statusCompleted)\n"
@@ -162,7 +159,6 @@ import javax.persistence.NamedQuery;
                         + " and rootMessage.demand is not null"
                         + " and rootMessage.demand.status = :closedStatus"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is not null"
                         + " and latestUserMessage.message.offer.state = :offerStatusClosed\n"
                         + "group by latestUserMessage.id"),
@@ -179,7 +175,6 @@ import javax.persistence.NamedQuery;
                         + " and rootMessage = :root"
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is null"
                         + " and ((latestUserMessage.message.sender = :user"
                         + " and toRole.user = supplier"
@@ -196,7 +191,6 @@ import javax.persistence.NamedQuery;
                         + "where rootMessage.demand is not null"
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is null"),
             @NamedQuery(name = "getClientConversationsWithOfferCount",
                 query = "select count(latestUserMessage.id)\n"
@@ -206,7 +200,6 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.demand = :demand"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
                         + " and latestUserMessage.message.offer is not null")
 }
 )
