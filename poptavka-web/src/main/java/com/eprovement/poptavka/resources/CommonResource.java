@@ -85,4 +85,8 @@ public interface CommonResource extends CssResource {
 
     @ClassName("validation-container")
     String validationContainer();
+
+    /** How it works **/
+    @ClassName("how-it-works-container")
+    String howItWorksContainer();
 }
