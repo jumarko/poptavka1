@@ -8,6 +8,7 @@ import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.MessageContext;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -81,7 +82,7 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
         final Message threadRootMessage = updateDemandThreadRootMessage(demand, Arrays.asList(potentialSupplier));
         final UserMessage potentialDemandUserMessage = userMessageService.createUserMessage(
                 threadRootMessage, potentialSupplier.getSupplier().getBusinessUser());
-        notificationService.notifyUserNewMessage(potentialDemandUserMessage);
+        notificationService.notifyUserNewMessage(Period.INSTANTLY, potentialDemandUserMessage);
 
         LOGGER.debug("Action=demand_send_to_supplier status=finish demand=" + demand);
     }

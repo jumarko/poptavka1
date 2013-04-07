@@ -19,7 +19,11 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.eprovement.poptavka.util.search.SearcherException;
+
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.Validate;
@@ -136,7 +140,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
             final List<UserMessage> potentialDemands = Searcher.searchCollection(getPotentialDemands(supplier), search);
             LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{} "
                     + "potential_demands_size={}", supplier, potentialDemands.size());
-            return Long.valueOf(potentialDemands.size()).longValue();
+            return potentialDemands.size();
 
         } catch (SearcherException ex) {
             LOGGER.error("action=get_potential_demands_supplier_search status=error supplier{}", ex);
@@ -339,5 +343,22 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
             return userMessage;
         }
         return createUserMessage(message, user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<User, List<UserMessage>> getUserMessagesFromDateGroupedByUser(Date dateFrom) {
+        final Search messageSearch = new Search(UserMessage.class);
+        messageSearch.addFilterGreaterOrEqual("message.created", dateFrom);
+        final List<UserMessage> userMessagesToBeNotified = generalService.search(messageSearch);
+        final HashMap<User, List<UserMessage>> userMessagesGroupedByUser = new HashMap<>();
+        for (UserMessage userMessage : userMessagesToBeNotified) {
+            final List<UserMessage> userMessages = userMessagesGroupedByUser.containsKey(userMessage.getUser())
+                    ? userMessagesGroupedByUser.get(userMessage.getUser())
+                    : new ArrayList<UserMessage>();
+            userMessages.add(userMessage);
+            userMessagesGroupedByUser.put(userMessage.getUser(), userMessages);
+        }
+        return userMessagesGroupedByUser;
     }
 }

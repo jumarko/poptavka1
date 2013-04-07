@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.service.notification;
 
 import com.eprovement.poptavka.domain.settings.Notification;

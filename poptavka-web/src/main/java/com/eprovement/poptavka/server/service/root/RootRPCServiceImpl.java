@@ -253,12 +253,16 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
         final ReplyMessage replyMessage = sendReplyMessage(offerMessageToSend);
         // TODO RELEASE ivlcek - create converter for offer
+
         // update demand entity
         final Demand demand = replyMessage.message.getDemand();
         demand.setStatus(DemandStatus.OFFERED);
         generalService.save(demand);
+
+        // save offer for message
         replyMessage.message.setOffer(createOfferFromMessage(offerMessageToSend, replyMessage.message));
-        // TODO RELEASE ivlcek - shall I save message here or shall I let send() method do it?
+        messageService.update(replyMessage.message);
+
         return getMessageDetail(replyMessage);
     }
 

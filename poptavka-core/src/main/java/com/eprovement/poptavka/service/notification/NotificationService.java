@@ -1,8 +1,6 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.service.notification;
 
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.message.UserMessage;
 
 /**
@@ -11,16 +9,16 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 public interface NotificationService {
 
     /**
-     * Notifies user associated with given user messages.
+     * Notifies user associated with given user messages if he has notification settings period
+     * equal to {@code expectedPeriod}.
      * All given user messages should have the same user and are supposed to be sent together
      * in one notification message.
      * <p>
-     * Notification is sent immediately only if user has notification
-     * settings for {@link com.eprovement.poptavka.domain.register.Registers.Notification#NEW_MESSAGE}
-     * set to {@link com.eprovement.poptavka.domain.enums.Period#INSTANTLY}.
-     * Otherwise the Notification job should handle notifications.
+     * Notification should sent almost immediately (but asynchronously).
      * </p>
+     * @param expectedPeriod expectedPeriod which user has to have for "new.message" notification
      * @param array of all new user messages that will be sent in one notification.
+     * @see com.eprovement.poptavka.domain.settings.NotificationItem
      */
-    void notifyUserNewMessage(UserMessage... newMessages);
+    void notifyUserNewMessage(Period expectedPeriod, UserMessage... newMessages);
 }

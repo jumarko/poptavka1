@@ -3,6 +3,7 @@ package com.eprovement.poptavka.service.message;
 import com.eprovement.poptavka.dao.message.MessageDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
@@ -111,7 +112,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Override
     @Transactional(readOnly = true)
     public User getUserForReply(Message inReplyTo, User sender) {
-        Validate.notNull(inReplyTo, "");
+        Validate.notNull(inReplyTo, "inReplyTo cannot be null!");
         Message addresseeMessage = inReplyTo;
         while (addresseeMessage.getParent() != null
                 && !addresseeMessage.equals(addresseeMessage.getParent())
@@ -329,7 +330,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
                     || (role.getType() == MessageUserRoleType.BCC)) {
                 // we got one of the recipients of the message
                 final UserMessage userMessage = userMessageService.createUserMessage(message, role.getUser());
-                notificationService.notifyUserNewMessage(userMessage);
+                notificationService.notifyUserNewMessage(Period.INSTANTLY, userMessage);
             }
         }
         message.setMessageState(MessageState.SENT);

@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class NotificationItemServiceIntegrationTest extends DBUnitIntegrationTest {
+public class NotificationSettingsIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private ClientService clientService;

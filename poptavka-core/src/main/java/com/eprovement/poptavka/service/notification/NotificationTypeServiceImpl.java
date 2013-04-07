@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.service.notification;
 
 import com.eprovement.poptavka.domain.enums.NotificationType;
@@ -26,7 +23,6 @@ public class NotificationTypeServiceImpl implements NotificationTypeService {
      * @return all notifications that could be associated with any {@link com.eprovement.poptavka.domain.user.User}
      */
     @Override
-    @Cacheable(cacheName = "cache5h")
     public List<Notification> getNotificationsForUser() {
         return getNotifications(NotificationType.USER);
     }
@@ -56,10 +52,15 @@ public class NotificationTypeServiceImpl implements NotificationTypeService {
     }
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+
+    /**
+     * Load notifications of given type.
+     * Notifications are fairly static therefore we can cache them for a longer period of time.
+     */
+    @Cacheable(cacheName = "cache5h")
     private List<Notification> getNotifications(NotificationType notificationType) {
         final Search notificationSearch = new Search(Notification.class);
         notificationSearch.addFilterEqual("notificationType", notificationType);
         return  generalService.search(notificationSearch);
     }
-
 }

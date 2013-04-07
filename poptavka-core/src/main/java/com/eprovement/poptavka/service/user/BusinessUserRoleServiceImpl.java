@@ -208,7 +208,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         final List<NotificationItem> notificationItems = new ArrayList<>();
         for (Notification supplierNotification : getNotifications()) {
             notificationItems.add(
-                    notificationUtils.createInstantNotificationItem(supplierNotification.getCode(), true));
+                    notificationUtils.createNotificationItemWithDefaultPeriod(supplierNotification.getCode(), true));
         }
         LOGGER.info("action=supplier_create_default_notifications supplier={} notifications={}",
                 businessUserRole, notificationItems);

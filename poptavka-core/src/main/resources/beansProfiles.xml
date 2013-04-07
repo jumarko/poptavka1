@@ -17,6 +17,25 @@
                 </list>
             </property>
         </bean>
+
+        <!-- Mail support -->
+        <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+            <property name="host" value="${mail.server.host}" />
+            <property name="port" value="${mail.server.port}" />
+            <property name="protocol" value="${mail.server.protocol}" />
+            <property name="username" value="${mail.server.username}" />
+            <property name="password" value="${mail.server.password}" />
+            <property name="javaMailProperties">
+                <props>
+                    <prop key="mail.smtp.auth">true</prop>
+                    <prop key="mail.smtp.starttls.enable">true</prop>
+                    <prop key="mail.smtp.quitwait">false</prop>
+                </props>
+            </property>
+        </bean>
+        <bean id="mailService" class="com.eprovement.poptavka.service.mail.MailServiceImpl">
+            <property name="javaMailSender" ref="javaMailSender" />
+        </bean>
     </beans>
 
 
@@ -49,6 +68,11 @@ MUST FOLLOW ONLY AFTER IMPORT of "applicationContext.xml" !!! -->
             <property name="transactionManager" ref="transactionManager"/>
             <!-- REQUIRES_NEW -->
             <property name="propagationBehavior" value="3"/>
+        </bean>
+
+        <!--Mocked mail service because we do not want to send emails as a part of integration tests-->
+        <bean id="mailService" class="org.mockito.Mockito" factory-method="mock">
+            <constructor-arg value="com.eprovement.poptavka.service.mail.MailService" />
         </bean>
 
     </beans>

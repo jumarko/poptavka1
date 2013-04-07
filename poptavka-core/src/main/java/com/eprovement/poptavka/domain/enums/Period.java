@@ -5,12 +5,12 @@ package com.eprovement.poptavka.domain.enums;
  *         Date: 11.4.11
  */
 public enum Period {
-
+    /** Immediately. */
     INSTANTLY("INSTANTLY"),
+    /** Once a day, usually early in the morning. */
     DAILY("DAILY"),
-    BY3DAYS("3DAYS"),
-    BY5DAYS("5DAYS"),
-    BY7DAYS("7DAYS");
+    /** Once a week, usually on Monday. */
+    WEEKLY("WEEKLY");
 
     private final String value;
 

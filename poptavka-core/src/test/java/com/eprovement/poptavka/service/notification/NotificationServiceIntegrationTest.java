@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.enums.MessageState;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
@@ -79,7 +80,7 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testSendNotificationForInvalidUser() throws Exception {
         final UserMessage userMessage = createUserMessage(new Message(), new User());
-        notificationService.notifyUserNewMessage(userMessage);
+        notificationService.notifyUserNewMessage(Period.INSTANTLY, userMessage);
         verifyZeroInteractions(mailNotificationSender);
     }
 
@@ -99,7 +100,8 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
         for (Message message : originalMessages) {
             newUserMessages.add(createUserMessage(message, notifiedUser));
         }
-        notificationService.notifyUserNewMessage(newUserMessages.toArray(new UserMessage[newUserMessages.size()]));
+        notificationService.notifyUserNewMessage(Period.INSTANTLY,
+                newUserMessages.toArray(new UserMessage[newUserMessages.size()]));
 
         final ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
         verify(mailServiceMock).sendAsync(messageCaptor.capture());
@@ -122,7 +124,7 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
         final Message originalMessage = new Message();
         originalMessage.setMessageState(MessageState.COMPOSED);
         final User notifiedUser = generalService.find(User.class, userId);
-        notificationService.notifyUserNewMessage(createUserMessage(originalMessage, notifiedUser));
+        notificationService.notifyUserNewMessage(Period.INSTANTLY, createUserMessage(originalMessage, notifiedUser));
         verifyZeroInteractions(mailNotificationSender);
     }
 }

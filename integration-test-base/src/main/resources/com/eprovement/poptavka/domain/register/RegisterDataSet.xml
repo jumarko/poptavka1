@@ -1,7 +1,6 @@
 <!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
 <dataset >
 
-    <!--TODO: make correct access roles - e.g. "CLIENT_ROLE"-->
     <ACCESSROLE ID="1" CODE="test.access.role" DESCRIPTION="Useful only for testing" NAME="Test access role" />
     <ACCESSROLE ID="2" CODE="ROLE_CLIENT" DESCRIPTION="Real client role - the same as in production" NAME="Client access role" />
     <ACCESSROLE ID="3" CODE="ROLE_ADMIN" DESCRIPTION="Admin" NAME="Admin access role" />
