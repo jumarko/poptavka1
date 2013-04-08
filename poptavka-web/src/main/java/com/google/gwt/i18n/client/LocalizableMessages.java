@@ -410,6 +410,17 @@ public interface LocalizableMessages extends Messages {
     String addressZipCode();
 
     /*** 1 - Home Welcome module view *********************************** 1 ***/
+    String iamProfessional();
+    String iamProfessionalNext();
+    String iamProfessionalDesc();
+    String allProfessionals();
+    String howItWorks();
+    String signUpAsPro();
+    String placeProject();
+    String placeProjectNext();
+    String placeProjectDesc();
+    String allProjects();
+    String placeProjects();
 
     /*** 2 - Home Demands module view *********************************** 2 ***/
     /** HomeDemandsView.ui. **/
