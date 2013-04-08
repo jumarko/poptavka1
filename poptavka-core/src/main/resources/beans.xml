@@ -130,7 +130,6 @@
     <bean id="notificationTypeService" class="com.eprovement.poptavka.service.notification.NotificationTypeServiceImpl" >
         <constructor-arg ref="generalService"/>
     </bean>
-    <bean id="notificationItemService" class="com.eprovement.poptavka.service.notification.NotificationItemServiceImpl" />
     <bean id="notificationSender" class="com.eprovement.poptavka.service.notification.MailNotificationSender">
         <constructor-arg index="0" ref="mailService"/>
         <constructor-arg index="1" value="${mail.noreply.address}"/>
