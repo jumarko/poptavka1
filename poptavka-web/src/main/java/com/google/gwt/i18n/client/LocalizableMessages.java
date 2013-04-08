@@ -487,7 +487,7 @@ public interface LocalizableMessages extends Messages {
     String searchResultInfoLabel();
 
     /** SearchModuleView.ui. **/
-    String searchBtnAdvance();
+    String searchBtnAdvanced();
     String searchBtnSearch();
     String searchContent();
     String searchMenuDemand();

@@ -70,7 +70,7 @@
         </div>
 
         <g:Button ui:field="advSearchBtn" styleName='{style.advanced-search}'>
-            <ui:msg key="searchBtnAdvance">Advanced</ui:msg>
+            <ui:msg key="searchBtnAdvanced">Advanced</ui:msg>
         </g:Button>
     </g:HTMLPanel>
 </ui:UiBinder>
