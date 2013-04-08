@@ -25,15 +25,14 @@ public class RegisterServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetAllValuesForRegister() {
         final List<Notification> allNotifications = this.registerService.getAllValues(Notification.class);
         Assert.assertNotNull(allNotifications);
-        Assert.assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(12));
-
+        Assert.assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(7));
     }
 
     @Test
     public void testGetRegisterValueByCode() {
-        final Notification newMessageClient = this.registerService.getValue(Registers.Notification.CLIENT_NEW_MESSAGE,
-                Notification.class);
-        checkRegister(newMessageClient, 10L, "new.message.client");
+        final Notification newMessageClient = this.registerService.getValue(
+                Registers.Notification.NEW_MESSAGE.getCode(), Notification.class);
+        checkRegister(newMessageClient, 1L, "new.message");
 
         final Service serviceClassic = this.registerService.getValue(Registers.Service.CLASSIC, Service.class);
         checkRegister(serviceClassic, 4L, "classic");
@@ -41,7 +40,7 @@ public class RegisterServiceIntegrationTest extends DBUnitIntegrationTest {
 
     private <T extends Register> void checkRegister(T register, long expectedId, String expectedCode) {
         Assert.assertNotNull(register);
-        Assert.assertThat("Unexcpected register found", register.getId(), Is.is(expectedId));
-        Assert.assertThat("Unexcpected register's code found", register.getCode(), Is.is(expectedCode));
+        Assert.assertThat("Unexpected register found", register.getId(), Is.is(expectedId));
+        Assert.assertThat("Unexpected register's code found", register.getCode(), Is.is(expectedCode));
     }
 }

@@ -211,6 +211,8 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     public OfferMessageDetail updateSendingOfferMessage(OfferMessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setParentId(replyToMessage.getMessageId());
+        messageDetail.setStarred(replyToMessage.isStarred());
+        messageDetail.setSubject(replyToMessage.getSubject());
         messageDetail.setSupplierId(Storage.getBusinessUserDetail().getSupplierId());
         return messageDetail;
     }
@@ -225,6 +227,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setParentId(replyToMessage.getMessageId());
         messageDetail.setStarred(replyToMessage.isStarred());
+        messageDetail.setSubject(replyToMessage.getSubject());
         return messageDetail;
     }
 

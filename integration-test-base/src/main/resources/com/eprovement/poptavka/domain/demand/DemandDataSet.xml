@@ -39,12 +39,6 @@
             STATUS="CLOSED" CREATEDDATE="2010-10-01 13:33:34" />
 
 
-    <!--########################################## suppliers for demands ###########################################-->
-    <DEMAND_SUPPLIER DEMAND_ID="1" SUPPLIER_ID="1111111114" />
-    <DEMAND_SUPPLIER DEMAND_ID="2" SUPPLIER_ID="1111111114" />
-    <DEMAND_SUPPLIER DEMAND_ID="3" SUPPLIER_ID="1111111111" />
-    <DEMAND_SUPPLIER DEMAND_ID="4" SUPPLIER_ID="1111111111" />
-
     <!--########################################## demands for localities ###########################################-->
     <DEMAND_LOCALITY ID="1" DEMAND_ID="1" LOCALITY_ID="1" />   <!-- "locality1"-->
     <DEMAND_LOCALITY ID="2" DEMAND_ID="2" LOCALITY_ID="2" />   <!-- "locality2"-->

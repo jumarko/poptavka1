@@ -23,11 +23,15 @@ public class NotificationUtils {
         this.registerService = registerService;
     }
 
-    public NotificationItem createInstantNotificationItem(String notificationCode, boolean enabled) {
+    public NotificationItem createNotificationItemWithDefaultPeriod(String notificationCode, boolean enabled) {
+        return createNotificationItem(notificationCode, Period.DAILY, enabled);
+    }
+
+    public NotificationItem createNotificationItem(String notificationCode, Period period, boolean enabled) {
         final NotificationItem notificationItem = new NotificationItem();
         notificationItem.setNotification(this.registerService.getValue(notificationCode, Notification.class));
         notificationItem.setEnabled(enabled);
-        notificationItem.setPeriod(Period.INSTANTLY);
+        notificationItem.setPeriod(period);
         return notificationItem;
     }
 

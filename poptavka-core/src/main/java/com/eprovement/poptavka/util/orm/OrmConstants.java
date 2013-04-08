@@ -7,6 +7,7 @@ package com.eprovement.poptavka.util.orm;
  *         Date: 7.5.11
  */
 public final class OrmConstants {
+    public static final int TEXT_LENGTH = 65535;
     public static final int ENUM_FIELD_LENGTH = 64;
     public static final int ENUM_SHORTINT_FIELD_LENGTH = 2;
 

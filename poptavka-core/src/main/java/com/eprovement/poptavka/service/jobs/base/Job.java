@@ -9,8 +9,13 @@ package com.eprovement.poptavka.service.jobs.base;
  */
 public interface Job {
 
-    String EVERY_MIDNIGHT = "0 59 23 * * ? ";
     String EVERY_HOUR = "0 0 * * * ? ";
+    String EVERY_MIDNIGHT = "0 59 23 * * ? ";
+    /** Once a day early in the morning */
+    String EVERY_DAY = "0 59 04 * * ? ";
+    /** Each monday (once a week) early in the morning */
+    String EVERY_WEEK = "0 59 04 * * MON ";
+
 
     /**
      * Runs a job.

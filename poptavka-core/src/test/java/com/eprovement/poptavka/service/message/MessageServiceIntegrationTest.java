@@ -15,7 +15,6 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.offer.OfferService;
-import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,7 @@ import static org.junit.Assert.assertThat;
  *         Date: 11.5.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
@@ -54,8 +54,6 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     private GeneralService generalService;
     @Autowired
     private UserMessageService userMessageService;
-    @Autowired
-    private SupplierService supplierService;
     @Autowired
     private OfferService offerService;
 
@@ -214,18 +212,13 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final User client = this.generalService.find(User.class, 111111112L);
         final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesAll(client);
-        Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                6, listOfClientDemandMessages.size());
-
+        assertThat("Inacurrate number of threadRoot messages selected", listOfClientDemandMessages.size(), is(6));
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
-        Assert.assertEquals("Inacurrate number of subMessages selected",
-                (Object) 4, (Object) listOfClientDemandMessages.get(threadRoot1));
+        assertThat("Inacurrate number of subMessages selected", listOfClientDemandMessages.get(threadRoot1), is(4));
         checkUserMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
-        Assert.assertEquals("Inacurrate number of subMessages selected",
-                (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot200));
+        assertThat("Inacurrate number of subMessages selected", listOfClientDemandMessages.get(threadRoot200), is(1));
         checkUserMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
-        Assert.assertEquals("Inacurrate number of subMessages selected",
-                (Object) 2, (Object) listOfClientDemandMessages.get(threadRoot300));
+        assertThat("Inacurrate number of subMessages selected", listOfClientDemandMessages.get(threadRoot300), is(2));
     }
 
     @Test
@@ -233,7 +226,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final Message threadRoot1 = this.messageService.getById(1L);
         final Message threadRoot200 = this.messageService.getById(200L);
         final Message threadRoot300 = this.messageService.getById(300L);
-        final Demand demand = (Demand) this.generalService.find(Demand.class, 2L);
+        final Demand demand = this.generalService.find(Demand.class, 2L);
         final User client = this.generalService.find(User.class, 111111112L);
         final Map<Long, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesUnread(client);

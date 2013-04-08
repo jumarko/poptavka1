@@ -10,19 +10,29 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 /**
- * @author Juraj Martinka
- *         Date: 11.4.11
+ * Notification object represents one type of notifications being sent to the users.
+ * @see NotificationItem for concrete settings of notifications for users
  */
 @Entity
 public class Notification extends Register {
 
+    /** Human readable name of notification. Used as subject for notification message. */
     private String name;
 
+    /** Short description of purpose of this notification. */
     private String description;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private NotificationType notificationType;
+
+    /**
+     * Base template for generating notification messages. Message templates can consist of simple text
+     * and template variables using syntax {myVariable}. Variables can be expanded at runtime.
+     * @see org.springframework.web.util.UriTemplate for inspiration and basic ways how to expand variables.
+     */
+    @Column(length = OrmConstants.TEXT_LENGTH)
+    private String messageTemplate;
 
     public String getName() {
         return name;
@@ -46,6 +56,14 @@ public class Notification extends Register {
 
     public void setNotificationType(NotificationType notificationType) {
         this.notificationType = notificationType;
+    }
+
+    public String getMessageTemplate() {
+        return messageTemplate;
+    }
+
+    public void setMessageTemplate(String messageTemplate) {
+        this.messageTemplate = messageTemplate;
     }
 
     @Override

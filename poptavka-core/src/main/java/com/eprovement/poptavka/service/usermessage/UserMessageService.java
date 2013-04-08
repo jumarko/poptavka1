@@ -15,6 +15,8 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GenericService;
 import com.googlecode.genericdao.search.Search;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -349,5 +351,13 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return the newly created (or existing if there was such) <code>UserMessage</code>
      */
     UserMessage getAdminUserMessage(Message message, User user);
+
+    /**
+     * Loads all {@link UserMessage}-s that have associated message
+     * with {@link Message#created} equal or later than {@code dateFrom}.
+     * @param dateFrom start date for message created date
+     * @return users mapped to all their user messages which has associated created date staring from given period
+     */
+    Map<User, List<UserMessage>> getUserMessagesFromDateGroupedByUser(Date dateFrom);
 
 }

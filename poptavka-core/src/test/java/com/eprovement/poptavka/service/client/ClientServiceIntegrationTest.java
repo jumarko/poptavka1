@@ -33,9 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *         Date: 20.12.10
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml" },
+        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
          dtd = "classpath:test.dtd")
 public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
 
@@ -77,11 +77,8 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testSearchClientByName() {
-        final List<Client> clients = clientService.searchByCriteria(
-                UserSearchCriteria.Builder.userSearchCriteria()
-                        .withName("Elv\u00edra")
-                        .withSurName("Vytret\u00e1")
-                        .build());
+        final List<Client> clients = clientService.searchByCriteria(UserSearchCriteria.Builder.userSearchCriteria()
+                .withName("Elv\u00edra").withSurName("Vytret\u00e1").build());
         Assert.assertNotNull(clients);
         Assert.assertEquals(2, clients.size());
         final Client client = clients.get(0);
@@ -173,21 +170,9 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check if new client has also all client notifications set to the sensible values
         Assert.assertNotNull(createdClient.getBusinessUser().getSettings());
-        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.CLIENT_NEW_MESSAGE, Notification.class),
-                true, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.CLIENT_NEW_OPERATOR, Notification.class),
-                true, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.CLIENT_NEW_INFO, Notification.class),
-                false, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.CLIENT_NEW_OFFER, Notification.class),
-                false, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.CLIENT_DEMAND_STATUS_CHANGED, Notification.class),
-                false, Period.INSTANTLY);
+        checkNotifications(createdClient, Registers.Notification.NEW_OFFER,
+                Registers.Notification.NEW_MESSAGE, Registers.Notification.NEW_INFO,
+                Registers.Notification.NEW_MESSAGE_OPERATOR, Registers.Notification.DEMAND_STATUS_CHANGED);
     }
 
 
@@ -197,6 +182,16 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
         assertTrue(this.clientService.checkFreeEmail("elvira11@email.com"));
         assertFalse(this.clientService.checkFreeEmail("elviraM@email.com"));
         assertFalse(this.clientService.checkFreeEmail("lisohlavka@email.com"));
+    }
+
+
+    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    private void checkNotifications(Client createdClient, Registers.Notification... notifications) {
+        for (Registers.Notification notification : notifications) {
+            UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
+                    this.registerService.getValue(notification.getCode(), Notification.class), true, Period.INSTANTLY);
+        }
+
     }
 
 

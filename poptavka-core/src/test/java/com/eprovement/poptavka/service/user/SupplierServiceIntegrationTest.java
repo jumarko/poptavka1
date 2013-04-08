@@ -258,22 +258,9 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check if new supplier has also all supplier notifications set to the sensible values
         assertNotNull(createdSupplier.getBusinessUser().getSettings());
-        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_DEMAND, Notification.class),
-                true, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_MESSAGE, Notification.class),
-                true, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_OPERATOR, Notification.class),
-                true, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_INFO, Notification.class),
-                false, Period.INSTANTLY);
-        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
-                this.registerService.getValue(Registers.Notification.SUPPLIER_OFFER_STATUS_CHANGED, Notification.class),
-                false, Period.INSTANTLY);
-
+        checkNotifications(createdSupplier, Registers.Notification.NEW_DEMAND, Registers.Notification.NEW_MESSAGE,
+                Registers.Notification.NEW_INFO, Registers.Notification.NEW_MESSAGE_OPERATOR,
+                Registers.Notification.OFFER_STATUS_CHANGED);
 
         // check that potential demand has been sent to supplier immediately after he has been created
         final ArgumentCaptor<Demand> demandCaptor = ArgumentCaptor.forClass(Demand.class);
@@ -286,7 +273,6 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         assertThat("Incorrect supplier has been passed",
                 supplierCaptor.getValue().getSupplier().getId(), is(newSupplier.getId()));
     }
-
 
 
     @Test
@@ -419,4 +405,11 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertEquals(expectedCount, suppliers.size());
     }
 
+    private void checkNotifications(Supplier createdSupplier, Registers.Notification... notifications) {
+        for (Registers.Notification notification : notifications) {
+            UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
+                    this.registerService.getValue(notification.getCode(), Notification.class), true, Period.INSTANTLY);
+        }
+
+    }
 }

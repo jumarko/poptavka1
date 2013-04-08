@@ -6,12 +6,17 @@ import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
+import com.eprovement.poptavka.domain.settings.Notification;
+import com.eprovement.poptavka.domain.settings.NotificationItem;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.eprovement.poptavka.util.notification.NotificationUtils;
 import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.collections.CollectionUtils;
@@ -22,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,17 +54,24 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
     private final GeneralService generalService;
     private final RegisterService registerService;
+    private final NotificationUtils notificationUtils;
+    protected final NotificationTypeService notificationTypeService;
+
     private UserVerificationService userVerificationService;
 
+
     public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService,
-            UserVerificationService userVerificationService) {
-        Preconditions.checkNotNull(generalService);
-        Preconditions.checkNotNull(registerService);
-        Preconditions.checkNotNull(userVerificationService);
+            UserVerificationService userVerificationService, NotificationTypeService notificationTypeService) {
+        Validate.notNull(generalService, "generalService cannot be null");
+        Validate.notNull(registerService, "registerService cannot be null");
+        Validate.notNull(userVerificationService, "userVerificationService cannot be null!");
+        Validate.notNull(notificationTypeService, "notificationTypeService cannot be null!");
 
         this.generalService = generalService;
         this.registerService = registerService;
         this.userVerificationService = userVerificationService;
+        this.notificationUtils = new NotificationUtils(registerService);
+        this.notificationTypeService = notificationTypeService;
     }
 
     @Override
@@ -86,6 +99,10 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         LOGGER.info("action=create_new_business_user_role status=start businuessUser={}",
                 businessUserRole.getBusinessUser());
+
+        createDefaultNotifications(businessUserRole);
+        createDefaultAccessRole(businessUserRole);
+
         // set common stuff when creating new business user
         final UserService classicClient = new UserService();
         classicClient.setUser(businessUserRole.getBusinessUser());
@@ -159,6 +176,18 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         return registerService;
     }
 
+    /**
+     * @return all access roles for concrete business user role
+     */
+    protected abstract List<AccessRole> getDefaultAccessRoles();
+
+    /**
+     * @return all notifications for concrete business user role
+     * @see com.eprovement.poptavka.service.notification.NotificationTypeService
+     */
+    protected abstract List<Notification> getNotifications();
+
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     private void createBusinessUserIfNotExist(BUR businessUserRole) {
         if (isNewBusinessUser(businessUserRole)) {
@@ -173,4 +202,30 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     private boolean isNewBusinessUser(BUR businessUserRole) {
         return businessUserRole.getBusinessUser().getId() == null;
     }
+
+
+    private void createDefaultNotifications(BusinessUserRole businessUserRole) {
+        final List<NotificationItem> notificationItems = new ArrayList<>();
+        for (Notification supplierNotification : getNotifications()) {
+            notificationItems.add(
+                    notificationUtils.createNotificationItemWithDefaultPeriod(supplierNotification.getCode(), true));
+        }
+        LOGGER.info("action=supplier_create_default_notifications supplier={} notifications={}",
+                businessUserRole, notificationItems);
+        businessUserRole.getBusinessUser().getSettings().setNotificationItems(notificationItems);
+    }
+
+
+
+    private void createDefaultAccessRole(BusinessUserRole businessUserRole) {
+        Validate.notNull(businessUserRole);
+        Validate.notNull(businessUserRole.getBusinessUser(), "Supplier.businessUser must not be null!");
+        if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
+            final List<AccessRole> defaultAccessRoles = getDefaultAccessRoles();
+            LOGGER.info("action=create_default_access_roles business_user_role={} roles={}",
+                    businessUserRole, defaultAccessRoles);
+            businessUserRole.getBusinessUser().setAccessRoles(defaultAccessRoles);
+        }
+    }
+
 }
