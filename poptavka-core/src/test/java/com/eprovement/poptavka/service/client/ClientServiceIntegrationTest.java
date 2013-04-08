@@ -189,7 +189,7 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
     private void checkNotifications(Client createdClient, Registers.Notification... notifications) {
         for (Registers.Notification notification : notifications) {
             UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
-                    this.registerService.getValue(notification.getCode(), Notification.class), true, Period.INSTANTLY);
+                    this.registerService.getValue(notification.getCode(), Notification.class), true, Period.DAILY);
         }
 
     }
