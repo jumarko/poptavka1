@@ -210,7 +210,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final Message root = generalService.find(Message.class, 1L);
         final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
                 .getClientConversationsWithoutOffer(this.userClient, root);
-        Assert.assertEquals(1, clientConversations.size());
+        Assert.assertEquals(2, clientConversations.size());
         checkUserMessageIdAndCountAndSupplierId(7L, 4, 111111111L, clientConversations);
 
         final Message root2 = generalService.find(Message.class, 200L);
@@ -224,9 +224,9 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetClientConversationsWithoutOfferCount() {
         final int clientConversationsCount = this.userMessageService
                 .getClientConversationsWithoutOfferCount(this.userClient);
-        Assert.assertEquals("The count of client's (id="
-                + this.userClient.getId() + "conversations without offer is"
-                + " incorrect.", 2, clientConversationsCount);
+        Assert.assertEquals("The count of client's [id="
+                + this.userClient.getId() + "] conversations without offer is"
+                + " incorrect.", 3, clientConversationsCount);
     }
 
     @Test

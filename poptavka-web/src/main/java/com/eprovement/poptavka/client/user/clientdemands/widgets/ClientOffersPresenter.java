@@ -177,7 +177,8 @@ public class ClientOffersPresenter
             detailSection.initDetails(
                     conversationDetail.getDemandId(),
                     conversationDetail.getSupplierId(),
-                    conversationDetail.getThreadRootId());
+                    conversationDetail.getThreadRootId(),
+                    conversationDetail.getSenderId());
         }
     }
 

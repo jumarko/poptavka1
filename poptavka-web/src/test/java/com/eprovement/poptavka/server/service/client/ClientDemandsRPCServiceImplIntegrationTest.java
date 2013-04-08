@@ -3,7 +3,9 @@ package com.eprovement.poptavka.server.service.client;
 import com.eprovement.poptavka.base.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider;
@@ -143,7 +145,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         SearchDefinition searchDefinition = new SearchDefinition();
         long count = clientDemandsRPCService.getClientOfferedDemandOffersCount(111111112L, 2L, searchDefinition);
         Assert.assertEquals("getClientOfferedDemandOffersCount [count=" + count + "] was not correct",
-                Long.valueOf(2L), Long.valueOf(count));
+                Long.valueOf(3L), Long.valueOf(count));
         List<ClientOfferedDemandOffersDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
                 111111112L, 2L, 1L, searchDefinition);
         assertThat(offers.size(), is(2));
@@ -157,6 +159,34 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, 1L, searchDefinition);
         assertThat(offers.size(), is(2));
     }
+
+    @Test
+    public void testAcceptOffer() {
+        long demandId = 2;
+        long offerToBeAccepted = 11;
+        Demand demand = generalService.find(Demand.class, demandId);
+        Assert.assertEquals("Number of offers [offers.size="
+                + demand.getOffers() + "] for given demand [demandId="
+                + demandId + "] is not as expected", 2, demand.getOffers().size());
+        for (Offer offer : demand.getOffers()) {
+            Assert.assertThat("Unexpected offer state for offer.id=" + offer.getId(),
+                    OfferStateType.PENDING.getValue(), is(offer.getState().getCode()));
+        }
+        clientDemandsRPCService.acceptOffer(offerToBeAccepted);
+
+        for (Offer offer : demand.getOffers()) {
+            if (offer.getId().longValue() != offerToBeAccepted) {
+                Assert.assertEquals("Offer status [offer.state.code=" + offer.getState().getCode()
+                        + "] for offer [offer.id=" + offer.getId() + "] is not in DECLINED state",
+                        OfferStateType.DECLINED.getValue(), offer.getState().getCode());
+            } else {
+                Assert.assertEquals("Offer status [offer.state.code=" + offer.getState().getCode()
+                        + "] for offer [offer.id=" + offer.getId() + "] is not in ACCEPTED state",
+                        OfferStateType.ACCEPTED.getValue(), offer.getState().getCode());
+            }
+        }
+    }
+
 
     private void checkFullOfferDetailExists(List<FullOfferDetail> offers,
             final long offerId, final long userMessageId) {
