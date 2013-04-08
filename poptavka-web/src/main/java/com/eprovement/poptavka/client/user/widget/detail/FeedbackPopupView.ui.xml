@@ -10,143 +10,167 @@
              type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:HTMLPanel>
-        <b:Modal ui:field="popupFeedback" height="500px" width="900px">
-            <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
-                <h4 class="{res.detailViews.demandDetailSectionHeader}">
-                    <ui:msg key="formSupplierInfo">Supplier information</ui:msg>
-                </h4>
-                <g:HTMLPanel>
-                    <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                        <ui:msg key="formSupplierName">Supplier name: </ui:msg>
-                    </g:Label>
-                    <g:Label ui:field="supplierName" />
-                </g:HTMLPanel>
-            </g:HTMLPanel>
+        <b:Modal ui:field="popupFeedback" addStyleNames='{res.modal.feedbackModal} {res.common.validationContainer}'>
+            <b:Heading size="2">Please enter your feedback.</b:Heading>            
+                        
+            <b:FluidContainer addStyleNames='feedback-content'>
+                <b:FluidRow>
+                    <b:Column size="8">
+                        <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
+                            <g:HTMLPanel>
+                                <g:Label>
+                                    <ui:msg key="formSupplierName">Supplier name: </ui:msg>
+                                </g:Label>
+                                <g:Label ui:field="supplierName" addStyleNames='user-info-label'/>
+                            </g:HTMLPanel>                                           
+                        </g:HTMLPanel>
 
-            <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
-                <p>
-                    <ui:msg key="feedbackToClientMessage">An request has been sent to Client to accept the project.
-                        Meanwhile please enter feedback for Client
-                    </ui:msg>
-                </p>
-                <h4 class="{res.detailViews.demandDetailSectionHeader}">
-                    <ui:msg key="formClientInfo">Client information</ui:msg>
-                </h4>
-                <g:HTMLPanel>
-                    <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                        <ui:msg key="formClientName">Client name:</ui:msg>
-                    </g:Label>
-                    <g:Label ui:field="clientName" />
-                </g:HTMLPanel>
-            </g:HTMLPanel>
-
-
-            <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
-                <g:Label>Your feedback will help us and other users to prevent possible problems.</g:Label>
-            </g:HTMLPanel>
-            <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
-                <b:FluidContainer>
-                    <b:FluidRow>
-                        <b:Column size="6">
-                            <b:FluidRow>
-                                <b:WellForm>
-                                    <b:Column size="2">
-                                        <g:ToggleButton ui:field="starBtn1">*****</g:ToggleButton>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Heading size="2">
-                                            <ui:msg key="feedbackHeading1">Excelent</ui:msg>
-                                        </b:Heading>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Paragraph>
-                                            <ui:msg key="feedbackComment1">Perfect, professional, according expectations, no problem</ui:msg>
-                                        </b:Paragraph>
-                                    </b:Column>
-                                </b:WellForm>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:WellForm>
-                                    <b:Column size="2">
-                                        <g:ToggleButton ui:field="starBtn2">****</g:ToggleButton>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Heading size="2">
-                                            <ui:msg key="feedbackHeading2">Good</ui:msg>
-                                        </b:Heading>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Paragraph>
-                                            <ui:msg key="feedbackComment2">Minor problems, slighly misunderstandings, but still first class work</ui:msg>
-                                        </b:Paragraph>
-                                    </b:Column>
-                                </b:WellForm>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:WellForm>
-                                    <b:Column size="2">
-                                        <g:ToggleButton ui:field="starBtn3">***</g:ToggleButton>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Heading size="2">
-                                            <ui:msg key="feedbackHeading3">Fair</ui:msg>
-                                        </b:Heading>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Paragraph>
-                                            <ui:msg key="feedbackComment3">Had problems, acceptable, but not complete work</ui:msg>
-                                        </b:Paragraph>
-                                    </b:Column>
-                                </b:WellForm>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:WellForm>
-                                    <b:Column size="2">
-                                        <g:ToggleButton ui:field="starBtn4">**</g:ToggleButton>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Heading size="2">
-                                            <ui:msg key="feedbackHeading4">Poor</ui:msg>
-                                        </b:Heading>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Paragraph>
-                                            <ui:msg key="feedbackComment4">Had several problems, serious misunderstandings, not satisfied, ...</ui:msg>
-                                        </b:Paragraph>
-                                    </b:Column>
-                                </b:WellForm>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:WellForm>
-                                    <b:Column size="2">
-                                        <g:ToggleButton ui:field="starBtn5">*</g:ToggleButton>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Heading size="2">
-                                            <ui:msg key="feedbackHeading5">Very bad</ui:msg>
-                                        </b:Heading>
-                                    </b:Column>
-                                    <b:Column size="5">
-                                        <b:Paragraph>
-                                            <ui:msg key="feedbackComment5">Not acceptable work, unsatisfied, ...</ui:msg>
-                                        </b:Paragraph>
-                                    </b:Column>
-                                </b:WellForm>
-                            </b:FluidRow>
-                        </b:Column>
-                        <b:Column size="6">
-                            <b:TextArea placeholder="{msgs.feedbackAdditionalCommentPlaceholder}" ui:field="commentArea"/>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:FluidContainer>
-            </g:HTMLPanel>
+                        <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
+                            <g:HTMLPanel>
+                                <g:Label>
+                                    <ui:msg key="formClientName">Client name:</ui:msg>
+                                </g:Label>
+                                <g:Label ui:field="clientName" addStyleNames='user-info-label'/>
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
+                    </b:Column>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="8">
+                        <b:FluidRow>
+                            <b:WellForm>
+                                <g:HTMLPanel styleName='span-star'>
+                                    <g:ToggleButton ui:field="starBtn1" addStyleNames='hide'>*****</g:ToggleButton>
+                                    <g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>                                       
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-title'>
+                                    <b:Heading size="4">
+                                        <ui:msg key="feedbackHeading1">Excelent</ui:msg>
+                                    </b:Heading>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-detail'>
+                                    <b:Paragraph>
+                                        <ui:msg key="feedbackComment1">Perfect, professional, according expectations, no problem</ui:msg>
+                                    </b:Paragraph>
+                                </g:HTMLPanel>
+                            </b:WellForm>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:WellForm>
+                                <g:HTMLPanel styleName='span-star'>
+                                    <g:ToggleButton ui:field="starBtn2" addStyleNames='hide'>****</g:ToggleButton>
+                                    <g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-title'>
+                                    <b:Heading size="4">
+                                        <ui:msg key="feedbackHeading2">Good</ui:msg>
+                                    </b:Heading>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-detail'>
+                                    <b:Paragraph>
+                                        <ui:msg key="feedbackComment2">Minor problems, slighly misunderstandings, but still first class work</ui:msg>
+                                    </b:Paragraph>
+                                </g:HTMLPanel>
+                            </b:WellForm>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:WellForm>
+                                <g:HTMLPanel styleName='span-star'>
+                                    <g:ToggleButton ui:field="starBtn3" addStyleNames='hide'>***</g:ToggleButton>
+                                    <g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-title'>
+                                    <b:Heading size="4">
+                                        <ui:msg key="feedbackHeading3">Fair</ui:msg>
+                                    </b:Heading>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-detail'>
+                                    <b:Paragraph>
+                                        <ui:msg key="feedbackComment3">Had problems, acceptable, but not complete work</ui:msg>
+                                    </b:Paragraph>
+                                </g:HTMLPanel>
+                            </b:WellForm>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:WellForm>
+                                <g:HTMLPanel styleName='span-star'>
+                                    <g:ToggleButton ui:field="starBtn4" addStyleNames='hide'>**</g:ToggleButton>
+                                    <g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-title'>
+                                    <b:Heading size="4">
+                                        <ui:msg key="feedbackHeading4">Poor</ui:msg>
+                                    </b:Heading>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-detail'>
+                                    <b:Paragraph>
+                                        <ui:msg key="feedbackComment4">Had several problems, serious misunderstandings, not satisfied, ...</ui:msg>
+                                    </b:Paragraph>
+                                </g:HTMLPanel>
+                            </b:WellForm>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:WellForm>
+                                <g:HTMLPanel styleName='span-star'>
+                                    <g:ToggleButton ui:field="starBtn5" addStyleNames='hide'>*</g:ToggleButton>
+                                    <g:HTMLPanel>
+                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    </g:HTMLPanel>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-title'>
+                                    <b:Heading size="4">
+                                        <ui:msg key="feedbackHeading5">Very bad</ui:msg>
+                                    </b:Heading>
+                                </g:HTMLPanel>
+                                <g:HTMLPanel styleName='span-detail'>
+                                    <b:Paragraph>
+                                        <ui:msg key="feedbackComment5">Not acceptable work, unsatisfied, ...</ui:msg>
+                                    </b:Paragraph>
+                                </g:HTMLPanel>
+                            </b:WellForm>
+                        </b:FluidRow>
+                    </b:Column>
+                    <b:Column size="4">
+                        <b:TextArea placeholder="{msgs.feedbackAdditionalCommentPlaceholder}" ui:field="commentArea"
+                                    width="268" height="358"/>
+                    </b:Column>
+                </b:FluidRow>
+            </b:FluidContainer>            
 
             <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
                 <!--                <g:Anchor ui:field="anchorComment">
                     <ui:msg key="formRateInsertComment">Insert additional rate commment: </ui:msg>
                 </g:Anchor>-->
                 
-                <g:Button ui:field="rateBtn">
+                <g:Button ui:field="rateBtn" styleName='{res.common.buttonGreen}'>
                     <ui:msg key="commonBtnRate">Rate</ui:msg>
                 </g:Button>
             </g:HTMLPanel>

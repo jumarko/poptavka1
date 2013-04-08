@@ -2,6 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
              xmlns:b2="urn:import:com.github.gwtbootstrap.datepicker.client.ui">
 
     <!-- injecting style resources -->
@@ -86,10 +87,8 @@
                         <ui:msg key="formFinnishDate">Finnish date:</ui:msg>
                     </g:Label>
                     <g:HTMLPanel styleName="input-append">
-                        <b2:DateBox placeholder="{msgs.formFrom}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox} append-date" ui:field="finnishDateFrom" />
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName="input-append">
-                        <b2:DateBox placeholder="{msgs.formTo}" format="{msgs.formatDate}" autoClose="true" styleName="{style.dateBox} append-date" ui:field="finnishDateTo" />
+                        <cm:MyDateBox placeholder="{msgs.formFrom}" styleName="{style.dateBox} append-date" ui:field="finnishDateFrom" />
+                        <cm:MyDateBox placeholder="{msgs.formTo}" styleName="{style.dateBox} append-date" ui:field="finnishDateTo" />
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>

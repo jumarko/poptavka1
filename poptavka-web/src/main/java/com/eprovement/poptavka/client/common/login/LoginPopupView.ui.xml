@@ -51,7 +51,7 @@
                     </g:DisclosurePanel>
                 </b:Fieldset>
                 <b:Controls>
-                    <b:Button ui:field="submitBtn" type="PRIMARY" styleName='login-button'>
+                    <b:Button ui:field="submitBtn" type="PRIMARY" styleName='{res.common.buttonGreen}'>
                         Login
                     </b:Button>
                     <b:Button ui:field="cancelBtn" styleName='{res.common.buttonGrey}'>

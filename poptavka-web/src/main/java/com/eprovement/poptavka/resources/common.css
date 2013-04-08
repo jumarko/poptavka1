@@ -179,6 +179,31 @@
     text-decoration: none;
 }
 
+.button-green {
+    background: url(images/login-popup/login-button.png) no-repeat scroll 0 0 transparent;
+    display: block;
+    color: #ffffff;
+    float: right;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin: 18px 15px 0 0;
+    text-align: center;
+    text-decoration: none;
+    width: 85px;
+    border: none;    
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+button.button-green {
+    padding: 0 8px 0 0;
+}
+
+.button-green:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
 /* CellBrowser selected item styles  */
 
 .selected-items-widget .selected-Label {
@@ -369,4 +394,121 @@
 .validation-container .warning .controls input[type="password"],
 .validation-container .warning .controls textarea {
     border: 1px solid #C09853;
+}
+
+/* how it works */
+.how-it-works-container {
+    width: 1000px;
+    margin: 20px auto;
+}
+
+.how-it-works-container .content-step {
+    background: url(images/how-it-works-circle.png) no-repeat;
+    margin: 0 auto;
+    width: 155px;
+    height: 171px;
+}
+
+.how-it-works-container .first-step {
+    background: url(images/how-it-works-circle-first.png) no-repeat;
+    height: 163px;
+}
+
+.how-it-works-container .last-step {
+    background: url(images/how-it-works-circle-last.png) no-repeat;
+}
+
+.how-it-works-container .last-step button {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 300;
+    height: 100%;
+    line-height: 34px;
+    padding: 0 0 28px;
+    text-transform: uppercase;
+}
+
+.how-it-works-container .first-step .circle-label {
+    padding-top: 24px;
+}
+
+.how-it-works-container .circle-label {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 40px;
+    padding-top: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.how-it-works-container .circle-number {
+    font-size: 60px;
+    font-weight: 300;
+    line-height: 64px;
+    text-align: center;
+}
+
+.how-it-works-container .content-block {
+    margin: 20px auto;
+    width: 700px;    
+}
+
+.how-it-works-container .content-block-small {
+    margin: 20px auto;
+    width: 500px;    
+} 
+
+.how-it-works-container .content-block .content-block-top {
+    background: url(images/how-it-works-triangle-up.png) no-repeat top center;
+    height: 10px;
+}
+
+.how-it-works-container .content-block .content-block-bottom {
+    background: url(images/how-it-works-triangle-down.png) no-repeat top center;
+    height: 10px;
+}
+
+.how-it-works-container .content-block .content-block-center {
+    background: #e3ddca;
+    padding: 20px;
+    min-height: 100px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.how-it-works-container h4 {
+    background: url(images/header2.gif) repeat-x scroll left top #f1ecda;
+    border-left: 1px solid #D1CCBB;
+    border-right: 1px solid #D1CCBB;    
+    border-bottom: 1px solid #e8e3d2;
+    color: #6F6B59;
+    font-size: 23px;
+    font-weight: 300;
+    padding: 17px 0;
+    margin: 0;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+
+.how-it-works-container .container-fluid {
+    background: #faf7eb;
+    border-left: 1px solid #D1CCBB;
+    border-right: 1px solid #D1CCBB;
+    border-bottom: 1px solid #aba798;    
+    padding: 20px;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+}
+
+.how-it-works-container .container-fluid .span4,
+.how-it-works-container .container-fluid .span6 {
+    background: url(images/how-it-works-arrow.png) no-repeat 0 6px;
+    padding: 0 0 0 12px;
 }

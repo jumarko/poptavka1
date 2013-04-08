@@ -6,10 +6,89 @@
              type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:style>
     </ui:style>
-
-    <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
-        <g:HTMLPanel>
-            How it works for demand
-        </g:HTMLPanel>
-    </g:ScrollPanel>
+        
+    <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+        <g:north size="49">
+            <g:HTMLPanel>
+                <h2 class='{res.layout.toolbarHeader}'>
+                    How it works for demand
+                </h2>
+            </g:HTMLPanel>
+        </g:north>
+        <g:center>
+            <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
+                <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
+                    <g:HTMLPanel styleName='content-step first-step'>
+                        <g:Label styleName="circle-label">step</g:Label>
+                        <g:Label styleName="circle-number">1</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'>Praesent sed sem eget dolor sollicitudin commodo.</b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>                        
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>    
+                    </g:HTMLPanel>    
+                    <g:HTMLPanel styleName='content-step'>
+                        <g:Label styleName="circle-label">step</g:Label>
+                        <g:Label styleName="circle-number">2</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block content-block-small'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'>Praesent sed sem eget dolor sollicitudin commodo.</b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>                        
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>    
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step'>
+                        <g:Label styleName="circle-label">step</g:Label>
+                        <g:Label styleName="circle-number">3</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'>Praesent sed sem eget dolor sollicitudin commodo.</b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>                        
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>    
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step last-step'>
+                        <g:Button>create demand</g:Button>
+                    </g:HTMLPanel>
+                </g:HTMLPanel>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

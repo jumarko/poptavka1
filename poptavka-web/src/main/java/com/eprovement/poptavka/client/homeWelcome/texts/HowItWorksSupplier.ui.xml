@@ -9,7 +9,9 @@
 
     <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
         <g:HTMLPanel>
-            How it works for supplier.
+            <h2 class='{res.layout.toolbarHeader}'>
+                How it works for supplier.
+            </h2>
         </g:HTMLPanel>
     </g:ScrollPanel>
 </ui:UiBinder>

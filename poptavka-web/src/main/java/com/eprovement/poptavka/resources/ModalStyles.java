@@ -19,4 +19,8 @@ public interface ModalStyles extends CssResource {
     /* Loader Modal Styles */
     @ClassName("advanced-search-modal")
     String advancedSearchModal();
+
+    /* Loader Modal Styles */
+    @ClassName("feedback-modal")
+    String feedbackModal();
 }

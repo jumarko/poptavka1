@@ -19,7 +19,7 @@
     <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
         <g:center>           
             <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.fourStepTabPanel}' 
-                                  addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='80'>
+                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='80'>
                 <!--1-->
                 <g:tab>
                     <g:customHeader size="30">
@@ -179,7 +179,7 @@
                             <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
                         </g:HTML>
                     </g:customHeader>
-                    <g:ScrollPanel>
+                    <g:ScrollPanel>                   
                         <g:HTMLPanel>
                             <b:FluidRow>
                                 <b:Column size="12">
@@ -194,29 +194,23 @@
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
                             <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:DockLayoutPanel unit="PX" styleName='formContainer'>
-                                        <g:east size="20">
-                                            <g:HTMLPanel></g:HTMLPanel>
-                                        </g:east>
-                                        <g:west size="20">
-                                            <g:HTMLPanel></g:HTMLPanel>
-                                        </g:west>
-                                        <g:center>
-                                            <g:ScrollPanel styleName='well'>
-                                                <g:HTMLPanel>
-                                                    <g:SimplePanel ui:field="contentHolder4" />
-                                                    <g:HorizontalPanel ui:field="agreementPanel" >
-                                                        <g:CheckBox ui:field="agreedCheck" />
-                                                        <g:Anchor ui:field="conditionLink">
-                                                            <ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
-                                                        </g:Anchor>
-                                                    </g:HorizontalPanel>
-                                                </g:HTMLPanel>
-                                            </g:ScrollPanel>                            
-                                        </g:center>
-                                    </g:DockLayoutPanel>
+                                <b:Column size="12">           
+                                    <b:FluidContainer addStyleNames='formContainer'>
+                                        <g:SimplePanel ui:field="contentHolder4" />
+                                    </b:FluidContainer>
                                 </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:HTMLPanel styleName='formFooter'>
+                                        <g:HorizontalPanel ui:field="agreementPanel" >
+                                            <g:CheckBox ui:field="agreedCheck" />
+                                            <g:Anchor ui:field="conditionLink">
+                                                <ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
+                                            </g:Anchor>
+                                        </g:HorizontalPanel>           
+                                    </g:HTMLPanel>                   
+                                </b:Column>                        
                             </b:FluidRow>
                             <b:FluidRow>
                                 <b:Column size="12">
@@ -235,8 +229,8 @@
                                         </b:FluidRow>
                                     </b:FluidContainer>
                                 </b:Column>
-                            </b:FluidRow>
-                        </g:HTMLPanel>
+                            </b:FluidRow>          
+                        </g:HTMLPanel>              
                     </g:ScrollPanel>
                 </g:tab>
             </g:TabLayoutPanel>
