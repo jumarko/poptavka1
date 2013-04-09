@@ -10,32 +10,54 @@ import com.google.gwt.user.client.ui.Label;
 
 public class UniversalGrid<T> extends DataGrid<T> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private ListDataProvider<T> dataProvider = new ListDataProvider<T>();
     private ListHandler<T> sortHandler = new ListHandler<T>(dataProvider.getList());
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     public UniversalGrid() {
         super();
-        this.addColumnSortHandler(getSortHandler());
-        dataProvider.addDataDisplay(this);
-        setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
+        initGridDefaults();
     }
 
     public UniversalGrid(ProvidesKey<T> keyProvider) {
         super(keyProvider);
-        this.addColumnSortHandler(getSortHandler());
-        dataProvider.addDataDisplay(this);
-        setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
+        initGridDefaults();
     }
 
+    public UniversalGrid(int pageSize, Resources resources, ProvidesKey<T> keyProvider) {
+        super(pageSize, resources, keyProvider);
+        initGridDefaults();
+    }
+
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
     public void setDataProvider(ListDataProvider<T> dataProvider) {
         this.dataProvider = dataProvider;
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
     public ListDataProvider<T> getDataProvider() {
         return dataProvider;
     }
 
     public ListHandler<T> getSortHandler() {
         return sortHandler;
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void initGridDefaults() {
+        this.addColumnSortHandler(getSortHandler());
+        dataProvider.addDataDisplay(this);
+        setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
     }
 }
