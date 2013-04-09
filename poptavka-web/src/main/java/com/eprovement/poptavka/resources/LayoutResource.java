@@ -57,12 +57,8 @@ public interface LayoutResource extends CssResource {
     @ClassName("menu")
     String menu();
 
-    @ClassName("home-logo")
-    String homeLogo();
-
-    /** User Menu Styles **/
-    @ClassName("user-logo")
-    String userLogo();
+    @ClassName("logo")
+    String logo();
 
     /** Search Bar Styles **/
     @ClassName("search-bar")
