@@ -70,9 +70,19 @@
                                     <g:Label ui:field="bannerLabel">Tu bude
                                         banner :)
                                     </g:Label>
-                                    <d:DemandDetailView
-                                        ui:field="demandDetail" />
                                 </g:HTMLPanel>
+                                <g:DockLayoutPanel ui:field="detailPanel" unit="PX" styleName='{res.layout.fullSize}' visible="false">
+                                    <g:north size="53">
+                                        <b:Heading size='4' styleName="{res.detailViews.demandDetailSectionHeader}">
+                                            <ui:msg key="formDemandInfo">Demand information</ui:msg>
+                                        </b:Heading>
+                                    </g:north>
+                                    <g:center>
+                                        <g:ScrollPanel>
+                                            <d:DemandDetailView ui:field="demandDetail"/>
+                                        </g:ScrollPanel>
+                                    </g:center>
+                                </g:DockLayoutPanel>
                             </b:Column>
                         </b:FluidRow>
                     </b:FluidContainer>
