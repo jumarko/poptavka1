@@ -2,6 +2,7 @@ package com.eprovement.poptavka.shared.domain.message;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -35,6 +36,7 @@ public class OfferMessageDetail extends MessageDetail {
     private String body;
     @NotNull(message = "{messageNotNullPrice}")
     @Min(value = 0, message = "{messageMinPrice}")
+    @Digits(integer = 100000000, fraction = 0, message = "{messageDigitsPrice}")
     private BigDecimal price;
     @NotNull(message = "{messageNotNullFinishDate}")
     @Future(message = "{messageFutureFinishDate}")

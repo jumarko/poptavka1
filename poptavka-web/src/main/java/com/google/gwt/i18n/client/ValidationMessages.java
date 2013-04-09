@@ -84,6 +84,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("demand.min.price")
     String demandMinPrice();
 
+    @Key("demand.digits.price")
+    String demandDigitsPrice();
+
     @Key("demand.notNull.endDate")
     String demandNotNullEndDate();
 
@@ -188,6 +191,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("message.min.price")
     String messageMinPrice();
+
+    @Key("message.digits.price")
+    String messageDigitsPrice();
 
     @Key("message.notNull.finishDate")
     String messageNotNullFinishDate();
