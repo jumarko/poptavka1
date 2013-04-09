@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.StarImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.SerializableHashMap;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -30,7 +31,6 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.Range;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -116,7 +116,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * are provided by
      * (@link orderColumns) attribute.
      */
-    private HashMap<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    private SerializableHashMap<String, OrderType> orderColumns = new SerializableHashMap<String, OrderType>();
     /**
      * Represents table column names. Each widget using this class
      * (UniversalAsyncGrid) must define column names when creating
