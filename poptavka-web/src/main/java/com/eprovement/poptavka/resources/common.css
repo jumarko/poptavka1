@@ -204,6 +204,28 @@ button.button-green {
     text-decoration: none;
 }
 
+.toolbar-button-green {
+    background: url(images/messages-button.png) repeat-x scroll 0 0 #199204;
+    border: 1px solid #199204;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 15px;
+    font-weight: normal;
+    height: 35px;
+    line-height: 33px;
+    margin: 0 7px 0 0;
+    padding: 0 12px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.toolbar-button-green:hover {
+    color: #ffffff;
+    box-shadow: 0 0 5px #42be0b;
+    text-decoration: none;
+}
+
 /* CellBrowser selected item styles  */
 
 .selected-items-widget .selected-Label {

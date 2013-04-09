@@ -71,6 +71,9 @@ public interface CommonResource extends CssResource {
     @ClassName("button-green")
     String buttonGreen();
 
+    @ClassName("toolbar-button-green")
+    String toolbarButtonGreen();
+
     @ClassName("selected-items-widget")
     String selectedItemsWidget();
 
