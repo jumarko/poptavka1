@@ -40,15 +40,18 @@
                             Enter email and password to login.
                         </g:Label>
                     </b:Alert>
-                    <g:DisclosurePanel ui:field="forgotPassword" animationEnabled="true" title="Forgot Your Password" width="100%">
-                        <g:header>Forgot Your Password?</g:header>
-                        <g:VerticalPanel>
-                            <b:TextBox ui:field="forgotPasswordEmail" placeholder="Enter Your Email:"/>
-                            <b:Button ui:field="resetPasswordButton" type="PRIMARY" styleName='login-button'>
-                                Reset Password
-                            </b:Button>
-                        </g:VerticalPanel>
-                    </g:DisclosurePanel>
+                    
+                    <b:ControlGroup>
+                        <g:DisclosurePanel ui:field="forgotPassword" animationEnabled="true" title="Forgot Your Password" width="100%">
+                            <g:header>Forgot Your Password?</g:header>
+                            <g:VerticalPanel>
+                                <b:TextBox ui:field="forgotPasswordEmail" placeholder="Enter Your Email:"/>
+                                <b:Button ui:field="resetPasswordButton">
+                                    Reset Password
+                                </b:Button>
+                            </g:VerticalPanel>
+                        </g:DisclosurePanel>
+                    </b:ControlGroup>
                 </b:Fieldset>
                 <b:Controls>
                     <b:Button ui:field="submitBtn" type="PRIMARY" styleName='{res.common.buttonGreen}'>
