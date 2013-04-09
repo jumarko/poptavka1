@@ -201,6 +201,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         GWT.log("ACCESS ROLES ++++ " + Storage.getUser().getAccessRoles().toString());
         //If exact module is known to be loaded, do it
         switch (widgetToLoad) {
+            case Constants.SKIP:
+                return;
             case Constants.USER_SETTINGS_MODULE:
                 eventBus.goToSettingsModule();
                 break;

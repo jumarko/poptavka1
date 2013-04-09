@@ -17,13 +17,15 @@ import java.util.LinkedList;
 @History(type = HistoryConverterType.DEFAULT, name = "suppliers")
 public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppliersEventBus> {
 
-    public static final String VALUE_SEPARATOR = "=";
-    public static final String ITEM_SEPARATOR = ";";
-    public static final String FILTER_SEPARATOR = ">>";
-    public static final String LIST_BRACKET_LEFT = "(";
-    public static final String LIST_BRACKET_RIGHT = ")";
-    public static final String LIST_ITEM_SEPARATOR = ",";
-    public static final String LIST_ITEM_IDX_SEPARATOR = ":";
+    private static final String HOME = "home";
+    private static final String USER = "user";
+    private static final String VALUE_SEPARATOR = "=";
+    private static final String ITEM_SEPARATOR = ";";
+    private static final String FILTER_SEPARATOR = ">>";
+    private static final String LIST_BRACKET_LEFT = "(";
+    private static final String LIST_BRACKET_RIGHT = ")";
+    private static final String LIST_ITEM_SEPARATOR = ",";
+    private static final String LIST_ITEM_IDX_SEPARATOR = ":";
 
     public String onCreateTokenForHistory(SearchModuleDataHolder searchDataHolder,
             LinkedList<TreeItem> openedHierarchy, int page, FullSupplierDetail supplierDetail) {
@@ -35,6 +37,9 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
             token.append(searchDataHolder.toStringWithIDs());
             token.append(FILTER_SEPARATOR);
         }
+        //Location
+        token.append(Storage.getUser() == null ? HOME : USER);
+        token.append(ITEM_SEPARATOR);
         //Category
         token.append("tree");
         token.append(VALUE_SEPARATOR);
@@ -63,42 +68,34 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
-        //If application is called by URL, log in user and forward him to overview (goToClientDemandModule.Welcome)
-        if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {
-            Storage.setAppCalledByURL(false);
+        if (param.startsWith(USER)) {
             eventBus.setHistoryStoredForNextOne(false);
-            eventBus.loginFromSession(Constants.HOME_SUPPLIERS_MODULE);
-            return;
+            eventBus.loginFromSession(Constants.SKIP);
         }
-        if (param == null) {
-            //aj tak tu nemam categoryDetail ale iba ID
-            eventBus.goToHomeSuppliersModule(null);
+        Storage.setCalledDueToHistory(true);
+        SearchModuleDataHolder searchDataHolder = null;
+        if (param.startsWith("filter:")) {
+            param = param.replace("filter:", "");
+            searchDataHolder = SearchModuleDataHolder.parseSearchModuleDataHolder(
+                    param.substring(0, param.indexOf(FILTER_SEPARATOR)));
+        }
+        //When back & forward events -> don't need to call goToHomeSupplierModule
+        // - it would create new universalAsyncTable, ...
+        // - just use what is already created - events will fire appropiate actions
+        //parse param
+        param = param.substring(param.indexOf(FILTER_SEPARATOR) + FILTER_SEPARATOR.length(), param.length());
+        String[] params = param.split(ITEM_SEPARATOR);
+        LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split(VALUE_SEPARATOR)[1]);
+        if (tree.isEmpty()) {
+            eventBus.setModuleByHistory(searchDataHolder, tree, null,
+                    Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
+                    Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
         } else {
-            Storage.setCalledDueToHistory(true);
-            SearchModuleDataHolder searchDataHolder = null;
-            if (param.startsWith("filter:")) {
-                param = param.replace("filter:", "");
-                searchDataHolder = SearchModuleDataHolder.parseSearchModuleDataHolder(
-                        param.substring(0, param.indexOf(FILTER_SEPARATOR)));
-            }
-            //When back & forward events -> don't need to call goToHomeSupplierModule
-            // - it would create new universalAsyncTable, ...
-            // - just use what is already created - events will fire appropiate actions
-            //parse param
-            param = param.substring(param.indexOf(FILTER_SEPARATOR) + FILTER_SEPARATOR.length(), param.length());
-            String[] params = param.split(ITEM_SEPARATOR);
-            LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split(VALUE_SEPARATOR)[1]);
-            if (tree.isEmpty()) {
-                eventBus.setModuleByHistory(searchDataHolder, tree, null,
-                        Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
-                        Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
-            } else {
-                eventBus.getCategoryAndSetModuleByHistory(
-                        searchDataHolder, tree,
-                        tree.getLast().getCategoryId(),
-                        Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
-                        Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
-            }
+            eventBus.getCategoryAndSetModuleByHistory(
+                    searchDataHolder, tree,
+                    tree.getLast().getCategoryId(),
+                    Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
+                    Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
         }
     }
 
