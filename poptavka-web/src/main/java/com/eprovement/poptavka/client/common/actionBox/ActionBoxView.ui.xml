@@ -1,10 +1,13 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:MenuBar vertical="false">
+    <g:MenuBar vertical="false" addStyleNames='{res.common.toolbarButtonGrey}'>
         <g:MenuItem>
             <ui:msg key="commonListDefault">Action</ui:msg>
+            <img src="images/button-dropdown-icon.png"/>
             <g:MenuBar vertical="true">
                 <g:MenuItem ui:field="actionRead">
                     <ui:msg key="commonListRead">read</ui:msg>

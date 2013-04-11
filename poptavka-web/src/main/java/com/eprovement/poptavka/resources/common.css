@@ -204,6 +204,44 @@ button.button-green {
     text-decoration: none;
 }
 
+.toolbar-button-grey {
+    background: url(images/messages-close-button.png) repeat-x #929292;
+    border: 1px solid #818181;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 16px;
+    font-weight: normal;
+    height: 34px;
+    line-height: 36px;
+    margin: 0 7px 0 0;
+    cursor: pointer;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.toolbar-button-grey:hover {
+    color: #ffffff;
+    box-shadow: 0 0 5px #bbbbbb;
+    text-decoration: none;
+}
+
+.toolbar-button-grey .gwt-MenuItem {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: normal;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 12px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.toolbar-button-grey .gwt-MenuItem:hover,
+.toolbar-button-grey .gwt-MenuItem-selected {
+    background: none;
+}
+
 .toolbar-button-green {
     background: url(images/messages-button.png) repeat-x scroll 0 0 #199204;
     border: 1px solid #199204;
@@ -211,9 +249,9 @@ button.button-green {
     cursor: pointer;
     display: block;
     float: left;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: normal;
-    height: 35px;
+    height: 36px;
     line-height: 33px;
     margin: 0 7px 0 0;
     padding: 0 12px;
@@ -224,6 +262,14 @@ button.button-green {
     color: #ffffff;
     box-shadow: 0 0 5px #42be0b;
     text-decoration: none;
+}
+
+.toolbar-button-back {
+    background: url(images/button-back-icon.png) no-repeat scroll 0 0 transparent;
+    border: medium none;
+    height: 36px;
+    margin: 0 5px 0 0;
+    width: 52px;
 }
 
 /* CellBrowser selected item styles  */

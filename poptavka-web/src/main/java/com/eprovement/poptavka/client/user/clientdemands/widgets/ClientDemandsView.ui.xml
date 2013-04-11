@@ -26,7 +26,7 @@
                 
                 <!--demand table header-->
                 <g:HorizontalPanel ui:field="demandHeader">
-                    <g:Label>
+                    <g:Label styleName='hide'>
                         <ui:msg key="clientDemandsTableTitle">Vypis klientovych poptaviek</ui:msg>
                     </g:Label>
                     <s:UniversalPagerWidget ui:field='demandPager' />
@@ -36,7 +36,7 @@
                     <b:Button ui:field="backBtn" type="PRIMARY" icon="ARROW_LEFT">
                         <ui:msg key="clientDemandsBackBtn">Spat na vsetky nove poptavky</ui:msg>
                     </b:Button>
-                    <g:Label ui:field="demandTitlelabel"/>
+                    <g:Label ui:field="demandTitlelabel" styleName='hide'/>
                     
                     <g:SimplePanel ui:field="actionBox" visible="false" />
                     <s:UniversalPagerWidget ui:field='conversationPager'/>

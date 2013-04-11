@@ -28,7 +28,7 @@
         </g:west>
         <g:north size="65">
             <g:HorizontalPanel ui:field="toolBar" styleName="{res.layout.toolbarItemsBlock}">
-                <g:Label ui:field="tableNameLabel" />
+                <g:Label ui:field="tableNameLabel" styleName='hide'/>
                 <s:UniversalPagerWidget ui:field='pager'/>
             </g:HorizontalPanel>
         </g:north>        
