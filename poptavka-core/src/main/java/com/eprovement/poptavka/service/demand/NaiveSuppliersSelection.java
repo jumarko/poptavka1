@@ -6,8 +6,10 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.user.SupplierService;
+import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -71,6 +73,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
         removeExcludedSuppliers(demand, suppliers);
         removeLowRatingSuppliers(demand, suppliers);
         removeAdminSuppliers(suppliers);
+        removeSupplierHimself(demand, suppliers);
 
 
         // convert to set of PotentialSupplier-s  sorted by rating
@@ -210,6 +213,29 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
             }
         });
         LOGGER.debug("action=remove_excluded_suppliers status=finish");
+    }
+
+    /**
+     * Removes supplier who created this demand through his own client role.
+     * @param demand
+     * @param suppliers
+     */
+    private void removeSupplierHimself(Demand demand, Set<Supplier> suppliers) {
+        LOGGER.debug("action=remove_admin_suppliers status=start");
+        User user = (User) demand.getClient().getBusinessUser();
+        final List<Supplier> foundSuppliers = this.supplierService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria().withEmail(user.getEmail()).build());
+        if (CollectionUtils.isEmpty(foundSuppliers)) {
+            // client who created this demand doesn't have supplier account matching this demand profile
+            return;
+        }
+
+        if (foundSuppliers.size() > 1) {
+            throw new IllegalArgumentException("One supplier with email=" + user.getEmail() + " expected, but found"
+                    + foundSuppliers.size());
+        }
+        boolean removed = suppliers.remove(foundSuppliers.get(0));
+        LOGGER.debug("action=remove_supplier_himself status=finish removed=" + removed);
     }
 
     private boolean sufficientRating(Integer supplierOveralRating, Demand demand) {
