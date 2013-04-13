@@ -1,0 +1,94 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:style>
+    </ui:style>
+
+    <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+        <g:north size="49">
+            <g:HTMLPanel>
+                <h2 class='{res.layout.toolbarHeader}'>
+                    <ui:msg key="howItWorksClients">About Us</ui:msg>
+                </h2>
+            </g:HTMLPanel>
+        </g:north>
+        <g:center>
+            <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
+                <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
+                    <g:HTMLPanel styleName='content-step first-step'>
+                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
+                        <g:Label styleName="circle-number">1</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'><ui:msg key="clientStep1">Post a Project</ui:msg></b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="clientStep11">Describe a project, demand or service you are looking for in section Post a Project</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="clientStep12">You can specify detailed information such as locality, category,  urgency, or estimated price</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step'>
+                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
+                        <g:Label styleName="circle-number">2</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block content-block-small'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'><ui:msg key="clientStep2">Professionals will receive your project</ui:msg></b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="clientStep21">Your project will be verified before contacting professionals</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="clientStep22">Professionals and companies matching your criteria will be notified about your project</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step'>
+                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
+                        <g:Label styleName="circle-number">3</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'><ui:msg key="clientStep3">Receive offers from Professionals</ui:msg></b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel><ui:msg key="clientStep31">Professionals will read your project description and create an offer for you</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel><ui:msg key="clientStep32">You will compare all offers in our system and select the best professional</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel><ui:msg key="clientStep33">Once professional finishes his work you will enter a feedback for him</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step last-step'>
+                        <g:Button><ui:msg key="placeProject">Post a Project</ui:msg></g:Button>
+                    </g:HTMLPanel>
+                </g:HTMLPanel>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
+</ui:UiBinder>

@@ -447,6 +447,18 @@ public interface LocalizableMessages extends Messages {
     String supplierStep32();
     String supplierStep33();
     String signUpNow();
+    /** 1.3 - Footer Info - FAQ */
+    String faq();
+    String faq1q();
+    String faq1r();
+    String faq2q();
+    String faq2r();
+    String faq3q();
+    String faq3r();
+    String faq4q();
+    String faq4r();
+    String faq5q();
+    String faq5r();
 
 
     /*** 2 - Home Demands module view *********************************** 2 ***/
