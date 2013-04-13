@@ -26,4 +26,6 @@ public interface IUserMenuView extends IsWidget {
     void userMenuStyleChange(int loadedModule);
 
     void setTabVisibility(int module, boolean visible);
+
+    void setSupplierButtonVerticalNoLine(boolean noLine);
 }
