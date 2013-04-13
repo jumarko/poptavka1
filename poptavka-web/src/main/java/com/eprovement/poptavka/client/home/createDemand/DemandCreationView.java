@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.github.gwtbootstrap.client.ui.FluidContainer;
 
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,21 +34,25 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
+    /** UiBinder attributes. **/
+    @UiField(provided = true) Widget footer;
     @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5;
     @UiField FluidContainer panel1, panel2;
-    @UiField SimplePanel footerHolder;
     @UiField TabLayoutPanel mainPanel;
     @UiField Button loginBtn, registerBtn;
     @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4, nextButtonTab5;
     @UiField Button backButtonTab1, backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
     @UiField HTML headerLabelTab1, headerLabelTab2, headerLabelTab3, headerLabelTab4, headerLabelTab5;
+    /** Class attributes. **/
+    private @Inject FooterView footerView;
+    private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
+        footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
         recalculateTabNumbers();
 
@@ -117,11 +123,6 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     @Override
     public SimplePanel getHolderPanel(int order) {
         return holderPanels.get(order);
-    }
-
-    @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
     }
 
     /** HEADERS. **/

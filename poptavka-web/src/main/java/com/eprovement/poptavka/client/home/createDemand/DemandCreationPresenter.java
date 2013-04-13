@@ -66,8 +66,6 @@ public class DemandCreationPresenter
 
         SimplePanel getHolderPanel(int order);
 
-        SimplePanel getFooterHolder();
-
         /** Buttons. **/
         //Comment - what's the difference in compile report if using return values: HasClickHandlers vs Button
         Button getLoginBtn();
@@ -244,7 +242,6 @@ public class DemandCreationPresenter
         LOGGER.info("DemandCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         eventBus.setBody(view.getWidgetView());
-        eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         if (Storage.getUser() == null) {
             eventBus.menuStyleChange(Constants.CREATE_DEMAND);
