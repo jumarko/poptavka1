@@ -4,6 +4,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
+import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.NumberCell;
@@ -18,6 +19,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
@@ -37,8 +39,7 @@ public class ServicesSelectorView extends Composite
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true)
-    UniversalGrid table;
+    @UiField(provided = true) UniversalGrid table;
     /** Class attributes. **/
     private ServiceDetail originalSelected;
     private ServiceDetail selected;
@@ -55,7 +56,8 @@ public class ServicesSelectorView extends Composite
 
     private void initTable() {
         /** Table initialization. **/
-        table = new UniversalGrid(ServiceDetail.KEY_PROVIDER);
+        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
+        table = new UniversalGrid<ServiceDetail>(10, resource, ServiceDetail.KEY_PROVIDER);
 
         /** Column initialization. **/
         //Radio column

@@ -237,13 +237,14 @@ body>div {
 *	Logo Styles
 *
 */
-.home-logo,.user-logo {
+.logo {
     background: url(images/logo.png) no-repeat scroll 0 0 transparent;
     height: 112px;
     position: absolute;
     top: 11px;
     width: 235px;
     z-index: 150;
+    border: 0px;
 }
 
 /*

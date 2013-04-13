@@ -9,159 +9,147 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:DockLayoutPanel unit="PX" styleName='{res.layout.fullSize}'>
-        <g:north size="53">
-            <b:Heading size='4'
-                       styleName="{res.detailViews.demandDetailSectionHeader}">
-                <ui:msg key="formDemandInfo">Demand information</ui:msg>
-            </b:Heading>
-        </g:north>
-        <g:center>
-            <g:ScrollPanel>
-                <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent}'>
-                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
-                        <b:Column size='12'>
-                            <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
-                                <ui:msg key="formCommonInfo">Common info</ui:msg>
-                            </b:Heading>
-                        </b:Column>
+    <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent}'>
+        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
+                    <ui:msg key="formCommonInfo">Common info</ui:msg>
+                </b:Heading>
+            </b:Column>
 
-                        <b:Column size='12'>
-                            <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                                <ui:msg key="formDemandTitle">Demand title</ui:msg>
-                            </g:Label>
-                            <cm:ChangeMonitor ui:field='titleMonitor'>
-                                <g:TextBox />
-                            </cm:ChangeMonitor>
-                        </b:Column>
+            <b:Column size='12'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                    <ui:msg key="formDemandTitle">Demand title</ui:msg>
+                </g:Label>
+                <cm:ChangeMonitor ui:field='titleMonitor'>
+                    <g:TextBox />
+                </cm:ChangeMonitor>
+            </b:Column>
 
-                        <b:Column size='12'>
-                            <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                                <ui:msg key="formPrice">Price:</ui:msg>
-                            </g:Label>
-                            <cm:ChangeMonitor ui:field='priceMonitor'>
-                                <cm:BigDecimalBox />
-                            </cm:ChangeMonitor>
-                            <g:Label>$</g:Label>
-                        </b:Column>
+            <b:Column size='12'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                    <ui:msg key="formPrice">Price:</ui:msg>
+                </g:Label>
+                <cm:ChangeMonitor ui:field='priceMonitor'>
+                    <cm:BigDecimalBox />
+                </cm:ChangeMonitor>
+                <g:Label>$</g:Label>
+            </b:Column>
                     
-                        <b:Column size='12'>
-                            <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                                <ui:msg key="formEndDate">End date:</ui:msg>
-                            </g:Label>
-                            <cm:ChangeMonitor ui:field='endDateMonitor'>
-                                <d:DateBox />
-                            </cm:ChangeMonitor>
-                        </b:Column>
-                        <b:Column size='12'>
-                            <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                                <ui:msg key="formUrgency">Urgency: </ui:msg>
-                            </g:Label>
-                            <cm:UrgencySelectorView ui:field="urgencySelector" />
-                        </b:Column>
-                    </b:FluidRow>
+            <b:Column size='12'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                    <ui:msg key="formEndDate">End date:</ui:msg>
+                </g:Label>
+                <cm:ChangeMonitor ui:field='endDateMonitor'>
+                    <d:DateBox />
+                </cm:ChangeMonitor>
+            </b:Column>
+            <b:Column size='12'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                    <ui:msg key="formUrgency">Urgency: </ui:msg>
+                </g:Label>
+                <cm:UrgencySelectorView ui:field="urgencySelector" />
+            </b:Column>
+        </b:FluidRow>
                     
-                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
-                        <b:Column size='12'>
-                            <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
-                                <ui:msg key="formCategories">Category info</ui:msg>
-                            </b:Heading>
-                        </b:Column>
+        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
+                    <ui:msg key="formCategories">Category info</ui:msg>
+                </b:Heading>
+            </b:Column>
                         
-                        <b:Column size='12'>
-                            <cm:ListChangeMonitor ui:field='categoriesMonitor'>
-                                <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' />
-                            </cm:ListChangeMonitor>
-                        </b:Column>
+            <b:Column size='12'>
+                <cm:ListChangeMonitor ui:field='categoriesMonitor'>
+                    <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' />
+                </cm:ListChangeMonitor>
+            </b:Column>
                         
-                        <b:Column size='12'>
-                            <b:Button ui:field="editCatBtn" type="PRIMARY">
-                                <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                            </b:Button>
-                        </b:Column>
-                    </b:FluidRow>
+            <b:Column size='12'>
+                <b:Button ui:field="editCatBtn" type="PRIMARY">
+                    <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                </b:Button>
+            </b:Column>
+        </b:FluidRow>
 
-                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
-                        <b:Column size='12'>
-                            <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
-                                <ui:msg key="formLocalities">Locality info</ui:msg>
-                            </b:Heading>
-                        </b:Column>
+        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
+                    <ui:msg key="formLocalities">Locality info</ui:msg>
+                </b:Heading>
+            </b:Column>
                         
-                        <b:Column size='12'>
-                            <cm:ListChangeMonitor ui:field='localitiesMonitor'>
-                                <c:CellList ui:field="localities" styleName='{res.detailViews.detailLocalityLabel}' />
-                            </cm:ListChangeMonitor>
-                        </b:Column>
+            <b:Column size='12'>
+                <cm:ListChangeMonitor ui:field='localitiesMonitor'>
+                    <c:CellList ui:field="localities" styleName='{res.detailViews.detailLocalityLabel}' />
+                </cm:ListChangeMonitor>
+            </b:Column>
                         
-                        <b:Column size='12'>
-                            <b:Button ui:field="editLocBtn" type="PRIMARY">
-                                <ui:msg key="commonBtnEdit">Edit    </ui:msg>
-                            </b:Button>
-                        </b:Column>
-                    </b:FluidRow>
+            <b:Column size='12'>
+                <b:Button ui:field="editLocBtn" type="PRIMARY">
+                    <ui:msg key="commonBtnEdit">Edit    </ui:msg>
+                </b:Button>
+            </b:Column>
+        </b:FluidRow>
 
-                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
-                        <b:Column size='12'>
-                            <b:Heading size='5'
+        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5'
                                        styleName='{res.detailViews.detailHeader}'>
-                                <ui:msg key="formDetailInfo">Detail info: </ui:msg>
-                            </b:Heading>
-                        </b:Column>
+                    <ui:msg key="formDetailInfo">Detail info: </ui:msg>
+                </b:Heading>
+            </b:Column>
 
-                        <b:Column size='12'>
-                            <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                                <ui:msg key="formMaxSuppliers">Maximal number of suppliers:</ui:msg>
-                            </g:Label>
-                        </b:Column>
+            <b:Column size='12'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                    <ui:msg key="formMaxSuppliers">Maximal number of suppliers:</ui:msg>
+                </g:Label>
+            </b:Column>
                         
-                        <b:Column size='12'>
-                            <cm:ChangeMonitor ui:field='maxOffersMonitor'>
-                                <cm:MyIntegerBox />
-                            </cm:ChangeMonitor>
-                        </b:Column>
+            <b:Column size='12'>
+                <cm:ChangeMonitor ui:field='maxOffersMonitor'>
+                    <cm:MyIntegerBox />
+                </cm:ChangeMonitor>
+            </b:Column>
 
-                        <b:Column size='12'>
-                            <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                                <ui:msg key="formMinSupplierRating">Minimal supplier rating: </ui:msg>
-                            </g:Label>
-                        </b:Column>
+            <b:Column size='12'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                    <ui:msg key="formMinSupplierRating">Minimal supplier rating: </ui:msg>
+                </g:Label>
+            </b:Column>
                         
-                        <b:Column size='12'>
-                            <cm:ChangeMonitor ui:field='minRatingMonitor'>
-                                <cm:MyIntegerBox />
-                            </cm:ChangeMonitor>
-                            <g:Label>%</g:Label>
-                        </b:Column>
-                    </b:FluidRow>
+            <b:Column size='12'>
+                <cm:ChangeMonitor ui:field='minRatingMonitor'>
+                    <cm:MyIntegerBox />
+                </cm:ChangeMonitor>
+                <g:Label>%</g:Label>
+            </b:Column>
+        </b:FluidRow>
 
-                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
-                        <b:Column size='12'>
-                            <b:Heading size='5'
+        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5'
                                        styleName='{res.detailViews.detailHeader}'>
-                                <ui:msg key="formDescription">Description: </ui:msg>
-                            </b:Heading>
-                        </b:Column>
+                    <ui:msg key="formDescription">Description: </ui:msg>
+                </b:Heading>
+            </b:Column>
                         
-                        <b:Column size='12'>
-                            <cm:ChangeMonitor ui:field='descriptionMonitor'>
-                                <g:TextArea />
-                            </cm:ChangeMonitor>
-                        </b:Column>
-                    </b:FluidRow>
+            <b:Column size='12'>
+                <cm:ChangeMonitor ui:field='descriptionMonitor'>
+                    <g:TextArea />
+                </cm:ChangeMonitor>
+            </b:Column>
+        </b:FluidRow>
 
-                    <b:FluidRow ui:field="editButtonsPanel" addStyleNames='{res.detailViews.detailBlock}'>
-                        <b:Column size='12'>
-                            <b:Button ui:field="submitButton" type="PRIMARY" icon="SAVE">
-                                <ui:msg key="commonBtnSubmit">Submit</ui:msg>
-                            </b:Button>
-                            <b:Button ui:field="cancelButton" type="PRIMARY" icon="REMOVE">
-                                <ui:msg key="commonBtnCancel">Cancel</ui:msg>
-                            </b:Button>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:FluidContainer>                    
-            </g:ScrollPanel>
-        </g:center>
-    </g:DockLayoutPanel>
+        <b:FluidRow ui:field="editButtonsPanel" addStyleNames='{res.detailViews.detailBlock}'>
+            <b:Column size='12'>
+                <b:Button ui:field="submitButton" type="PRIMARY" icon="SAVE">
+                    <ui:msg key="commonBtnSubmit">Submit</ui:msg>
+                </b:Button>
+                <b:Button ui:field="cancelButton" type="PRIMARY" icon="REMOVE">
+                    <ui:msg key="commonBtnCancel">Cancel</ui:msg>
+                </b:Button>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>                    
 </ui:UiBinder>

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root.interfaces;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface IRootView extends IsWidget {
@@ -7,7 +8,7 @@ public interface IRootView extends IsWidget {
     public interface IRootPresenter {
     }
 
-    void setLogoStyle(String style);
+    Button getLogo();
 
     void setHeader(IsWidget header);
 

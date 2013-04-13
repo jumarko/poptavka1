@@ -11,19 +11,26 @@ import com.eprovement.poptavka.client.common.search.SearchModuleView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
+import com.google.gwt.user.client.ui.Button;
 
 public class RootView extends ReverseCompositeView<IRootPresenter> implements
         IRootView {
 
     private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
-    @UiField
-    SimplePanel logo, header, body, menu, searchBar;
 
     interface RootViewUiBinder extends UiBinder<Widget, RootView> {
     }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField SimplePanel header, body, menu, searchBar;
+    @UiField Button logo;
 
+    /**************************************************************************/
+    /* Initialization                                                                */
+    /**************************************************************************/
     public RootView() {
-
         initWidget(uiBinder.createAndBindUi(this));
         /* Tato metoda, zaisti, ze sa nacíta CSS styl. Bez nej by sa styl nahral az pri prepnuti do
          * dalsieho modulu.
@@ -33,6 +40,17 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
 
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    @Override
+    public Button getLogo() {
+        return logo;
+    }
+
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
     @Override
     public void setMenu(IsWidget menu) {
         GWT.log("Menu widget view set");
@@ -59,11 +77,6 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         GWT.log("Header widget view set");
         this.header.setWidget(header);
 
-    }
-
-    @Override
-    public void setLogoStyle(String style) {
-        this.logo.setStyleName(style);
     }
 
     /**

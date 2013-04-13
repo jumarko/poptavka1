@@ -29,7 +29,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -79,8 +79,8 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true) CellTree cellTree;
     @UiField(provided = true) UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField(provided = true) UniversalPagerWidget pager;
+    @UiField DockLayoutPanel detailPanel;
     @UiField Label reklama, filterLabel;
-    @UiField HTMLPanel detail;
     @UiField UserDetailView userDetailView;
     @UiField Button contactBtn;
     @UiField SimplePanel footerHolder;
@@ -109,8 +109,6 @@ public class HomeSuppliersView extends OverflowComposite
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
 
-        reklama.setVisible(true);
-        detail.setVisible(false);
         LOGGER.info("CreateView pre DisplaySuppliers");
 
         StyleResource.INSTANCE.layout().ensureInjected();
@@ -246,7 +244,7 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public void displaySuppliersDetail(FullSupplierDetail fullSupplierDetail) {
         reklama.setVisible(false);
-        detail.setVisible(true);
+        detailPanel.setVisible(true);
 
         userDetailView.setSupplierDetail(fullSupplierDetail);
     }
@@ -254,7 +252,7 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public void hideSuppliersDetail() {
         reklama.setVisible(true);
-        detail.setVisible(false);
+        detailPanel.setVisible(false);
     }
 
     /** Buttons. **/

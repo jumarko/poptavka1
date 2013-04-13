@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -104,6 +105,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     private String title;
     @NotNull(message = "{demandNotNullPrice}")
     @Min(value = 0, message = "{demandMinPrice}")
+    @Digits(integer = 100000000, fraction = 0, message = "{demandDigitsPrice}")
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")
     @Future(message = "{demandFutureEndDate}")

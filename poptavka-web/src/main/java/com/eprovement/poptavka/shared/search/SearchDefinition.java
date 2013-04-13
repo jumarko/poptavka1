@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.search;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.SerializableHashMap;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.HashMap;
 
@@ -14,7 +15,7 @@ public class SearchDefinition implements IsSerializable {
     private int firstResult = -1;
     private int maxResult = -1;
     private SearchModuleDataHolder filter = null;
-    private HashMap<String, OrderType> orderColumns = null;
+    private SerializableHashMap<String, OrderType> orderColumns = null;
 
     public SearchDefinition() {
     }
@@ -24,7 +25,7 @@ public class SearchDefinition implements IsSerializable {
     }
 
     public SearchDefinition(int start, int maxResult, SearchModuleDataHolder filter,
-            HashMap<String, OrderType> orderColumns) {
+            SerializableHashMap<String, OrderType> orderColumns) {
         this.firstResult = start;
         this.maxResult = maxResult;
         this.filter = filter;
@@ -59,7 +60,7 @@ public class SearchDefinition implements IsSerializable {
         return orderColumns;
     }
 
-    public void setOrderColumns(HashMap<String, OrderType> orderColumns) {
+    public void setOrderColumns(SerializableHashMap<String, OrderType> orderColumns) {
         this.orderColumns = orderColumns;
     }
 }

@@ -27,6 +27,7 @@ import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -99,6 +100,8 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     // Others
     @UiField
+    DockLayoutPanel detailPanel;
+    @UiField
     Label bannerLabel, filterLabel;
     @UiField
     DemandDetailView demandDetail;
@@ -119,8 +122,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
 
-        bannerLabel.setVisible(true);
-        demandDetail.setVisible(false);
         // set offerBtn1 enabled to false as default
         offerBtn.setEnabled(false);
 
@@ -288,7 +289,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     @Override
     public void displayDemandDetail(FullDemandDetail fullDemandDetail) {
         bannerLabel.setVisible(false);
-        demandDetail.setVisible(true);
+        detailPanel.setVisible(true);
 
         demandDetail.setDemanDetail(fullDemandDetail);
     }
@@ -296,6 +297,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     @Override
     public void hideDemandDetail() {
         bannerLabel.setVisible(true);
-        demandDetail.setVisible(false);
+        detailPanel.setVisible(false);
     }
 }

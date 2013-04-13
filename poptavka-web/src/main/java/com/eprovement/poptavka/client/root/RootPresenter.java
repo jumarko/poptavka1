@@ -149,12 +149,10 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         GWT.log("User has logged in and his user data are about to be retrieved");
         showDevelUserInfoPopupThatShouldBedeletedAfter();
         // notify all components that user has logged in
-        view.setLogoStyle(Storage.RSCS.layout().userLogo());
     }
 
     public void onAtHome() {
         // notify all components that user has logged out
-        view.setLogoStyle(Storage.RSCS.layout().homeLogo());
     }
 
     /**************************************************************************/
@@ -201,6 +199,20 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         if (loading != null) {
             loading.hide();
         }
+    }
+
+    /**************************************************************************/
+    /* Bind UI events                                                         */
+    /**************************************************************************/
+    @Override
+    public void bind() {
+        view.getLogo().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeWelcomeModule();
+            }
+        });
     }
 
     /**************************************************************************/

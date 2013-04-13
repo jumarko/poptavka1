@@ -64,10 +64,21 @@
                                 </g:DockLayoutPanel>
                             </b:Column>
                             <b:Column size="5">
-                                <g:HTMLPanel ui:field="detail" styleName='{res.layout.detailInfo}'>
+                                <g:HTMLPanel styleName='{res.layout.detailInfo}'>
                                     <g:Label ui:field="reklama">Reklama</g:Label>
-                                    <d:UserDetailView ui:field="userDetailView" />
                                 </g:HTMLPanel>
+                                <g:DockLayoutPanel ui:field="detailPanel" unit="PX" styleName='{res.layout.fullSize}' visible="false">
+                                    <g:north size="53">
+                                        <b:Heading size='4' styleName="{res.detailViews.demandDetailSectionHeader}">
+                                            <ui:msg key="formDemandInfo">Demand information</ui:msg>
+                                        </b:Heading>
+                                    </g:north>
+                                    <g:center>
+                                        <g:ScrollPanel>
+                                            <d:UserDetailView ui:field="userDetailView" />
+                                        </g:ScrollPanel>
+                                    </g:center>
+                                </g:DockLayoutPanel>
                             </b:Column>
                         </b:FluidRow>
                     </b:FluidContainer>
