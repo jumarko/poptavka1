@@ -6,12 +6,12 @@
              type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:style>
     </ui:style>
-        
+
     <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
         <g:north size="49">
             <g:HTMLPanel>
                 <h2 class='{res.layout.toolbarHeader}'>
-                    How it works for demand
+                    How it works for Clients
                 </h2>
             </g:HTMLPanel>
         </g:north>
@@ -25,23 +25,20 @@
                     <g:HTMLPanel styleName='content-block'>
                         <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
                         <g:HTMLPanel styleName='content-block-center'>
-                            <b:Heading size='4'>Praesent sed sem eget dolor sollicitudin commodo.</b:Heading>
+                            <b:Heading size='4'>Post a Project</b:Heading>
                             <b:FluidContainer>
                                 <b:FluidRow>
-                                    <b:Column size="4">
-                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel>Describe a project, demand or service you are looking for in section Post a Project</g:HTMLPanel>
                                     </b:Column>
-                                    <b:Column size="4">
-                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
-                                    </b:Column>
-                                    <b:Column size="4">
-                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel>You can specify detailed information such as locality, category,  urgency, or estimated price</g:HTMLPanel>
                                     </b:Column>
                                 </b:FluidRow>
                             </b:FluidContainer>
-                        </g:HTMLPanel>                        
-                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>    
-                    </g:HTMLPanel>    
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
+                    </g:HTMLPanel>
                     <g:HTMLPanel styleName='content-step'>
                         <g:Label styleName="circle-label">step</g:Label>
                         <g:Label styleName="circle-number">2</g:Label>
@@ -49,19 +46,19 @@
                     <g:HTMLPanel styleName='content-block content-block-small'>
                         <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
                         <g:HTMLPanel styleName='content-block-center'>
-                            <b:Heading size='4'>Praesent sed sem eget dolor sollicitudin commodo.</b:Heading>
+                            <b:Heading size='4'>Professionals will receive your project</b:Heading>
                             <b:FluidContainer>
                                 <b:FluidRow>
                                     <b:Column size="6">
-                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                        <g:HTMLPanel>Your project will be verified before contacting professionals</g:HTMLPanel>
                                     </b:Column>
                                     <b:Column size="6">
-                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                        <g:HTMLPanel>Professionals and companies matching your criteria will be notified about your project</g:HTMLPanel>
                                     </b:Column>
                                 </b:FluidRow>
                             </b:FluidContainer>
-                        </g:HTMLPanel>                        
-                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>    
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
                     </g:HTMLPanel>
                     <g:HTMLPanel styleName='content-step'>
                         <g:Label styleName="circle-label">step</g:Label>
@@ -70,22 +67,25 @@
                     <g:HTMLPanel styleName='content-block'>
                         <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
                         <g:HTMLPanel styleName='content-block-center'>
-                            <b:Heading size='4'>Praesent sed sem eget dolor sollicitudin commodo.</b:Heading>
+                            <b:Heading size='4'>Receive offers from Professionals</b:Heading>
                             <b:FluidContainer>
                                 <b:FluidRow>
-                                    <b:Column size="6">
-                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel>Professionals will read your project description and create an offer for you</g:HTMLPanel>
                                     </b:Column>
-                                    <b:Column size="6">
-                                        <g:HTMLPanel>Aliquam placerat feugiat quam, ullamcorper dapibus quam ultrices</g:HTMLPanel>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel>You will compare all offers in our system and select the best professional</g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel>Once professional finishes his work you will enter a feedback for him</g:HTMLPanel>
                                     </b:Column>
                                 </b:FluidRow>
                             </b:FluidContainer>
-                        </g:HTMLPanel>                        
-                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>    
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
                     </g:HTMLPanel>
                     <g:HTMLPanel styleName='content-step last-step'>
-                        <g:Button>create demand</g:Button>
+                        <g:Button>Post a Project</g:Button>
                     </g:HTMLPanel>
                 </g:HTMLPanel>
             </g:ScrollPanel>
