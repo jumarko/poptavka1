@@ -13,6 +13,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.messages.tab.MessageListPresenter;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -29,7 +30,7 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = MessagesPresenter.class)
+    @Event(handlers = MessagesPresenter.class, bind = FooterPresenter.class)
     void start();
 
     /**

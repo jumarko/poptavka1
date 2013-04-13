@@ -7,6 +7,7 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -26,7 +27,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
      * First event to be handled.
      */
     @Start
-    @Event(handlers = HomeWelcomePresenter.class)
+    @Event(handlers = HomeWelcomePresenter.class, bind = FooterPresenter.class)
     void start();
 
     /**

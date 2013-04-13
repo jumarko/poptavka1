@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.celltree.CustomCellTree;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
@@ -31,10 +32,10 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 import com.mvp4g.client.view.ReverseViewInterface;
 import java.util.Arrays;
 import java.util.List;
@@ -71,28 +72,27 @@ public class HomeSuppliersView extends OverflowComposite
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    //Table constants
-    private static final String ADDRESS_COL_WIDTH = "120px";
-    private static final String LOGO_COL_WIDTH = "70px";
-    //
-    private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     @UiField(provided = true) CellTree cellTree;
     @UiField(provided = true) UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField(provided = true) UniversalPagerWidget pager;
+    @UiField(provided = true) Widget footer;
     @UiField DockLayoutPanel detailPanel;
     @UiField Label reklama, filterLabel;
     @UiField UserDetailView userDetailView;
     @UiField Button contactBtn;
-    @UiField SimplePanel footerHolder;
+    /** Class Attributes. **/
+    private @Inject FooterView footerView;
+    private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
     private List<String> gridColumns = Arrays.asList(
             new String[]{
                 "", "businessUser.businessUserData.companyName", "overalRating", "businessUser.address.city"
             });
-    /**
-     * The key provider that provides the unique ID of a FullSupplierDetail.
-     */
+    /** Constants. **/
+    private static final String ADDRESS_COL_WIDTH = "120px";
+    private static final String LOGO_COL_WIDTH = "70px";
+    /** The key provider that provides the unique ID of a FullSupplierDetail. */
     private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
         @Override
         public Object getKey(FullSupplierDetail item) {
@@ -105,6 +105,8 @@ public class HomeSuppliersView extends OverflowComposite
     /**************************************************************************/
     @Override
     public void createView() {
+        footer = footerView;
+
         initTableAndPager();
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
@@ -262,11 +264,6 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     /** Other. **/
-    @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
-    }
-
     @Override
     public Widget getWidgetView() {
         return this;

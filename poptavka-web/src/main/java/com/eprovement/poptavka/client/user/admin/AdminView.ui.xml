@@ -99,7 +99,7 @@
                     </b:FluidRow>
                     <b:FluidRow>
                         <b:Column size="12">
-                            <g:SimplePanel ui:field="footerHolder"/>
+                            <g:Widget ui:field="footer"/>
                         </b:Column>
                     </b:FluidRow>
                 </b:FluidContainer>

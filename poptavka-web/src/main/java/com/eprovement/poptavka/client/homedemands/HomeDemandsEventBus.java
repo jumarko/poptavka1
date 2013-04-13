@@ -8,6 +8,7 @@ package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.homesuppliers.TreeItem;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -35,7 +36,7 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = HomeDemandsPresenter.class)
+    @Event(handlers = HomeDemandsPresenter.class, bind = FooterPresenter.class)
     void start();
 
     /**

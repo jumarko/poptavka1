@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import java.util.logging.Logger;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.resources.StyleResource;
+import com.google.inject.Inject;
 
 public class AdminView extends OverflowComposite implements AdminPresenter.AdminModuleInterface {
 
@@ -18,10 +19,14 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
 
     interface AdminModuleViewUiBinder extends UiBinder<Widget, AdminView> {
     }
-    private static final Logger LOGGER = Logger.getLogger(AdminView.class.getName());
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField(provided = true) Widget footer;
     @UiField SimplePanel contentPanel;
     @UiField Button newDemandsBtn;
-    @UiField SimplePanel footerHolder;
     //TODO LATER Martin - finnish admin interface for other tables
     //Temporary initialzie manually because in uiBinder are those buttons commented
     Button demandsButton = new Button();
@@ -37,13 +42,22 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     Button preferencesButton = new Button();
     Button problemsButton = new Button();
     //ourPaymentDetailsButton,
+    /** Class attributes. **/
+    private @Inject FooterView footerView;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
+        footer = footerView;
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**************************************************************************/
+    /* Getters & Setters                                                      */
+    /**************************************************************************/
     @Override
     public Widget getWidgetView() {
         return this;
@@ -126,10 +140,5 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     @Override
     public SimplePanel getContentPanel() {
         return contentPanel;
-    }
-
-    @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
     }
 }

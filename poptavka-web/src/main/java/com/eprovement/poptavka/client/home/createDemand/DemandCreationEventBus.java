@@ -7,6 +7,7 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -34,7 +35,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = DemandCreationPresenter.class)
+    @Event(handlers = DemandCreationPresenter.class, bind = FooterPresenter.class)
     void start();
 
     /**

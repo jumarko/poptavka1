@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -9,6 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 public class ClientDemandsModuleView extends Composite
         implements ClientDemandsModulePresenter.ClientDemandsLayoutInterface {
@@ -21,14 +23,19 @@ public class ClientDemandsModuleView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField SimplePanel contentPanel, footerHolder;
+    /** UiBinder attribute. **/
+    @UiField(provided = true) Widget footer;
+    @UiField SimplePanel contentPanel;
     @UiField Button clientNewDemands, clientOffers, clientAssignedDemands, clientClosedDemands, clientRatings;
+    /** Class attributes. **/
+    private @Inject FooterView footerView;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
+        footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -145,11 +152,6 @@ public class ClientDemandsModuleView extends Composite
     @Override
     public SimplePanel getContentPanel() {
         return contentPanel;
-    }
-
-    @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
     }
 
     @Override

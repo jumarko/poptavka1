@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
@@ -59,7 +60,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = AdminPresenter.class)
+    @Event(handlers = AdminPresenter.class, bind = FooterPresenter.class)
     void start();
 
     /**
