@@ -1,18 +1,19 @@
 package com.eprovement.poptavka.client.root.footer;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IFooterView;
 import com.eprovement.poptavka.client.root.interfaces.IFooterView.IFooterPresenter;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.Date;
 
 @Presenter(view = FooterView.class)
-public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
+public class FooterPresenter extends BasePresenter<IFooterView, EventBusWithLookup>
         implements IFooterPresenter {
 
     @Override
@@ -21,7 +22,7 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
+                ((BaseChildEventBus) eventBus).sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
             }
         });
     }

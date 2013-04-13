@@ -16,11 +16,11 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
-import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.client.presenter.LazyPresenter;
 import java.util.ArrayList;
 
 @Presenter(view = HomeWelcomeView.class)
-public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements
+public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements
         IHomeWelcomePresenter, NavigationConfirmationInterface {
 
     //columns number of root chategories in parent widget
@@ -40,7 +40,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     }
 
     public void onForward() {
-        eventBus.setFooter(view.getFooterHolder());
         eventBus.setUpSearchBar(null);
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
         view.getCategorySelectionModel().clear();
@@ -59,7 +58,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         /** ANCHOR. **/
         addSuppliersBtnClickHandler();
         addDemandsBtnClickHandler();
