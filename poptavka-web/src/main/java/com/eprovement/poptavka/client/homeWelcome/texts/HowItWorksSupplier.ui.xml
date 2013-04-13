@@ -7,11 +7,88 @@
     <ui:style>
     </ui:style>
 
-    <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
-        <g:HTMLPanel>
-            <h2 class='{res.layout.toolbarHeader}'>
-                How it works for supplier.
-            </h2>
-        </g:HTMLPanel>
-    </g:ScrollPanel>
+    <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+        <g:north size="49">
+            <g:HTMLPanel>
+                <h2 class='{res.layout.toolbarHeader}'>
+                    <ui:msg key="howItWorksProfessionals">How it works for Professionals</ui:msg>
+                </h2>
+            </g:HTMLPanel>
+        </g:north>
+        <g:center>
+            <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
+                <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
+                    <g:HTMLPanel styleName='content-step first-step'>
+                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
+                        <g:Label styleName="circle-number">1</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'><ui:msg key="supplierStep1">Sign up as Professional or Company</ui:msg></b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="supplierStep11">You don't need to look for new customers now. We will notify you about every business opportunity matching your profile</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="supplierStep12">Fill in your contact information, categories of your interest and U.S. localities where you can work</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step'>
+                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
+                        <g:Label styleName="circle-number">2</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block content-block-small'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'><ui:msg key="supplierStep2">Receive projects matching your profile</ui:msg></b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="supplierStep21">Based on your selected profession categories you will receive every single project posted by Clients</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="6">
+                                        <g:HTMLPanel><ui:msg key="supplierStep22">You can contact Client or send him your offer immediately through our system</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step'>
+                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
+                        <g:Label styleName="circle-number">3</g:Label>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-block'>
+                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-center'>
+                            <b:Heading size='4'><ui:msg key="supplierStep3">Start working and get new reference</ui:msg></b:Heading>
+                            <b:FluidContainer>
+                                <b:FluidRow>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel><ui:msg key="supplierStep31">If Client approves your offer you can start working on the project</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel><ui:msg key="supplierStep32">Once you finish your work you will be asked to enter feedback for Client</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="4">
+                                        <g:HTMLPanel><ui:msg key="supplierStep33">Client will confirm finished project and provide you with adequate feedback</ui:msg></g:HTMLPanel>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName='content-step last-step'>
+                        <g:Button><ui:msg key="signUpNow">Sign up now</ui:msg></g:Button>
+                    </g:HTMLPanel>
+                </g:HTMLPanel>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

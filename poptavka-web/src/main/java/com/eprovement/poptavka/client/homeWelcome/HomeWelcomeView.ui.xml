@@ -136,7 +136,7 @@
         background: #d9cda1;
         border-radius: 0 0 5px 5px;
         }
-        
+
         .footer-container {
         background: none;
         float: left;
@@ -155,53 +155,56 @@
             us an email</g:Button> <g:Button styleName="{style.important}" ui:field="button"
             /> </g:HTMLPanel> -->
             <g:HTMLPanel styleName="{style.banner1}">
-                <b:Heading size="4" styleName="{style.header}">Jsem
-                    Dodavatel
+                <b:Heading size="4" styleName="{style.header}">
+                    <ui:msg key="iamProfessional">I''m Professional</ui:msg>
                 </b:Heading>
-                <g:Label styleName="{style.subheader}">a hledám nové zákazky!</g:Label>
+                <g:Label styleName="{style.subheader}">
+                    <ui:msg key="iamProfessionalNext">looking for new business!</ui:msg>
+                </g:Label>
                 <g:Label styleName="{style.banner-content}">
-                    Je težké hledat nové zakázky.
-                    U nás jsou stovky poptávek na jednom
-                    místě. Nechte
-                    zákazníky, aby vás oslovily.
+                    <ui:msg key="iamProfessionalDesc">
+                        Are you looking for new business opportunities?
+                        We are providing hundreds of projects on one site.
+                        Let the Clients contact you easily.
+                    </ui:msg>
                 </g:Label>
                 <g:Button ui:field="suppliersBtn"
                           addStyleNames="{style.banner-link} {style.banner-link1-position}">
-                    Katalog dodavatelů
+                    <ui:msg key="allProfessionals">All Professionals</ui:msg>
                 </g:Button>
                 <g:Button ui:field="howItWorksSupplierBtn"
                           addStyleNames="{style.banner-link} {style.banner-link2-position}">
-                    Jak to funguje?
+                    <ui:msg key="howItWorks">How it works?</ui:msg>
                 </g:Button>
                 <g:Button ui:field="registerSupplierBtn"
                           addStyleNames="{style.banner-button}">
-                    Registrovat dodavatele
+                    <ui:msg key="signUpAsPro">Sign up as Professional</ui:msg>
                 </g:Button>
             </g:HTMLPanel>
             <g:HTMLPanel styleName="{style.banner2}">
-                <b:Heading size="4" styleName="{style.header}">Zadat
-                    Poptávku
+                <b:Heading size="4" styleName="{style.header}">
+                    <ui:msg key="placeProject">Place Project</ui:msg>
                 </b:Heading>
-                <g:Label styleName="{style.subheader}">a oslovit profíky v
-                    oboru!
+                <g:Label styleName="{style.subheader}">
+                    <ui:msg key="placeProjectNext">and find Professionals now</ui:msg>
                 </g:Label>
                 <g:Label styleName="{style.banner-content}">
-                    Najděte vhodného dodavatele
-                    pro Vaši poptávku ZDARMA. Máme více
-                    jak: 169 087
-                    prověřených dodavatelů
+                    <ui:msg key="placeProjectDesc">
+                        Is there anything you need to get done?
+                        Find suitable Professionals online and save your time and money.
+                    </ui:msg>
                 </g:Label>
                 <g:Button ui:field="demandsBtn"
                           addStyleNames="{style.banner-link} {style.banner-link1-position}">
-                    Katalog poptávek
+                    <ui:msg key="allProjects">All Projects</ui:msg>
                 </g:Button>
                 <g:Button ui:field="howItWorksDemandBtn"
                           addStyleNames="{style.banner-link} {style.banner-link2-position}">
-                    Jak to funguje?
+                    <ui:msg key="howItWorks">How it works?</ui:msg>
                 </g:Button>
                 <g:Button ui:field="registerDemandBtn"
                           addStyleNames="{style.banner-button}">
-                    Registrovat poptávku
+                    <ui:msg key="placeProjects">Place Project</ui:msg>
                 </g:Button>
             </g:HTMLPanel>
             <g:HTMLPanel styleName="{style.banner3}"></g:HTMLPanel>

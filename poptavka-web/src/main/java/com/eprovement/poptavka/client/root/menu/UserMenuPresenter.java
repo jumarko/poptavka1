@@ -48,6 +48,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
                 view.setTabVisibility(Constants.CREATE_SUPPLIER, false);
                 view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
                 view.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
+                view.setSupplierButtonVerticalNoLine(true);
                 /* CLIENT TAB */
             } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.CLIENT)) {
@@ -60,6 +61,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
                 view.setTabVisibility(Constants.CREATE_SUPPLIER, true);
                 view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
                 view.userMenuStyleChange(Constants.USER_CLIENT_MODULE);
+                view.setSupplierButtonVerticalNoLine(false);
             }
         }
         eventBus.setMenu(view);

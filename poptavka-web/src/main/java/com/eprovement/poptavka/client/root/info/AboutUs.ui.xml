@@ -11,7 +11,7 @@
         <g:north size="49">
             <g:HTMLPanel>
                 <h2 class='{res.layout.toolbarHeader}'>
-                    <ui:msg key="howItWorksClients">How it works for Clients</ui:msg>
+                    <ui:msg key="howItWorksClients">About Us</ui:msg>
                 </h2>
             </g:HTMLPanel>
         </g:north>

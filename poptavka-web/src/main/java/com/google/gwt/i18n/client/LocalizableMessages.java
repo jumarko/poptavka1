@@ -410,6 +410,56 @@ public interface LocalizableMessages extends Messages {
     String addressZipCode();
 
     /*** 1 - Home Welcome module view *********************************** 1 ***/
+    String iamProfessional();
+    String iamProfessionalNext();
+    String iamProfessionalDesc();
+    String allProfessionals();
+    String howItWorks();
+    String signUpAsPro();
+    String placeProject();
+    String placeProjectNext();
+    String placeProjectDesc();
+    String allProjects();
+    String placeProjects();
+    /** 1.1 - How it works for clients */
+    String howItWorksClients();
+    String step();
+    String clientStep1();
+    String clientStep11();
+    String clientStep12();
+    String clientStep2();
+    String clientStep21();
+    String clientStep22();
+    String clientStep3();
+    String clientStep31();
+    String clientStep32();
+    String clientStep33();
+    /** 1.2 - How it works for clients */
+    String howItWorksProfessionals();
+    String supplierStep1();
+    String supplierStep11();
+    String supplierStep12();
+    String supplierStep2();
+    String supplierStep21();
+    String supplierStep22();
+    String supplierStep3();
+    String supplierStep31();
+    String supplierStep32();
+    String supplierStep33();
+    String signUpNow();
+    /** 1.3 - Footer Info - FAQ */
+    String faq();
+    String faq1q();
+    String faq1r();
+    String faq2q();
+    String faq2r();
+    String faq3q();
+    String faq3r();
+    String faq4q();
+    String faq4r();
+    String faq5q();
+    String faq5r();
+
 
     /*** 2 - Home Demands module view *********************************** 2 ***/
     /** HomeDemandsView.ui. **/
@@ -476,7 +526,7 @@ public interface LocalizableMessages extends Messages {
     String searchResultInfoLabel();
 
     /** SearchModuleView.ui. **/
-    String searchBtnAdvance();
+    String searchBtnAdvanced();
     String searchBtnSearch();
     String searchContent();
     String searchMenuDemand();

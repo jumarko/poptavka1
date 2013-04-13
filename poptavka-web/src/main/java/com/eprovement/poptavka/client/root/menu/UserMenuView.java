@@ -249,4 +249,13 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
                 break;
         }
     }
+
+    @Override
+    public void setSupplierButtonVerticalNoLine(boolean noLine) {
+        if (noLine) {
+            suppliers.setStyleName("button8");
+        } else {
+            suppliers.setStyleName("button4");
+        }
+    }
 }

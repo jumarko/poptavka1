@@ -32,7 +32,7 @@ public class OfferMessageDetail extends MessageDetail {
     /**************************************************************************/
     private long supplierId;
     @NotBlank(message = "{messageNotBlankBody}")
-    @Size(min = 10, message = "{messageSizeBody}")
+    @Size(min = 2, message = "{messageSizeBody}")
     private String body;
     @NotNull(message = "{messageNotNullPrice}")
     @Min(value = 0, message = "{messageMinPrice}")
