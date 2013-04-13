@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -9,6 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 public class SupplierDemandsModuleView extends Composite
         implements SupplierDemandsModulePresenter.SupplierDemandsLayoutInterface {
@@ -20,14 +22,19 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
-    @UiField SimplePanel contentPanel, footerHolder;
+    /** UiBinder attributes. **/
+    @UiField(provided = true) Widget footer;
+    @UiField SimplePanel contentPanel;
     @UiField Button supplierDemands, supplierOffers, supplierAssignedDemands, supplierClosedDemands, supplierRatings;
+    /** Class attributes. **/
+    private @Inject FooterView footerView;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
+        footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -148,11 +155,6 @@ public class SupplierDemandsModuleView extends Composite
     @Override
     public Button getSupplierRatingsButton() {
         return supplierRatings;
-    }
-
-    @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
     }
 
     @Override
