@@ -73,7 +73,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
         removeExcludedSuppliers(demand, suppliers);
         removeLowRatingSuppliers(demand, suppliers);
         removeAdminSuppliers(suppliers);
-        removeSupplierHimself(demand, suppliers);
+//        removeSupplierHimself(demand, suppliers);
 
 
         // convert to set of PotentialSupplier-s  sorted by rating
