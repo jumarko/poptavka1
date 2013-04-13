@@ -35,6 +35,7 @@ public final class Constants {
     /* Common Contants                                                        */
     /**************************************************************************/
     public static final int NONE = 0;
+    public static final int SKIP = -99;
 
     /**************************************************************************/
     /* Module Views Contants                                                  */
