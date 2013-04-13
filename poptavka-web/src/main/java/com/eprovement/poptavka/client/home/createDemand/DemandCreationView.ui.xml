@@ -18,14 +18,14 @@
     <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
         <g:center>
             <g:TabLayoutPanel ui:field='mainPanel' stylePrimaryName='{res.createTabPanel.createTabPanel}'
-                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='80'>
+                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='70'>
                 <!--1 -->
                 <g:tab>
                     <g:customHeader size="30">
                         <g:HTML ui:field="headerLabelTab1" addStyleNames="{style.tabIndex5} customHeader">
                             <ui:msg key="demandCreationTab1">Contact Info</ui:msg>
                         </g:HTML>
-                    </g:customHeader>                        
+                    </g:customHeader>
                     <g:ScrollPanel>
                         <g:HTMLPanel>
                             <b:FluidContainer ui:field="panel1">
@@ -49,17 +49,7 @@
                                     </b:Column>
                                 </b:FluidRow>                                    
                             </b:FluidContainer>
-                            <b:FluidContainer ui:field="panel2" styleName='{res.layout.fullSize}'>
-                                <b:FluidRow>
-                                    <b:Column size="12">
-                                        <g:Label styleName='infoLabel2'>
-                                            <ui:msg key="clientCreationInfoLabel12">
-                                                Please fill in your Account Information, company information if
-                                                applicable, address and description of your business activities
-                                            </ui:msg>
-                                        </g:Label>
-                                    </b:Column>
-                                </b:FluidRow>
+                            <b:FluidContainer ui:field="panel2" styleName='{res.layout.fullSize}'>                                
                                 <b:FluidRow>                                    
                                     <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>                                    
                                 </b:FluidRow>
@@ -97,14 +87,7 @@
                         </g:HTML>
                     </g:customHeader>
                     <g:ScrollPanel>
-                        <g:HTMLPanel>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label styleName='infoLabel2'>
-                                        <ui:msg key="clientCreationInfoLabel2">Fill basic demand information to continue.</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>                            
+                        <g:HTMLPanel>                            
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
@@ -137,15 +120,6 @@
                     </g:customHeader>
                     <g:ScrollPanel>
                         <g:HTMLPanel>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label styleName='infoLabel2'>
-                                        <ui:msg key="clientCreationInfoLabel3">Select the most suitable category. The more accurate category the more
-                                            relevant suppliers will contact you.
-                                        </ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
@@ -193,13 +167,6 @@
                     <g:ScrollPanel>
                         <g:HTMLPanel>
                             <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label styleName='infoLabel2'>
-                                        <ui:msg key="clientCreationInfoLabel4">Select your Locality.</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>                        
-                            <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
                             <b:FluidRow>
@@ -245,13 +212,6 @@
                     </g:customHeader>
                     <g:ScrollPanel>
                         <g:HTMLPanel>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label styleName='infoLabel2'>
-                                        <ui:msg key="clientCreationInfoLabel5">Fill advance demand information to continue.</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>                        
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>

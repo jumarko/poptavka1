@@ -106,7 +106,7 @@
             </g:tab>
             <g:tab>
                 <g:customHeader size="10">
-                    <g:Label ui:field="currentViewAttributesLabel">
+                    <g:Label ui:field="currentViewAttributesLabel" styleName=''>
                         <ui:msg key="advSearchCurrentViewTab">Current's table attributes</ui:msg>
                     </g:Label>
                 </g:customHeader>

@@ -46,7 +46,8 @@
                 <g:north size="65">
                     <g:HTMLPanel styleName='{res.layout.toolbarItemsBlock}'>
                         <g:Button ui:field="contactBtn"
-                                  styleName='{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}'>
+                                  styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>
+                            <img src="images/messages-reply-icon.png"/>
                             <ui:msg key="homeSuppliersContactBtn">Contact</ui:msg>
                         </g:Button>
                         <s:UniversalPagerWidget ui:field="pager" />

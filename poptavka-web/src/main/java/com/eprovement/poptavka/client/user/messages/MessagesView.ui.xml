@@ -8,7 +8,7 @@
 
     <g:DockLayoutPanel unit="PX"
                        styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
-        <g:west size="240">
+        <g:west size="220">
             <g:DockLayoutPanel unit="PX">
                 <g:north size="49">
                     <g:HTMLPanel>

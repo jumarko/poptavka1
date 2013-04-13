@@ -13,8 +13,8 @@
         <g:HTMLPanel>
             <!-- Message composition content -->
             <b:FluidContainer ui:field="messageBody" visible="false">
-                <b:FluidRow styleName="{res.detailViews.messageContainer}">
-                    <b:Column size="12">
+                <b:FluidRow>
+                    <b:Column size="12" styleName="{res.detailViews.messageContainer}">
                         <b:FluidRow>                        
                             <b:Column size="12">
                                 <cm:ValidationMonitor ui:field="bodyMonitor">
@@ -48,8 +48,8 @@
                         </b:FluidRow>
                     </b:Column>
                 </b:FluidRow>
-                <g:HTMLPanel addStyleNames="{res.detailViews.messageButtonsContainer}">
-                    <b:Column size="12">
+                <b:FluidRow>
+                    <b:Column size="12" addStyleNames="{res.detailViews.messageButtonsContainer}">
                         <g:Button ui:field="submitBtn" styleName='{res.detailViews.replyButton}'>                            
                             <img src="images/messages-submit-icon.png"/>
                             <ui:msg key="commonBtnSubmit">Submit</ui:msg>                            
@@ -58,7 +58,7 @@
                             <ui:msg key="commonBtnClose">Close</ui:msg>
                         </g:Button>
                     </b:Column>
-                </g:HTMLPanel>
+                </b:FluidRow>
             </b:FluidContainer>
             <g:HTMLPanel ui:field="messagePanel" addStyleNames='{res.detailViews.conversationDetail}'>
                 <g:HTMLPanel styleName='{res.detailViews.conversationLeftBlock}'>

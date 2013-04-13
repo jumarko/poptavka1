@@ -72,7 +72,8 @@
 
 .detail-block .gwt-Label {
     color: #6f6b59;
-    line-height: 30px;
+    line-height: 20px;
+    float: left;
 }
 
 .detail-strong {
@@ -93,6 +94,7 @@
     padding: 0 0 0 24px;
     color: #6f6b59;
     font-weight: bold;
+    float: left;
 }
 
 .detail-category-label,.detail-locality-label div div {
@@ -136,6 +138,7 @@
     border-top: 1px solid #f2efe7;
     padding: 20px 30px;
     cursor: pointer;
+    min-height: 40px;
 }
 
 .conversation-detail-green, .conversation-detail-red {
@@ -177,12 +180,13 @@
 /* messages */
 .message-container {
     margin: 0;
-    padding: 20px 30px; 
+    padding: 20px 30px 0;
 }
 
 .message-container .conversation-input {
     border: 1px solid #d2c9a9;
     background: #f8f4e4;
+    margin: 0;
 }
 
 .message-container .conversation-input:focus {
@@ -197,10 +201,9 @@
 .message-buttons-container {    
     cursor: pointer;
     cursor: hand;
-    border-radius: 5px;
-    display: block;
-    float: left;
+    border-radius: 5px;    
     padding: 10px 7px 10px 29px;
+    min-height: 50px;
     -webkit-box-top-left-radius: 7px;
     -webkit-box-top-right-radius: 7px;
     -moz-border-topleft-radius: 7px;

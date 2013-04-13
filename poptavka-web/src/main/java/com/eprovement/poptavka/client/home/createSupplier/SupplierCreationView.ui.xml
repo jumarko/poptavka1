@@ -19,7 +19,7 @@
     <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
         <g:center>           
             <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.fourStepTabPanel}' 
-                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='80'>
+                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='70'>
                 <!--1-->
                 <g:tab>
                     <g:customHeader size="30">
@@ -30,14 +30,6 @@
                     </g:customHeader>
                     <g:ScrollPanel>
                         <g:HTMLPanel>
-                            <b:FluidRow>
-                                <g:Label styleName='infoLabel2'>
-                                    <ui:msg key="supplierCreationInfoLabel1">
-                                        Please fill in your account Information: your company information if applicable, your address and 
-                                        description of your activities you want to offer to potential customers
-                                    </ui:msg>
-                                </g:Label>
-                            </b:FluidRow>
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
@@ -73,15 +65,6 @@
                     </g:customHeader>
                     <g:ScrollPanel>
                         <g:HTMLPanel>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label styleName='infoLabel2'>
-                                        <ui:msg key="supplierCreationInfoLabel2">
-                                            Select the most suitable categories so that we can notify you when new project/demand has been posted.
-                                        </ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>                            
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
@@ -130,13 +113,6 @@
                     <g:ScrollPanel>
                         <g:HTMLPanel>
                             <b:FluidRow>
-                                <g:Label styleName='infoLabel2'>
-                                    <ui:msg key="supplierCreationInfoLabel3">
-                                        Select the most suitable localities so that we can notify you when new project/demand has been posted in your preferred localities.
-                                    </ui:msg>
-                                </g:Label>
-                            </b:FluidRow>
-                            <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
                             <b:FluidRow>
@@ -181,15 +157,6 @@
                     </g:customHeader>
                     <g:ScrollPanel>                   
                         <g:HTMLPanel>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label styleName='infoLabel2'>
-                                        <ui:msg key="supplierCreationInfoLabel4">
-                                            Select service you are interested in.
-                                        </ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>

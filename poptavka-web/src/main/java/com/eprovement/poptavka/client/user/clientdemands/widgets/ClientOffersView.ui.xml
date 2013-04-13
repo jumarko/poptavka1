@@ -8,20 +8,6 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <ui:style>
-        .button {
-        background: url(images/new-offer-green.png) no-repeat;
-        padding: 0 0 1px 23px;
-        border: none;
-        color: #FFFFFF;
-        font-weight: bold;
-        height: 31px;
-        width: 119px;
-        float: left;
-        }
-
-    </ui:style>
-
     <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
         <g:west size="20">
             <g:HTMLPanel></g:HTMLPanel>
@@ -29,22 +15,23 @@
         <g:north size="65">
             <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
                 <g:HorizontalPanel ui:field="demandHeader">
-                    <g:Label>
+                    <g:Label styleName='hide'>
                         <ui:msg key="clientOffersTableTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
                     </g:Label>
                     <s:UniversalPagerWidget ui:field='demandPager' />
                 </g:HorizontalPanel>
                 <g:HorizontalPanel ui:field="offerHeader">
-                    <g:Button ui:field="backBtn">
+                    <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}'>
                         <ui:msg key="clientOffersBackBtn">Spat na vsetky poptavky s ponukami</ui:msg>
                     </g:Button>
-                    <g:Label ui:field="demandTableNameLabel" />
+                    <g:Label ui:field="demandTableNameLabel" styleName='hide'/>
                 </g:HorizontalPanel>
                 <g:HorizontalPanel ui:field="offerToolBar">
-                    <g:Button ui:field="acceptBtn" styleName='{style.button}'>
+                    <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>
+                        <img src="images/button-cross-icon.png"/>
                         <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
                     </g:Button>
-                    <g:Label ui:field="offerTableNameLabel" />
+                    <g:Label ui:field="offerTableNameLabel" styleName='hide'/>
                     <g:SimplePanel ui:field="actionBox" visible="false" />
                     <s:UniversalPagerWidget ui:field='offerPager' />
                 </g:HorizontalPanel>
