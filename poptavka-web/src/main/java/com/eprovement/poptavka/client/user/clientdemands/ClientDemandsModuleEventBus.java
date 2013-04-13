@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsWelcomePresenter;
@@ -41,7 +42,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
      * First event to be handled.
      */
     @Start
-    @Event(handlers = ClientDemandsModulePresenter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class, bind = FooterPresenter.class)
     void start();
 
     /**
