@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.resources.StyleResource;
 
 import com.google.gwt.core.client.GWT;
@@ -28,6 +29,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,10 +47,11 @@ public class SupplierCreationView extends OverflowComposite
     /* Attributes                                                             */
     /**************************************************************************/
     /** Class attributes. **/
+    private @Inject FooterView footerView;
     private List<SimplePanel> holderPanels;
     /** UiBinder attributes. **/
+    @UiField(provided = true) Widget footer;
     @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4;
-    @UiField SimplePanel footerHolder;
     @UiField TabLayoutPanel mainPanel;
     @UiField HorizontalPanel agreementPanel;
     @UiField CheckBox agreedCheck;
@@ -61,6 +64,8 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     @Override
     public void createView() {
+        footer = footerView;
+
         initWidget(uiBinder.createAndBindUi(this));
 
         /** filling panels list **/
@@ -106,11 +111,6 @@ public class SupplierCreationView extends OverflowComposite
     @Override
     public SimplePanel getHolderPanel(int order) {
         return holderPanels.get(order);
-    }
-
-    @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
     }
 
     /** BUTTONS. **/
