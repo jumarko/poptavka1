@@ -1204,7 +1204,7 @@ a,a:visited,a:hover {
 }
 
 .gwt-DatePicker {
-    border: 1px solid #A2BBDD;
+    border: 1px solid #8a8267;
     cursor: default;
 }
 
@@ -1225,13 +1225,13 @@ a,a:visited,a:hover {
 }
 
 .datePickerWeekdayLabel,.datePickerWeekendLabel {
-    background: #C3D9FF;
+    background: #f1ecda;
     padding: 0px 4px 2px;
     cursor: default;
 }
 
 .datePickerDay {
-    padding: 4px;
+    padding: 7px;
     cursor: hand;
     cursor: pointer;
 }
@@ -1267,7 +1267,7 @@ a,a:visited,a:hover {
 }
 
 .datePickerMonthSelector {
-    background: #C3D9FF;
+    background: #CECBBE;
     width: 100%;
 }
 
@@ -1277,13 +1277,14 @@ td.datePickerMonth {
     white-space: nowrap;
     font-size: 70%;
     font-weight: bold;
-    color: blue;
+    color: #51492e;
+    height: 20px;
 }
 
 .datePickerPreviousButton,.datePickerNextButton {
     font-size: 120%;
     line-height: 1em;
-    color: blue;
+    color: #6f6b59;
     cursor: hand;
     cursor: pointer;
     padding: 0px 4px;
