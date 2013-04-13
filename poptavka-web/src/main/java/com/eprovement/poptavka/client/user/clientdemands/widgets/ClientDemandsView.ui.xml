@@ -16,10 +16,10 @@
             <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
                 <!--Edit demand func buttons-->
                 <g:HTMLPanel ui:field="choiceButtonsPanel" visible="false">
-                    <b:Button ui:field="editDemandButton" type="PRIMARY" icon="EDIT">
+                    <b:Button ui:field="editDemandButton" styleName='{res.common.toolbarButtonGrey}'>
                         <ui:msg key="commonBtnEdit">Edit</ui:msg>
                     </b:Button>
-                    <b:Button ui:field="deleteDemandButton" type="PRIMARY" icon="TRASH">
+                    <b:Button ui:field="deleteDemandButton" styleName='{res.common.toolbarButtonGrey}'>
                         <ui:msg key="commonBtnDelete">Delete</ui:msg>
                     </b:Button>
                 </g:HTMLPanel>

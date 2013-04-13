@@ -80,6 +80,9 @@ public interface CommonResource extends CssResource {
     @ClassName("toolbar-button-back")
     String toolbarButtonBack();
 
+    @ClassName("toolbar-menubar")
+    String toolbarMenubar();
+
     @ClassName("selected-items-widget")
     String selectedItemsWidget();
 

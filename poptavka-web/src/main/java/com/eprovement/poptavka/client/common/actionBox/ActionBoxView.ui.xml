@@ -8,7 +8,7 @@
         <g:MenuItem>
             <ui:msg key="commonListDefault">Action</ui:msg>
             <img src="images/button-dropdown-icon.png"/>
-            <g:MenuBar vertical="true">
+            <g:MenuBar vertical="true" styleName='{res.common.toolbarMenubar} action-button'>
                 <g:MenuItem ui:field="actionRead">
                     <ui:msg key="commonListRead">read</ui:msg>
                 </g:MenuItem>

@@ -214,12 +214,15 @@ button.button-green {
     font-size: 16px;
     font-weight: normal;
     height: 34px;
-    line-height: 36px;
+    line-height: 34px;
     margin: 0 7px 0 0;
     cursor: pointer;
     border-radius: 5px 5px 5px 5px;
 }
 
+a.toolbar-button-grey {
+    padding: 0 15px;
+}
 .toolbar-button-grey:hover {
     color: #ffffff;
     box-shadow: 0 0 5px #bbbbbb;
@@ -228,7 +231,7 @@ button.button-green {
 
 .toolbar-button-grey .gwt-MenuItem {
     color: #ffffff;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
     height: 34px;
     line-height: 34px;
@@ -270,6 +273,44 @@ button.button-green {
     height: 36px;
     margin: 0 5px 0 0;
     width: 52px;
+}
+
+/* menuBar styles */
+.toolbar-menubar.action-button {
+    width: 93px;
+}
+
+.toolbar-menubar.pager-button {
+    width: 48px;
+}
+
+.toolbar-menubar {
+    background: #ffffff;
+    border: 1px solid #C2C8D2;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 0 3px #DDDDDD;
+    line-height: 20px;
+    margin: 3px 0 0 -9px;
+    width: 93px;
+}
+
+.toolbar-menubar table {
+    width: 100%;
+}
+
+.toolbar-menubar tr:first-child td {
+    border-top: none;
+}
+
+.toolbar-menubar td {
+    width: 100%;
+    border-top: 1px solid #DADADA;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.toolbar-menubar td:hover {
+    color: #bd0000;    
 }
 
 /* CellBrowser selected item styles  */

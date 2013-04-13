@@ -88,6 +88,8 @@
                     </g:Label>
                     <g:HTMLPanel styleName="input-append">
                         <cm:MyDateBox placeholder="{msgs.formFrom}" styleName="{style.dateBox} append-date" ui:field="finnishDateFrom" />
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName="input-append">
                         <cm:MyDateBox placeholder="{msgs.formTo}" styleName="{style.dateBox} append-date" ui:field="finnishDateTo" />
                     </g:HTMLPanel>
                 </b:Column>

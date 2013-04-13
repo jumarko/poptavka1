@@ -9,9 +9,9 @@
 
     <ui:style>
     .category-cell {
-    margin: 0 7px;
+    margin: 0 6px;
     float: left;
-    width: 310px;
+    width: 313px;
     height: 37px;
     display: block;
     border-radius: 4px;
@@ -58,7 +58,7 @@
 
     </ui:style>
 
-    <div class='{res.detailViews.conversationLeftBlock} {style.category-cell}'>
+    <div class='{style.category-cell}'>
         <!--<span class='{pull-left}'>-->
         <span class='{style.category-name}'>
             <ui:text from='{catName}' />

@@ -74,11 +74,11 @@ public class LoginPopupView extends Composite
 
         public PrivateUser(BusinessRole role) {
             if (role == BusinessRole.CLIENT) {
-                name = "webgres@gmail.com";
+                name = "M8R-7w4je5@mailinator.com";
                 pass = "123123";
             }
             if (role == BusinessRole.SUPPLIER) {
-                name = "pras3xer@gmail.com";
+                name = "M8R-d1h10w@mailinator.com";
                 pass = "123123";
             }
             if (role == BusinessRole.ADMIN) {
