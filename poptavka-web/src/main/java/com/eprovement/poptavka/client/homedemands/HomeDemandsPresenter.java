@@ -19,7 +19,6 @@ import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -73,8 +72,6 @@ public class HomeDemandsPresenter
         Button getOfferBtn();
 
         //Other
-        SimplePanel getFooterHolder();
-
         Widget getWidgetView();
     }
     /**************************************************************************/
@@ -145,7 +142,6 @@ public class HomeDemandsPresenter
         } else {
             eventBus.userMenuStyleChange(Constants.HOME_DEMANDS_MODULE);
         }
-        eventBus.setFooter(view.getFooterHolder());
     }
 
     @Override

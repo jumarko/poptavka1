@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
@@ -29,9 +30,9 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 import com.mvp4g.client.view.ReverseViewInterface;
 import java.util.Arrays;
 import java.util.Date;
@@ -74,40 +75,28 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     public HomeDemandsPresenter getPresenter() {
         return homeDemandsPresenter;
     }
-    /**
-     * ***********************************************************************
-     */
-    /* ATTRIBUTES */
-    /**
-     * ***********************************************************************
-     */
-    // Table constants
-    private static final String LOCALITY_COL_WIDTH = "150px";
-    // Table definitions
-    @UiField(provided = true)
-    UniversalAsyncGrid<FullDemandDetail> dataGrid;
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField(provided = true) UniversalAsyncGrid<FullDemandDetail> dataGrid;
+    @UiField(provided = true) UniversalPagerWidget pager;
+    @UiField(provided = true) CellTree cellTree;
+    // Others
+    @UiField(provided = true) Widget footer;
+    @UiField DockLayoutPanel detailPanel;
+    @UiField Label bannerLabel, filterLabel;
+    @UiField DemandDetailView demandDetail;
+    @UiField Button offerBtn;
+    /** Class attributes. **/
     private List<String> gridColumns = Arrays.asList(new String[]{"createdDate", "title", "locality", "endDate"});
-    // Pager
-    @UiField(provided = true)
-    UniversalPagerWidget pager;
-    // CellTree
-    @UiField(provided = true)
-    CellTree cellTree;
     // Using category detail key provider in selection model, allow us to have
-    // displayed
-    // alwas only one node. The other are automaticaly closed.
+    // displayed alwas only one node. The other are automaticaly closed.
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
-    // Others
-    @UiField
-    DockLayoutPanel detailPanel;
-    @UiField
-    Label bannerLabel, filterLabel;
-    @UiField
-    DemandDetailView demandDetail;
-    @UiField
-    Button offerBtn;
-    @UiField SimplePanel footerHolder;
+    private @Inject FooterView footerView;
+    /** Constants. **/
+    private static final String LOCALITY_COL_WIDTH = "150px";
 
     /**
      * ***********************************************************************
@@ -118,6 +107,8 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
      */
     @Override
     public void createView() {
+        footer = footerView;
+
         initTableAndPager();
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
@@ -269,11 +260,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     /**
      * Other. *
      */
-    @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
-    }
-
     @Override
     public Widget getWidgetView() {
         return this;
