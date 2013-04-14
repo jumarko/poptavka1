@@ -305,7 +305,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
         errorPanel.setVisible(!isValid);
         errorLabel.setText(validationMessage);
         if (isValid) {
-            if (!isModified()) {
+            if (!enabled || !isModified()) {
                 controlGroup.setType(ControlGroupType.NONE);
             }
         } else {
