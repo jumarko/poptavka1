@@ -9,4 +9,7 @@ public interface IFooterView extends IsWidget {
     }
 
     Button getContactUs();
+    Button getAboutUs();
+    Button getFAQ();
+    Button getPrivacyPolicy();
 }

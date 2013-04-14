@@ -136,6 +136,10 @@ public class SupplierCreationView extends OverflowComposite
         contentPanel.add(closeButton, "button");
         panel.setWidget(contentPanel);
         panel.setWidth("580px");
+        panel.setAnimationEnabled(true);
+        panel.setAutoHideEnabled(true);
+        panel.setGlassEnabled(true);
+
 
         closeButton.addClickHandler(new ClickHandler() {
             @Override

@@ -1,95 +1,33 @@
-<h1>1. Smluvní strany</h1>
-<h3>B2M.CZ, s.r.o.</h3>
-    Se sídlem Šafránkova 3, 155 00, Praha 5<br />
-    IČ: 27455971<br />
-    DIČ: CZ27455971<br />
-    číslo účtu: 2366499001/5500 <br />
+<h3>1. Contracting Parties</h3>
+<br />eProvement, s.r.o.
+<br />Address: Kubelíkova 1224/42, Prague - Žižkov 130 00,
+<br />IČ: 24164054
+<br />DIČ: CZ24164054
+<br />bank account:
+<br />IBAN: CZ4820100000002100183667
+<br />SWIFT: FIOBCZPPXXX
+<br />(further stated as „Provider“)
+<h4>Professional</h4>
+For the purpose of this Terms and Conditions the Professional is every subject which orders one of paid tariffs providing access to Client projects and their contacts on Want-Something.com (further stated as "Professional")
+<h4>Client</h4>
+For the purpose of this Terms and Conditions the Client is every subject which posted a project on Want-Something.com with the aim of finding suitable Professional that will provide required product or service in order to satisfy Client's demand.
+<h3>2. Service Description</h3>
+<h4>2.1 Distribution of posted project by email</h4>
+Service Want-Something.com provides access to projects posted by Clients to all registered Professionals. Project is defined as any requirement from Client with the aim of finding suitable Professional that is able to deliver required products, services or projects. Want-Something.com validates all posted projects and subsequently distributes these projects to registered Professionals together with Client contact so that both parties can start their co-operation.
+<h4>2.1.2 Registration</h4>
+Registration of Professional can be done via online form accessible in Sign Up section.
+<h4>2.1.2 Service Functionality</h4>
+By registration of Professional on Want-Something.com the Professional will get access to all Client contacts which posted a project within categories matching the Professional's profile.
+Professional will receive suitable projects on his email address immediately after the posted project has been validated by Want-Something.com. Projects can be send only to one email address. Part of Professional's registration is adding Professional profile into online catalogue.
+<h4>2.1.3 Service Duration</h4>
+The service is started instantly after Professional registration.
 
-    Jsme plátci daně DPH.<br />
-    Zapsáni pod spisovou značkou C 113637<br />
-<i>(dále jen „Poskytovatel“)</i><br />
-<br />
-<h3>Objednavatel</h3>
-Pro účely těchto obchodních podmínek se rozumí objednavatelem každý subjekt, který má přidělené identifkační číslo v ČR a který si objedná jeden z placených tarifů - přístupu ke kontaktům na zadavatele poptávek v systému ePoptavka.cz.
-<i>(dále jen „Objednavatel“)</i><br />
-<h1>2. Popis služby</h1>
-<h3>2.1 Zasílání obchodních poptávek do emailu</h3>
+<h3>3. Service Termination</h3>
+<h4>3.1 Service Provider</h4>
+Service provider can terminate the contract if Professional's behavior is in contrary with this Terms and Conditions, good manners, violates the interest of third parties, provider of Want-Something.com, spreading Want-Something.com data without any written consent, sharing his login credentials, misuses Client contacts. When Professionals violates these conditions Want-Something.com has the right to terminate the contract and remove Professional from our database without any financial compensation.
 
-    <p>Služba www.ePoptavka.cz slouží ke zprostředkování obchodních poptávek pro registrované dodavatele. Poptávkou se rozumí odeslaný strukturovaný požadavek od poptávajícího s cílem najít vhodného dodavatele zboží a služeb. Služba provádí kontrolu a rozeslání odpovídajících poptávek na vybrané registrované dodavatele a zpřístupňuje kontakty za účelem navázání spolupráce. Službu provozuje společnost B2M.CZ, s.r.o.
-    </p>
-
-<h3>2.1.2 Provedení registrace</h3>
-    <p>Registraci může objednavatel provést prostřednictvím webového formuláře, dostupného na adrese <a href="http://www.epoptavka.cz/index.php?action=registrationsuplier">http://www.epoptavka.cz/index.php?action=registrationsuplier</a>. Registraci může provést také telefonicky po poskytnutí všech potřebných údajů. Registrace do systému ePoptavka.cz je závazná (telefonicky, přes elektronický formulář, e-mailem).
-    </p>
-
-<h4>2.1.2 Funkčnost služby</h4>
-    <p>Registrací na serveru ePoptávka.cz získá objednavatel přístup ke kontaktům na zadavatele všech poptávek v oborových kategoriích systému ePoptávka.cz. Přihlašovací jméno a heslo je zasíláno na vyžádání po uhrazení faktury a přístup je omezen počtem 30 zobrazených kontaktů v rámci jednoho přihlášení. Jedno přihlášení je možné pouze z jednoho počítače (tj. z jedné IP adresy) a rozumí se jím lhůta 72 hodin. Prohlížeč uživatele musí podporovat cookies.
-    </p>
-
-    <p>Objednavateli budou zasílány poptávky z vybraných oborů přímo na uvedený e-mail ihned po jejich zveřejnění. Poptávky lze zasílat pouze na jednu e-mailovou adresu. Z realizovaných obchodů neplatí poskytovateli žádnou provizi. Součástí registrace je i zařazení do katalogu dodavatelů a do katalogu firem sítě B2M. Poptávky jsou zasílány ze 3 oborů s možností rozšíření na max. 10 oborů (za poplatek).
-    </p>
-
-<h4>2.1.3 Trvání služby</h4>
-    <p>Trvání služby je zahájeno ihned po zpracování objednávky (max. do 3 pracovních dnů od objednání). Zároveň je zaslána faktura, která je splatná ihned. Uskutečněním platby se rozumí připsání platby na účet provozovatele, maximálně do 14 dní po odeslání faktury. Při neuhrazení v době splatnosti faktury mohou být firemní údaje předány třetí straně a to pouze za účelem vynucení platby. Služba je ukončena dle zvoleného tarifu za 3, 6 nebo 12 měsíců.
-    </p>
-    <p>Součástí služby pro tarif Profi je program „Garance služby“. Program zahrnuje:</p>
-<ul>
-<li>Počet zveřejněných poptávek (vztahuje se na obor, který byl při registraci vybrán - seznam je uveden na www.epoptavka.cz/garance/ - pokud vybrán nebyl, je nastaven automaticky administrátorem). </li>
-<li>Kvalitu zaslaných poptávek (rozumí se pravdivost a ověření poptávek ze strany poskytovatele služby). Ověřením poptávky se rozumí telefonický kontakt se zákazníkem a jeho potvrzení zadaných kontaktních údajů včetně popisu poptávky (vyčerpávající popis poptávky je určen znalostí zákazníka). </li>
-
-<li>Stejný nebo nižší prodlužovací poplatek oproti ceně registrace nového objednavatele. </li>
-</ul>
-<br />
-<h3>2.2 Poptávky od veřejných subjektů a veřejné zakázky</h3>
-    <p>
-Služba Poptávky od veřejných subjektů a veřejné zakázky slouží ke zprostředkování kontaktů a podrobných informací o poptávkách od veřejných subjektů a veřejných zakázkách pro registrované dodavatele. Poptávkou od veřejných subjektů a veřejnou zakázkou se rozumí strukturovaný požadavek od veřejné a státní instituce z České republiky a Evropské unie s cílem najít vhodného dodavatele zboží a služeb. Služba provádí rozeslání odpovídajících poptávek od veřejných subjektů a veřejných zakázek na vybrané registrované dodavatele a zpřístupňuje kontakty za účelem navázání spolupráce na www.ePoptavka.cz. Službu provozuje společnost B2M.CZ, s.r.o.
-    </p>
-
-<h4>2.2.1 Provedení registrace</h4>
-    <p>
-    Registraci může objednavatel provést prostřednictvím webového formuláře, dostupného na adrese <a href="http://www.epoptavka.cz/index.php?action=registrationsuplier">http://www.epoptavka.cz/index.php?action=registrationsuplier</a>. Registraci může provést také telefonicky po poskytnutí všech potřebných údajů. Registrace do systému ePoptavka.cz je závazná (telefonicky, přes elektronický formulář, e-mailem).
-    </p>
-
-<h4>2.2.2 Funkčnost služby</h4>
-    <p>
-    Registrací na serveru ePoptávka.cz získá objednavatel přístup ke kontaktům na zadavatele všech poptávek od veřejných subjektů a veřejných zakázek v systému ePoptávka.cz. Přihlašovací jméno a heslo je zasíláno na vyžádání po uhrazení faktury a přístup je omezen počtem 50 zobrazených kontaktů v rámci jednoho přihlášení. Jedno přihlášení je možné pouze z jednoho počítače (tj. z jedné IP adresy) a rozumí se jím lhůta 72 hodin. Prohlížeč uživatele musí podporovat cookies.
-    </p>
-    <p>
-    Objednavateli budou zasílány poptávky od veřejných subjektů a veřejné zakázky z vybraných oborů přímo na uvedený e-mail v intervalu, který si vybere ve svém profilu v systému ePoptávka.cz. Poptávky od veřejných subjektů a veřejné zakázky lze zasílat pouze na jednu e-mailovou adresu. Z realizovaných obchodů neplatí poskytovateli žádnou provizi. Součástí registrace je i zařazení do katalogu dodavatelů a do katalogu firem sítě B2M.CZ. Poptávky od veřejných subjektů a veřejné zakázky jsou zasílány z vybraných oborů, které lze během trvání služby měnit.
-    </p>
-
-<h4>2.2.3 Trvání služby</h4>
-    <p>
-
-    Trvání služby je zahájeno ihned po zpracování objednávky (max. do 3 pracovních dnů od objednání). Zároveň je zaslána faktura, která je splatná ihned. Uskutečněním platby se rozumí připsání platby na účet provozovatele, maximálně do 14 dní po odeslání faktury. Při neuhrazení v době splatnosti faktury mohou být firemní údaje předány třetí straně a to pouze za účelem vynucení platby. Služba je ukončena za 12 měsíců.
-    </p>
-
-<h1>3. Odstoupení od smlouvy</h1>
-<h3>3.1	Poskytovatel služby</h3>
-    <p>Poskytovatel služby může odstoupit od smlouvy, pokud je jednání objednavatele v rozporu s těmito obchodními podmínkami, dobrými mravy, porušuje zájmy třetích osob, provozovatele serveru, šíří obsah poptávek jakýmkoli způsobem bez souhlasu provozovatele, šíří své přístupové kódy do systému, zasílá nevyžádaná obchodní sdělení nebo nabídku služeb nesouvisejících s obsahem poptávky (nevyžádanou nabídku), zneužívá získaných kontaktů k podvodnému podnikání (k páchání trestné činnosti). Při nedodržení těchto povinností si poskytovatel vyhrazuje právo na odstoupení od smlouvy a odhlášení objednavatele ze systému, bez jakéhokoli finančního vyrovnání.</p>
-
-<h3>3.2 Objednavatel</h3>
-    <p>Pokud má objednavatel registrovanou službu zasílání obchodních poptávek, může odstoupit od smlouvy, pokud poskytovatel poruší některou z výše uvedených garancí pro tarif Profi a to následujícím způsobem:</p>
-
-<ul>
-<li>V případě ukončení služby a nedodržení počtu zveřejněných poptávek je povinen informovat poskytovatele na e-mailovou adresu info@epoptavka.cz a požadovat potvrzení o přijetí. </li>
-<li>V případě získání poptávky s nepravdivými informacemi kontaktovat poskytovatele na e-mailovou adresu info@epoptavka.cz a požadovat potvrzení o přijetí a to nejpozději do 30 dnů od odeslání poptávky jež garanci porušila. </li>
-<li>V případě nedodržení ceny při prodloužení služby informovat poskytovatele na e-mailovou adresu info@epoptavka.cz a požadovat potvrzení o přijetí.  </li>
-</ul>
-        <p>Poskytovatel má povinnost do 30 dnů od podání této stížnosti registrovaného dodavatele informovat o výsledku. V případě, že bude reklamace oprávněná, má poskytovatel povinnost vrátit část registračního poplatku (v poměrné hodnotě ve vztahu k celkovému počtu zaslaných poptávek nebo rozdíl ceny v případě porušení cenové garance) a to při ukončení služby.</p>
-
-
-<h1>4. Ochrana osobních údajů</h1>
-    <p>Poskytovatel služby shromažďuje se souhlasem objednavatele jeho osobní údaje, zejména jméno a příjmení, adresu, kontaktní údaje, název společnosti. Objednavatel dále souhlasí s tím, že poskytnuté údaje se automaticky objeví a zveřejní v katalozích dodavatelů provozovaných firmou B2M.cz, s.r.o..  Výše uvedené údaje slouží pro zprostředkování obchodních poptávek, poptávek od veřejných subjektů a veřejných zakázek mezi objednavateli a poptávajícími. </p>
-
-    <p>Poskytovatel služby má právo zasílat objednavateli e-mailem, prostřednictvím SMS a telefonicky obchodní sdělení s novinkami, akčními nabídkami, inzercí, apod. Objednavatel má právo odhlásit se ze zasílání obchodních sdělení na výše uvedených kontaktech nebo odpovědí na obchodní sdělení, které bylo zasláno e-mailem.</p>
-    <p>Po vypršení platnosti registrace objednavatele v systému www.epoptavka.cz má poskytovatel právo uchovávat jeho kontaktní údaje pro své interní potřeby, pokud dodavatel nepožádá o jejich výmaz.</p>
-    <p>Poskytovatel služby předává osobní údaje objednavatele pouze za účelem zprostředkování obchodních poptávek, poptávek od veřejných subjektů a veřejných zakázek.</p>
-    <p>Uchovávané osobní údaje může objednavatel nebo poptávající kdykoli změnit ve svém zákaznickém profilu nebo prostřednictvím výše uvedených kontaktů.</p>
-
-<h1>5. Závěrečná ustanovení</h1>
-    <p>Provozovatel neposkytuje záruku nepřetržité funkčnosti systému, bezchybného provozu a zabezpečení systému. Registrací firmy je vyjádřen bezpodmínečný souhlas s uvedenými podmínkami. Další vztahy a náležitosti, stejně jako obsah registrace, nesmí být v rozporu s obecně platnými zákony a souvisejícími předpisy. </p>
-
-    <p>Předmětem těchto obchodních podmínek je úprava smluvních vztahů mezi Poskytovatelem a Objednavatelem při poskytování služby - přístupu ke kontaktům na zadavatele poptávek, poptávek od veřejných subjektů a veřejných zakázek v systému ePoptavka.cz. </p>
-    <p>Smluvní vztah založený na těchto obchodních podmínkách vzniká mezi Objednavatelem a Poskytovatelem okamžikem schválení řádně učiněné objednávky. Odesláním objednávky Objednavatel strvzuje, že s těmito obchodními podmínkami souhlasí.</p>
-    <p>Tyto podmínky nabývají platnosti jejich zveřejněním. Společnost B2M.CZ, s.r.o. si vyhrazuje právo Obchodní podmínky měnit. Změnu a její účinnost společnost zveřejní vhodným způsobem na internetových stránkách www.epoptavka.cz. </p>
+<h3>4. Final Arrangements</h3>
+Want-Something.com doesn't provide the guaranty of continual website operation, flawless operation and system security. By registration of Professional or Client the user agrees with all former conditions.
+The subject of this Terms and Conditions is to adjust the contractual relationship between registered user and provider of Want-Something.com portal.
+The contractual relationship becomes valid as soon as Professional finishes his registration.
+This Terms and Conditions become valid by publishing and Want-Something.com has the right to change Terms and Conditions anytime. Every change will be properly displayed on Want-Something.com portal.
