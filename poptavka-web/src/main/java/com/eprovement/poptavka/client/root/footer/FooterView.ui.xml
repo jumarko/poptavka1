@@ -42,7 +42,7 @@
             </g:Label>
         </g:HTMLPanel>
         <g:HTMLPanel styleName=''>
-            <g:Button styleName='{style.footerButton}'>
+            <g:Button ui:field="termsAndConditions" styleName='{style.footerButton}'>
                 <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
             </g:Button>
             <div class='{style.separator}'>|</div>
@@ -50,8 +50,16 @@
                 <ui:msg key='footerContactUs'>Contact us</ui:msg>
             </g:Button>
             <div class='{style.separator}'>|</div>
-            <g:Button styleName='{style.footerButton}'>
+            <g:Button ui:field="aboutUs" styleName='{style.footerButton}'>
                 <ui:msg key='footerAboutUs'>About us</ui:msg>
+            </g:Button>
+            <div class='{style.separator}'>|</div>
+            <g:Button ui:field="faq" styleName='{style.footerButton}'>
+                <ui:msg key='faq'>FAQ</ui:msg>
+            </g:Button>
+            <div class='{style.separator}'>|</div>
+            <g:Button ui:field="privacyPolicy" styleName='{style.footerButton}'>
+                <ui:msg key='privacyPolicy'>Privacy Policy</ui:msg>
             </g:Button>
         </g:HTMLPanel>
     </g:HTMLPanel>

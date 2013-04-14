@@ -11,82 +11,29 @@
         <g:north size="49">
             <g:HTMLPanel>
                 <h2 class='{res.layout.toolbarHeader}'>
-                    <ui:msg key="howItWorksClients">About Us</ui:msg>
+                    About Want-Something.com
                 </h2>
             </g:HTMLPanel>
         </g:north>
         <g:center>
             <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
                 <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
-                    <g:HTMLPanel styleName='content-step first-step'>
-                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
-                        <g:Label styleName="circle-number">1</g:Label>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName='content-block'>
-                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
-                        <g:HTMLPanel styleName='content-block-center'>
-                            <b:Heading size='4'><ui:msg key="clientStep1">Post a Project</ui:msg></b:Heading>
-                            <b:FluidContainer>
-                                <b:FluidRow>
-                                    <b:Column size="6">
-                                        <g:HTMLPanel><ui:msg key="clientStep11">Describe a project, demand or service you are looking for in section Post a Project</ui:msg></g:HTMLPanel>
-                                    </b:Column>
-                                    <b:Column size="6">
-                                        <g:HTMLPanel><ui:msg key="clientStep12">You can specify detailed information such as locality, category,  urgency, or estimated price</ui:msg></g:HTMLPanel>
-                                    </b:Column>
-                                </b:FluidRow>
-                            </b:FluidContainer>
-                        </g:HTMLPanel>
-                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName='content-step'>
-                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
-                        <g:Label styleName="circle-number">2</g:Label>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName='content-block content-block-small'>
-                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
-                        <g:HTMLPanel styleName='content-block-center'>
-                            <b:Heading size='4'><ui:msg key="clientStep2">Professionals will receive your project</ui:msg></b:Heading>
-                            <b:FluidContainer>
-                                <b:FluidRow>
-                                    <b:Column size="6">
-                                        <g:HTMLPanel><ui:msg key="clientStep21">Your project will be verified before contacting professionals</ui:msg></g:HTMLPanel>
-                                    </b:Column>
-                                    <b:Column size="6">
-                                        <g:HTMLPanel><ui:msg key="clientStep22">Professionals and companies matching your criteria will be notified about your project</ui:msg></g:HTMLPanel>
-                                    </b:Column>
-                                </b:FluidRow>
-                            </b:FluidContainer>
-                        </g:HTMLPanel>
-                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName='content-step'>
-                        <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>
-                        <g:Label styleName="circle-number">3</g:Label>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName='content-block'>
-                        <g:HTMLPanel styleName='content-block-top'></g:HTMLPanel>
-                        <g:HTMLPanel styleName='content-block-center'>
-                            <b:Heading size='4'><ui:msg key="clientStep3">Receive offers from Professionals</ui:msg></b:Heading>
-                            <b:FluidContainer>
-                                <b:FluidRow>
-                                    <b:Column size="4">
-                                        <g:HTMLPanel><ui:msg key="clientStep31">Professionals will read your project description and create an offer for you</ui:msg></g:HTMLPanel>
-                                    </b:Column>
-                                    <b:Column size="4">
-                                        <g:HTMLPanel><ui:msg key="clientStep32">You will compare all offers in our system and select the best professional</ui:msg></g:HTMLPanel>
-                                    </b:Column>
-                                    <b:Column size="4">
-                                        <g:HTMLPanel><ui:msg key="clientStep33">Once professional finishes his work you will enter a feedback for him</ui:msg></g:HTMLPanel>
-                                    </b:Column>
-                                </b:FluidRow>
-                            </b:FluidContainer>
-                        </g:HTMLPanel>
-                        <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName='content-step last-step'>
-                        <g:Button><ui:msg key="placeProject">Post a Project</ui:msg></g:Button>
-                    </g:HTMLPanel>
+                    <g:Label>Portal Want-Someting.com is designed for professional individuals and companies to present
+                        their products and services in order to acquire new customers easily and effectively.</g:Label>
+                        <br />
+                    <g:Label>Vision</g:Label>
+                    <g:Label>
+                        Achieving the best results in any business depends not only on the knowledge of the product or
+                        service you are providing to your customers but also on effective communication channels, which
+                        are supposed to make a successful deal for your business. That's why Want-Something.com
+                        enables you to communicate with broad audience of consumers and
+                        suppliers in an effective and fashionalble way.
+                    </g:Label>
+                        <br />
+                    <g:Label>Want-Something.com was established in year 2013 with
+                        the idea of filling the gap on U.S. marketplace in the
+                        area of close and mutual connection between companies and customers.
+                    </g:Label>
                 </g:HTMLPanel>
             </g:ScrollPanel>
         </g:center>

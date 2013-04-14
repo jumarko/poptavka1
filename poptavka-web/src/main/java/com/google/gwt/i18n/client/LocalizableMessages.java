@@ -459,6 +459,8 @@ public interface LocalizableMessages extends Messages {
     String faq4r();
     String faq5q();
     String faq5r();
+    /** 1.4 - Footer Info - Privacy Policy */
+    String privacyPolicy();
 
 
     /*** 2 - Home Demands module view *********************************** 2 ***/

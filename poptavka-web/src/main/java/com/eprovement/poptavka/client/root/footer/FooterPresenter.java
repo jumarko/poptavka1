@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.root.footer;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.root.info.FooterInfo;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -23,6 +24,27 @@ public class FooterPresenter extends BasePresenter<IFooterView, EventBusWithLook
             @Override
             public void onClick(ClickEvent event) {
                 ((BaseChildEventBus) eventBus).sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
+            }
+        });
+        view.getAboutUs().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                ((BaseChildEventBus) eventBus).setBody(FooterInfo.createAboutUs());
+            }
+        });
+        view.getFAQ().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                ((BaseChildEventBus) eventBus).setBody(FooterInfo.createFAQ());
+            }
+        });
+        view.getPrivacyPolicy().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                ((BaseChildEventBus) eventBus).setBody(FooterInfo.createPrivacyPolicy());
             }
         });
     }

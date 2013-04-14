@@ -31,6 +31,11 @@ public class FooterInfo extends Composite {
     }
     private static AboutUsBinder aboutUsBinder = GWT.create(AboutUsBinder.class);
 
+    @UiTemplate("PrivacyPolicy.ui.xml")
+    interface PrivacyPolicyBinder extends UiBinder<Widget, FooterInfo> {
+    }
+    private static PrivacyPolicyBinder privacyPolicyBinder = GWT.create(PrivacyPolicyBinder.class);
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -42,7 +47,7 @@ public class FooterInfo extends Composite {
     }
 
     /**
-     * Creates widget using HowItWorksDemand.ui.xml.
+     * Creates widget using FAQ.ui.xml.
      * @return widget instance
      */
     public static FooterInfo createFAQ() {
@@ -50,11 +55,19 @@ public class FooterInfo extends Composite {
     }
 
     /**
-     * Creates widget using HowItWorksSupplier.ui.xml.
+     * Creates widget using AboutUs.ui.xml.
      * @return widget instance
      */
     public static FooterInfo createAboutUs() {
         return new FooterInfo(aboutUsBinder);
+    }
+
+    /**
+     * Creates widget using PrivacyPolicy.ui.xml.
+     * @return widget instance
+     */
+    public static FooterInfo createPrivacyPolicy() {
+        return new FooterInfo(privacyPolicyBinder);
     }
 
     /**************************************************************************/
