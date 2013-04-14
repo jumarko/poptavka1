@@ -12,4 +12,8 @@ import java.util.HashMap;
  * @author Martin Slavkovsky
  */
 public class SerializableHashMap<K, V> extends HashMap<K, V> implements IsSerializable {
+
+    public SerializableHashMap() {
+        //nothing by default
+    }
 }
