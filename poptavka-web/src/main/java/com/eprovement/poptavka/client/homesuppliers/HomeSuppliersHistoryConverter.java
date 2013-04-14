@@ -74,6 +74,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         }
         Storage.setCalledDueToHistory(true);
         SearchModuleDataHolder searchDataHolder = null;
+        param = param.substring(6, param.length());
         if (param.startsWith("filter:")) {
             param = param.replace("filter:", "");
             searchDataHolder = SearchModuleDataHolder.parseSearchModuleDataHolder(
