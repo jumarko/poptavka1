@@ -16,20 +16,20 @@
             </g:HTMLPanel>
         </g:north>
         <g:center>
-            <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
+            <g:ScrollPanel>
                 <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
+                    <h1>About Want-Something.com</h1>
                     <g:Label>Portal Want-Someting.com is designed for professional individuals and companies to present
-                        their products and services in order to acquire new customers easily and effectively.</g:Label>
-                        <br />
-                    <g:Label>Vision</g:Label>
+                        their products and services in order to acquire new customers easily and effectively.</g:Label>                        
+                    <h3>Vision</h3>
                     <g:Label>
                         Achieving the best results in any business depends not only on the knowledge of the product or
                         service you are providing to your customers but also on effective communication channels, which
                         are supposed to make a successful deal for your business. That's why Want-Something.com
                         enables you to communicate with broad audience of consumers and
                         suppliers in an effective and fashionalble way.
-                    </g:Label>
-                        <br />
+                    </g:Label>                        
+                    <br />
                     <g:Label>Want-Something.com was established in year 2013 with
                         the idea of filling the gap on U.S. marketplace in the
                         area of close and mutual connection between companies and customers.
