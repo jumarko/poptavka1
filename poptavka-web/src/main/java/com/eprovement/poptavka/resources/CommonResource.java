@@ -101,4 +101,7 @@ public interface CommonResource extends CssResource {
     /** How it works **/
     @ClassName("how-it-works-container")
     String howItWorksContainer();
+
+    @ClassName("myListBox")
+    String myListBox();
 }

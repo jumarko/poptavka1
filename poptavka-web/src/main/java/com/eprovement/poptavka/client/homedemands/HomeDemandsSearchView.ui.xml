@@ -3,6 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:mlb="urn:import:com.eprovement.poptavka.client.common.myListBox"
              xmlns:b2="urn:import:com.github.gwtbootstrap.datepicker.client.ui">
 
     <!-- injecting style resources -->
@@ -74,7 +75,7 @@
                     <g:Label>
                         <ui:msg key="formCreationDate">Creation date:</ui:msg>
                     </g:Label>
-                    <g:ListBox ui:field="creationDate" styleName='full-width' />
+                    <mlb:MyListBox ui:field="creationDate" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 

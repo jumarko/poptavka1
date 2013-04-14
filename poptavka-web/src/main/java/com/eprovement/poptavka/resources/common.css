@@ -621,3 +621,9 @@ a.toolbar-button-grey {
     background: url(images/how-it-works-arrow.png) no-repeat 0 6px;
     padding: 0 0 0 12px;
 }
+
+/* MyListBox */
+.myListBox {
+    z-index: 1060;
+    min-width: 0;
+}
