@@ -45,24 +45,17 @@ import java.util.List;
 public class HomeDemandsView extends OverflowComposite implements ReverseViewInterface<HomeDemandsPresenter>,
         HomeDemandsPresenter.HomeDemandsViewInterface {
 
-    /**
-     * ***********************************************************************
-     */
-    /* UiBinder */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static HomeDemandsViewUiBinder uiBinder = GWT.create(HomeDemandsViewUiBinder.class);
 
     interface HomeDemandsViewUiBinder extends UiBinder<Widget, HomeDemandsView> {
     }
-    /**
-     * ***********************************************************************
-     */
-    /* Home Supplier presenter */
-    /**
-     * ***********************************************************************
-     */
+
+    /**************************************************************************/
+    /* Home Supplier presenter                                                */
+    /**************************************************************************/
     private HomeDemandsPresenter homeDemandsPresenter;
 
     @Override
@@ -74,6 +67,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     public HomeDemandsPresenter getPresenter() {
         return homeDemandsPresenter;
     }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -96,13 +90,9 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     /** Constants. **/
     private static final String LOCALITY_COL_WIDTH = "150px";
 
-    /**
-     * ***********************************************************************
-     */
-    /* INITIALIZATION */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
     @Override
     public void createView() {
         footer = footerView;
@@ -150,9 +140,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     private void initGridColumns() {
 
         // Date of creation
-        /**
-         * ***********************************************************************
-         */
+        /**********************************************************************/
         dataGrid.addColumn(new CreatedDateCell(), Storage.MSGS.columnCreatedDate(), true, Constants.COL_WIDTH_DATE,
             new UniversalAsyncGrid.GetValue<Date>() {
                 @Override
@@ -163,9 +151,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         );
 
         // Demand Info
-        /**
-         * ***********************************************************************
-         */
+        /***********************************************************************/
         dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDemandTitle(), true, Constants.COL_WIDTH_TITLE,
             new UniversalAsyncGrid.GetValue<String>() {
                 @Override
@@ -176,9 +162,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         );
 
         // Locality
-        /**
-         * ***********************************************************************
-         */
+        /**********************************************************************/
         dataGrid.addColumn(new TextCell(), Storage.MSGS.columnLocality(), false, LOCALITY_COL_WIDTH,
             new UniversalAsyncGrid.GetValue<String>() {
                 @Override
@@ -197,22 +181,14 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         );
 
         // Urgence
-        /**
-         * ***********************************************************************
-         */
+        /**********************************************************************/
         dataGrid.addUrgentColumn();
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /* GETTERS */
-    /**
-     * ***********************************************************************
-     */
-    /**
-     * CellTree. *
-     */
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    /** CellTree. **/
     @Override
     public CellTree getCellTree() {
         return cellTree;
@@ -223,9 +199,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         return selectionCategoryModel;
     }
 
-    /**
-     * Table. *
-     */
+    /** Table. **/
     @Override
     public UniversalAsyncGrid<FullDemandDetail> getDataGrid() {
         return dataGrid;
@@ -236,29 +210,21 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         return pager.getPager();
     }
 
-    /**
-     * Filter. *
-     */
+    /** Filter. **/
     @Override
     public Label getFilterLabel() {
         return filterLabel;
     }
 
-    /**
-     * Other. *
-     */
+    /** Other. **/
     @Override
     public Widget getWidgetView() {
         return this;
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /* SETTERS */
-    /**
-     * ***********************************************************************
-     */
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
     @Override
     public void displayDemandDetail(FullDemandDetail fullDemandDetail) {
         bannerLabel.setVisible(false);
