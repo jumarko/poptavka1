@@ -1,5 +1,8 @@
 package com.eprovement.poptavka.client.common;
 
+import com.github.gwtbootstrap.client.ui.base.HasPlaceholder;
+import com.github.gwtbootstrap.client.ui.base.PlaceholderHelper;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.InputElement;
@@ -14,7 +17,19 @@ import java.text.ParseException;
  *
  * @author Martin Slavkovsky
  */
-public class BigDecimalBox extends BigDecimalBoxBase {
+public class BigDecimalBox extends BigDecimalBoxBase implements HasPlaceholder {
+
+    private PlaceholderHelper placeholderHelper = GWT.create(PlaceholderHelper.class);
+
+    @Override
+    public void setPlaceholder(String placeholder) {
+        placeholderHelper.setPlaceholer(getElement(), placeholder);
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return placeholderHelper.getPlaceholder(getElement());
+    }
 
     /**
      * Creates a IntegerTextBox widget that wraps an existing &lt;input type='text'&gt;

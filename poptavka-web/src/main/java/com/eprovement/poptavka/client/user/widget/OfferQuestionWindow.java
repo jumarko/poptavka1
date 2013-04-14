@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.validation.groups.Default;
 
 /**
  * Mixed widget for sending offer as well for asking questions.
@@ -66,11 +67,11 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
 
     private void initValidationMonitors() {
         bodyMonitor = new ValidationMonitor<OfferMessageDetail>(
-                OfferMessageDetail.class, OfferMessageDetail.MessageField.BODY.getValue());
+                OfferMessageDetail.class, Default.class, OfferMessageDetail.MessageField.BODY.getValue());
         priceMonitor = new ValidationMonitor<OfferMessageDetail>(
-                OfferMessageDetail.class, OfferMessageDetail.MessageField.PRICE.getValue());
+                OfferMessageDetail.class, Default.class, OfferMessageDetail.MessageField.PRICE.getValue());
         finishDateMonitor = new ValidationMonitor<OfferMessageDetail>(
-                OfferMessageDetail.class, OfferMessageDetail.MessageField.FINISH_DATE.getValue());
+                OfferMessageDetail.class, Default.class, OfferMessageDetail.MessageField.FINISH_DATE.getValue());
     }
 
 

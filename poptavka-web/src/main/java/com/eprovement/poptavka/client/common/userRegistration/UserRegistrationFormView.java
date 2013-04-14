@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.Arrays;
 import java.util.List;
+import javax.validation.groups.Default;
 
 /**
  * User registration widget represent user's registration form.
@@ -84,27 +85,27 @@ public class UserRegistrationFormView extends Composite
      */
     private void initValidationMonitors() {
         firstName = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.FIRST_NAME.getValue());
+                BusinessUserDetail.class, Default.class, UserField.FIRST_NAME.getValue());
         lastName = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.LAST_NAME.getValue());
+                BusinessUserDetail.class, Default.class, UserField.LAST_NAME.getValue());
         phone = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.PHONE.getValue());
+                BusinessUserDetail.class, Default.class, UserField.PHONE.getValue());
         email = new ValidationMonitor<UserDetail>(
-                UserDetail.class, UserField.EMAIL.getValue());
+                UserDetail.class, Default.class, UserField.EMAIL.getValue());
         password = new ValidationMonitor<UserDetail>(
-                UserDetail.class, UserField.PASSWORD.getValue());
+                UserDetail.class, Default.class, UserField.PASSWORD.getValue());
         passwordConfirm = new ValidationMonitor<UserDetail>(
-                UserDetail.class, UserField.PASSWORD.getValue());
+                UserDetail.class, Default.class, UserField.PASSWORD.getValue());
         companyName = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.COMPANY_NAME.getValue());
+                BusinessUserDetail.class, Default.class, UserField.COMPANY_NAME.getValue());
         description = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.DESCRIPTION.getValue());
+                BusinessUserDetail.class, Default.class, UserField.DESCRIPTION.getValue());
         website = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.WEBSITE.getValue());
+                BusinessUserDetail.class, Default.class, UserField.WEBSITE.getValue());
         identificationNumber = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.IDENTIF_NUMBER.getValue());
+                BusinessUserDetail.class, Default.class, UserField.IDENTIF_NUMBER.getValue());
         taxId = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, UserField.TAX_ID.getValue());
+                BusinessUserDetail.class, Default.class, UserField.TAX_ID.getValue());
     }
 
     /**

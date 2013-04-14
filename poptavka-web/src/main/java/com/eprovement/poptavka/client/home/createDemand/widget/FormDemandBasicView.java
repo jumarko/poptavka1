@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import javax.validation.groups.Default;
 
 public class FormDemandBasicView extends Composite
         implements FormDemandBasicPresenter.FormDemandBasicInterface, ProvidesValidate {
@@ -46,13 +47,13 @@ public class FormDemandBasicView extends Composite
 
     private void initValidationMonitors() {
         titleMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.TITLE.getValue());
+                FullDemandDetail.class, Default.class, DemandField.TITLE.getValue());
         priceMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.PRICE.getValue());
+                FullDemandDetail.class, Default.class, DemandField.PRICE.getValue());
         endDateMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.END_DATE.getValue());
+                FullDemandDetail.class, Default.class, DemandField.END_DATE.getValue());
         descriptionMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.DESCRIPTION.getValue());
+                FullDemandDetail.class, Default.class, DemandField.DESCRIPTION.getValue());
         monitors = new ArrayList<ValidationMonitor>(
                 Arrays.asList(titleMonitor, priceMonitor, endDateMonitor, descriptionMonitor));
     }

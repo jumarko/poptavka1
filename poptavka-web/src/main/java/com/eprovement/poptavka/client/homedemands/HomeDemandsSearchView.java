@@ -1,14 +1,17 @@
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.common.BigDecimalBox;
 import com.eprovement.poptavka.client.common.MyDateBox;
+import com.eprovement.poptavka.client.common.ValidationMonitor;
 import com.eprovement.poptavka.client.common.myListBox.MyListBox;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.IntegerBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,10 +34,10 @@ public class HomeDemandsSearchView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeDemandsSearchView> {
     }
     /** UiBinder attributes. **/
-    @UiField TextBox demandTitle;
-    @UiField IntegerBox priceFrom, priceTo;
-    @UiField ListBox demandTypes;
     @UiField(provided = true) MyListBox creationDate;
+    @UiField(provided = true) ValidationMonitor priceMonitorFrom, priceMonitorTo;
+    @UiField TextBox demandTitle;
+    @UiField ListBox demandTypes;
     @UiField MyDateBox finnishDateFrom, finnishDateTo;
     @UiField Button clearBtn;
     /** Search Fields. **/
@@ -47,6 +50,7 @@ public class HomeDemandsSearchView extends Composite implements
     public HomeDemandsSearchView() {
         creationDate = MyListBox.createListBox(getCreaionDateData());
         creationDate.addStyleName(Storage.RSCS.common().myListBox());
+        initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
 
         demandTypes.addItem(Storage.MSGS.commonListDefault());
@@ -55,6 +59,13 @@ public class HomeDemandsSearchView extends Composite implements
         }
 
         StyleResource.INSTANCE.common().ensureInjected();
+    }
+
+    private void initValidationMonitors() {
+        priceMonitorFrom = new ValidationMonitor<FullDemandDetail>(
+                FullDemandDetail.class, SearchGroup.class, FullDemandDetail.DemandField.PRICE.getValue());
+        priceMonitorTo = new ValidationMonitor<FullDemandDetail>(
+                FullDemandDetail.class, SearchGroup.class, FullDemandDetail.DemandField.PRICE.getValue());
     }
 
     private List<String> getCreaionDateData() {
@@ -78,11 +89,11 @@ public class HomeDemandsSearchView extends Composite implements
                     FilterItem.OPERATION_EQUALS,
                     demandTypes.getItemText(demandTypes.getSelectedIndex())));
         }
-        if (!priceFrom.getText().isEmpty()) {
-            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_FROM, priceFrom.getValue()));
+        if (priceMonitorFrom.getValue() != null) {
+            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_FROM, priceMonitorFrom.getValue()));
         }
-        if (!priceTo.getText().isEmpty()) {
-            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_TO, priceTo.getValue()));
+        if (priceMonitorTo.getValue() != null) {
+            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_TO, priceMonitorTo.getValue()));
         }
         if (!creationDate.getSelected().equals(Storage.MSGS.creationDateNoLimits())) {
             filters.add(new FilterItem(FIELD_CREATED_DATE, FilterItem.OPERATION_FROM, getCreatedDate()));
@@ -117,8 +128,10 @@ public class HomeDemandsSearchView extends Composite implements
     public void clear() {
         demandTitle.setText("");
         demandTypes.setSelectedIndex(0);
-        priceFrom.setText("");
-        priceTo.setText("");
+        ((BigDecimalBox) priceMonitorFrom.getWidget()).setText("");
+        priceMonitorFrom.reset();
+        ((BigDecimalBox) priceMonitorTo.getWidget()).setText("");
+        priceMonitorTo.reset();
         creationDate.setSelected(Storage.MSGS.creationDateNoLimits());
     }
 
