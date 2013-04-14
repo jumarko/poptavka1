@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.Arrays;
 
 /**
  *
@@ -62,5 +63,9 @@ public class ActionBoxPresenter extends LazyPresenter<ActionBoxPresenter.ActionB
                 eventBus.requestStarStatusUpdate(grid.getSelectedUserMessageIds(), false);
             }
         });
+    }
+
+    public void updateStar(long objectId, boolean value) {
+        eventBus.requestStarStatusUpdate(Arrays.asList(objectId), value);
     }
 }

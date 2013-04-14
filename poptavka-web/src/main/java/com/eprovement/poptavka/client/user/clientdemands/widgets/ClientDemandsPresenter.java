@@ -403,7 +403,7 @@ public class ClientDemandsPresenter
                 public void update(int index, IUniversalDetail object, Boolean value) {
                     object.setIsStarred(!value);
                     view.getConversationGrid().redrawRow(index);
-                    ((ActionBoxView) view.getActionBox().getWidget()).getActionStar().getScheduledCommand().execute();
+                    ((ActionBoxView) view.getActionBox().getWidget()).updateStar(object.getUserMessageId(), !value);
                 }
             });
     }
