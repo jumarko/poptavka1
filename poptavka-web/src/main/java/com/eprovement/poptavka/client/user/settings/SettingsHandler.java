@@ -32,9 +32,7 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
         settingsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
             @Override
             public void onSuccess(UnreadMessagesDetail result) {
-                // empty i.e number of new messages could be retrieved
-                GWT.log("UpdateUnreadMessagesCount retrieved, number=" + result.getUnreadMessagesCount());
-                eventBus.setUpdatedUnreadMessagesCount(result.getUnreadMessagesCount());
+                eventBus.setUpdatedUnreadMessagesCount(result);
             }
         });
     }

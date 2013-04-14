@@ -12,6 +12,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView.IUserHeaderPresenter;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -74,8 +75,9 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
 
     }
 
-    public void onSetUpdatedUnreadMessagesCount(int numberOfMessages) {
-        view.getNewMessagesCount().setText(String.valueOf(numberOfMessages));
+    public void onSetUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages) {
+        view.getNewMessagesCount().setText(String.valueOf(numberOfMessages.getUnreadMessagesCount()));
+        view.getNewSystemMessagesCount().setText(String.valueOf(numberOfMessages.getUnreadSystemMessageCount()));
     }
 
     /**

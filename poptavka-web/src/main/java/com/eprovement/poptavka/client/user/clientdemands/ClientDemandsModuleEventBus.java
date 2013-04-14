@@ -21,6 +21,7 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -128,7 +129,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void goToCreateSupplierModule();
 
     @Event(forwardToParent = true)
-    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+    void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     @Event(forwardToParent = true)
     void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);

@@ -14,6 +14,7 @@ import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
@@ -33,6 +34,7 @@ import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.googlecode.genericdao.search.Field;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -139,9 +141,23 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
         Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
-        // TODO Vojto - get number of unread messages. UserId is provided from Authentication obejct see above
+        Search unreadMessagesSearch = new Search(UserMessage.class);
+        unreadMessagesSearch.addFilterNotNull("message.demand");
+        unreadMessagesSearch.addFilterEqual("isRead", false);
+        unreadMessagesSearch.addFilterEqual("user.id", userId.longValue());
+        unreadMessagesSearch.addField("id", Field.OP_COUNT);
+        unreadMessagesSearch.setResultMode(Search.RESULT_SINGLE);
         UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
-        unreadMessagesDetail.setUnreadMessagesCount(99);
+        unreadMessagesDetail.setUnreadMessagesCount((
+                (Long) generalService.searchUnique(unreadMessagesSearch)).intValue());
+        Search unreadSystemMessagesSearch = new Search(UserMessage.class);
+        unreadSystemMessagesSearch.addFilterNull("message.demand");
+        unreadSystemMessagesSearch.addFilterEqual("isRead", false);
+        unreadSystemMessagesSearch.addFilterEqual("user.id", userId.longValue());
+        unreadSystemMessagesSearch.addField("id", Field.OP_COUNT);
+        unreadSystemMessagesSearch.setResultMode(Search.RESULT_SINGLE);
+        unreadMessagesDetail.setUnreadSystemMessageCount((
+                (Long) generalService.searchUnique(unreadSystemMessagesSearch)).intValue());
         return unreadMessagesDetail;
     }
 

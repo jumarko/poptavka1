@@ -33,6 +33,8 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     @UiField HTMLPanel headerHolder;
     @UiField PushButton pushButton;
     @UiField Label newMessagesCount;
+    @UiField PushButton pushSystemButton;
+    @UiField Label newSystemMessagesCount;
     @UiField MenuItem username, menuLogOut, menuMyProfile, menuHelp, menuCustomerService;
     @UiField MyMenuItem logoutMenuItemBtn;
     @UiField MenuBar logoutMenuBarBtn;
@@ -97,7 +99,20 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     }
 
     @UiHandler("pushButton")
-    void handleClick(ClickEvent e) {
+    void unreadMessagesClick(ClickEvent e) {
+        Window.alert("Uzivatel bude presmerovany na modul Client/Supplier Welcome, kde uvidi neprecitane spravy");
+    }
+
+    /**
+     * @return the newSystemMessagesCount
+     */
+    @Override
+    public Label getNewSystemMessagesCount() {
+        return newSystemMessagesCount;
+    }
+
+    @UiHandler("pushSystemButton")
+    void unreadSystemMessagesClick(ClickEvent e) {
         Window.alert("Uzivatel bude presmerovany na modul Messages, kde uvidi neprecitane spravy");
     }
 }
