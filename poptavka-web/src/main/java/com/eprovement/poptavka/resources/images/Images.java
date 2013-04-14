@@ -142,14 +142,20 @@ public interface Images extends ClientBundle {
     @Source("envelope.png")
     ImageResource envelopeImage();
 
+    @Source("envelope-empty.png")
+    ImageResource envelopeImageEmpty();
+
     @Source("envelope-hover.png")
     ImageResource envelopeHoverImage();
 
-    @Source("envelope.png")
+    @Source("flag.png")
     ImageResource flagImage();
 
-    @Source("envelope-hover.png")
+    @Source("flag-hover.png")
     ImageResource flagHoverImage();
+
+    @Source("flag-empty.png")
+    ImageResource flagImageEmpty();
 
     @Source("contact.jpg")
     ImageResource contactImage();

@@ -11,8 +11,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -98,11 +96,6 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
         return newMessagesCount;
     }
 
-    @UiHandler("pushButton")
-    void unreadMessagesClick(ClickEvent e) {
-        Window.alert("Uzivatel bude presmerovany na modul Client/Supplier Welcome, kde uvidi neprecitane spravy");
-    }
-
     /**
      * @return the newSystemMessagesCount
      */
@@ -111,8 +104,19 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
         return newSystemMessagesCount;
     }
 
-    @UiHandler("pushSystemButton")
-    void unreadSystemMessagesClick(ClickEvent e) {
-        Window.alert("Uzivatel bude presmerovany na modul Messages, kde uvidi neprecitane spravy");
+    /**
+     * @return the pushButton
+     */
+    @Override
+    public PushButton getPushButton() {
+        return pushButton;
+    }
+
+    /**
+     * @return the pushSystemButton
+     */
+    @Override
+    public PushButton getPushSystemButton() {
+        return pushSystemButton;
     }
 }
