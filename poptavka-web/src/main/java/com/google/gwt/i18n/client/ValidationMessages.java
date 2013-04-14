@@ -156,6 +156,12 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("user.pattern.website")
     String userPatternWebsite();
 
+    @Key("user.min.rating")
+    String userMinRating();
+
+    @Key("user.max.rating")
+    String userMaxRating();
+
     /**************************************************************************/
     /** Email Dialog Popup - error messages.                                  */
     /**************************************************************************/

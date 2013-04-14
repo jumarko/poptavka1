@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
+import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -20,6 +21,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -104,8 +106,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     @Size(min = 5, max = 50, message = "{demandSizeTitle}")
     private String title;
     @NotNull(message = "{demandNotNullPrice}")
-    @Min(value = 0, message = "{demandMinPrice}")
-    @Digits(integer = 100000000, fraction = 0, message = "{demandDigitsPrice}")
+    @Min(value = 0, message = "{demandMinPrice}", groups = {Default.class, SearchGroup.class })
+    @Digits(integer = 100000000, fraction = 0, message = "{demandDigitsPrice}",
+    groups = {Default.class, SearchGroup.class })
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")
     @Future(message = "{demandFutureEndDate}")

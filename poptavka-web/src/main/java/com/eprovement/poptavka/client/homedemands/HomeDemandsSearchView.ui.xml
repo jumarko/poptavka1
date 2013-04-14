@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             xmlns:b2="urn:import:com.github.gwtbootstrap.datepicker.client.ui">
+             xmlns:mlb="urn:import:com.eprovement.poptavka.client.common.myListBox">
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
@@ -46,10 +46,14 @@
                         <ui:msg key="formPrice">Price:</ui:msg>
                     </g:Label>
                     <g:HTMLPanel styleName="input-append">
-                        <b:IntegerBox placeholder="{msgs.formFrom}" styleName="{style.priceBox} append-dollar" ui:field="priceFrom" />
+                        <cm:ValidationMonitor ui:field="priceMonitorFrom">
+                            <cm:BigDecimalBox placeholder="{msgs.formFrom}" styleName="{style.priceBox} append-dollar" />
+                        </cm:ValidationMonitor>
                     </g:HTMLPanel>
                     <g:HTMLPanel styleName="input-append">
-                        <b:IntegerBox placeholder="{msgs.formTo}" styleName="{style.priceBox} append-dollar" ui:field="priceTo" />
+                        <cm:ValidationMonitor ui:field="priceMonitorTo">
+                            <cm:BigDecimalBox placeholder="{msgs.formTo}" styleName="{style.priceBox} append-dollar" />
+                        </cm:ValidationMonitor>
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>
@@ -62,7 +66,7 @@
                     <g:Label>
                         <ui:msg key="formDemandType">Demand Type:</ui:msg>
                     </g:Label>
-                    <g:ListBox ui:field="demandTypes" styleName='full-width' />
+                    <mlb:MyListBox ui:field="demandTypes" styleName='selector-box full-width' />
                 </b:Column>
             </b:FluidRow>
 
@@ -74,7 +78,7 @@
                     <g:Label>
                         <ui:msg key="formCreationDate">Creation date:</ui:msg>
                     </g:Label>
-                    <g:ListBox ui:field="creationDate" styleName='full-width' />
+                    <mlb:MyListBox ui:field="creationDate" styleName='selector-box full-width' />
                 </b:Column>
             </b:FluidRow>
 

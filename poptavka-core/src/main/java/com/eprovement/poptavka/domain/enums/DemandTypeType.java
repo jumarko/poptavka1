@@ -3,6 +3,9 @@
  */
 package com.eprovement.poptavka.domain.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Enum for handy work with demand type.
  *
@@ -42,4 +45,11 @@ public enum DemandTypeType {
         return value;
     }
 
+    public static List<String> getStringValues() {
+        List<String> stringValues = new ArrayList<String>();
+        for (DemandTypeType type : values()) {
+            stringValues.add(type.name());
+        }
+        return stringValues;
+    }
 }

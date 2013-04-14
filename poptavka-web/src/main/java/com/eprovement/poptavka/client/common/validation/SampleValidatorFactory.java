@@ -45,7 +45,7 @@ public final class SampleValidatorFactory extends AbstractGwtValidatorFactory {
     @GwtValidation(value = {FullClientDetail.class, FullSupplierDetail.class, FullDemandDetail.class,
             AddressDetail.class, EmailDialogDetail.class, LocalityDetail.class, CategoryDetail.class,
             MessageDetail.class, UserDetail.class, BusinessUserDetail.class, OfferMessageDetail.class },
-    groups = {Default.class })
+    groups = {Default.class, SearchGroup.class })
     public interface GwtValidator extends Validator {
     }
 

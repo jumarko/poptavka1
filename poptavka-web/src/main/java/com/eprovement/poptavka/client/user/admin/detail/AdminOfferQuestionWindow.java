@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import javax.validation.groups.Default;
 
 /**
  * Mixed widget for sending offer as well for asking questions.
@@ -54,7 +55,7 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
 
     private void initValidationMonitors() {
         bodyMonitor = new ValidationMonitor<OfferMessageDetail>(
-                OfferMessageDetail.class, OfferMessageDetail.MessageField.BODY.getValue());
+                OfferMessageDetail.class, Default.class, OfferMessageDetail.MessageField.BODY.getValue());
     }
 
     /**************************************************************************/

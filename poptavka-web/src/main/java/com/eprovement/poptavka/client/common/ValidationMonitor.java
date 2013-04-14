@@ -36,7 +36,6 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.groups.Default;
 
 /**
  * Main purpose of Validation monitor is to simplifies validation process through
@@ -74,6 +73,7 @@ public class ValidationMonitor<T> extends Composite
     private ArrayList<IListDetailObject> listData;
     private Validator validator;
     private Class<T> beanType;
+    private Class<?> beanGroup;
     private String field;
     private Boolean valid;
     private boolean hideErrorPanel = true;
@@ -86,8 +86,9 @@ public class ValidationMonitor<T> extends Composite
      * to know Class<T>.
      * @param beanType
      */
-    public ValidationMonitor(Class<T> beanType, String field) {
+    public ValidationMonitor(Class<T> beanType, Class<?> beanGroup, String field) {
         this.beanType = beanType;
+        this.beanGroup = beanGroup;
         this.field = field;
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
         listData = new ArrayList<IListDetailObject>();
@@ -108,7 +109,7 @@ public class ValidationMonitor<T> extends Composite
         valid = true;
         //perform new validation
         Set<ConstraintViolation<T>> violations = validator.validateValue(
-                beanType, field, getValue(), Default.class);
+                beanType, field, getValue(), beanGroup);
         for (ConstraintViolation<T> violation : violations) {
             setValidationStyles(false, violation.getMessage());
             valid = false;
