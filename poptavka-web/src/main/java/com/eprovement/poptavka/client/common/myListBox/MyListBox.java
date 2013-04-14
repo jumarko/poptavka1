@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.common.myListBox;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.base.HasPlaceholder;
@@ -19,7 +20,7 @@ import com.google.gwt.user.client.ui.SuggestOracle;
 import java.util.List;
 
 /**
- *
+ * Suggest box that behaves as ListBox and can be better designed.
  *
  * @author Martin Slavkovsky
  */
@@ -28,7 +29,8 @@ public final class MyListBox extends SuggestBox {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private static MyTextBox textBox;
+    private MyTextBox textBox;
+    private String defaultString;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -40,13 +42,15 @@ public final class MyListBox extends SuggestBox {
      * @param data
      * @return MultiWordSuggestOracle filled with given List
      */
-    public static MyListBox createListBox(List<String> data) {
-        return new MyListBox(createSuggestOracle(data), createReadOnlyTextBox(), createOracleDisplay());
+    public static MyListBox createListBox(List<String> data, String defaultValue) {
+        return new MyListBox(createSuggestOracle(data), createReadOnlyTextBox(), createOracleDisplay(), defaultValue);
     }
 
-    private MyListBox(MultiWordSuggestOracle oracleData, MyTextBox textBox, DefaultSuggestionDisplay display) {
+    private MyListBox(MultiWordSuggestOracle oracleData, MyTextBox textBox,
+            DefaultSuggestionDisplay display, String defaultValue) {
         super(oracleData, textBox, display);
-
+        this.textBox = textBox;
+        this.defaultString = defaultValue;
         bind();
     }
 
@@ -58,9 +62,9 @@ public final class MyListBox extends SuggestBox {
     }
 
     private static MyTextBox createReadOnlyTextBox() {
-        textBox = new MyTextBox();
-        textBox.setReadOnly(true);
-        return textBox;
+        MyTextBox readOnlyTextBox = new MyTextBox();
+        readOnlyTextBox.setReadOnly(true);
+        return readOnlyTextBox;
     }
 
     private static DefaultSuggestionDisplay createOracleDisplay() {
@@ -86,6 +90,11 @@ public final class MyListBox extends SuggestBox {
             public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event) {
                 setText("");
                 setSelected(event.getSelectedItem().getDisplayString());
+                if (event.getSelectedItem().getDisplayString().equals(defaultString)) {
+                    removeStyleName(Constants.ACT);
+                } else {
+                    addStyleName(Constants.ACT);
+                }
             }
         });
     }
@@ -99,6 +108,10 @@ public final class MyListBox extends SuggestBox {
 
     public String getSelected() {
         return textBox.getPlaceholder();
+    }
+
+    public boolean isSelected() {
+        return !textBox.getPlaceholder().contains(defaultString);
     }
 }
 

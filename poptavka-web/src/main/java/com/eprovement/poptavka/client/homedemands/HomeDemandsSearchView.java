@@ -19,7 +19,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.ArrayList;
@@ -34,10 +33,9 @@ public class HomeDemandsSearchView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeDemandsSearchView> {
     }
     /** UiBinder attributes. **/
-    @UiField(provided = true) MyListBox creationDate;
+    @UiField(provided = true) MyListBox creationDate, demandTypes;
     @UiField(provided = true) ValidationMonitor priceMonitorFrom, priceMonitorTo;
     @UiField TextBox demandTitle;
-    @UiField ListBox demandTypes;
     @UiField MyDateBox finnishDateFrom, finnishDateTo;
     @UiField Button clearBtn;
     /** Search Fields. **/
@@ -48,15 +46,10 @@ public class HomeDemandsSearchView extends Composite implements
     private static final String FIELD_END_DATE = "endDate";
 
     public HomeDemandsSearchView() {
-        creationDate = MyListBox.createListBox(getCreaionDateData());
-        creationDate.addStyleName(Storage.RSCS.common().myListBox());
+        creationDate = MyListBox.createListBox(getCreationDateData(), Storage.MSGS.creationDateNoLimits());
+        demandTypes = MyListBox.createListBox(getDemandTypeData(), Storage.MSGS.commonListDefault());
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
-
-        demandTypes.addItem(Storage.MSGS.commonListDefault());
-        for (DemandTypeType type : DemandTypeType.values()) {
-            demandTypes.addItem(type.name());
-        }
 
         StyleResource.INSTANCE.common().ensureInjected();
     }
@@ -68,7 +61,14 @@ public class HomeDemandsSearchView extends Composite implements
                 FullDemandDetail.class, SearchGroup.class, FullDemandDetail.DemandField.PRICE.getValue());
     }
 
-    private List<String> getCreaionDateData() {
+    private List<String> getDemandTypeData() {
+        List<String> data = new ArrayList<String>();
+        data.add(Storage.MSGS.commonListDefault());
+        data.addAll(DemandTypeType.getStringValues());
+        return data;
+    }
+
+    private List<String> getCreationDateData() {
         List<String> data = new ArrayList<String>();
         data.add(Storage.MSGS.creationDateToday());
         data.add(Storage.MSGS.creationDateYesterday());
@@ -84,18 +84,16 @@ public class HomeDemandsSearchView extends Composite implements
         if (!demandTitle.getText().isEmpty()) {
             filters.add(new FilterItem(FIELD_TITLE, FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
-        if (demandTypes.getSelectedIndex() != 0) {
-            filters.add(new FilterItem(FIELD_DEMAND_TYPE,
-                    FilterItem.OPERATION_EQUALS,
-                    demandTypes.getItemText(demandTypes.getSelectedIndex())));
-        }
         if (priceMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_FROM, priceMonitorFrom.getValue()));
         }
         if (priceMonitorTo.getValue() != null) {
             filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_TO, priceMonitorTo.getValue()));
         }
-        if (!creationDate.getSelected().equals(Storage.MSGS.creationDateNoLimits())) {
+        if (demandTypes.isSelected()) {
+            filters.add(new FilterItem(FIELD_DEMAND_TYPE, FilterItem.OPERATION_EQUALS, demandTypes.getSelected()));
+        }
+        if (creationDate.isSelected()) {
             filters.add(new FilterItem(FIELD_CREATED_DATE, FilterItem.OPERATION_FROM, getCreatedDate()));
         }
         if (finnishDateFrom.getValue() != null) {
@@ -127,11 +125,11 @@ public class HomeDemandsSearchView extends Composite implements
     @Override
     public void clear() {
         demandTitle.setText("");
-        demandTypes.setSelectedIndex(0);
         ((BigDecimalBox) priceMonitorFrom.getWidget()).setText("");
         priceMonitorFrom.reset();
         ((BigDecimalBox) priceMonitorTo.getWidget()).setText("");
         priceMonitorTo.reset();
+        demandTypes.setSelected(Storage.MSGS.commonListDefault());
         creationDate.setSelected(Storage.MSGS.creationDateNoLimits());
     }
 
