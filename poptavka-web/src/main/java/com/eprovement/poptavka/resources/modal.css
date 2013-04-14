@@ -297,8 +297,8 @@
 
 .contactUs-modal {
     padding: 10px;
-    margin: -350px 0 0 -532px;
-    width: 1075px;
+    margin: -310px 0 0 -445px;
+    width: 850px;
     height: 600px;
     background: #000000;
 }
@@ -352,7 +352,7 @@
 
 .contactUs-modal .container-fluid {
     background: #E7E3D6;
-    margin: 40px 100px;
+    margin: 30px 15px 15px 15px;
     padding: 25px 25px 10px;
 }
 
@@ -375,7 +375,7 @@
 
 .contactUs-modal input.full-width,
 .contactUs-modal select.full-width {
-    width: 560px;
+    width: 445px;
     height: 40px;
 }
 

@@ -13,7 +13,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -28,7 +27,6 @@ import com.mvp4g.client.view.LazyView;
 public class EmailDialogPopupPresenter
         extends LazyPresenter<EmailDialogPopupPresenter.IEmailDialogPopupView, RootEventBus> {
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private MailRPCServiceAsync mailService;
     private String errorId;
     private int subjectId;
@@ -82,10 +80,7 @@ public class EmailDialogPopupPresenter
             public void onClick(ClickEvent event) {
                 if (view.isValid()) {
                     EmailDialogDetail dialogDetail = view.getEmailDialogDetail();
-                    dialogDetail.setRecipient("pras3xer@gmail.com");
                     dialogDetail.setMessage(extendMessageBody() + dialogDetail.getMessage());
-                    dialogDetail.setSubject(view.getSubjectListBox().getValue(
-                            view.getSubjectListBox().getSelectedIndex()));
                     mailService.sendMail(dialogDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
                         @Override
                         public void onSuccess(Boolean result) {
