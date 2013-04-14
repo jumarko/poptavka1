@@ -63,7 +63,7 @@
                     <g:Label>
                         <ui:msg key="formDemandType">Demand Type:</ui:msg>
                     </g:Label>
-                    <g:ListBox ui:field="demandTypes" styleName='full-width' />
+                    <g:ListBox ui:field="demandTypes" styleName='selector-box full-width' />
                 </b:Column>
             </b:FluidRow>
 
@@ -75,7 +75,7 @@
                     <g:Label>
                         <ui:msg key="formCreationDate">Creation date:</ui:msg>
                     </g:Label>
-                    <mlb:MyListBox ui:field="creationDate" styleName='full-width' />
+                    <mlb:MyListBox ui:field="creationDate" styleName='selector-box full-width' />
                 </b:Column>
             </b:FluidRow>
 

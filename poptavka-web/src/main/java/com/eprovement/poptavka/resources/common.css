@@ -505,6 +505,15 @@ a.toolbar-button-grey {
     border: 1px solid #C09853;
 }
 
+.GKRGINQDCC .selector-box[readonly] {
+    cursor: pointer;
+    background: url(images/advanced-search-triangle-icon.png) no-repeat scroll right 7px #F8F4E4;
+}
+
+.GKRGINQDCC .selector-box[readonly].act {
+    color: #000000;
+}
+
 /* how it works */
 .how-it-works-container {
     width: 1000px;
@@ -623,7 +632,28 @@ a.toolbar-button-grey {
 }
 
 /* MyListBox */
-.myListBox {
+.myListBox {    
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #C2C8D2;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 0 3px #DDDDDD;
+    line-height: 20px;
+    margin: 3px 0 0 -9px;
     z-index: 1060;
     min-width: 0;
+}
+
+.myListBox .suggestPopupMiddleCenter tr:first-child td {
+    border-top: none;
+}
+
+.myListBox .suggestPopupMiddleCenter td {
+    border-top: 1px solid #DADADA;
+    cursor: pointer;
+    padding: 5px 10px;
+    width: 100%;
+}   
+
+.myListBox .suggestPopupMiddleCenter td:hover {
+    color: #bd0000;
 }
