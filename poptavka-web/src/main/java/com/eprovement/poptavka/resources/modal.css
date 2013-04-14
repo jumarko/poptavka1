@@ -294,3 +294,116 @@
     height: 40px;
     float: left;
 }
+
+.contactUs-modal {
+    padding: 10px;
+    margin: -350px 0 0 -532px;
+    width: 1075px;
+    height: 600px;
+    background: #000000;
+}
+
+.contactUs-modal .modal-body {
+    padding: 0;
+    max-height: 600px;
+}
+
+.contactUs-modal .gwt-TabLayoutPanel {
+    height: 100%;
+}
+
+.contactUs-modal .gwt-TabLayoutPanelTab {
+    
+    padding: 0 24px;
+    margin-right: 5px;
+    background: #0c2d42;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: normal;    
+    color: #4d7894;
+    border: 1px solid #031d2d;
+    border-bottom: none;
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+}
+
+.contactUs-modal .gwt-TabLayoutPanelTabs {
+    margin: 10px 10px 0;
+}
+
+.contactUs-modal .gwt-TabLayoutPanelTab-selected {
+    border: 1px solid #f1ecda;    
+    background: #f1ecda;
+    color: #6f6b59;
+}
+
+.contactUs-modal .gwt-TabLayoutPanelContentContainer {
+    background: url(images/advanced-search-content.gif) repeat-x #ffffff;    
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.contactUs-modal .container-fluid {
+    background: #E7E3D6;
+    margin: 40px 100px;
+    padding: 25px 25px 10px;
+}
+
+.contactUs-modal .row-fluid {
+    margin-bottom: 12px;
+}
+
+.contactUs-modal .span11 {
+    margin: 0;
+}
+
+.contactUs-modal .gwt-Label {
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
+    width: 120px;
+    float: left;
+    padding: 0 15px 0 15px;
+}
+
+.contactUs-modal input.full-width,
+.contactUs-modal select.full-width {
+    width: 560px;
+    height: 40px;
+}
+
+.contactUs-modal .input-append {
+    float: left;
+    width: 290px;
+    height: 40px;
+}
+
+.contactUs-modal .input-append input {
+    float: left;
+    width: 270px;
+    height: 40px;
+    margin: 0;
+}
+
+.contactUs-modal .clear-button {
+    margin: 5px 40px 0 0;
+}
+
+.contactUs-modal .well {
+    height: 510px;
+    background: none;
+    margin: 10px 0 0;
+    box-shadow: none;
+    border: none;
+}
+
+.contactUs-modal .well input[type="checkbox"] {
+    margin: 1px 4px 0 0;
+}

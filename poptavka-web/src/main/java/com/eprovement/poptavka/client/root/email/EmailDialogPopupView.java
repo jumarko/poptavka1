@@ -3,9 +3,11 @@ package com.eprovement.poptavka.client.root.email;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter.IEmailDialogPopupView;
 import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.github.gwtbootstrap.client.ui.Modal;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.Editor.Ignore;
@@ -20,11 +22,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.view.ReverseViewInterface;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -38,9 +38,8 @@ import javax.validation.groups.Default;
  * @author ivlcek, Martin Slavkovsky (validation)
  *
  */
-public class EmailDialogPopupView extends PopupPanel
-        implements ReverseViewInterface<EmailDialogPopupPresenter>, IEmailDialogPopupView,
-        ProvidesValidate, Editor<EmailDialogDetail> {
+public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupPresenter>
+    implements IEmailDialogPopupView, ProvidesValidate, Editor<EmailDialogDetail> {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -48,20 +47,6 @@ public class EmailDialogPopupView extends PopupPanel
     private static EmailDialogPopupUiBinder uiBinder = GWT.create(EmailDialogPopupUiBinder.class);
 
     interface EmailDialogPopupUiBinder extends UiBinder<Widget, EmailDialogPopupView> {
-    }
-    /**************************************************************************/
-    /* PRESENTER                                                              */
-    /**************************************************************************/
-    private EmailDialogPopupPresenter presenter;
-
-    @Override
-    public void setPresenter(EmailDialogPopupPresenter presenter) {
-        this.presenter = presenter;
-    }
-
-    @Override
-    public EmailDialogPopupPresenter getPresenter() {
-        return presenter;
     }
 
     /**************************************************************************/
@@ -78,6 +63,7 @@ public class EmailDialogPopupView extends PopupPanel
     /**************************************************************************/
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static final ValidationMessages MSGS_VALIDATION = GWT.create(ValidationMessages.class);
+    @UiField Modal popupPanel;
     @UiField
     TextBox emailFrom;
     @UiField
@@ -117,7 +103,7 @@ public class EmailDialogPopupView extends PopupPanel
         subject.insertItem(MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
 
         //create widget
-        setWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
         // set values from Storage object if user is logged in
         if (Storage.getUser() != null) {
             // user is logged in so we can retrieve his email address
@@ -128,12 +114,11 @@ public class EmailDialogPopupView extends PopupPanel
         this.driver.initialize(this);
         this.driver.edit(emailDialogDetail);
         //style
+        StyleResource.INSTANCE.layout().ensureInjected();
         StyleResource.INSTANCE.common().ensureInjected();
+        StyleResource.INSTANCE.modal().ensureInjected();
         //popup
-        this.setModal(true);
-        this.setGlassEnabled(true);
-        this.center();
-        this.show();
+        popupPanel.show();
     }
 
     /**************************************************************************/
@@ -218,7 +203,7 @@ public class EmailDialogPopupView extends PopupPanel
     /**************************************************************************/
     @Override
     public void hidePopup() {
-        this.hide();
+        popupPanel.hide();
     }
 
     /**************************************************************************/

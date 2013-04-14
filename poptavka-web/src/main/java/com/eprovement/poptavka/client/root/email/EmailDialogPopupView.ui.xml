@@ -3,80 +3,157 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+
     <ui:style>
         .error {
         font-size:10px;
         color: red;
         }
+
+        .search-button {
+        background: url(images/advanced-search-button.png) no-repeat scroll 0 0 transparent;
+        border: medium none;
+        cursor: pointer;
+        float: right;
+        font-weight: bold;
+        height: 34px;
+        padding: 0;
+        width: 54px;
+        }
+
+        .search-list {
+        background: url(images/advanced-search-dropdown.gif) repeat scroll 0 0 transparent;
+        color: #002F51;
+        cursor: pointer;
+        float: right;
+        height: 34px;
+        margin: 0 11px;
+        width: 179px;
+        }
+
+        .search-list-item {
+        line-height: 34px;
+        padding: 0 27px 0 15px;
+        width: 137px;
+        }
+
+        .search-list-dropdown table {
+        background: #ffffff;
+        padding:10px;
+        margin: 3px 0 0 -9px;
+        line-height: 20px;
+        width: 136px;
+        border: 1px solid #C2C8D2;
+        border-radius: 4px;
+        box-shadow: 0 0 3px #DDDDDD;
+        }
+
+        .search-list-dropdown
+        table td:hover {
+        color: #bd0000;
+        cursor:pointer;
+        }
+
+        .advanced-toolbar {
+        background: none repeat scroll 0 0 transparent;
+        height: 34px;
+        position: absolute;
+        right: 20px;
+        width: 330px;
+        z-index: 1500;
+        }
+
+        .search-label {        
+        float: right;
+        line-height: 34px;
+        margin: 0 5px;
+        color: #837f71;
+        }
     </ui:style>
-    <b:FluidContainer>
-        <b:FluidRow>
-            <b:Column size="4">
-                <g:Label>
-                    <ui:msg key="emailDialogTo">To: </ui:msg>
-                </g:Label>
-            </b:Column>
-            <b:Column size="8">
-                <g:Label>
-                    <ui:msg key="emailDialogCustomerSupport">Customer support</ui:msg>
-                </g:Label>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow>    
-            <b:Column size="4">
-                <g:Label>
-                    <ui:msg key="emailDialogSubject">Subject</ui:msg>
-                </g:Label>
-            </b:Column>
-            <b:Column size="8">
-                <g:ListBox ui:field="subject"/>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow>
-            <b:Column size="4">
-                <g:Label>
-                    <ui:msg key="emailDialogEnterYourEmail">Enter your email address</ui:msg>
-                </g:Label>
-            </b:Column>
-            <b:Column size="8">
-                <g:TextBox ui:field="emailFrom"/>
-                <g:Label styleName="{style.error}" ui:field="emailFromErrorLabel"/>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow>
-            <b:Column size="4">
-                <g:Label>
-                    <ui:msg key="emailDialogReEnterYourEmail">Re-enter your email address</ui:msg>
-                </g:Label>
-            </b:Column>
-            <b:Column size="8">
-                <g:TextBox ui:field="reEmailFrom"/>
-                <g:Label styleName="{style.error}" ui:field="reEmailFromErrorLabel"/>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow>
-            <b:Column size="4">
-                <g:Label>
-                    <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
-                </g:Label>
-            </b:Column>
-            <b:Column size="8">
-                <g:TextArea width="400px" height="150px" ui:field="message"/>
-                <g:Label styleName="{style.error}" ui:field="messageErrorLabel"/>
-                <g:Label>
-                    <ui:msg key="emailDialogMaximumChars">Maximum 10000 characters. No HTML, JavaScript.</ui:msg>
-                </g:Label>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow>
-            <b:Column size="12">
-                <g:Button ui:field="sendButton">
-                    <ui:msg key="commonBtnSend">Send</ui:msg>
-                </g:Button>
-                <g:Button ui:field="closeButton">
-                    <ui:msg key="commonBtnClose">Close</ui:msg>
-                </g:Button>
-            </b:Column>
-        </b:FluidRow>
-    </b:FluidContainer>
+
+    <g:HTMLPanel>
+        <b:Modal ui:field="popupPanel" backdrop="NORMAL" keyboard="true" animation="true" dynamicSafe="true"
+                 addStyleNames='{res.modal.contactUsModal}'>
+            <g:TabLayoutPanel barUnit='PX' barHeight='42' animationDuration="1000">
+                <g:tab>
+                    <g:header>
+                        <ui:msg key="footerContactUs">Contact us</ui:msg>
+                    </g:header>
+
+                    <b:FluidContainer>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogTo">To: </ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <g:Label>
+                                    <ui:msg key="emailDialogCustomerSupport">Customer support</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>    
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogSubject">Subject</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <g:ListBox ui:field="subject"/>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogEnterYourEmail">Enter your email address</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <g:TextBox ui:field="emailFrom"/>
+                                <g:Label styleName="{style.error}" ui:field="emailFromErrorLabel"/>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogReEnterYourEmail">Re-enter your email address</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <g:TextBox ui:field="reEmailFrom"/>
+                                <g:Label styleName="{style.error}" ui:field="reEmailFromErrorLabel"/>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <g:TextArea width="400px" height="150px" ui:field="message"/>
+                                <g:Label styleName="{style.error}" ui:field="messageErrorLabel"/>
+                                <g:Label>
+                                    <ui:msg key="emailDialogMaximumChars">Maximum 10000 characters. No HTML, JavaScript.</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="12">
+                                <g:Button ui:field="sendButton">
+                                    <ui:msg key="commonBtnSend">Send</ui:msg>
+                                </g:Button>
+                                <g:Button ui:field="closeButton" styleName="clear-button">
+                                    <ui:msg key="commonBtnClose">Close</ui:msg>
+                                </g:Button>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:FluidContainer>
+                </g:tab>
+            </g:TabLayoutPanel>
+        </b:Modal>
+    </g:HTMLPanel>
 </ui:UiBinder>
