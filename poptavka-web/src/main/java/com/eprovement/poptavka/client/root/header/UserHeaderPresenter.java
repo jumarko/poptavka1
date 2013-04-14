@@ -12,13 +12,18 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IUserHeaderView.IUserHeaderPresenter;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PushButton;
 import java.util.logging.Logger;
 
 @Presenter(view = UserHeaderView.class)
@@ -66,6 +71,27 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
 //                Cookies.setCookie("login", "no");
             }
         });
+        view.getPushButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.ADMIN)) {
+                    eventBus.goToAdminModule(null, Constants.NONE);
+                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                        BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                    eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+                } else {
+                    eventBus.goToClientDemandsModule(null, Constants.NONE);
+                }
+            }
+        });
+        view.getPushSystemButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToMessagesModule(null, Constants.NONE);
+            }
+        });
     }
 
     public void onAtAccount() {
@@ -75,9 +101,43 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
 
     }
 
+    /**
+     * Loads notification icons with adequate numbers of unread messages for user header section.
+     * @param numberOfMessages carrying number of unread demand and system messages
+     */
     public void onSetUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages) {
-        view.getNewMessagesCount().setText(String.valueOf(numberOfMessages.getUnreadMessagesCount()));
-        view.getNewSystemMessagesCount().setText(String.valueOf(numberOfMessages.getUnreadSystemMessageCount()));
+        if (numberOfMessages.getUnreadMessagesCount() == 0) {
+            setButton(view.getPushButton(), new Image(Storage.RSCS.images().envelopeImageEmpty()), false, null);
+        } else {
+            view.getNewMessagesCount().setText(String.valueOf(numberOfMessages.getUnreadMessagesCount()));
+            setButton(view.getPushButton(), new Image(Storage.RSCS.images().envelopeImage()), true,
+                    new Image(Storage.RSCS.images().envelopeHoverImage()));
+        }
+        if (numberOfMessages.getUnreadSystemMessageCount() == 0) {
+            setButton(view.getPushSystemButton(), new Image(Storage.RSCS.images().flagImageEmpty()), false, null);
+        } else {
+            view.getNewSystemMessagesCount().setText(String.valueOf(numberOfMessages.getUnreadSystemMessageCount()));
+            setButton(view.getPushSystemButton(), new Image(Storage.RSCS.images().flagImage()), true,
+                    new Image(Storage.RSCS.images().flagHoverImage()));
+        }
+    }
+
+    /**
+     * Define images for hovering and click actions for given button.
+     * @param button to be adjusted
+     * @param image default image
+     * @param upHoveringFace is hovering actions enabled for this button
+     * @param upHoveringImage to be displayed if hovering action is enabled
+     */
+    private void setButton(PushButton button, Image image, boolean upHoveringFace, Image upHoveringImage) {
+        if (upHoveringFace) {
+            button.getUpHoveringFace().setImage(upHoveringImage);
+        } else {
+            button.getUpHoveringFace().setImage(image);
+        }
+        button.getUpFace().setImage(image);
+        button.getDownFace().setImage(image);
+        button.getDownHoveringFace().setImage(image);
     }
 
     /**
