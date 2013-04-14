@@ -27,7 +27,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -87,7 +86,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     @UiField DockLayoutPanel detailPanel;
     @UiField Label bannerLabel, filterLabel;
     @UiField DemandDetailView demandDetail;
-    @UiField Button offerBtn;
     /** Class attributes. **/
     private List<String> gridColumns = Arrays.asList(new String[]{"createdDate", "title", "locality", "endDate"});
     // Using category detail key provider in selection model, allow us to have
@@ -112,9 +110,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         initTableAndPager();
         initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
-
-        // set offerBtn1 enabled to false as default
-        offerBtn.setEnabled(false);
 
         StyleResource.INSTANCE.layout().ensureInjected();
     }
@@ -247,14 +242,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     @Override
     public Label getFilterLabel() {
         return filterLabel;
-    }
-
-    /**
-     * Buttons. *
-     */
-    @Override
-    public Button getOfferBtn() {
-        return offerBtn;
     }
 
     /**

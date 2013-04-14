@@ -29,7 +29,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -79,7 +78,6 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField DockLayoutPanel detailPanel;
     @UiField Label reklama, filterLabel;
     @UiField UserDetailView userDetailView;
-    @UiField Button contactBtn;
     /** Class Attributes. **/
     private @Inject FooterView footerView;
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
@@ -255,12 +253,6 @@ public class HomeSuppliersView extends OverflowComposite
     public void hideSuppliersDetail() {
         reklama.setVisible(true);
         detailPanel.setVisible(false);
-    }
-
-    /** Buttons. **/
-    @Override
-    public Button getContactBtn() {
-        return contactBtn;
     }
 
     /** Other. **/

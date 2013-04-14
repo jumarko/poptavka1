@@ -160,6 +160,6 @@ public interface Images extends ClientBundle {
     @Source("contact.jpg")
     ImageResource contactImage();
 
-    @Source("rate_6.png")
-    ImageResource rate6();
+    @Source("star-gold.png")
+    ImageResource starGold();
 }

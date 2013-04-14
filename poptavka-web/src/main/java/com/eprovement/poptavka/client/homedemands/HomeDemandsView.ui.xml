@@ -45,11 +45,6 @@
             <g:DockLayoutPanel unit="PX">
                 <g:north size="65">
                     <g:HTMLPanel styleName='{res.layout.toolbarItemsBlock}'>
-                        <g:Button ui:field="offerBtn"
-                                  styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>
-                            <img src="images/button-cross-icon.png"/>
-                            <ui:msg key="homeDemandsOfferBtn">Send Offer</ui:msg>
-                        </g:Button>
                         <s:UniversalPagerWidget ui:field='pager' />
                     </g:HTMLPanel>
                 </g:north>

@@ -39,7 +39,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         OVERALL_RATING("overalRating"),
         TAX_ID("taxId"),
         WEBSITE("website");
-
         private String value;
 
         private UserField(String value) {
@@ -76,7 +75,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     @NotBlank(message = "{userNotBlankTaxNumber}")
     private String taxId;
     @Pattern(regexp = "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
-    message = "{userPatternWebsite}")
+            message = "{userPatternWebsite}")
     private String website;
     /** Class lists. **/
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();
@@ -238,6 +237,27 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
 
     public void setOveralRating(int overallRating) {
         this.overalRating = overallRating;
+    }
+
+    /**
+     * Display company name if available, if not, display person's name as
+     * concatenated string of first and last name.
+     * @return display string
+     */
+    public String getDisplayName() {
+        String result = "";
+
+        if (!getCompanyName().isEmpty()) {
+            result = getCompanyName();
+        } else {
+            if (!getPersonFirstName().isEmpty()) {
+                result = getPersonFirstName();
+            }
+            if (!getPersonLastName().isEmpty()) {
+                result += ", " + getPersonLastName();
+            }
+        }
+        return result;
     }
 
     /**************************************************************************/
