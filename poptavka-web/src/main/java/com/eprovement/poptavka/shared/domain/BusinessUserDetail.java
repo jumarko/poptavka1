@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
 
@@ -10,6 +11,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -33,6 +36,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         PASSWORD("password"),
         PHONE("phone"),
         DESCRIPTION("description"),
+        OVERALL_RATING("overallRating"),
         TAX_ID("taxId"),
         WEBSITE("website");
 
@@ -82,6 +86,8 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     /** Others. **/
     private BusinessType businessType;
     private Verification verification;
+    @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
+    @Max(value = 100, message = "{userMaxRating}", groups = SearchGroup.class)
     private int overallRating = -1;
 
     /**************************************************************************/

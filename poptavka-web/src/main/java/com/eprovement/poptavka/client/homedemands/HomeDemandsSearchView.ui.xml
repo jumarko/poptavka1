@@ -3,8 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             xmlns:mlb="urn:import:com.eprovement.poptavka.client.common.myListBox"
-             xmlns:b2="urn:import:com.github.gwtbootstrap.datepicker.client.ui">
+             xmlns:mlb="urn:import:com.eprovement.poptavka.client.common.myListBox">
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />

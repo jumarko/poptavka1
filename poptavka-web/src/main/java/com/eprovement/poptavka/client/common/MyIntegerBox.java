@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.common;
 
+import com.github.gwtbootstrap.client.ui.IntegerBox;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.user.client.ui.IntegerBox;
 import java.text.ParseException;
 
 /**
