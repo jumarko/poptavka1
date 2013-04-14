@@ -40,6 +40,7 @@ import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -210,7 +211,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void atAccount();
 
     @Event(handlers = UserHeaderPresenter.class)
-    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+    void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     /**
      * This method populates Storage i.e. our custom GWT session object with UserDetail.

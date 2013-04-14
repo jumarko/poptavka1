@@ -34,6 +34,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -99,7 +100,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
             List<LocalityDetail> categoriesToSet);
 
     @Event(forwardToParent = true)
-    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+    void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     /**************************************************************************/
     /* Business Initialization events                                         */

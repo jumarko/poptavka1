@@ -16,6 +16,7 @@ import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.event.EventBusWithLookup;
@@ -61,7 +62,7 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
     void userMenuStyleChange(int loadedModule);
 
     @Event(forwardToParent = true)
-    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+    void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     /**************************************************************************/
     /* History events                                                         */

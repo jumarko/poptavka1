@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class UnreadMessagesDetail implements IsSerializable {
 
     private int unreadMessagesCount;
+    private int unreadSystemMessageCount;
 
     public UnreadMessagesDetail() {
         // empty
@@ -32,4 +33,17 @@ public class UnreadMessagesDetail implements IsSerializable {
         this.unreadMessagesCount = unreadMessagesCount;
     }
 
+    /**
+     * @return the unreadSystemMessageCount
+     */
+    public int getUnreadSystemMessageCount() {
+        return unreadSystemMessageCount;
+    }
+
+    /**
+     * @param unreadSystemMessageCount the unreadSystemMessageCount to set
+     */
+    public void setUnreadSystemMessageCount(int unreadSystemMessageCount) {
+        this.unreadSystemMessageCount = unreadSystemMessageCount;
+    }
 }

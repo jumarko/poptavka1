@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresent
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -68,7 +69,7 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(forwardToParent = true)
-    void setUpdatedUnreadMessagesCount(int numberOfMessages);
+    void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
