@@ -484,7 +484,7 @@ a,a:visited,a:hover {
 }
 
 .gwt-PopupPanel {
-    border: 1px solid #006b9f;
+    border: 1px solid #8a8267;
     padding: 10px;
     background: white;
     box-shadow: 0 0 6px #000000;
@@ -850,15 +850,21 @@ a,a:visited,a:hover {
 .gwt-SuggestBoxPopup .item {
     padding: 2px 6px;
     color: #424242;
-    cursor: default;
+    cursor: hand;
+    cursor: pointer;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
 }
 
 .gwt-SuggestBoxPopup .item-selected {
-    background: #b7d6f6;
+    background: #f1ecda;
+    border-top: 1px solid #d8d3c3;
+    border-bottom: 1px solid #d8d3c3;
 }
 
 .gwt-SuggestBoxPopup .suggestPopupContent {
     background: white;
+    border: 1px solid #8A8267;
 }
 
 .gwt-SuggestBoxPopup .suggestPopupTopCenter {
@@ -1204,7 +1210,7 @@ a,a:visited,a:hover {
 }
 
 .gwt-DatePicker {
-    border: 1px solid #A2BBDD;
+    border: 1px solid #8a8267;
     cursor: default;
 }
 
@@ -1225,13 +1231,13 @@ a,a:visited,a:hover {
 }
 
 .datePickerWeekdayLabel,.datePickerWeekendLabel {
-    background: #C3D9FF;
+    background: #f1ecda;
     padding: 0px 4px 2px;
     cursor: default;
 }
 
 .datePickerDay {
-    padding: 4px;
+    padding: 7px;
     cursor: hand;
     cursor: pointer;
 }
@@ -1267,7 +1273,7 @@ a,a:visited,a:hover {
 }
 
 .datePickerMonthSelector {
-    background: #C3D9FF;
+    background: #CECBBE;
     width: 100%;
 }
 
@@ -1277,13 +1283,14 @@ td.datePickerMonth {
     white-space: nowrap;
     font-size: 70%;
     font-weight: bold;
-    color: blue;
+    color: #51492e;
+    height: 20px;
 }
 
 .datePickerPreviousButton,.datePickerNextButton {
     font-size: 120%;
     line-height: 1em;
-    color: blue;
+    color: #6f6b59;
     cursor: hand;
     cursor: pointer;
     padding: 0px 4px;

@@ -17,11 +17,20 @@
         margin: 0 10px;
         color: #000000;
         }
+        
+        .newMessageContainer {
+        float:right;
+        position: relative;
+        }
 
         .newMessageCount {
-        float: right;
+        color: #FFFFFF;
         margin: 0;
-        color: #000000;
+        position: absolute;
+        right: 9px;
+        text-align: center;
+        top: 2px;
+        width: 19px;
         }
 
         .pushButton {
@@ -80,14 +89,16 @@
         <div class='{res.layout.loginBar}'>
             <g:Button ui:field="help" styleName='{res.layout.helpButton}'>
             </g:Button>
-            <g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
-            <g:PushButton ui:field='pushButton' enabled='true'
-                          styleName='{style.pushButton}'>
-                <g:upFace image='{res.images.envelopeImage}' />
-                <g:upHoveringFace image='{res.images.envelopeHoverImage}' />
-                <g:downFace image='{res.images.envelopeImage}' />
-                <g:downHoveringFace image='{res.images.envelopeImage}' />
-            </g:PushButton>
+            <g:HTMLPanel styleName='{style.newMessageContainer}'>
+                <g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
+                <g:PushButton ui:field='pushButton' enabled='true'
+                              styleName='{style.pushButton}'>
+                    <g:upFace image='{res.images.envelopeImage}' />
+                    <g:upHoveringFace image='{res.images.envelopeHoverImage}' />
+                    <g:downFace image='{res.images.envelopeImage}' />
+                    <g:downHoveringFace image='{res.images.envelopeImage}' />
+                </g:PushButton>
+            </g:HTMLPanel>
         </div>
     </g:HTMLPanel>
 </ui:UiBinder>
