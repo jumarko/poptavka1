@@ -205,7 +205,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             detail.setValidTo(um.getMessage().getDemand().getValidTo());
             detail.setEndDate(um.getMessage().getDemand().getEndDate());
             detail.setTitle(um.getMessage().getDemand().getTitle());
-            detail.setPrice(um.getMessage().getDemand().getPrice().toPlainString());
+            detail.setPrice(um.getMessage().getDemand().getPrice());
 
             supplierPotentialDemands.add(detail);
         }
@@ -269,7 +269,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setDemandId(offer.getDemand().getId());
             sod.setTitle(offer.getDemand().getTitle());
             // offer part
-            sod.setPrice(offer.getPrice().toPlainString());
+            sod.setPrice(offer.getPrice());
             sod.setDeliveryDate(offer.getFinishDate());
             sod.setOfferId(offer.getId());
             // Message part
@@ -343,7 +343,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setDemandId(offer.getDemand().getId());
             sod.setTitle(offer.getDemand().getTitle());
             // offer part
-            sod.setPrice(offer.getPrice().toPlainString());
+            sod.setPrice(offer.getPrice());
             sod.setDeliveryDate(offer.getFinishDate());
             sod.setOfferId(offer.getId());
             // Message part
@@ -422,7 +422,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setDemandId(offer.getDemand().getId());
             sod.setTitle(offer.getDemand().getTitle());
             // offer part
-            sod.setPrice(offer.getPrice().toPlainString());
+            sod.setPrice(offer.getPrice());
             sod.setDeliveryDate(offer.getFinishDate());
             sod.setOfferId(offer.getId());
             // Message part
@@ -623,7 +623,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         sod.setClientId(offer.getDemand().getClient().getId());
         sod.setDemandId(offer.getDemand().getId());
-        sod.setPrice(offer.getPrice().toPlainString());
+        sod.setPrice(offer.getPrice());
         sod.setDeliveryDate(offer.getFinishDate());
         sod.setOfferId(offer.getId());
         sod.setReceivedDate(offer.getCreated());

@@ -248,7 +248,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return ((IUniversalDetail) object).getPrice();
+                            return Storage.CURRENCY_FORMAT.format(((IUniversalDetail) object).getPrice());
                         }
                     });
         }

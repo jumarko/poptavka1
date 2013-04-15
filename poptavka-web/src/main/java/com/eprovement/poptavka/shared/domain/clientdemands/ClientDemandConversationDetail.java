@@ -6,6 +6,7 @@ import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
+import java.math.BigDecimal;
 
 
 import java.util.Date;
@@ -214,7 +215,7 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
     }
 
     @Override
-    public String getPrice() {
+    public BigDecimal getPrice() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

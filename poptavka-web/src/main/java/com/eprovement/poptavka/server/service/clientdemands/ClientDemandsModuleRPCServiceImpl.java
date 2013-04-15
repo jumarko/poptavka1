@@ -449,7 +449,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set Offer attributes
             codod.setOfferId(offer.getId());
             codod.setDemandId(offer.getDemand().getId());
-            codod.setPrice(offer.getPrice().toPlainString());
+            codod.setPrice(offer.getPrice());
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
             // set demand attributes
@@ -545,7 +545,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());
-            codod.setPrice(offer.getPrice().toPlainString());
+            codod.setPrice(offer.getPrice());
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
             // set Demand attributes
@@ -617,7 +617,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());
-            codod.setPrice(offer.getPrice().toPlainString());
+            codod.setPrice(offer.getPrice());
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
             // set Demand attributes

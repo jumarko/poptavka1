@@ -9,6 +9,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
+import java.math.BigDecimal;
 
 import java.util.Date;
 
@@ -185,8 +186,8 @@ public class FullOfferDetail implements IsSerializable, TableDisplay, IUniversal
     }
 
     @Override
-    public String getPrice() {
-        return demandDetail.getPrice().toString();
+    public BigDecimal getPrice() {
+        return demandDetail.getPrice();
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -71,7 +72,7 @@ public interface IUniversalDetail {
 
     String getTitle();
 
-    String getPrice();
+    BigDecimal getPrice();
 
     // Offer part
     //--------------------------------------------------------------------------
