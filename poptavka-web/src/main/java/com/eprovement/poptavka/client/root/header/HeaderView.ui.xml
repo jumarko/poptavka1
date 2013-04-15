@@ -31,10 +31,5 @@
 			</div>
 		</div>
 
-		<!-- help button -->
-		<div class='{res.layout.loginBar}'>
-			<g:Button styleName='{res.layout.helpButton}'>
-			</g:Button>
-		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

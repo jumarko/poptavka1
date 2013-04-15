@@ -33,7 +33,7 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     @UiField Label newMessagesCount;
     @UiField PushButton pushSystemButton;
     @UiField Label newSystemMessagesCount;
-    @UiField MenuItem username, menuLogOut, menuMyProfile, menuHelp, menuCustomerService;
+    @UiField MenuItem username, menuLogOut, menuMyProfile;
     @UiField MyMenuItem logoutMenuItemBtn;
     @UiField MenuBar logoutMenuBarBtn;
 
@@ -76,16 +76,6 @@ public class UserHeaderView extends ReverseCompositeView<IUserHeaderPresenter>
     @Override
     public MenuItem getMenuMyProfile() {
         return menuMyProfile;
-    }
-
-    @Override
-    public MenuItem getMenuHelp() {
-        return menuHelp;
-    }
-
-    @Override
-    public MenuItem getMenuCustomerService() {
-        return menuCustomerService;
     }
 
     /**

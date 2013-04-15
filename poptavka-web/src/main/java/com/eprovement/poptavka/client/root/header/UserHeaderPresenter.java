@@ -51,19 +51,6 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
             }
         });
 
-        view.getMenuHelp().setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                Window.alert("Implement Help Command in UserHeaderMenuCommands class");
-            }
-        });
-
-        view.getMenuCustomerService().setScheduledCommand(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                Window.alert("Implement Cutom Service Command in UserHeaderMenuCommands class.");
-            }
-        });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
             @Override
             public void onWindowClosing(ClosingEvent event) {

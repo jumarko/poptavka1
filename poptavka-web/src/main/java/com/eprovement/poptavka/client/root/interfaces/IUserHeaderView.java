@@ -20,10 +20,6 @@ public interface IUserHeaderView extends IsWidget {
 
     MenuItem getMenuMyProfile();
 
-    MenuItem getMenuHelp();
-
-    MenuItem getMenuCustomerService();
-
     PushButton getPushButton();
 
     PushButton getPushSystemButton();
