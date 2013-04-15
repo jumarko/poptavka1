@@ -145,7 +145,7 @@ public class ClientOffersView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return ((ClientDemandDetail) object).getPrice();
+                        return Storage.CURRENCY_FORMAT.format(((ClientDemandDetail) object).getPrice());
                     }
                 });
 

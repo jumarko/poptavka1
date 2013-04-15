@@ -4,6 +4,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CustomImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
+import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
@@ -407,6 +408,22 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         addColumn(urgencyColumn, urgencyHeader);
         setColumnWidth(urgencyColumn, Constants.COL_WIDTH_URGENT);
         return urgencyColumn;
+    }
+
+    public Column<T, Integer> addRatingColumn() {
+        Column<T, Integer> ratingCol = new Column<T, Integer>(new RatingCell()) {
+            @Override
+            public Integer getValue(T object) {
+                return ((TableDisplayRating) object).getRating();
+            }
+        };
+        //set column style
+        ratingCol.setSortable(true);
+        ratingCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
+        //put it together
+        addColumn(ratingCol, Storage.MSGS.columnRating());
+        setColumnWidth(ratingCol, Constants.COL_WIDTH_RATING);
+        return ratingCol;
     }
 
     /**

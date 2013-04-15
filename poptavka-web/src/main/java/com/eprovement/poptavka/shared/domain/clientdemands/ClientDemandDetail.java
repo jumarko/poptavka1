@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayRating;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
@@ -15,7 +16,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientDemandDetail implements IsSerializable, TableDisplay {
+public class ClientDemandDetail implements IsSerializable, TableDisplay, TableDisplayRating {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -26,7 +27,7 @@ public class ClientDemandDetail implements IsSerializable, TableDisplay {
     private long threadRootId;
     private DemandStatus demandStatus;
     private String demandTitle; //title
-    private BigDecimal price = null;
+    private BigDecimal price;
     private Date endDate;
     private Date validToDate;
     private boolean isRead = false;
@@ -116,8 +117,8 @@ public class ClientDemandDetail implements IsSerializable, TableDisplay {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public String getPrice() {
-        return price == null ? "N/A" : price.toString();
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public void setPrice(BigDecimal price) {

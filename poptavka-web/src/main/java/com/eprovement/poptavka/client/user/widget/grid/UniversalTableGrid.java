@@ -36,7 +36,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private Column<IUniversalDetail, Boolean> checkColumn;
     private Column<IUniversalDetail, Boolean> starColumn;
     private Column<IUniversalDetail, String> demandTitleColumn;
-    private Column<IUniversalDetail, String> ratingColumn;
+    private Column<IUniversalDetail, Integer> ratingColumn;
     private Column<IUniversalDetail, String> priceColumn;
     private Column<IUniversalDetail, Date> urgencyColumn;
     private Column<IUniversalDetail, String> receiveDateColumn;
@@ -191,7 +191,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         starColumn = addStarColumn();
 
         addDemandTitleColumn();
-        addRatingColumn();
+        ratingColumn = addRatingColumn();
         addPriceColumn();
 
         if (gridColumns.contains(URGENCY_COLUMN)) {
@@ -226,20 +226,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         }
     }
 
-    private void addRatingColumn() {
-        if (gridColumns.contains(RATING_COLUMN)) {
-            ratingColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnRating(),
-                    true, Constants.COL_WIDTH_RATING,
-                    new UniversalAsyncGrid.GetValue<String>() {
-                        @Override
-                        public String getValue(Object object) {
-                            return Integer.toString(((IUniversalDetail) object).getRating());
-                        }
-                    });
-        }
-    }
-
     private void addPriceColumn() {
         if (gridColumns.contains(PRICE_COLUMN)) {
             priceColumn = addColumn(
@@ -248,7 +234,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return ((IUniversalDetail) object).getPrice();
+                            return Storage.CURRENCY_FORMAT.format(((IUniversalDetail) object).getPrice());
                         }
                     });
         }
@@ -310,7 +296,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         return finnishDateColumn;
     }
 
-    public Column<IUniversalDetail, String> getRatingColumn() {
+    public Column<IUniversalDetail, Integer> getRatingColumn() {
         return ratingColumn;
     }
 

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayRating;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -12,7 +13,7 @@ import java.util.Collection;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
-public class FullSupplierDetail implements IsSerializable {
+public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -89,6 +90,11 @@ public class FullSupplierDetail implements IsSerializable {
 
     public void setUserData(BusinessUserDetail userData) {
         this.userData = userData;
+    }
+
+    @Override
+    public int getRating() {
+        return userData.getOverallRating();
     }
 
     /**************************************************************************/

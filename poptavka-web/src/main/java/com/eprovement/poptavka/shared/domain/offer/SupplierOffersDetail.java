@@ -7,6 +7,7 @@ package com.eprovement.poptavka.shared.domain.offer;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
+import java.math.BigDecimal;
 
 import java.util.Date;
 
@@ -27,7 +28,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     private long userMessageId;
     private boolean isStarred;
     private String supplierName;
-    private String price;
+    private BigDecimal price;
     private Integer rating;
     private Date receivedDate;
     private Date deliveryDate;
@@ -148,14 +149,14 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
      * @return the price
      */
     @Override
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
     /**
      * @param price the price to set
      */
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

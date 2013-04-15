@@ -16,7 +16,6 @@ import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TreeNode;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -67,9 +66,6 @@ public class HomeDemandsPresenter
 
         //Filter
         Label getFilterLabel();
-
-        //Buttons
-        Button getOfferBtn();
 
         //Other
         Widget getWidgetView();

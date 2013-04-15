@@ -10,6 +10,7 @@ import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
+import java.math.BigDecimal;
 
 import java.util.Date;
 
@@ -41,7 +42,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable, IUniversal
     private Date validTo;
     private Date endDate; // column 4 - I believe this field is used to make urgency icon in our table
     private String title; // column 3
-    private String price; // column ? - maybe we will not display this in table
+    private BigDecimal price; // column ? - maybe we will not display this in table
     // Supplier part
     private long supplierId;
 
@@ -308,14 +309,14 @@ public class SupplierPotentialDemandDetail implements IsSerializable, IUniversal
      * @return the price
      */
     @Override
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
     /**
      * @param price the price to set
      */
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -72,12 +72,6 @@
                     <g:MenuItem ui:field="menuMyProfile">
                         <ui:msg key="userHeaderMyProfile">My profile</ui:msg>
                     </g:MenuItem>
-                    <g:MenuItem ui:field="menuHelp">
-                        <ui:msg key="userHeaderHelp">Help</ui:msg>
-                    </g:MenuItem>
-                    <g:MenuItem ui:field="menuCustomerService">
-                        <ui:msg key="userHeaderCustomerService">Customer Service</ui:msg>
-                    </g:MenuItem>
                     <g:MenuItem ui:field="menuLogOut"
                                 addStyleNames='{style.logout-button}'>
                         <ui:msg key="userHeaderLogOut">Log Out</ui:msg>
@@ -87,8 +81,6 @@
         </g:MenuBar>
 
         <div class='{res.layout.loginBar}'>
-            <g:Button ui:field="help" styleName='{res.layout.helpButton}'>
-            </g:Button>
             <g:HTMLPanel styleName='{style.newMessageContainer}'>
                 <g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
                 <g:PushButton ui:field='pushButton' enabled='true'

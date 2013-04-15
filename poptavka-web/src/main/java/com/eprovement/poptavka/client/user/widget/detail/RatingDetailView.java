@@ -84,7 +84,7 @@ public class RatingDetailView extends Composite {
     }
 
     private void setDefaultRateChoice(int rating, Image image, Heading heading, Label comment) {
-        image.setResource(Storage.RSCS.images().rate6());
+        image.setResource(Storage.RSCS.images().starGold());
         switch (rating) {
             case Constants.RATE_1:
                 heading.setText(Storage.MSGS.feedbackHeading1());

@@ -12,7 +12,6 @@ import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -29,7 +28,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -79,7 +77,6 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField DockLayoutPanel detailPanel;
     @UiField Label reklama, filterLabel;
     @UiField UserDetailView userDetailView;
-    @UiField Button contactBtn;
     /** Class Attributes. **/
     private @Inject FooterView footerView;
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
@@ -185,12 +182,7 @@ public class HomeSuppliersView extends OverflowComposite
 
         // SupplierRating.
         /**************************************************************************/
-        Column<FullSupplierDetail, RatingCell> ratingCol = new IdentityColumn(new RatingCell());
-        //set column style
-        ratingCol.setSortable(true);
-        ratingCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
-        dataGrid.addColumn(ratingCol, Storage.MSGS.columnRating());
-        dataGrid.setColumnWidth(ratingCol, Constants.COL_WIDTH_RATING);
+        dataGrid.addRatingColumn();
 
         // Address.
         /**************************************************************************/
@@ -255,12 +247,6 @@ public class HomeSuppliersView extends OverflowComposite
     public void hideSuppliersDetail() {
         reklama.setVisible(true);
         detailPanel.setVisible(false);
-    }
-
-    /** Buttons. **/
-    @Override
-    public Button getContactBtn() {
-        return contactBtn;
     }
 
     /** Other. **/
