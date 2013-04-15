@@ -27,7 +27,10 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
                 filter = new Filter(filterItem.getItem(), filterItem.getValue(), Filter.OP_EQUAL);
                 break;
             case FilterItem.OPERATION_LIKE:
-                filter = new Filter(filterItem.getItem(), filterItem.getValue(), Filter.OP_LIKE);
+                filter = new Filter(
+                        filterItem.getItem(),
+                        "%".concat((String) filterItem.getValue()).concat("%"),
+                        Filter.OP_LIKE);
                 break;
             case FilterItem.OPERATION_IN:
                 filter = new Filter(filterItem.getItem(), filterItem.getValue(), Filter.OP_IN);

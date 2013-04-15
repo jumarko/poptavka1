@@ -36,7 +36,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         PASSWORD("password"),
         PHONE("phone"),
         DESCRIPTION("description"),
-        OVERALL_RATING("overallRating"),
+        OVERALL_RATING("overalRating"),
         TAX_ID("taxId"),
         WEBSITE("website");
 
@@ -88,7 +88,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     private Verification verification;
     @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
     @Max(value = 100, message = "{userMaxRating}", groups = SearchGroup.class)
-    private int overallRating = -1;
+    private int overalRating = -1;
 
     /**************************************************************************/
     /* Constuctors                                                            */
@@ -232,12 +232,12 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         this.verification = Verification.valueOf(verification);
     }
 
-    public int getOverallRating() {
-        return overallRating;
+    public int getOveralRating() {
+        return overalRating;
     }
 
-    public void setOverallRating(int overallRating) {
-        this.overallRating = overallRating;
+    public void setOveralRating(int overallRating) {
+        this.overalRating = overallRating;
     }
 
     /**************************************************************************/
@@ -258,7 +258,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         str.append(", addresses=" + addresses);
         str.append(", verification=" + verification);
         str.append(", businessType=" + businessType);
-        str.append(", ranking=" + overallRating);
+        str.append(", ranking=" + overalRating);
         str.append('}');
         return str.toString();
     }

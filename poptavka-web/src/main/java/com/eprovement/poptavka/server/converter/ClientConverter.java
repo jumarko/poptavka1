@@ -30,7 +30,7 @@ public final class ClientConverter extends AbstractConverter<Client, FullClientD
         if (source.getBusinessUser() != null) {
             detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
             if (source.getOveralRating() != null) {
-                detail.getUserData().setOverallRating(source.getOveralRating());
+                detail.getUserData().setOveralRating(source.getOveralRating());
             }
         }
         if (source.getSupplierBlacklist() != null) {

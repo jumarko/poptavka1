@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
@@ -29,9 +30,7 @@ public class HomeSuppliersSearchView extends Composite implements
     @UiField TextBox companyName, supplierDescription;
     @UiField Button clearBtn;
     /** Search Fields. **/
-    private static final String FIELD_NAME = "businessUser.businessUserData.companyName";
-    private static final String FIELD_DESCRIPTION = "description";
-    private static final String FIELD_RATING = "overalRating";
+    private static final String PATH_TO_BUSINESS_USER = "businessUser.businessUserData.";
 
     public HomeSuppliersSearchView() {
         initValidationMonitors();
@@ -49,17 +48,30 @@ public class HomeSuppliersSearchView extends Composite implements
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!companyName.getText().isEmpty()) {
-            filters.add(new FilterItem(FIELD_NAME, FilterItem.OPERATION_LIKE, companyName.getText()));
+            filters.add(new FilterItem(
+                    PATH_TO_BUSINESS_USER.concat(UserField.COMPANY_NAME.getValue()),
+                    FilterItem.OPERATION_LIKE, companyName.getText()));
+            filters.add(new FilterItem(
+                    PATH_TO_BUSINESS_USER.concat(UserField.FIRST_NAME.getValue()),
+                    FilterItem.OPERATION_LIKE, companyName.getText()));
+            filters.add(new FilterItem(
+                    PATH_TO_BUSINESS_USER.concat(UserField.LAST_NAME.getValue()),
+                    FilterItem.OPERATION_LIKE, companyName.getText()));
         }
         if (!supplierDescription.getText().isEmpty()) {
-            filters.add(new FilterItem(FIELD_DESCRIPTION, FilterItem.OPERATION_LIKE,
-                    supplierDescription.getText()));
+            filters.add(new FilterItem(
+                    PATH_TO_BUSINESS_USER.concat(UserField.DESCRIPTION.getValue()),
+                    FilterItem.OPERATION_LIKE, supplierDescription.getText()));
         }
         if (ratingMonitorFrom.getValue() != null) {
-            filters.add(new FilterItem(FIELD_RATING, FilterItem.OPERATION_FROM, ratingMonitorFrom.getValue()));
+            filters.add(new FilterItem(
+                    UserField.OVERALL_RATING.getValue(),
+                    FilterItem.OPERATION_FROM, ratingMonitorFrom.getValue()));
         }
         if (ratingMonitorTo.getValue() != null) {
-            filters.add(new FilterItem(FIELD_RATING, FilterItem.OPERATION_TO, ratingMonitorTo.getValue()));
+            filters.add(new FilterItem(
+                    UserField.OVERALL_RATING.getValue(),
+                    FilterItem.OPERATION_TO, ratingMonitorTo.getValue()));
         }
         return filters;
     }
