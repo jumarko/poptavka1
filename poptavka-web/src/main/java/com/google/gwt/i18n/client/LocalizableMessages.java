@@ -601,6 +601,15 @@ public interface LocalizableMessages extends Messages {
 
     /*** 8 - Client Demands module view ********************************* 8 ***/
     String clientDemandsToolbarLabel();
+    /** ClientDemandsWelcomeView.ui. **/
+    SafeHtml youHave();
+    SafeHtml inMyDemands();
+    SafeHtml inOfferedDemands();
+    SafeHtml inAssignedDemands();
+    SafeHtml inClosedDemands();
+    SafeHtml noMessage();
+    SafeHtml oneMessage();
+    SafeHtml manyMessages(String number);
     /** ClientDemandsView.ui. **/
     String clientDemandsTableTitle();
     String clientDemandsBackBtn();

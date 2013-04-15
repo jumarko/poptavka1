@@ -9,6 +9,7 @@ import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.inject.Inject;
@@ -68,6 +69,22 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 break;
         }
     }
+
+    //*************************************************************************/
+    // Retrieving methods - SUPPLIER WELCOME DASHBOARD                        */
+    //*************************************************************************/
+    public void onGetSupplierDashboardDetail() {
+        supplierDemandsService.getSupplierDashboardDetail(Storage.getUser().getUserId(), Storage.getSupplierId(),
+                new SecuredAsyncCallback<SupplierDashboardDetail>(eventBus) {
+
+                    @Override
+                    public void onSuccess(SupplierDashboardDetail result) {
+                        eventBus.loadSupplierDashboardDetail(result);
+                    }
+                });
+    }
+
+
     //*************************************************************************/
     // Retrieving methods                                                     */
     //*************************************************************************/

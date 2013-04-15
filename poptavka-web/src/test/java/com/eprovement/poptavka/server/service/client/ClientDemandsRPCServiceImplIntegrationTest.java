@@ -16,6 +16,7 @@ import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -187,6 +188,19 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         }
     }
 
+    @Test
+    public void testGetClientDashboardDetail() {
+        long userId = 111111112;
+        ClientDashboardDetail dashboard = clientDemandsRPCService.getClientDashboardDetail(userId);
+        Assert.assertEquals("Expected number of unread messages for myDemands doesn't match the result", 1,
+                dashboard.getUnreadMessagesMyDemandsCount());
+        Assert.assertEquals("Expected number of unread messages for Offered Demands doesn't match the result", 1,
+                dashboard.getUnreadMessagesOfferedDemandsCount());
+        Assert.assertEquals("Expected number of unread messages for Assigned Demands doesn't match the result", 0,
+                dashboard.getUnreadMessagesAssignedDemandsCount());
+        Assert.assertEquals("Expected number of unread messages for Closed Demands doesn't match the result", 0,
+                dashboard.getUnreadMessagesClosedDemandsCount());
+    }
 
     private void checkFullOfferDetailExists(List<FullOfferDetail> offers,
             final long offerId, final long userMessageId) {
