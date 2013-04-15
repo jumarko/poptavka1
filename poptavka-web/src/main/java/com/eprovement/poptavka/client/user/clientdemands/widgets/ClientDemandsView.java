@@ -171,9 +171,9 @@ public class ClientDemandsView extends Composite
                     }
                 });
 
-        // Finnish date column
+        // End date column
         demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnFinnishDate(),
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnEndDate(),
                 true, Constants.COL_WIDTH_DATE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -182,16 +182,8 @@ public class ClientDemandsView extends Composite
                     }
                 });
 
-        // Valid-to date column
-        demandGrid.addColumn(
-                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnValidTo(),
-                true, Constants.COL_WIDTH_DATE,
-                new UniversalAsyncGrid.GetValue<String>() {
-                    @Override
-                    public String getValue(Object object) {
-                        return Storage.DATE_FORMAT.format(((ClientDemandDetail) object).getValidToDate());
-                    }
-                });
+        // Urgency (Valid-to date) column
+        demandGrid.addUrgentColumn();
     }
 
     /**
