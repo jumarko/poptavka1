@@ -33,7 +33,7 @@
                     <g:Label>
                         <ui:msg key="formTitle">Title</ui:msg>
                     </g:Label>
-                    <b:TextBox ui:field="demandTitle" styleName='full-width' />
+                    <b:TextBox ui:field="demandTitle" placeholder="{msgs.columnText}" styleName='full-width' />
                 </b:Column>
             </b:FluidRow>
 

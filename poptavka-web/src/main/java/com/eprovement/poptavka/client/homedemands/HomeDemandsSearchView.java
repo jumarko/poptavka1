@@ -44,7 +44,7 @@ public class HomeDemandsSearchView extends Composite implements
 
     public HomeDemandsSearchView() {
         creationDate = MyListBox.createListBox(getCreationDateData(), Storage.MSGS.creationDateNoLimits());
-        demandTypes = MyListBox.createListBox(getDemandTypeData(), Storage.MSGS.commonListDefault());
+        demandTypes = MyListBox.createListBox(getDemandTypeData(), Storage.MSGS.columnType());
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -60,7 +60,7 @@ public class HomeDemandsSearchView extends Composite implements
 
     private List<String> getDemandTypeData() {
         List<String> data = new ArrayList<String>();
-        data.add(Storage.MSGS.commonListDefault());
+        data.add(Storage.MSGS.columnType());
         data.addAll(DemandTypeType.getStringValues());
         return data;
     }
@@ -140,7 +140,7 @@ public class HomeDemandsSearchView extends Composite implements
         priceMonitorFrom.reset();
         ((BigDecimalBox) priceMonitorTo.getWidget()).setText("");
         priceMonitorTo.reset();
-        demandTypes.setSelected(Storage.MSGS.commonListDefault());
+        demandTypes.setSelected(Storage.MSGS.columnType());
         creationDate.setSelected(Storage.MSGS.creationDateNoLimits());
         endDateFrom.getTextBox().setText("");
         endDateTo.getTextBox().setText("");
