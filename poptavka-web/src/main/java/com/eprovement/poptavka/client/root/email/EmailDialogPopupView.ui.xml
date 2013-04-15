@@ -25,7 +25,7 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="8">
-                                <g:Label>
+                                <g:Label styleName='support-label'>
                                     <ui:msg key="emailDialogCustomerSupport">Customer support</ui:msg>
                                 </g:Label>
                             </b:Column>
@@ -69,22 +69,21 @@
                                 <g:Label>
                                     <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
                                 </g:Label>
+                                <g:Label styleName='description'>
+                                    <ui:msg key="emailDialogMaximumChars">Maximum 10000 characters. No HTML, JavaScript.</ui:msg>
+                                </g:Label>
                             </b:Column>
                             <b:Column size="8">
                                 <cm:ValidationMonitor ui:field="msgBodyMonitor">
-                                    <g:TextArea width="400px" height="150px" styleName='full-width' />
-                                </cm:ValidationMonitor>
-                                <g:Label>
-                                    <ui:msg key="emailDialogMaximumChars">Maximum 10000 characters. No HTML, JavaScript.</ui:msg>
-                                </g:Label>
+                                    <g:TextArea width="97%" height="150px" styleName='full-width' />
+                                </cm:ValidationMonitor>                                
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
                             <b:Column size="12">
-                                <g:Button ui:field="sendButton">
-                                    <ui:msg key="commonBtnSend">Send</ui:msg>
+                                <g:Button ui:field="sendButton" styleName="{res.common.buttonOkGreen} send-button">
                                 </g:Button>
-                                <g:Button ui:field="closeButton" styleName="clear-button">
+                                <g:Button ui:field="closeButton" styleName="{res.common.buttonGrey}">
                                     <ui:msg key="commonBtnClose">Close</ui:msg>
                                 </g:Button>
                             </b:Column>

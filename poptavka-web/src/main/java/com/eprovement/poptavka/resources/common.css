@@ -172,6 +172,7 @@
     width: 85px;
     color: #ffffff; 
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: none;
 }
 
 .button-grey:hover {
@@ -202,6 +203,13 @@ button.button-green {
 .button-green:hover {
     color: #ffffff;
     text-decoration: none;
+}
+
+.button-ok-green {
+    background: url(images/button-ok-green.png) no-repeat scroll 0 0 transparent;        
+    border: medium none;
+    height: 40px;
+    width: 63px;
 }
 
 .toolbar-button-grey {

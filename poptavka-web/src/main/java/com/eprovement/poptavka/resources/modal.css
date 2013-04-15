@@ -295,11 +295,12 @@
     float: left;
 }
 
+/* Contact Us Modal */
 .contactUs-modal {
     padding: 10px;
     margin: -310px 0 0 -445px;
     width: 850px;
-    height: 600px;
+    height: 565px;
     background: #000000;
 }
 
@@ -312,8 +313,7 @@
     height: 100%;
 }
 
-.contactUs-modal .gwt-TabLayoutPanelTab {
-    
+.contactUs-modal .gwt-TabLayoutPanelTab {    
     padding: 0 24px;
     margin-right: 5px;
     background: #0c2d42;
@@ -354,6 +354,10 @@
     background: #E7E3D6;
     margin: 30px 15px 15px 15px;
     padding: 25px 25px 10px;
+    border: none;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
 }
 
 .contactUs-modal .row-fluid {
@@ -367,16 +371,32 @@
 .contactUs-modal .gwt-Label {
     font-weight: normal;
     height: 40px;
-    line-height: 40px;
-    width: 120px;
+    line-height: 40px;    
     float: left;
     padding: 0 15px 0 15px;
 }
 
+.contactUs-modal .description {
+    color: #777777;
+    padding:0 15px;
+    font-style: italic;
+}
+
 .contactUs-modal input.full-width,
-.contactUs-modal select.full-width {
-    width: 445px;
+.contactUs-modal select.full-width,
+.contactUs-modal textbox.full-width {
+    width: 97%;
     height: 40px;
+}
+
+.contactUs-modal .support-label {
+    border: 1px solid #D2C9A9;
+    border-radius: 5px 5px 5px 5px;
+    color: #474644;
+    height: 18px;
+    margin-bottom: 10px;
+    padding: 10px 6px;
+    width: 477px;
 }
 
 .contactUs-modal .input-append {
@@ -394,6 +414,11 @@
 
 .contactUs-modal .clear-button {
     margin: 5px 40px 0 0;
+}
+
+.contactUs-modal .send-button {
+    margin: 17px 17px 0 0;
+    float: right;
 }
 
 .contactUs-modal .well {
