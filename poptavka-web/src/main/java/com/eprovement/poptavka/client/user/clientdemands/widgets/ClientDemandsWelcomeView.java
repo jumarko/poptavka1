@@ -6,8 +6,10 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -21,6 +23,9 @@ public class ClientDemandsWelcomeView extends Composite
 
     interface ClientDemandsWelcomeViewUiBinder extends UiBinder<Widget, ClientDemandsWelcomeView> {
     }
+
+    @UiField Label myDemandsUnreadMessages, offeredDemandsUnreadMessages, assignedDemandsUnreadMessages,
+    closedDemandsUnreadMessages;
 
     /**
      * creates WIDGET view
@@ -36,5 +41,33 @@ public class ClientDemandsWelcomeView extends Composite
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**
+     * @return the myDemandsUnreadMessages
+     */
+    public Label getMyDemandsUnreadMessages() {
+        return myDemandsUnreadMessages;
+    }
+
+    /**
+     * @return the offeredDemandsUnreadMessages
+     */
+    public Label getOfferedDemandsUnreadMessages() {
+        return offeredDemandsUnreadMessages;
+    }
+
+    /**
+     * @return the assignedDemandsUnreadMessages
+     */
+    public Label getAssignedDemandsUnreadMessages() {
+        return assignedDemandsUnreadMessages;
+    }
+
+    /**
+     * @return the closedDemandsUnreadMessages
+     */
+    public Label getClosedDemandsUnreadMessages() {
+        return closedDemandsUnreadMessages;
     }
 }

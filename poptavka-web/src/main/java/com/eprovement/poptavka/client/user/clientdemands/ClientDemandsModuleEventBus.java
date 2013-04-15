@@ -18,6 +18,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -141,6 +142,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void displayView(IsWidget content);
 
     /**************************************************************************/
+    /* Business events handled by ClientWelcomePresenter.                     */
+    /**************************************************************************/
+    @Event(handlers = ClientDemandsWelcomePresenter.class)
+    void loadClientDashboardDetail(ClientDashboardDetail result);
+
+    /**************************************************************************/
     /* Business events handled by ClientDemandsPresenter.                     */
     /**************************************************************************/
     @Event(handlers = ClientDemandsPresenter.class)
@@ -217,6 +224,9 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestCloseAndRateSupplier(long demandID, long offerID, Integer rating, String comment);
+
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void getClientDashboardDetail();
 
     /**************************************************************************/
     /* Business events for demand's CRUD operations                           */

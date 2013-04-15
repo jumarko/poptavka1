@@ -1,24 +1,65 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder
-  xmlns:ui="urn:ui:com.google.gwt.uibinder"
-  xmlns:g="urn:import:com.google.gwt.user.client.ui">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
+    <!-- injecting style resources -->
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:HTML>
+    <g:HTMLPanel>
         <center>
-            <h1>Welcome to Client Tab</h1>
+            <h1>Client Dashboard</h1>
         </center>
-						Here will be some news for signed client.
         <br />
-        <br />
-        <strong>Recent news:</strong>
-        <ul>
-            <li>Poptavka1234 was bidded by Suplier1234</li>
-            <li>Poptavka000 was finnished</li>
-            <li>...</li>
-        </ul>
-    </g:HTML>
+        <b:FluidContainer addStyleNames='{res.common.validationContainer}'>
+            <b:FluidRow>
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
+                    <g:Label>
+                        Recent News
+                    </g:Label>
+                </b:Column>
+            </b:FluidRow>
+
+            <b:FluidRow>
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
+                    <g:Label ui:field="myDemandsUnreadMessages" />
+                </b:Column>
+            </b:FluidRow>
+
+            <b:FluidRow>
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
+                    <g:Label ui:field="offeredDemandsUnreadMessages" />
+                </b:Column>
+            </b:FluidRow>
+
+            <b:FluidRow>
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
+                    <g:Label ui:field="assignedDemandsUnreadMessages" />
+                </b:Column>
+            </b:FluidRow>
+
+            <b:FluidRow>
+                <b:Column size="1">
+                    <g:HTMLPanel></g:HTMLPanel>
+                </b:Column>
+                <b:Column size="11">
+                    <g:Label ui:field="closedDemandsUnreadMessages" />
+                </b:Column>
+            </b:FluidRow>
+
+        </b:FluidContainer>
+    </g:HTMLPanel>
 </ui:UiBinder>
-
-

@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServi
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -85,7 +86,21 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     }
 
     //*************************************************************************/
-    // Retrieving methods - CLIENT PROJECTS                                   */
+    // Retrieving methods - CLIENT WELCOME DASHBOARD                          */
+    //*************************************************************************/
+
+    public void onGetClientDashboardDetail() {
+        clientDemandsService.getClientDashboardDetail(Storage.getUser().getUserId(),
+                new SecuredAsyncCallback<ClientDashboardDetail>(eventBus) {
+                    @Override
+                    public void onSuccess(ClientDashboardDetail result) {
+                        eventBus.loadClientDashboardDetail(result);
+                    }
+                });
+    }
+
+    //*************************************************************************/
+    // Retrieving methods - CLIENT DEMANDS                                   */
     //*************************************************************************/
     private void getClientDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandsCount(Storage.getUser().getUserId(), searchDefinition,
@@ -110,7 +125,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     }
 
     //*************************************************************************/
-    // Retrieving methods - CLIENT PROJECT CONVERSATIONS                      */
+    // Retrieving methods - CLIENT DEMAND CONVERSATIONS                      */
     //*************************************************************************/
     private void getClientDemandConversationsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandConversationsCount(
@@ -139,7 +154,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     }
 
     //*************************************************************************/
-    // Retrieving methods - CLIENT OFFERED PROJECTS                           */
+    // Retrieving methods - CLIENT OFFERED DEMANDS                           */
     //*************************************************************************/
     private void getClientOfferedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandsCount(Storage.getUser().getUserId(), searchDefinition,

@@ -35,6 +35,7 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -1003,5 +1004,68 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Double ratingScore = (double) ratingSum / numberOfRatings;
         supplier.setOveralRating(Integer.valueOf(ratingScore.intValue()));
         generalService.save(supplier);
+    }
+
+    /**
+     * Load all data to construct ClientDashboardDetail. Data such as number of unread messages for particular sections
+     * will be retrieved.
+     *
+     * @param userId of Client for which dashboard object will be created
+     * @return clientDashboardDetail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public ClientDashboardDetail getClientDashboardDetail(long userId) throws RPCException,
+    ApplicationSecurityException {
+        User user = generalService.find(User.class, userId);
+        ClientDashboardDetail cdd = new ClientDashboardDetail();
+        cdd.setUserId(userId);
+        // my Demands unread messages
+        final Search search1 = new Search(UserMessage.class);
+        search1.addFilterEqual("user", user);
+        search1.addFilterEqual("isRead", false);
+        search1.addFilterNotNull("message.demand");
+        search1.addFilterNull("message.offer");
+        search1.addField("id", Field.OP_COUNT);
+        search1.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesMyDemandsCount(((Long) generalService.searchUnique(search1)).intValue());
+        // my Offered Demands unread messages
+        OfferState offerPending = offerService.getOfferState(OfferStateType.PENDING.getValue());
+        final Search search2 = new Search(UserMessage.class);
+        search2.addFilterEqual("user", user);
+        search2.addFilterEqual("isRead", false);
+        search2.addFilterNotNull("message.demand");
+        search2.addFilterNotNull("message.offer");
+        search2.addFilterEqual("message.offer.state", offerPending);
+        search2.addField("id", Field.OP_COUNT);
+        search2.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesOfferedDemandsCount(((Long) generalService.searchUnique(search2)).intValue());
+        // my Assigned Demands unread messages
+        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
+        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final Search search3 = new Search(UserMessage.class);
+        search3.addFilterEqual("user", user);
+        search3.addFilterEqual("isRead", false);
+        search3.addFilterNotNull("message.demand");
+        search3.addFilterNotNull("message.offer");
+        search3.addFilterIn("message.offer.state", offerAccepted, offerCompleted);
+        search3.addField("id", Field.OP_COUNT);
+        search3.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesAssignedDemandsCount(((Long) generalService.searchUnique(search3)).intValue());
+        // my Closed Demands unread messages
+        OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
+        final Search search4 = new Search(UserMessage.class);
+        search4.addFilterEqual("user", user);
+        search4.addFilterEqual("isRead", false);
+        search4.addFilterNotNull("message.demand");
+        search4.addFilterNotNull("message.offer");
+        search4.addFilterEqual("message.offer.state", offerClosed);
+        search4.addField("id", Field.OP_COUNT);
+        search4.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesClosedDemandsCount(((Long) generalService.searchUnique(search4)).intValue());
+
+        return cdd;
     }
 }

@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -108,6 +109,8 @@ public interface ClientDemandsModuleRPCServiceAsync {
     void getClientOfferedDemandOffer(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
 
     void getClientAssignedDemand(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
+
+    void getClientDashboardDetail(long userId, AsyncCallback<ClientDashboardDetail> calback);
 
     /**************************************************************************/
     /* CRUD operation of demand                                               */

@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -267,4 +268,15 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      */
     void closeDemandAndEnterFeedbackForSupplier(long demandID, long offerID, Integer supplierRating,
             String supplierMessage) throws RPCException;
+
+    /**
+     * Load all data to construct ClientDashboardDetail. Data such as number of unread messages for particular sections
+     * will be retrieved.
+     *
+     * @param userId of Client for which dashboard object will be created
+     * @return clientDashboardDetail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    ClientDashboardDetail getClientDashboardDetail(long userId) throws RPCException, ApplicationSecurityException;
 }
