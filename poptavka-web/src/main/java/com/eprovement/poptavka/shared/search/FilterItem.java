@@ -34,7 +34,7 @@ public class FilterItem implements IsSerializable {
     private int operation = -1;
     //
     private String string;
-    private Integer integer;
+    private Number number;
     private Date date;
     private Boolean bool;
 
@@ -48,8 +48,8 @@ public class FilterItem implements IsSerializable {
             if (value instanceof String) {
                 this.string = (String) value;
             }
-            if (value instanceof Integer) {
-                this.integer = (Integer) value;
+            if (value instanceof Number) {
+                this.number = (Number) value;
             }
             if (value instanceof Date) {
                 this.date = (Date) value;
@@ -71,10 +71,10 @@ public class FilterItem implements IsSerializable {
     public Object getValue() {
         if (string != null) {
             return string;
-        } else if (integer != null) {
-            return integer;
+        } else if (number != null) {
+            return number;
         } else if (date != null) {
-            return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(date);
+            return date;
         } else if (bool != null) {
             return bool;
         } else {

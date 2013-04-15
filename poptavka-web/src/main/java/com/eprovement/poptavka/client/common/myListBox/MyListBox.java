@@ -90,11 +90,6 @@ public final class MyListBox extends SuggestBox {
             public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event) {
                 setText("");
                 setSelected(event.getSelectedItem().getDisplayString());
-                if (event.getSelectedItem().getDisplayString().equals(defaultString)) {
-                    removeStyleName(Constants.ACT);
-                } else {
-                    addStyleName(Constants.ACT);
-                }
             }
         });
     }
@@ -104,6 +99,11 @@ public final class MyListBox extends SuggestBox {
     /**************************************************************************/
     public void setSelected(String text) {
         textBox.setPlaceholder(text);
+        if (text.equals(defaultString)) {
+            removeStyleName(Constants.ACT);
+        } else {
+            addStyleName(Constants.ACT);
+        }
     }
 
     public String getSelected() {
