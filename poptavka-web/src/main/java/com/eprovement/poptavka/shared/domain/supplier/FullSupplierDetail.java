@@ -94,7 +94,7 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
 
     @Override
     public int getRating() {
-        return userData.getOverallRating();
+        return userData.getOveralRating();
     }
 
     /**************************************************************************/

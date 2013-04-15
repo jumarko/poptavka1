@@ -27,7 +27,7 @@
     <DEMAND ID="7" TYPE_ID="1" TITLE="Demand 7" DESCRIPTION="7: Normal request for java application."        PRICE="1110"
             STATUS="NEW" CREATEDDATE="2001-01-01 00:00:01" />
     <DEMAND ID="8" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."        PRICE="9000000"
-            STATUS="ACTIVE" CREATEDDATE="2001-01-01 00:00:01" />
+            STATUS="ACTIVE" CREATEDDATE="2001-01-01 00:00:01" CLIENT_ID="111111114" />
     <!--demand with id 18 is the same as with id 8 bus has status NEW -->
     <DEMAND ID="18" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."        PRICE="9000000"
             STATUS="NEW" CREATEDDATE="2001-01-01 00:00:01" />
