@@ -1027,6 +1027,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search1.addFilterEqual("user", user);
         search1.addFilterEqual("isRead", false);
         search1.addFilterNotNull("message.demand");
+        search1.addFilterEqual("message.threadRoot.sender", user);
         search1.addFilterNull("message.offer");
         search1.addField("id", Field.OP_COUNT);
         search1.setResultMode(Search.RESULT_SINGLE);
@@ -1037,6 +1038,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search2.addFilterEqual("user", user);
         search2.addFilterEqual("isRead", false);
         search2.addFilterNotNull("message.demand");
+        search2.addFilterEqual("message.threadRoot.sender", user);
         search2.addFilterNotNull("message.offer");
         search2.addFilterEqual("message.offer.state", offerPending);
         search2.addField("id", Field.OP_COUNT);
@@ -1049,6 +1051,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search3.addFilterEqual("user", user);
         search3.addFilterEqual("isRead", false);
         search3.addFilterNotNull("message.demand");
+        search3.addFilterEqual("message.threadRoot.sender", user);
         search3.addFilterNotNull("message.offer");
         search3.addFilterIn("message.offer.state", offerAccepted, offerCompleted);
         search3.addField("id", Field.OP_COUNT);
@@ -1060,6 +1063,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search4.addFilterEqual("user", user);
         search4.addFilterEqual("isRead", false);
         search4.addFilterNotNull("message.demand");
+        search4.addFilterEqual("message.threadRoot.sender", user);
         search4.addFilterNotNull("message.offer");
         search4.addFilterEqual("message.offer.state", offerClosed);
         search4.addField("id", Field.OP_COUNT);
