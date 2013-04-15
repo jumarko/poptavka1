@@ -88,13 +88,13 @@
                 </b:Column>
                 <b:Column size="11">
                     <g:Label>
-                        <ui:msg key="formFinnishDate">Finnish date:</ui:msg>
+                        <ui:msg key="formEndDate">End date:</ui:msg>
                     </g:Label>
                     <g:HTMLPanel styleName="input-append">
-                        <cm:MyDateBox placeholder="{msgs.formFrom}" styleName="{style.dateBox} append-date" ui:field="finnishDateFrom" />
+                        <cm:MyDateBox placeholder="{msgs.formFrom}" styleName="{style.dateBox} append-date" ui:field="endDateFrom" />
                     </g:HTMLPanel>
                     <g:HTMLPanel styleName="input-append">
-                        <cm:MyDateBox placeholder="{msgs.formTo}" styleName="{style.dateBox} append-date" ui:field="finnishDateTo" />
+                        <cm:MyDateBox placeholder="{msgs.formTo}" styleName="{style.dateBox} append-date" ui:field="endDateTo" />
                     </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>

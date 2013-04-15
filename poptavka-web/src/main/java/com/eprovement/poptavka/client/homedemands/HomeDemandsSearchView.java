@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
@@ -36,14 +37,10 @@ public class HomeDemandsSearchView extends Composite implements
     @UiField(provided = true) MyListBox creationDate, demandTypes;
     @UiField(provided = true) ValidationMonitor priceMonitorFrom, priceMonitorTo;
     @UiField TextBox demandTitle;
-    @UiField MyDateBox finnishDateFrom, finnishDateTo;
+    @UiField MyDateBox endDateFrom, endDateTo;
     @UiField Button clearBtn;
-    /** Search Fields. **/
-    private static final String FIELD_TITLE = "title";
-    private static final String FIELD_DEMAND_TYPE = "type.description";
-    private static final String FIELD_PRICE = "price";
-    private static final String FIELD_CREATED_DATE = "createdDate";
-    private static final String FIELD_END_DATE = "endDate";
+    /** Additional Search Fields. **/
+    private static final String DEMAND_TYPE_DESCRIPTION_FIELD = ".description";
 
     public HomeDemandsSearchView() {
         creationDate = MyListBox.createListBox(getCreationDateData(), Storage.MSGS.creationDateNoLimits());
@@ -82,25 +79,39 @@ public class HomeDemandsSearchView extends Composite implements
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!demandTitle.getText().isEmpty()) {
-            filters.add(new FilterItem(FIELD_TITLE, FilterItem.OPERATION_LIKE, demandTitle.getText()));
+            filters.add(new FilterItem(
+                    DemandField.TITLE.getValue(),
+                    FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
         if (priceMonitorFrom.getValue() != null) {
-            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_FROM, priceMonitorFrom.getValue()));
+            filters.add(new FilterItem(
+                    DemandField.PRICE.getValue(),
+                    FilterItem.OPERATION_FROM, priceMonitorFrom.getValue()));
         }
         if (priceMonitorTo.getValue() != null) {
-            filters.add(new FilterItem(FIELD_PRICE, FilterItem.OPERATION_TO, priceMonitorTo.getValue()));
+            filters.add(new FilterItem(
+                    DemandField.PRICE.getValue(),
+                    FilterItem.OPERATION_TO, priceMonitorTo.getValue()));
         }
         if (demandTypes.isSelected()) {
-            filters.add(new FilterItem(FIELD_DEMAND_TYPE, FilterItem.OPERATION_EQUALS, demandTypes.getSelected()));
+            filters.add(new FilterItem(
+                    DemandField.DEMAND_TYPE.getValue().concat(DEMAND_TYPE_DESCRIPTION_FIELD),
+                    FilterItem.OPERATION_EQUALS, demandTypes.getSelected()));
         }
         if (creationDate.isSelected()) {
-            filters.add(new FilterItem(FIELD_CREATED_DATE, FilterItem.OPERATION_FROM, getCreatedDate()));
+            filters.add(new FilterItem(
+                    DemandField.CREATED.getValue(),
+                    FilterItem.OPERATION_FROM, getCreatedDate()));
         }
-        if (finnishDateFrom.getValue() != null) {
-            filters.add(new FilterItem(FIELD_END_DATE, FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
+        if (endDateFrom.getValue() != null) {
+            filters.add(new FilterItem(
+                    DemandField.END_DATE.getValue(),
+                    FilterItem.OPERATION_FROM, endDateFrom.getValue()));
         }
-        if (finnishDateTo.getValue() != null) {
-            filters.add(new FilterItem(FIELD_END_DATE, FilterItem.OPERATION_TO, finnishDateTo.getValue()));
+        if (endDateTo.getValue() != null) {
+            filters.add(new FilterItem(
+                    DemandField.END_DATE.getValue(),
+                    FilterItem.OPERATION_TO, endDateTo.getValue()));
         }
         return filters;
     }
@@ -131,6 +142,8 @@ public class HomeDemandsSearchView extends Composite implements
         priceMonitorTo.reset();
         demandTypes.setSelected(Storage.MSGS.commonListDefault());
         creationDate.setSelected(Storage.MSGS.creationDateNoLimits());
+        endDateFrom.getTextBox().setText("");
+        endDateTo.getTextBox().setText("");
     }
 
     @Override
