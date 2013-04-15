@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public interface IUniversalDetail {
+public interface IUniversalDetail extends TableDisplayRating {
 
     // Client part
     //--------------------------------------------------------------------------
@@ -27,8 +27,6 @@ public interface IUniversalDetail {
     long getSupplierId();
 
     String getSupplierName();
-
-    int getRating();
 
     // Message part
     //--------------------------------------------------------------------------

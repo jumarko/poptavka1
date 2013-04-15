@@ -12,7 +12,6 @@ import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -183,12 +182,7 @@ public class HomeSuppliersView extends OverflowComposite
 
         // SupplierRating.
         /**************************************************************************/
-        Column<FullSupplierDetail, RatingCell> ratingCol = new IdentityColumn(new RatingCell());
-        //set column style
-        ratingCol.setSortable(true);
-        ratingCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
-        dataGrid.addColumn(ratingCol, Storage.MSGS.columnRating());
-        dataGrid.setColumnWidth(ratingCol, Constants.COL_WIDTH_RATING);
+        dataGrid.addRatingColumn();
 
         // Address.
         /**************************************************************************/

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayRating;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
@@ -15,7 +16,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientDemandDetail implements IsSerializable, TableDisplay {
+public class ClientDemandDetail implements IsSerializable, TableDisplay, TableDisplayRating {
 
     /**************************************************************************/
     /* Attributes                                                             */
