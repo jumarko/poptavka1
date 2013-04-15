@@ -37,7 +37,7 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="8">
-                                <g:ListBox ui:field="subject" styleName='full-width' />
+                                <mlb:MyListBox ui:field="subject" styleName='selector-box full-width' />
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>

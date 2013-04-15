@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.root.email;
 
+import com.eprovement.poptavka.client.common.myListBox.MyListBox;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
@@ -13,7 +14,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -40,7 +40,7 @@ public class EmailDialogPopupPresenter
 
         HasClickHandlers getCloseButton();
 
-        ListBox getSubjectListBox();
+        MyListBox getSubjectListBox();
 
         EmailDialogDetail getEmailDialogDetail();
 
@@ -115,7 +115,7 @@ public class EmailDialogPopupPresenter
     public void fillContactUsValues(int subjectId, String errorId) {
         this.errorId = errorId;
         this.subjectId = subjectId;
-        view.getSubjectListBox().setSelectedIndex(subjectId);
+        view.getSubjectListBox().setSelectedByIndex(subjectId);
     }
 
     /**************************************************************************/

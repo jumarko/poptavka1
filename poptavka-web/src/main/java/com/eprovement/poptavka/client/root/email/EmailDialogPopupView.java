@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.client.root.email;
 
 import com.eprovement.poptavka.client.common.ValidationMonitor;
+import com.eprovement.poptavka.client.common.myListBox.MyListBox;
+import com.eprovement.poptavka.client.common.myListBox.MyListBoxData;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
@@ -16,7 +18,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import javax.validation.groups.Default;
@@ -41,7 +42,7 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     /* ATTRIBUTES                                                              */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) ListBox subject;
+    @UiField(provided = true) MyListBox subject;
     @UiField(provided = true) ValidationMonitor emailMonitor, reEmailMonitor, msgBodyMonitor;
     @UiField TextBox reEmailFrom;
     @UiField Modal popupPanel;
@@ -53,12 +54,7 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     @Override
     public void createView() {
         // set values for subjectListBox
-        subject = new ListBox();
-        subject.insertItem(Storage.MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
-        subject.insertItem(Storage.MSGS.emailDialogSubjectHelp(), Constants.SUBJECT_HELP);
-        subject.insertItem(Storage.MSGS.emailDialogSubjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
-        subject.insertItem(Storage.MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
-        subject.insertItem(Storage.MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
+        createSubjectListBox();
 
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
@@ -86,6 +82,16 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
                 EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.EMAIL_FROM.getValue());
         msgBodyMonitor = new ValidationMonitor<EmailDialogDetail>(
                 EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.MESSAGE.getValue());
+    }
+
+    private void createSubjectListBox() {
+        MyListBoxData subjectData = new MyListBoxData();
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectHelp(), Constants.SUBJECT_HELP);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
+        subject = MyListBox.createListBox(subjectData, 0);
     }
 
     /**************************************************************************/
@@ -126,7 +132,7 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     }
 
     @Override
-    public ListBox getSubjectListBox() {
+    public MyListBox getSubjectListBox() {
         return subject;
     }
 
@@ -134,7 +140,7 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     public EmailDialogDetail getEmailDialogDetail() {
         EmailDialogDetail detail = new EmailDialogDetail();
         detail.setRecipient("pras3xer@gmail.com");
-        detail.setSubject(subject.getValue(subject.getSelectedIndex()));
+        detail.setSubject(subject.getSelected());
         detail.setEmailFrom((String) emailMonitor.getValue());
         detail.setMessage((String) msgBodyMonitor.getValue());
         return detail;
