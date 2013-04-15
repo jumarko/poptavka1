@@ -33,6 +33,7 @@ import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -660,6 +661,76 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         throws RPCException, ApplicationSecurityException {
         finishOffer(offerID);
         enterFeedbackForClient(demandID, supplierRating, supplierMessage);
+    }
+
+    /**
+     * Load all data to construct SupplierDashboardDetail. Data such as number of unread messages for particular
+     * sections will be retrieved.
+     *
+     * @param userId of Supplier for which dashboard object will be created
+     * @param supplierId of this Supplier
+     * @return supplierDashboardDetail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public SupplierDashboardDetail getSupplierDashboardDetail(long userId, long supplierId) throws RPCException,
+    ApplicationSecurityException {
+        User user = generalService.find(User.class, userId);
+        Supplier supplier = generalService.find(Supplier.class, supplierId);
+        SupplierDashboardDetail cdd = new SupplierDashboardDetail();
+        cdd.setUserId(userId);
+        // my PotentialDemands unread messages
+        final Search search1 = new Search(UserMessage.class);
+        search1.addFilterEqual("user", user);
+        search1.addFilterEqual("isRead", false);
+        search1.addFilterNotNull("message.demand");
+        search1.addFilterNotEqual("message.threadRoot.sender", user);
+        search1.addFilterIn("message.demand.status", DemandStatus.ACTIVE, DemandStatus.OFFERED);
+        search1.addFilterNull("message.offer");
+        search1.addField("id", Field.OP_COUNT);
+        search1.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesPotentialDemandsCount(((Long) generalService.searchUnique(search1)).intValue());
+        // my Offered Demands unread messages
+        OfferState offerPending = offerService.getOfferState(OfferStateType.PENDING.getValue());
+        final Search search2 = new Search(UserMessage.class);
+        search2.addFilterEqual("user", user);
+        search2.addFilterEqual("isRead", false);
+        search2.addFilterNotNull("message.demand");
+        search2.addFilterNotNull("message.offer");
+        search2.addFilterEqual("message.offer.supplier", supplier);
+        search2.addFilterEqual("message.offer.state", offerPending);
+        search2.addField("id", Field.OP_COUNT);
+        search2.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesOfferedDemandsCount(((Long) generalService.searchUnique(search2)).intValue());
+        // my Assigned Demands unread messages
+        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
+        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final Search search3 = new Search(UserMessage.class);
+        search3.addFilterEqual("user", user);
+        search3.addFilterEqual("isRead", false);
+        search3.addFilterNotNull("message.demand");
+        search3.addFilterNotNull("message.offer");
+        search3.addFilterEqual("message.offer.supplier", supplier);
+        search3.addFilterIn("message.offer.state", offerAccepted, offerCompleted);
+        search3.addField("id", Field.OP_COUNT);
+        search3.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesAssignedDemandsCount(((Long) generalService.searchUnique(search3)).intValue());
+        // my Closed Demands unread messages
+        OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
+        final Search search4 = new Search(UserMessage.class);
+        search4.addFilterEqual("user", user);
+        search4.addFilterEqual("isRead", false);
+        search4.addFilterNotNull("message.demand");
+        search4.addFilterNotNull("message.offer");
+        search4.addFilterEqual("message.offer.supplier", supplier);
+        search4.addFilterEqual("message.offer.state", offerClosed);
+        search4.addField("id", Field.OP_COUNT);
+        search4.setResultMode(Search.RESULT_SINGLE);
+        cdd.setUnreadMessagesClosedDemandsCount(((Long) generalService.searchUnique(search4)).intValue());
+
+        return cdd;
     }
 
     private void finishOffer(long offerId) throws RPCException, ApplicationSecurityException {

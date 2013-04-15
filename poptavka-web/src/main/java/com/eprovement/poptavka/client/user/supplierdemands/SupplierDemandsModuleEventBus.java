@@ -19,6 +19,7 @@ import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -124,6 +125,12 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void displayView(IsWidget content);
 
     /**************************************************************************/
+    /* Business events handled by SupplierDemandsModulePresenter.             */
+    /**************************************************************************/
+    @Event(handlers = SupplierDemandsWelcomePresenter.class)
+    void loadSupplierDashboardDetail(SupplierDashboardDetail result);
+
+    /**************************************************************************/
     /* Business events handled by SupplierDemandsPresenter.                   */
     /**************************************************************************/
     @Event(handlers = SupplierDemandsPresenter.class)
@@ -187,6 +194,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(handlers = SupplierDemandsModuleHandler.class)
     void getSupplierAssignedDemand(long offerID);
+
+    @Event(handlers = SupplierDemandsModuleHandler.class)
+    void getSupplierDashboardDetail();
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */

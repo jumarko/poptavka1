@@ -29,7 +29,7 @@
                     <g:HTMLPanel></g:HTMLPanel>
                 </b:Column>
                 <b:Column size="11">
-                    <g:Label ui:field="myDemandsUnreadMessages" />
+                    <g:HTML ui:field="myDemandsUnreadMessages" />
                 </b:Column>
             </b:FluidRow>
 
@@ -38,7 +38,7 @@
                     <g:HTMLPanel></g:HTMLPanel>
                 </b:Column>
                 <b:Column size="11">
-                    <g:Label ui:field="offeredDemandsUnreadMessages" />
+                    <g:HTML ui:field="offeredDemandsUnreadMessages" />
                 </b:Column>
             </b:FluidRow>
 
@@ -47,7 +47,7 @@
                     <g:HTMLPanel></g:HTMLPanel>
                 </b:Column>
                 <b:Column size="11">
-                    <g:Label ui:field="assignedDemandsUnreadMessages" />
+                    <g:HTML ui:field="assignedDemandsUnreadMessages" />
                 </b:Column>
             </b:FluidRow>
 
@@ -56,7 +56,7 @@
                     <g:HTMLPanel></g:HTMLPanel>
                 </b:Column>
                 <b:Column size="11">
-                    <g:Label ui:field="closedDemandsUnreadMessages" />
+                    <g:HTML ui:field="closedDemandsUnreadMessages" />
                 </b:Column>
             </b:FluidRow>
 

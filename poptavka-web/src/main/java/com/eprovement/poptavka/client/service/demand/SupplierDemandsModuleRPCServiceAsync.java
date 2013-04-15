@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -17,6 +18,9 @@ import java.util.List;
  * @author Martin Slavkovsky
  */
 public interface SupplierDemandsModuleRPCServiceAsync {
+
+    //SupplierWelcome widget
+    void getSupplierDashboardDetail(long userId, long supplierId, AsyncCallback<SupplierDashboardDetail> callback);
 
     //SupplierDemands widget
     void getSupplierPotentialDemandsCount(long supplierID, SearchDefinition searchDefinition,

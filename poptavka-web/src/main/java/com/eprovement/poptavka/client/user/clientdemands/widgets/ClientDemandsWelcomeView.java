@@ -9,7 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -24,7 +24,7 @@ public class ClientDemandsWelcomeView extends Composite
     interface ClientDemandsWelcomeViewUiBinder extends UiBinder<Widget, ClientDemandsWelcomeView> {
     }
 
-    @UiField Label myDemandsUnreadMessages, offeredDemandsUnreadMessages, assignedDemandsUnreadMessages,
+    @UiField HTML myDemandsUnreadMessages, offeredDemandsUnreadMessages, assignedDemandsUnreadMessages,
     closedDemandsUnreadMessages;
 
     /**
@@ -46,28 +46,28 @@ public class ClientDemandsWelcomeView extends Composite
     /**
      * @return the myDemandsUnreadMessages
      */
-    public Label getMyDemandsUnreadMessages() {
+    public HTML getMyDemandsUnreadMessages() {
         return myDemandsUnreadMessages;
     }
 
     /**
      * @return the offeredDemandsUnreadMessages
      */
-    public Label getOfferedDemandsUnreadMessages() {
+    public HTML getOfferedDemandsUnreadMessages() {
         return offeredDemandsUnreadMessages;
     }
 
     /**
      * @return the assignedDemandsUnreadMessages
      */
-    public Label getAssignedDemandsUnreadMessages() {
+    public HTML getAssignedDemandsUnreadMessages() {
         return assignedDemandsUnreadMessages;
     }
 
     /**
      * @return the closedDemandsUnreadMessages
      */
-    public Label getClosedDemandsUnreadMessages() {
+    public HTML getClosedDemandsUnreadMessages() {
         return closedDemandsUnreadMessages;
     }
 }

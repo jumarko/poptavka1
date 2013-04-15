@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -23,6 +24,21 @@ import java.util.List;
 public interface SupplierDemandsModuleRPCService extends RemoteService {
 
     String URL = "service/supplierdemandsmodule";
+
+    //************************ SUPPLIER - Welcome Page **************************/
+    /**
+     * Load all data to construct SupplierDashboardDetail. Data such as number of unread messages for particular
+     * sections will be retrieved.
+     *
+     * @param userId of Supplier for which dashboard object will be created
+     * @param supplierId of this Supplier
+     * @return supplierDashboardDetail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    SupplierDashboardDetail getSupplierDashboardDetail(long userId, long supplierId) throws RPCException,
+            ApplicationSecurityException;
+
 
     //************************ SUPPLIER - My Demands **************************/
     /**
