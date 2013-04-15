@@ -175,7 +175,7 @@ public class SupplierDemandsPresenter extends LazyPresenter<
             public void update(int index, IUniversalDetail object, Boolean value) {
                 object.setIsStarred(!value);
                 view.getDataGrid().redrawRow(index);
-                ((ActionBoxView) view.getActionBox().getWidget()).getActionStar().getScheduledCommand().execute();
+                ((ActionBoxView) view.getActionBox().getWidget()).updateStar(object.getUserMessageId(), !value);
             }
         });
     }

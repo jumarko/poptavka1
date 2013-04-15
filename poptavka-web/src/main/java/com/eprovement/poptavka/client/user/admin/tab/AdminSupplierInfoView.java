@@ -104,7 +104,7 @@ public class AdminSupplierInfoView extends Composite {
         supplierInfo.getUserData().setEmail(email.getText());
         supplierInfo.getUserData().setPhone(phone.getText());
         supplierInfo.getUserData().setVerification(verification.getItemText(verification.getSelectedIndex()));
-        supplierInfo.getUserData().setOverallRating(Integer.valueOf(overalRating.getText()));
+        supplierInfo.getUserData().setOveralRating(Integer.valueOf(overalRating.getText()));
         supplierInfo.getUserData().setIdentificationNumber(identifNumber.getText());
         supplierInfo.getUserData().setBusinessType(businessType.getItemText(businessType.getSelectedIndex()));
         supplierInfo.setCertified(certified.getValue());
@@ -165,7 +165,7 @@ public class AdminSupplierInfoView extends Composite {
             if (supplier != null) {
                 //Company
                 companyName.setText(supplier.getUserData().getCompanyName());
-                overalRating.setText(Integer.toString(supplier.getUserData().getOverallRating()));
+                overalRating.setText(Integer.toString(supplier.getUserData().getOveralRating()));
                 descriptionBox.setText(supplier.getUserData().getDescription());
                 //Contact
                 firstName.setText(supplier.getUserData().getPersonFirstName());

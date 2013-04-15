@@ -325,8 +325,8 @@ public class ClientOffersPresenter
                 @Override
                 public void update(int index, IUniversalDetail object, Boolean value) {
                     object.setIsStarred(!value);
-                    view.getDemandGrid().redrawRow(index);
-                    ((ActionBoxView) view.getActionBox().getWidget()).getActionStar().getScheduledCommand().execute();
+                    view.getOfferGrid().redrawRow(index);
+                    ((ActionBoxView) view.getActionBox().getWidget()).updateStar(object.getUserMessageId(), !value);
                 }
             });
     }

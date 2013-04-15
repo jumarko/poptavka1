@@ -4,10 +4,10 @@
  */
 package com.eprovement.poptavka.client.common.actionBox;
 
+import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Martin Slavkovsky
  */
-public class ActionBoxView extends Composite
+public class ActionBoxView extends ReverseCompositeView<ActionBoxPresenter>
         implements ActionBoxPresenter.ActionBoxViewInterface {
 
     /**************************************************************************/
@@ -36,6 +36,13 @@ public class ActionBoxView extends Composite
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    /**************************************************************************/
+    /* Actions                                                                */
+    /**************************************************************************/
+    public void updateStar(long objectId, boolean value) {
+        presenter.updateStar(objectId, value);
     }
 
     /**************************************************************************/
