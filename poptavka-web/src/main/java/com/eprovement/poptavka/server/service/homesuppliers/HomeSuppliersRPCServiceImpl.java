@@ -276,7 +276,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getSupplierFilter(definition);
+            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getOrderColumns(), "");
             search.addField("id", Field.OP_COUNT);
             search.setResultMode(Search.RESULT_SINGLE);
             return (Long) this.generalService.searchUnique(search);
@@ -324,7 +324,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getSupplierFilter(definition);
+            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getOrderColumns(), "");
             return supplierConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 0
@@ -430,16 +430,19 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         for (FilterItem item : definition.getFilter().getAttributes()) {
             search.addFilter(filterConverter.convertToSource(item));
         }
-        return this.getSortSearch(search, definition.getOrderColumns(), "supplier");
+        return search;
     }
 
     private Search getSortSearch(Search search, Map<String, OrderType> orderColumns, String prefix) {
         if (orderColumns != null) {
             for (String item : orderColumns.keySet()) {
+                if (prefix != null && !prefix.isEmpty()) {
+                    item = prefix.concat(".").concat(item);
+                }
                 if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    search.addSortAsc(prefix + item, true);
+                    search.addSortAsc(item, true);
                 } else {
-                    search.addSortDesc(prefix + item, true);
+                    search.addSortDesc(item, true);
                 }
             }
         }

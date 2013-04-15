@@ -283,7 +283,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getDemandFilter(definition);
+            Search search = this.getSortSearch(this.getDemandFilter(definition), definition.getOrderColumns(), "");
             search.addField("id", Field.OP_COUNT);
             search.setResultMode(Search.RESULT_SINGLE);
             return (Long) this.generalService.searchUnique(search);
@@ -331,7 +331,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getDemandFilter(definition);
+            Search search = this.getSortSearch(this.getDemandFilter(definition), definition.getOrderColumns(), "");
             return demandConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 0
@@ -437,17 +437,19 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         for (FilterItem item : definition.getFilter().getAttributes()) {
             search.addFilter(filterConverter.convertToSource(item));
         }
-        return this.getSortSearch(search, definition.getOrderColumns(), "demand");
+        return search;
     }
 
     private Search getSortSearch(Search search, Map<String, OrderType> orderColumns, String prefix) {
         if (orderColumns != null) {
             for (String item : orderColumns.keySet()) {
-                final String itemProperty = prefix + "." + item;
+                if (prefix != null && !prefix.isEmpty()) {
+                    item = prefix.concat(".").concat(item);
+                }
                 if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    search.addSortAsc(itemProperty, true);
+                    search.addSortAsc(item, true);
                 } else {
-                    search.addSortDesc(itemProperty, true);
+                    search.addSortDesc(item, true);
                 }
             }
         }
