@@ -11,6 +11,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -347,6 +348,17 @@ public class DetailsWrapperPresenter
     }
 
     /**
+     * Hide message panel if is empty, show otherwise.
+     */
+    private void setMessagePanelVisibility() {
+        if (view.getMessageProvider().getList().isEmpty()) {
+            view.getMessagePanel().getElement().getStyle().setDisplay(Style.Display.NONE);
+        } else {
+            view.getMessagePanel().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+        }
+    }
+
+    /**
      * Clear detail section means reseting widget's attributes of all tabs widgets.
      */
     private void clear() {
@@ -368,6 +380,7 @@ public class DetailsWrapperPresenter
     public void setMessageList(LinkedList<MessageDetail> messages, boolean collapsed) {
         view.getReplyHolder().setMessage(messages.removeFirst());
         view.getMessageProvider().setList(messages);
+        setMessagePanelVisibility();
     }
 
     /**
@@ -382,6 +395,7 @@ public class DetailsWrapperPresenter
         linkedList.addFirst(view.getReplyHolder().getMessage());
         view.getMessageProvider().setList(linkedList);
         view.getReplyHolder().setMessage(lastMessage);
+        setMessagePanelVisibility();
     }
 
     /**
