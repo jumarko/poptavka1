@@ -223,15 +223,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-
-			<dependency>
-				<groupId>com.eprovement</groupId>
-				<artifactId>dbunit-dtd-generator-plugin</artifactId>
-				<version>${project.version}</version>
-				<!--TODO LATER: because of ApplicationContextHolder cannot use test scope -->
-				<!--<scope>test</scope> -->
-			</dependency>
-
 			<dependency>
 				<groupId>com.eprovement</groupId>
 				<artifactId>integration-test-base</artifactId>
@@ -1042,5 +1033,12 @@
 
 		</plugins>
 	</build>
+
+
+    <scm>
+        <connection>scm:git:git@bitbucket.org:poptavka/poptavka-app.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:poptavka/poptavka-app.git</developerConnection>
+        <url>https://bitbucket.org/poptavka/poptavka-app</url>
+    </scm>
 
 </project>
