@@ -51,12 +51,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
  *
  * @author Praso
  *
- * TODO Praso - Check which method are shared amongst more RPC services.
+ * TODO LATER ivlcek - Check which method are shared amongst more RPC services.
  * Probably Locality and categories are going to be used in more RPC. The best
  * idea is to make an parent class with locality/category methods and other RPC
  * will extend this class.
  *
- * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
+ * TODO LATER ivlcek: optimalizovat na strane backendu
  */
 @Configurable
 public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implements HomeDemandsRPCService {

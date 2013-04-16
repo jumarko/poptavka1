@@ -32,9 +32,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Module description:.
+ * This presenter handles main actions for HomeDemands module such as list of all Demands etc.
  * Data retrieving handle categorySelectionHandler.
- * TODO add description of this module.
  * All changes to CellTree, Table range (Pager), Table Selection is stored to history.
  *
  * @author praso, Martin Slavkovsky

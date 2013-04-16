@@ -48,7 +48,7 @@ public class AdminInvoicesPresenter
     private Map<Long, InvoiceDetail> originalData = new HashMap<Long, InvoiceDetail>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
-    //detail related, TODO Martin implement Detail if needed
+    //TODO LATER Martin implement Detail if needed
     private Boolean detailDisplayed = false;
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
@@ -215,7 +215,7 @@ public class AdminInvoicesPresenter
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
-                    //TODO Martin
+                    //TODO LATER Martin
 //                    object.setPaymentMethod(value);
                     eventBus.addInvoiceToCommit(object);
                 }

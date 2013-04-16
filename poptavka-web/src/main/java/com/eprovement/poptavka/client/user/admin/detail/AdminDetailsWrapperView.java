@@ -16,8 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
 /**
- * TODOS:
- * Loading Indicator while getting detail's data
+ * TODO LATER martin: Loading Indicator while getting detail's data
  *
  * @author Martin
  */

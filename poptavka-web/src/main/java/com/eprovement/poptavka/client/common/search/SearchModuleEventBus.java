@@ -25,11 +25,6 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
     /**************************************************************************/
     /* Parent events - navigation events                                      */
     /**************************************************************************/
-    // TODO praso - preco tu mame tieto metody. Vsetko su to navigacne eventy mali
-    // by predsa byt v HomeMenu. Naco ich mat dva krat v dvoch presenteroch?
-    // IV: tak pohopil som, ze su nutne kvoli vysledkom, ktore sa moju zobrazit po
-    // zadani vyhladavacich kriterii do search panelu. Po kliknuti search uzivatelia
-    // presmerujeme na jeden z pohladov suppliers/demands/messages
     @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 

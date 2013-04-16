@@ -43,7 +43,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * new supplier.
  *
  * @author Praso
- * TODO praso - pridat komenty, vytvorit predka pre checkFreeEmail, optimalizovat backend
+ * TODO LATER ivlcek: vytvorit predka pre checkFreeEmail if possible, optimalizovat backend
  */
 @Configurable
 public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService implements SupplierCreationRPCService {
@@ -114,13 +114,11 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         assignBusinessRoleToNewSupplier(newSupplier);
         newSupplier.setOveralRating(Integer.valueOf(0));
         /** registration process **/
-        // TODO - verification will be set after activation link has been received
         final Supplier supplierFromDB = supplierService.create(newSupplier);
 
-        // TODO jumar - WTF ? why new supplier is also a new client?!?
-        /** Brand new supplier has automatically the role of a client as well. **/
-        // TODO VOjto - Client creation should be moved to one client block.
-        // SUpplier creation should be in Supplier block. Zgrupovat kod!
+        /** Brand new Supplier has automatically the role of a Client as well. **/
+        // TODO LATER vojto - Client creation should be moved to one client block.
+        // TODO LATER vojto - Supplier creation should be in Supplier block. Zgrupovat kod!
         final Client client = new Client();
         client.setBusinessUser(supplierFromDB.getBusinessUser());
         client.getBusinessUser().getBusinessUserRoles().add(client);
@@ -153,14 +151,14 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private void setNewSuppliersNotificationItems(Supplier newSupplier) {
         final List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
         NotificationItem notificationItem = new NotificationItem();
-        // TODO ivlcek - create constant for Notifications in DB
+        // TODO RELEASE ivlcek - create constant for Notifications in DB, don't use numbers
         notificationItem.setNotification(this.generalService.find(Notification.class, 6L));
         notificationItem.setEnabled(true);
         notificationItem.setPeriod(Period.INSTANTLY);
         notificationItems.add(notificationItem);
         /** This is notification for Client role that is automatically created herein. **/
         NotificationItem notificationItemClient = new NotificationItem();
-        // TODO ivlcek - create constant for Notifications in DB
+        // TODO RELEASE ivlcek - create constant for Notifications in DB, don't use numbers
         notificationItemClient.setNotification(this.generalService.find(Notification.class, 10L));
         notificationItemClient.setEnabled(true);
         notificationItemClient.setPeriod(Period.INSTANTLY);

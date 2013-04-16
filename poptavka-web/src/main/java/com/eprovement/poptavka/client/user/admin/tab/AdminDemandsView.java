@@ -174,7 +174,6 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         // DemandType.
         List<String> demandTypeNames = new ArrayList<String>();
         for (ClientDemandType clientDemandType : ClientDemandType.values()) {
-            // TODO ivlcek - add Localizable name of ClientDemandType enum
             demandTypeNames.add(clientDemandType.getValue());
         }
         demandTypeColumn = dataGrid.addColumn(

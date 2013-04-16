@@ -427,7 +427,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
                 offerDetail.getSupplierName())) {
             offer.getSupplier().getBusinessUser().getBusinessUserData().setCompanyName(offerDetail.getSupplierName());
         }
-        //TODO Martin - how to update OfferState??
+        //TODO RELEASE Martin - how to update OfferState? ivlcek: insert OfferService by Dependency Injection and:
+        // OfferState newOfferState = offerService.getOfferState(offerDetail.getState().getValue());
+        // offer.setState(newOfferState);
         if (!offer.getPrice().equals(offerDetail.getPrice())) {
             offer.setPrice((BigDecimal) offerDetail.getPrice());
         }
@@ -471,7 +473,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!accessRole.getCode().equalsIgnoreCase(accessRoleDetail.getCode())) {
             accessRole.setCode(accessRoleDetail.getCode());
         }
-        //TODO Martin - update permissions
+        //TODO LATER Martin - update permissions
         generalService.merge(accessRole);
     }
 
@@ -583,7 +585,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!invoice.getConstSymbol().equals(invoiceDetail.getConstSymbol())) {
             invoice.setConstSymbol(invoiceDetail.getConstSymbol());
         }
-        //TODO Martin - how to update userServices, paymentMethods
+        //TODO LATER Martin - how to update userServices, paymentMethods
         generalService.merge(invoice);
     }
 

@@ -104,8 +104,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(handlers = DemandCreationHandler.class)
     void registerNewClient(BusinessUserDetail newClient);
 
-    // TODO praso - FullDemandDetail will obviosuly fell inside the left-over fragment
-    // if it is used in another module. And I think it is bacause I saw it in left-over
     @Event(handlers = DemandCreationHandler.class)
     void createDemand(FullDemandDetail detail, Long clientId);
 }

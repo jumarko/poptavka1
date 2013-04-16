@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO = check for number of categories according to payed service
+ * TODO LATER ivlcek: = check for number of categories according to payed service
  *      = authentication code when updating email
  *      = what else need to do when updating services? send invoice??.
  *

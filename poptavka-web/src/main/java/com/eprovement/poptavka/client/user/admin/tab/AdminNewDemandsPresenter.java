@@ -35,10 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Module description:.
- * Data retrieving handle categorySelectionHandler.
- * TODO add description of this module.
- * All changes to CellTree, Table range (Pager), Table Selection is stored to history.
+ * This presenter handles main actions of AdminNewDemands
  *
  * @author praso, Martin Slavkovsky
  */

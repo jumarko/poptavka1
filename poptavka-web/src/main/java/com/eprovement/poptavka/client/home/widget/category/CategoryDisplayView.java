@@ -32,7 +32,6 @@ public class CategoryDisplayView extends Composite implements CategoryDisplayPre
 
     @Override
     public HTML getCategoryView() {
-        // TODO Auto-generated method stub
         return categoryView;
     }
 

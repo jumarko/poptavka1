@@ -34,7 +34,7 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
     private boolean isRead;
     private boolean isStarred;
     private int messageCount;
-    // TODO ivlcek - remove unreadSubmessages
+    // TODO LATER ivlcek: remove unreadSubmessages and optimize usage of this detail object
     private int unreadSubmessagesCount;
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
             new ProvidesKey<IUniversalDetail>() {

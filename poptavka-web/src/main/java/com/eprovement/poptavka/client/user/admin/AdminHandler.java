@@ -225,7 +225,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         adminService.updateOffer(offer, new SecuredAsyncCallback<OfferDetail>(eventBus) {
             @Override
             public void onSuccess(OfferDetail result) {
-                // TODO: what's wrong with this ?
+                // TODO LATER: what's wrong with this ?
 //                eventBus.refreshUpdatedOffer(result);
             }
         });
@@ -257,7 +257,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         adminService.updateClient(client, new SecuredAsyncCallback<ClientDetail>(eventBus) {
             @Override
             public void onSuccess(ClientDetail result) {
-                // TODO: what's wrong with this ?
+                // TODO LATER: what's wrong with this ?
                 //                eventBus.refreshUpdatedDemand(result);
             }
         });

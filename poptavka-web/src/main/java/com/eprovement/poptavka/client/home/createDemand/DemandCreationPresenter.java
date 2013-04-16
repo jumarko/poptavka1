@@ -47,7 +47,7 @@ public class DemandCreationPresenter
     private static final int THIRD_TAB_CATEGORY = 2;
     private static final int FOURTH_TAB_LOCALITY = 3;
     private static final int FIFTH_TAB_DEMAND_ADVANCE_FORM = 4;
-    // TODO praso - All this presenters should be moved into this particular
+    // TODO LATER ivlcek - All this presenters should be moved into this particular
     // module otherwise they will fall in left-over fragment
     private FormDemandBasicPresenter demandBasicForm = null;
     private FormDemandAdvPresenter demandAdvForm = null;

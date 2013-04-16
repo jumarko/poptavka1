@@ -84,7 +84,7 @@ public class EmailDialogPopupPresenter
                     mailService.sendMail(dialogDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
                         @Override
                         public void onSuccess(Boolean result) {
-                            // TODO ivlcek - display success message about sending
+                            // TODO RELEASE martin - display success message about sending such as Feedback alert win.
                             GWT.log("Message has been sent to customer support");
                             hideView();
                         }

@@ -218,7 +218,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     //request? better would be update
 
     public void onRequestEditOffer(long id) {
-        //TODO RPC
+        //TODO LATER ivlcek: maybe we will not enable this functionality. Consider removing
     }
 
     public void onUpdateUnreadMessagesCount() {
@@ -231,7 +231,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     }
 
     public void onUpdateOfferStatus(OfferDetail offerDetail) {
-        //TODO RPC
+        //TODO LATER ivlcek: consider removing. Supplier shouldn't change his offer status
     }
 
     /**************************************************************************/

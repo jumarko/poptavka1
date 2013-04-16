@@ -32,7 +32,6 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
         supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
             @Override
             public void onSuccess(FullSupplierDetail supplier) {
-                // TODO forward to user/atAccount
                 eventBus.loadingHide();
                 eventBus.initActivationCodePopup(newSupplier.getUserData(), Constants.SUPPLIER_DEMANDS_WELCOME);
             }

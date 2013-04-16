@@ -168,7 +168,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /* Activation methods                                                     */
     /**************************************************************************/
     public void onActivateUser(BusinessUserDetail user, String activationCode) {
-        // TODO martin review: whole (new) activation related logic and also "SentActivationCodeAgain" process
+        // TODO RELEASE martin review: whole (new) activation related logic and also "SentActivationCodeAgain" process
         rootService.activateUser(user, activationCode, new SecuredAsyncCallback<UserActivationResult>(eventBus) {
             @Override
             public void onSuccess(UserActivationResult result) {
