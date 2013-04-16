@@ -296,7 +296,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         eventBus.nofityServicesWidgetListeners();
     }
 
-    // TODO RELEASE ivlcek: delete for production
+    // TODO RELEASE ivlcek: comment for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
         final DialogBox userInfoPanel = new DialogBox(false, false);
         userInfoPanel.setText("User Info Box");

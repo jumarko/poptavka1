@@ -175,9 +175,6 @@ public class MessageDetail implements IsSerializable {
         this.created = created;
     }
 
-    // TODO RELEASE ivlcek: what's the difference between sent and created date? Is it needed.
-    // ivlcek: created date is date when message was created by user. This message can be saved in drafts for example,
-    // the sent date is date when the message was sent to its recipients.
     /**
      * @return the sent
      */
@@ -185,8 +182,6 @@ public class MessageDetail implements IsSerializable {
         return sent;
     }
 
-    // TODO RELEASE ivlcek: what's the difference between sent and created date? Is it needed.
-    // ivlcek: Check my response above
     /**
      * @param sent the sent to set
      */

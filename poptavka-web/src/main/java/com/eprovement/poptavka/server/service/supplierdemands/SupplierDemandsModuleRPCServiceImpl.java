@@ -255,7 +255,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELASE ivlcek - refactor and create converter, set Rating
+            // TODO RELEASE ivlcek - refactor and create converter, set Rating
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
