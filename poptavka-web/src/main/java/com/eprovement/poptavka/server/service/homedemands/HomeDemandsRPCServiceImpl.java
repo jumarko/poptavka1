@@ -6,7 +6,6 @@ package com.eprovement.poptavka.server.service.homedemands;
 
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandCategory;
@@ -35,7 +34,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,7 +59,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Configurable
 public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implements HomeDemandsRPCService {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HomeDemandsRPCServiceImpl.class);
     private GeneralService generalService;
     private DemandService demandService;
     private CategoryService categoryService;
@@ -69,7 +66,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private TreeItemService treeItemService;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
-    private Converter<ResultCriteria, SearchDefinition> criteriaConverter;
     private Converter<Filter, FilterItem> filterConverter;
     private FulltextSearchService fulltextSearchService;
 
@@ -119,12 +115,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     }
 
     @Autowired
-    public void setCriteriaConverter(
-            @Qualifier("criteriaConverter") Converter<ResultCriteria, SearchDefinition> criteriaConverter) {
-        this.criteriaConverter = criteriaConverter;
-    }
-
-    @Autowired
     public void setFilterConverter(
             @Qualifier("filterConverter") Converter<Filter, FilterItem> filterConverter) {
         this.filterConverter = filterConverter;
@@ -163,7 +153,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     @Override
     public long getDemandsCount(SearchDefinition definition) throws RPCException {
         if (definition == null || definition.getFilter() == null) {
-//            return filterWithoutAttributesCount(definition);
             //general
             return getDemandsGeneralCount();
         } else {
