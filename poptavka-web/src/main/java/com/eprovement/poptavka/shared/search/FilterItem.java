@@ -6,9 +6,7 @@ package com.eprovement.poptavka.shared.search;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <B>Item</B> = string representing domain object attribute <B>Operation</B> =
@@ -32,16 +30,26 @@ public class FilterItem implements IsSerializable {
     /**************************************************************************/
     public enum Operation {
 
-        OPERATION_FROM,
-        OPERATION_TO,
-        OPERATION_EQUALS,
-        OPERATION_IN,
-        OPERATION_LIKE;
-    }
+        OPERATION_FROM("=>"),
+        OPERATION_TO("<="),
+        OPERATION_EQUALS("="),
+        OPERATION_IN(" IN "),
+        OPERATION_LIKE("~");
 
+        private String value;
+
+        private Operation(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    /** Class attributes. **/
     private int group = 0;
     private String item;
     private Operation operation;
@@ -49,6 +57,8 @@ public class FilterItem implements IsSerializable {
     private Number number;
     private Date date;
     private Boolean bool;
+    /** Constants. **/
+    private static final String GROUP_INDICATOR = "^";
 
     /**************************************************************************/
     /* Initialziation                                                         */
@@ -111,39 +121,43 @@ public class FilterItem implements IsSerializable {
     @Override
     public String toString() {
         StringBuilder infoStr = new StringBuilder();
-        infoStr.append(item);
+        infoStr.append(toStringItem(item));
         switch (operation) {
             case OPERATION_EQUALS:
-                infoStr.append("=");
+                infoStr.append(Operation.OPERATION_EQUALS.getValue());
                 break;
             case OPERATION_LIKE:
-                infoStr.append("~");
+                infoStr.append(Operation.OPERATION_LIKE.getValue());
                 break;
             case OPERATION_FROM:
-                infoStr.append(">");
+                infoStr.append(Operation.OPERATION_FROM.getValue());
                 break;
             case OPERATION_TO:
-                infoStr.append("<");
+                infoStr.append(Operation.OPERATION_TO.getValue());
                 break;
             case OPERATION_IN:
-                infoStr.append(" in ");
+                infoStr.append(Operation.OPERATION_IN.getValue());
                 break;
             default:
                 break;
         }
         infoStr.append(getValue().toString());
-        infoStr.append("^");
-        infoStr.append(group);
         return infoStr.toString();
     }
 
+    private String toStringItem(String item) {
+        if (item.lastIndexOf(".") != -1) {
+            return item.substring(item.lastIndexOf(".") + 1, item.length());
+        }
+        return item;
+    }
+
     public static FilterItem parseFilterItem(String filterItemString) {
-        List<String> operations = Arrays.asList(new String[]{"=", "~", "<", ">", "in"});
         int idx = -1;
         int groupIdx = -1;
-        for (String operation : operations) {
-            idx = filterItemString.indexOf(operation);
-            groupIdx = filterItemString.indexOf("^");
+        for (Operation operation : Operation.values()) {
+            idx = filterItemString.indexOf(operation.getValue());
+            groupIdx = filterItemString.indexOf(GROUP_INDICATOR);
             return new FilterItem(
                     filterItemString.substring(0, idx - 1),
                     parseOperation(filterItemString.substring(idx, idx + 1)),
@@ -154,19 +168,7 @@ public class FilterItem implements IsSerializable {
     }
 
     private static Operation parseOperation(String operationString) {
-        if (operationString.equals("=")) {
-            return Operation.OPERATION_EQUALS;
-        } else if (operationString.equals("~")) {
-            return Operation.OPERATION_LIKE;
-        } else if (operationString.equals(">")) {
-            return Operation.OPERATION_FROM;
-        } else if (operationString.equals("<")) {
-            return Operation.OPERATION_TO;
-        } else if (operationString.equals("in")) {
-            return Operation.OPERATION_IN;
-        } else {
-            return null;
-        }
+        return Operation.valueOf(operationString);
     }
 
     private static Object parseValue(String valueString) {

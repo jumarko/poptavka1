@@ -208,13 +208,11 @@ public class HomeSuppliersPresenter
         //----------------------------------------------------------------------
         if (filterHolder == null) {
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
-            view.getFilterLabel().setText("");
+            view.getFilterLabel().setTitle("");
             view.getFilterLabel().setVisible(false);
         } else {
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
-            //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
-            //ale ak bude dynamicky (zobrazia searching criteria), tak ano
-            view.getFilterLabel().setText(Storage.MSGS.searchResultInfoLabel() + filterHolder.toString());
+            view.getFilterLabel().setTitle(filterHolder.toString());
             view.getFilterLabel().setVisible(true);
         }
         searchDataHolder = filterHolder;

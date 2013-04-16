@@ -66,7 +66,6 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
             eventBus.loginFromSession(Constants.SKIP);
         }
         Storage.setCalledDueToHistory(true);
-        SearchModuleDataHolder searchDataHolder = null;
         param = param.substring(6, param.length());
         //When back & forward events -> don't need to call goToHomeSupplierModule
         // - it would create new universalAsyncTable, ...
@@ -75,13 +74,12 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
         String[] params = param.split(ITEM_SEPARATOR);
         LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split(VALUE_SEPARATOR)[1]);
         if (tree.isEmpty()) {
-            eventBus.setModuleByHistory(searchDataHolder, tree, null,
+            eventBus.setModuleByHistory(null, tree, null,
                     Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
                     Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
         } else {
             eventBus.getCategoryAndSetModuleByHistory(
-                    searchDataHolder, tree,
-                    tree.getLast().getCategoryId(),
+                    null, tree, tree.getLast().getCategoryId(),
                     Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
                     Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
         }

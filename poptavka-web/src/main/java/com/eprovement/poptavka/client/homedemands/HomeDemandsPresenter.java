@@ -223,14 +223,11 @@ public class HomeDemandsPresenter
         //----------------------------------------------------------------------
         if (filterHolder == null) {
             Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_DEFAULT);
-            view.getFilterLabel().setText("");
+            view.getFilterLabel().setTitle("");
             view.getFilterLabel().setVisible(false);
         } else {
-            //HOME_DEMANDS_BY_SEARCH
             Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_SEARCH);
-            //Ak bude text stale rovnaky, nemusi sa setovat tu (moze v UiBinderi),
-            //ale ak bude dynamicky (zobrazia searching criteria), tak ano
-            view.getFilterLabel().setText(Storage.MSGS.searchResultInfoLabel() + filterHolder.toString());
+            view.getFilterLabel().setTitle(filterHolder.toString());
             view.getFilterLabel().setVisible(true);
         }
         searchDataHolder = filterHolder;
