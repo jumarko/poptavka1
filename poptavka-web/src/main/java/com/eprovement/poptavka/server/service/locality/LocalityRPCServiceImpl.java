@@ -103,8 +103,8 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
                 Filter.equal("type", LocalityType.CITY),
                 Filter.ilike("name", "__"),
                 Filter.or(
-                /**/Filter.ilike("name", cityLike + "%"),
-                /**/ Filter.ilike("name", "% " + cityLike + "%")));
+                    Filter.ilike("name", cityLike + "%"),
+                    Filter.ilike("name", "% " + cityLike + "%")));
         List<Locality> list = generalService.search(locSearch);
 
         List<LocalitySuggestionDetail> result = new ArrayList<LocalitySuggestionDetail>();

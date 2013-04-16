@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class AdminClientsViewView extends Composite implements
@@ -35,26 +36,27 @@ public class AdminClientsViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!idFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, idFrom.getText(), group++));
         }
         if (!idTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, idTo.getText(), group++));
         }
         if (!companyName.getText().equals("")) {
-            filters.add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, companyName.getText()));
+            filters.add(new FilterItem("companyName", Operation.OPERATION_LIKE, companyName.getText(), group++));
         }
         if (!firstName.getText().equals("")) {
-            filters.add(new FilterItem("personFirstName", FilterItem.OPERATION_LIKE, firstName.getText()));
+            filters.add(new FilterItem("personFirstName", Operation.OPERATION_LIKE, firstName.getText(), group++));
         }
         if (!lastName.getText().equals("")) {
-            filters.add(new FilterItem("personLastName", FilterItem.OPERATION_LIKE, lastName.getText()));
+            filters.add(new FilterItem("personLastName", Operation.OPERATION_LIKE, lastName.getText(), group++));
         }
         if (!ratingFrom.getText().equals("0")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingFrom.getText()));
+            filters.add(new FilterItem("overalRating", Operation.OPERATION_LIKE, ratingFrom.getText(), group++));
         }
         if (!ratingTo.getText().equals("100")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingTo.getText()));
+            filters.add(new FilterItem("overalRating", Operation.OPERATION_LIKE, ratingTo.getText(), group++));
         }
         return filters;
     }

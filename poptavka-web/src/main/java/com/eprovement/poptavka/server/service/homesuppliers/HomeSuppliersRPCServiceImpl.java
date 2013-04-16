@@ -427,9 +427,8 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         search.setFirstResult(definition.getFirstResult());
         search.setMaxResults(definition.getMaxResult());
 
-        for (FilterItem item : definition.getFilter().getAttributes()) {
-            search.addFilter(filterConverter.convertToSource(item));
-        }
+        ArrayList<Filter> filtersOr = filterConverter.convertToSourceList(definition.getFilter().getAttributes());
+        search.addFilterAnd(filtersOr.toArray(new Filter[filtersOr.size()]));
         return search;
     }
 

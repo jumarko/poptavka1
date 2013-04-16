@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class AdminProblemsViewView extends Composite implements
@@ -33,14 +34,15 @@ public class AdminProblemsViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!idFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, idFrom.getText(), group++));
         }
         if (!idTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, idTo.getText(), group++));
         }
         if (!text.getText().equals("")) {
-            filters.add(new FilterItem("text", FilterItem.OPERATION_LIKE, text.getText()));
+            filters.add(new FilterItem("text", Operation.OPERATION_LIKE, text.getText(), group++));
         }
         return filters;
     }

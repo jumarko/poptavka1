@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class AdminInvoicesViewView extends Composite implements
@@ -38,32 +39,33 @@ public class AdminInvoicesViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!idFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, idFrom.getText(), group++));
         }
         if (!idTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, idTo.getText(), group++));
         }
         if (!invoiceNumberFrom.getText().equals("")) {
             filters.add(new FilterItem("invoiceNumber",
-                    FilterItem.OPERATION_FROM, invoiceNumberFrom.getText()));
+                    Operation.OPERATION_FROM, invoiceNumberFrom.getText(), group++));
         }
         if (!invoiceNumberTo.getText().equals("")) {
-            filters.add(new FilterItem("invoiceNumber", FilterItem.OPERATION_TO, invoiceNumberTo.getText()));
+            filters.add(new FilterItem("invoiceNumber", Operation.OPERATION_TO, invoiceNumberTo.getText(), group++));
         }
         if (!totalPriceFrom.getText().equals("")) {
-            filters.add(new FilterItem("totalPrice", FilterItem.OPERATION_FROM, totalPriceFrom.getText()));
+            filters.add(new FilterItem("totalPrice", Operation.OPERATION_FROM, totalPriceFrom.getText(), group++));
         }
         if (!totalPriceTo.getText().equals("")) {
-            filters.add(new FilterItem("totalPrice", FilterItem.OPERATION_TO, totalPriceTo.getText()));
+            filters.add(new FilterItem("totalPrice", Operation.OPERATION_TO, totalPriceTo.getText(), group++));
         }
         if (!variableSymbol.getText().equals("")) {
             filters.add(new FilterItem("variableSymbol",
-                    FilterItem.OPERATION_FROM, variableSymbol.getText()));
+                    Operation.OPERATION_FROM, variableSymbol.getText(), group++));
         }
         if (paymentMethod.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("paymentMethod", FilterItem.OPERATION_TO,
-                    paymentMethod.getValue(paymentMethod.getSelectedIndex())));
+            filters.add(new FilterItem("paymentMethod", Operation.OPERATION_TO,
+                    paymentMethod.getValue(paymentMethod.getSelectedIndex()), group++));
         }
         return filters;
     }

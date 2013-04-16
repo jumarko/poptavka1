@@ -14,6 +14,7 @@ import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import java.util.ArrayList;
@@ -47,31 +48,32 @@ public class HomeSuppliersSearchView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!companyName.getText().isEmpty()) {
             filters.add(new FilterItem(
                     PATH_TO_BUSINESS_USER.concat(UserField.COMPANY_NAME.getValue()),
-                    FilterItem.OPERATION_LIKE, companyName.getText()));
+                    Operation.OPERATION_LIKE, companyName.getText(), group));
             filters.add(new FilterItem(
                     PATH_TO_BUSINESS_USER.concat(UserField.FIRST_NAME.getValue()),
-                    FilterItem.OPERATION_LIKE, companyName.getText()));
+                    Operation.OPERATION_LIKE, companyName.getText(), group));
             filters.add(new FilterItem(
                     PATH_TO_BUSINESS_USER.concat(UserField.LAST_NAME.getValue()),
-                    FilterItem.OPERATION_LIKE, companyName.getText()));
+                    Operation.OPERATION_LIKE, companyName.getText(), group++));
         }
         if (!supplierDescription.getText().isEmpty()) {
             filters.add(new FilterItem(
                     PATH_TO_BUSINESS_USER.concat(UserField.DESCRIPTION.getValue()),
-                    FilterItem.OPERATION_LIKE, supplierDescription.getText()));
+                    Operation.OPERATION_LIKE, supplierDescription.getText(), group++));
         }
         if (ratingMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(
                     UserField.OVERALL_RATING.getValue(),
-                    FilterItem.OPERATION_FROM, ratingMonitorFrom.getValue()));
+                    Operation.OPERATION_FROM, ratingMonitorFrom.getValue(), group++));
         }
         if (ratingMonitorTo.getValue() != null) {
             filters.add(new FilterItem(
                     UserField.OVERALL_RATING.getValue(),
-                    FilterItem.OPERATION_TO, ratingMonitorTo.getValue()));
+                    Operation.OPERATION_TO, ratingMonitorTo.getValue(), group++));
         }
         return filters;
     }

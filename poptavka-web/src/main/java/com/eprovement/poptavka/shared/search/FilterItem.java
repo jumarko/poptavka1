@@ -17,31 +17,46 @@ import java.util.List;
  * Class was design to use directly with Search in RPC methods. See
  * <I>filter</I> and <I>setFilters</I> methods in <I>AdminRPCServiceImpl</I>.
  *
+ * FilterItems are grouped by <B>group<B> attribute represented by integer value.
+ * So one FilterItem is a group of one element(filter).
+ * If Group contains more elements(filters), operation OR is used among them.
+ * If we have more groups, operation AND is used among them.
+ * Summarize: Within a group is used OR operation, outside the group is used AND operation.
+ *
  * @author Martin Slavkovsky
  */
 public class FilterItem implements IsSerializable {
 
-    /*
-     * OPERATIONS
-     */
-    public static final int OPERATION_FROM = 0;
-    public static final int OPERATION_TO = 1;
-    public static final int OPERATION_EQUALS = 2;
-    public static final int OPERATION_IN = 3;
-    public static final int OPERATION_LIKE = 4;
-    //
-    private String item = null;
-    private int operation = -1;
-    //
+    /**************************************************************************/
+    /* Enum - attribute's supported operations                                */
+    /**************************************************************************/
+    public enum Operation {
+
+        OPERATION_FROM,
+        OPERATION_TO,
+        OPERATION_EQUALS,
+        OPERATION_IN,
+        OPERATION_LIKE;
+    }
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private int group = 0;
+    private String item;
+    private Operation operation;
     private String string;
     private Number number;
     private Date date;
     private Boolean bool;
 
+    /**************************************************************************/
+    /* Initialziation                                                         */
+    /**************************************************************************/
     public FilterItem() {
     }
 
-    public FilterItem(String item, int operation, Object value) {
+    public FilterItem(String item, Operation operation, Object value, int group) {
         this.item = item;
         this.operation = operation;
         if (value != null) {
@@ -58,13 +73,17 @@ public class FilterItem implements IsSerializable {
                 this.bool = (Boolean) value;
             }
         }
+        this.group = group;
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
     public String getItem() {
         return item;
     }
 
-    public int getOperation() {
+    public Operation getOperation() {
         return operation;
     }
 
@@ -80,6 +99,10 @@ public class FilterItem implements IsSerializable {
         } else {
             return "";
         }
+    }
+
+    public int getGroup() {
+        return group;
     }
 
     /**************************************************************************/
@@ -109,36 +132,40 @@ public class FilterItem implements IsSerializable {
                 break;
         }
         infoStr.append(getValue().toString());
+        infoStr.append("^");
+        infoStr.append(group);
         return infoStr.toString();
     }
 
     public static FilterItem parseFilterItem(String filterItemString) {
         List<String> operations = Arrays.asList(new String[]{"=", "~", "<", ">", "in"});
         int idx = -1;
+        int groupIdx = -1;
         for (String operation : operations) {
             idx = filterItemString.indexOf(operation);
+            groupIdx = filterItemString.indexOf("^");
             return new FilterItem(
                     filterItemString.substring(0, idx - 1),
                     parseOperation(filterItemString.substring(idx, idx + 1)),
-                    parseValue(filterItemString.substring(idx + 2, filterItemString.length())));
-
+                    parseValue(filterItemString.substring(idx + 2, groupIdx)),
+                    Integer.parseInt(filterItemString.substring(groupIdx + 1, filterItemString.length())));
         }
         return null;
     }
 
-    private static int parseOperation(String operationString) {
+    private static Operation parseOperation(String operationString) {
         if (operationString.equals("=")) {
-            return OPERATION_EQUALS;
+            return Operation.OPERATION_EQUALS;
         } else if (operationString.equals("~")) {
-            return OPERATION_LIKE;
+            return Operation.OPERATION_LIKE;
         } else if (operationString.equals(">")) {
-            return OPERATION_FROM;
+            return Operation.OPERATION_FROM;
         } else if (operationString.equals("<")) {
-            return OPERATION_TO;
+            return Operation.OPERATION_TO;
         } else if (operationString.equals("in")) {
-            return OPERATION_IN;
+            return Operation.OPERATION_IN;
         } else {
-            return -1;
+            return null;
         }
     }
 

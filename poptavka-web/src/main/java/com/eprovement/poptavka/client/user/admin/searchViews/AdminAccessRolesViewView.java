@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 /*
@@ -37,24 +38,25 @@ public class AdminAccessRolesViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!idFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, idFrom.getText(), group++));
         }
         if (!idTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, idTo.getText(), group++));
         }
         if (!code.getText().equals("")) {
-            filters.add(new FilterItem("code", FilterItem.OPERATION_EQUALS, code.getText()));
+            filters.add(new FilterItem("code", Operation.OPERATION_EQUALS, code.getText(), group++));
         }
         if (!roleName.getText().equals("")) {
-            filters.add(new FilterItem("name", FilterItem.OPERATION_LIKE, roleName.getText()));
+            filters.add(new FilterItem("name", Operation.OPERATION_LIKE, roleName.getText(), group++));
         }
         if (!roleDescription.getText().equals("")) {
-            filters.add(new FilterItem("description", FilterItem.OPERATION_LIKE, roleDescription.getText()));
+            filters.add(new FilterItem("description", Operation.OPERATION_LIKE, roleDescription.getText(), group++));
         }
         if (!permissions.getText().equals("")) {
             //split permissions by ';'
-            filters.add(new FilterItem("permissions", FilterItem.OPERATION_IN, permissions.getText()));
+            filters.add(new FilterItem("permissions", Operation.OPERATION_IN, permissions.getText(), group++));
         }
         return filters;
     }

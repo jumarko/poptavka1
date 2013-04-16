@@ -5,6 +5,7 @@ import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -49,40 +50,41 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!demandIdFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, demandIdFrom.getText(), group++));
         }
         if (!demandIdTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, demandIdTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, demandIdTo.getText(), group++));
         }
         if (!clientIdFrom.getText().equals("")) {
-            filters.add(new FilterItem("client.id", FilterItem.OPERATION_FROM, clientIdFrom.getText()));
+            filters.add(new FilterItem("client.id", Operation.OPERATION_FROM, clientIdFrom.getText(), group++));
         }
         if (!clientIdTo.getText().equals("")) {
-            filters.add(new FilterItem("client.id", FilterItem.OPERATION_TO, clientIdTo.getText()));
+            filters.add(new FilterItem("client.id", Operation.OPERATION_TO, clientIdTo.getText(), group++));
         }
         if (!demandTitle.getText().equals("")) {
-            filters.add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
+            filters.add(new FilterItem("title", Operation.OPERATION_LIKE, demandTitle.getText(), group++));
         }
         if (expirationDateFrom.getValue() != null) {
-            filters.add(new FilterItem("validTo", FilterItem.OPERATION_FROM, expirationDateFrom.getValue()));
+            filters.add(new FilterItem("validTo", Operation.OPERATION_FROM, expirationDateFrom.getValue(), group++));
         }
         if (expirationDateTo.getValue() != null) {
-            filters.add(new FilterItem("validTo", FilterItem.OPERATION_TO, expirationDateTo.getValue()));
+            filters.add(new FilterItem("validTo", Operation.OPERATION_TO, expirationDateTo.getValue(), group++));
         }
         if (endDateFrom.getValue() != null) {
-            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, endDateFrom.getValue()));
+            filters.add(new FilterItem("endDate", Operation.OPERATION_FROM, endDateFrom.getValue(), group++));
         }
         if (endDateTo.getValue() != null) {
-            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, endDateTo.getValue()));
+            filters.add(new FilterItem("endDate", Operation.OPERATION_TO, endDateTo.getValue(), group++));
         }
         if (demandType.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
-                    demandType.getItemText(demandType.getSelectedIndex())));
+            filters.add(new FilterItem("type", Operation.OPERATION_EQUALS,
+                    demandType.getItemText(demandType.getSelectedIndex()), group++));
         }
         if (demandStatus.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("status", FilterItem.OPERATION_EQUALS,
-                    demandStatus.getItemText(demandStatus.getSelectedIndex())));
+            filters.add(new FilterItem("status", Operation.OPERATION_EQUALS,
+                    demandStatus.getItemText(demandStatus.getSelectedIndex()), group++));
         }
         return filters;
     }

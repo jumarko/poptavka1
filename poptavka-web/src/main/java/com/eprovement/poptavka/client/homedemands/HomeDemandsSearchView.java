@@ -12,6 +12,7 @@ import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
@@ -78,40 +79,41 @@ public class HomeDemandsSearchView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!demandTitle.getText().isEmpty()) {
             filters.add(new FilterItem(
                     DemandField.TITLE.getValue(),
-                    FilterItem.OPERATION_LIKE, demandTitle.getText()));
+                    Operation.OPERATION_LIKE, demandTitle.getText(), group++));
         }
         if (priceMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(
                     DemandField.PRICE.getValue(),
-                    FilterItem.OPERATION_FROM, priceMonitorFrom.getValue()));
+                    Operation.OPERATION_FROM, priceMonitorFrom.getValue(), group++));
         }
         if (priceMonitorTo.getValue() != null) {
             filters.add(new FilterItem(
                     DemandField.PRICE.getValue(),
-                    FilterItem.OPERATION_TO, priceMonitorTo.getValue()));
+                    Operation.OPERATION_TO, priceMonitorTo.getValue(), group++));
         }
         if (demandTypes.isSelected()) {
             filters.add(new FilterItem(
                     DemandField.DEMAND_TYPE.getValue().concat(DEMAND_TYPE_DESCRIPTION_FIELD),
-                    FilterItem.OPERATION_EQUALS, demandTypes.getSelected()));
+                    Operation.OPERATION_EQUALS, demandTypes.getSelected(), group++));
         }
         if (creationDate.isSelected()) {
             filters.add(new FilterItem(
                     DemandField.CREATED.getValue(),
-                    FilterItem.OPERATION_FROM, getCreatedDate()));
+                    Operation.OPERATION_FROM, getCreatedDate(), group++));
         }
         if (endDateFrom.getValue() != null) {
             filters.add(new FilterItem(
                     DemandField.END_DATE.getValue(),
-                    FilterItem.OPERATION_FROM, endDateFrom.getValue()));
+                    Operation.OPERATION_FROM, endDateFrom.getValue(), group++));
         }
         if (endDateTo.getValue() != null) {
             filters.add(new FilterItem(
                     DemandField.END_DATE.getValue(),
-                    FilterItem.OPERATION_TO, endDateTo.getValue()));
+                    Operation.OPERATION_TO, endDateTo.getValue(), group++));
         }
         return filters;
     }
