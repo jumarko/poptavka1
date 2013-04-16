@@ -6,7 +6,6 @@ package com.eprovement.poptavka.server.service.homesuppliers;
 
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
@@ -56,7 +55,6 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private FulltextSearchService fulltextSearchService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
-    private Converter<ResultCriteria, SearchDefinition> criteriaConverter;
     private Converter<Filter, FilterItem> filterConverter;
 
     @Autowired
@@ -99,12 +97,6 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     public void setCategoryConverter(
             @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
-    }
-
-    @Autowired
-    public void setCriteriaConverter(
-            @Qualifier("criteriaConverter") Converter<ResultCriteria, SearchDefinition> criteriaConverter) {
-        this.criteriaConverter = criteriaConverter;
     }
 
     @Autowired

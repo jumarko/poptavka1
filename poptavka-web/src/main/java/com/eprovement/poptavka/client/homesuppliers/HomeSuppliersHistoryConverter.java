@@ -21,7 +21,6 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     private static final String USER = "user";
     private static final String VALUE_SEPARATOR = "=";
     private static final String ITEM_SEPARATOR = ";";
-    private static final String FILTER_SEPARATOR = ">>";
     private static final String LIST_BRACKET_LEFT = "(";
     private static final String LIST_BRACKET_RIGHT = ")";
     private static final String LIST_ITEM_SEPARATOR = ",";
@@ -30,13 +29,6 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     public String onCreateTokenForHistory(SearchModuleDataHolder searchDataHolder,
             LinkedList<TreeItem> openedHierarchy, int page, FullSupplierDetail supplierDetail) {
         StringBuilder token = new StringBuilder();
-        if (searchDataHolder == null) {
-            token.append("");
-        } else {
-            token.append("filter:");
-            token.append(searchDataHolder.toStringWithIDs());
-            token.append(FILTER_SEPARATOR);
-        }
         //Location
         token.append(Storage.getUser() == null ? HOME : USER);
         token.append(ITEM_SEPARATOR);
@@ -75,16 +67,10 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         Storage.setCalledDueToHistory(true);
         SearchModuleDataHolder searchDataHolder = null;
         param = param.substring(6, param.length());
-        if (param.startsWith("filter:")) {
-            param = param.replace("filter:", "");
-            searchDataHolder = SearchModuleDataHolder.parseSearchModuleDataHolder(
-                    param.substring(0, param.indexOf(FILTER_SEPARATOR)));
-        }
         //When back & forward events -> don't need to call goToHomeSupplierModule
         // - it would create new universalAsyncTable, ...
         // - just use what is already created - events will fire appropiate actions
         //parse param
-        param = param.substring(param.indexOf(FILTER_SEPARATOR) + FILTER_SEPARATOR.length(), param.length());
         String[] params = param.split(ITEM_SEPARATOR);
         LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split(VALUE_SEPARATOR)[1]);
         if (tree.isEmpty()) {

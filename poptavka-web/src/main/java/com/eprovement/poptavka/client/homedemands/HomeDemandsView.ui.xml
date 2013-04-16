@@ -52,7 +52,9 @@
                     <b:FluidContainer addStyleNames='{res.layout.fluidMainGrid}'>
                         <b:FluidRow>
                             <b:Column size="7">
-                                <g:Label ui:field="filterLabel" styleName="{style.filterLabel}"/>
+                                <g:Label ui:field="filterLabel" styleName="{style.filterLabel}">
+                                    <ui:msg key="searchResultInfoLabel">Search filter is on!</ui:msg>
+                                </g:Label>
                                 <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer}'>                            
                                     <g:center>
                                         <c:DataGrid ui:field="dataGrid"

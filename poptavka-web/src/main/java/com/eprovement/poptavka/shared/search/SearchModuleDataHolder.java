@@ -106,8 +106,28 @@ public class SearchModuleDataHolder implements IsSerializable {
         if (!attributes.isEmpty()) {
             str.append("attrs");
             str.append(VALUE_SEPARATOR);
-            str.append(attributes.toString());
+            str.append(toStringAttributes());
         }
+        return str.toString();
+    }
+
+    private String toStringAttributes() {
+        StringBuilder str = new StringBuilder("(");
+        int group = -1;
+        boolean first = true;
+        for (FilterItem item : attributes) {
+            if (group == item.getGroup()) {
+                str.append(" | ");
+            } else {
+                if (!first) {
+                    str.append(") & (");
+                }
+                first = false;
+                group = item.getGroup();
+            }
+            str.append(item.toString());
+        }
+        str.append(")");
         return str.toString();
     }
 
@@ -136,7 +156,7 @@ public class SearchModuleDataHolder implements IsSerializable {
         if (!attributes.isEmpty()) {
             str.append("attrs");
             str.append(VALUE_SEPARATOR);
-            str.append(attributes.toString());
+            str.append(toStringAttributes());
         }
         return str.toString();
     }
