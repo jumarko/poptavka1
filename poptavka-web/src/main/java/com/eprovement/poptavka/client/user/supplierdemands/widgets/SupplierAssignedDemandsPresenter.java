@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.common.actionBox.ActionBoxView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
@@ -135,14 +136,13 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     }
 
     public void onResponseFeedback() {
-        ratePopup.getPopupThankYou().show();
-        Timer togglebuttonTimer = new Timer() {
+        Timer additionalAction = new Timer() {
             @Override
             public void run() {
-                ratePopup.getPopupThankYou().hide();
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
         };
-        togglebuttonTimer.schedule(Constants.THANK_YOU_POPUP_DISPLAY_TIME);
+        ThankYouPopup.create(Storage.MSGS.thankYouFeedback(), additionalAction);
     }
 
     /**

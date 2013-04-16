@@ -208,9 +208,8 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 new SecuredAsyncCallback<Void>(eventBus) {
                     @Override
                     public void onSuccess(Void result) {
-                        eventBus.responseFeedback();
-                        eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
                         eventBus.sendStatusMessage(Storage.MSGS.finishedOfferMessage());
+                        eventBus.responseFeedback();
                     }
                 });
     }

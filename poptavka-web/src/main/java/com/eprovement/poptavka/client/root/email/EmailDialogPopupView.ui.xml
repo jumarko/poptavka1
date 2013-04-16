@@ -55,18 +55,6 @@
                         <b:FluidRow>
                             <b:Column size="4">
                                 <g:Label>
-                                    <ui:msg key="emailDialogReEnterYourEmail">Re-enter your email address</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ValidationMonitor ui:field="reEmailMonitor">
-                                    <g:TextBox ui:field="reEmailFrom" styleName='full-width' />
-                                </cm:ValidationMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
                                     <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
                                 </g:Label>
                                 <g:Label styleName='description'>

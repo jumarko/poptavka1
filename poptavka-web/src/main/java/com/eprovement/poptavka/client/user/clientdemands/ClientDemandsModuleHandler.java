@@ -291,9 +291,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 new SecuredAsyncCallback<Void>(eventBus) {
                     @Override
                     public void onSuccess(Void result) {
-                        eventBus.responseFeedback();
-                        eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
                         eventBus.sendStatusMessage(Storage.MSGS.closeDemandMessage());
+                        eventBus.responseFeedback();
                     }
                 });
     }
@@ -304,8 +303,8 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 @Override
                 public void onSuccess(Void result) {
                     GWT.log("onRequestAcceptOffer finished");
-                    eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
                     eventBus.sendStatusMessage(Storage.MSGS.acceptedOfferMessage());
+                    eventBus.responseAcceptOffer();
                 }
             });
     }

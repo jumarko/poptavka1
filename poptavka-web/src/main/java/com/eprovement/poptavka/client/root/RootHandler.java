@@ -131,10 +131,10 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_OFFERS);
-                eventBus.addConversationMessage(sentMessage);
                 GWT.log("Offer message [messageId=" + sentMessage.getMessageId()
                         + "]  has been successfully sent to client");
+                eventBus.addConversationMessage(sentMessage);
+                eventBus.responseSendOfferMessage();
             }
         });
     }

@@ -12,13 +12,10 @@ import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter.IEmai
 import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import javax.validation.groups.Default;
 
@@ -43,8 +40,7 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) MyListBox subject;
-    @UiField(provided = true) ValidationMonitor emailMonitor, reEmailMonitor, msgBodyMonitor;
-    @UiField TextBox reEmailFrom;
+    @UiField(provided = true) ValidationMonitor emailMonitor, msgBodyMonitor;
     @UiField Modal popupPanel;
     @UiField Button sendButton, closeButton;
 
@@ -62,7 +58,6 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
         if (Storage.getUser() != null) {
             // user is logged in so we can retrieve his email address
             emailMonitor.setValue(Storage.getUser().getEmail());
-            reEmailMonitor.setValue(Storage.getUser().getEmail());
         }
         //style
         StyleResource.INSTANCE.layout().ensureInjected();
@@ -78,8 +73,6 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     private void initValidationMonitors() {
         emailMonitor = new ValidationMonitor<EmailDialogDetail>(
                 EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.EMAIL_FROM.getValue());
-        reEmailMonitor = new ValidationMonitor<EmailDialogDetail>(
-                EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.EMAIL_FROM.getValue());
         msgBodyMonitor = new ValidationMonitor<EmailDialogDetail>(
                 EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.MESSAGE.getValue());
     }
@@ -92,22 +85,6 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
         subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
         subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
         subject = MyListBox.createListBox(subjectData, 0);
-    }
-
-    /**************************************************************************/
-    /* UiHandlers                                                             */
-    /**************************************************************************/
-    @UiHandler("reEmailFrom")
-    public void validateReEmailFrom(BlurEvent e) {
-        if (reEmailMonitor.getValue() == null) {
-            reEmailMonitor.setValidationStyles(false, Storage.VMSGS.reRmailDialogNotBlankEmail());
-        } else {
-            if (reEmailMonitor.getValue().equals(emailMonitor.getValue())) {
-                reEmailMonitor.setValidationStyles(true, "");
-            } else {
-                reEmailMonitor.setValidationStyles(false, Storage.VMSGS.reEmailDialogEmail());
-            }
-        }
     }
 
     /**************************************************************************/
@@ -149,9 +126,8 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     @Override
     public boolean isValid() {
         //Need to do it this way because we need all monitors perform isValid method.
-        boolean valid = false;
+        boolean valid = true;
         valid = emailMonitor.isValid() && valid;
-        valid = reEmailMonitor.isValid() && valid;
         valid = msgBodyMonitor.isValid() && valid;
         return valid;
     }

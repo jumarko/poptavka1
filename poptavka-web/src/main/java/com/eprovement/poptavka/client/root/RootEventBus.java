@@ -423,6 +423,9 @@ public interface RootEventBus extends EventBusWithLookup {
     void sendOfferMessage(OfferMessageDetail offerMessageToSend);
 
     @Event(handlers = DetailsWrapperPresenter.class)
+    void responseSendOfferMessage();
+
+    @Event(handlers = DetailsWrapperPresenter.class)
     void addConversationMessage(MessageDetail sentMessage);
 
     /**

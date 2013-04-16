@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.root.email;
 import com.eprovement.poptavka.client.common.myListBox.MyListBox;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
@@ -84,9 +85,9 @@ public class EmailDialogPopupPresenter
                     mailService.sendMail(dialogDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
                         @Override
                         public void onSuccess(Boolean result) {
-                            // TODO RELEASE martin - display success message about sending such as Feedback alert win.
                             GWT.log("Message has been sent to customer support");
                             hideView();
+                            ThankYouPopup.create(Storage.MSGS.thankYouContactUs(), null);
                         }
                     });
                 }

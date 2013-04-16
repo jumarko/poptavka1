@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 import com.eprovement.poptavka.client.common.actionBox.ActionBoxView;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
@@ -23,6 +24,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -226,6 +228,16 @@ public class ClientOffersPresenter
         textFieldUpdater.update(-1, detail, null);
     }
 
+    public void onResponseAcceptOffer() {
+        Timer additionalAction = new Timer() {
+            @Override
+            public void run() {
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
+            }
+        };
+        ThankYouPopup.create(Storage.MSGS.thankYouAcceptOffer(), additionalAction);
+    }
+
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
@@ -266,8 +278,9 @@ public class ClientOffersPresenter
         view.getOfferGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                //set actionBox visibility
+                //tool bar items
                 view.getActionBox().setVisible(view.getOfferGrid().getSelectedUserMessageIds().size() > 0);
+                view.getAcceptBtn().setVisible(view.getOfferGrid().getSelectedUserMessageIds().size() == 1);
                 //init details
                 if (view.getOfferGrid().getSelectedUserMessageIds().size() == 1) {
                     selectedOfferedDemandOfferObject = view.getOfferGrid().getSelectedObjects().get(0);
