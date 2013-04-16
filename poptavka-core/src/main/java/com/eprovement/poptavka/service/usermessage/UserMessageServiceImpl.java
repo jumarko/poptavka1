@@ -128,8 +128,10 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
      * <p>
      *     This implementation requires only <code>id</code> attribute of parameter <code>supplier</code> to be filled.
      * </p>
-     * TODO Backend - ivan: I'm not sure if we need method that retrieves count of search results? If so how should it
-     * work? Rework this solution.
+     * TODO LATER Backend - ivan: I'm not sure if we need method that retrieves count of search results?
+     * If so how should it work? Rework this solution. This will be pain in the ass. We will have to
+     * make a count for search result. The best solution would be to move HQLs into Search-es and Filter-s like we have
+     * for HomeDemands and HomeSuppliers.
      */
     @Override
     @Transactional(readOnly = true)

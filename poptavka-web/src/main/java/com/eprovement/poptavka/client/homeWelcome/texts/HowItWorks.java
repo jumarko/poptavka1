@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class HowItWorks extends Composite {
 
     /**************************************************************************/
-    /* UiBinders & UiTemplates                                                  */
+    /* UiBinders & UiTemplates                                                */
     /**************************************************************************/
     @UiTemplate("HowItWorksDemand.ui.xml")
     interface DemandBinder extends UiBinder<Widget, HowItWorks> {

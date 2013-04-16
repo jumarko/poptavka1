@@ -13,7 +13,6 @@ import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,9 +79,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
 
     void getFullSupplierDetail(long supplierId,
             AsyncCallback<FullSupplierDetail> callback);
-
-    void getSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId,
-            AsyncCallback<ArrayList<MessageDetail>> callback);
 
     /**************************************************************************/
     /* Setter methods                                                         */

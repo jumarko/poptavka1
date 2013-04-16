@@ -261,7 +261,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     public List<FullDemandDetail> fullTextSearch(SearchDefinition definition) throws RPCException {
         final List<Demand> foundDemands = this.fulltextSearchService.search(
                 Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, definition.getFilter().getSearchText());
-        //TODO RELEASE Juraj - implementd SearchDefinition - first, max result
+        //TODO RELEASE vojto - implement SearchDefinition
         if (foundDemands.size() < (definition.getFirstResult() + definition.getMaxResult())) {
             return demandConverter.convertToTargetList(foundDemands);
         } else {

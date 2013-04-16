@@ -42,7 +42,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  *
- * @author Praso TODO Praso - optimize this PRC service as other RPC services
+ * This RPC hadnled all requests from HomeSuppliers module such as suppliers catalogue and their details.
+ * @author ivlcek
  */
 @Configurable
 public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService implements HomeSuppliersRPCService {

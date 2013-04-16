@@ -14,7 +14,6 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -216,9 +215,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException;
 
     FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException;
-
-    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId,
-            long userMessageId) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /* Setter methods                                                         */

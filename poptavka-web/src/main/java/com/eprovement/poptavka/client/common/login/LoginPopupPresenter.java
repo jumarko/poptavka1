@@ -116,8 +116,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
     private void verifyUser() {
         view.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
-        // TODO RELEASE: check if user is VERIFIED
-        // if not then display activation popup
         rootService.getBusinessUserByEmail(getUserEmail(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(BusinessUserDetail user) {
@@ -171,7 +169,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging, exception="
                             + exception.getMessage());
                     view.setErrorMessage(Storage.MSGS.loginUnknownError());
-                    // TODO jumarko - Shall we send email notifications when this happens?
+                    // TODO RELEASE juraj - Shall we send email notifications when this happens?
                 }
 
                 @Override
@@ -197,7 +195,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         } catch (RequestException exception) {
             LOGGER.severe("RequestException thrown during user logging, exception=" + exception.getMessage());
             view.setErrorMessage(Storage.MSGS.loginUnknownError());
-            // TODO jumarko - Shall we send email notifications when this happens?
+            // TODO RELEASE juraj - Shall we send email notifications when this happens?
         }
     }
 
@@ -228,7 +226,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     }
 
     /**
-     * Sets session ID. TODO ivlcek - this will be removed after we fully integrate Spring Security
+     * Sets session ID.
+     * TODO LATER ivlcek - this will be removed after we fully integrate Spring Security and RememberMe feature
      */
     private void setSessionID(String sessionId) {
 //        LOGGER.fine("Setting SID cookie");
@@ -256,7 +255,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         GWT.log("user id " + loggedUser.getUserId());
                         Storage.setBusinessUserDetail(loggedUser);
                         Storage.loadClientAndSupplierIDs();
-                        // TODO ivlcek - fix the session model on the base of SpringSecurity rememberMe
+                        // TODO LATER ivlcek - fix the session model on the base of SpringSecurity rememberMe
                         final String sessionId = "id=" + loggedUser.getUserId();
                         forwardUser();
                         hideView();

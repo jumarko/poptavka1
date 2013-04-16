@@ -70,7 +70,7 @@ public class AuditServiceImpl implements AuditService {
         return this.auditDao.getAuditReader().getCurrentRevision(revisionEntityClass, persist);
     }
 
-    // TODO: Make up your mind how the following method could be used
+    // TODO LATER juraj: Make up your mind how the following method could be used
 //    @Override
 //    public AuditQueryCreator createQuery() {
 //        return this.auditDao.getAuditReader().createQuery();

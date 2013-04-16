@@ -41,7 +41,7 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         }
         detail.setCategories(categoryConverter.convertToTargetList(source.getCategories()));
         detail.setLocalities(localityConverter.convertToTargetList(source.getLocalities()));
-        //TODO services
+        //TODO LATER services
         if (source.getBusinessUser() != null) {
             detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
             if (source.getOveralRating() != null) {

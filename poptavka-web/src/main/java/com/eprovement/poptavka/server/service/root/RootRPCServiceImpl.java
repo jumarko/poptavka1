@@ -188,7 +188,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     @Override
-    // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService
+    // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService. I 'm not sure but will try it.
     public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {
         final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId);
         // set all user messages as read
@@ -252,7 +252,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
         final ReplyMessage replyMessage = sendReplyMessage(offerMessageToSend);
-        // TODO RELEASE ivlcek - create converter for offer
+        // TODO LATER ivlcek - create converter for offer
 
         // update demand entity
         final Demand demand = replyMessage.message.getDemand();

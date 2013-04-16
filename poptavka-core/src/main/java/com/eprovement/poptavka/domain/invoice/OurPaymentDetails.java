@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 @Audited
 public class OurPaymentDetails extends DomainObject {
 
-    // TODO analyze if some attributes could be replaced with existing domain objects (e.g. {@link Address}
+    // TODO LATER ivlcek: analyze if some attributes could be replaced with existing domain objects(e.g. {@link Address}
     // Some attribute migth be also extracted into the new domain objects (e.g. identificationNumber and taxId)
     private String title;
 

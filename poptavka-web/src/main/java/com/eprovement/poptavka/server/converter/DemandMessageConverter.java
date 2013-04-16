@@ -31,8 +31,6 @@ public final class DemandMessageConverter extends AbstractConverter<UserMessage,
     public DemandMessageDetail convertToTarget(UserMessage userMessage) {
         final DemandMessageDetail demandMessageDetail = new DemandMessageDetail();
 
-        // TODO:
-//        MessageDetail.fillMessageDetail(demandMessageDetail, userMessage);
         demandMessageDetail.setDemandId(userMessage.getMessage().getDemand().getId());
         demandMessageDetail.setDemandTitle(userMessage.getMessage().getDemand().getTitle());
         demandMessageDetail.setPrice(userMessage.getMessage().getDemand().getPrice());

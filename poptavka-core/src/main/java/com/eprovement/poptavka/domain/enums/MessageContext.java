@@ -22,7 +22,7 @@ package com.eprovement.poptavka.domain.enums;
  */
 public enum MessageContext {
     /* Message for supplier with potential demand.
-    TODO Vojto rethink the contexts */
+    TODO LATER juraj: remove MessageContext from Database */
     POTENTIAL_SUPPLIERS_DEMAND,
     /* Message for client with potential offer. */
     POTENTIAL_CLIENTS_OFFER,

@@ -93,7 +93,6 @@ public class AccessRoleDetail implements IsSerializable {
                 + "\n    Permissions=" + permissions.toString();
     }
 
-    //TODO je to potrebne mat?
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

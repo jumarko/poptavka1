@@ -63,7 +63,7 @@ public final class FullOfferConverter extends AbstractConverter<UserMessage, Ful
 
     @Override
     public UserMessage convertToSource(FullOfferDetail fullOfferDetail) {
-        //TODO Juraj - ako to implementovat?
+        //TODO LATER Juraj - ako to implementovat?
 //        offerService.getById(fullOfferDetail.getOfferDetail().getId());
         throw new UnsupportedOperationException("Conversion from FullOfferDetail to domain object Message "
                 + "is not implemented yet!");

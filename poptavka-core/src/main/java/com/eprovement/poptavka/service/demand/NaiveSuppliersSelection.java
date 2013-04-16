@@ -61,10 +61,10 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
 
 
 
-        // TODO 1) client city can be used as some indicator
+        // TODO LATER juraj 1) client city can be used as some indicator
 //        demand.getClient().getBusinessUser().getAddresses().get(0).getCity();
 
-        // TODO 2) supplier's company name and description (see BusinessUserData) can be searched through
+        // TODO LATER juraj 2) supplier's company name and description (see BusinessUserData) can be searched through
         // for occurrences of some words from demand's description
 //        demand.getDescription();
 

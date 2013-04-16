@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * Job responsible for sending daily notifications.
- * TODO: introduce more generic jobs parameterized by period.
+ * TODO LATER juraj: introduce more generic jobs parameterized by period.
  */
 public class DailyNotificationSender implements Job {
     private final NotificationSenderHelper notificationSenderHelper;

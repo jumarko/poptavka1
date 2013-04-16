@@ -37,9 +37,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  *
- * @author praso
+ * This RPC handles all requests for DemandCreation module such as registration of new Client and creating new Demand.
+ * @author ivlcek
  *
- * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
 @Configurable
 public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService

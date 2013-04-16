@@ -131,8 +131,6 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
      * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
      * only when PoptavkaUserAuthentication object exist in SecurityContextHolder and we can retrieve userId.
      *
-     * TODO Vojto - call DB servise to retrieve the number of unread messages for given userId
-     *
      * @return UnreadMessagesDetail with number of unread messages and other info to be displayed after users logs in
      * @throws RPCException
      * @throws ApplicationSecurityException

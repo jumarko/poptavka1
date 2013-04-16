@@ -194,7 +194,8 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
             final BusinessUser savedBusinessUserEntity = generalService.save(businessUserRole.getBusinessUser());
             businessUserRole.setBusinessUser(savedBusinessUserEntity);
 
-            // TODO RELEASE: move out of this class to the SupplierRPCService and ClientRPCService ??
+            // TODO RELEASE juraj: move out of this class to the SupplierRPCService and ClientRPCService??
+            // ivlcek: I think we can keep it here so that notification is not sent 2x for Client and again for Supplier
             userVerificationService.sendNewActivationCodeAsync(savedBusinessUserEntity);
         }
     }

@@ -18,7 +18,7 @@ import javax.persistence.Entity;
 @Entity
 public class Template extends DomainObject {
 
-    // TODO: "co chtel basnik rici? - vid Dat. model"
+    // TODO LATER juraj: "co chtel basnik rici? - vid Dat. model"
     private String prefilledInputs;
 
     public String getPrefilledInputs() {
