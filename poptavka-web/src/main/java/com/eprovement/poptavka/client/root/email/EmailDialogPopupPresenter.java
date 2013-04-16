@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.root.email;
 
+import com.eprovement.poptavka.client.common.myListBox.MyListBox;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
@@ -13,8 +14,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -28,7 +27,6 @@ import com.mvp4g.client.view.LazyView;
 public class EmailDialogPopupPresenter
         extends LazyPresenter<EmailDialogPopupPresenter.IEmailDialogPopupView, RootEventBus> {
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private MailRPCServiceAsync mailService;
     private String errorId;
     private int subjectId;
@@ -42,7 +40,7 @@ public class EmailDialogPopupPresenter
 
         HasClickHandlers getCloseButton();
 
-        ListBox getSubjectListBox();
+        MyListBox getSubjectListBox();
 
         EmailDialogDetail getEmailDialogDetail();
 
@@ -82,10 +80,7 @@ public class EmailDialogPopupPresenter
             public void onClick(ClickEvent event) {
                 if (view.isValid()) {
                     EmailDialogDetail dialogDetail = view.getEmailDialogDetail();
-                    dialogDetail.setRecipient("pras3xer@gmail.com");
                     dialogDetail.setMessage(extendMessageBody() + dialogDetail.getMessage());
-                    dialogDetail.setSubject(view.getSubjectListBox().getValue(
-                            view.getSubjectListBox().getSelectedIndex()));
                     mailService.sendMail(dialogDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
                         @Override
                         public void onSuccess(Boolean result) {
@@ -120,7 +115,7 @@ public class EmailDialogPopupPresenter
     public void fillContactUsValues(int subjectId, String errorId) {
         this.errorId = errorId;
         this.subjectId = subjectId;
-        view.getSubjectListBox().setSelectedIndex(subjectId);
+        view.getSubjectListBox().setSelectedByIndex(subjectId);
     }
 
     /**************************************************************************/

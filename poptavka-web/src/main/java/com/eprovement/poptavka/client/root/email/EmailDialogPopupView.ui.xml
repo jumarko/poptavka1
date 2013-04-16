@@ -1,53 +1,96 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:mlb="urn:import:com.eprovement.poptavka.client.common.myListBox"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
-    <ui:style>
-        .error {
-        font-size:10px;
-        color: red;
-        }
-    </ui:style>
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+
     <g:HTMLPanel>
-        <g:VerticalPanel>
-            <g:HorizontalPanel>
-                <g:Label>
-                    <ui:msg key="emailDialogTo">To: </ui:msg>
-                </g:Label>
-                <g:Label>
-                    <ui:msg key="emailDialogCustomerSupport">Customer support</ui:msg>
-                </g:Label>
-            </g:HorizontalPanel>
-            <g:Label>
-                <ui:msg key="emailDialogSubject">Subject</ui:msg>
-            </g:Label>
-            <g:ListBox ui:field="subject"/>
-            <g:Label>
-                <ui:msg key="emailDialogEnterYourEmail">Enter your email address</ui:msg>
-            </g:Label>
-            <g:TextBox ui:field="emailFrom"/>
-            <g:Label styleName="{style.error}" ui:field="emailFromErrorLabel"/>
-            <g:Label>
-                <ui:msg key="emailDialogReEnterYourEmail">Re-enter your email address</ui:msg>
-            </g:Label>
-            <g:TextBox ui:field="reEmailFrom"/>
-            <g:Label styleName="{style.error}" ui:field="reEmailFromErrorLabel"/>
-            <g:Label>
-                <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
-            </g:Label>
-            <g:TextArea width="400px" height="150px" ui:field="message"/>
-            <g:Label styleName="{style.error}" ui:field="messageErrorLabel"/>
-            <g:Label>
-                <ui:msg key="emailDialogMaximumChars">Maximum 10000 characters. No HTML, JavaScript.</ui:msg>
-            </g:Label>
-            <g:HorizontalPanel>
-                <g:Button ui:field="sendButton">
-                    <ui:msg key="commonBtnSend">Send</ui:msg>
-                </g:Button>
-                <g:Button ui:field="closeButton">
-                    <ui:msg key="commonBtnClose">Close</ui:msg>
-                </g:Button>
-            </g:HorizontalPanel>
-        </g:VerticalPanel>
+        <b:Modal ui:field="popupPanel" backdrop="NORMAL" keyboard="true" animation="true" dynamicSafe="true"
+                 addStyleNames='{res.modal.contactUsModal}'>
+            <g:TabLayoutPanel barUnit='PX' barHeight='42' animationDuration="1000">
+                <g:tab>
+                    <g:header>
+                        <ui:msg key="footerContactUs">Contact us</ui:msg>
+                    </g:header>
+
+                    <b:FluidContainer addStyleNames='{res.common.validationContainer}'>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogTo">To: </ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <g:Label styleName='support-label'>
+                                    <ui:msg key="emailDialogCustomerSupport">Customer support</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>    
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogSubject">Subject</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <mlb:MyListBox ui:field="subject" styleName='selector-box full-width' />
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogEnterYourEmail">Enter your email address</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <cm:ValidationMonitor ui:field="emailMonitor">
+                                    <g:TextBox styleName='full-width' />
+                                </cm:ValidationMonitor>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogReEnterYourEmail">Re-enter your email address</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <cm:ValidationMonitor ui:field="reEmailMonitor">
+                                    <g:TextBox ui:field="reEmailFrom" styleName='full-width' />
+                                </cm:ValidationMonitor>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
+                                </g:Label>
+                                <g:Label styleName='description'>
+                                    <ui:msg key="emailDialogMaximumChars">Maximum 10000 characters. No HTML, JavaScript.</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <cm:ValidationMonitor ui:field="msgBodyMonitor">
+                                    <g:TextArea width="97%" height="150px" styleName='full-width' />
+                                </cm:ValidationMonitor>                                
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="12">
+                                <g:Button ui:field="sendButton" styleName="{res.common.buttonOkGreen} send-button">
+                                </g:Button>
+                                <g:Button ui:field="closeButton" styleName="{res.common.buttonGrey}">
+                                    <ui:msg key="commonBtnClose">Close</ui:msg>
+                                </g:Button>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:FluidContainer>
+                </g:tab>
+            </g:TabLayoutPanel>
+        </b:Modal>
     </g:HTMLPanel>
 </ui:UiBinder>

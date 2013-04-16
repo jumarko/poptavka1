@@ -1,35 +1,25 @@
 package com.eprovement.poptavka.client.root.email;
 
+import com.eprovement.poptavka.client.common.ValidationMonitor;
+import com.eprovement.poptavka.client.common.myListBox.MyListBox;
+import com.eprovement.poptavka.client.common.myListBox.MyListBoxData;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.root.email.EmailDialogPopupPresenter.IEmailDialogPopupView;
 import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.github.gwtbootstrap.client.ui.Modal;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.editor.client.Editor.Ignore;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.i18n.client.ValidationMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.view.ReverseViewInterface;
-import java.util.HashSet;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 /**
@@ -38,9 +28,8 @@ import javax.validation.groups.Default;
  * @author ivlcek, Martin Slavkovsky (validation)
  *
  */
-public class EmailDialogPopupView extends PopupPanel
-        implements ReverseViewInterface<EmailDialogPopupPresenter>, IEmailDialogPopupView,
-        ProvidesValidate, Editor<EmailDialogDetail> {
+public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupPresenter>
+        implements IEmailDialogPopupView, ProvidesValidate {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -50,166 +39,74 @@ public class EmailDialogPopupView extends PopupPanel
     interface EmailDialogPopupUiBinder extends UiBinder<Widget, EmailDialogPopupView> {
     }
     /**************************************************************************/
-    /* PRESENTER                                                              */
-    /**************************************************************************/
-    private EmailDialogPopupPresenter presenter;
-
-    @Override
-    public void setPresenter(EmailDialogPopupPresenter presenter) {
-        this.presenter = presenter;
-    }
-
-    @Override
-    public EmailDialogPopupPresenter getPresenter() {
-        return presenter;
-    }
-
-    /**************************************************************************/
     /* ATTRIBUTES                                                              */
     /**************************************************************************/
-    interface Driver extends SimpleBeanEditorDriver<EmailDialogDetail, EmailDialogPopupView> {
-    }
-    private EmailDialogPopupView.Driver driver = GWT.create(EmailDialogPopupView.Driver.class);
-    private Validator validator = null;
-    private EmailDialogDetail emailDialogDetail = new EmailDialogDetail();
-    private Set<Integer> valid = new HashSet<Integer>();
-    /**************************************************************************/
-    /* OTHER ATTRIBUTES                                                       */
-    /**************************************************************************/
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private static final ValidationMessages MSGS_VALIDATION = GWT.create(ValidationMessages.class);
-    @UiField
-    TextBox emailFrom;
-    @UiField
-    @Ignore
-    TextBox reEmailFrom;
-    @UiField(provided = true)
-    @Ignore
-    ListBox subject;
-    @UiField
-    TextArea message;
-    @UiField
-    @Ignore
-    Button sendButton, closeButton;
-    @UiField
-    @Ignore
-    Label emailFromErrorLabel, reEmailFromErrorLabel, messageErrorLabel;
-    //Constants
-    private final static String NORMAL_STYLE = StyleResource.INSTANCE.common().emptyStyle();
-    private final static String ERROR_STYLE = StyleResource.INSTANCE.common().errorField();
-    private final static int EMAIL_FROM = 0;
-    private final static int RE_EMAIL_FROM = 1;
-    private final static int MESSAGE = 2;
+    /** UiBinder attributes. **/
+    @UiField(provided = true) MyListBox subject;
+    @UiField(provided = true) ValidationMonitor emailMonitor, reEmailMonitor, msgBodyMonitor;
+    @UiField TextBox reEmailFrom;
+    @UiField Modal popupPanel;
+    @UiField Button sendButton, closeButton;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
-
         // set values for subjectListBox
-        subject = new ListBox();
-        subject.insertItem(MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
-        subject.insertItem(MSGS.emailDialogSubjectHelp(), Constants.SUBJECT_HELP);
-        subject.insertItem(MSGS.emailDialogSubjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
-        subject.insertItem(MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
-        subject.insertItem(MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
+        createSubjectListBox();
 
-        //create widget
-        setWidget(uiBinder.createAndBindUi(this));
+        initValidationMonitors();
+        initWidget(uiBinder.createAndBindUi(this));
         // set values from Storage object if user is logged in
         if (Storage.getUser() != null) {
             // user is logged in so we can retrieve his email address
-            emailFrom.setText(Storage.getUser().getEmail());
-            reEmailFrom.setText(Storage.getUser().getEmail());
+            emailMonitor.setValue(Storage.getUser().getEmail());
+            reEmailMonitor.setValue(Storage.getUser().getEmail());
         }
-        //validation
-        this.driver.initialize(this);
-        this.driver.edit(emailDialogDetail);
         //style
+        StyleResource.INSTANCE.layout().ensureInjected();
         StyleResource.INSTANCE.common().ensureInjected();
+        StyleResource.INSTANCE.modal().ensureInjected();
         //popup
-        this.setModal(true);
-        this.setGlassEnabled(true);
-        this.center();
-        this.show();
-    }
-
-    /**************************************************************************/
-    /* UIHANDLERS for validation                                              */
-    /* Each field that we want to validate has its own blurEventHandler to    */
-    /* allow us validate form per field right after user inputs,              */
-    /* not only at the end - during submiting form                            */
-    /**************************************************************************/
-    @UiHandler("emailFrom")
-    public void validateEmailFrom(BlurEvent e) {
-        EmailDialogDetail emailDialog = driver.flush();
-        Set<ConstraintViolation<EmailDialogDetail>> violations = validator.validateValue(
-                EmailDialogDetail.class, "emailFrom", emailDialog.getEmailFrom(), Default.class);
-        this.displayErrors(EMAIL_FROM, violations);
-    }
-
-    @UiHandler("reEmailFrom")
-    public void validateReEmailFrom(BlurEvent e) {
-        if (reEmailFrom.getText().isEmpty()) {
-            setError(RE_EMAIL_FROM, ERROR_STYLE, MSGS_VALIDATION.reRmailDialogNotBlankEmail());
-            valid.add(RE_EMAIL_FROM);
-        } else {
-            if (reEmailFrom.getText().equals(emailFrom.getText())) {
-                setError(RE_EMAIL_FROM, NORMAL_STYLE, "");
-                valid.remove(RE_EMAIL_FROM);
-            } else {
-                setError(RE_EMAIL_FROM, ERROR_STYLE, MSGS_VALIDATION.reEmailDialogEmail());
-                valid.add(RE_EMAIL_FROM);
-            }
-        }
-    }
-
-    @UiHandler("message")
-    public void validateMessage(BlurEvent e) {
-        EmailDialogDetail emailDialog = driver.flush();
-        Set<ConstraintViolation<EmailDialogDetail>> violations = validator.validateValue(
-                EmailDialogDetail.class, "message", emailDialog.getMessage(), Default.class);
-        this.displayErrors(MESSAGE, violations);
-    }
-
-    /**************************************************************************/
-    /* VALIDATION helper methods                                              */
-    /**************************************************************************/
-    private void displayErrors(int item, Set<ConstraintViolation<EmailDialogDetail>> violations) {
-        for (ConstraintViolation<EmailDialogDetail> violation : violations) {
-            setError(item, ERROR_STYLE, violation.getMessage());
-            valid.add(item);
-            return;
-        }
-        setError(item, NORMAL_STYLE, "");
-        valid.remove(item);
+        popupPanel.show();
     }
 
     /**
-     * Set style and error message to given item.
-     *
-     * @param item - use class constant CITY, STATE, STREET, ZIP
-     * @param style - user class constant NORMAL_STYLE, ERROR_STYLE
-     * @param errorMessage - message of item's ErrorLabel
+     * Initialize validation monitors for each field we want to validate.
      */
-    private void setError(int item, String style, String errorMessage) {
-        switch (item) {
-            case EMAIL_FROM:
-                this.emailFrom.setStyleName(style);
-                this.emailFromErrorLabel.setText(errorMessage);
-                break;
-            case RE_EMAIL_FROM:
-                this.reEmailFrom.setStyleName(style);
-                this.reEmailFromErrorLabel.setText(errorMessage);
-                break;
-            case MESSAGE:
-                this.message.setStyleName(style);
-                this.messageErrorLabel.setText(errorMessage);
-                break;
-            default:
-                break;
+    private void initValidationMonitors() {
+        emailMonitor = new ValidationMonitor<EmailDialogDetail>(
+                EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.EMAIL_FROM.getValue());
+        reEmailMonitor = new ValidationMonitor<EmailDialogDetail>(
+                EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.EMAIL_FROM.getValue());
+        msgBodyMonitor = new ValidationMonitor<EmailDialogDetail>(
+                EmailDialogDetail.class, Default.class, EmailDialogDetail.Field.MESSAGE.getValue());
+    }
+
+    private void createSubjectListBox() {
+        MyListBoxData subjectData = new MyListBoxData();
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectHelp(), Constants.SUBJECT_HELP);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
+        subject = MyListBox.createListBox(subjectData, 0);
+    }
+
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    @UiHandler("reEmailFrom")
+    public void validateReEmailFrom(BlurEvent e) {
+        if (reEmailMonitor.getValue() == null) {
+            reEmailMonitor.setValidationStyles(false, Storage.VMSGS.reRmailDialogNotBlankEmail());
+        } else {
+            if (reEmailMonitor.getValue().equals(emailMonitor.getValue())) {
+                reEmailMonitor.setValidationStyles(true, "");
+            } else {
+                reEmailMonitor.setValidationStyles(false, Storage.VMSGS.reEmailDialogEmail());
+            }
         }
     }
 
@@ -218,7 +115,7 @@ public class EmailDialogPopupView extends PopupPanel
     /**************************************************************************/
     @Override
     public void hidePopup() {
-        this.hide();
+        popupPanel.hide();
     }
 
     /**************************************************************************/
@@ -235,23 +132,27 @@ public class EmailDialogPopupView extends PopupPanel
     }
 
     @Override
-    public ListBox getSubjectListBox() {
+    public MyListBox getSubjectListBox() {
         return subject;
     }
 
     @Override
     public EmailDialogDetail getEmailDialogDetail() {
-        return emailDialogDetail;
+        EmailDialogDetail detail = new EmailDialogDetail();
+        detail.setRecipient("pras3xer@gmail.com");
+        detail.setSubject(subject.getSelected());
+        detail.setEmailFrom((String) emailMonitor.getValue());
+        detail.setMessage((String) msgBodyMonitor.getValue());
+        return detail;
     }
 
     @Override
     public boolean isValid() {
-        //validate form before anouncing validation state
-        //moze byt urobene aj inak, ze sa zrobi metoda na validaciu celeho objektu,
-        //nie len jednotlivych properties, ale moze sa pouzit len tu.
-        validateEmailFrom(null);
-        validateReEmailFrom(null);
-        validateMessage(null);
-        return valid.isEmpty();
+        //Need to do it this way because we need all monitors perform isValid method.
+        boolean valid = false;
+        valid = emailMonitor.isValid() && valid;
+        valid = reEmailMonitor.isValid() && valid;
+        valid = msgBodyMonitor.isValid() && valid;
+        return valid;
     }
 }

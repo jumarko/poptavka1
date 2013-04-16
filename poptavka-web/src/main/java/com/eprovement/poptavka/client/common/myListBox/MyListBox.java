@@ -17,8 +17,11 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
-import java.util.List;
+import java.util.Collection;
 
+/**************************************************************************/
+/* Private classes                                                        */
+/**************************************************************************/
 /**
  * Suggest box that behaves as ListBox and can be better designed.
  *
@@ -31,6 +34,7 @@ public final class MyListBox extends SuggestBox {
     /**************************************************************************/
     private MyTextBox textBox;
     private String defaultString;
+    private MyListBoxData data;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -42,22 +46,25 @@ public final class MyListBox extends SuggestBox {
      * @param data
      * @return MultiWordSuggestOracle filled with given List
      */
-    public static MyListBox createListBox(List<String> data, String defaultValue) {
-        return new MyListBox(createSuggestOracle(data), createReadOnlyTextBox(), createOracleDisplay(), defaultValue);
+    public static MyListBox createListBox(MyListBoxData listBoxData, int selectedIndex) {
+        return new MyListBox(createSuggestOracle(listBoxData.getValues().values()),
+                createReadOnlyTextBox(), createOracleDisplay(), listBoxData, selectedIndex);
     }
 
     private MyListBox(MultiWordSuggestOracle oracleData, MyTextBox textBox,
-            DefaultSuggestionDisplay display, String defaultValue) {
+            DefaultSuggestionDisplay display, MyListBoxData data, int selectedIndex) {
         super(oracleData, textBox, display);
         this.textBox = textBox;
-        this.defaultString = defaultValue;
+        this.data = data;
+        this.defaultString = data.getValue(selectedIndex);
+        setSelectedByIndex(selectedIndex);
         bind();
     }
 
-    private static MultiWordSuggestOracle createSuggestOracle(List<String> data) {
+    private static MultiWordSuggestOracle createSuggestOracle(Collection<String> values) {
         MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
-        oracle.setDefaultSuggestionsFromText(data);
-        oracle.addAll(data);
+        oracle.setDefaultSuggestionsFromText(values);
+        oracle.addAll(values);
         return oracle;
     }
 
@@ -95,8 +102,12 @@ public final class MyListBox extends SuggestBox {
     }
 
     /**************************************************************************/
-    /* Getters & Setters                                                      */
+    /* Setters                                                                */
     /**************************************************************************/
+    public void setDefaultString(String defaultString) {
+        this.defaultString = defaultString;
+    }
+
     public void setSelected(String text) {
         textBox.setPlaceholder(text);
         if (text.equals(defaultString)) {
@@ -106,6 +117,17 @@ public final class MyListBox extends SuggestBox {
         }
     }
 
+    public void setSelectedByIndex(int itemValueIndex) {
+        setSelected(data.getValue(itemValueIndex));
+    }
+
+    public void setSelectedByValue(String itemValue) {
+        setSelected(data.getValue(itemValue));
+    }
+
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
     public String getSelected() {
         return textBox.getPlaceholder();
     }
@@ -115,14 +137,12 @@ public final class MyListBox extends SuggestBox {
     }
 }
 
-/**************************************************************************/
-/* Private classes                                                        */
-/**************************************************************************/
 /**
  * Custom text box to access place holder text.
  * @author Martin Slavkovsky
  */
 class MyTextBox extends TextBox implements HasPlaceholder {
+
     private PlaceholderHelper placeholderHelper = GWT.create(PlaceholderHelper.class);
 
     @Override

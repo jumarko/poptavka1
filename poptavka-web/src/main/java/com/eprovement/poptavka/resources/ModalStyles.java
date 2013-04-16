@@ -23,4 +23,8 @@ public interface ModalStyles extends CssResource {
     /* Loader Modal Styles */
     @ClassName("feedback-modal")
     String feedbackModal();
+
+    /* Contact Us Modal Styles */
+    @ClassName("contactUs-modal")
+    String contactUsModal();
 }

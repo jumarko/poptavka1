@@ -4,9 +4,11 @@ import com.eprovement.poptavka.client.common.BigDecimalBox;
 import com.eprovement.poptavka.client.common.MyDateBox;
 import com.eprovement.poptavka.client.common.ValidationMonitor;
 import com.eprovement.poptavka.client.common.myListBox.MyListBox;
+import com.eprovement.poptavka.client.common.myListBox.MyListBoxData;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
+import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView.SearchModulViewUiBinder;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -25,7 +27,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class HomeDemandsSearchView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -44,8 +45,9 @@ public class HomeDemandsSearchView extends Composite implements
     private static final String DEMAND_TYPE_DESCRIPTION_FIELD = ".description";
 
     public HomeDemandsSearchView() {
-        creationDate = MyListBox.createListBox(getCreationDateData(), Storage.MSGS.creationDateNoLimits());
-        demandTypes = MyListBox.createListBox(getDemandTypeData(), Storage.MSGS.columnType());
+        createCreationDateListBox();
+        createDemandTypeListBox();
+
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -59,21 +61,22 @@ public class HomeDemandsSearchView extends Composite implements
                 FullDemandDetail.class, SearchGroup.class, FullDemandDetail.DemandField.PRICE.getValue());
     }
 
-    private List<String> getDemandTypeData() {
-        List<String> data = new ArrayList<String>();
-        data.add(Storage.MSGS.columnType());
-        data.addAll(DemandTypeType.getStringValues());
-        return data;
+    private void createDemandTypeListBox() {
+        MyListBoxData demandTypeData = new MyListBoxData();
+        demandTypeData.insertItem(Storage.MSGS.commonListDefault(), 0);
+        demandTypeData.insertItem(DemandTypeType.NORMAL.getValue(), 1);
+        demandTypeData.insertItem(DemandTypeType.ATTRACTIVE.getValue(), 2);
+        demandTypes = MyListBox.createListBox(demandTypeData, 0);
     }
 
-    private List<String> getCreationDateData() {
-        List<String> data = new ArrayList<String>();
-        data.add(Storage.MSGS.creationDateToday());
-        data.add(Storage.MSGS.creationDateYesterday());
-        data.add(Storage.MSGS.creationDateLastWeek());
-        data.add(Storage.MSGS.creationDateLastMonth());
-        data.add(Storage.MSGS.creationDateNoLimits());
-        return data;
+    private void createCreationDateListBox() {
+        MyListBoxData creationDateData = new MyListBoxData();
+        creationDateData.insertItem(Storage.MSGS.creationDateToday(), 0);
+        creationDateData.insertItem(Storage.MSGS.creationDateYesterday(), 1);
+        creationDateData.insertItem(Storage.MSGS.creationDateLastWeek(), 2);
+        creationDateData.insertItem(Storage.MSGS.creationDateLastMonth(), 3);
+        creationDateData.insertItem(Storage.MSGS.creationDateNoLimits(), 4);
+        creationDate = MyListBox.createListBox(creationDateData, 4);
     }
 
     @Override

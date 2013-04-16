@@ -16,6 +16,25 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class EmailDialogDetail implements IsSerializable {
 
+    /** Enums. **/
+    public enum Field {
+
+        RECIPIENT("recipient"),
+        SUBJECT("subject"),
+        EMAIL_FROM("emailFrom"),
+        MESSAGE("message");
+
+        private String value;
+
+        private Field(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     private String recipient;
     private String subject;
     //TODO - zjednotit niektore popisky? NotBlankEmail vseobecne, alebo to chceme rozlisovat, v ktorom okne?
