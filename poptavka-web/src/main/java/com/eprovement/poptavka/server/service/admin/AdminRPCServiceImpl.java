@@ -352,7 +352,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         }
         client.setVerification(Verification.valueOf(clientDetail.getVerification()));
         //TODO LATER Martin - how to update businessUserData, supplierBlackList, demandsIds???
-        generalService.merge(client);
+        generalService.save(client);
     }
 
     /**
@@ -384,7 +384,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public void updateSupplier(FullSupplierDetail supplierDetail) throws
             RPCException, ApplicationSecurityException {
         Supplier supplier = generalService.find(Supplier.class, supplierDetail.getSupplierId());
-        generalService.merge(supplier);
+        generalService.save(supplier);
     }
 
     /**
@@ -433,7 +433,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!offer.getPrice().equals(offerDetail.getPrice())) {
             offer.setPrice((BigDecimal) offerDetail.getPrice());
         }
-        generalService.merge(offer);
+        generalService.save(offer);
     }
 
     /**
@@ -474,7 +474,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             accessRole.setCode(accessRoleDetail.getCode());
         }
         //TODO LATER Martin - update permissions
-        generalService.merge(accessRole);
+        generalService.save(accessRole);
     }
 
     /**
@@ -512,7 +512,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!emailActivation.getValidTo().equals(emailActivationDetail.getTimeout())) {
             emailActivation.setValidTo(emailActivationDetail.getTimeout());
         }
-        generalService.merge(emailActivation);
+        generalService.save(emailActivation);
     }
 
     /**
@@ -586,7 +586,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             invoice.setConstSymbol(invoiceDetail.getConstSymbol());
         }
         //TODO LATER Martin - how to update userServices, paymentMethods
-        generalService.merge(invoice);
+        generalService.save(invoice);
     }
 
     /**
@@ -634,7 +634,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             message.setMessageState(MessageState.valueOf(messageDetail.getMessageState()));
         }
 
-        generalService.merge(message);
+        generalService.save(message);
     }
 
     /**************************************************************************/
@@ -761,7 +761,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!ourPaymentDetails.getZipCode().equals(paymentDetail.getZipCode())) {
             ourPaymentDetails.setZipCode(paymentDetail.getZipCode());
         }
-        generalService.merge(ourPaymentDetails);
+        generalService.save(ourPaymentDetails);
     }
 
     /**
@@ -808,7 +808,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!paymentMethod.getDescription().equals(paymentMethodDetail.getDescription())) {
             paymentMethod.setDescription(paymentMethodDetail.getDescription());
         }
-        generalService.merge(paymentMethod);
+        generalService.save(paymentMethod);
     }
 
     /**
@@ -848,7 +848,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!permission.getCode().equals(permissionDetail.getCode())) {
             permission.setCode(permissionDetail.getCode());
         }
-        generalService.merge(permission);
+        generalService.save(permission);
     }
 
     /**
@@ -888,7 +888,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!preference.getDescription().equals(preferenceDetail.getDescription())) {
             preference.setDescription(preferenceDetail.getDescription());
         }
-        generalService.merge(preference);
+        generalService.save(preference);
     }
 
     /**
@@ -922,7 +922,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!problem.getText().equals(problemDetail.getText())) {
             problem.setText(problemDetail.getText());
         }
-        generalService.merge(problem);
+        generalService.save(problem);
     }
 
     /**

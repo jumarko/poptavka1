@@ -886,7 +886,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
         updateDemandFields(demand, updatedDemand);
-        return demandConverter.convertToTarget(generalService.merge(demand));
+        return demandConverter.convertToTarget(generalService.save(demand));
     }
 
     @Override
@@ -894,7 +894,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public FullDemandDetail deleteDemand(long demandId) throws RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
         demand.setStatus(DemandStatus.CLOSED);
-        return demandConverter.convertToTarget(generalService.merge(demand));
+        return demandConverter.convertToTarget(generalService.save(demand));
     }
 
     private Demand updateDemandFields(Demand demand, FullDemandDetail updatedDemand) {
@@ -973,7 +973,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         }
         Double ratingScore = (double) ratingSum / numberOfRatings;
         supplier.setOveralRating(Integer.valueOf(ratingScore.intValue()));
-        generalService.save(supplier);
+        generalService.merge(supplier);
     }
 
     /**
