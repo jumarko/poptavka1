@@ -116,7 +116,7 @@ public class LoginPopupView extends Composite
         StyleResource.INSTANCE.common().ensureInjected();
     }
 
-    // TODO prod - delete and user real form
+    // TODO RELEASE ivlcek: - delete and user real form
     private void initFastLoginForDevel() {
         list.setWidth("100%");
         list.setVisibleItemCount(privateUsers.size());
@@ -176,7 +176,6 @@ public class LoginPopupView extends Composite
 
     @Override
     public boolean isValid() {
-        // TODO ivlcek - maybe we should check the lenght of email and password to avoid 1 - 4 character long values
         // TODO ivlcek - are values somehow checked against some sort sql attacks?
         if ((getLogin().getText().length() == 0) || (getPassword().getText().length() == 0)) {
             setErrorMessage(Storage.MSGS.commonEmptyCredentials());

@@ -61,10 +61,10 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
 
 
 
-        // TODO 1) client city can be used as some indicator
+        // TODO LATER juraj 1) client city can be used as some indicator
 //        demand.getClient().getBusinessUser().getAddresses().get(0).getCity();
 
-        // TODO 2) supplier's company name and description (see BusinessUserData) can be searched through
+        // TODO LATER juraj 2) supplier's company name and description (see BusinessUserData) can be searched through
         // for occurrences of some words from demand's description
 //        demand.getDescription();
 
@@ -73,7 +73,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
         removeExcludedSuppliers(demand, suppliers);
         removeLowRatingSuppliers(demand, suppliers);
         removeAdminSuppliers(suppliers);
-//        removeSupplierHimself(demand, suppliers);
+        removeSupplierHimself(demand, suppliers);
 
 
         // convert to set of PotentialSupplier-s  sorted by rating
@@ -221,7 +221,8 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
      * @param suppliers
      */
     private void removeSupplierHimself(Demand demand, Set<Supplier> suppliers) {
-        LOGGER.debug("action=remove_admin_suppliers status=start");
+        LOGGER.debug("action=remove_admin_suppliers status=start demandId=" + demand.getId());
+        System.err.println("prasiatko demandId=" + demand.getId());
         User user = (User) demand.getClient().getBusinessUser();
         final List<Supplier> foundSuppliers = this.supplierService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria().withEmail(user.getEmail()).build());

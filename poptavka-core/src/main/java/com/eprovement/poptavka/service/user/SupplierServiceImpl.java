@@ -294,8 +294,8 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
         final PotentialSupplier newPotentialSupplier = new PotentialSupplier(newSupplier);
         for (Demand demandsCandidate : getPotentialDemandsCandidates(newSupplier)) {
-            // TODO: call of isRealPotentialSupplier can be quit inefficient since getSuppliers is called subsequently
-            // try to make uniform solution
+            // TODO LATER juraj: call of isRealPotentialSupplier can be quite inefficient since
+            // getSuppliers is called subsequently try to make uniform solution
             if (isRealPotentialSupplier(newPotentialSupplier, demandsCandidate)) {
                 potentialDemandService.sendDemandToPotentialSupplier(demandsCandidate, newPotentialSupplier);
             }

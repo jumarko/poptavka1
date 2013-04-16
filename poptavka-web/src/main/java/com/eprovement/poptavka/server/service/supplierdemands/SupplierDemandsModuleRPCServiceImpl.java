@@ -41,7 +41,6 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -146,7 +145,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public int getSupplierPotentialDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE ivlcek / vojto - implement search definition when implemented on backend
+        //TODO RELEASE vojto - implement SearchDefinition
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch = searchConverter.convertToSource(searchDefinition);
         potentialDemandsCountSearch.setSearchClass(Demand.class);
@@ -174,7 +173,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         final User user = (User) generalService.find(User.class, userId);
         final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithoutOffer(user);
-        // TODO RELEASE ivlcek - refactor with detail converter
+        // TODO LATER ivlcek - refactor with detail converter
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
 
@@ -223,7 +222,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public int getSupplierOffersCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE Vojto/Ivan- implement SearchDefinition
+        //TODO RELEASE vojto- implement SearchDefinition
         return offerService.getPendingOffersCountForSupplier(supplierID).intValue();
     }
 
@@ -249,7 +248,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         final User user = (User) generalService.find(User.class, userId);
         final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithOffer(user, pendingState);
-        // TODO RELEASE ivlcek - refactor with detail converter
+        // TODO LATER ivlcek - refactor with detail converter
 
         for (Map.Entry<UserMessage, Integer> mapEntry : latestUserMessagesWithCount.entrySet()) {
             UserMessage latestUserMessage = mapEntry.getKey();
@@ -296,7 +295,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public int getSupplierAssignedDemandsCount(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE Vojto/Ivan- implement SearchDefinition
+        //TODO RELEASE vojto- implement SearchDefinition
         return offerService.getAcceptedOffersCountForSupplier(supplierID).intValue();
     }
 
@@ -331,7 +330,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELEASE ivlcek - refactor and create converter
+            // TODO LATER ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
@@ -410,7 +409,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Offer offer = latestUserMessage.getMessage().getOffer();
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
-            // TODO RELEASE ivlcek - refactor and create converter
+            // TODO LATER ivlcek - refactor and create converter
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
@@ -515,38 +514,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException {
         return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    // TODO call setMessageReadStatus in body
-    public ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId) throws RPCException, ApplicationSecurityException {
-        Message threadRoot = messageService.getById(threadId);
-
-        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
-
-        User user = this.generalService.find(User.class, userId);
-        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
-                threadRoot, user);
-        ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
-        for (Message message : messages) {
-            messageDetailImpls.add(messageConverter.convertToTarget(message));
-        }
-        return messageDetailImpls;
-    }
-
-    /**
-     * COMMON.
-     * Change 'read' status of sent messages to chosen value
-     */
-    private void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
-            ApplicationSecurityException {
-        for (Long userMessageId : userMessageIds) {
-            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
-            userMessage.setRead(isRead);
-            this.userMessageService.update(userMessage);
-        }
     }
 
     /**************************************************************************/

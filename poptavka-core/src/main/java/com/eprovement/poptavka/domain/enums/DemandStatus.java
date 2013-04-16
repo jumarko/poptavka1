@@ -8,6 +8,10 @@ package com.eprovement.poptavka.domain.enums;
 public enum DemandStatus {
 
 
+    /**
+     * New Demand has been creted by Client. This Demand has to be validated by Operator who will change its
+     * DemandStatus to ACTIVE, INVALID.
+     */
     NEW("NEW"),
 
     /**
@@ -22,7 +26,6 @@ public enum DemandStatus {
      * Registered/non-registered Client confirmed/approved TEMPORARY Demand.
      * Operator must check this Demand and switch it to another state.
      *
-     * TODO vojto - nahradit temporary tymto stavom v rpc servisach. Toto je  1. stav pri vytvarani poptavky
      */
     TO_BE_CHECKED("TO_BE_CHECKED"),
 

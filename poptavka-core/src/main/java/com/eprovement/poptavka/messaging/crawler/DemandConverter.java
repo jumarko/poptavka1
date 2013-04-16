@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO RELEASE: extract logic related to particular domain object into the separated converters - good example
+ * TODO LATER: extract logic related to particular domain object into the separated converters - good example
  * is Client or Supplier. Is even used this converter???
  *
  * Converter for convert crawled demands objects of type {@link Demand}
@@ -75,7 +75,7 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
         domainDemand.setForeignCategory(sourceDemand.getCategory());
         setLocalities(sourceDemand, domainDemand);
 
-        // TODO REALESE: test edge cases - such as January or December
+        // TODO LATER: test edge cases - such as January or December
         // TODO LATER: make contract with crawler about stable date format
         // set demand validTo
         setValidTo(sourceDemand, domainDemand);
@@ -118,7 +118,7 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
 
         if (userByEmail != null) {
             // existing business user
-            // TODO RELEASE : make different decisions based on user's role (client or supplier) ?
+            // TODO LATER : make different decisions based on user's role (client or supplier) ?
 
             for (BusinessUserRole businessUserRole : userByEmail.getBusinessUserRoles()) {
                 if (businessUserRole.getClass() == Client.class) {
@@ -186,7 +186,7 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
         if (StringUtils.isBlank(clientBusinessUserData.getPhone())) {
             clientBusinessUserData.setPhone(sourceDemand.getPhone());
         }
-        // TODO RELEASE: parse contact person's names and store them into the separated fields
+        // TODO LATER: parse contact person's names and store them into the separated fields
         if (StringUtils.isBlank(clientBusinessUserData.getPersonLastName())) {
             // try to parse the contact name
             final String contactPerson = sourceDemand.getContactPerson();

@@ -181,17 +181,6 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     }
 
     /**
-     * Returns offer messages from this threadRoot
-     * @param threadRoot
-     * @return
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Message> getAllOfferMessagesForDemand(Message threadRoot) {
-        return getDao().getAllOfferMessagesForDemand(threadRoot);
-    }
-
-    /**
      * Loads conversation between supplier and client related to potential offer.
      *
      * @param message

@@ -28,11 +28,10 @@ import java.util.Map;
  */
 public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> implements UserMessageDao {
 
-    // TODO ivlcek - maybe I will have to replace MessageFilter by UserMessageFiletr
+    // TODO LATER ivlcek - consider creating UserMessageFilter instead of using MessageFilter
     @Override
     public List<UserMessage> getUserMessages(List<Message> messages, User user, MessageFilter messageFilter) {
         final Criteria userMessageCriteria = buildUserMessageCriteria(messages, user, messageFilter);
-        // TODO ivlcek - remove this method. It will be in a separate
         return buildResultCriteria(userMessageCriteria, messageFilter.getResultCriteria()).list();
     }
 

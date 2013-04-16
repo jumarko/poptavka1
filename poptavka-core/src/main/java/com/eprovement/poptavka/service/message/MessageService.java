@@ -118,13 +118,6 @@ public interface MessageService extends GenericService<Message, MessageDao> {
     Message getThreadRootMessage(Demand demand);
 
     /**
-     * Returns offer messages from this threadRoot
-     * @param threadRoot
-     * @return
-     */
-    List<Message> getAllOfferMessagesForDemand(Message threadRoot);
-
-    /**
      * Loads conversation between supplier and client related to potential offer.
      *
      * @param message

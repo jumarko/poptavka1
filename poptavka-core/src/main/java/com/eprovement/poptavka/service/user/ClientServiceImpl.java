@@ -50,7 +50,7 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
 
         LOGGER.info("action=create_client status=start client={}", businessUserRole);
 
-        // TODO ivlcek - nastavit datum vytvorenia UserService aby sme mohli
+        // TODO LATER ivlcek - nastavit datum vytvorenia UserService aby sme mohli
         // objednannu service zrusit ak client neaktivuje svoj ucet do 14 dni
         // budeme to ziskavat cez AUD entitu alebo novy atribut. AUD entitu pre
         // UserService nemame a je urcite nutna

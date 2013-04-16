@@ -2,7 +2,6 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -10,7 +9,6 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDe
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,9 +61,6 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     void getFullDemandDetail(long demandId, AsyncCallback<FullDemandDetail> callback);
 
     void getFullSupplierDetail(long supplierId, AsyncCallback<FullSupplierDetail> callback);
-
-    void getSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId, AsyncCallback<ArrayList<MessageDetail>> callback);
 
     /**************************************************************************/
     /* Setter methods                                                         */

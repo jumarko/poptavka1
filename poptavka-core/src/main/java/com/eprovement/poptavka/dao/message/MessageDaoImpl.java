@@ -46,7 +46,6 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     @Override
     public List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter) {
         final Criteria userMessageCriteria = buildUserMessageCriteria(messages, messageFilter);
-        // TODO ivlcek - remove this method. It will be in a separate
         return buildResultCriteria(userMessageCriteria, messageFilter.getResultCriteria()).list();
     }
 
@@ -163,18 +162,6 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         final Criteria criteria = getHibernateSession().createCriteria(Message.class);
         criteria.add(Restrictions.eq("demand", demand)).add(Restrictions.isNull("parent"));
         return (Message) criteria.uniqueResult();
-    }
-
-    @Override
-    public List<Message> getAllOfferMessagesForDemand(Message threadRoot) {
-        // TODO ivlcek - prerobit na select
-        List<Message> offerMessages = new ArrayList<Message>();
-        for (Message message : threadRoot.getChildren()) {
-            if (message.getOffer() != null) {
-                offerMessages.add(message);
-            }
-        }
-        return offerMessages;
     }
 
     @Override

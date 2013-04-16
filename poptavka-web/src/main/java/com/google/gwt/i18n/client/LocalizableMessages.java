@@ -607,6 +607,7 @@ public interface LocalizableMessages extends Messages {
     SafeHtml inOfferedDemands();
     SafeHtml inAssignedDemands();
     SafeHtml inClosedDemands();
+    SafeHtml inPotentialDemands();
     SafeHtml noMessage();
     SafeHtml oneMessage();
     SafeHtml manyMessages(String number);

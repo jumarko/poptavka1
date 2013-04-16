@@ -75,10 +75,6 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         customAuthentication.setAuthenticated(true);
 
         return customAuthentication;
-        // TODO ivlcek - if granted roles are not assigned to SpringContet properly use this code bellow
-        // + commented support method
-//        return new UsernamePasswordAuthenticationToken(customAuthentication.getName(),
-//        customAuthentication.getCredentials(), customAuthentication.getAuthorities());
     }
 
     @Override

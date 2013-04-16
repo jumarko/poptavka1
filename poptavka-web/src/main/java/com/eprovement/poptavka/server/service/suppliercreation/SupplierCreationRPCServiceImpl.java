@@ -39,6 +39,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
+ * This RPC hadnles all requests comming from SupplierCreation module. This module is supposed to create and register
+ * new supplier.
  *
  * @author Praso
  * TODO praso - pridat komenty, vytvorit predka pre checkFreeEmail, optimalizovat backend
@@ -87,10 +89,10 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     }
 
     /**
-     * Metoda vytvara uzivatela -> BusinessUsera -> rolu klienta a dodavatela pretoze
-     * kazdy dodavatel moze byt aj klient.
+     * Create new supplier from detail object constructed by SupplierCreation forms. New Supplier automatically
+     * contains a Client role so that he can create new Demands.
      *
-     * TODO Vojto - Ak uz existuje Klient tj User a BusinessUser
+     * TODO LATER - Ak uz existuje Klient tj User a BusinessUser
      * tak musime pridat kontrolu a vytvarat len rolu Dodavatela pre tohto existujuceho
      * Usera v resp. BusinessUsera.
      *

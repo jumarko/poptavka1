@@ -2,7 +2,6 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -13,7 +12,6 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -169,9 +167,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     FullDemandDetail getFullDemandDetail(long demandId) throws RPCException;
 
     FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException;
-
-    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId,
-            long userMessageId) throws RPCException;
 
     /**************************************************************************/
     /* Setter methods                                                         */

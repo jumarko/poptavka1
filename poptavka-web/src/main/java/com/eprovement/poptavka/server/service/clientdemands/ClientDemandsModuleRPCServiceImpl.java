@@ -52,7 +52,6 @@ import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
@@ -296,7 +295,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
             final UserMessage userMessage = userMessageEntry.getKey();
 
-            // TODO RELEASE ivlcek - make detail object converter and create search definition
+            // TODO LATER ivlcek - make detail object converter
+            // TODO RELEASE vojto - implement search definition
             final ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
             // set UserMessage attributes
             cdcd.setUserMessageId(userMessage.getId());
@@ -403,7 +403,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public int getClientOfferedDemandOffersCount(final long userId, final long demandID,
             final SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        // TODO RELEASE ivlcek - incorporate searchDefinition for this method and refactor with new sql
+        // TODO RELEASE vojto - implement searchDefinition
         final User user = generalService.find(User.class, userId);
         final Demand demand = generalService.find(Demand.class, demandID);
         return userMessageService.getClientConversationsWithOfferCount(user, demand);
@@ -530,7 +530,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         for (Map.Entry<UserMessage, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = userMessageEntry.getKey();
             Offer offer = userMessage.getMessage().getOffer();
-            // TODO RELEASE ivlcek - create converter
+            // TODO LATER ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
@@ -602,7 +602,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         for (Map.Entry<UserMessage, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = userMessageEntry.getKey();
             Offer offer = userMessage.getMessage().getOffer();
-            // TODO RELEASE ivlcek - create converter
+            // TODO LATER ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
@@ -700,35 +700,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException {
         return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
-    }
-
-    @Override
-    // TODO is this RPC service the correct place for this and following methods ?!
-    // TODO call setMessageReadStatus in body
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId) throws RPCException, ApplicationSecurityException {
-        Message threadRoot = messageService.getById(threadId);
-
-        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
-
-        User user = this.generalService.find(User.class, userId);
-        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
-                threadRoot, user);
-        ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
-        for (Message message : messages) {
-            messageDetailImpls.add(messageConverter.convertToTarget(message));
-        }
-        return messageDetailImpls;
-    }
-
-    private void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException,
-            ApplicationSecurityException {
-        for (Long userMessageId : userMessageIds) {
-            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
-            userMessage.setRead(isRead);
-            this.userMessageService.update(userMessage);
-        }
     }
 
     /**************************************************************************/
@@ -887,7 +858,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientDemandDetail getClientOfferedDemand(long clientDemandID) throws RPCException,
             ApplicationSecurityException {
-        //TODO staci takto? alebo treba nejak rozlisovat demand a offeredDemand
         return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
     }
 
@@ -1027,6 +997,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search1.addFilterEqual("user", user);
         search1.addFilterEqual("isRead", false);
         search1.addFilterNotNull("message.demand");
+        search1.addFilterEqual("message.threadRoot.sender", user);
         search1.addFilterNull("message.offer");
         search1.addField("id", Field.OP_COUNT);
         search1.setResultMode(Search.RESULT_SINGLE);
@@ -1037,6 +1008,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search2.addFilterEqual("user", user);
         search2.addFilterEqual("isRead", false);
         search2.addFilterNotNull("message.demand");
+        search2.addFilterEqual("message.threadRoot.sender", user);
         search2.addFilterNotNull("message.offer");
         search2.addFilterEqual("message.offer.state", offerPending);
         search2.addField("id", Field.OP_COUNT);
@@ -1049,6 +1021,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search3.addFilterEqual("user", user);
         search3.addFilterEqual("isRead", false);
         search3.addFilterNotNull("message.demand");
+        search3.addFilterEqual("message.threadRoot.sender", user);
         search3.addFilterNotNull("message.offer");
         search3.addFilterIn("message.offer.state", offerAccepted, offerCompleted);
         search3.addField("id", Field.OP_COUNT);
@@ -1060,6 +1033,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         search4.addFilterEqual("user", user);
         search4.addFilterEqual("isRead", false);
         search4.addFilterNotNull("message.demand");
+        search4.addFilterEqual("message.threadRoot.sender", user);
         search4.addFilterNotNull("message.offer");
         search4.addFilterEqual("message.offer.state", offerClosed);
         search4.addField("id", Field.OP_COUNT);

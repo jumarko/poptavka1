@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 
 /**
  *
- * TODO ivlcek - prerobit na standardny ciselnik s kodmi
  * @author Vojtech Hubr
  *         Date 12.4.11
 

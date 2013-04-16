@@ -186,8 +186,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         /****/
         recipients.addAll(generalService.search(messageUserRoleSearch));
 
-        todoDeleteOrRefactor();
-
 
         //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
 
@@ -314,54 +312,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         return deletedMessagesDetail;
     }
 
-    // TODO RELEASE - check this method
-    private void todoDeleteOrRefactor() {
-        //        Search recipientMessagesSearch = new Search(MessageUserRole.class);
-//        recipientMessagesSearch.addFilterEqual("user", sender);
-//        recipientMessagesSearch.addFilterIn("type", roles);
-//        if (searchDataHolder != null) {
-//            recipientMessagesSearch.addFilterIn("message", generalService.search(messageSearch));
-//        }
-        //ziskaj prvotne spravy na vypis v tabulke
-//        List<Message> rootMessages = new ArrayList<Message>();
-//        List<Long> threadIds = new ArrayList<Long>();
-//        if (recipients.isEmpty()) {
-//            for (Message msg : senderMessages) {
-//                if (!threadIds.contains(msg.getThreadRoot().getId())) {
-//                    threadIds.add(msg.getThreadRoot().getId());
-//                    Search rootMsgSearch = new Search(Message.class);
-//                    rootMsgSearch.addFilterEqual("id", msg.getThreadRoot().getId());
-//                    rootMsgSearch.addFilterNull("parent");
-//                    rootMessages.addAll(generalService.search(messageSearch));
-//                }
-//            }
-//        } else {
-//            for (MessageUserRole mur : recipients) {
-//                if (!threadIds.contains(mur.getMessage().getThreadRoot().getId())) {
-//                    threadIds.add(mur.getMessage().getThreadRoot().getId());
-//                    Search rootMsgSearch = new Search(Message.class);
-//                    rootMsgSearch.addFilterEqual("id", mur.getMessage().getThreadRoot().getId());
-//                    rootMsgSearch.addFilterNull("parent");
-//                    rootMessages.addAll(generalService.search(messageSearch));
-//                }
-//            }
-//        }
-//        Search firstBornRecipientMessagesSearch = new Search(Message.class);
-//        List<Message> firstBornRecipientMessages = new ArrayList<Message>();
-//        for (MessageUserRole mur : recipientMessages) {
-//            firstBornRecipientMessagesSearch.addFilterEqual("id", mur.getMessage().getId());
-//            firstBornRecipientMessages = generalService.search(firstBornRecipientMessagesSearch);
-//        }
-//        Map<Long, Message> rootRecipientMessages = new TreeMap<Long, Message>();
-//        for (MessageUserRole mur : senderMessages) {
-//            if (mur.getMessage().getParent() == null) {
-//                // nemusi kontorlovat, ved thread_id s parent_id = null je vzdy len jeden
-////                if (!rootRecipientMessages.containsKey(mur.getMessage().getThreadRoot().getId())) {
-//                rootRecipientMessages.put(mur.getMessage().getThreadRoot().getId(), mur.getMessage());
-//            }
-//        }
-    }
-
     private List<UserMessageDetail> getMessages(Long recipientId, SearchModuleDataHolder searchDataHolder,
             List<MessageUserRoleType> roles) {
         User recipient = generalService.find(User.class, recipientId);
@@ -449,8 +399,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      * This method will update number of unread messages of logged user.
      * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
      * only when PoptavkaUserAuthentication object exist in SecurityContextHolder and we can retrieve userId.
-     *
-     * TODO Vojto - call DB servise to retrieve the number of unread messages for given userId
      *
      * @return UnreadMessagesDetail with number of unread messages and other info to be displayed after users logs in
      * @throws RPCException

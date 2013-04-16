@@ -6,7 +6,7 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.demandsModule.ClientOfferDetail;
 
-//TODO RELEASE - removed? not used
+//TODO RELEASE Juraj - removed? not used
 public final class ClientOfferConverter extends AbstractConverter<UserMessage, ClientOfferDetail> {
 
     private ClientOfferConverter() {

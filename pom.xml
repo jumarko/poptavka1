@@ -228,7 +228,7 @@
 				<groupId>com.eprovement</groupId>
 				<artifactId>dbunit-dtd-generator-plugin</artifactId>
 				<version>${project.version}</version>
-				<!--TODO: because of ApplicationContextHolder cannot use test scope -->
+				<!--TODO LATER: because of ApplicationContextHolder cannot use test scope -->
 				<!--<scope>test</scope> -->
 			</dependency>
 
@@ -236,7 +236,7 @@
 				<groupId>com.eprovement</groupId>
 				<artifactId>integration-test-base</artifactId>
 				<version>${project.version}</version>
-				<!--TODO: because of ApplicationContextHolder cannot use test scope -->
+				<!--TODO LATER: because of ApplicationContextHolder cannot use test scope -->
 				<!--<scope>test</scope> -->
 			</dependency>
 			<dependency>

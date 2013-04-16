@@ -71,7 +71,7 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
         view.getPotentialDemandsUnreadMessages().setHTML(((new SafeHtmlBuilder())
                     .append(Storage.MSGS.youHave())
                     .append(getNumberIntoString(dashboard.getUnreadMessagesPotentialDemandsCount()))
-                    .append(Storage.MSGS.inMyDemands())).toSafeHtml());
+                    .append(Storage.MSGS.inPotentialDemands())).toSafeHtml());
         view.getOfferedDemandsUnreadMessages().setHTML(((new SafeHtmlBuilder())
                     .append(Storage.MSGS.youHave())
                     .append(getNumberIntoString(dashboard.getUnreadMessagesOfferedDemandsCount()))

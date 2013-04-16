@@ -194,10 +194,7 @@ public class Demand extends DomainObject {
     /** The minimum rating that the supplier ({@link Supplier} has to have to participate in this demand. */
     private Integer minRating;
 
-    /** TODO make the decision: replace this attribute with "maxOffers" - maximum number of offers that can be
-     * send to the client from suppliers.
-     *
-     * The maximum number of suppliers that can participate in this demand. */
+    /** The maximum number of suppliers that will receive notification about this demand. */
     private Integer maxSuppliers;
 
     /** Demand rating, that means evalution from supplier and client as well. */

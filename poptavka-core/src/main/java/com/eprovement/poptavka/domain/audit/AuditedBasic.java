@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * When applied to a class, indicates that basic information about history of modification of this entity should
  * be stored in separate audit table.
  *
- * TODO martinka: implement the logic for handling this annotation.
+ * TODO LATER martinka: implement the logic for handling this annotation.
  *
  * @author Juraj Martinka
  * @see com.eprovement.poptavka.domain.audit.BasicAuditInfo for fields that are stored in audit table
@@ -40,5 +40,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 public @interface AuditedBasic {
-    // TODO martinka: fill meaningful attributes
+    // TODO LATER martinka: fill meaningful attributes
 }

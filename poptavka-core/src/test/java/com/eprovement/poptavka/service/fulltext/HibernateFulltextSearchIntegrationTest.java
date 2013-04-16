@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandFulltextDataSet.xml" },
         dtd = "classpath:test.dtd")
-// TODO Fulltext index is not created correctly, probably because transaction is not really commited
+// TODO RELEASE juraj: Fulltext index is not created correctly, probably because transaction is not really commited
 // in integration tests
 @Ignore
 public class HibernateFulltextSearchIntegrationTest extends DBUnitIntegrationTest {
