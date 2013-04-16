@@ -115,7 +115,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
             return;
         }
 
-        generalService.save(user);
+        generalService.merge(user);
         LOGGER.debug("action=verify_user status=finish_verified user={}", user);
     }
 

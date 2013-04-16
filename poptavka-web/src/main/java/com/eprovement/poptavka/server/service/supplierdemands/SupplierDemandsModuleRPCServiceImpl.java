@@ -706,7 +706,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         demand.setStatus(DemandStatus.PENDINGCOMPLETION);
         generalService.merge(demand);
         offer.setState(offerService.getOfferState(OfferStateType.COMPLETED.getValue()));
-        generalService.merge(offer);
+        generalService.save(offer);
     }
 
     private void enterFeedbackForClient(final long demandID, final Integer clientRating, final String clientMessage)

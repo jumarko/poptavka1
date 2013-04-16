@@ -209,7 +209,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         }
         user.getSettings().setNotificationItems(notificationsItems);
 
-        generalService.merge(user);
+        generalService.save(user);
         return true;
     }
 }
