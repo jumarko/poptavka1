@@ -94,7 +94,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
                 this.generalService.find(User.class, messageDetailImpl.getSenderId()));
         m.setBody(messageDetailImpl.getBody());
         m.setSubject(INTERNAL_MESSAGE);
-        // TODO LATER - for message module
+        // TODO LATER ivlcek: for message module
         MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
         return messageDetailFromDB;
     }

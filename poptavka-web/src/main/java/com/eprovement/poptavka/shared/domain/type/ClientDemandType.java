@@ -6,7 +6,7 @@ package com.eprovement.poptavka.shared.domain.type;
 
 /**
  * ClientDemandType is used only to list all DemandType enum values.
- * TODO ivlcek - maybe we can use the domain object DemandType and remove this
+ * TODO LATER ivlcek - maybe we can use the domain object DemandType and remove this
  * shared ClientDemandType object.
  *
  * @author ivan.vlcek

@@ -13,7 +13,7 @@
 	-->
     <security:http auto-config="true" entry-point-ref="customAuthenticationEntryPoint" create-session="always">
         <!-- URL patterns that require Authentication by particular roles -->
-        <!-- TODO ivlcek - all secured RPC should have secured string in their name -->
+        <!-- TODO RELEASE ivlcek: test that all secured RPC working correctly. -->
         <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/poptavka/service/user" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />

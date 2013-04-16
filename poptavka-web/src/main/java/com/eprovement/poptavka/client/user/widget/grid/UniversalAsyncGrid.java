@@ -387,7 +387,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             @Override
             public Date getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                //TODO Martin 10.3.13 shoudn't be here validTo date?
+                //TODO RELEASE Martin 10.3.13 shoudn't be here validTo date? ivlcek: Let's discuss it
                 return obj.getEndDate();
             }
         };
@@ -432,7 +432,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      *
      * NOTE:
      * Sorting is not implemented now.
-     * //TODO
+     * TODO RELEASE Martin: let's implement star sorting as it is quite important especially for potentialDemands view
      * Implement sorting according to star status
      *
      * @return star column

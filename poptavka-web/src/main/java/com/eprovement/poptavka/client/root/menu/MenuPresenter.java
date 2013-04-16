@@ -24,7 +24,6 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         eventBus.setMenu(view);
     }
 
-    // TODO praso - zistit ako mam nastavit SearchFilter pre moduly. A vyvtovirt konstanty "home"
     /**************************************************************************/
     /* Navigation methods.                                                    */
     /**************************************************************************/

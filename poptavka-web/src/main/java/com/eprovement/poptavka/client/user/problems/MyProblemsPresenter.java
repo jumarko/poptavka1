@@ -57,12 +57,12 @@ public class MyProblemsPresenter
                         Problem selected = view.getSelectionModel()
                                 .getSelectedObject();
                         if (selected != null) {
-                            // TODO Martin - add funkcionality
+                            // TODO LATER Martin - add funkcionality
                             // eventBus.displayMessages(selected);
                         }
                     }
                 });
-        // TODO Martin -- provide data from db, not fake data
+        // TODO LATER Martin -- provide data from db, not fake data
     }
 
     public void onInvokeMyProblems() {
@@ -80,12 +80,12 @@ public class MyProblemsPresenter
         LOGGER.info("onDisplayMessages in MessagesPresenter");
     }
 
-    // TODO Martin Sl.: refactor this method, probably remove completely ?
+    // TODO LATER Martin Sl.: refactor this method, probably remove completely ?
     public List<MessageDetail> getMessages(String sufix) {
         List<MessageDetail> list = new LinkedList<MessageDetail>();
         MessageDetail m1 = new MessageDetail();
         m1.setSubject("Odpoved" + sufix);
-        // TODO:
+        // TODO LATER Martin:
 //            User u = new User();
 //            u.setEmail("userEmail" + sufix);
 //            m1.setSender(u);
@@ -98,7 +98,7 @@ public class MyProblemsPresenter
         m2.setSubject("Odpoved" + sufix);
 //            User u2 = new User();
 //            u2.setEmail("UserEmail" + sufix);
-        // TODO:
+        // TODO LATER Martin:
 //            m2.setSender(u2);
         m2.setSent(new Date());
 //            m2.setId(2L);
@@ -118,7 +118,7 @@ public class MyProblemsPresenter
         m4.setSubject("Odpoved" + sufix);
 //            User u4 = new User();
 //            u4.setEmail("UserEmail" + sufix);
-        // TODO:
+        // TODO LATER Martin:
 //            m4.setSender(u4);
 //            m4.setSent(new Date());
 //            m4.setId(4L);

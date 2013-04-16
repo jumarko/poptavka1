@@ -39,7 +39,7 @@ public class MessageConverterTest extends BasicIntegrationTest {
     private static final String DATE = "21.12.2012";
     private static final SimpleDateFormat SDF = new SimpleDateFormat(DATE_FORMAT);
 
-    //TODO RELEASE - make it work - problem with setting senderName
+    //TODO RELEASE juraj: make it work - problem with setting senderName
     @Test
     public void testConvertToUserMessageTarget() throws Exception {
 
@@ -69,7 +69,7 @@ public class MessageConverterTest extends BasicIntegrationTest {
 //        assertThat(SDF.format(messageDetail.getSent()), is(DATE));
     }
 
-    //TODO RELEASE - make it work - problem with setting senderName
+    //TODO RELEASE juraj: make it work - problem with setting senderName
     @Test
     public void testConvertToMessageTarget() throws Exception {
 //        Validate.notNull(messageConverter);

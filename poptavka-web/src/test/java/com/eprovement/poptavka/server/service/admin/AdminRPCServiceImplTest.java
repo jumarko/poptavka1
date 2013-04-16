@@ -50,7 +50,7 @@ public class AdminRPCServiceImplTest {
 
     private void mockSecurity() {
         if (ApplicationContextHolder.getApplicationContext() != null) {
-            // TODO: XXX there is some application context
+            // TODO RELEASE juraj: XXX there is some application context
             // (but what the hell does it mean ?
             // there should be no spring application context because we are in simple unit test)
             // -> However, we have to mock spring security in this case

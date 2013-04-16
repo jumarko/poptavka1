@@ -123,7 +123,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
     }
 
     private void authenticateClient() {
-        // TODO authenticate correctly as client - make common methods in abstract parent
+        // TODO RELEASE juraj: authenticate correctly as client - make common methods in abstract parent
         // setup correct roles in UsersDataSet.xml
         final PoptavkaAuthenticationProvider authenticationProvider = new PoptavkaAuthenticationProvider(loginService);
         final Authentication clientAuthentication = authenticationProvider

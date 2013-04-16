@@ -14,13 +14,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * TODO refactoring, maybe deleted later.
+ * TODO LATER ivlcek: refactoring, maybe deleted later.
  *
  * @author Martin Slavkovsky
  */
 public class FullOfferDetail implements IsSerializable, TableDisplay, IUniversalDetail {
 
-    // TODO remove dipsplayed
+    // TODO RELEASE ivlcek: remove dipsplayed. wtf? What display.
     private int messageCount;
     private MessageDetail messageDetail = new MessageDetail();
     private OfferDetail offerDetail = new OfferDetail();

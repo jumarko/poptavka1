@@ -54,7 +54,7 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
             @Override
             public void onWindowClosing(ClosingEvent event) {
-                //TODO Martin - musi to tu byt, pouzivame vobec cookies?
+                //TODO LATER Martin - musi to tu byt, pouzivame vobec cookies?
 //                Cookies.setCookie("login", "no");
             }
         });

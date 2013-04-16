@@ -137,13 +137,9 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = HomeSuppliersModule.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
-    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
-    // pohladoch. Alebo je tam nejaky default filter?
     @Event(forwardToModules = SupplierCreationModule.class)
     void goToCreateSupplierModule();
 
-    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
-    // pohladoch. Alebo je tam nejaky default filter?
     @Event(forwardToModules = DemandCreationModule.class)
     void goToCreateDemandModule();
 
@@ -261,7 +257,9 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
-    // TODO Praso - mozeme odstranit? No usage
+    /**
+     * When URL token can't be recognized this method gets invoked.
+     */
     @NotFoundHistory
     @Event(handlers = RootPresenter.class)
     void notFound();
@@ -287,15 +285,14 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void loadingShow(String loadingMessage);
 
-    // TODO praso - zakomentoval som tieto dve metody na loadovanie cakacieho popupu
-    // Chcem pouzit standardnu funkciu cez onBefore, onAfter
+    // TODO LATER ivlcek - zakomentoval som tieto dve metody na loadovanie cakacieho popupu
+    // Chcem pouzit standardnu funkciu cez onBefore, onAfter, ktora mi zatial nefunguje :(
     @Event(handlers = RootPresenter.class)
     void loadingHide();
 
     /**************************************************************************/
     /* CATEGORY SELECTOR WIDGET.                                              */
     /**************************************************************************/
-    // TODO Praso - tuto metodu vola sibling module DemandCreationModule, SupplierCreationModule a ClientDemandsModule
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,

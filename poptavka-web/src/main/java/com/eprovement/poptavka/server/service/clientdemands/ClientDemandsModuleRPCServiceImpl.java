@@ -433,7 +433,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
             UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
             Offer offer = userMessage.getMessage().getOffer();
-            // TODO ivlcek - refactor and create converter
+            // TODO LATER ivlcek - refactor and create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
@@ -751,7 +751,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
                 this.generalService.find(User.class, messageDetailImpl.getSenderId()));
         m.setBody(messageDetailImpl.getBody());
         m.setSubject(messageDetailImpl.getSubject());
-        // TODO set the id correctly, check it
+        // TODO RELEASE ivlcek: test if id is set correctly
         MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
         return messageDetailFromDB;
     }
@@ -849,7 +849,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) throws
             RPCException, ApplicationSecurityException {
-        //TODO Martin - finnish
+        //TODO RELEASE ivlcek: check the flow of this method, where it is used and test if it works correctly
         //- Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
         return new ClientDemandConversationDetail();
     }

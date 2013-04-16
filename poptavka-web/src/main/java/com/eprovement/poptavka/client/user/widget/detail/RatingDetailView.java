@@ -50,6 +50,7 @@ public class RatingDetailView extends Composite {
     /* HELPER METHODS                                                         */
     /**************************************************************************/
     private void setClientRatingDetail(DemandRatingsDetail demandDetail) {
+        // TODO RELEASE martin - add display name (person first name + last name OR company name)
         clientName.setText("TODO name");
         clientStarImg.setVisible(demandDetail.getRatingClient() != null);
         if (demandDetail.getRatingClient() == null) {
@@ -63,6 +64,7 @@ public class RatingDetailView extends Composite {
     }
 
     private void setSupplierRatingDetail(DemandRatingsDetail demandDetail) {
+        // TODO RELEASE martin - add display name (person first name + last name OR company name)
         supplierName.setText("TODO name");
         supplierStarImg.setVisible(demandDetail.getRatingSupplier() != null);
         if (demandDetail.getRatingSupplier() == null) {

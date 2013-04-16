@@ -54,7 +54,7 @@ public final class CrawlServlet implements Filter {
                 tmpSb.append(URLDecoder.decode(queryStringSb.substring(i + ESCAPED_LENGTH,
                         queryStringSb.length()), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
+            // TODO LATER juraj: Auto-generated catch block
                 e.printStackTrace();
             }
             queryStringSb = tmpSb;

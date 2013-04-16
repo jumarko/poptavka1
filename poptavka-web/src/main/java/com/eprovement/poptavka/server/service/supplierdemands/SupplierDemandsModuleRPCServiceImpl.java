@@ -559,7 +559,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID)
         throws RPCException, ApplicationSecurityException {
-        //TODO Ivan
+        //TODO RELEASE ivlcek: check workflow of this method and test UI
         return new SupplierPotentialDemandDetail();
     }
 
