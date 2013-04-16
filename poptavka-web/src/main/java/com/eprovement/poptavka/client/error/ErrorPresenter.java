@@ -30,8 +30,7 @@ public class ErrorPresenter extends BasePresenter<IErrorView, ErrorEventBus> imp
     }
 
     public void onForward() {
-        // TODO ivlcek - is the line bellow necessary? Ask Martin
-//        eventBus.setUpSearchBar(null, false, false, false);
+        // nothing
     }
 
 

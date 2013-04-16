@@ -35,7 +35,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
      */
     @Override
     public final void onFailure(final Throwable caught) {
-        // TODO ivlcek - random generator of error Id should be moved to RpcExceptionAspect.java
+        // TODO LATER ivlcek - random generator of error Id should be moved to RpcExceptionAspect.java
         String errorId = Long.toString(new Date().getTime());
         if (caught == null) {
             ASYNC_CALLBACK_LOGGER.log(Level.SEVERE, "ErrorID=" + errorId + ", Received parameter 'caught' is null ?!!");
@@ -110,7 +110,7 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
      * @param caught
      */
     protected void onServiceFailure(Throwable caught, int errorResponse, String errorId) {
-        // TODO: more reasonable message must be provided -> probably reference to error id with possibility to send
+        // TODO LATER: more reasonable message must be provided like error id with possibility to send
         // message to our customer support team.
         // error id should be generated in RpcExceptionAspect
         ASYNC_CALLBACK_LOGGER.log(Level.SEVERE, "ErrorID=" + errorId + ", Error status response: caught="
@@ -123,7 +123,6 @@ public abstract class SecuredAsyncCallback<T> implements AsyncCallback<T>, Secur
      */
     @Override
     public void onAuthorizationExpected(String messageForUser) {
-        // TODO ivlcek - we could display a message to user that he is not authorized for this action
         lookupEventbus.dispatch("login", Constants.NONE);
     }
 

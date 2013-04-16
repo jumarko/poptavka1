@@ -176,7 +176,6 @@ public class LoginPopupView extends Composite
 
     @Override
     public boolean isValid() {
-        // TODO ivlcek - are values somehow checked against some sort sql attacks?
         if ((getLogin().getText().length() == 0) || (getPassword().getText().length() == 0)) {
             setErrorMessage(Storage.MSGS.commonEmptyCredentials());
             return false;
