@@ -85,7 +85,15 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         view.getHowItWorksSupplierBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.setBody(HowItWorks.createHowItWorksSupplier());
+                HowItWorks howItWorks = HowItWorks.createHowItWorksDemand();
+                howItWorks.getRegisterBtn().addClickHandler(new ClickHandler() {
+
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        eventBus.goToCreateSupplierModule();
+                    }
+                });
+                eventBus.setBody(howItWorks);
             }
         });
     }
@@ -94,7 +102,15 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         view.getHowItWorksDemandBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.setBody(HowItWorks.createHowItWorksDemand());
+                HowItWorks howItWorks = HowItWorks.createHowItWorksDemand();
+                howItWorks.getRegisterBtn().addClickHandler(new ClickHandler() {
+
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        eventBus.goToCreateDemandModule();
+                    }
+                });
+                eventBus.setBody(howItWorks);
             }
         });
     }

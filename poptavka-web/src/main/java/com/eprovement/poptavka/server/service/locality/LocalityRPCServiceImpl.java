@@ -5,40 +5,27 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.googlecode.genericdao.search.Filter;
-import com.googlecode.genericdao.search.Search;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Configurable
 public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implements LocalityRPCService {
 
-    private GeneralService generalService;
     private LocalityService localityService;
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Locality, LocalitySuggestionDetail> localitySuggestionConverter;
-    private static final Logger LOGGER = LoggerFactory.getLogger(LocalityRPCServiceImpl.class);
 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setGeneralService(GeneralService generalService) {
-        this.generalService = generalService;
     }
 
     @Autowired
@@ -83,50 +70,16 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public List<LocalitySuggestionDetail> getCityWithStateSuggestions(String cityLike) throws RPCException {
-        Search locSearch = new Search(Locality.class);
-
-        locSearch.addFilterAnd(
-                Filter.equal("type", LocalityType.CITY),
-                Filter.or(
-                    Filter.ilike("name", cityLike + "%"),
-                    Filter.ilike("name", "% " + cityLike + "%")));
-        List<Locality> list = generalService.search(locSearch);
-        return localitySuggestionConverter.convertToTargetList(list);
+    public List<LocalitySuggestionDetail> getCityWithStateSuggestions(
+            String cityLike, int wordLength) throws RPCException {
+        return localitySuggestionConverter.convertToTargetList(
+                localityService.getLocalitiesByMinLength(wordLength, cityLike, LocalityType.CITY));
     }
 
     @Override
-    public List<LocalitySuggestionDetail> getShortCityWithStateSuggestions(String cityLike) throws RPCException {
-        Search locSearch = new Search(Locality.class);
-
-        locSearch.addFilterAnd(
-                Filter.equal("type", LocalityType.CITY),
-                Filter.ilike("name", "__"),
-                Filter.or(
-                    Filter.ilike("name", cityLike + "%"),
-                    Filter.ilike("name", "% " + cityLike + "%")));
-        List<Locality> list = generalService.search(locSearch);
-
-        List<LocalitySuggestionDetail> result = new ArrayList<LocalitySuggestionDetail>();
-        LocalitySuggestionDetail d1 = new LocalitySuggestionDetail();
-        d1.setCityId(1L);
-        d1.setCityName("AB");
-        d1.setStateId(2L);
-        d1.setStateName("Alabama");
-        if ("AB".contains(cityLike)) {
-            result.add(d1);
-        }
-
-        LocalitySuggestionDetail d2 = new LocalitySuggestionDetail();
-        d2.setCityId(3L);
-        d2.setCityName("CD");
-        d2.setStateId(4L);
-        d2.setStateName("California");
-        if ("CD".contains(cityLike)) {
-            result.add(d2);
-        }
-
-//        return localitySuggestionConverter.convertToTargetList(list);
-        return result;
+    public List<LocalitySuggestionDetail> getShortCityWithStateSuggestions(
+            String cityLike, int wordLength) throws RPCException {
+        return localitySuggestionConverter.convertToTargetList(
+                localityService.getLocalitiesByMaxLengthExcl(wordLength, cityLike, LocalityType.CITY));
     }
 }

@@ -2,7 +2,9 @@ package com.eprovement.poptavka.client.homeWelcome.texts;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -30,6 +32,8 @@ public class HowItWorks extends Composite {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    @UiField Button registerBtn;
+
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
@@ -59,6 +63,10 @@ public class HowItWorks extends Composite {
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    public Button getRegisterBtn() {
+        return registerBtn;
+    }
+
     public Widget getWidgetView() {
         return this;
     }
