@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RootCategoryCell;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
@@ -19,8 +18,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 
-/**************************************************************************/
-/* Class: Root Category Cell                                                     */
 public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter> implements IHomeWelcomeView {
 
     private static HomeWelcomeViewUiBinder uiBinder = GWT.create(HomeWelcomeViewUiBinder.class);
@@ -39,10 +36,6 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     @UiField Button howItWorksSupplierBtn, howItWorksDemandBtn;
     @UiField Button registerSupplierBtn, registerDemandBtn;
     /** Class attributes. **/
-    //TODO 25.2.13 Martin - initialize manually because UiBinder is commented
-    Button demandCreateBtn = new Button();
-    Button securedButton = new Button();
-    Button sendUsEmailButton = new Button();
     private @Inject FooterView footerView;
     private ListDataProvider dataProvider = new ListDataProvider();
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
@@ -134,20 +127,5 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     @Override
     public Button getRegisterDemandBtn() {
         return registerDemandBtn;
-    }
-
-    @Override
-    public HasClickHandlers getCreateDemandButton() {
-        return demandCreateBtn;
-    }
-
-    @Override
-    public HasClickHandlers getSecuredButton() {
-        return securedButton;
-    }
-
-    @Override
-    public HasClickHandlers getSendUsEmailButton() {
-        return sendUsEmailButton;
     }
 }

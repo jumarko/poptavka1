@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.homeWelcome.interfaces;
 
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -39,10 +38,4 @@ public interface IHomeWelcomeView extends IsWidget, LazyView {
     Button getRegisterSupplierBtn();
 
     Button getRegisterDemandBtn();
-
-    HasClickHandlers getCreateDemandButton();
-
-    HasClickHandlers getSecuredButton();
-
-    HasClickHandlers getSendUsEmailButton();
 }
