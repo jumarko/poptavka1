@@ -47,7 +47,7 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
         } else {
             addressSelectorPresenter.getCitySuggestionPopup().showLoading();
             addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(
-                    getCityFromQuery(suggestRequest.getQuery()),
+                    getCityFromQuery(suggestRequest.getQuery()), Constants.MIN_CHARS_TO_SEARCH,
                     new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
                         @Override
                         public void onSuccess(List<LocalitySuggestionDetail> result) {
@@ -59,7 +59,8 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
 
     public void requestShortCitySuggestions() {
         addressSelectorPresenter.getCitySuggestionPopup().showLoading();
-        addressSelectorPresenter.getLocalityService().getShortCityWithStateSuggestions(suggestRequest.getQuery(),
+        addressSelectorPresenter.getLocalityService().getShortCityWithStateSuggestions(
+                suggestRequest.getQuery(), Constants.MIN_CHARS_TO_SEARCH,
                 new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
                     @Override
                     public void onSuccess(List<LocalitySuggestionDetail> result) {

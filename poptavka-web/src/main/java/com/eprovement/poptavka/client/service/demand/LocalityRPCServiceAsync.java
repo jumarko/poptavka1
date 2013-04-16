@@ -18,7 +18,9 @@ public interface LocalityRPCServiceAsync {
 
     void getAllRootLocalities(AsyncCallback<List<LocalityDetail>> callback);
 
-    void getCityWithStateSuggestions(String cityLike, AsyncCallback<List<LocalitySuggestionDetail>> callback);
+    void getCityWithStateSuggestions(String cityLike, int wordLength,
+            AsyncCallback<List<LocalitySuggestionDetail>> callback);
 
-    void getShortCityWithStateSuggestions(String cityLike, AsyncCallback<List<LocalitySuggestionDetail>> callback);
+    void getShortCityWithStateSuggestions(String cityLike, int wordLength,
+            AsyncCallback<List<LocalitySuggestionDetail>> callback);
 }
