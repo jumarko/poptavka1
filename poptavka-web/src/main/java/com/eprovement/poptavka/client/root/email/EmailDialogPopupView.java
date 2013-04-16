@@ -149,7 +149,7 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     @Override
     public boolean isValid() {
         //Need to do it this way because we need all monitors perform isValid method.
-        boolean valid = false;
+        boolean valid = true;
         valid = emailMonitor.isValid() && valid;
         valid = reEmailMonitor.isValid() && valid;
         valid = msgBodyMonitor.isValid() && valid;

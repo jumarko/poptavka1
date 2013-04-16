@@ -33,7 +33,7 @@ public class FeedbackPopupView extends Composite {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField Modal popupFeedback, popupThankYou;
+    @UiField Modal popupFeedback;
     @UiField HTMLPanel clientPanel, supplierPanel;
     /** SupplierPanel. **/
     @UiField Label supplierName;
@@ -109,10 +109,6 @@ public class FeedbackPopupView extends Composite {
     /**************************************************************************/
     public Modal getPopupFeedback() {
         return popupFeedback;
-    }
-
-    public Modal getPopupThankYou() {
-        return popupThankYou;
     }
 
     public Button getRateBtn() {

@@ -27,7 +27,7 @@
                     <g:Label ui:field="demandTableNameLabel" styleName='hide'/>
                 </g:HorizontalPanel>
                 <g:HorizontalPanel ui:field="offerToolBar">
-                    <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>
+                    <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}' visible="false">
                         <img src="images/button-cross-icon.png"/>
                         <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
                     </g:Button>

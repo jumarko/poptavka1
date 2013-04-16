@@ -175,10 +175,5 @@
                 </g:Button>
             </g:HTMLPanel>
         </b:Modal>
-        <b:Modal ui:field="popupThankYou" backdrop="STATIC" keyboard="true" animation="true">
-            <b:Alert type="SUCCESS" close="false">
-                Thank you for your feedback.
-            </b:Alert>
-        </b:Modal>
     </g:HTMLPanel>
 </ui:UiBinder>

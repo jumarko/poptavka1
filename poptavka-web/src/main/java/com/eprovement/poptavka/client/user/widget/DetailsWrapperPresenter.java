@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.client.user.widget;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
@@ -17,6 +19,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -227,6 +230,16 @@ public class DetailsWrapperPresenter
             detail.setIsStarred(sentMessage.isStarred());
         }
         table.redraw();
+    }
+
+    public void onResponseSendOfferMessage() {
+        Timer additionalAction = new Timer() {
+            @Override
+            public void run() {
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_OFFERS);
+            }
+        };
+        ThankYouPopup.create(Storage.MSGS.thankYouSendOffer(), additionalAction);
     }
 
     public void setEditDemandMode(boolean enable,  Widget editableWidget) {

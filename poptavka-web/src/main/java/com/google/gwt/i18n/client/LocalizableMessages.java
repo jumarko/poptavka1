@@ -205,8 +205,13 @@ public interface LocalizableMessages extends Messages {
     String emailDialogSubjectPartnership();
     String emailDialogSubjectReportIssue();
     String emailDialogSubjectReportUser();
-    String emailDialogThanksForMessage();
     String emailDialogTo();
+
+    /** # ThankYouPopup.ui **/
+    String thankYouAcceptOffer();
+    String thankYouContactUs();
+    String thankYouFeedback();
+    String thankYouSendOffer();
 
     /** ActivationCodePopupView.ui. **/
     String activationBtnActivate();

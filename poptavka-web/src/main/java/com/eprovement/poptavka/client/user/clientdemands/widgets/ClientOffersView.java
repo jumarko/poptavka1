@@ -240,7 +240,6 @@ public class ClientOffersView extends Composite
         offerGrid.setVisible(visible);
         offerGrid.redraw();
         offerHeader.setVisible(visible);
-        offerToolBar.setVisible(visible);
     }
 
     @Override
