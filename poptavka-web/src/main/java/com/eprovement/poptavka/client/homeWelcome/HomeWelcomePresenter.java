@@ -1,18 +1,13 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks;
-import com.eprovement.poptavka.client.service.demand.SimpleRPCServiceAsync;
-import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
@@ -22,15 +17,6 @@ import java.util.ArrayList;
 @Presenter(view = HomeWelcomeView.class)
 public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements
         IHomeWelcomePresenter, NavigationConfirmationInterface {
-
-    //columns number of root chategories in parent widget
-    private SimpleRPCServiceAsync simpleService;
-
-    //TODO remove this and all relevant code, if security development is finnished
-    @Inject
-    void setSimpleService(SimpleRPCServiceAsync service) {
-        simpleService = service;
-    }
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -71,81 +57,6 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
 
         /** OTHERS. **/
         addCategorySelectionModelHandler();
-
-        view.getCreateDemandButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                // do something
-                simpleService.getData(new SecuredAsyncCallback<String>(eventBus) {
-                    public void onServiceFailure(Throwable caught) {
-                        // Show the RPC error message to the user
-                        DialogBox dialogBox = new DialogBox();
-                        dialogBox.center();
-                        dialogBox.setModal(true);
-                        dialogBox.setGlassEnabled(true);
-                        dialogBox.setAutoHideEnabled(true);
-
-                        dialogBox.setText("Remote Procedure Call - Failure");
-                        dialogBox.show();
-                    }
-
-                    public void onSuccess(String result) {
-                        DialogBox dialogBox = new DialogBox();
-                        dialogBox.center();
-                        dialogBox.setModal(true);
-                        dialogBox.setGlassEnabled(true);
-                        dialogBox.setAutoHideEnabled(true);
-
-                        dialogBox.setText(result);
-                        dialogBox.show();
-                    }
-                });
-            }
-        });
-
-        view.getSecuredButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                // do something
-                simpleService.getSecuredData(new SecuredAsyncCallback<String>(eventBus) {
-                    public void onServiceFailure(Throwable caught) {
-                        // Show the RPC error message to the user
-                        DialogBox dialogBox = new DialogBox();
-                        dialogBox.center();
-                        dialogBox.setModal(true);
-                        dialogBox.setGlassEnabled(true);
-                        dialogBox.setAutoHideEnabled(true);
-
-                        dialogBox.setText("Remote Procedure Call - Failure");
-                        dialogBox.show();
-                    }
-
-                    public void onSuccess(String result) {
-                        DialogBox dialogBox = new DialogBox();
-                        dialogBox.center();
-                        dialogBox.setModal(true);
-                        dialogBox.setGlassEnabled(true);
-                        dialogBox.setAutoHideEnabled(true);
-
-                        dialogBox.setText(result);
-                        dialogBox.show();
-                    }
-                });
-            }
-        });
-
-        view.getSendUsEmailButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                //TODO Martin - use for invoking variety popups for development
-//                eventBus.sendUsEmail(Constants.SUBJECT_GENERAL_QUESTION, "");
-//                SecurityDialogBoxes.showAlertBox(eventBus, Storage.MSGS.errorTipTryWaiting());
-//                SecurityDialogBoxes.showAccessDeniedBox(eventBus);
-                new FeedbackPopupView(FeedbackPopupView.CLIENT);
-//                ExceptionUtils.showErrorDialog("error", "errorMessage");
-            }
-        });
-
     }
 
     /**************************************************************************/

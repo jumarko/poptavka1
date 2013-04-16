@@ -23,22 +23,22 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
     public Filter convertToSource(FilterItem filterItem) {
         Filter filter;
         switch (filterItem.getOperation()) {
-            case FilterItem.OPERATION_EQUALS:
+            case OPERATION_EQUALS:
                 filter = new Filter(filterItem.getItem(), filterItem.getValue(), Filter.OP_EQUAL);
                 break;
-            case FilterItem.OPERATION_LIKE:
+            case OPERATION_LIKE:
                 filter = new Filter(
                         filterItem.getItem(),
                         "%".concat((String) filterItem.getValue()).concat("%"),
                         Filter.OP_LIKE);
                 break;
-            case FilterItem.OPERATION_IN:
+            case OPERATION_IN:
                 filter = new Filter(filterItem.getItem(), filterItem.getValue(), Filter.OP_IN);
                 break;
-            case FilterItem.OPERATION_FROM:
+            case OPERATION_FROM:
                 filter = new Filter(filterItem.getItem(), filterItem.getValue(), Filter.OP_GREATER_OR_EQUAL);
                 break;
-            case FilterItem.OPERATION_TO:
+            case OPERATION_TO:
                 filter = new Filter(filterItem.getItem(), filterItem.getValue(), Filter.OP_LESS_OR_EQUAL);
                 break;
             default:
@@ -59,10 +59,21 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
 
     @Override
     public ArrayList<Filter> convertToSourceList(Collection<FilterItem> targetObjects) {
-        final ArrayList<Filter> domainObjects = new ArrayList<Filter>();
-        for (FilterItem detailObject : targetObjects) {
-            domainObjects.add(convertToSource(detailObject));
+        ArrayList<Filter> filtersAnd = new ArrayList<Filter>();
+        ArrayList<Filter> filtersOr = new ArrayList<Filter>();
+        int group = -1;
+        for (FilterItem item : targetObjects) {
+            if (group == -1 || group == item.getGroup()) {
+                filtersOr.add(convertToSource(item));
+            } else {
+                filtersAnd.add(Filter.or(filtersOr.toArray(new Filter[filtersOr.size()])));
+                filtersOr = new ArrayList<Filter>();
+                filtersOr.add(convertToSource(item));
+            }
+            group = item.getGroup();
         }
-        return domainObjects;
+        //add last iteration
+        filtersAnd.add(Filter.or(filtersOr.toArray(new Filter[filtersOr.size()])));
+        return filtersAnd;
     }
 }

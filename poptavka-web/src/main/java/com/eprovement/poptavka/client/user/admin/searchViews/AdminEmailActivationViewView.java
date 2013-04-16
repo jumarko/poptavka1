@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class AdminEmailActivationViewView extends Composite implements
@@ -36,21 +37,22 @@ public class AdminEmailActivationViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!idFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, idFrom.getText(), group++));
         }
         if (!idTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, idTo.getText(), group++));
         }
         if (!activationCode.getText().equals("")) {
             filters.add(new FilterItem("activationCode",
-                    FilterItem.OPERATION_LIKE, activationCode.getText()));
+                    Operation.OPERATION_LIKE, activationCode.getText(), group++));
         }
         if (timeoutFrom.getValue() != null) {
-            filters.add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutFrom.getValue()));
+            filters.add(new FilterItem("timeout", Operation.OPERATION_FROM, timeoutFrom.getValue(), group++));
         }
         if (timeoutTo.getValue() != null) {
-            filters.add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutTo.getValue()));
+            filters.add(new FilterItem("timeout", Operation.OPERATION_FROM, timeoutTo.getValue(), group++));
         }
         return filters;
     }

@@ -137,15 +137,7 @@
     </ui:style>
 
     <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
-        <g:HTMLPanel
-            addStyleNames='{res.layout.bodyContent} {style.homepage-container}'>
-            <!--TODO leave for development -->
-            <!-- <g:HTMLPanel addStyleNames='{style.hidden}'> <h1>secured
-            button calling secured RPC</h1> <g:Button ui:field="demandCreateBtn">Call
-            Simple Service with Default LoginPopupPresenter</g:Button> <g:Button ui:field="securedButton">securedButton
-            to invoke Acccess Denied 403 error</g:Button> <g:Button ui:field="sendUsEmailButton">Send
-            us an email</g:Button> <g:Button styleName="{style.important}" ui:field="button"
-            /> </g:HTMLPanel> -->
+        <g:HTMLPanel addStyleNames='{res.layout.bodyContent} {style.homepage-container}'>
             <g:HTMLPanel styleName="{style.banner1}">
                 <b:Heading size="4" styleName="{style.header}">
                     <ui:msg key="iamProfessional">I''m Professional</ui:msg>

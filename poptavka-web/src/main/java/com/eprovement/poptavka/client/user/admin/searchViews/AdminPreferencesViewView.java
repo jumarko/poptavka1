@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class AdminPreferencesViewView extends Composite implements
@@ -33,20 +34,21 @@ public class AdminPreferencesViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!idFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, idFrom.getText(), group++));
         }
         if (!idTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, idTo.getText(), group++));
         }
         if (!key.getText().equals("")) {
-            filters.add(new FilterItem("key", FilterItem.OPERATION_LIKE, key.getText()));
+            filters.add(new FilterItem("key", Operation.OPERATION_LIKE, key.getText(), group++));
         }
         if (!value.getText().equals("")) {
-            filters.add(new FilterItem("value", FilterItem.OPERATION_LIKE, value.getText()));
+            filters.add(new FilterItem("value", Operation.OPERATION_LIKE, value.getText(), group++));
         }
         if (!description.getText().equals("")) {
-            filters.add(new FilterItem("description", FilterItem.OPERATION_IN, description.getText()));
+            filters.add(new FilterItem("description", Operation.OPERATION_IN, description.getText(), group++));
         }
         return filters;
     }

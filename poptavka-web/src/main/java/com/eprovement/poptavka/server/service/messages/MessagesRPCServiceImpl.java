@@ -374,19 +374,19 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     private Search filter(Search search, String prefix, FilterItem item) {
         prefix += ".";
         switch (item.getOperation()) {
-            case FilterItem.OPERATION_EQUALS:
+            case OPERATION_EQUALS:
                 search.addFilterEqual(prefix + item.getItem(), item.getValue());
                 break;
-            case FilterItem.OPERATION_LIKE:
+            case OPERATION_LIKE:
                 search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
                 break;
-            case FilterItem.OPERATION_IN:
+            case OPERATION_IN:
                 search.addFilterIn(prefix + item.getItem(), item.getValue());
                 break;
-            case FilterItem.OPERATION_FROM:
+            case OPERATION_FROM:
                 search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
                 break;
-            case FilterItem.OPERATION_TO:
+            case OPERATION_TO:
                 search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
                 break;
             default:

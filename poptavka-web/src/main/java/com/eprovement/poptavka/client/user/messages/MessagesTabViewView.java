@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class MessagesTabViewView extends Composite implements
@@ -33,13 +34,13 @@ public class MessagesTabViewView extends Composite implements
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!sender.getText().equals("")) {
-            filters.add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, sender.getText()));
+            filters.add(new FilterItem("companyName", Operation.OPERATION_LIKE, sender.getText(), 0));
         }
         if (!subject.getText().equals("")) {
-            filters.add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
+            filters.add(new FilterItem("subject", Operation.OPERATION_LIKE, subject.getText(), 1));
         }
         if (!body.getText().equals("")) {
-            filters.add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
+            filters.add(new FilterItem("body", Operation.OPERATION_LIKE, body.getText(), 2));
         }
         return filters;
     }

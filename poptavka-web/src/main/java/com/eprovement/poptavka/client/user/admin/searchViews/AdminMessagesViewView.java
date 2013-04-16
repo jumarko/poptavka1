@@ -17,6 +17,7 @@ import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class AdminMessagesViewView extends Composite implements
@@ -51,55 +52,56 @@ public class AdminMessagesViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!messageIdFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, messageIdFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, messageIdFrom.getText(), group++));
         }
         if (!messageIdTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, messageIdTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, messageIdTo.getText(), group++));
         }
         if (!demandIdFrom.getText().equals("")) {
-            filters.add(new FilterItem("demand.id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
+            filters.add(new FilterItem("demand.id", Operation.OPERATION_FROM, demandIdFrom.getText(), group++));
         }
         if (!demandIdTo.getText().equals("")) {
-            filters.add(new FilterItem("demand.id", FilterItem.OPERATION_TO, demandIdTo.getText()));
+            filters.add(new FilterItem("demand.id", Operation.OPERATION_TO, demandIdTo.getText(), group++));
         }
         if (!parentIdFrom.getText().equals("")) {
-            filters.add(new FilterItem("parent.id", FilterItem.OPERATION_FROM, parentIdFrom.getText()));
+            filters.add(new FilterItem("parent.id", Operation.OPERATION_FROM, parentIdFrom.getText(), group++));
         }
         if (!parentIdTo.getText().equals("")) {
-            filters.add(new FilterItem("parent.id", FilterItem.OPERATION_TO, parentIdTo.getText()));
+            filters.add(new FilterItem("parent.id", Operation.OPERATION_TO, parentIdTo.getText(), group++));
         }
         if (!senderIdFrom.getText().equals("")) {
-            filters.add(new FilterItem("sender.id", FilterItem.OPERATION_FROM, senderIdFrom.getText()));
+            filters.add(new FilterItem("sender.id", Operation.OPERATION_FROM, senderIdFrom.getText(), group++));
         }
         if (!senderIdTo.getText().equals("")) {
-            filters.add(new FilterItem("sender.id", FilterItem.OPERATION_TO, senderIdTo.getText()));
+            filters.add(new FilterItem("sender.id", Operation.OPERATION_TO, senderIdTo.getText(), group++));
         }
         if (!subject.getText().equals("")) {
-            filters.add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
+            filters.add(new FilterItem("subject", Operation.OPERATION_LIKE, subject.getText(), group++));
         }
         if (!body.getText().equals("")) {
-            filters.add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
+            filters.add(new FilterItem("body", Operation.OPERATION_LIKE, body.getText(), group++));
         }
         if (createdFrom.getValue() != null) {
-            filters.add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
+            filters.add(new FilterItem("created", Operation.OPERATION_FROM, createdFrom.getValue(), group++));
         }
         if (createdTo.getValue() != null) {
-            filters.add(new FilterItem("created", FilterItem.OPERATION_TO, createdTo.getValue()));
+            filters.add(new FilterItem("created", Operation.OPERATION_TO, createdTo.getValue(), group++));
         }
         if (sentFrom.getValue() != null) {
-            filters.add(new FilterItem("sent", FilterItem.OPERATION_FROM, sentFrom.getValue()));
+            filters.add(new FilterItem("sent", Operation.OPERATION_FROM, sentFrom.getValue(), group++));
         }
         if (sentTo.getValue() != null) {
-            filters.add(new FilterItem("sent", FilterItem.OPERATION_TO, sentTo.getValue()));
+            filters.add(new FilterItem("sent", Operation.OPERATION_TO, sentTo.getValue(), group++));
         }
         if (type.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("messageType", FilterItem.OPERATION_EQUALS,
-                    type.getItemText(type.getSelectedIndex())));
+            filters.add(new FilterItem("messageType", Operation.OPERATION_EQUALS,
+                    type.getItemText(type.getSelectedIndex()), group++));
         }
         if (state.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("messageState", FilterItem.OPERATION_EQUALS,
-                    state.getItemText(state.getSelectedIndex())));
+            filters.add(new FilterItem("messageState", Operation.OPERATION_EQUALS,
+                    state.getItemText(state.getSelectedIndex()), group++));
         }
         return filters;
     }

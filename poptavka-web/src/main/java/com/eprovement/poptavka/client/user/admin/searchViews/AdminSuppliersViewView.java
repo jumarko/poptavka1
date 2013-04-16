@@ -16,6 +16,7 @@ import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.shared.search.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
 public class AdminSuppliersViewView extends Composite implements
@@ -59,36 +60,37 @@ public class AdminSuppliersViewView extends Composite implements
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
+        int group = 0;
         if (!supplierName.getText().equals("")) {
-            filters.add(new FilterItem("name", FilterItem.OPERATION_FROM, supplierName.getText()));
+            filters.add(new FilterItem("name", Operation.OPERATION_FROM, supplierName.getText(), group++));
         }
         if (!supplierDescription.getText().equals("")) {
-            filters.add(new FilterItem("description", FilterItem.OPERATION_TO,
-                    supplierDescription.getText()));
+            filters.add(new FilterItem("description", Operation.OPERATION_TO,
+                    supplierDescription.getText(), group++));
         }
         if (!ratingFrom.getText().equals("0")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
+            filters.add(new FilterItem("overalRating", Operation.OPERATION_FROM, ratingFrom.getText(), group++));
         }
         if (!ratingTo.getText().equals("100")) {
-            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_TO, ratingTo.getText()));
+            filters.add(new FilterItem("overalRating", Operation.OPERATION_TO, ratingTo.getText(), group++));
         }
         if (type.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
-                    type.getItemText(type.getSelectedIndex())));
+            filters.add(new FilterItem("type", Operation.OPERATION_EQUALS,
+                    type.getItemText(type.getSelectedIndex()), group++));
         }
         if (certified.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("certified", FilterItem.OPERATION_EQUALS,
-                    certified.getItemText(certified.getSelectedIndex())));
+            filters.add(new FilterItem("certified", Operation.OPERATION_EQUALS,
+                    certified.getItemText(certified.getSelectedIndex()), group++));
         }
         if (verified.getSelectedIndex() != 0) {
-            filters.add(new FilterItem("verification", FilterItem.OPERATION_FROM,
-                    verified.getItemText(verified.getSelectedIndex())));
+            filters.add(new FilterItem("verification", Operation.OPERATION_FROM,
+                    verified.getItemText(verified.getSelectedIndex()), group++));
         }
         if (!idFrom.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_FROM, idFrom.getText(), group++));
         }
         if (!idTo.getText().equals("")) {
-            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", Operation.OPERATION_TO, idTo.getText(), group++));
         }
         return filters;
     }
