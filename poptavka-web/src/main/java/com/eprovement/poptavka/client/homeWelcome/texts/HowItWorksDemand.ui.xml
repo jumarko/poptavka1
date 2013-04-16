@@ -85,7 +85,9 @@
                         <g:HTMLPanel styleName='content-block-bottom'></g:HTMLPanel>
                     </g:HTMLPanel>
                     <g:HTMLPanel styleName='content-step last-step'>
-                        <g:Button><ui:msg key="placeProject">Post a Project</ui:msg></g:Button>
+                        <g:Button ui:field="registerBtn">
+                            <ui:msg key="placeProject">Post a Project</ui:msg>
+                        </g:Button>
                     </g:HTMLPanel>
                 </g:HTMLPanel>
             </g:ScrollPanel>
