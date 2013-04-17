@@ -316,7 +316,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setSupplierId(supplier.getId());
             cdcd.setSenderId(supplier.getBusinessUser().getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
-            cdcd.setSenderId(supplier.getBusinessUser().getId());
+            cdcd.setRating(supplier.getOveralRating().intValue());
 
             list.add(cdcd);
         }

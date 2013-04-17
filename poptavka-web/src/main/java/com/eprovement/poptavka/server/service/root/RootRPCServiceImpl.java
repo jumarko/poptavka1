@@ -191,7 +191,6 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     @Override
-    // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService. I 'm not sure but will try it.
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException,
         ApplicationSecurityException {
