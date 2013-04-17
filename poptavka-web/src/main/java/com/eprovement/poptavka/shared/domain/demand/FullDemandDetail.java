@@ -107,7 +107,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     private String title;
     @NotNull(message = "{demandNotNullPrice}")
     @Min(value = 0, message = "{demandMinPrice}", groups = {Default.class, SearchGroup.class })
-    @Digits(integer = 100000000, fraction = 0, message = "{demandDigitsPrice}",
+    @Digits(integer = 12, fraction = 0, message = "{demandDigitsPrice}",
     groups = {Default.class, SearchGroup.class })
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")
@@ -117,7 +117,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     @Future(message = "{demandFutureValidToDate}")
     private Date validTo;
     @NotBlank(message = "{demandNotBlankDescription}")
-    @Size(min = 20, message = "{demandSizeDescription}")
+    @Size(min = 20, max = 1500, message = "{demandSizeDescription}")
     private String description;
     //
     private List<FullSupplierDetail> excludedSuppliers;
