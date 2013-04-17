@@ -23,86 +23,77 @@
         <b:FluidRow>
             <b:Column size="12">
                 <b:FluidRow>
-                    <b:Column size="3">
+                    <b:Column size="4">
                         <g:Label>
                             Urgency level:
                         </g:Label>
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:Label>
                             Normal
                         </g:Label>
+                        <g:Image resource='{res.images.urgencyGreen}' title='{msgs.urgencyNormalDesc}' />
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:Label>
                             Higher
                         </g:Label>
+                        <g:Image resource='{res.images.urgencyOrange}' title='{msgs.urgencyHigherDesc}'/>
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:Label>
-                            HIGHT
+                            High
                         </g:Label>
+                        <g:Image resource='{res.images.urgencyRed}' title='{msgs.urgencyHighDesc}'/>
+                    </b:Column>
+                    <b:Column size="2">
+                        <g:Label>
+                            Expired
+                        </g:Label>
+                        <g:Image resource='{res.images.urgencyHeader}' title='{msgs.urgencyExpiredDesc}'/>
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow>
-                    <b:Column size="3">
-                        <b:Tooltip text='{msgs.urgencyDesc}'>
-                            <g:Image resource='{res.images.urgencyHeader}'/>
-                        </b:Tooltip>
-                    </b:Column>
-                    <b:Column size="3">
-                        <b:Tooltip text='{msgs.urgencyNormalDesc}'>
-                            <g:Image resource='{res.images.urgencyGreen}'/>
-                        </b:Tooltip>
-                    </b:Column>
-                    <b:Column size="3">
-                        <b:Tooltip text='{msgs.urgencyHigherDesc}'>
-                            <g:Image resource='{res.images.urgencyOrange}'/>
-                        </b:Tooltip>
-                    </b:Column>
-                    <b:Column size="3">
-                        <b:Tooltip text='{msgs.urgencyHighDesc}'>
-                            <g:Image resource='{res.images.urgencyRed}'/>
-                        </b:Tooltip>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="3">
+                    <b:Column size="4">
                         <g:Label>
                             Selected:
                         </g:Label>
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:RadioButton name="urgency" ui:field="urgency1" checked="true" />
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:RadioButton name="urgency" ui:field="urgency2" />
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:RadioButton name="urgency" ui:field="urgency3" />
+                    </b:Column>
+                    <b:Column size="2">
+                        <g:RadioButton name="urgency" ui:field="urgency4" />
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow styleName='hide'>
-                    <b:Column size="3">
+                    <b:Column size="4">
                         <g:Label>
                             Cost creadits:
                         </g:Label>
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:Label>
                             5
                         </g:Label>
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:Label>
                             10
                         </g:Label>
                     </b:Column>
-                    <b:Column size="3">
+                    <b:Column size="2">
                         <g:Label>
                             15
                         </g:Label>
                     </b:Column>
+                    <b:Column size="2"/>
                 </b:FluidRow>
                 <b:FluidRow>
                     <b:Column size="12">

@@ -73,7 +73,10 @@ public class DemandDetailView extends Composite {
     private void setValidTo(Date validTo) {
         Date now = new Date();
         int daysBetween = CalendarUtil.getDaysBetween(now, validTo);
-        if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
+        if (daysBetween < 0) {
+            urgency.setResource(Storage.RSCS.images().urgencyHeader());
+            urgencyTooltip.setTitle(Storage.MSGS.urgencyExpiredDesc());
+        } else if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
             urgency.setResource(Storage.RSCS.images().urgencyRed());
             urgencyTooltip.setTitle(Storage.MSGS.urgencyHighDesc());
         } else if (daysBetween <= Constants.DAYS_URGENCY_HIGHER) {
