@@ -38,7 +38,7 @@ public class UrgencySelectorView extends Composite {
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField FluidContainer fluidContainer;
-    @UiField RadioButton urgency1, urgency2, urgency3;
+    @UiField RadioButton urgency1, urgency2, urgency3, urgency4;
     @UiField Anchor revert;
     /** Class attributes. **/
     private Date validToOriginal;
@@ -59,7 +59,7 @@ public class UrgencySelectorView extends Composite {
         setChangeStyle(false);
     }
 
-    @UiHandler(value = {"urgency1", "urgency2", "urgency3" })
+    @UiHandler(value = {"urgency1", "urgency2", "urgency3", "urgency4" })
     public void checkBoxClickHandlers(ClickEvent e) {
         setChangeStyle(isChanged());
     }
@@ -76,7 +76,9 @@ public class UrgencySelectorView extends Composite {
         Date now = new Date();
         this.validToOriginal = validTo;
         int daysBetween = CalendarUtil.getDaysBetween(now, validTo);
-        if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
+        if (daysBetween < 0) {
+            urgency4.setValue(Boolean.TRUE);
+        } else if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
             urgency3.setValue(Boolean.TRUE);
         } else if (daysBetween <= Constants.DAYS_URGENCY_HIGHER) {
             urgency2.setValue(Boolean.TRUE);
@@ -113,8 +115,10 @@ public class UrgencySelectorView extends Composite {
             CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGH);
         } else if (urgency2.getValue()) {
             CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGHER);
-        } else {
+        } else if (urgency3.getValue()) {
             CalendarUtil.addMonthsToDate(validTo, Constants.MONTHS_URGENCY_NORMAL);
+        } else {
+            CalendarUtil.addDaysToDate(validTo, -1);
         }
         return validTo;
     }
@@ -138,5 +142,9 @@ public class UrgencySelectorView extends Composite {
 
     public RadioButton getUrgency3() {
         return urgency3;
+    }
+
+    public RadioButton getUrgency4() {
+        return urgency4;
     }
 }

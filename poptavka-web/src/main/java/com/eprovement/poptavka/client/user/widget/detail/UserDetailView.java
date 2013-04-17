@@ -8,8 +8,11 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
@@ -26,13 +29,28 @@ public class UserDetailView extends Composite {
     private static final String EMPTY = "";
     @UiField(provided = true) CellList categories, localities;
     @UiField HTMLPanel categoryPanel, localityPanel;
+    @UiField FluidRow invoiceRow;
+    @UiField Column businessTypeColumn, certifiedColumn, phoneColumn, emailColumn;
     @UiField Label overallRating, description, email, companyName, taxId, identificationNumber,
     firstName, lastName, phone, website, street, city, zipCode, certified, businessType;
 
-    public UserDetailView() {
+    /**
+     * Detail view of user (client/supplier/..).
+     *
+     * @param advancedView true to show fields for admin, false to show fields for clients
+     */
+    @UiConstructor
+    public UserDetailView(boolean advancedView) {
         categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         initWidget(uiBinder.createAndBindUi(this));
+
+        businessTypeColumn.setVisible(advancedView);;
+        certifiedColumn.setVisible(advancedView);
+        phoneColumn.setVisible(advancedView);
+        emailColumn.setVisible(advancedView);
+        invoiceRow.setVisible(advancedView);
+
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 

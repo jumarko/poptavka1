@@ -337,6 +337,7 @@ public interface LocalizableMessages extends Messages {
 
     /** UrgentImageCell.java. **/
     String urgencyDesc();
+    String urgencyExpiredDesc();
     String urgencyHighDesc();
     String urgencyHigherDesc();
     String urgencyNormalDesc();

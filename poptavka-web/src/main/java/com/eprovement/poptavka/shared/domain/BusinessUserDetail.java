@@ -254,7 +254,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
                 result = getPersonFirstName();
             }
             if (!getPersonLastName().isEmpty()) {
-                result += ", " + getPersonLastName();
+                result = result.concat(" ").concat(getPersonLastName());
             }
         }
         return result;
