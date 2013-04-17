@@ -13,7 +13,7 @@ public interface TableDisplay {
 
     void setIsStarred(boolean value);
 
-    Date getEndDate();
+    Date getValidTo();
 
     DemandStatus getDemandStatus();
 

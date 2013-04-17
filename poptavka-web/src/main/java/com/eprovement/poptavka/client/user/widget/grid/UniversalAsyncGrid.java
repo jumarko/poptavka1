@@ -387,8 +387,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             @Override
             public Date getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                //TODO RELEASE Martin 10.3.13 shoudn't be here validTo date? ivlcek: Let's discuss it
-                return obj.getEndDate();
+                return obj.getValidTo();
             }
         };
         urgencyColumn.setSortable(true);

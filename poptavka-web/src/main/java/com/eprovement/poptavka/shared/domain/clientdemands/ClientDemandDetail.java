@@ -29,7 +29,7 @@ public class ClientDemandDetail implements IsSerializable, TableDisplay, TableDi
     private String demandTitle; //title
     private BigDecimal price;
     private Date endDate;
-    private Date validToDate;
+    private Date validTo;
     private boolean isRead = false;
     private boolean isStarred = false;
     private int unreadSubmessagesCount;
@@ -91,12 +91,13 @@ public class ClientDemandDetail implements IsSerializable, TableDisplay, TableDi
         this.endDate = endDate;
     }
 
-    public Date getValidToDate() {
-        return validToDate;
+    @Override
+    public Date getValidTo() {
+        return validTo;
     }
 
-    public void setValidToDate(Date validToDate) {
-        this.validToDate = validToDate;
+    public void setValidTo(Date validToDate) {
+        this.validTo = validToDate;
     }
 
     @Override

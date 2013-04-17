@@ -299,7 +299,6 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.starred = starred;
     }
 
-    @Override
     public Date getEndDate() {
         return endDate;
     }
@@ -313,6 +312,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.endDate = endDate;
     }
 
+    @Override
     public Date getValidTo() {
         return validTo;
     }
