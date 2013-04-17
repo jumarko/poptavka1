@@ -6,6 +6,7 @@
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
              xmlns:vm="urn:import:com.eprovement.poptavka.client.common">
 
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     <ui:style>
         .clickable {
         cursor: pointer;
@@ -50,7 +51,7 @@
                             <b:FluidRow>
                                 <b:Column size="4">
                                     <g:Label>
-                                        <ui:msg key="formTitle">Title</ui:msg>
+                                        <ui:msg key="formTitle">Title</ui:msg>:
                                     </g:Label>
                                 </b:Column>
                                 <b:Column size="8">
@@ -62,7 +63,7 @@
                             <b:FluidRow>
                                 <b:Column size="4">
                                     <g:Label>
-                                        <ui:msg key="formPrice">Price</ui:msg>
+                                        <ui:msg key="formPrice">Price</ui:msg>:
                                     </g:Label>
                                 </b:Column>
                                 <b:Column size="8">
@@ -74,7 +75,7 @@
                             <b:FluidRow>
                                 <b:Column size="4">
                                     <g:Label>
-                                        <ui:msg key="formEndDate">End Date</ui:msg>
+                                        <ui:msg key="formEndDate">End Date</ui:msg>:
                                     </g:Label>
                                 </b:Column>
                                 <b:Column size="8">
@@ -88,7 +89,8 @@
                             <b:FluidRow>                                
                                 <b:Column size="12">
                                     <vm:ValidationMonitor ui:field="descriptionMonitor">
-                                        <g:TextArea styleName="{style.textbox}"/>
+                                        <b:TextArea styleName="{style.textbox}"
+                                                    placeholder="{msgs.placeholderDemandDesciption}"/>
                                     </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>

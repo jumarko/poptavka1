@@ -3,9 +3,11 @@ package com.eprovement.poptavka.client.home.createDemand;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.google.gwt.user.client.Timer;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -67,13 +69,19 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     public void onCreateDemand(FullDemandDetail detail, Long clientId) {
         demandCreationService.createNewDemand(detail, clientId,
                 new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(FullDemandDetail result) {
-                        eventBus.loadingHide();
-                        eventBus.loadingShow(Storage.MSGS.demandCreationSuccessfullyCreated());
-                        eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
-                    }
-                });
+                @Override
+                public void onSuccess(FullDemandDetail result) {
+                    eventBus.loadingHide();
+                    eventBus.loadingShow(Storage.MSGS.demandCreationSuccessfullyCreated());
+                    Timer additionalAction = new Timer() {
+                        @Override
+                        public void run() {
+                            eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
+                        }
+                    };
+                    ThankYouPopup.create(Storage.MSGS.thankYouFeedback(), additionalAction);
+                }
+            });
         LOGGER.info("submitting new demand");
     }
 }

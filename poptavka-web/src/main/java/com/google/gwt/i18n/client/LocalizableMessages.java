@@ -65,6 +65,9 @@ public interface LocalizableMessages extends Messages {
     String commonListStarred();
     String commonListUnstarred();
 
+    /** Placeholders. **/
+    String placeholderDemandDesciption();
+
     /** Form section info labels . **/
     String formAccountInfo();
     String formAddressInfo();
@@ -211,6 +214,7 @@ public interface LocalizableMessages extends Messages {
     /** # ThankYouPopup.ui **/
     String thankYouAcceptOffer();
     String thankYouContactUs();
+    String thankYouCreateDemand();
     String thankYouFeedback();
     String thankYouSendOffer();
 
