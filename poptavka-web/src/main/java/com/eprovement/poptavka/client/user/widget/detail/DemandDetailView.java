@@ -74,7 +74,7 @@ public class DemandDetailView extends Composite {
         demandName.setText(demandDetail.getTitle());
         clientRating.setText(Integer.toString(demandDetail.getClientRating()));
         price.setText(Storage.CURRENCY_FORMAT.format(demandDetail.getPrice()));
-        endDate.setText(Storage.DATE_FORMAT.format(demandDetail.getEndDate()));
+        endDate.setText(Storage.DATE_FORMAT_LONG.format(demandDetail.getEndDate()));
         setValidTo(demandDetail.getValidTo());
         categories.setRowData(demandDetail.getCategories());
         localities.setRowData(demandDetail.getLocalities());

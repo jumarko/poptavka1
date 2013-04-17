@@ -87,7 +87,7 @@ public class MessageCell extends AbstractCell<MessageDetail> {
         if (sent == null) {
             return "";
         } else {
-            return Storage.DATE_FORMAT.format(sent);
+            return Storage.DATE_FORMAT_LONG.format(sent);
         }
     }
 

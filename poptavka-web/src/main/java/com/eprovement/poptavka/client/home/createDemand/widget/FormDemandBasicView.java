@@ -59,7 +59,7 @@ public class FormDemandBasicView extends Composite
     }
 
     private void initEndDateDatePricker() {
-        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.DATE_FORMAT));
+        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.DATE_FORMAT_LONG));
         ((DateBox) endDateMonitor.getWidget()).getDatePicker().getParent().addHandler(
                 new CloseHandler<PopupPanel>() {
                 @Override

@@ -21,7 +21,8 @@ public interface LocalizableMessages extends Messages {
     /*** 0 - Root module view ******************************************* 0 ***/
     /*** ATTRIBUTES ***********************************************************/
     /** Formats i18n. **/
-    String formatDate();
+    String formatDateShort();
+    String formatDateLong();
     String formatCurrency();
     String formatCurrencySign();
 

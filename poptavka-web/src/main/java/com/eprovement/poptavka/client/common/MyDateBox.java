@@ -21,7 +21,7 @@ public class MyDateBox extends DateBox implements HasPlaceholder {
     private PlaceholderHelper placeholderHelper = GWT.create(PlaceholderHelper.class);
 
     public MyDateBox() {
-        super.setFormat(new DefaultFormat(Storage.DATE_FORMAT));
+        super.setFormat(new DefaultFormat(Storage.DATE_FORMAT_LONG));
     }
 
     @Override

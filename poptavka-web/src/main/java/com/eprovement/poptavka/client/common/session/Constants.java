@@ -191,7 +191,7 @@ public final class Constants {
     /**************************************************************************/
     public static final String COL_WIDTH_TITLE = "100%";
     public static final String COL_WIDTH_PRICE = "120px";
-    public static final String COL_WIDTH_DATE = "140px";
+    public static final String COL_WIDTH_DATE = "100px";
     public static final String COL_WIDTH_RATING = "80px";
     public static final String COL_WIDTH_ICON = "40px";
     public static final String COL_WIDTH_URGENT = "65px";
