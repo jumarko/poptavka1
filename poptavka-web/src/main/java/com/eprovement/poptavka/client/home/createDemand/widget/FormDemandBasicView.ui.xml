@@ -27,6 +27,12 @@
         .width {
         width: 400px;
         }
+        
+        .textbox {
+        height: 160px !important;
+        max-width: 95% !important;
+        width: 95% !important;
+        }
     </ui:style>
     <b:FluidContainer>
         <b:FluidRow>
@@ -79,15 +85,10 @@
                             </b:FluidRow>
                         </b:Column>
                         <b:Column size="6">
-                            <b:FluidRow>
-                                <b:Column size="4">
-                                    <g:Label>
-                                        <ui:msg key="formDescription">Description</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="8">
+                            <b:FluidRow>                                
+                                <b:Column size="12">
                                     <vm:ValidationMonitor ui:field="descriptionMonitor">
-                                        <g:TextArea height="186px"/>
+                                        <g:TextArea styleName="{style.textbox}"/>
                                     </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>

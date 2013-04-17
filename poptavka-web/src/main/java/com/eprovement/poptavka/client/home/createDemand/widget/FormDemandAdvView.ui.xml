@@ -9,7 +9,7 @@
 
     <ui:style>
         .form {
-        padding-top: 20px;
+        padding-top: 20px !important;
         }
     </ui:style>
 
@@ -18,52 +18,47 @@
             <b:Column size="12">
                 <b:WellForm addStyleNames='{style.form}'>
                     <b:FluidRow>
+                        <!-- *************************** URGENCY *************************** -->
+                        <b:Column size="6">                            
+                            <co:UrgencySelectorView ui:field="urgencySelector" />                            
+                        </b:Column>
+                        
                         <b:Column size="6">
-                            <b:FluidRow>
-                                <b:Column size="6">
+                            <b:FluidRow styleName='hide'>
+                                <b:Column size="4">
                                     <g:Label>
                                         <ui:msg key="formMaxOffers">Max offers Count</ui:msg>
                                     </g:Label>
                                 </b:Column>
-                                <b:Column size="6">
+                                <b:Column size="8">
                                     <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
                                 </b:Column>
                             </b:FluidRow>
-                        </b:Column>
-                        <b:Column size="6">
-                            <b:WellForm>
-                                <b:FluidRow>
-                                    <b:Column size="2">
-                                        <g:Label>
-                                            <ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg>
-                                        </g:Label>
-                                    </b:Column>
-                                    <b:Column size="2">
-                                        <g:Label>
-                                            <ui:msg key="formDemandAdvDemandNormal">Normal</ui:msg>
-                                        </g:Label>
-                                    </b:Column>
-                                    <b:Column size="6">
-                                        <g:HTMLPanel ui:field="demandTypeChoicePanel" addStyleNames='{res.common.switchLeft}'>
-                                            <g:Button ui:field="normalBtn"></g:Button>
-                                            <g:Button ui:field="attractiveBtn"></g:Button>
-                                        </g:HTMLPanel>
-                                    </b:Column>
-                                    <b:Column size="2">
-                                        <g:Label>
-                                            <ui:msg key="formDemandAdvDemandAttractive">Attractive</ui:msg>
-                                        </g:Label>
-                                    </b:Column>
-                                </b:FluidRow>
-                            </b:WellForm>
-                        </b:Column>
-                    </b:FluidRow>
-                    <!-- *************************** URGENCY *************************** -->
-                    <b:FluidRow>
-                        <b:Column size="6">
-                            <co:UrgencySelectorView ui:field="urgencySelector" />
-                        </b:Column>                    
-                    </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="4">
+                                    <g:Label>
+                                        <ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="2">
+                                    <g:Label>
+                                        <ui:msg key="formDemandAdvDemandNormal">Normal</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="2">
+                                    <g:HTMLPanel ui:field="demandTypeChoicePanel" addStyleNames='{res.common.switchLeft}'>
+                                        <g:Button ui:field="normalBtn"></g:Button>
+                                        <g:Button ui:field="attractiveBtn"></g:Button>
+                                    </g:HTMLPanel>
+                                </b:Column>
+                                <b:Column size="2">
+                                    <g:Label>
+                                        <ui:msg key="formDemandAdvDemandAttractive">Attractive</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>                        
+                    </b:FluidRow>                                      
                 </b:WellForm>
             </b:Column>
         </b:FluidRow>

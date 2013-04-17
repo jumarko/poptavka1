@@ -5,39 +5,62 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    
+    <ui:style>
+        .urgency-container {
+        }        
+        
+        .urgency-container span img {
+        margin: 0 0 0 30px;
+        }
+        
+        .urgency-container input[type="radio"], input[type="checkbox"] {
+        margin: 13px 0 0 40px;
+        }
+    </ui:style>
 
-    <b:FluidContainer ui:field="fluidContainer">
+    <b:FluidContainer ui:field="fluidContainer" addStyleNames='{style.urgency-container}'>
         <b:FluidRow>
-            <b:Column size="6">
+            <b:Column size="12">
                 <b:FluidRow>
                     <b:Column size="3">
                         <g:Label>
                             Urgency level:
                         </g:Label>
-                        <b:Tooltip text='{msgs.urgencyDesc}'>
-                            <g:Image resource='{res.images.urgencyHeader}'/>
-                        </b:Tooltip>
                     </b:Column>
                     <b:Column size="3">
                         <g:Label>
                             Normal
                         </g:Label>
-                        <b:Tooltip text='{msgs.urgencyNormalDesc}'>
-                            <g:Image resource='{res.images.urgencyGreen}'/>
-                        </b:Tooltip>
                     </b:Column>
                     <b:Column size="3">
                         <g:Label>
                             Higher
                         </g:Label>
-                        <b:Tooltip text='{msgs.urgencyHigherDesc}'>
-                            <g:Image resource='{res.images.urgencyOrange}'/>
-                        </b:Tooltip>
                     </b:Column>
                     <b:Column size="3">
                         <g:Label>
                             HIGHT
                         </g:Label>
+                    </b:Column>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="3">
+                        <b:Tooltip text='{msgs.urgencyDesc}'>
+                            <g:Image resource='{res.images.urgencyHeader}'/>
+                        </b:Tooltip>
+                    </b:Column>
+                    <b:Column size="3">
+                        <b:Tooltip text='{msgs.urgencyNormalDesc}'>
+                            <g:Image resource='{res.images.urgencyGreen}'/>
+                        </b:Tooltip>
+                    </b:Column>
+                    <b:Column size="3">
+                        <b:Tooltip text='{msgs.urgencyHigherDesc}'>
+                            <g:Image resource='{res.images.urgencyOrange}'/>
+                        </b:Tooltip>
+                    </b:Column>
+                    <b:Column size="3">
                         <b:Tooltip text='{msgs.urgencyHighDesc}'>
                             <g:Image resource='{res.images.urgencyRed}'/>
                         </b:Tooltip>
@@ -59,7 +82,7 @@
                         <g:RadioButton name="urgency" ui:field="urgency3" />
                     </b:Column>
                 </b:FluidRow>
-                <b:FluidRow>
+                <b:FluidRow styleName='hide'>
                     <b:Column size="3">
                         <g:Label>
                             Cost creadits:
