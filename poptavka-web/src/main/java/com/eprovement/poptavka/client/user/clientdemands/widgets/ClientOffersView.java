@@ -5,9 +5,13 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -72,16 +76,12 @@ public class ClientOffersView extends Composite
      * Initialize this example.
      */
     private void initDemandTable() {
-        List<String> gridColumns = Arrays.asList(
-                new String[]{
-                    "title", "price", "finnishDate", "validTo"
-                });
         // Create a Pager.
         demandPager = new UniversalPagerWidget();
         // Create a Table.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
-                gridColumns, demandPager.getPageSize(), resource);
+                initSort(), demandPager.getPageSize(), resource);
         demandGrid.setWidth("100%");
         demandGrid.setHeight("100%");
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
@@ -113,6 +113,18 @@ public class ClientOffersView extends Composite
         offerGrid.setHeight("100%");
         // bind pager to grid
         offerPager.setDisplay(offerGrid);
+    }
+
+    private SortDataHolder initSort() {
+        List<String> gridColumns = Arrays.asList(new String[]{
+            FullDemandDetail.DemandField.TITLE.getValue(),
+            FullDemandDetail.DemandField.PRICE.getValue(),
+            FullDemandDetail.DemandField.END_DATE.getValue(),
+            FullDemandDetail.DemandField.VALID_TO.getValue()
+        });
+        List<SortPair> sortPairs = Arrays.asList(
+                new SortPair(FullDemandDetail.DemandField.CREATED.getValue(), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     /**

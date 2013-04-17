@@ -39,7 +39,7 @@ public class MessageDetailView extends Composite {
     public void setMessageDetail(MessageDetail messageDetail) {
         GWT.log("detail detail" + messageDetail.toString());
         subject.setText(messageDetail.getSubject());
-        sender.setText(messageDetail.getSenderName());
+        sender.setText(messageDetail.getSender());
         body.setText(messageDetail.getBody());
     }
 

@@ -15,6 +15,36 @@ import java.util.Date;
  */
 public class MessageDetail implements IsSerializable {
 
+    public enum MessageField {
+
+        CREATED("created"),
+        SENT("sent"),
+        SENDER("sender"),
+        SUBJECT("subject"),
+        BODY("body"),
+        MESSAGE_STATE("messageState"),
+        MESSAGE_TYPE("messageType");
+
+        private String value;
+
+        private MessageField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public static MessageField toMessageField(String value) {
+            for (MessageField field : MessageField.values()) {
+                if (field.getValue().equals(value)) {
+                    return field;
+                }
+            }
+            return null;
+        }
+    }
+
     //UserMessage
     private boolean read = false;
     private boolean starred = false;
@@ -30,7 +60,7 @@ public class MessageDetail implements IsSerializable {
     private String messageType = null;
     private Date created = null;
     private Date sent = null;
-    private String senderName;
+    private String sender;
 
     public static final ProvidesKey<MessageDetail> KEY_PROVIDER =
             new ProvidesKey<MessageDetail>() {
@@ -238,7 +268,7 @@ public class MessageDetail implements IsSerializable {
         sb.append(", threadRootId=" + threadRootId);
         sb.append(", parentId=" + parentId);
         sb.append(", senderId=" + senderId);
-        sb.append(", senderName=" + senderName);
+        sb.append(", senderName=" + sender);
         sb.append(", subject=" + subject);
         sb.append(", body=" + body);
         sb.append(", messageState=" + messageState);
@@ -252,14 +282,14 @@ public class MessageDetail implements IsSerializable {
     /**
      * @return the senderName
      */
-    public String getSenderName() {
-        return senderName;
+    public String getSender() {
+        return sender;
     }
 
     /**
      * @param senderName the senderName to set
      */
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
+    public void setSender(String senderName) {
+        this.sender = senderName;
     }
 }

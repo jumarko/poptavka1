@@ -15,8 +15,12 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.MessageDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -50,18 +54,12 @@ public class MessageListView extends Composite implements MessageListPresenter.M
     @UiField HorizontalPanel toolBar;
     @UiField Button replyBtn;
     /** Class attributes. **/
-    //table related
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "", "sender", "subject", "created"
-            });
     private MultiSelectionModel selectionModel;
-    //table columns
     private Column<MessageDetail, Boolean> checkColumn;
     private Column<MessageDetail, String> senderColumn;
     private Column<MessageDetail, String> subjectColumn;
     private Column<MessageDetail, String> dateColumn;
-    //table column width constatnts
+    /** Constants. **/
     private static final String COL_WIDTH_SENDER = "100px";
 
     /**************************************************************************/
@@ -84,7 +82,7 @@ public class MessageListView extends Composite implements MessageListPresenter.M
         pager = new UniversalPagerWidget();
         // Create a Table.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        grid = new UniversalAsyncGrid<MessageDetail>(gridColumns, pager.getPageSize(), resource);
+        grid = new UniversalAsyncGrid<MessageDetail>(initSort(), pager.getPageSize(), resource);
         grid.setWidth("100%");
         grid.setHeight("100%");
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
@@ -96,6 +94,18 @@ public class MessageListView extends Composite implements MessageListPresenter.M
         pager.setDisplay(grid);
 
         initDemandTableColumns();
+    }
+
+    private SortDataHolder initSort() {
+        List<String> gridColumns = Arrays.asList(new String[]{
+            "", //check box column
+            MessageField.SENDER.getValue(),
+            MessageField.SUBJECT.getValue(),
+            MessageField.CREATED.getValue()
+        });
+        List<SortPair> sortPairs = Arrays.asList(
+                new SortPair(MessageField.CREATED.getValue(), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     /**
@@ -118,7 +128,7 @@ public class MessageListView extends Composite implements MessageListPresenter.M
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return ((MessageDetail) object).getSenderName();
+                        return ((MessageDetail) object).getSender();
                     }
                 });
 

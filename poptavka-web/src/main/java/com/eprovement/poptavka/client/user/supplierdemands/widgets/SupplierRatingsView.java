@@ -5,8 +5,12 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.RatingDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -44,8 +48,6 @@ public class SupplierRatingsView extends Composite
     @UiField SimplePanel detailPanel;
     @UiField HorizontalPanel toolBar;
     @UiField Label tableNameLabel;
-    /** Class attributes. **/
-    private static final List<String> GRID_COLUMNS = Arrays.asList(new String[]{"title"});
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -63,7 +65,7 @@ public class SupplierRatingsView extends Composite
         pager = new UniversalPagerWidget();
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         dataGrid = new UniversalAsyncGrid<DemandRatingsDetail>(
-                GRID_COLUMNS, pager.getPageSize(), resource);
+                initSort(), pager.getPageSize(), resource);
         dataGrid.setSelectionModel(new SingleSelectionModel<DemandRatingsDetail>(DemandRatingsDetail.KEY_PROVIDER));
         dataGrid.setSelectionModel(new SingleSelectionModel<DemandRatingsDetail>());
         dataGrid.setPageSize(pager.getPageSize());
@@ -86,6 +88,15 @@ public class SupplierRatingsView extends Composite
                     return ((DemandRatingsDetail) object).getDemandTitle();
                 }
             });
+    }
+
+    private SortDataHolder initSort() {
+        List<String> gridColumns = Arrays.asList(new String[]{
+            FullDemandDetail.DemandField.TITLE.getValue(),
+        });
+        List<SortPair> sortPairs = Arrays.asList(
+                new SortPair(FullDemandDetail.DemandField.CREATED.getValue(), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     /**************************************************************************/

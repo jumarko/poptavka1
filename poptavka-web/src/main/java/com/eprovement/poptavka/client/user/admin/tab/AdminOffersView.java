@@ -9,7 +9,10 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
@@ -114,7 +117,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new UniversalAsyncGrid<OfferDetail>(KEY_PROVIDER, gridColumns);
+        dataGrid = new UniversalAsyncGrid<OfferDetail>(KEY_PROVIDER, initSort());
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
@@ -210,6 +213,11 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                         return ((OfferDetail) object).getFinishDate();
                     }
                 });
+    }
+
+    private SortDataHolder initSort() {
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     //*************************************************************************/

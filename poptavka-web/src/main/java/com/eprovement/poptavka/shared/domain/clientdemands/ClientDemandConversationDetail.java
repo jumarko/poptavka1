@@ -34,7 +34,7 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
     private boolean isRead;
     private boolean isStarred;
     private int messageCount;
-    private int supplierRating;
+    private int rating;
     // TODO LATER ivlcek: remove unreadSubmessages and optimize usage of this detail object
     private int unreadSubmessagesCount;
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
@@ -156,7 +156,11 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
 
     @Override
     public int getRating() {
-        return this.supplierRating;
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;;
     }
 
     @Override
@@ -238,12 +242,5 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
      */
     public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
         this.unreadSubmessagesCount = unreadSubmessagesCount;
-    }
-
-    /**
-     * @param supplierRating the supplierRating to set
-     */
-    public void setRating(int supplierRating) {
-        this.supplierRating = supplierRating;
     }
 }

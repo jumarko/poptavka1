@@ -8,7 +8,10 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -95,7 +98,7 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
         GWT.log("init AdminProblems DataGrid initialized");
 
         // TABLE
-        dataGrid = new UniversalAsyncGrid<ProblemDetail>(KEY_PROVIDER, gridColumns);
+        dataGrid = new UniversalAsyncGrid<ProblemDetail>(KEY_PROVIDER, initSort());
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
@@ -136,7 +139,12 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
                 });
     }
 
-//*************************************************************************/
+    private SortDataHolder initSort() {
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
+    }
+
+    //*************************************************************************/
     //                      GETTER METHODS (defined by interface)             */
     //*************************************************************************/
     //                          *** TABLE ***

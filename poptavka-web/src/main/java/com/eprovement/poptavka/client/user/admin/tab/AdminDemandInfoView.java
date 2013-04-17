@@ -108,7 +108,7 @@ public class AdminDemandInfoView extends Composite {
         endDateBox = new ChangeMonitor<FullDemandDetail>(
                 FullDemandDetail.class, new ChangeDetail(DemandField.END_DATE.getValue()));
         expirationBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO_DATE.getValue()));
+                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO.getValue()));
         priceBox = new ChangeMonitor<FullDemandDetail>(
                 FullDemandDetail.class, new ChangeDetail(DemandField.PRICE.getValue()));
         maxOffers = new ChangeMonitor<FullDemandDetail>(
@@ -262,7 +262,7 @@ public class AdminDemandInfoView extends Composite {
                 case END_DATE:
                     endDateBox.setChangeDetail(change);
                     break;
-                case VALID_TO_DATE:
+                case VALID_TO:
                     expirationBox.setChangeDetail(change);
                     break;
                 case MAX_OFFERS:

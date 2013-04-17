@@ -138,7 +138,7 @@ public class AdminOfferQuestionWindow extends Composite implements ProvidesValid
         sender.addStyleName(cssColor);
 
         this.replyToMessage = message;
-        sender.setText(message.getSenderName());
+        sender.setText(message.getSender());
         if (message.getSent() != null) {
             sent.setText(Storage.DATE_FORMAT_LONG.format(message.getSent()));
         }

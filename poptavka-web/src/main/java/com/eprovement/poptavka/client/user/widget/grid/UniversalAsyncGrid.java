@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.grid;
 
+import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CustomImageCell;
@@ -9,7 +10,6 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.StarImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.SerializableHashMap;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -112,19 +112,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     private AsyncHandler sortHandler = null;
     /**
-     * Holds information about sorting. Represent pairs <String, OrderType>
-     * where key is <b>column name</b> and value: <b>ASC, DESC</b>. Column Names
-     * are provided by
-     * (@link orderColumns) attribute.
+     * Holds information about sorting.
      */
-    private SerializableHashMap<String, OrderType> orderColumns = new SerializableHashMap<String, OrderType>();
-    /**
-     * Represents table column names. Each widget using this class
-     * (UniversalAsyncGrid) must define column names when creating
-     * UniversalAsyncGrid. Column names are then used as key in orderColumns
-     * attribute.
-     */
-    private List<String> gridColumns = null;
+    private SortDataHolder sort;
     /**
      * Stores eventBus of module that uses this class. Stored when
      * (@link getDataCount(IEventBusData eventBus, SearchModuleDataHolder searchDataHolder)
@@ -139,16 +129,17 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     // providing HTML safe display
     public static final ClickableTextCell TABLE_CLICKABLE_TEXT_CELL = new ClickableTextCell(
             new SafeHtmlRenderer<String>() {
-                @Override
-                public SafeHtml render(String object) {
-                    return SafeHtmlUtils.fromTrustedString(object);
-                }
+            @Override
+            public SafeHtml render(String object) {
+                return SafeHtmlUtils.fromTrustedString(object);
+            }
 
-                @Override
-                public void render(String object, SafeHtmlBuilder builder) {
-                    builder.appendHtmlConstant(object);
-                }
-            });
+            @Override
+            public void render(String object, SafeHtmlBuilder builder) {
+                builder.appendHtmlConstant(object);
+            }
+        }
+    );
 
     /**************************************************************************/
     /* Constructors of UniversalAsyncGrid                                     */
@@ -157,14 +148,14 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         super(pageSize, resources);
     }
 
-    public UniversalAsyncGrid(List<String> gridColumns, int pageSize, Resources resources) {
+    public UniversalAsyncGrid(SortDataHolder sort, int pageSize, Resources resources) {
         super(pageSize, resources);
-        this.gridColumns = gridColumns;
+        this.sort = sort;
     }
 
-    public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
+    public UniversalAsyncGrid(ProvidesKey<T> keyProvider, SortDataHolder sort) {
         super(keyProvider);
-        this.gridColumns = gridColumns;
+        this.sort = sort;
     }
 
     /**************************************************************************/
@@ -211,11 +202,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 start = display.getVisibleRange().getStart();
                 length = display.getVisibleRange().getLength();
                 if (!cancelRangeChangedEvent) {
-                    orderColumns.clear();
-                    orderColumns.put(gridColumns.get(1), OrderType.ASC);
                     //Aks for new data
                     if (length > 0) {
-                        eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
+                        eventBus.getData(new SearchDefinition(
+                                start, start + length, searchDataHolder, sort.getSortOrder()));
                     }
                 }
                 cancelRangeChangedEvent = false;
@@ -226,7 +216,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 super.updateRowCount(size, exact);
                 if (size > 0) {
                     setEmptyTableWidget(null);
-                    eventBus.getData(new SearchDefinition(start, start + length, searchDataHolder, orderColumns));
+                    eventBus.getData(new SearchDefinition(
+                            start, start + length, searchDataHolder, sort.getSortOrder()));
                 } else {
                     setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
                 }
@@ -252,18 +243,18 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         sortHandler = new AsyncHandler(this) {
             @Override
             public void onColumnSort(ColumnSortEvent event) {
-                orderColumns.clear();
-                OrderType orderType = OrderType.DESC;
-                if (event.isSortAscending()) {
-                    orderType = OrderType.ASC;
-                }
                 Column<T, String> column = (Column<T, String>) event.getColumn();
                 if (column == null) {
                     return;
                 }
-                orderColumns.put(gridColumns.get(getColumnIndex(column)), orderType);
+                sort.clear();
+                sort.addCustomSortOrder(
+                        getColumnIndex(column),
+                        event.isSortAscending() ? OrderType.ASC : OrderType.DESC);
+                sort.useCustomSortOrder();
 
-                eventBus.getData(new SearchDefinition(start, getPageSize(), searchDataHolder, orderColumns));
+                eventBus.getData(new SearchDefinition(
+                        start, getPageSize(), searchDataHolder, sort.getSortOrder()));
             }
         };
         addColumnSortHandler(sortHandler);
@@ -340,7 +331,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
 //        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
 //        return col;
 //    }
-
     public Column<T, ImageResource> addIconColumn(final ImageResource imageResource, String explanationText) {
         Column<T, ImageResource> col = new Column<T, ImageResource>(new CustomImageCell(explanationText)) {
             @Override
@@ -393,16 +383,15 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         urgencyColumn.setSortable(true);
         //create urgency's header represented by urgency's image
         Header urgencyHeader = new Header<Date>(new UrgentImageCell()) {
-
-                @Override
-                public Date getValue() {
-                    /* Returning null value tells UrgetUmageCell to use header image.
-                     * Using it this way we can use same class:UrgentImageCell for
-                     * providing urgency images as for hear as for urgency column items.
-                     * Otherwise we must create new class image cell providing only header's image. */
-                    return null;
-                }
-            };
+            @Override
+            public Date getValue() {
+                /* Returning null value tells UrgetUmageCell to use header image.
+                 * Using it this way we can use same class:UrgentImageCell for
+                 * providing urgency images as for hear as for urgency column items.
+                 * Otherwise we must create new class image cell providing only header's image. */
+                return null;
+            }
+        };
         //put it together
         addColumn(urgencyColumn, urgencyHeader);
         setColumnWidth(urgencyColumn, Constants.COL_WIDTH_URGENT);
@@ -450,16 +439,15 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
         //create star header represented by star image
         Header starHeader = new Header<Boolean>(new StarImageCell()) {
-
-                @Override
-                public Boolean getValue() {
-                    /* Returning null value tells StarCell to use header image.
-                     * Using it this way we can use same class StarCell for
-                     * providing star images as for header as for star column items.
-                     * Otherwise we must create new class image cell providing only header's image. */
-                    return null;
-                }
-            };
+            @Override
+            public Boolean getValue() {
+                /* Returning null value tells StarCell to use header image.
+                 * Using it this way we can use same class StarCell for
+                 * providing star images as for header as for star column items.
+                 * Otherwise we must create new class image cell providing only header's image. */
+                return null;
+            }
+        };
         //set header style
         starHeader.setHeaderStyleNames(Storage.RSCS.grid().cellTableIconColumn());
         //put it all together
@@ -502,8 +490,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         cancelRangeChangedEvent = true;
     }
 
-    public void setGridColumns(List<String> gridColumns) {
-        this.gridColumns = gridColumns;
+    public void setGridColumns(SortDataHolder sort) {
+        this.sort = sort;
     }
 
     public void refresh() {

@@ -215,5 +215,6 @@ public final class Constants {
     public static final int THANK_YOU_POPUP_DISPLAY_TIME = 3000;
     public static final int REGISTER_MAX_CATEGORIES = 5;
     public static final int REGISTER_MAX_LOCALITIES = 5;
+    public static final String PATH_TO_BUSINESS_DATA = "businessUser.businessUserData.";
     public static final String PATH_TO_TOKEN_FOR_VIEWS = "homeWelcome/view?";
 }

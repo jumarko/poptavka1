@@ -32,7 +32,7 @@ public final class MessageConverter extends AbstractConverter<Message, MessageDe
         }
         if (source.getSender() != null) {
             detail.setSenderId(source.getSender().getId());
-            detail.setSenderName(((BusinessUser) source.getSender())
+            detail.setSender(((BusinessUser) source.getSender())
                     .getBusinessUserData().getDisplayName());
         }
 

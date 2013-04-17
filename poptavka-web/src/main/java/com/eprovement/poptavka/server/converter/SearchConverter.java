@@ -6,13 +6,13 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.Sort;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.Validate;
 
 public final class SearchConverter implements Converter<Search, SearchDefinition> {
@@ -102,12 +102,12 @@ public final class SearchConverter implements Converter<Search, SearchDefinition
     }
 
     private void convertOrderColumns(SearchDefinition definition, Search search) {
-        if (MapUtils.isNotEmpty(definition.getOrderColumns())) {
-            for (String column : definition.getOrderColumns().keySet()) {
-                if (definition.getOrderColumns().get(column) == OrderType.ASC) {
-                    search.addSort(Sort.asc(column));
+        if (definition.getSortOrder() != null) {
+            for (SortPair column : definition.getSortOrder()) {
+                if (column.getColumnOrderType() == OrderType.ASC) {
+                    search.addSort(Sort.asc(column.getColumnName()));
                 } else {
-                    search.addSort(Sort.desc(column));
+                    search.addSort(Sort.desc(column.getColumnName()));
                 }
             }
         }

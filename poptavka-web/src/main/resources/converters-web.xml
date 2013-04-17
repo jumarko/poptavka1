@@ -75,5 +75,6 @@
         <constructor-arg index="0" ref="serviceConverter"/>
         <constructor-arg index="1" ref="businessUserConverter"/>
     </bean>
+    <bean id="sortConverter" class="com.eprovement.poptavka.server.converter.SortConverter" />
 
 </beans>

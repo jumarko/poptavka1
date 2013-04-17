@@ -24,8 +24,9 @@ public final class CriteriaConverter implements Converter<ResultCriteria, Search
         final ResultCriteria resultCriteria =
                 new ResultCriteria.Builder()
                     .firstResult(definition.getFirstResult())
-                    .maxResults(definition.getMaxResult())
-                    .orderByColumns(definition.getOrderColumns()).build();
+                    .maxResults(definition.getMaxResult()).build();
+        //TODO LATER Martin 17.4.2013 - ResultCriteria is no longer used in frontend - todo delete
+//                    .orderByColumns(definition.getOrderColumns()).build();
         return resultCriteria;
     }
 

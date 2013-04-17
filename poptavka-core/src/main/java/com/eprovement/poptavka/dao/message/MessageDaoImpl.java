@@ -128,7 +128,7 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
-    public Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
+    public Map<UserMessage, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
         OfferState pendingState) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("threadRoot", threadRoot);
@@ -138,9 +138,9 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         List<Object[]> unread = runNamedQuery(
                 "getLatestSupplierUserMessagesWithOfferForDemand",
                 queryParams);
-        Map<Long, Integer> unreadMap = new HashMap();
+        Map<UserMessage, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {
-            unreadMap.put((Long) entry[0], ((Long) entry[1]).intValue());
+            unreadMap.put((UserMessage) entry[0], ((Long) entry[1]).intValue());
         }
         return unreadMap;
     }

@@ -37,7 +37,7 @@ public final class UserMessageConverter extends AbstractConverter<UserMessage, M
         }
         if (source.getMessage().getSender() != null) {
             detail.setSenderId(source.getMessage().getSender().getId());
-            detail.setSenderName(((BusinessUser) source.getMessage().getSender())
+            detail.setSender(((BusinessUser) source.getMessage().getSender())
                     .getBusinessUserData().getDisplayName());
         }
 

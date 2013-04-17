@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
@@ -28,6 +29,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import java.util.Arrays;
 import java.util.List;
 
@@ -116,7 +119,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new UniversalAsyncGrid<InvoiceDetail>(KEY_PROVIDER, gridColumns);
+        dataGrid = new UniversalAsyncGrid<InvoiceDetail>(KEY_PROVIDER, initSort());
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
@@ -189,6 +192,11 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
                         return ((InvoiceDetail) object).getPaymentMethod().getName();
                     }
                 });
+    }
+
+    private SortDataHolder initSort() {
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     //*************************************************************************/
