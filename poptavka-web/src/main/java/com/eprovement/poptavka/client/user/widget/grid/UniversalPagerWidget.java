@@ -46,7 +46,7 @@ public class UniversalPagerWidget extends Composite {
     //Represent gab between page size options.
     private static final int PAGE_SIZE_MULTIPLICANT = 10;
     //Which of the items of pageSize combo is selected. by default.
-    private static final int PAGE_SIZE_ITEM_SELECTED = 0;
+    private static final int PAGE_SIZE_ITEM_SELECTED = 2;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -94,6 +94,7 @@ public class UniversalPagerWidget extends Composite {
                         @Override
                         public void execute() {
                             pageSize.setText(Integer.toString(j * mutiplicant));
+                            pager.setPageSize(j * mutiplicant);
                         }
                     }));
         }
