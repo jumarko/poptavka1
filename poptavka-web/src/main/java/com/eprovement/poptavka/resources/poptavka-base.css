@@ -199,7 +199,7 @@ body>div {
 .menu li button:active {
     border: none;
 }
-    
+
 .menu .button1 {
     background: url(images/menu-icons.png) no-repeat 0 0;
 }
@@ -261,7 +261,7 @@ body>div {
 *
 */
 .logo {
-    background: url(images/logo.png) no-repeat scroll 0 0 transparent;
+    background: url(images/logo2.png) no-repeat scroll 0 0 transparent;
     height: 112px;
     position: absolute;
     top: 11px;
@@ -570,4 +570,92 @@ body>div {
         -1464px;
     background: url(images/stack-layout-panel-header-hover.gif) repeat-x;
 }
-/** DELETE AFTER THIS LINE **/
+
+/* Client And Supplier Dashboard Styles*/
+
+.dashboard {
+    background: #e3deca;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.dashboard .dashboard-block {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.dashboard h4 {
+    background: url(images/header2.gif) repeat-x scroll left top #F1ECDA;
+    border-bottom: 1px solid #e8e3d2;
+    border-left: 1px solid #D1CCBB;    
+    border-right: 1px solid #D1CCBB;
+    color: #6F6B59;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 30px;
+    margin: 0;
+    padding: 5px 14px;
+    text-align: left;
+    border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+}
+
+.dashboard h5 {
+    color: #6F6B59; 
+    font-weight: normal; 
+    margin: 0px; 
+    padding: 9px 15px;
+    font-size: 15px;
+    border-bottom: 1px solid #e9e5d7;
+}
+
+.dashboard .dashboard-block-content {
+    background: #faf7eb;
+    border-bottom: 1px solid #aba798;    
+    padding: 0;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+}
+
+.dashboard .dashboard-block-content > .span12 {
+    border-left: 1px solid #D1CCBB;
+    border-right: 1px solid #D1CCBB;
+}
+
+.dashboard  .dashboard-block-content .gwt-HTML.label-list {
+    color: #6f6b59;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e9e5d7;
+    border-top: 1px solid #fefdfa;
+    cursor: pointer;
+}
+
+.dashboard  .dashboard-block-content .gwt-HTML.label-list:hover {
+    background: #ffffff;
+}
+
+.dashboard  .dashboard-block-content .gwt-HTML.label-list strong {
+    color: #249a06;
+}
+
+.dashboard  .dashboard-block-content .gwt-HTML.label-list span {
+    text-decoration: underline;
+}
+
+.dashboard  .dashboard-block-content .gwt-Label.pull-left {
+    background: url(images/dashboard-arrow-icon.png) no-repeat scroll right 16px;
+    width: 145px;
+}
+
+.dashboard  .dashboard-block-content .description {
+    float: left;
+    font-size: 14px;
+    line-height: 40px;
+    padding-left: 15px;
+}

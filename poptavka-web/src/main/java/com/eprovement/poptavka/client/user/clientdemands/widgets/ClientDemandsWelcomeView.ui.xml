@@ -7,59 +7,137 @@
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:HTMLPanel>
-        <center>
-            <h1>Client Dashboard</h1>
-        </center>
-        <br />
-        <b:FluidContainer addStyleNames='{res.common.validationContainer}'>
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        Recent News
-                    </g:Label>
-                </b:Column>
-            </b:FluidRow>
+    <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+        <g:north size="70">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:north>
+        <g:east size="20">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:east>
+        <g:west size="20">
+            <g:HTMLPanel></g:HTMLPanel>
+        </g:west>
+        <g:center>
+            <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
+                <b:FluidContainer addStyleNames='{res.common.validationContainer} {res.layout.dashboard}'>
+                    <b:FluidRow>
+                        <b:Column size="4" addStyleNames='dashboard-block'>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <b:Heading size="4">
+                                        Client Dashboard
+                                    </b:Heading>
+                                </b:Column>
+                            </b:FluidRow>
+                            
+                            <b:FluidRow addStyleNames='dashboard-block-content'>
+                                <b:Column size="12">
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <b:Heading size="5">
+                                                Recent News
+                                            </b:Heading>
+                                        </b:Column>
+                                    </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:HTML ui:field="myDemandsUnreadMessages" />
-                </b:Column>
-            </b:FluidRow>
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:HTML ui:field="myDemandsUnreadMessages" addStyleNames='label-list'/>
+                                        </b:Column>
+                                    </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:HTML ui:field="offeredDemandsUnreadMessages" />
-                </b:Column>
-            </b:FluidRow>
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:HTML ui:field="offeredDemandsUnreadMessages" addStyleNames='label-list'/>
+                                        </b:Column>
+                                    </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:HTML ui:field="assignedDemandsUnreadMessages" />
-                </b:Column>
-            </b:FluidRow>
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:HTML ui:field="assignedDemandsUnreadMessages" addStyleNames='label-list'/>
+                                        </b:Column>
+                                    </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:HTML ui:field="closedDemandsUnreadMessages" />
-                </b:Column>
-            </b:FluidRow>
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:HTML ui:field="closedDemandsUnreadMessages" addStyleNames='label-list'/>
+                                        </b:Column>
+                                    </b:FluidRow>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>
+                        
+                        <b:Column size="8" addStyleNames='dashboard-block'>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <b:Heading size="4">
+                                        Quick guide to client menu
+                                    </b:Heading>
+                                </b:Column>
+                            </b:FluidRow>
+                            
+                            <b:FluidRow addStyleNames='dashboard-block-content'>
+                                <b:Column size="12">                            
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:Label addStyleNames='pull-left'>
+                                                <ui:msg key="menuClientDemands">My demands</ui:msg>
+                                            </g:Label>
+                                            <g:Label styleName='description'>
+                                                Lorem ipsum dolor sit amet.                                                
+                                            </g:Label>
+                                        </b:Column>
+                                    </b:FluidRow>
 
-        </b:FluidContainer>
-    </g:HTMLPanel>
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:Label addStyleNames='pull-left'>
+                                                <ui:msg key="menuClientOffers">Offered demands</ui:msg>
+                                            </g:Label>
+                                            <g:Label styleName='description'>
+                                                Lorem ipsum dolor sit amet.                                                
+                                            </g:Label>
+                                        </b:Column>
+                                    </b:FluidRow>
+
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:Label addStyleNames='pull-left'>
+                                                <ui:msg key="menuClientAssignedDemands">Assigned demands</ui:msg>
+                                            </g:Label>
+                                            <g:Label styleName='description'>
+                                                Lorem ipsum dolor sit amet.                                                
+                                            </g:Label>
+                                        </b:Column>
+                                    </b:FluidRow>
+
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:Label addStyleNames='pull-left'>
+                                                <ui:msg key="menuClientClosedDemands">Closed demands</ui:msg>
+                                            </g:Label>
+                                            <g:Label styleName='description'>
+                                                Lorem ipsum dolor sit amet.                                                
+                                            </g:Label>
+                                        </b:Column>
+                                    </b:FluidRow>
+                                    
+                                    <b:FluidRow>
+                                        <b:Column size="12">
+                                            <g:Label addStyleNames='pull-left'>
+                                                <ui:msg key="menuClientRatings">My Ratings</ui:msg>
+                                            </g:Label>
+                                            <g:Label styleName='description'>
+                                                Lorem ipsum dolor sit amet.                                                
+                                            </g:Label>
+                                        </b:Column>
+                                    </b:FluidRow>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
 </ui:UiBinder>
