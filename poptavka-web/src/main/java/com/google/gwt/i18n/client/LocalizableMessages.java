@@ -212,6 +212,7 @@ public interface LocalizableMessages extends Messages {
     String emailDialogSubjectReportIssue();
     String emailDialogSubjectReportUser();
     String emailDialogTo();
+    String supportWantSomethingEmail();
 
     /** # ThankYouPopup.ui **/
     String thankYouAcceptOffer();

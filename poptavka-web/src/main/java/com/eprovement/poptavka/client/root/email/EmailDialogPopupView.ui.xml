@@ -30,7 +30,7 @@
                                 </g:Label>
                             </b:Column>
                         </b:FluidRow>
-                        <b:FluidRow>    
+                        <b:FluidRow>
                             <b:Column size="4">
                                 <g:Label>
                                     <ui:msg key="emailDialogSubject">Subject</ui:msg>
@@ -58,13 +58,13 @@
                                     <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
                                 </g:Label>
                                 <g:Label styleName='description'>
-                                    <ui:msg key="emailDialogMaximumChars">Maximum 10000 characters. No HTML, JavaScript.</ui:msg>
+                                    <ui:msg key="emailDialogMaximumChars">Maximum 1000 characters.</ui:msg>
                                 </g:Label>
                             </b:Column>
                             <b:Column size="8">
                                 <cm:ValidationMonitor ui:field="msgBodyMonitor">
                                     <g:TextArea width="97%" height="150px" styleName='full-width' />
-                                </cm:ValidationMonitor>                                
+                                </cm:ValidationMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>

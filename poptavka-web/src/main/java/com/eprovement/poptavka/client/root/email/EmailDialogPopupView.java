@@ -116,7 +116,7 @@ public class EmailDialogPopupView extends ReverseCompositeView<EmailDialogPopupP
     @Override
     public EmailDialogDetail getEmailDialogDetail() {
         EmailDialogDetail detail = new EmailDialogDetail();
-        detail.setRecipient("pras3xer@gmail.com");
+        detail.setRecipient(Storage.MSGS.supportWantSomethingEmail());
         detail.setSubject(subject.getSelected());
         detail.setEmailFrom((String) emailMonitor.getValue());
         detail.setMessage((String) msgBodyMonitor.getValue());
