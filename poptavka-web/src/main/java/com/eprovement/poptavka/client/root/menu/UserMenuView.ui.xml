@@ -15,32 +15,32 @@
                 </li>
                 <li>
                     <g:Button ui:field="supplier" styleName='button9'>
-                        <ui:msg key="menuSupplier">Supplier</ui:msg><br /><br />
+                        <ui:msg key="menuSupplier">Professional</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
                     <g:Button ui:field="inbox" styleName='button7'>
-                        <ui:msg key='menuMessages'>Messages</ui:msg><br /><br />
+                        <ui:msg key='menuMessages'>Inbox</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
                     <g:Button ui:field="demands" styleName='button2'>
-                        <ui:msg key="menuDemands">Demands</ui:msg><br /><br />
+                        <ui:msg key="menuDemands">Projects</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
                     <g:Button ui:field="createDemand"  styleName='button3'>
-                        <ui:msg key="createDemand">Create Demand</ui:msg>
+                        <ui:msg key="createDemand">Post Project</ui:msg>
                     </g:Button>
                 </li>
                 <li>
                     <g:Button ui:field="suppliers" styleName='button4'>
-                        <ui:msg key="menuSuppliers">Suppliers</ui:msg><br /><br />
+                        <ui:msg key="menuSuppliers">Professionals</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>
                     <g:Button ui:field="createSupplier"  styleName='button5'>
-                        <ui:msg key="menucreateSupplier">Create supplier</ui:msg>
+                        <ui:msg key="menucreateSupplier">Become Professional</ui:msg>
                     </g:Button>
                 </li>
                 <li>

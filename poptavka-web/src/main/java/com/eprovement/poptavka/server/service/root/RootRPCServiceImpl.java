@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.service.root;
 
 import com.eprovement.poptavka.client.service.demand.RootRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -34,6 +35,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -189,7 +192,9 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     // TODO RELEASE ivlcek - secure this method and other methods in rootRPCService. I 'm not sure but will try it.
-    public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException,
+        ApplicationSecurityException {
         final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId);
         // set all user messages as read
         for (UserMessage userMessage : userMessages) {
@@ -243,16 +248,29 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      * @return message
      */
     @Override
-    public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException,
+        ApplicationSecurityException {
         final ReplyMessage replyMessage = sendReplyMessage(questionMessageToSend);
         return getMessageDetail(replyMessage);
     }
 
-
+    /**
+     * Send a message with incorporated Offer. This message with offer will be the reply message to latest message
+     * from Client / Supplier conversation. From this moment on every new message in further coversation will have to
+     * contain this Offer.
+     *
+     * @param offerMessageToSend
+     * @return messageDetail created from persisted Message object.
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
-    public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException {
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException,
+        ApplicationSecurityException {
         final ReplyMessage replyMessage = sendReplyMessage(offerMessageToSend);
-        // TODO LATER ivlcek - create converter for offer
+        // TODO LATER ivlcek - create converter for offers
 
         // update demand entity
         final Demand demand = replyMessage.message.getDemand();

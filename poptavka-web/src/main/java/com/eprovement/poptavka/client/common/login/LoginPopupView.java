@@ -116,7 +116,7 @@ public class LoginPopupView extends Composite
         StyleResource.INSTANCE.common().ensureInjected();
     }
 
-    // TODO RELEASE ivlcek: - delete and user real form
+    // TODO RELEASE ivlcek: - comment for production
     private void initFastLoginForDevel() {
         list.setWidth("100%");
         list.setVisibleItemCount(privateUsers.size());
