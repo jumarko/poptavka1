@@ -14,89 +14,101 @@
  * the License.
  */
 .cellTreeWidget {
-	background: transparent;
-	border: none;
-	margin: 10px 0 0;
-	color: #443b19;
+    background: transparent;
+    border: none;
+    margin: 10px 0 0;
+    color: #443b19;
 }
 
 .cellTreeEmptyMessage {
-	padding-left: 16px;
-	font-style: italic;
+    padding-left: 16px;
+    font-style: italic;
 }
 
 .cellTreeItem {
-	padding: 2px 10px 2px;
-	cursor: hand;
-	cursor: pointer;
-	zoom: 1;
+    padding: 2px 10px 2px;
+    cursor: hand;
+    cursor: pointer;
+    zoom: 1;
+    background: #faf7eb;
+    border-bottom: 1px solid #F6ECC6;
 }
 
 .cellTreeItem .cellTreeItem {
-	background: none;
+    background: none;
+    border-bottom: none;
 }
 
 .cellTreeItem:hover {
-	background: #ffffff;
+    background-color: #ffffff;
 }
 
 .cellTreeItem .cellTreeSelectedItem {
-	background: #faf7eb;
+    background: #faf7eb;
+    border-bottom: 1px solid #ffffff;
 }
 
 .cellTreeItemImage {
-	top: 8px;
+    top: 8px;
 }
 
 .cellTreeItemImageValue {
-	zoom: 1;
+    zoom: 1;
 }
 
 .cellTreeItemValue {
-	padding-left: 3px;
-	padding-right: 3px;
-	outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    outline: none;
 }
 
 .cellTreeOpenItem {
-	color: #237e00;
+    color: #237e00;
 }
 
 .cellTreeTopItem {
-	font-weight: normal;	
-	padding: 3px 10px 3px 10px !important;
-	background: url(images/cellTreeItemBorder.gif) repeat-x bottom;
+    font-weight: normal;
+    padding: 3px 10px 3px 10px !important;
+    background: url(images/cellTreeItemBorder.gif) repeat-x bottom;
+    border-bottom: none;
 }
 
 .cellTreeTopItemImage {
-	top: 11px;
+    top: 11px;
 }
 
 .cellTreeWidget div div div div:first-child .cellTreeTopItem .cellTreeTopItemImageValue
-	{
-	background: none;
+{
+    background: none;
 }
 
 .cellTreeTopItem .cellTreeTopItemImageValue {
-	padding-bottom: 1px;
-	height: 27px;
-	line-height: 27px;
+    padding-bottom: 1px;
+    height: 27px;
+    line-height: 27px;
 }
 
 .cellTreeKeyboardSelectedItem {
-	background-color: #fff;
-	outline: none;
+    background-color: none;
+    outline: none;
 }
 
 /* @sprite */
 .cellTreeSelectedItem { /* gwt-image: 'cellTreeSelectedBackground'; */
-	color: #237e00;
-	height: auto;
-	overflow: visible;
-	font-weight: bold;
+    color: #237e00;
+    height: auto;
+    overflow: visible;
+    font-weight: normal;
+    border-bottom: 1px solid #ddd3b3;
+    border-top: 1px solid #ffffff;
+    background: #ffffff;
+}
+
+.cellTreeTopItem.cellTreeSelectedItem {
+    border: none;
 }
 
 .cellTreeShowMoreButton {
-	padding-left: 16px;
-	outline: none;
+    padding-left: 16px;
+    outline: none;
 }
