@@ -32,11 +32,11 @@ public class OfferMessageDetail extends MessageDetail {
     /**************************************************************************/
     private long supplierId;
     @NotBlank(message = "{messageNotBlankBody}")
-    @Size(min = 2, message = "{messageSizeBody}")
+    @Size(min = 2, max = 1500, message = "{messageSizeBody}")
     private String body;
     @NotNull(message = "{messageNotNullPrice}")
     @Min(value = 0, message = "{messageMinPrice}")
-    @Digits(integer = 100000000, fraction = 0, message = "{messageDigitsPrice}")
+    @Digits(integer = 12, fraction = 0, message = "{messageDigitsPrice}")
     private BigDecimal price;
     @NotNull(message = "{messageNotNullFinishDate}")
     @Future(message = "{messageFutureFinishDate}")

@@ -63,8 +63,8 @@ public class UrgentImageCell extends AbstractCell<Date> {
             tooltip = Storage.MSGS.urgencyTooltip();
             return;
         }
-        int daysBetween = CalendarUtil.getDaysBetween(value, DateUtils.getNowDate());
-        if (daysBetween < Constants.DAYS_URGENCY_HIGH) {
+        int daysBetween = CalendarUtil.getDaysBetween(DateUtils.getNowDate(), value);
+        if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
             imageResource = imageRenderer.render(Storage.RSCS.images().urgencyRed());
             tooltip = Storage.MSGS.urgencyHighDesc();
             return;

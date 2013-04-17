@@ -44,7 +44,7 @@ public class DemandMessageDetail extends MessageDetail implements IsSerializable
         this.validToDate = validTo;
     }
 
-    public Date getValidToDate() {
+    public Date getValidTo() {
         return validToDate;
     }
 

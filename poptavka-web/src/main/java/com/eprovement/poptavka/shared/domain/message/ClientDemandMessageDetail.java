@@ -31,7 +31,7 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 + ",\n messagesCount=" + getMessageCount()
                 + ",\n unreadSubMessages=" + getUnreadSubMessages()
                 + ",\n endDate=" + getEndDate()
-                + ",\n validToDate=" + getValidToDate()
+                + ",\n validToDate=" + getValidTo()
                 + ",\n price=" + getPrice() + "}\n\n";
     }
     public static final ProvidesKey<ClientDemandMessageDetail> KEY_PROVIDER =
