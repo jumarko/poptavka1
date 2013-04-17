@@ -4,7 +4,7 @@
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <ui:with field='res'
-                 type='com.eprovement.poptavka.resources.StyleResource' />
+             type='com.eprovement.poptavka.resources.StyleResource' />
 
     <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent}'>
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
@@ -22,7 +22,7 @@
                 <g:Label ui:field="companyName" />
             </b:Column>
 
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="businessTypeColumn">
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formBusinessType">Business type: </ui:msg>
                 </g:Label>
@@ -36,7 +36,7 @@
                 <g:Label ui:field="overallRating" />
             </b:Column>
 
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="certifiedColumn">
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formCertified">Certified:</ui:msg>
                 </g:Label>
@@ -90,7 +90,7 @@
                 </b:Column>
 
                 <c:CellList ui:field="categories"
-                                                                    styleName='{res.detailViews.detailCategoryLabel}' />
+                            styleName='{res.detailViews.detailCategoryLabel}' />
 
             </g:HTMLPanel>
         </b:FluidRow>
@@ -103,7 +103,7 @@
                     </b:Heading>
                 </b:Column>
                 <c:CellList ui:field="localities"
-                                                                    styleName='{res.detailViews.detailLocalityLabel}' />
+                            styleName='{res.detailViews.detailLocalityLabel}' />
             </g:HTMLPanel>
         </b:FluidRow>
 
@@ -126,22 +126,25 @@
                 </g:Label>
                 <g:Label ui:field="lastName" />
             </b:Column>
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="phoneColumn">
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formPhone">Phone: </ui:msg>
                 </g:Label>
                 <g:Label ui:field="phone" />
             </b:Column>
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="emailColumn">
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formEmail">Email: </ui:msg>
                 </g:Label>
                 <g:Label ui:field="email" />
             </b:Column>
+        </b:FluidRow>
+
+        <b:FluidRow ui:field="invoiceRow" addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
                     <ui:msg key="formInvoiceInfo">Invoice info</ui:msg>
-                </g:Label>
+                </b:Heading>
             </b:Column>
             <b:Column size='12'>
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>

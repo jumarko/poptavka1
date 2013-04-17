@@ -73,7 +73,7 @@
                                     </g:north>
                                     <g:center>
                                         <g:ScrollPanel>
-                                            <d:UserDetailView ui:field="userDetailView" />
+                                            <d:UserDetailView ui:field="userDetailView" advancedView="false" />
                                         </g:ScrollPanel>
                                     </g:center>
                                 </g:DockLayoutPanel>
