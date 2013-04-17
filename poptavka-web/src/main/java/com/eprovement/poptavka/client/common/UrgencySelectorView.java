@@ -120,7 +120,11 @@ public class UrgencySelectorView extends Composite {
     }
 
     public boolean isChanged() {
-        return !CalendarUtil.isSameDate(validToOriginal, getValidTo());
+        if (validToOriginal == null) {
+            return false;
+        } else {
+            return !CalendarUtil.isSameDate(validToOriginal, getValidTo());
+        }
     }
 
     /** CheckBoxes. **/
