@@ -85,16 +85,16 @@
                 <g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
                 <g:PushButton ui:field='pushButton' enabled='true'
                               styleName='{style.pushButton}'>
-                    <g:upFace image='{res.images.envelopeImage}' />
-                    <g:upHoveringFace image='{res.images.envelopeHoverImage}' />
+                    <g:upFace image='{res.images.envelopeImageEmpty}' />
+                    <g:upHoveringFace image='{res.images.envelopeImageEmpty}' />
                     <g:downFace image='{res.images.envelopeImage}' />
                     <g:downHoveringFace image='{res.images.envelopeImage}' />
                 </g:PushButton>
                 <g:Label ui:field="newSystemMessagesCount" styleName='{style.newMessageCount}'></g:Label>
                 <g:PushButton ui:field='pushSystemButton' enabled='true'
                               styleName='{style.pushButton}'>
-                    <g:upFace image='{res.images.flagImage}' />
-                    <g:upHoveringFace image='{res.images.flagHoverImage}' />
+                    <g:upFace image='{res.images.flagImageEmpty}' />
+                    <g:upHoveringFace image='{res.images.flagImageEmpty}' />
                     <g:downFace image='{res.images.flagImage}' />
                     <g:downHoveringFace image='{res.images.flagImage}' />
                 </g:PushButton>

@@ -30,7 +30,7 @@
                 </li>
                 <li>
                     <g:Button ui:field="createDemand"  styleName='button3'>
-                        <ui:msg key="createDemand">Post Project</ui:msg>
+                        <ui:msg key="createDemand">Post Project</ui:msg><br /><br />
                     </g:Button>
                 </li>
                 <li>

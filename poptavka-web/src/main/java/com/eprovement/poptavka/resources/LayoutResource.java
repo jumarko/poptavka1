@@ -140,6 +140,9 @@ public interface LayoutResource extends CssResource {
     @ClassName("stack-layout-panel-header")
     String stackLayoutPanelHeader();
 
+    @ClassName("dashboard")
+    String dashboard();
+
     /** DELETE AFTER THIS LINE **/
 
 }
