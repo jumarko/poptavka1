@@ -193,7 +193,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final User clientUser = this.generalService.find(User.class, 111111112L);
         final Map<Long, Integer> latestSupplierUserMessages =
                 this.messageService.getLatestSupplierUserMessagesWithoutOfferForDemand(clientUser, threadRoot);
-        // TODO RELEAE ivlcek, vojto - this will be removed once vojto finishes his new select for this scenario
+        // TODO RELEASE ivlcek, vojto - this will be removed once vojto finishes his new select for this scenario
 //        Assert.assertEquals(1, latestSupplierUserMessages.size());
 //        for (Long key : latestSupplierUserMessages.keySet()) {
 //            Assert.assertEquals("UserMessage [id=" + key + "] expected to be in map ["

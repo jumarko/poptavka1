@@ -16,9 +16,6 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
-import com.eprovement.poptavka.domain.settings.Notification;
-import com.eprovement.poptavka.domain.settings.NotificationItem;
-import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -110,7 +107,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         setNewSupplierLocalities(supplier, newSupplier);
         setNewSupplierCategories(supplier, newSupplier);
         setNewSupplierUserServices(supplier, newSupplier);
-        setNewSuppliersNotificationItems(newSupplier);
         assignBusinessRoleToNewSupplier(newSupplier);
         newSupplier.setOveralRating(Integer.valueOf(0));
         /** registration process **/
@@ -146,24 +142,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         final List<Address> addresses = getAddressesFromSupplierCityName(supplier);
 
         newSupplier.getBusinessUser().setAddresses(addresses);
-    }
-
-    private void setNewSuppliersNotificationItems(Supplier newSupplier) {
-        final List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
-        NotificationItem notificationItem = new NotificationItem();
-        // TODO RELEASE ivlcek - create constant for Notifications in DB, don't use numbers
-        notificationItem.setNotification(this.generalService.find(Notification.class, 6L));
-        notificationItem.setEnabled(true);
-        notificationItem.setPeriod(Period.INSTANTLY);
-        notificationItems.add(notificationItem);
-        /** This is notification for Client role that is automatically created herein. **/
-        NotificationItem notificationItemClient = new NotificationItem();
-        // TODO RELEASE ivlcek - create constant for Notifications in DB, don't use numbers
-        notificationItemClient.setNotification(this.generalService.find(Notification.class, 10L));
-        notificationItemClient.setEnabled(true);
-        notificationItemClient.setPeriod(Period.INSTANTLY);
-        notificationItems.add(notificationItemClient);
-        newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
     }
 
     private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
