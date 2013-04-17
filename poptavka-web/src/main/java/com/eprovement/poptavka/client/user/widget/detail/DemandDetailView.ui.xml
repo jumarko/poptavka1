@@ -5,88 +5,87 @@
 
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
+    
+    <ui:style>
+        .ratingLabel {
+        color:#F7BD00 !important;
+        }
+    </ui:style>
 
     <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent}'>
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
-                <b:Heading size='5'
-                                       styleName='{res.detailViews.detailHeader}'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
                     <ui:msg key="formCommonInfo">Common info</ui:msg>
                 </b:Heading>
             </b:Column>
 
             <b:Column size='12'>
-                <g:Label
-                    styleName='{res.detailViews.detailBlockLabel}'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formDemandTitle">Demand title: </ui:msg>
                 </g:Label>
                 <g:Label ui:field="demandName" addStyleNames='{res.detailViews.detailStrong}'/>
             </b:Column>
 
             <b:Column size='12'>
-                <g:Label
-                    styleName='{res.detailViews.detailBlockLabel}'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formPrice">Price:</ui:msg>
                 </g:Label>
                 <g:Label ui:field="price" addStyleNames='{res.detailViews.detailStrong}'/>
             </b:Column>
 
             <b:Column size='12'>
-                <g:Label
-                    styleName='{res.detailViews.detailBlockLabel}'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formEndDate">End date:</ui:msg>
                 </g:Label>
                 <g:Label styleName='{res.detailViews.detailDateLabel}'
-                                     ui:field="endDate" />
+                         ui:field="endDate" />
             </b:Column>
             <b:Column size='12'>
-                <g:Label
-                    styleName='{res.detailViews.detailBlockLabel}'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formUrgency">Urgency: </ui:msg>
                 </g:Label>
                 <b:Tooltip ui:field="urgencyTooltip">
                     <g:Image ui:field="urgency" />
                 </b:Tooltip>
             </b:Column>
-            <b:Column size='12'>
-                <g:Label
-                    styleName='{res.detailViews.detailBlockLabel}'>
+            <b:Column size='12' ui:field="ratingColumn">
+                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formClientRating">Client rating:</ui:msg>
                 </g:Label>
-                <g:Label ui:field="clientRating" addStyleNames='{res.detailViews.detailStrong}'/>
+                <g:Image resource='{res.images.starGold}' addStyleNames="pull-left" />
+                <g:Label ui:field="clientRating" addStyleNames='{res.detailViews.detailStrong} {style.ratingLabel}'/>
+
             </b:Column>
         </b:FluidRow>
 
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
-                <b:Heading size='5'
-                                       styleName='{res.detailViews.detailHeader}'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
                     <ui:msg key="formCategories">Category info</ui:msg>
                 </b:Heading>
             </b:Column>
             <b:Column size='12'>
                 <c:CellList ui:field="categories"
-                                        styleName='{res.detailViews.detailCategoryLabel}' />
+                            styleName='{res.detailViews.detailCategoryLabel}' />
             </b:Column>
         </b:FluidRow>
 
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
-                <b:Heading size='5'
-                                       styleName='{res.detailViews.detailHeader}'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
                     <ui:msg key="formLocalities">Locality info</ui:msg>
                 </b:Heading>
             </b:Column>
             <b:Column size='12'>
                 <c:CellList ui:field="localities"
-                                        styleName='{res.detailViews.detailLocalityLabel}' />
+                            styleName='{res.detailViews.detailLocalityLabel}' />
             </b:Column>
         </b:FluidRow>
 
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
-                <b:Heading size='5'
-                                       styleName='{res.detailViews.detailHeader}'>
+                <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
                     <ui:msg key="formDescription">Description: </ui:msg>
                 </b:Heading>
             </b:Column>
