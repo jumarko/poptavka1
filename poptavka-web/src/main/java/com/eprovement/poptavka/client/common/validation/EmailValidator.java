@@ -31,11 +31,11 @@ public class EmailValidator
     private static final String DOMAIN = "(" + ATOM + "+(\\." + ATOM + "+)*";
     private static final String IP_DOMAIN = "\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]";
     private RegExp pattern = RegExp.compile(
-            "^" + ATOM + "+(\\." + ATOM + "+)*@"
+            "^\\s*" + ATOM + "+(\\." + ATOM + "+)*@"
             + DOMAIN
             + "|"
             + IP_DOMAIN
-            + ")$", "i");
+            + ")\\s*$", "i");
 
     @Override
     public void initialize(com.eprovement.poptavka.client.common.validation.Email annotation) {

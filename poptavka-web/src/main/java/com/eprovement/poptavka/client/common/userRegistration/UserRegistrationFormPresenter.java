@@ -55,7 +55,7 @@ public class UserRegistrationFormPresenter
                     @Override
                     public void onValueChange(ValueChangeEvent<String> value) {
                         if (view.getEmailBox().isValid()) {
-                            eventBus.checkFreeEmail(value.getValue());
+                            eventBus.checkFreeEmail(value.getValue().trim());
                         }
                     }
                 });
