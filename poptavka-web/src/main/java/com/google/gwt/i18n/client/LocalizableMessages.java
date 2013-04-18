@@ -361,6 +361,7 @@ public interface LocalizableMessages extends Messages {
     String demandStatusInactive();
     String demandStatusInvalid();
     String demandStatusNew();
+    String demandStatusOffered();
     String demandStatusToBeChecked();
 
     /** Explanation texts for Offer state icon column. **/

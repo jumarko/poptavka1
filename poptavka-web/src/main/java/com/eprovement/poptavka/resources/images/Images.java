@@ -87,9 +87,6 @@ public interface Images extends ClientBundle {
     @Source("urgency-header.png")
     ImageResource urgencyHeader();
 
-    @Source("new.png")
-    ImageResource newDemand();
-
     @Source("temporary.png")
     ImageResource temporary();
 
@@ -114,7 +111,14 @@ public interface Images extends ClientBundle {
     @Source("ctrl_mouseLeft.gif")
     ImageResource ctrlMouseLeft();
 
+    //Demand Status
+    @Source("new.png")
+    ImageResource newDemand();
+
+    @Source("offer.png")
+    ImageResource offeredDemand();
     //Table buttons
+
     @Source("reply.png")
     ImageResource replyImage();
 
