@@ -15,11 +15,12 @@
         .tabIndex4 { z-index: 4; }
         .tabIndex5 { z-index: 5; }
     </ui:style>
-    
+
     <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
-        <g:center>           
-            <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.fourStepTabPanel}' 
-                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='70'>
+        <g:center>
+            <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.fourStepTabPanel}'
+                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='70'
+                              animationDuration="1000">
                 <!--1-->
                 <g:tab>
                     <g:customHeader size="30">
@@ -39,21 +40,21 @@
                                 </b:Column>
                             </b:FluidRow>
                             <b:FluidRow>
-                                <b:Column size="12">                                                                                                                                                                        
+                                <b:Column size="12">
                                     <g:HTMLPanel styleName='formFooter'>
                                         <g:Label>
                                             <ui:msg key="formRequiredFields">* fields are required</ui:msg>
                                         </g:Label>
-                                        <g:HTMLPanel styleName='buttonsContainer'>                                
+                                        <g:HTMLPanel styleName='buttonsContainer'>
                                             <g:Button ui:field="nextButtonTab1" styleName='{res.common.buttonRightSmall}'>
-                                                <ui:msg key="commonBtnNext">Next</ui:msg>                          
+                                                <ui:msg key="commonBtnNext">Next</ui:msg>
                                             </g:Button>
                                         </g:HTMLPanel>
                                     </g:HTMLPanel>
                                 </b:Column>
-                            </b:FluidRow>                                
+                            </b:FluidRow>
                         </g:HTMLPanel>
-                    </g:ScrollPanel>                        
+                    </g:ScrollPanel>
                 </g:tab>
                 <!--2-->
                 <g:tab>
@@ -90,17 +91,17 @@
                                     <g:HTMLPanel styleName='formFooter'>
                                         <g:HTMLPanel styleName='buttonsContainer'>
                                             <g:Button ui:field="nextButtonTab2" styleName='{res.common.buttonRightSmall}'>
-                                                <ui:msg key="commonBtnNext">Next</ui:msg>                                
+                                                <ui:msg key="commonBtnNext">Next</ui:msg>
                                             </g:Button>
                                             <g:Button ui:field="backButtonTab2" styleName='{res.common.buttonLeftSmall}'>
                                                 <ui:msg key="commonBtnBack">Back</ui:msg>
-                                            </g:Button>                            
+                                            </g:Button>
                                         </g:HTMLPanel>
                                     </g:HTMLPanel>
                                 </b:Column>
-                            </b:FluidRow>                            
+                            </b:FluidRow>
                         </g:HTMLPanel>
-                    </g:ScrollPanel>                        
+                    </g:ScrollPanel>
                 </g:tab>
                 <!--3-->
                 <g:tab>
@@ -135,15 +136,15 @@
                                     <g:HTMLPanel styleName='formFooter'>
                                         <g:HTMLPanel styleName='buttonsContainer'>
                                             <g:Button ui:field="nextButtonTab3" styleName='{res.common.buttonRightSmall}'>
-                                                <ui:msg key="commonBtnNext">Next</ui:msg>                                
+                                                <ui:msg key="commonBtnNext">Next</ui:msg>
                                             </g:Button>
                                             <g:Button ui:field="backButtonTab3" styleName='{res.common.buttonLeftSmall}'>
                                                 <ui:msg key="commonBtnBack">Back</ui:msg>
-                                            </g:Button>                            
+                                            </g:Button>
                                         </g:HTMLPanel>
                                     </g:HTMLPanel>
                                 </b:Column>
-                            </b:FluidRow>                                
+                            </b:FluidRow>
                         </g:HTMLPanel>
                     </g:ScrollPanel>
                 </g:tab>
@@ -155,13 +156,13 @@
                             <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
                         </g:HTML>
                     </g:customHeader>
-                    <g:ScrollPanel>                   
+                    <g:ScrollPanel>
                         <g:HTMLPanel>
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
                             <b:FluidRow>
-                                <b:Column size="12">           
+                                <b:Column size="12">
                                     <b:FluidContainer addStyleNames='formContainer'>
                                         <g:SimplePanel ui:field="contentHolder4" />
                                     </b:FluidContainer>
@@ -175,16 +176,16 @@
                                             <g:Anchor ui:field="conditionLink">
                                                 <ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
                                             </g:Anchor>
-                                        </g:HorizontalPanel>           
-                                    </g:HTMLPanel>                   
-                                </b:Column>                        
+                                        </g:HorizontalPanel>
+                                    </g:HTMLPanel>
+                                </b:Column>
                             </b:FluidRow>
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:FluidContainer>
                                         <b:FluidRow addStyleNames='buttonsBorderRow'>
                                             <b:Column size="4">
-                                                <g:Button ui:field="backButtonTab4" styleName='{res.common.buttonLeftLarge}'>                            
+                                                <g:Button ui:field="backButtonTab4" styleName='{res.common.buttonLeftLarge}'>
                                                     <ui:msg key="commonBtnBack">Back</ui:msg>
                                                 </g:Button>
                                             </b:Column>
@@ -196,13 +197,13 @@
                                         </b:FluidRow>
                                     </b:FluidContainer>
                                 </b:Column>
-                            </b:FluidRow>          
-                        </g:HTMLPanel>              
+                            </b:FluidRow>
+                        </g:HTMLPanel>
                     </g:ScrollPanel>
                 </g:tab>
             </g:TabLayoutPanel>
         </g:center>
-        <g:south size="30">            
+        <g:south size="30">
             <g:Widget ui:field="footer"/>
         </g:south>
     </g:DockLayoutPanel>
