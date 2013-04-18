@@ -1,8 +1,11 @@
 package com.eprovement.poptavka.client.common.category;
 
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -20,12 +23,11 @@ import java.util.List;
 public class CategorySelectorPresenter
         extends LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, RootEventBus> {
 
-    @Inject
-    private CategoryRPCServiceAsync categoryService;
-
     public interface CategorySelectorInterface extends LazyView {
 
         void createCellBrowser(int checkboxes, int displayCountsOfWhat);
+
+        void setSelectedCountLabel(int count);
 
         ListDataProvider<CategoryDetail> getCellListDataProvider();
 
@@ -38,6 +40,29 @@ public class CategorySelectorPresenter
         Widget getWidgetView();
     }
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /**
+     * Selection restriction.
+     * True - allow only Constants.REGISTER_MAX_CATEGORIES to be selected.
+     * False - no restrictions to selection.
+     */
+    private boolean selectionRestrictions = false;
+
+    /**************************************************************************/
+    /* CategoryRPCServiceAsync                                                */
+    /**************************************************************************/
+    @Inject
+    private CategoryRPCServiceAsync categoryService;
+
+    public CategoryRPCServiceAsync getCategoryService() {
+        return categoryService;
+    }
+
+    /**************************************************************************/
+    /* Bind                                                                   */
+    /**************************************************************************/
     @Override
     public void bindView() {
         view.getCellBrowserSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -45,7 +70,17 @@ public class CategorySelectorPresenter
             public void onSelectionChange(SelectionChangeEvent event) {
                 List<CategoryDetail> selectedList = new ArrayList<CategoryDetail>(
                         view.getCellBrowserSelectionModel().getSelectedSet());
-                view.getCellListDataProvider().setList(selectedList);
+                if (selectionRestrictions
+                        && (view.getCellBrowserSelectionModel().getSelectedSet().size()
+                        > Constants.REGISTER_MAX_CATEGORIES)) {
+                    Window.alert(Storage.MSGS.commonCategorySelectionRestriction());
+                    view.getCellBrowserSelectionModel().setSelected(getSelectedObjectOverAllowedMax(), false);
+                } else {
+                    view.getCellListDataProvider().setList(selectedList);
+                    if (selectionRestrictions) {
+                        view.setSelectedCountLabel(selectedList.size());
+                    }
+                }
             }
         });
         view.getCellListSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -60,10 +95,9 @@ public class CategorySelectorPresenter
         });
     }
 
-    public CategoryRPCServiceAsync getCategoryService() {
-        return categoryService;
-    }
-
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     /**
      *
      * @param embedWidget - panel where widget will be set up.
@@ -75,8 +109,9 @@ public class CategorySelectorPresenter
      *                              CategoryCell.DISPLAY_COUNT_DISABLED
      */
     public void initCategoryWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat,
-            List<CategoryDetail> categoriesToSet) {
+            List<CategoryDetail> categoriesToSet, boolean selectionRestrictions) {
         view.createCellBrowser(checkboxes, displayCountsOfWhat);
+        this.selectionRestrictions = selectionRestrictions;
         embedWidget.setWidget(view.getWidgetView());
 
         //Set categories if any
@@ -88,5 +123,17 @@ public class CategorySelectorPresenter
                 view.getCellListDataProvider().getList().add(catDetail);
             }
         }
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private CategoryDetail getSelectedObjectOverAllowedMax() {
+        for (CategoryDetail selectedCategory : view.getCellBrowserSelectionModel().getSelectedSet()) {
+            if (!view.getCellListSelectionModel().getSelectedSet().contains(selectedCategory)) {
+                return selectedCategory;
+            }
+        }
+        return null;
     }
 }

@@ -120,7 +120,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
                         view.getSelectorWidgetPopup(),
                         Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getCategories());
+                        view.getCategories(), true);
                 view.getSelectorWidgetPopup().center();
             }
         });

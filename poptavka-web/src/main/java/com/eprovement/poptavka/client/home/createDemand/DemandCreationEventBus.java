@@ -74,7 +74,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet);
+        List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,

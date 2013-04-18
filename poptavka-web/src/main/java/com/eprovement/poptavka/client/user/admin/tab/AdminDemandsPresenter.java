@@ -160,7 +160,7 @@ public class AdminDemandsPresenter
                         view.getAdminDemandDetail().getSelectorWidgetPopup(),
                         Constants.WITH_CHECK_BOXES,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminDemandDetail().getCategories());
+                        view.getAdminDemandDetail().getCategories(), true);
                 view.getAdminDemandDetail().getSelectorWidgetPopup().center();
             }
         });

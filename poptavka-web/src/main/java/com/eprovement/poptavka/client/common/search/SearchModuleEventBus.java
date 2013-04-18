@@ -48,7 +48,7 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
     /**************************************************************************/
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holder, int checkboxes, int displayCountsOfWhat,
-            List<CategoryDetail> categoriesToSet);
+            List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat,

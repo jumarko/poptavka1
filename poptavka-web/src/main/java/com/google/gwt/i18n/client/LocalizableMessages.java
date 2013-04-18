@@ -46,10 +46,12 @@ public interface LocalizableMessages extends Messages {
 
     /** Common labels. **/
     String commonCategoriesLabel();
+    String commonCategorySelectionRestriction();
     String commonClient();
     String commonEmptyCredentials();
     String commonEmptyTable();
     String commonLocalitiesLabel();
+    String commonLocalitySelectionRestriction();
     String commonNoData();
     String commonNotDefined();
     String commonNotRanked();

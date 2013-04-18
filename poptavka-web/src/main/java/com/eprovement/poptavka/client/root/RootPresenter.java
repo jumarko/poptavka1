@@ -230,12 +230,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onInitCategoryWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
-            List<CategoryDetail> categoriesToSet) {
+            List<CategoryDetail> categoriesToSet, boolean selectionRestriction) {
         if (categorySelector != null) {
             eventBus.removeHandler(categorySelector);
         }
         categorySelector = eventBus.addHandler(CategorySelectorPresenter.class);
-        categorySelector.initCategoryWidget(holderPanel, checkboxes, displayCountsOfWhat, categoriesToSet);
+        categorySelector.initCategoryWidget(holderPanel, checkboxes, displayCountsOfWhat,
+                categoriesToSet, selectionRestriction);
     }
 
     public void onInitLocalityWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
