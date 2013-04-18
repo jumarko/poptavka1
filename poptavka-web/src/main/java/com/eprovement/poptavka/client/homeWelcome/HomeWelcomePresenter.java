@@ -4,9 +4,11 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks;
+import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks.HowItWorksViews;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
@@ -85,7 +87,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         view.getHowItWorksSupplierBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                HowItWorks howItWorks = HowItWorks.createHowItWorksDemand();
+                HowItWorks howItWorks = HowItWorks.createHowItWorksSupplier();
                 howItWorks.getRegisterBtn().addClickHandler(new ClickHandler() {
 
                     @Override
@@ -93,6 +95,8 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
                         eventBus.goToCreateSupplierModule();
                     }
                 });
+                History.newItem(Constants.PATH_TO_TOKEN_FOR_VIEWS.concat(
+                        HowItWorksViews.HOW_IT_WORKS_SUPPLIER.getValue()));
                 eventBus.setBody(howItWorks);
             }
         });
@@ -110,6 +114,8 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
                         eventBus.goToCreateDemandModule();
                     }
                 });
+                History.newItem(Constants.PATH_TO_TOKEN_FOR_VIEWS.concat(
+                        HowItWorksViews.HOW_IT_WORKS_DEMAND.getValue()));
                 eventBus.setBody(howItWorks);
             }
         });

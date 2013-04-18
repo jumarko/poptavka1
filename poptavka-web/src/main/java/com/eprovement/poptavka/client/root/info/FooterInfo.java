@@ -18,6 +18,22 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class FooterInfo extends Composite {
 
+    public enum FooterInfoViews {
+
+        FAQ("FAQ"),
+        ABOUT_US("AboutUs"),
+        PRIVACY_POLICY("PrivacyPolicy");
+
+        private FooterInfoViews(String value) {
+            this.value = value;
+        }
+        private String value;
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     /**************************************************************************/
     /* UiBinders & UiTemplates                                                  */
     /**************************************************************************/

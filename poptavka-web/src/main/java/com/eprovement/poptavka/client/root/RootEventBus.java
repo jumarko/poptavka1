@@ -120,8 +120,11 @@ public interface RootEventBus extends EventBusWithLookup {
     void setFooter(SimplePanel footerHolder);
 
     /**************************************************************************/
-    /* Navigation events.                                                     */
+    /* History events.                                                     */
     /**************************************************************************/
+    @Event(historyConverter = RootHistoryConverter.class, name = "view")
+    String createCustomToken(String param);
+
     /**************************************************************************/
     /* Navigation events - Home menu control section                          */
     /**************************************************************************/

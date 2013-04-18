@@ -52,7 +52,7 @@ public final class Constants {
     public static final int USER_ADMININSTRATION_MODULE = -9;
 
     /**************************************************************************/
-    /* Table Views Contants                                                   */
+    /* Widget Views Contants                                                  */
     /**************************************************************************/
     /* Home demands module - view types */
     public static final int HOME_DEMANDS_BY_DEFAULT = 80;
@@ -215,4 +215,5 @@ public final class Constants {
     public static final int THANK_YOU_POPUP_DISPLAY_TIME = 3000;
     public static final int REGISTER_MAX_CATEGORIES = 5;
     public static final int REGISTER_MAX_LOCALITIES = 5;
+    public static final String PATH_TO_TOKEN_FOR_VIEWS = "homeWelcome/view?";
 }
