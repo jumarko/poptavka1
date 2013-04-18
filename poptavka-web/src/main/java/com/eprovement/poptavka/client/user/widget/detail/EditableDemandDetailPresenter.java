@@ -103,7 +103,7 @@ public class EditableDemandDetailPresenter extends
                         view.getSelectorWidgetPopup(),
                         Constants.WITH_CHECK_BOXES,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getLocalities());
+                        view.getLocalities(), true);
                 view.getSelectorWidgetPopup().center();
             }
         });

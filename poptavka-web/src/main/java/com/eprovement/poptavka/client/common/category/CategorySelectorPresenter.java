@@ -130,10 +130,10 @@ public class CategorySelectorPresenter
     /**************************************************************************/
     private CategoryDetail getSelectedObjectOverAllowedMax() {
         for (CategoryDetail selectedCategory : view.getCellBrowserSelectionModel().getSelectedSet()) {
-            if (!view.getCellListSelectionModel().getSelectedSet().contains(selectedCategory)) {
+            if (!view.getCellListDataProvider().getList().contains(selectedCategory)) {
                 return selectedCategory;
             }
         }
-        return null;
+        return new CategoryDetail();
     }
 }

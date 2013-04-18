@@ -76,7 +76,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<LocalityDetail> localitiesToSet);
+        List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
 
     /**************************************************************************/
     /* History events                                                         */

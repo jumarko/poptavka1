@@ -52,5 +52,5 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus {
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedWidget, int checkboxes, int displayCountsOfWhat,
-            List<LocalityDetail> localitiesToSet);
+            List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
 }

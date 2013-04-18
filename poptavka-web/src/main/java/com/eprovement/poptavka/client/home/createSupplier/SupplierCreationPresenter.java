@@ -171,7 +171,7 @@ public class SupplierCreationPresenter
                             view.getHolderPanel(THIRD_TAB_LOCALITY),
                             Constants.WITH_CHECK_BOXES,
                             CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
-                            null);
+                            null, true);
                 }
                 break;
             case FOURTH_TAB_SERVICES:

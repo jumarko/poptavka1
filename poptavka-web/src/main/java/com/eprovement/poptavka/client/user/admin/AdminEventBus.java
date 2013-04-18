@@ -97,7 +97,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-            List<LocalityDetail> categoriesToSet);
+            List<LocalityDetail> categoriesToSet, boolean selectionRestriction);
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);

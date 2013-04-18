@@ -240,12 +240,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onInitLocalityWidget(SimplePanel holderPanel, int checkboxes, int displayCountsOfWhat,
-            List<LocalityDetail> localitiesToSet) {
+            List<LocalityDetail> localitiesToSet, boolean selectinoRestriction) {
         if (localitySelector != null) {
             eventBus.removeHandler(localitySelector);
         }
         localitySelector = eventBus.addHandler(LocalitySelectorPresenter.class);
-        localitySelector.initLocalityWidget(holderPanel, checkboxes, displayCountsOfWhat, localitiesToSet);
+        localitySelector.initLocalityWidget(holderPanel, checkboxes, displayCountsOfWhat,
+                localitiesToSet, selectinoRestriction);
     }
 
     public void onInitAddressWidget(SimplePanel holderPanel) {

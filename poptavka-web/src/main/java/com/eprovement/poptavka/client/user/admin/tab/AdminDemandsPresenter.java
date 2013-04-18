@@ -171,7 +171,7 @@ public class AdminDemandsPresenter
                         view.getAdminDemandDetail().getSelectorWidgetPopup(),
                         Constants.WITH_CHECK_BOXES,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminDemandDetail().getLocalities());
+                        view.getAdminDemandDetail().getLocalities(), true);
                 view.getAdminDemandDetail().getSelectorWidgetPopup().center();
             }
         });

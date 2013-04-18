@@ -254,7 +254,7 @@ public class SearchModulePresenter
                                         view.getAdvanceSearchContentView().getLocalitySelectorPanel(),
                                         Constants.WITH_CHECK_BOXES,
                                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                                        null);
+                                        null, false);
                             }
                             break;
                         default:

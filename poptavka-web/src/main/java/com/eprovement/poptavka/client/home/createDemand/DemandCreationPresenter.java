@@ -166,7 +166,7 @@ public class DemandCreationPresenter
                             view.getHolderPanel(FOURTH_TAB_LOCALITY),
                             Constants.WITH_CHECK_BOXES,
                             CategoryCell.DISPLAY_COUNT_OF_DEMANDS,
-                            null);
+                            null, true);
                 }
                 break;
             case FIFTH_TAB_DEMAND_ADVANCE_FORM:
