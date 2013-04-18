@@ -248,7 +248,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return Storage.DATE_FORMAT.format(((IUniversalDetail) object).getReceivedDate());
+                            return Storage.DATE_FORMAT_SHORT.format(((IUniversalDetail) object).getReceivedDate());
                         }
                     });
         }
@@ -262,7 +262,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
                     new UniversalAsyncGrid.GetValue<String>() {
                         @Override
                         public String getValue(Object object) {
-                            return Storage.DATE_FORMAT.format(((IUniversalDetail) object).getDeliveryDate());
+                            return Storage.DATE_FORMAT_SHORT.format(((IUniversalDetail) object).getDeliveryDate());
                         }
                     });
         }

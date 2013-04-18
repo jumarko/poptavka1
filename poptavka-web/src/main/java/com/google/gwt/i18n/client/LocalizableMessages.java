@@ -21,7 +21,8 @@ public interface LocalizableMessages extends Messages {
     /*** 0 - Root module view ******************************************* 0 ***/
     /*** ATTRIBUTES ***********************************************************/
     /** Formats i18n. **/
-    String formatDate();
+    String formatDateShort();
+    String formatDateLong();
     String formatCurrency();
     String formatCurrencySign();
 
@@ -45,10 +46,12 @@ public interface LocalizableMessages extends Messages {
 
     /** Common labels. **/
     String commonCategoriesLabel();
+    String commonCategorySelectionRestriction();
     String commonClient();
     String commonEmptyCredentials();
     String commonEmptyTable();
     String commonLocalitiesLabel();
+    String commonLocalitySelectionRestriction();
     String commonNoData();
     String commonNotDefined();
     String commonNotRanked();
@@ -63,6 +66,9 @@ public interface LocalizableMessages extends Messages {
     String commonListUnread();
     String commonListStarred();
     String commonListUnstarred();
+
+    /** Placeholders. **/
+    String placeholderDemandDesciption();
 
     /** Form section info labels . **/
     String formAccountInfo();
@@ -210,6 +216,7 @@ public interface LocalizableMessages extends Messages {
     /** # ThankYouPopup.ui **/
     String thankYouAcceptOffer();
     String thankYouContactUs();
+    String thankYouCreateDemand();
     String thankYouFeedback();
     String thankYouSendOffer();
 

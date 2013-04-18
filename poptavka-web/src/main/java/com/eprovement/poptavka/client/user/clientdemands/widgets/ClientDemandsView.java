@@ -178,7 +178,7 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return Storage.DATE_FORMAT.format(((ClientDemandDetail) object).getEndDate());
+                        return Storage.DATE_FORMAT_SHORT.format(((ClientDemandDetail) object).getEndDate());
                     }
                 });
 
@@ -230,7 +230,8 @@ public class ClientDemandsView extends Composite
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return Storage.DATE_FORMAT.format(((ClientDemandConversationDetail) object).getMessageSent());
+                        return Storage.DATE_FORMAT_SHORT.format(
+                                ((ClientDemandConversationDetail) object).getMessageSent());
                     }
                 });
     }

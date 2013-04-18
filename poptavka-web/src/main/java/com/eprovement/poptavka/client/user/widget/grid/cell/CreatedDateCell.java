@@ -4,7 +4,6 @@ import com.eprovement.poptavka.client.common.DateUtils;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.DateCell;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -24,8 +23,6 @@ import java.util.Date;
  */
 public class CreatedDateCell extends DateCell {
 
-    public static final DateTimeFormat TIME_FORMATTER = DateTimeFormat.getFormat("hh:mm");
-
     private SafeHtmlRenderer<Date> renderer = new AbstractSafeHtmlRenderer<Date>() {
         @Override
         public SafeHtml render(Date demandCreation) {
@@ -33,12 +30,12 @@ public class CreatedDateCell extends DateCell {
                 return SafeHtmlUtils.fromTrustedString(Storage.MSGS.commonNotDefined());
             } else {
                 if (CalendarUtil.isSameDate(DateUtils.getNowDate(), demandCreation)) {
-                    return SafeHtmlUtils.fromTrustedString(TIME_FORMATTER.format(demandCreation));
+                    return SafeHtmlUtils.fromTrustedString(Storage.TIME_FORMATTER.format(demandCreation));
                 }
                 if (CalendarUtil.isSameDate(DateUtils.getYesterdayDate(), demandCreation)) {
                     return SafeHtmlUtils.fromTrustedString(Storage.MSGS.creationDateYesterday());
                 }
-                return SafeHtmlUtils.fromTrustedString(Storage.DATE_FORMAT.format(demandCreation));
+                return SafeHtmlUtils.fromTrustedString(Storage.DATE_FORMAT_SHORT.format(demandCreation));
             }
         }
     };

@@ -140,7 +140,7 @@ public class MessageListView extends Composite implements MessageListPresenter.M
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        return Storage.DATE_FORMAT.format(((MessageDetail) object).getCreated());
+                        return Storage.DATE_FORMAT_SHORT.format(((MessageDetail) object).getCreated());
                     }
                 });
     }

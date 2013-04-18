@@ -76,7 +76,7 @@
                                     </g:north>
                                     <g:center>
                                         <g:ScrollPanel>
-                                            <d:DemandDetailView ui:field="demandDetail"/>
+                                            <d:DemandDetailView ui:field="demandDetail" advancedView="false" />
                                         </g:ScrollPanel>
                                     </g:center>
                                 </g:DockLayoutPanel>

@@ -161,7 +161,7 @@ public class SupplierCreationPresenter
                             view.getHolderPanel(SECOND_TAB_CATEGORY),
                             Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
                             CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
-                            null);
+                            null, true);
                 }
                 break;
             case THIRD_TAB_LOCALITY:
@@ -171,7 +171,7 @@ public class SupplierCreationPresenter
                             view.getHolderPanel(THIRD_TAB_LOCALITY),
                             Constants.WITH_CHECK_BOXES,
                             CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
-                            null);
+                            null, true);
                 }
                 break;
             case FOURTH_TAB_SERVICES:

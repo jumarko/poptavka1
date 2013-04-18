@@ -15,9 +15,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class RatingDetailView extends Composite {
 
-    private static DemandDetailViewUiBinder uiBinder = GWT.create(DemandDetailViewUiBinder.class);
+    private static RatingDetailViewUiBinder uiBinder = GWT.create(RatingDetailViewUiBinder.class);
 
-    interface DemandDetailViewUiBinder extends UiBinder<Widget, RatingDetailView> {
+    interface RatingDetailViewUiBinder extends UiBinder<Widget, RatingDetailView> {
     }
     /**************************************************************************/
     /* ATTRIBUTES                                                             */

@@ -1,7 +1,10 @@
 package com.eprovement.poptavka.client.common.category;
 
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.root.ReverseCompositeView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.cellbrowser.CustomCellBrowser;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -13,17 +16,16 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.mvp4g.client.view.ReverseViewInterface;
 
-public class CategorySelectorView extends Composite
-        implements ProvidesValidate, ReverseViewInterface<CategorySelectorPresenter>, CategorySelectorInterface {
+public class CategorySelectorView extends ReverseCompositeView<CategorySelectorPresenter>
+        implements ProvidesValidate, CategorySelectorInterface {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -34,26 +36,14 @@ public class CategorySelectorView extends Composite
     }
 
     /**************************************************************************/
-    /* PRESENTER                                                              */
-    /**************************************************************************/
-    @Override
-    public void setPresenter(CategorySelectorPresenter presenter) {
-        this.categorySelectorPresenter = presenter;
-    }
-
-    @Override
-    public CategorySelectorPresenter getPresenter() {
-        return categorySelectorPresenter;
-    }
-    /**************************************************************************/
     /* ATTRIBUTES                                                              */
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField HTML loader;
+    @UiField Label selectedCountLabel;
     @UiField SimplePanel cellBrowserHolder;
     @UiField(provided = true) CellList<CategoryDetail> cellList;
     /** Class attributes. **/
-    private CategorySelectorPresenter categorySelectorPresenter;
     MultiSelectionModel cellBrowserSelectionModel = new MultiSelectionModel();
     SingleSelectionModel cellListSelectionModel = new SingleSelectionModel();
     ListDataProvider<CategoryDetail> cellListDataProvider = new ListDataProvider<CategoryDetail>();
@@ -75,12 +65,23 @@ public class CategorySelectorView extends Composite
         CellBrowser.Resources resource = GWT.create(CustomCellBrowser.class);
         CellBrowser cellBrowser = new CellBrowser(new CategoryTreeViewModel(
                 cellBrowserSelectionModel,
-                categorySelectorPresenter.getCategoryService(),
-                categorySelectorPresenter.getEventBus(),
+                presenter.getCategoryService(),
+                presenter.getEventBus(),
                 checkboxes, displayCountsOfWhat,
                 null), null, resource);
         cellBrowser.setAnimationEnabled(true);
         cellBrowserHolder.setWidget(cellBrowser);
+    }
+
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public void setSelectedCountLabel(int count) {
+        selectedCountLabel.setText(
+                Storage.MSGS.commonSelected().concat(" (").concat(
+                Integer.toString(count)).concat("/").concat(
+                Integer.toString(Constants.REGISTER_MAX_CATEGORIES)).concat("):"));
     }
 
     /**************************************************************************/

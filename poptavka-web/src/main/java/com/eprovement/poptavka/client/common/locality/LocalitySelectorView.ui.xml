@@ -21,9 +21,9 @@
         </g:center>
         <g:south size="40">
             <g:HTMLPanel styleName='{res.common.selectedItemsWidget}'>
-                <g:HTMLPanel styleName="selected-Label">
-                    <ui:msg key="commonSelected">Selected</ui:msg>
-                </g:HTMLPanel>
+                <g:Label ui:field="selectedCountLabel" styleName="selected-Label">
+                    <ui:msg key="commonSelected" >Selected</ui:msg>:
+                </g:Label>
                 <g:ScrollPanel styleName='scroll-Container'>
                     <c:CellList ui:field="cellList"/>
                 </g:ScrollPanel>

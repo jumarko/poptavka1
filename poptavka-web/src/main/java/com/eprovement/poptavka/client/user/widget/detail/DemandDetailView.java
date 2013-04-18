@@ -8,9 +8,11 @@ import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
@@ -35,6 +37,7 @@ public class DemandDetailView extends Composite {
     /** UiBinder attributes. **/
     @UiField(provided = true) CellList categories, localities;
     @UiField Label demandName, price, endDate, description, clientRating;
+    @UiField Column ratingColumn;
     @UiField Image urgency;
     @UiField Tooltip urgencyTooltip;
     /** Class attributes. **/
@@ -45,11 +48,19 @@ public class DemandDetailView extends Composite {
     /**************************************************************************/
     /* INITIALIZATON                                                          */
     /**************************************************************************/
-    //Constructors
-    public DemandDetailView() {
+    /**
+     * Detail view of demand
+     *
+     * @param advancedView true to show fields for admin, false to show fields for clients
+     */
+
+    @UiConstructor
+    public DemandDetailView(boolean advancedView) {
         categories = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
         localities = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
         initWidget(uiBinder.createAndBindUi(this));
+
+        ratingColumn.setVisible(advancedView);
 
         StyleResource.INSTANCE.detailViews().ensureInjected();
     }
@@ -63,7 +74,7 @@ public class DemandDetailView extends Composite {
         demandName.setText(demandDetail.getTitle());
         clientRating.setText(Integer.toString(demandDetail.getClientRating()));
         price.setText(Storage.CURRENCY_FORMAT.format(demandDetail.getPrice()));
-        endDate.setText(Storage.DATE_FORMAT.format(demandDetail.getEndDate()));
+        endDate.setText(Storage.DATE_FORMAT_LONG.format(demandDetail.getEndDate()));
         setValidTo(demandDetail.getValidTo());
         categories.setRowData(demandDetail.getCategories());
         localities.setRowData(demandDetail.getLocalities());

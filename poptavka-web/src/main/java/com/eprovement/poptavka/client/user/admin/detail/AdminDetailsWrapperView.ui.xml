@@ -23,7 +23,7 @@
                 <ui:msg key="detailsWrapperTabDemandDetail">Demand detail</ui:msg>
             </g:header>
             <g:ScrollPanel>
-                <d:DemandDetailView ui:field="demandDetail" />
+                <d:DemandDetailView ui:field="demandDetail" advancedView="true" />
             </g:ScrollPanel>
         </g:tab>
         <g:tab>

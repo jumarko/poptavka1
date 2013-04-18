@@ -172,7 +172,7 @@ public class AdminSuppliersPresenter
                         view.getAdminSupplierDetail().getSelectorWidgetPopup(),
                         Constants.WITH_CHECK_BOXES,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminSupplierDetail().getCategories());
+                        view.getAdminSupplierDetail().getCategories(), true);
                 view.getAdminSupplierDetail().getSelectorWidgetPopup().center();
             }
         });
@@ -183,7 +183,7 @@ public class AdminSuppliersPresenter
                         view.getAdminSupplierDetail().getSelectorWidgetPopup(),
                         Constants.WITH_CHECK_BOXES,
                         CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminSupplierDetail().getLocalities());
+                        view.getAdminSupplierDetail().getLocalities(), true);
                 view.getAdminSupplierDetail().getSelectorWidgetPopup().center();
             }
         });

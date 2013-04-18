@@ -43,7 +43,9 @@ public final class Storage {
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final ValidationMessages VMSGS = GWT.create(ValidationMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
-    public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(MSGS.formatDate());
+    public static final DateTimeFormat TIME_FORMATTER = DateTimeFormat.getFormat("hh:mm a");
+    public static final DateTimeFormat DATE_FORMAT_SHORT = DateTimeFormat.getFormat(MSGS.formatDateShort());
+    public static final DateTimeFormat DATE_FORMAT_LONG = DateTimeFormat.getFormat(MSGS.formatDateLong());
     //Define own custom currency number formater because we don't want cents to be displayed.
     //Otherwise just use NumberFormat.getCurrencyFormater() to format currency numbers;
     public static final NumberFormat CURRENCY_FORMAT = NumberFormat.getFormat(MSGS.formatCurrency());

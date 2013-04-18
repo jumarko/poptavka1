@@ -296,7 +296,7 @@ public interface RootEventBus extends EventBusWithLookup {
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet);
+        List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
 
     /**************************************************************************/
     /* LOCALITY SELECTOR WIDGET.                                              */
@@ -304,7 +304,7 @@ public interface RootEventBus extends EventBusWithLookup {
     /** LocalitySelector section. **/
     @Event(handlers = RootPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<LocalityDetail> localitiesToSet);
+        List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
 
     /**************************************************************************/
     /* ADDRESS SELECTOR WIDGET.                                               */

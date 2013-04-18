@@ -59,11 +59,11 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
 
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet);
+        List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<LocalityDetail> localitiesToSet);
+        List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
 
     @Event(forwardToParent = true)
     void initServicesWidget(SimplePanel embedToWidget);
