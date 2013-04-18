@@ -37,6 +37,9 @@ public interface DetailViews extends CssResource {
     @ClassName("detail-category-label")
     String detailCategoryLabel();
 
+    @ClassName("rating-container")
+    String ratingContainer();
+
     @ClassName("detail-locality-label")
     String detailLocalityLabel();
 
