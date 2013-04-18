@@ -88,10 +88,13 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
      * @return list of user messages.
      */
     @Override
-    public List<UserMessage> getConversationUserMessages(Message threadRoot, User supplierUser) {
+    public List<UserMessage> getConversationUserMessages(Message threadRoot, User supplierUser, User senderUser) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("threadRoot", threadRoot);
         queryParams.put("supplier", supplierUser);
+        // TODO RELEASE Vojto - please incorporate senderUser so that we can restrict the result of conversation
+        // between 2 users only.
+//        queryParams.put("sender", senderUser);
 
         return runNamedQuery("getConversationUserMessages", queryParams);
     }

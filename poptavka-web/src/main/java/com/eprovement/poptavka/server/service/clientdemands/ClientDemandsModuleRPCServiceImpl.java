@@ -314,6 +314,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set Supplier attributes
             final Supplier supplier = findSupplier(userMessageEntry.getValue().getSupplier().getId());
             cdcd.setSupplierId(supplier.getId());
+            // TODO RELEASE ivlcek - refactor this senderId
             cdcd.setSenderId(supplier.getBusinessUser().getId());
             cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             cdcd.setRating(supplier.getOveralRating().intValue());
@@ -445,6 +446,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setSupplierId(offer.getSupplier().getId());
             codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
+            // TODO RELEASE ivlcek - supplierUserId is basically a senderId. I should refactor this for all methods
             codod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());

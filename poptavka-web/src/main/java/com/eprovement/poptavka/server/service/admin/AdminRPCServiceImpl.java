@@ -1019,7 +1019,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         final Search searchDefinition = new Search(UserMessage.class);
         searchDefinition.addSort("message.created", true);
         return this.messageService
-                .getConversationUserMessages(threadRoot, user, searchDefinition);
+                .getConversationUserMessages(threadRoot, user, user, searchDefinition);
     }
 
     /**

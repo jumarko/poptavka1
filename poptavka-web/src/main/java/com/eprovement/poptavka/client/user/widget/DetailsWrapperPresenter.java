@@ -168,13 +168,14 @@ public class DetailsWrapperPresenter
      * @param supplierId
      * @param threadRootId
      */
-    public void initDetails(long demandId, long threadRootId) {
+    public void initDetails(long demandId, long threadRootId, long senderId) {
         reset();
         view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
         this.demandId = demandId;
         this.threadRootId = threadRootId;
-        // senderId is always taken from Storage when Supplier presenters invoke this method
-//        this.senderId = Storage.getUser().getUserId();
+        // senderId is always client's userId for SupplierDemandsPresenter, SupplierAssignedPresenter
+        // and SupplierOffersPresenter
+        this.senderId = senderId;
         view.getContainer().selectTab(CONVERSATION_TAB, false);
         requestActualTabData();
     }
@@ -303,7 +304,7 @@ public class DetailsWrapperPresenter
      */
     public void requestConversation(long threadRootId, long userId) {
         view.loadingDivShow(view.getConversationHolder());
-        eventBus.requestConversation(threadRootId, userId);
+        eventBus.requestConversation(threadRootId, userId, senderId);
     }
 
     /**************************************************************************/

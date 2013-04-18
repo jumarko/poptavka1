@@ -192,9 +192,9 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException,
+    public List<MessageDetail> getConversation(long threadId, long userId, long senderId) throws RPCException,
         ApplicationSecurityException {
-        final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId);
+        final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId, senderId);
         // set all user messages as read
         for (UserMessage userMessage : userMessages) {
             userMessage.setRead(true);
@@ -203,14 +203,15 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
         return userMessageConverter.convertToTargetList(userMessages);
     }
 
-    private List<UserMessage> getConversationUserMessages(long threadId, long userId) {
+    private List<UserMessage> getConversationUserMessages(long threadId, long userId, long senderId) {
         Message threadRoot = messageService.getById(threadId);
 
         User user = this.generalService.find(User.class, userId);
+        User sender = this.generalService.find(User.class, senderId);
         final Search searchDefinition = new Search(UserMessage.class);
         searchDefinition.addSort("message.created", true);
         return this.messageService
-                .getConversationUserMessages(threadRoot, user, searchDefinition);
+                .getConversationUserMessages(threadRoot, user, sender, searchDefinition);
     }
 
     /**************************************************************************/

@@ -119,6 +119,7 @@ public class SupplierOffersPresenter extends LazyPresenter<
             view.getDetailPanel().setVisible(true);
             detailSection.initDetails(
                     demandDetail.getDemandId(),
+                    demandDetail.getSenderId(),
                     demandDetail.getThreadRootId());
         }
     }

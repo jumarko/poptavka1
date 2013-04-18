@@ -153,7 +153,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         // the same test but returns UserMessage instead of Messages
         // -> search definition is empty since we don't want to apply any further search criteria
         final List<UserMessage> potentialDemandConversationUserMessages =
-                this.messageService.getConversationUserMessages(threadRoot, supplier, null);
+                this.messageService.getConversationUserMessages(threadRoot, supplier, null, null);
 
         Assert.assertEquals(4, potentialDemandConversationUserMessages.size());
         // check if all expected messages are in conversation
@@ -173,7 +173,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         searchDefinition.addSort("message.created", true);
 
         final List<UserMessage> potentialDemandConversationUserMessages =
-                this.messageService.getConversationUserMessages(threadRoot, supplier, searchDefinition);
+                this.messageService.getConversationUserMessages(threadRoot, supplier, null, searchDefinition);
 
         Assert.assertEquals(4, potentialDemandConversationUserMessages.size());
         // check if all expected messages are in conversation
