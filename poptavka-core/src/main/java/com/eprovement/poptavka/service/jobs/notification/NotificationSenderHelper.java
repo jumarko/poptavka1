@@ -7,6 +7,7 @@ import com.eprovement.poptavka.service.notification.NotificationService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import org.apache.commons.lang.Validate;
 import org.joda.time.DateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,7 @@ class NotificationSenderHelper {
      * @param period last period for which the notifications will be sent, can be either {@link Period.DAILY}
      *               or {@link Period.WEEKLY}.
      */
+    @Transactional
     public void sendNotifications(Period period) {
         final Date createdDateFrom;
         switch(period) {
