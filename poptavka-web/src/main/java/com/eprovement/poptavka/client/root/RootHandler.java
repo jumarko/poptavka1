@@ -68,12 +68,28 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * @param threadId
      * @param userId
      */
-    public void onRequestConversation(Long threadId, Long userId) {
+    public void onRequestConversation(Long threadId, final Long userId) {
         rootService.getConversation(threadId, userId,
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<MessageDetail> result) {
                         eventBus.responseConversation(result);
+                    }
+                });
+    }
+
+    /**
+     * Update isRead status of all messages for given User.
+     *
+     * @param userId user whose UserMessages will be udpated
+     * @param messages messages to be updated as read
+     */
+    public void onUpdateUserMessagesReadStatus(Long userId, List<MessageDetail> messages) {
+        rootService.updateUserMessagesReadStatus(userId, messages,
+                new SecuredAsyncCallback<Void>(eventBus) {
+                    @Override
+                    public void onSuccess(Void result) {
+                        // userMessages in DB are updated thus there is no need to invoke other methods.
                     }
                 });
     }

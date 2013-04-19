@@ -14,11 +14,12 @@
         .tabIndex4 {z-index: 4;}
         .tabIndex5 {z-index: 5;}
     </ui:style>
-    
+
     <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
         <g:center>
             <g:TabLayoutPanel ui:field='mainPanel' stylePrimaryName='{res.createTabPanel.createTabPanel}'
-                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='70'>
+                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='70'
+                              animationDuration="1000" >
                 <!--1 -->
                 <g:tab>
                     <g:customHeader size="30">
@@ -47,19 +48,19 @@
                                             <ui:msg key="demandCreationRegisterBtn">Register for FREE</ui:msg>
                                         </g:Button>
                                     </b:Column>
-                                </b:FluidRow>                                    
+                                </b:FluidRow>
                             </b:FluidContainer>
-                            <b:FluidContainer ui:field="panel2" styleName='{res.layout.fullSize}'>                                
-                                <b:FluidRow>                                    
-                                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>                                    
+                            <b:FluidContainer ui:field="panel2" styleName='{res.layout.fullSize}'>
+                                <b:FluidRow>
+                                    <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                                 </b:FluidRow>
                                 <b:FluidRow>
-                                    <b:Column size="12">                                    
+                                    <b:Column size="12">
                                         <g:SimplePanel ui:field="contentHolder1" styleName='formContainer' />
                                     </b:Column>
-                                </b:FluidRow>                               
+                                </b:FluidRow>
                                 <b:FluidRow>
-                                    <b:Column size="12">   
+                                    <b:Column size="12">
                                         <g:HTMLPanel styleName='formFooter'>
                                             <g:Label>
                                                 <ui:msg key="formRequiredFields">* fields are required</ui:msg>
@@ -74,9 +75,9 @@
                                             </g:HTMLPanel>
                                         </g:HTMLPanel>
                                     </b:Column>
-                                </b:FluidRow>                                
+                                </b:FluidRow>
                             </b:FluidContainer>
-                        </g:HTMLPanel>              
+                        </g:HTMLPanel>
                     </g:ScrollPanel>
                 </g:tab>
                 <!--2 -->
@@ -87,12 +88,12 @@
                         </g:HTML>
                     </g:customHeader>
                     <g:ScrollPanel>
-                        <g:HTMLPanel>                            
+                        <g:HTMLPanel>
                             <b:FluidRow>
                                 <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
                             </b:FluidRow>
                             <b:FluidRow>
-                                <b:Column size="12">                             
+                                <b:Column size="12">
                                     <g:HTMLPanel>
                                         <g:SimplePanel ui:field="contentHolder2" styleName='formContainer' />
                                         <g:HTMLPanel styleName='formFooter'>
@@ -107,7 +108,7 @@
                                         </g:HTMLPanel>
                                     </g:HTMLPanel>
                                 </b:Column>
-                            </b:FluidRow>                            
+                            </b:FluidRow>
                         </g:HTMLPanel>
                     </g:ScrollPanel>
                 </g:tab>
@@ -139,7 +140,7 @@
                                         </g:center>
                                     </g:DockLayoutPanel>
                                 </b:Column>
-                            </b:FluidRow>                        
+                            </b:FluidRow>
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <g:HTMLPanel styleName='formFooter'>
@@ -183,9 +184,9 @@
                                                 <g:SimplePanel ui:field="contentHolder4" styleName='formContainer' />
                                             </g:ScrollPanel>
                                         </g:center>
-                                    </g:DockLayoutPanel>     
+                                    </g:DockLayoutPanel>
                                 </b:Column>
-                            </b:FluidRow>                            
+                            </b:FluidRow>
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <g:HTMLPanel styleName='formFooter'>
@@ -199,9 +200,9 @@
                                         </g:HTMLPanel>
                                     </g:HTMLPanel>
                                 </b:Column>
-                            </b:FluidRow>                            
+                            </b:FluidRow>
                         </g:HTMLPanel>
-                    </g:ScrollPanel>                    
+                    </g:ScrollPanel>
                 </g:tab>
                 <!--5 -->
                 <g:tab>
@@ -219,7 +220,7 @@
                                 <b:Column size="12">
                                     <g:SimplePanel ui:field="contentHolder5" styleName='formContainer' />
                                 </b:Column>
-                            </b:FluidRow>                            
+                            </b:FluidRow>
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:FluidContainer>
@@ -241,9 +242,9 @@
                         </g:HTMLPanel>
                     </g:ScrollPanel>
                 </g:tab>
-            </g:TabLayoutPanel>                        
+            </g:TabLayoutPanel>
         </g:center>
-        <g:south size="30">            
+        <g:south size="30">
             <g:Widget ui:field="footer"/>
         </g:south>
     </g:DockLayoutPanel>

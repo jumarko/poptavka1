@@ -45,7 +45,7 @@ import javax.persistence.NamedQuery;
                         + " where "
                         // either message itself is thread root or it has given thread root
                         + " (userMessage.message = :threadRoot OR userMessage.message.threadRoot = :threadRoot)"
-                        + "   and userMessage.user = :supplier"),
+                        + "   and userMessage.user = :user"),
 
         @NamedQuery(name = "getPotentialOfferConversation",
                 query = " select userMessage.message"

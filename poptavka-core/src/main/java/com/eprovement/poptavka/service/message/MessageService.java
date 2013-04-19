@@ -108,7 +108,8 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      *                         such as sorting, paging, ...
      * @return
      */
-    List<UserMessage> getConversationUserMessages(Message message, User supplierUser, Search searchDefinition);
+    List<UserMessage> getConversationUserMessages(Message message, User supplierUser,
+            Search searchDefinition);
 
     /**
      * Returns message thread root assigned to given demand.

@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  *
- * @author PC
+ * @author ivlcek
  */
 public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
 
@@ -34,6 +34,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     private Date deliveryDate;
     private int messageCount;
     private long clientId;
+    private long senderId;
     private String clientName;
     private String title;
     //Keyprovider
@@ -114,20 +115,6 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
      */
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
-    }
-
-    /**
-     * @return the supplierUserId
-     */
-    public long getSupplierUserId() {
-        return supplierUserId;
-    }
-
-    /**
-     * @param supplierUserId the supplierUserId to set
-     */
-    public void setSupplierUserId(long supplierUserId) {
-        this.supplierUserId = supplierUserId;
     }
 
     /**
@@ -253,7 +240,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
 
     @Override
     public long getSenderId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.senderId;
     }
 
     @Override
@@ -320,5 +307,9 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     @Override
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
+    }
+
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
     }
 }

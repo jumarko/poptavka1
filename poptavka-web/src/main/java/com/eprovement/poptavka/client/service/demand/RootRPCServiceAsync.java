@@ -35,6 +35,8 @@ public interface RootRPCServiceAsync {
 
     void getConversation(long threadId, long userId, AsyncCallback<List<MessageDetail>> callback);
 
+    void updateUserMessagesReadStatus(long userId, List<MessageDetail> messages, AsyncCallback<Void> callback);
+
     /**************************************************************************/
     /* Message methods                                                        */
     /**************************************************************************/
