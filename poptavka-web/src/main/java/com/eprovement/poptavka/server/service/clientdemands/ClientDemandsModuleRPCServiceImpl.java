@@ -446,7 +446,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setSupplierId(offer.getSupplier().getId());
             codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
-            // TODO RELEASE ivlcek - supplierUserId is basically a senderId. I should refactor this for all methods
+            codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());
             codod.setDemandId(offer.getDemand().getId());
@@ -543,6 +543,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setSupplierId(offer.getSupplier().getId());
             codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
+            codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());
             codod.setPrice(offer.getPrice());
@@ -614,6 +615,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setSupplierId(offer.getSupplier().getId());
             codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
+            codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());
             codod.setPrice(offer.getPrice());
