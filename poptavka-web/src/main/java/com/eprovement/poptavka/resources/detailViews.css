@@ -113,6 +113,42 @@
     -webkit-border-radius: 4px 4px;
 }
 
+.rating-container {
+}
+
+.rating-container .well {
+    border: 1px solid #199204;
+    background: url(images/feedback-selection_bg.gif) repeat-x #199204;
+    padding: 10px 20px;
+    margin-bottom: 7px;
+    cursor: pointer;
+}
+
+.rating-container .well  h4,
+.rating-container .well p,
+.rating-container .well .gwt-Label {
+    color: #ffffff;
+}
+
+.rating-container .well .gold-star {
+    background: url(images/feedback-stars.png) no-repeat 0 -40px;
+    width: 31px;
+    height: 40px;
+    float: left;
+}
+
+.rating-container .well .grey-star {
+    background: url(images/feedback-stars.png) no-repeat 0 -120px;
+    width: 31px;
+    height: 40px;
+    float: left;
+}
+
+.rating-container .rating-block {
+    float: left;
+    margin-right: 15px;
+}
+
 /*  conversation DETAIL SECTION  */
 .conversation-container {
     background: #ffffff;

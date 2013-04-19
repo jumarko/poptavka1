@@ -14,8 +14,8 @@
             </b:Heading>
         </g:north>
         <g:center>
-            <g:ScrollPanel>
-                <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent}'>
+            <g:ScrollPanel styleName='{res.layout.fullSize}'>
+                <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent} {res.detailViews.ratingContainer}'>
                     <!--Client-->
                     <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
                         <b:Column size='12'>
@@ -24,7 +24,7 @@
                             </b:Heading>
                         </b:Column>
                     </b:FluidRow>
-                    <b:FluidRow>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
                         <b:Column size='12'>
                             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                                 <ui:msg key="formClientName">Client name:</ui:msg>
@@ -32,22 +32,32 @@
                             <g:Label ui:field="clientName" addStyleNames='{res.detailViews.detailStrong}'/>
                         </b:Column>
                     </b:FluidRow>
-                    <b:FluidRow>
-                        <b:WellForm>
-                            <b:Column size="2">
-                                <g:Image ui:field="clientStarImg"/>
-                            </b:Column>
-                            <b:Column size="5">
-                                <b:Heading size="4" ui:field="clientHeading"/>
-                            </b:Column>
-                            <b:Column size="5">
-                                <b:Paragraph>
-                                    <g:Label ui:field="clientCommentDefault"/>
-                                </b:Paragraph>
-                            </b:Column>
-                        </b:WellForm>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                        <b:Column size='12'>
+                            <b:WellForm>
+                                <b:FluidRow>
+                                    <b:Column size="5">
+                                        <g:Image ui:field="clientStarImg"/>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    </b:Column>
+                                    <b:Column size="7">
+                                        <b:Heading size="4" ui:field="clientHeading"/>
+                                    </b:Column>
+                                </b:FluidRow> 
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <b:Paragraph>
+                                            <g:Label ui:field="clientCommentDefault"/>
+                                        </b:Paragraph>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:WellForm>
+                        </b:Column>
                     </b:FluidRow>
-                    <b:FluidRow>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
                         <b:Column size='12'>
                             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                                 <ui:msg key="formRateComment">Additional comment:</ui:msg>
@@ -64,7 +74,7 @@
                             </b:Heading>
                         </b:Column>
                     </b:FluidRow>
-                    <b:FluidRow>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
                         <b:Column size='12'>
                             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                                 <ui:msg key="formSupplierName">Supplier name:</ui:msg>
@@ -72,23 +82,31 @@
                             <g:Label ui:field="supplierName" addStyleNames='{res.detailViews.detailStrong}'/>
                         </b:Column>
                     </b:FluidRow>
-                    <b:FluidRow>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
                         <b:WellForm>
-                            <b:Column size="2">
-                                <g:Image ui:field="supplierStarImg"/>
-                            </b:Column>
-                            <b:Column size="5">
-                                <b:Heading size="4" ui:field="supplierHeading"/>
-                            </b:Column>
-                            <b:Column size="5">
-                                <b:Paragraph>
-                                    <g:Label ui:field="supplierCommentDefault"/>
-                                </b:Paragraph>
-                            </b:Column>
+                            <b:FluidRow>
+                                <b:Column size="5">
+                                    <g:Image ui:field="supplierStarImg"/>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                </b:Column>
+                                <b:Column size="7">
+                                    <b:Heading size="4" ui:field="supplierHeading"/>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <b:Paragraph>
+                                        <g:Label ui:field="supplierCommentDefault"/>
+                                    </b:Paragraph>
+                                </b:Column>
+                            </b:FluidRow>
                         </b:WellForm>
                     </b:FluidRow>
 
-                    <b:FluidRow>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
                         <b:Column size='12'>
                             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                                 <ui:msg key="formRateComment">Additional comment:</ui:msg>
