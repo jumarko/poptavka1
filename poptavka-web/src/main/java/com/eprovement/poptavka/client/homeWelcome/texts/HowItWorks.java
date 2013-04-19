@@ -16,6 +16,21 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class HowItWorks extends Composite {
 
+    public enum HowItWorksViews {
+
+        HOW_IT_WORKS_DEMAND("HowItWorksDemand"),
+        HOW_IT_WORKS_SUPPLIER("HowItWorksSupplier");
+
+        private HowItWorksViews(String value) {
+            this.value = value;
+        }
+        private String value;
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     /**************************************************************************/
     /* UiBinders & UiTemplates                                                */
     /**************************************************************************/

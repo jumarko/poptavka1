@@ -190,6 +190,12 @@ public class ClientDemandsView extends Composite
      * Create all columns to the grid.
      */
     public void initConversationTableColumns() {
+        // Check box column
+        conversationGrid.addCheckboxColumn();
+
+        // Star column
+        conversationGrid.addStarColumn();
+
         // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnSupplierName(),
@@ -209,19 +215,19 @@ public class ClientDemandsView extends Composite
                     }
                 });
 
-        // Demand price column
+        // Text column
         bodyPreviewColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnText(),
                 true, BODY_PREVIEW_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {
-                        StringBuilder str = new StringBuilder();
-                        str.append(((ClientDemandConversationDetail) object).getMessageBody());
-                        str.append("...");
-                        return str.toString();
+                        return ((ClientDemandConversationDetail) object).getMessageBody();
                     }
                 });
+
+        // Demand rating column
+        conversationGrid.addRatingColumn();
 
         // Date column
         dateColumn = conversationGrid.addColumn(

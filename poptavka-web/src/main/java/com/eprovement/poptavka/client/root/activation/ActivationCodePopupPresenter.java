@@ -2,6 +2,8 @@ package com.eprovement.poptavka.client.root.activation;
 
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
@@ -9,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -106,8 +109,8 @@ public class ActivationCodePopupPresenter
         view.getStatusLabel().setPassedSmall(activated);
 
         //inform user
-        switch(activationResult) {
-            case OK :
+        switch (activationResult) {
+            case OK:
                 reportActivationSuccessAndLoginUser();
                 break;
             case ERROR_UNKNOWN_USER:
@@ -137,24 +140,27 @@ public class ActivationCodePopupPresenter
         }
     }
 
-
     private void reportActivationSuccessAndLoginUser() {
         view.getStatusLabel().setMessage(MSGS.activationPassed());
         view.getStatusLabel().setState(StatusIconLabel.State.ACCEPT_24);
         //close activation popup
         ((PopupPanel) view.getWidgetView()).hide();
         //login user automatically
-        eventBus.autoLogin(
-                user.getEmail(),
-                user.getPassword(),
-                widgetToLoad);
+        Timer additionalAction = new Timer() {
+            @Override
+            public void run() {
+                eventBus.autoLogin(
+                        user.getEmail(),
+                        user.getPassword(),
+                        widgetToLoad);
+            }
+        };
+        ThankYouPopup.create(Storage.MSGS.thankYouCodeActivated(), additionalAction);
     }
-
 
     private void reportActivationFailure(String errorMessage) {
         view.getStatusLabel().setMessage(errorMessage);
         view.getStatusLabel().setState(StatusIconLabel.State.ERROR_24);
         view.getReportButton().setVisible(true);
     }
-
 }

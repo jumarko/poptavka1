@@ -220,6 +220,7 @@ public interface LocalizableMessages extends Messages {
     String thankYouCreateDemand();
     String thankYouFeedback();
     String thankYouSendOffer();
+    String thankYouCodeActivated();
 
     /** ActivationCodePopupView.ui. **/
     String activationBtnActivate();
@@ -361,6 +362,7 @@ public interface LocalizableMessages extends Messages {
     String demandStatusInactive();
     String demandStatusInvalid();
     String demandStatusNew();
+    String demandStatusOffered();
     String demandStatusToBeChecked();
 
     /** Explanation texts for Offer state icon column. **/

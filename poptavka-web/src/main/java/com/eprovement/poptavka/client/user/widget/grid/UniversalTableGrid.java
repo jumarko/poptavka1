@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
@@ -42,12 +43,14 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private Column<IUniversalDetail, String> receiveDateColumn;
     private Column<IUniversalDetail, String> finnishDateColumn;
     //table column contants
-    private static final String DEMAND_TITLE_COLUMN = "demandTitle";
-    private static final String RATING_COLUMN = "rating";
-    private static final String PRICE_COLUMN = "price";
-    private static final String URGENCY_COLUMN = "endDate";
-    private static final String RECEIVED_DATE_COLUMN = "receivedDate"; //Prijate
-    private static final String FINNISH_DATE_COLUMN = "finnishDate"; //Dodanie/dorucenie
+    private static final String COLUMN_CHECK_BOX = "";
+    private static final String COLUMN_STAR = "";
+    private static final String COLUMN_DEMAND_TITLE = DemandField.TITLE.getValue();
+    private static final String COLUMN_RATING = "rating";
+    private static final String COLUMN_PRICE = DemandField.PRICE.getValue();
+    private static final String COLUMN_URGENCY = DemandField.VALID_TO_DATE.getValue();
+    private static final String COLUMN_RECEIVED_DATE = "receivedDate"; //Prijate
+    private static final String COLUMN_FINNISH_DATE = "finnishDate"; //Dodanie/dorucenie
     private List<String> gridColumns = new ArrayList<String>();
     //Other
     private MultiSelectionModel<IUniversalDetail> selectionModel;
@@ -119,11 +122,13 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initClientOffers() {
         gridColumns.clear();
-        gridColumns.add(DEMAND_TITLE_COLUMN);
-        gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(RATING_COLUMN);
-        gridColumns.add(FINNISH_DATE_COLUMN);
-        gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(COLUMN_CHECK_BOX);
+        gridColumns.add(COLUMN_STAR);
+        gridColumns.add(COLUMN_DEMAND_TITLE);
+        gridColumns.add(COLUMN_PRICE);
+        gridColumns.add(COLUMN_RATING);
+        gridColumns.add(COLUMN_FINNISH_DATE);
+        gridColumns.add(COLUMN_RECEIVED_DATE);
     }
 
     /**
@@ -131,11 +136,13 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initClientAssignedDemands() {
         gridColumns.clear();
-        gridColumns.add(DEMAND_TITLE_COLUMN);
-        gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(FINNISH_DATE_COLUMN);
-        gridColumns.add(RATING_COLUMN);
-        gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(COLUMN_CHECK_BOX);
+        gridColumns.add(COLUMN_STAR);
+        gridColumns.add(COLUMN_DEMAND_TITLE);
+        gridColumns.add(COLUMN_PRICE);
+        gridColumns.add(COLUMN_FINNISH_DATE);
+        gridColumns.add(COLUMN_RATING);
+        gridColumns.add(COLUMN_RECEIVED_DATE);
     }
 
     /**
@@ -143,11 +150,12 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initSupplierPotentialDemands() {
         gridColumns.clear();
-        gridColumns.add(DEMAND_TITLE_COLUMN);
-        gridColumns.add(RATING_COLUMN);
-        gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(URGENCY_COLUMN);
-//        gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(COLUMN_CHECK_BOX);
+        gridColumns.add(COLUMN_STAR);
+        gridColumns.add(COLUMN_DEMAND_TITLE);
+        gridColumns.add(COLUMN_RATING);
+        gridColumns.add(COLUMN_PRICE);
+        gridColumns.add(COLUMN_URGENCY);
     }
 
     /**
@@ -155,11 +163,13 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initSupplierOffers() {
         gridColumns.clear();
-        gridColumns.add(DEMAND_TITLE_COLUMN);
-        gridColumns.add(RATING_COLUMN);
-        gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(FINNISH_DATE_COLUMN);
-        gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(COLUMN_CHECK_BOX);
+        gridColumns.add(COLUMN_STAR);
+        gridColumns.add(COLUMN_DEMAND_TITLE);
+        gridColumns.add(COLUMN_RATING);
+        gridColumns.add(COLUMN_PRICE);
+        gridColumns.add(COLUMN_FINNISH_DATE);
+        gridColumns.add(COLUMN_RECEIVED_DATE);
     }
 
     /**
@@ -167,105 +177,117 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      */
     private void initSupplierAssignedDemands() {
         gridColumns.clear();
-        gridColumns.add(DEMAND_TITLE_COLUMN);
-        gridColumns.add(RATING_COLUMN);
-        gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(FINNISH_DATE_COLUMN);
-        gridColumns.add(RECEIVED_DATE_COLUMN);
+        gridColumns.add(COLUMN_CHECK_BOX);
+        gridColumns.add(COLUMN_STAR);
+        gridColumns.add(COLUMN_DEMAND_TITLE);
+        gridColumns.add(COLUMN_RATING);
+        gridColumns.add(COLUMN_PRICE);
+        gridColumns.add(COLUMN_FINNISH_DATE);
+        gridColumns.add(COLUMN_RECEIVED_DATE);
     }
 
     /**
      * Create all columns to the grid according to needed schema represented by gridColumns attribute.
      */
     public void initTableColumns() {
-        // CheckBox column header - always create this header
+        if (gridColumns.contains(COLUMN_CHECK_BOX)) {
+            checkColumn = this.addCheckboxColumn();
+        }
+        if (gridColumns.contains(COLUMN_STAR)) {
+            starColumn = super.addStarColumn();
+        }
+        if (gridColumns.contains(COLUMN_DEMAND_TITLE)) {
+            demandTitleColumn = this.addDemandTitleColumn();
+        }
+        if (gridColumns.contains(COLUMN_RATING)) {
+            ratingColumn = super.addRatingColumn();
+        }
+        if (gridColumns.contains(COLUMN_PRICE)) {
+            priceColumn = this.addPriceColumn();
+        }
+        if (gridColumns.contains(COLUMN_URGENCY)) {
+            urgencyColumn = super.addUrgentColumn();
+        }
+        if (gridColumns.contains(COLUMN_RECEIVED_DATE)) {
+            receiveDateColumn = this.addReceivedDateColumn();
+        }
+        if (gridColumns.contains(COLUMN_FINNISH_DATE)) {
+            finnishDateColumn = this.addFinnishDateColumn();
+        }
+    }
+
+    public Column<IUniversalDetail, Boolean> addCheckboxColumn() {
         checkHeader = new Header<Boolean>(new CheckboxCell()) {
             @Override
             public Boolean getValue() {
                 return false;
             }
         };
-        // CheckBox column - always create this column
-        checkColumn = addCheckboxColumn(checkHeader);
-        // Star Column - always create this column
-        starColumn = addStarColumn();
-
-        addDemandTitleColumn();
-        ratingColumn = addRatingColumn();
-        addPriceColumn();
-
-        if (gridColumns.contains(URGENCY_COLUMN)) {
-            urgencyColumn = addUrgentColumn();
-        }
-
-        addReceivedDateColumn();
-        addFinnishDateColumn();
+        return super.addCheckboxColumn(checkHeader);
     }
 
-    private void addDemandTitleColumn() {
-        if (gridColumns.contains(DEMAND_TITLE_COLUMN)) {
-            demandTitleColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(),
-                    true, Constants.COL_WIDTH_TITLE,
-                    new UniversalAsyncGrid.GetValue<String>() {
-                        @Override
-                        public String getValue(Object object) {
-                            IUniversalDetail detail = (IUniversalDetail) object;
-                            if (detail.getMessageCount() > 0) {
-                                StringBuilder title = new StringBuilder();
-                                title.append(detail.getTitle());
-                                title.append(" (");
-                                title.append(detail.getMessageCount());
-                                title.append(")");
-                                return title.toString();
-                            } else {
-                                return detail.getTitle();
-                            }
-                        }
-                    });
-        }
+    @Override
+    public Column<IUniversalDetail, Boolean> addStarColumn() {
+        starColumn = super.addStarColumn();
+        return starColumn;
     }
 
-    private void addPriceColumn() {
-        if (gridColumns.contains(PRICE_COLUMN)) {
-            priceColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(),
-                    true, Constants.COL_WIDTH_PRICE,
-                    new UniversalAsyncGrid.GetValue<String>() {
-                        @Override
-                        public String getValue(Object object) {
-                            return Storage.CURRENCY_FORMAT.format(((IUniversalDetail) object).getPrice());
-                        }
-                    });
-        }
+    private Column<IUniversalDetail, String> addDemandTitleColumn() {
+        return super.addColumn(
+                TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnTitle(),
+                true, Constants.COL_WIDTH_TITLE,
+                new UniversalAsyncGrid.GetValue<String>() {
+                @Override
+                public String getValue(Object object) {
+                    IUniversalDetail detail = (IUniversalDetail) object;
+                    if (detail.getMessageCount() > 0) {
+                        StringBuilder title = new StringBuilder();
+                        title.append(detail.getTitle());
+                        title.append(" (");
+                        title.append(detail.getMessageCount());
+                        title.append(")");
+                        return title.toString();
+                    } else {
+                        return detail.getTitle();
+                    }
+                }
+            });
     }
 
-    private void addReceivedDateColumn() {
-        if (gridColumns.contains(RECEIVED_DATE_COLUMN)) {
-            receiveDateColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnReceived(),
-                    true, Constants.COL_WIDTH_DATE,
-                    new UniversalAsyncGrid.GetValue<String>() {
-                        @Override
-                        public String getValue(Object object) {
-                            return Storage.DATE_FORMAT_SHORT.format(((IUniversalDetail) object).getReceivedDate());
-                        }
-                    });
-        }
+    private Column<IUniversalDetail, String> addPriceColumn() {
+        return super.addColumn(
+                TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnPrice(),
+                true, Constants.COL_WIDTH_PRICE,
+                new UniversalAsyncGrid.GetValue<String>() {
+                @Override
+                public String getValue(Object object) {
+                    return Storage.CURRENCY_FORMAT.format(((IUniversalDetail) object).getPrice());
+                }
+            });
     }
 
-    private void addFinnishDateColumn() {
-        if (gridColumns.contains(FINNISH_DATE_COLUMN)) {
-            finnishDateColumn = addColumn(
-                    TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnDeliveryDate(),
-                    true, Constants.COL_WIDTH_DATE,
-                    new UniversalAsyncGrid.GetValue<String>() {
-                        @Override
-                        public String getValue(Object object) {
-                            return Storage.DATE_FORMAT_SHORT.format(((IUniversalDetail) object).getDeliveryDate());
-                        }
-                    });
-        }
+    private Column<IUniversalDetail, String> addReceivedDateColumn() {
+        return super.addColumn(
+                TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnReceived(),
+                true, Constants.COL_WIDTH_DATE,
+                new UniversalAsyncGrid.GetValue<String>() {
+                @Override
+                public String getValue(Object object) {
+                    return Storage.DATE_FORMAT_SHORT.format(((IUniversalDetail) object).getReceivedDate());
+                }
+            });
+    }
+
+    private Column<IUniversalDetail, String> addFinnishDateColumn() {
+        return super.addColumn(
+                TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnDeliveryDate(),
+                true, Constants.COL_WIDTH_DATE,
+                new UniversalAsyncGrid.GetValue<String>() {
+                @Override
+                public String getValue(Object object) {
+                    return Storage.DATE_FORMAT_SHORT.format(((IUniversalDetail) object).getDeliveryDate());
+                }
+            });
     }
 
     /**************************************************************************/
