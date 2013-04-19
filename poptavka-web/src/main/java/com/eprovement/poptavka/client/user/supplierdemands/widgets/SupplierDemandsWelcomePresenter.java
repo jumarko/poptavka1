@@ -8,6 +8,9 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
+import com.github.gwtbootstrap.client.ui.FluidRow;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HTML;
@@ -22,8 +25,6 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
 
     public interface SupplierDemandsWelcomeViewInterface extends LazyView, IsWidget {
 
-        IsWidget getWidgetView();
-
         HTML getPotentialDemandsUnreadMessages();
 
         HTML getOfferedDemandsUnreadMessages();
@@ -31,6 +32,16 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
         HTML getAssignedDemandsUnreadMessages();
 
         HTML getClosedDemandsUnreadMessages();
+
+        FluidRow getPotentialDemandsRow();
+
+        FluidRow getOfferedDemandsRow();
+
+        FluidRow getAssignedDemandsRow();
+
+        FluidRow getClosedDemandsRow();
+
+        IsWidget getWidgetView();
     }
 
     /**************************************************************************/
@@ -49,6 +60,30 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
     /**************************************************************************/
     @Override
     public void bindView() {
+        view.getPotentialDemandsRow().addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_POTENTIAL_DEMANDS);
+            }
+        }, ClickEvent.getType());
+        view.getOfferedDemandsRow().addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_OFFERS);
+            }
+        }, ClickEvent.getType());
+        view.getAssignedDemandsRow().addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
+            }
+        }, ClickEvent.getType());
+        view.getClosedDemandsRow().addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CLOSED_DEMANDS);
+            }
+        }, ClickEvent.getType());
     }
 
     /**************************************************************************/
@@ -69,19 +104,19 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
      */
     public void onLoadSupplierDashboardDetail(SupplierDashboardDetail dashboard) {
         view.getPotentialDemandsUnreadMessages().setHTML(((new SafeHtmlBuilder())
-                    .append(Storage.MSGS.youHave())
+                .append(Storage.MSGS.youHave())
                     .append(getNumberIntoString(dashboard.getUnreadMessagesPotentialDemandsCount()))
                     .append(Storage.MSGS.inPotentialDemands())).toSafeHtml());
         view.getOfferedDemandsUnreadMessages().setHTML(((new SafeHtmlBuilder())
-                    .append(Storage.MSGS.youHave())
+                .append(Storage.MSGS.youHave())
                     .append(getNumberIntoString(dashboard.getUnreadMessagesOfferedDemandsCount()))
                     .append(Storage.MSGS.inOfferedDemands())).toSafeHtml());
         view.getAssignedDemandsUnreadMessages().setHTML(((new SafeHtmlBuilder())
-                    .append(Storage.MSGS.youHave())
+                .append(Storage.MSGS.youHave())
                     .append(getNumberIntoString(dashboard.getUnreadMessagesAssignedDemandsCount()))
                     .append(Storage.MSGS.inAssignedDemands())).toSafeHtml());
         view.getClosedDemandsUnreadMessages().setHTML(((new SafeHtmlBuilder())
-                    .append(Storage.MSGS.youHave())
+                .append(Storage.MSGS.youHave())
                     .append(getNumberIntoString(dashboard.getUnreadMessagesClosedDemandsCount()))
                     .append(Storage.MSGS.inClosedDemands())).toSafeHtml());
     }
@@ -95,5 +130,4 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
             return Storage.MSGS.manyMessages(Integer.toString(number));
         }
     }
-
 }
