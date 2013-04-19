@@ -48,7 +48,7 @@
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formUrgency">Urgency: </ui:msg>
                 </g:Label>
-                <cm:UrgencySelectorView ui:field="urgencySelector" />
+                <cm:UrgencySelectorView ui:field="urgencySelector" advancedView="true"/>
             </b:Column>
         </b:FluidRow>
                     

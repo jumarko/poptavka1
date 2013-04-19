@@ -79,7 +79,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                             eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
                         }
                     };
-                    ThankYouPopup.create(Storage.MSGS.thankYouFeedback(), additionalAction);
+                    ThankYouPopup.create(Storage.MSGS.thankYouCreateDemand(), additionalAction);
                 }
             });
         LOGGER.info("submitting new demand");
