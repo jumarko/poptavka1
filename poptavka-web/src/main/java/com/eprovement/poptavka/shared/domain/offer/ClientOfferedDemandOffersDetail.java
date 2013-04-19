@@ -24,7 +24,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     private long offerId;
     private long threadRootId;
     private long supplierId;
-    private long supplierUserId;
+    private long senderId;
     private long userMessageId;
     private boolean isStarred;
     private boolean isRead;
@@ -238,7 +238,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
 
     @Override
     public long getSenderId() {
-        return this.supplierUserId;
+        return this.senderId;
     }
 
     @Override
@@ -274,8 +274,8 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     @Override
     public String toString() {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
-                + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
-                + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
+                + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", senderId="
+                + senderId + ", isStarred=" + isStarred + ", supplierName="
                 + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", isRead="
                 + isRead + '}';
@@ -289,5 +289,12 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     @Override
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
+    }
+
+    /**
+     * @param senderId the senderId to set
+     */
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
     }
 }
