@@ -47,7 +47,9 @@ public interface RootRPCService extends RemoteService {
 
     FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException;
 
-    List<MessageDetail> getConversation(long threadId, long userId, long senderId) throws RPCException;
+    List<MessageDetail> getConversation(long threadId, long userId) throws RPCException;
+
+    void updateUserMessagesReadStatus(long userId, List<MessageDetail> messages) throws RPCException;
 
     /**************************************************************************/
     /* Message methods                                                        */

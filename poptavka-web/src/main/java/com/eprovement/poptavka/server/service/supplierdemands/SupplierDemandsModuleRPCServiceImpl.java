@@ -193,7 +193,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // Message part
             detail.setMessageId(um.getMessage().getId());
             detail.setThreadRootId(um.getMessage().getThreadRoot().getId());
-            detail.setSenderId(um.getMessage().getSender().getId());
             detail.setMessageSent(um.getMessage().getSent());
             // UserMessage part
             detail.setUserMessageId(um.getId());
@@ -260,7 +259,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
-            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             // Client name can be displayed because it contrains only contact person name
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
@@ -336,7 +334,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
-            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -416,7 +413,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // supplier part
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
-            sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
             // client part
             sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
@@ -612,7 +608,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         sod.setUserMessageId(latestUserMessage.getId());
         // latestUserMessage object
         sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
-        sod.setSupplierUserId(offer.getSupplier().getBusinessUser().getId());
         return sod;
     }
 

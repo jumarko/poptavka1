@@ -118,20 +118,6 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     }
 
     /**
-     * @return the supplierUserId
-     */
-    public long getSupplierUserId() {
-        return supplierUserId;
-    }
-
-    /**
-     * @param supplierUserId the supplierUserId to set
-     */
-    public void setSupplierUserId(long supplierUserId) {
-        this.supplierUserId = supplierUserId;
-    }
-
-    /**
      * @return the supplierName
      */
     @Override

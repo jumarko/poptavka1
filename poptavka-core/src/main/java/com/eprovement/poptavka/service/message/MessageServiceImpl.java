@@ -157,11 +157,10 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public List<UserMessage> getConversationUserMessages(Message threadRoot, User supplierUser, User senderUser,
+    public List<UserMessage> getConversationUserMessages(Message threadRoot, User user,
         Search search) {
 
-        final List<UserMessage> allConversionMessages = getDao().getConversationUserMessages(threadRoot, supplierUser,
-                senderUser);
+        final List<UserMessage> allConversionMessages = getDao().getConversationUserMessages(threadRoot, user);
         if (search == null) {
             return allConversionMessages;
         }

@@ -192,26 +192,48 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<MessageDetail> getConversation(long threadId, long userId, long senderId) throws RPCException,
+    public List<MessageDetail> getConversation(long threadId, long userId) throws RPCException,
         ApplicationSecurityException {
-        final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId, senderId);
-        // set all user messages as read
-        for (UserMessage userMessage : userMessages) {
-            userMessage.setRead(true);
-            userMessageService.update(userMessage);
-        }
+        final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId);
         return userMessageConverter.convertToTargetList(userMessages);
     }
 
-    private List<UserMessage> getConversationUserMessages(long threadId, long userId, long senderId) {
+    private List<UserMessage> getConversationUserMessages(long threadId, long userId) {
         Message threadRoot = messageService.getById(threadId);
 
         User user = this.generalService.find(User.class, userId);
-        User sender = this.generalService.find(User.class, senderId);
         final Search searchDefinition = new Search(UserMessage.class);
         searchDefinition.addSort("message.created", true);
-        return this.messageService
-                .getConversationUserMessages(threadRoot, user, sender, searchDefinition);
+        return this.messageService.getConversationUserMessages(threadRoot, user, searchDefinition);
+    }
+
+    /**
+     * Update isRead status of all messages for given User.
+     *
+     * @param userId user whose UserMessages will be udpated
+     * @param messages messages to be updated as read
+     */
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public void updateUserMessagesReadStatus(long userId, List<MessageDetail> messages) throws RPCException,
+        ApplicationSecurityException {
+        final Search search = new Search(UserMessage.class);
+        search.addFilterIn("message.id", getMessageIds(messages));
+        search.addFilterEqual("user.id", userId);
+        search.addFilterEqual("isRead", false);
+        List<UserMessage> unreadUserMessages = generalService.search(search);
+        for (UserMessage userMessage : unreadUserMessages) {
+            userMessage.setRead(true);
+            userMessageService.update(userMessage);
+        }
+    }
+
+    private List<Long> getMessageIds(List<MessageDetail> messages) {
+        List<Long> messageIds = new ArrayList<>(messages.size());
+        for (MessageDetail message : messages) {
+            messageIds.add(message.getMessageId());
+        }
+        return messageIds;
     }
 
     /**************************************************************************/
