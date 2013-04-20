@@ -7,10 +7,10 @@
              type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:style>
         .important {
-        font-weight: bold;
+            font-weight: bold;
         }
     </ui:style>
-    
+
     <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
         <g:north size="49">
             <g:HTMLPanel>
