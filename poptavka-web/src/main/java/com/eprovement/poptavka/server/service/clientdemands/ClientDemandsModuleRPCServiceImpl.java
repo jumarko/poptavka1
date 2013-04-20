@@ -472,7 +472,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
             // set demand attributes
-            codod.setTitle(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setTitle(offer.getDemand().getTitle());
 
             listCodod.add(codod);
         }
