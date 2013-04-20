@@ -218,9 +218,10 @@ public interface LocalizableMessages extends Messages {
     String thankYouAcceptOffer();
     String thankYouContactUs();
     String thankYouCreateDemand();
-    String thankYouFeedback();
+    String thankYouFinishDemand();
     String thankYouSendOffer();
     String thankYouCodeActivated();
+    String thankYouClosedDemand();
 
     /** ActivationCodePopupView.ui. **/
     String activationBtnActivate();

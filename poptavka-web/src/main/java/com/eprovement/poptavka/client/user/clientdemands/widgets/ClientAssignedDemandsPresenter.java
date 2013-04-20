@@ -145,7 +145,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
             }
         };
-        ThankYouPopup.create(Storage.MSGS.thankYouCreateDemand(), additionalAction);
+        ThankYouPopup.create(Storage.MSGS.thankYouClosedDemand(), additionalAction);
     }
 
     /**
