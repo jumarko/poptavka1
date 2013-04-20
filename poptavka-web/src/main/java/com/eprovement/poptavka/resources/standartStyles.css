@@ -845,6 +845,8 @@ a,a:visited,a:hover {
 
 .gwt-SuggestBoxPopup {
     margin-left: 3px;
+    z-index:100;
+    min-width:0;
 }
 
 .gwt-SuggestBoxPopup .item {

@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
@@ -108,7 +107,7 @@ public class ServicesSelectorView extends Composite
 //        }, Storage.MSGS.columnDuration());
 
         //Set table and columns sizes
-        table.setSize("500px", "300px");
+        table.setSize("100%", "245px");
         table.setColumnWidth(0, "35px");
         table.setColumnWidth(1, "55px");
         table.setColumnWidth(2, "210px");

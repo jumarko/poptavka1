@@ -16,7 +16,7 @@
             </g:HTMLPanel>
         </g:north>
         <g:center>
-            <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
+            <g:ScrollPanel styleName='{res.layout.bodyFullContainer} {res.layout.bodyFullContainerBg}'>
                 <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
                     <g:HTMLPanel styleName='content-step first-step'>
                         <g:Label styleName="circle-label"><ui:msg key="step">step</ui:msg></g:Label>

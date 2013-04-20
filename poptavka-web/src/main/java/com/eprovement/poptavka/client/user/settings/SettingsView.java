@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.user.settings;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -55,7 +56,7 @@ public class SettingsView extends Composite implements
             infoStatus2.setVisible(false);
             menuClientBtn.setVisible(false);
         }
-
+        StyleResource.INSTANCE.detailViews().ensureInjected();
         createNotifyPopup();
     }
 

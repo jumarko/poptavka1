@@ -39,13 +39,17 @@ body>div {
 
 .body-content {
     background: #e1dcc8;
-    margin: 64px auto 20px;
+    margin: 16px auto 20px;
     padding: 15px;
     width: 950px;
     min-height: 350px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+}
+
+.body-full-container-bg {
+    background: url(images/left-container-top2.png) no-repeat scroll left top;
 }
 
 .body-full-container {
@@ -438,7 +442,7 @@ body>div {
 }
 
 .submenu-list {
-    background: url(images/left-container-top.png) no-repeat top right;
+    background: url(images/left-container-top.png) no-repeat top left;
     list-style: none outside none;
     margin: 0;
     padding: 20px 0 0 13px;

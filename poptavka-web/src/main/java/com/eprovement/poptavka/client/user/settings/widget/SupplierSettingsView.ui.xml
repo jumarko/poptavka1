@@ -10,78 +10,97 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
-
+    
     <ui:style>
-        .decorationPanel {
-        width: 100%;
-        }
+        .button-position {
+        margin: 0 7px 0 23px;
+        }        
     </ui:style>
 
-    <g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
-        <g:ScrollPanel>
-            <b:FluidContainer>
-                <b:FluidRow>
-                    <b:Column size="1">
-                        <g:Label>
-                            <ui:msg key='formRating'>Rating:</ui:msg>
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="1">
-                        <g:IntegerBox ui:field='supplierRating' />
-                    </b:Column>
-                    <b:Column size="10" />
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <g:Label>
-                            <ui:msg key='supplierSettingsCategories'>Categories(only suppliers):</ui:msg>
-                        </g:Label>
-                        <g:Button ui:field="editCatBtn">
-                            <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                        </g:Button>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <cm:ListChangeMonitor ui:field='categoriesMonitor'>
-                            <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' />
-                        </cm:ListChangeMonitor>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <g:Label>
-                            <ui:msg key='supplierSettingsLocalities'>Localities(only suppliers):</ui:msg>
-                        </g:Label>
-                        <g:Button ui:field="editLocBtn">
-                            <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                        </g:Button>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <cm:ListChangeMonitor ui:field='localitiesMonitor'>
-                            <c:CellList ui:field="localities" styleName='{res.detailViews.detailCategoryLabel}'/>
-                        </cm:ListChangeMonitor>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <g:Label>
-                            <ui:msg key='supplierServices'>Services:</ui:msg>
-                        </g:Label>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <g:SimplePanel ui:field="servicePanel" />
-                        <g:Anchor ui:field="revert" visible="false">
-                            <ui:msg key="commonBtnRevert">Revert</ui:msg>
-                        </g:Anchor>
-                    </b:Column>
-                </b:FluidRow>
-            </b:FluidContainer>
-        </g:ScrollPanel>
-    </g:DecoratorPanel>
-
+    <b:FluidContainer>
+        <b:FluidRow>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='supplierSettingsCategories'>Categories(only suppliers):</ui:msg>
+                                /
+                                <ui:msg key='supplierSettingsLocalities'>Localities(only suppliers):</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key='formRating'>Rating:</ui:msg>
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <g:IntegerBox ui:field='supplierRating' />
+                        </b:Column>                
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <g:Label>
+                                <ui:msg key='supplierSettingsCategories'>Categories(only suppliers):</ui:msg>
+                            </g:Label>                            
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="2">
+                            <g:Button ui:field="editCatBtn" styleName='{res.common.toolbarButtonGrey} {style.button-position}'>
+                                <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                            </g:Button>
+                        </b:Column>                            
+                        <b:Column size="10">
+                            <cm:ListChangeMonitor ui:field='categoriesMonitor'>
+                                <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' />
+                            </cm:ListChangeMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <g:Label>
+                                <ui:msg key='supplierSettingsLocalities'>Localities(only suppliers):</ui:msg>
+                            </g:Label>                            
+                        </b:Column>
+                    </b:FluidRow>        
+                    <b:FluidRow>
+                        <b:Column size="2">
+                            <g:Button ui:field="editLocBtn" styleName='{res.common.toolbarButtonGrey} {style.button-position}'>
+                                <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                            </g:Button>
+                        </b:Column>
+                        <b:Column size="10">
+                            <cm:ListChangeMonitor ui:field='localitiesMonitor'>
+                                <c:CellList ui:field="localities" styleName='{res.detailViews.detailCategoryLabel}'/>
+                            </cm:ListChangeMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='supplierServices'>Services:</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="1"></b:Column>
+                        <b:Column size="10">
+                            <g:SimplePanel ui:field="servicePanel" />
+                            <g:Anchor ui:field="revert" visible="false">
+                                <ui:msg key="commonBtnRevert">Revert</ui:msg>
+                            </g:Anchor>
+                        </b:Column>
+                        <b:Column size="1"></b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

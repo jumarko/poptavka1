@@ -16,7 +16,7 @@
             </g:HTMLPanel>
         </g:north>
         <g:center>
-            <g:ScrollPanel>
+            <g:ScrollPanel styleName='{res.layout.bodyFullContainerBg}'>
                 <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
                     <h1>About Want-Something.com</h1>
                     <g:Label>Portal Want-Someting.com is designed for professional individuals and companies to present
