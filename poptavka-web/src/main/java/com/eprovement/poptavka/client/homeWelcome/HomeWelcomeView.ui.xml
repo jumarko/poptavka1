@@ -12,8 +12,7 @@
         }
 
         .hidden {
-        visibility:
-        hidden;
+        visibility: hidden;
         display: none;
         }
 
@@ -135,67 +134,80 @@
         border-radius: 0 0 5px 5px;
         }
     </ui:style>
-
-    <g:ScrollPanel styleName='{res.layout.bodyFullContainer}'>
-        <g:HTMLPanel addStyleNames='{res.layout.bodyContent} {style.homepage-container}'>
-            <g:HTMLPanel styleName="{style.banner1}">
-                <b:Heading size="4" styleName="{style.header}">
-                    <ui:msg key="iamProfessional">I''m Professional</ui:msg>
-                </b:Heading>
-                <g:Label styleName="{style.subheader}">
-                    <ui:msg key="iamProfessionalNext">looking for new business!</ui:msg>
-                </g:Label>
-                <g:Label styleName="{style.banner-content}">
-                    <ui:msg key="iamProfessionalDesc">
-                        Are you looking for new business opportunities?
-                        We are providing hundreds of projects on one site.
-                        Let the Clients contact you easily.
-                    </ui:msg>
-                </g:Label>
-                <g:Button ui:field="suppliersBtn"
-                          addStyleNames="{style.banner-link} {style.banner-link1-position}">
-                    <ui:msg key="allProfessionals">All Professionals</ui:msg>
-                </g:Button>
-                <g:Button ui:field="howItWorksSupplierBtn"
-                          addStyleNames="{style.banner-link} {style.banner-link2-position}">
-                    <ui:msg key="howItWorks">How it works?</ui:msg>
-                </g:Button>
-                <g:Button ui:field="registerSupplierBtn"
-                          addStyleNames="{style.banner-button}">
-                    <ui:msg key="signUpAsPro">Sign up as Professional</ui:msg>
-                </g:Button>
+    
+    
+    <g:DockLayoutPanel unit="PX"
+                       styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
+        <g:north size="49">
+            <g:HTMLPanel>
+                <h2 class='{res.layout.toolbarHeader}'>
+                    <ui:msg key="menuHome">Home</ui:msg>
+                </h2>
             </g:HTMLPanel>
-            <g:HTMLPanel styleName="{style.banner2}">
-                <b:Heading size="4" styleName="{style.header}">
-                    <ui:msg key="placeProject">Place Project</ui:msg>
-                </b:Heading>
-                <g:Label styleName="{style.subheader}">
-                    <ui:msg key="placeProjectNext">and find Professionals now</ui:msg>
-                </g:Label>
-                <g:Label styleName="{style.banner-content}">
-                    <ui:msg key="placeProjectDesc">
-                        Is there anything you need to get done?
-                        Find suitable Professionals online and save your time and money.
-                    </ui:msg>
-                </g:Label>
-                <g:Button ui:field="demandsBtn"
+        </g:north>
+        <g:center>
+            <g:ScrollPanel styleName='{res.layout.bodyFullContainer} {res.layout.bodyFullContainerBg}'>
+                <g:HTMLPanel addStyleNames='{res.layout.bodyContent} {style.homepage-container}'>
+                    <g:HTMLPanel styleName="{style.banner1}">
+                        <b:Heading size="4" styleName="{style.header}">
+                            <ui:msg key="iamProfessional">I''m Professional</ui:msg>
+                        </b:Heading>
+                        <g:Label styleName="{style.subheader}">
+                            <ui:msg key="iamProfessionalNext">looking for new business!</ui:msg>
+                        </g:Label>
+                        <g:Label styleName="{style.banner-content}">
+                            <ui:msg key="iamProfessionalDesc">
+                                Are you looking for new business opportunities?
+                                We are providing hundreds of projects on one site.
+                                Let the Clients contact you easily.
+                            </ui:msg>
+                        </g:Label>
+                        <g:Button ui:field="suppliersBtn"
                           addStyleNames="{style.banner-link} {style.banner-link1-position}">
-                    <ui:msg key="allProjects">All Projects</ui:msg>
-                </g:Button>
-                <g:Button ui:field="howItWorksDemandBtn"
+                            <ui:msg key="allProfessionals">All Professionals</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field="howItWorksSupplierBtn"
                           addStyleNames="{style.banner-link} {style.banner-link2-position}">
-                    <ui:msg key="howItWorks">How it works?</ui:msg>
-                </g:Button>
-                <g:Button ui:field="registerDemandBtn"
+                            <ui:msg key="howItWorks">How it works?</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field="registerSupplierBtn"
                           addStyleNames="{style.banner-button}">
-                    <ui:msg key="placeProjects">Place Project</ui:msg>
-                </g:Button>
-            </g:HTMLPanel>
-            <g:HTMLPanel styleName="{style.banner3}"></g:HTMLPanel>
-            <g:FlowPanel ui:field="categorySection" styleName="{style.category-list}" >
-                <c:CellList ui:field="categoryList" />
-            </g:FlowPanel>
-            <g:Widget ui:field="footer"/>
-        </g:HTMLPanel>
-    </g:ScrollPanel>
+                            <ui:msg key="signUpAsPro">Sign up as Professional</ui:msg>
+                        </g:Button>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName="{style.banner2}">
+                        <b:Heading size="4" styleName="{style.header}">
+                            <ui:msg key="placeProject">Place Project</ui:msg>
+                        </b:Heading>
+                        <g:Label styleName="{style.subheader}">
+                            <ui:msg key="placeProjectNext">and find Professionals now</ui:msg>
+                        </g:Label>
+                        <g:Label styleName="{style.banner-content}">
+                            <ui:msg key="placeProjectDesc">
+                                Is there anything you need to get done?
+                                Find suitable Professionals online and save your time and money.
+                            </ui:msg>
+                        </g:Label>
+                        <g:Button ui:field="demandsBtn"
+                          addStyleNames="{style.banner-link} {style.banner-link1-position}">
+                            <ui:msg key="allProjects">All Projects</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field="howItWorksDemandBtn"
+                          addStyleNames="{style.banner-link} {style.banner-link2-position}">
+                            <ui:msg key="howItWorks">How it works?</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field="registerDemandBtn"
+                          addStyleNames="{style.banner-button}">
+                            <ui:msg key="placeProjects">Place Project</ui:msg>
+                        </g:Button>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel styleName="{style.banner3}"></g:HTMLPanel>
+                    <g:FlowPanel ui:field="categorySection" styleName="{style.category-list}" >
+                        <c:CellList ui:field="categoryList" />
+                    </g:FlowPanel>
+                    <g:Widget ui:field="footer"/>
+                </g:HTMLPanel>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

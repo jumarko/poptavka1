@@ -14,12 +14,26 @@
     <g:HTMLPanel>
         <b:FluidContainer>
             <b:FluidRow>
-                <b:Column size="6">
+                <b:Column size="6">                    
                     <b:WellForm>
                         <b:FluidRow>
                             <b:Column size="12">
                                 <b:Heading size="4">
-                                    <ui:msg key='formCommonInfo'>Common info:</ui:msg>
+                                    <ui:msg key='formAddress'>Address:</ui:msg>
+                                </b:Heading>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="12">
+                                <g:SimplePanel ui:field="addressHolder"/>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:WellForm>
+                    <b:WellForm>
+                        <b:FluidRow>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    <ui:msg key="formCompanyInfo">Company Info</ui:msg>
                                 </b:Heading>
                             </b:Column>
                         </b:FluidRow>
@@ -34,34 +48,29 @@
                                     <g:TextBox />
                                 </cm:ChangeMonitor>
                             </b:Column>
-                        </b:FluidRow>                    
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <g:Label>
-                                    <ui:msg key='formDescription'>Description:</ui:msg>
-                                </g:Label>
-                            </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
-                            <b:Column size="1"></b:Column>
-                            <b:Column size="11">
-                                <cm:ChangeMonitor ui:field='descriptionMonitor'>
-                                    <g:TextArea width="450px" height="130px"/>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key='formVatNumber'>Vat number:</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <cm:ChangeMonitor ui:field='identifNumberMonitor'>
+                                    <g:TextBox />
                                 </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
-                    </b:WellForm>
-                    <b:WellForm>
                         <b:FluidRow>
-                            <b:Column size="12">
-                                <b:Heading size="4">
-                                    <ui:msg key='formAddress'>Address:</ui:msg>
-                                </b:Heading>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key='formTaxNumber'>Tax number:</ui:msg>
+                                </g:Label>
                             </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <g:SimplePanel ui:field="addressHolder"/>
+                            <b:Column size="8">
+                                <cm:ChangeMonitor ui:field='taxNumberMonitor'>
+                                    <g:TextBox/>
+                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                     </b:WellForm>
@@ -135,36 +144,27 @@
                                 </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
-                    </b:WellForm>
+                    </b:WellForm>                    
                     <b:WellForm>
                         <b:FluidRow>
                             <b:Column size="12">
                                 <b:Heading size="4">
-                                    <ui:msg key='userSettingsBillingDetails'>Billing details:</ui:msg>
+                                    <ui:msg key='formCommonInfo'>Common info:</ui:msg>
                                 </b:Heading>
                             </b:Column>
-                        </b:FluidRow>
+                        </b:FluidRow>                                            
                         <b:FluidRow>
-                            <b:Column size="4">
+                            <b:Column size="12">
                                 <g:Label>
-                                    <ui:msg key='formVatNumber'>Vat number:</ui:msg>
+                                    <ui:msg key='formDescription'>Description:</ui:msg>
                                 </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='identifNumberMonitor'>
-                                    <g:TextBox />
-                                </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formTaxNumber'>Tax number:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='taxNumberMonitor'>
-                                    <g:TextBox/>
+                            <b:Column size="1"></b:Column>
+                            <b:Column size="11">
+                                <cm:ChangeMonitor ui:field='descriptionMonitor'>
+                                    <g:TextArea width="450px" height="130px"/>
                                 </cm:ChangeMonitor>
                             </b:Column>
                         </b:FluidRow>
