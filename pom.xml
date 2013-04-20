@@ -484,11 +484,6 @@
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-instrument</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjtools</artifactId>
 				<version>${aspectj.version}</version>
@@ -971,9 +966,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"</argLine>
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                </configuration>
 			</plugin>
 
-			<!-- aspectj -->
+			<!-- aspectj plugin configuration for compile-time weaving.
+			     Note that there is also load-time weaving used for classes outside poptavka's codebase,
+			     because compile-time weaving for this classes would be hardly manageable -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
@@ -1000,7 +1002,6 @@
                     <encoding>UTF-8</encoding>
                     <outxml>true</outxml>
                     <outxmlfile>target/aspectj-out.xml</outxmlfile>
-
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -1013,6 +1014,7 @@
                     <execution>
                         <goals>
                             <goal>compile</goal>
+                            <!-- test-compile goal is also necessary to ensure proper weaving when running unit tests via maven -->
                             <goal>test-compile</goal>
                         </goals>
                         <phase>compile</phase>

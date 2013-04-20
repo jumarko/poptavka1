@@ -1,12 +1,10 @@
 package com.eprovement.poptavka.dao.user;
 
 import com.eprovement.poptavka.dao.GenericHibernateDao;
-import com.eprovement.poptavka.domain.user.BusinessUser;
-import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -19,23 +17,26 @@ public abstract class BusinessUserRoleDaoImpl<BUR extends BusinessUserRole> exte
 
     @Override
     public List<BUR> searchByCriteria(UserSearchCriteria userSearchCritera) {
-        // query by example
-        // criteria
         final Criteria businessUserCriteria = getHibernateSession().createCriteria(getPersistentClass())
-                .createCriteria("businessUser")
-                .add(Example.create(
-                        new BusinessUser(userSearchCritera.getEmail(), userSearchCritera.getPassword())));
+                .createCriteria("businessUser");
+        addRestrictionIfValueNotNull(businessUserCriteria, "email", userSearchCritera.getEmail());
 
         final Criteria businessUserDataCriteria = businessUserCriteria.createCriteria("businessUserData");
-        businessUserDataCriteria.add(Example.create(
-                new BusinessUserData.Builder()
-                        .personFirstName(userSearchCritera.getName())
-                        .personLastName(userSearchCritera.getSurName())
-                        .companyName(userSearchCritera.getCompanyName())
-                        .build()));
+        addRestrictionIfValueNotNull(businessUserDataCriteria, "personFirstName", userSearchCritera.getName());
+        addRestrictionIfValueNotNull(businessUserDataCriteria, "personLastName", userSearchCritera.getSurName());
+        addRestrictionIfValueNotNull(businessUserDataCriteria, "companyName", userSearchCritera.getCompanyName());
+
         return businessUserDataCriteria.list();
     }
 
-
-
+    /**
+     * Applies given restriction that {@code property} has to have given {@code value} but only if
+     * {@code value} is different from null. This way we can allow user to omit some properties if he does not want
+     * to use them for filtering.
+     */
+    private void addRestrictionIfValueNotNull(Criteria businessUserCriteria, String property, String value) {
+        if (value != null) {
+            businessUserCriteria.add(Restrictions.eq(property, value));
+        }
+    }
 }

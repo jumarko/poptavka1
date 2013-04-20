@@ -18,7 +18,6 @@ public final class UserSearchCriteria {
 
     private String email;
 
-    private String password;
 
     private UserSearchCriteria() {
         // use builder instead of constructor
@@ -38,10 +37,6 @@ public final class UserSearchCriteria {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     //----------------------------------  builder ----------------------------------------------------------------------
@@ -69,11 +64,6 @@ public final class UserSearchCriteria {
 
         public Builder withEmail(String email) {
             userSearchCriteria.email = email;
-            return this;
-        }
-
-        public Builder withPassword(String passowrd) {
-            userSearchCriteria.password = passowrd;
             return this;
         }
 

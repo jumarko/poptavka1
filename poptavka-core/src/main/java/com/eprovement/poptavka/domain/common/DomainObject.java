@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.domain.common;
 
 import org.apache.lucene.analysis.cz.CzechAnalyzer;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
 import org.hibernate.search.annotations.Analyzer;
 
 import javax.persistence.Column;
@@ -20,6 +22,9 @@ import java.io.Serializable;
  *        {@link org.hibernate.search.annotations.Analyzer}.
  *        See also {@link com.eprovement.poptavka.service.fulltext.HibernateFulltextSearchService}
  *     </li>
+ *     <li>
+ *         Filters out all "disabled" objects via {@link #ENABLED_FILTER_NAME}.
+ *     </li>
  * </ol>
  *
  */
@@ -30,6 +35,8 @@ import java.io.Serializable;
         defaultCondition = "(enabled = '1' OR enabled IS NULL)")
 @Filter(name = DomainObject.ENABLED_FILTER_NAME)
 public abstract class DomainObject implements Serializable {
+
+    public static final String ENABLED_FILTER_NAME = "enabled";
 
     /** Id of the entity. */
     @Id
@@ -45,7 +52,7 @@ public abstract class DomainObject implements Serializable {
      * <a href="http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade">
      *     found-bit-expected-boolean-after-hibernate-4-upgrade</a>
      */
-    @Column(columnDefinition = "BIT")
+    @Column(columnDefinition = "BIT default 1")
     private Boolean enabled = true;
 
     public Long getId() {

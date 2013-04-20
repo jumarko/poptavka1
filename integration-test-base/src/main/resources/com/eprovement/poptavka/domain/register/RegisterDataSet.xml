@@ -6,25 +6,34 @@
     <ACCESSROLE ID="3" CODE="ROLE_ADMIN" DESCRIPTION="Admin" NAME="Admin access role" />
 
     <NOTIFICATION  ID="1" DESCRIPTION="Notification is sent when user gets new message."
-            NAME="New message" NOTIFICATIONTYPE="USER" CODE="new.message" MESSAGETEMPLATE="New message(s) summary:&#10;${body}"/>
+            NAME="New message" NOTIFICATIONTYPE="USER" CODE="new.message" MESSAGETEMPLATE="New message(s) summary:&#10;${body}"
+            ENABLED="1"/>
 
     <NOTIFICATION  ID="2" DESCRIPTION="Notification is sent when user gets new message from system"
-            NAME="New message from system" NOTIFICATIONTYPE="USER" CODE="new.info" />
+            NAME="New message from system" NOTIFICATIONTYPE="USER" CODE="new.info" ENABLED="1"/>
 
     <NOTIFICATION  ID="3" DESCRIPTION="Notification is sent when user gets new message from operator"
-                NAME="New message from operator" NOTIFICATIONTYPE="USER" CODE="new.message.operator" />
+                NAME="New message from operator" NOTIFICATIONTYPE="USER" CODE="new.message.operator" ENABLED="1"/>
 
     <NOTIFICATION  ID="4" DESCRIPTION="Notification is sent for supplier to be notified about new demand"
-                NAME="New demand" NOTIFICATIONTYPE="SUPPLIER" CODE="new.demand" />
+                NAME="New demand" NOTIFICATIONTYPE="SUPPLIER" CODE="new.demand" ENABLED="1"/>
 
     <NOTIFICATION  ID="5" DESCRIPTION="Notification is sent for supplier to notified about changed offer status"
-                NAME="Offer status changed" NOTIFICATIONTYPE="SUPPLIER" CODE="offer.status.changed" />
+                NAME="Offer status changed" NOTIFICATIONTYPE="SUPPLIER" CODE="offer.status.changed" ENABLED="1"/>
 
     <NOTIFICATION  ID="6" DESCRIPTION="Notification is sent for client to be notified about new offer"
-                NAME="New offer" NOTIFICATIONTYPE="CLIENT" CODE="new.offer" />
+                NAME="New offer" NOTIFICATIONTYPE="CLIENT" CODE="new.offer" ENABLED="1"/>
 
     <NOTIFICATION  ID="7" DESCRIPTION="Notification is sent for client to be notified about changed demand status"
-                NAME="Demand status change" NOTIFICATIONTYPE="CLIENT" CODE="demand.status.changed" />
+                NAME="Demand status change" NOTIFICATIONTYPE="CLIENT" CODE="demand.status.changed" ENABLED="1"/>
+
+    <!--Explicitly disabled notifications-->
+    <NOTIFICATION  ID="8" DESCRIPTION="Notification reserved for future use 1"
+                   NAME="Reserved for future 1" NOTIFICATIONTYPE="CLIENT" CODE="reserved.future.1" ENABLED="0"/>
+    <NOTIFICATION  ID="9" DESCRIPTION="Notification reserved for future use 2"
+                   NAME="Reserved for future 2" NOTIFICATIONTYPE="CLIENT" CODE="reserved.future.2" ENABLED="0"/>
+    <NOTIFICATION  ID="10" DESCRIPTION="Notification reserved for future use 3"
+                   NAME="Reserved for future 3" NOTIFICATIONTYPE="CLIENT" CODE="reserved.future.3" ENABLED="0"/>
 
 
     <!--see real DB for more information on SERVICEs-->
