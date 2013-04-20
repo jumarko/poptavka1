@@ -6,23 +6,24 @@ package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.TextArea;
+import com.github.gwtbootstrap.client.ui.WellForm;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
- * @author mato
+ * @author Martin Slavkovsky
  */
 public class FeedbackPopupView extends Composite {
 
@@ -34,6 +35,8 @@ public class FeedbackPopupView extends Composite {
     /* Attributes                                                             */
     /**************************************************************************/
     @UiField Modal popupFeedback;
+    @UiField FluidRow rateRow1, rateRow2, rateRow3, rateRow4, rateRow5;
+    @UiField WellForm rateWell1, rateWell2, rateWell3, rateWell4, rateWell5;
     @UiField HTMLPanel clientPanel, supplierPanel;
     /** SupplierPanel. **/
     @UiField Label supplierName;
@@ -41,7 +44,6 @@ public class FeedbackPopupView extends Composite {
     @UiField Label clientName;
     /** Rate. **/
     @UiField TextArea commentArea;
-    @UiField ToggleButton starBtn1, starBtn2, starBtn3, starBtn4, starBtn5;
     @UiField Button rateBtn;
     private int rating;
     private String comment;
@@ -64,44 +66,43 @@ public class FeedbackPopupView extends Composite {
             default:
                 break;
         }
+        bindHandlers();
     }
 
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
-    @UiHandler("starBtn1")
-    public void ratingButton1ClickHandler(ClickEvent e) {
-        unToggleOtherButtons(starBtn1);
-        rating = Constants.RATE_1;
-        comment = Storage.MSGS.feedbackComment1();
-    }
-
-    @UiHandler("starBtn2")
-    public void ratingButton2ClickHandler(ClickEvent e) {
-        unToggleOtherButtons(starBtn2);
-        rating = Constants.RATE_2;
-        comment = Storage.MSGS.feedbackComment2();
-    }
-
-    @UiHandler("starBtn3")
-    public void ratingButton3ClickHandler(ClickEvent e) {
-        unToggleOtherButtons(starBtn3);
-        rating = Constants.RATE_3;
-        comment = Storage.MSGS.feedbackComment3();
-    }
-
-    @UiHandler("starBtn4")
-    public void ratingButton45ClickHandler(ClickEvent e) {
-        unToggleOtherButtons(starBtn4);
-        rating = Constants.RATE_4;
-        comment = Storage.MSGS.feedbackComment4();
-    }
-
-    @UiHandler("starBtn5")
-    public void ratingButton5ClickHandler(ClickEvent e) {
-        unToggleOtherButtons(starBtn5);
-        rating = Constants.RATE_5;
-        comment = Storage.MSGS.feedbackComment5();
+    public void bindHandlers() {
+        rateRow1.addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setRate(rateWell1, Constants.RATE_1, Storage.MSGS.feedbackComment1());
+            }
+        }, ClickEvent.getType());
+        rateRow2.addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setRate(rateWell2, Constants.RATE_2, Storage.MSGS.feedbackComment2());
+            }
+        }, ClickEvent.getType());
+        rateRow3.addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setRate(rateWell3, Constants.RATE_3, Storage.MSGS.feedbackComment3());
+            }
+        }, ClickEvent.getType());
+        rateRow4.addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setRate(rateWell4, Constants.RATE_4, Storage.MSGS.feedbackComment4());
+            }
+        }, ClickEvent.getType());
+        rateRow5.addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setRate(rateWell5, Constants.RATE_5, Storage.MSGS.feedbackComment5());
+            }
+        }, ClickEvent.getType());
     }
 
     /**************************************************************************/
@@ -113,14 +114,6 @@ public class FeedbackPopupView extends Composite {
 
     public Button getRateBtn() {
         return rateBtn;
-    }
-
-    public boolean isToogleRating() {
-        return starBtn1.isDown()
-                || starBtn2.isDown()
-                || starBtn3.isDown()
-                || starBtn4.isDown()
-                || starBtn5.isDown();
     }
 
     public int getRating() {
@@ -146,11 +139,20 @@ public class FeedbackPopupView extends Composite {
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
-    private void unToggleOtherButtons(ToggleButton button) {
-        starBtn1.setDown(button.equals(starBtn1));
-        starBtn2.setDown(button.equals(starBtn2));
-        starBtn3.setDown(button.equals(starBtn3));
-        starBtn4.setDown(button.equals(starBtn4));
-        starBtn5.setDown(button.equals(starBtn5));
+    private void setRate(WellForm rateWell, int rating, String comment) {
+        unSelectRateOptions();
+        rateWell.addStyleName(Constants.ACT);
+        rateBtn.setVisible(true);
+        this.rating = rating;
+        this.comment = comment;
+    }
+
+    private void unSelectRateOptions() {
+        rateBtn.setVisible(false);
+        rateWell1.removeStyleName(Constants.ACT);
+        rateWell2.removeStyleName(Constants.ACT);
+        rateWell3.removeStyleName(Constants.ACT);
+        rateWell4.removeStyleName(Constants.ACT);
+        rateWell5.removeStyleName(Constants.ACT);
     }
 }
