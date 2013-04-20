@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.service.demand.RootRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
@@ -356,12 +357,10 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     @Override
     public ArrayList<ServiceDetail> getSupplierServices() throws RPCException {
-        List<Service> services = this.generalService.findAll(Service.class);
-        if (services != null) {
-            System.out.println("Services count: " + services.size());
-        } else {
-            System.out.println("NNULLLLLLLL");
-        }
+        Search supplierServicesSearch = new Search(Service.class);
+        supplierServicesSearch.addFilterEqual("valid", true);
+        supplierServicesSearch.addFilterEqual("serviceType", ServiceType.SUPPLIER);
+        List<Service> services = this.generalService.search(supplierServicesSearch);
         return serviceConverter.convertToTargetList(services);
     }
 

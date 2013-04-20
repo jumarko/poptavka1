@@ -84,27 +84,35 @@ public class ServicesSelectorView extends Composite
                 return object.getTitle();
             }
         }, Storage.MSGS.columnService());
+        //Service description column
+        table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
+            @Override
+            public String getValue(ServiceDetail object) {
+                return object.getDescription();
+            }
+        }, Storage.MSGS.columDescription());
         //Price column
-        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
-            @Override
-            public Number getValue(ServiceDetail object) {
-                return object.getPrice();
-            }
-        }, Storage.MSGS.columnPrice());
-        //Duration column
-        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
-            @Override
-            public Number getValue(ServiceDetail object) {
-                return object.getPrepaidMonths();
-            }
-        }, Storage.MSGS.columnDuration());
+        // TODO LATER ivlcek - commented for BETA version
+//        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
+//            @Override
+//            public Number getValue(ServiceDetail object) {
+//                return object.getPrice();
+//            }
+//        }, Storage.MSGS.columnPrice());
+        //Duration column -
+//        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
+//            @Override
+//            public Number getValue(ServiceDetail object) {
+//                return object.getPrepaidMonths();
+//            }
+//        }, Storage.MSGS.columnDuration());
 
         //Set table and columns sizes
         table.setSize("500px", "300px");
         table.setColumnWidth(0, "35px");
-        table.setColumnWidth(1, "155px");
-        table.setColumnWidth(2, "55px");
-        table.setColumnWidth(3, "55px");
+        table.setColumnWidth(1, "55px");
+        table.setColumnWidth(2, "210px");
+//        table.setColumnWidth(3, "55px");
     }
 
     /**************************************************************************/
