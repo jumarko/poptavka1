@@ -6,10 +6,12 @@ package com.eprovement.poptavka.client.common;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
@@ -39,6 +41,7 @@ public class UrgencySelectorView extends Composite {
     /** UiBinder attributes. **/
     @UiField FluidContainer fluidContainer;
     @UiField RadioButton urgency1, urgency2, urgency3, urgency4;
+    @UiField Column labelColumn4, buttonColumn4, creditsColumn4;
     @UiField Anchor revert;
     /** Class attributes. **/
     private Date validToOriginal;
@@ -46,8 +49,17 @@ public class UrgencySelectorView extends Composite {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
-    public UrgencySelectorView() {
+    /**
+     * @param advancedView True displays fourth choice - Grey icon - selection in progress
+     *                     False otherwise
+     */
+    @UiConstructor
+    public UrgencySelectorView(boolean advancedView) {
         initWidget(uiBinder.createAndBindUi(this));
+
+        labelColumn4.setVisible(advancedView);
+        buttonColumn4.setVisible(advancedView);
+        creditsColumn4.setVisible(advancedView);
     }
 
     /**************************************************************************/
@@ -115,7 +127,7 @@ public class UrgencySelectorView extends Composite {
             CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGH);
         } else if (urgency2.getValue()) {
             CalendarUtil.addDaysToDate(validTo, Constants.DAYS_URGENCY_HIGHER);
-        } else if (urgency3.getValue()) {
+        } else if (urgency1.getValue()) {
             CalendarUtil.addMonthsToDate(validTo, Constants.MONTHS_URGENCY_NORMAL);
         } else {
             CalendarUtil.addDaysToDate(validTo, -1);

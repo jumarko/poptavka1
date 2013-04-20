@@ -46,7 +46,7 @@
                         </g:Label>
                         <g:Image resource='{res.images.urgencyRed}' title='{msgs.urgencyHighDesc}'/>
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="2" ui:field="labelColumn4">
                         <g:Label>
                             Expired
                         </g:Label>
@@ -68,7 +68,7 @@
                     <b:Column size="2">
                         <g:RadioButton name="urgency" ui:field="urgency3" />
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="2" ui:field="buttonColumn4">
                         <g:RadioButton name="urgency" ui:field="urgency4" />
                     </b:Column>
                 </b:FluidRow>
@@ -93,7 +93,7 @@
                             15
                         </g:Label>
                     </b:Column>
-                    <b:Column size="2"/>
+                    <b:Column size="2" ui:field="creditsColumn4"/>
                 </b:FluidRow>
                 <b:FluidRow>
                     <b:Column size="12">

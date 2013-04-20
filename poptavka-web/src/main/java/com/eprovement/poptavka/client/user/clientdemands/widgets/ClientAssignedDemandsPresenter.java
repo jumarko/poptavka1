@@ -61,6 +61,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     private FieldUpdater textFieldUpdater;
     private IUniversalDetail selectedObject;
     private FeedbackPopupView ratePopup;
+    private boolean assignedDemandsMode = false;
     private long selectedClientAssignedDemandId = -1;
 
     /**************************************************************************/
@@ -85,6 +86,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_ASSIGNED_DEMANDS);
+        this.assignedDemandsMode = true;
 
         initWidget(filter);
     }
@@ -223,7 +225,9 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
                 view.getActionBox().setVisible(view.getDataGrid().getSelectedUserMessageIds().size() > 0);
                 //init details
                 if (view.getDataGrid().getSelectedUserMessageIds().size() == 1) {
-                    view.getCloseBtn().setVisible(true);
+                    if (assignedDemandsMode) {
+                        view.getCloseBtn().setVisible(true);
+                    }
                     selectedObject = view.getDataGrid().getSelectedObjects().get(0);
                     initDetailSection(selectedObject);
                 } else {

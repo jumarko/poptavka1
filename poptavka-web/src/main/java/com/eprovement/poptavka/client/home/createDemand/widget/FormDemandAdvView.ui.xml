@@ -20,7 +20,7 @@
                     <b:FluidRow>
                         <!-- *************************** URGENCY *************************** -->
                         <b:Column size="6">                            
-                            <co:UrgencySelectorView ui:field="urgencySelector" />                            
+                            <co:UrgencySelectorView ui:field="urgencySelector" advancedView="false"/>
                         </b:Column>
                         
                         <b:Column size="6">
