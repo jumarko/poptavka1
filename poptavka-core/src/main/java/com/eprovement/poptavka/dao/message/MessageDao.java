@@ -153,6 +153,6 @@ public interface MessageDao extends GenericDao<Message> {
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
+    Map<UserMessage, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
             OfferState pendingState);
 }

@@ -64,7 +64,7 @@ public class MessageCell extends AbstractCell<MessageDetail> {
             cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
         }
-        renderer.render(sb, cssBall, cssColor, value.getSenderName(),
+        renderer.render(sb, cssBall, cssColor, value.getSender(),
                 getSentText(value.getSent()), getBodyText(value.getBody()));
     }
 

@@ -205,7 +205,7 @@ public final class Searcher {
      * @param list the list to be sorted in situ
      * @throws SearcherException
      */
-    private static <E> void sortList(Search search, List<E> list) throws SearcherException {
+    public static <E> void sortList(Search search, List<E> list) throws SearcherException {
         final Map<Sort, List<Method>> sortGetterChains = new HashMap<Sort, List<Method>>();
         for (Sort sort : search.getSorts()) {
             sortGetterChains.put(sort, getGetterChain(sort.getProperty(),

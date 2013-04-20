@@ -6,10 +6,13 @@ import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.core.client.GWT;
@@ -87,7 +90,7 @@ public class AdminNewDemandsView extends Composite
         pager = new UniversalPagerWidget();
         // Create a DataGrid
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(GRID_COLUMNS, pager.getPageSize(), resource);
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(initSort(), pager.getPageSize(), resource);
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
         // Selection handler
@@ -158,6 +161,11 @@ public class AdminNewDemandsView extends Composite
         // Urgence
         /**************************************************************************/
         dataGrid.addUrgentColumn();
+    }
+
+    private SortDataHolder initSort() {
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(GRID_COLUMNS.get(0), OrderType.DESC));
+        return new SortDataHolder(sortPairs, GRID_COLUMNS);
     }
 
     /**************************************************************************/

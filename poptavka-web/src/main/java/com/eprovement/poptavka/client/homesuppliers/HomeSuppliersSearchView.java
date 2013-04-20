@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
@@ -30,8 +31,6 @@ public class HomeSuppliersSearchView extends Composite implements
     @UiField(provided = true) ValidationMonitor ratingMonitorFrom, ratingMonitorTo;
     @UiField TextBox companyName, supplierDescription;
     @UiField Button clearBtn;
-    /** Search Fields. **/
-    private static final String PATH_TO_BUSINESS_USER = "businessUser.businessUserData.";
 
     public HomeSuppliersSearchView() {
         initValidationMonitors();
@@ -51,18 +50,18 @@ public class HomeSuppliersSearchView extends Composite implements
         int group = 0;
         if (!companyName.getText().isEmpty()) {
             filters.add(new FilterItem(
-                    PATH_TO_BUSINESS_USER.concat(UserField.COMPANY_NAME.getValue()),
+                    Constants.PATH_TO_BUSINESS_DATA.concat(UserField.COMPANY_NAME.getValue()),
                     Operation.OPERATION_LIKE, companyName.getText(), group));
             filters.add(new FilterItem(
-                    PATH_TO_BUSINESS_USER.concat(UserField.FIRST_NAME.getValue()),
+                    Constants.PATH_TO_BUSINESS_DATA.concat(UserField.FIRST_NAME.getValue()),
                     Operation.OPERATION_LIKE, companyName.getText(), group));
             filters.add(new FilterItem(
-                    PATH_TO_BUSINESS_USER.concat(UserField.LAST_NAME.getValue()),
+                    Constants.PATH_TO_BUSINESS_DATA.concat(UserField.LAST_NAME.getValue()),
                     Operation.OPERATION_LIKE, companyName.getText(), group++));
         }
         if (!supplierDescription.getText().isEmpty()) {
             filters.add(new FilterItem(
-                    PATH_TO_BUSINESS_USER.concat(UserField.DESCRIPTION.getValue()),
+                    Constants.PATH_TO_BUSINESS_DATA.concat(UserField.DESCRIPTION.getValue()),
                     Operation.OPERATION_LIKE, supplierDescription.getText(), group++));
         }
         if (ratingMonitorFrom.getValue() != null) {

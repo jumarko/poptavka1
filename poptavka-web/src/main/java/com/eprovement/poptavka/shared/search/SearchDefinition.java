@@ -1,9 +1,7 @@
 package com.eprovement.poptavka.shared.search;
 
-import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.SerializableHashMap;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Represent search definition sends to RPC services.
@@ -14,8 +12,8 @@ public class SearchDefinition implements IsSerializable {
 
     private int firstResult = -1;
     private int maxResult = -1;
-    private SearchModuleDataHolder filter = null;
-    private SerializableHashMap<String, OrderType> orderColumns = null;
+    private SearchModuleDataHolder filter;
+    private ArrayList<SortPair> sortPairs;
 
     public SearchDefinition() {
     }
@@ -24,12 +22,12 @@ public class SearchDefinition implements IsSerializable {
         this.filter = filter;
     }
 
-    public SearchDefinition(int start, int maxResult, SearchModuleDataHolder filter,
-            SerializableHashMap<String, OrderType> orderColumns) {
+    public SearchDefinition(int start, int maxResult,
+            SearchModuleDataHolder filter, ArrayList<SortPair> sortPairs) {
         this.firstResult = start;
         this.maxResult = maxResult;
         this.filter = filter;
-        this.orderColumns = orderColumns;
+        this.sortPairs = sortPairs;
     }
 
     public int getFirstResult() {
@@ -56,11 +54,11 @@ public class SearchDefinition implements IsSerializable {
         this.filter = filter;
     }
 
-    public HashMap<String, OrderType> getOrderColumns() {
-        return orderColumns;
+    public ArrayList<SortPair> getSortOrder() {
+        return sortPairs;
     }
 
-    public void setOrderColumns(SerializableHashMap<String, OrderType> orderColumns) {
-        this.orderColumns = orderColumns;
+    public void setSortOrder(ArrayList<SortPair> sort) {
+        this.sortPairs = sort;
     }
 }

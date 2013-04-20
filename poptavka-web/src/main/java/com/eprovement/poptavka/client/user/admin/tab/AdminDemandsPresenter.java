@@ -251,7 +251,7 @@ public class AdminDemandsPresenter
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 if (!object.getValidTo().equals(value)) {
-                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.VALID_TO_DATE,
+                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.VALID_TO,
                             object.getDemandId(), object.getValidTo(), value);
                     object.setValidTo(value);
                 }

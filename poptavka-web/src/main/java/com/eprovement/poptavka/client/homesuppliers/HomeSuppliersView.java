@@ -13,9 +13,13 @@ import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.ImageResourceCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -82,10 +86,6 @@ public class HomeSuppliersView extends OverflowComposite
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "", "businessUser.businessUserData.companyName", "overalRating", "businessUser.address.city"
-            });
     /** Constants. **/
     private static final String ADDRESS_COL_WIDTH = "120px";
     private static final String LOGO_COL_WIDTH = "70px";
@@ -138,7 +138,7 @@ public class HomeSuppliersView extends OverflowComposite
         // used to identify contacts when fields (such as the name and address)
         // change.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(gridColumns, pager.getPageSize(), resource);
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(initSort(), pager.getPageSize(), resource);
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
         // Selection handler
@@ -176,7 +176,7 @@ public class HomeSuppliersView extends OverflowComposite
         /**************************************************************************/
         //IdentityColumn - A passthrough column, useful for giving cells access to the entire row object.
         Column<FullSupplierDetail, SupplierCell> companyNameCol = new IdentityColumn(new SupplierCell());
-        companyNameCol.setSortable(true);
+        companyNameCol.setSortable(false);
         dataGrid.addColumn(companyNameCol, Storage.MSGS.columnSupplierName());
         dataGrid.setColumnWidth(companyNameCol, Constants.COL_WIDTH_TITLE);
 
@@ -201,6 +201,19 @@ public class HomeSuppliersView extends OverflowComposite
                         return str.toString();
                     }
                 });
+    }
+
+    private SortDataHolder initSort() {
+        List<String> gridColumns = Arrays.asList(new String[]{
+            "", //Logo
+            Constants.PATH_TO_BUSINESS_DATA.concat(UserField.COMPANY_NAME.getValue()),
+            UserField.OVERALL_RATING.getValue(),
+            "", //Address
+        });
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(
+                UserField.OVERALL_RATING.getValue(),
+                OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     /**************************************************************************/

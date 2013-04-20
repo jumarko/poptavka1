@@ -70,7 +70,7 @@ import org.hibernate.annotations.CascadeType;
                         + " and subMessage.offer is null\n"
                         + "group by subMessage.sender.id"),
         @NamedQuery(name = "getLatestSupplierUserMessagesWithOfferForDemand",
-                query = "select latestUserMessage.id, count(subUserMessage.id)\n"
+                query = "select latestUserMessage, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join\n"
                         + " subUserMessage.message.threadRoot as rootMessage,"
                         + "UserMessage as latestUserMessage\n"

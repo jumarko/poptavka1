@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
@@ -28,6 +29,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import java.util.Arrays;
 
 import java.util.Date;
@@ -105,7 +108,7 @@ public class AdminEmailActivationsView extends Composite
         GWT.log("init AdminEmailActivations DataGrid initialized");
 
         // TABLE
-        dataGrid = new UniversalAsyncGrid<ActivationEmailDetail>(KEY_PROVIDER, gridColumns);
+        dataGrid = new UniversalAsyncGrid<ActivationEmailDetail>(KEY_PROVIDER, initSort());
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
@@ -157,6 +160,11 @@ public class AdminEmailActivationsView extends Composite
                         return ((ActivationEmailDetail) object).getTimeout();
                     }
                 });
+    }
+
+    private SortDataHolder initSort() {
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     //*************************************************************************/

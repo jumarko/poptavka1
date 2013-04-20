@@ -284,7 +284,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
                 case END_DATE:
                     demand.setEndDate((Date) change.getValue());
                     break;
-                case VALID_TO_DATE:
+                case VALID_TO:
                     demand.setValidTo((Date) change.getValue());
                     break;
                 case MAX_OFFERS:

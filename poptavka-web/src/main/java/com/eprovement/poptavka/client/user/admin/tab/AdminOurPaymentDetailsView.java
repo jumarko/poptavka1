@@ -7,7 +7,10 @@ package com.eprovement.poptavka.client.user.admin.tab;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -89,7 +92,7 @@ public class AdminOurPaymentDetailsView extends Composite
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new UniversalAsyncGrid<PaymentDetail>(KEY_PROVIDER, gridColumns);
+        dataGrid = new UniversalAsyncGrid<PaymentDetail>(KEY_PROVIDER, initSort());
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
@@ -160,6 +163,10 @@ public class AdminOurPaymentDetailsView extends Composite
 
     }
 
+    private SortDataHolder initSort() {
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
+    }
 
     @Override
     public Widget getWidgetView() {

@@ -26,6 +26,7 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -203,11 +203,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         Search search = new Search(Supplier.class);
         search.setFirstResult(definition.getFirstResult());
         search.setMaxResults(definition.getMaxResult());
-        for (String column : definition.getOrderColumns().keySet()) {
-            if (definition.getOrderColumns().get(column) == OrderType.ASC) {
-                search.addSort(Sort.asc(column));
+        for (SortPair column : definition.getSortOrder()) {
+            if (column.getColumnOrderType() == OrderType.ASC) {
+                search.addSort(Sort.asc(column.getColumnName()));
             } else {
-                search.addSort(Sort.desc(column));
+                search.addSort(Sort.desc(column.getColumnName()));
             }
         }
         return supplierConverter.convertToTargetList(generalService.search(search));
@@ -269,7 +269,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getOrderColumns(), "");
+            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getSortOrder(), "");
             search.addField("id", Field.OP_COUNT);
             search.setResultMode(Search.RESULT_SINGLE);
             return (Long) this.generalService.searchUnique(search);
@@ -309,7 +309,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getOrderColumns(), "");
+            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getSortOrder(), "");
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
             return supplierConverter.convertToTargetList(this.generalService.search(search));
@@ -367,7 +367,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
             categorySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(definition)));
         }
 
-        return this.getSortSearch(categorySearch, definition.getOrderColumns(), "supplier");
+        return this.getSortSearch(categorySearch, definition.getSortOrder(), "supplier");
     }
 
     /**
@@ -390,7 +390,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
             localitySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(definition)));
         }
 
-        return this.getSortSearch(localitySearch, definition.getOrderColumns(), "supplier");
+        return this.getSortSearch(localitySearch, definition.getSortOrder(), "supplier");
     }
 
     /**
@@ -433,16 +433,18 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         return search;
     }
 
-    private Search getSortSearch(Search search, Map<String, OrderType> orderColumns, String prefix) {
+    private Search getSortSearch(Search search, ArrayList<SortPair> orderColumns, String prefix) {
+        String prefixedItem;
         if (orderColumns != null) {
-            for (String item : orderColumns.keySet()) {
+            for (SortPair item : orderColumns) {
+                prefixedItem = item.getColumnName();
                 if (prefix != null && !prefix.isEmpty()) {
-                    item = prefix.concat(".").concat(item);
+                    prefixedItem = prefix.concat(".").concat(item.getColumnName());
                 }
-                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    search.addSortAsc(item, true);
+                if (item.getColumnOrderType() == OrderType.ASC) {
+                    search.addSortAsc(prefixedItem, true);
                 } else {
-                    search.addSortDesc(item, true);
+                    search.addSortDesc(prefixedItem, true);
                 }
             }
         }

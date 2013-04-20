@@ -14,12 +14,16 @@ import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.celltree.CustomCellTree;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -81,7 +85,6 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     @UiField Label bannerLabel, filterLabel;
     @UiField DemandDetailView demandDetail;
     /** Class attributes. **/
-    private List<String> gridColumns = Arrays.asList(new String[]{"createdDate", "title", "locality", "endDate"});
     // Using category detail key provider in selection model, allow us to have
     // displayed alwas only one node. The other are automaticaly closed.
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
@@ -122,7 +125,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         pager = new UniversalPagerWidget();
         // Create a CellTable
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns, pager.getPageSize(), resource);
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(initSort(), pager.getPageSize(), resource);
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
         // Selection handler
@@ -142,7 +145,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         // Date of creation
         /**********************************************************************/
         dataGrid.addColumn(new CreatedDateCell(), Storage.MSGS.columnCreatedDate(), true, Constants.COL_WIDTH_DATE,
-            new UniversalAsyncGrid.GetValue<Date>() {
+                new UniversalAsyncGrid.GetValue<Date>() {
                 @Override
                 public Date getValue(Object object) {
                     return ((FullDemandDetail) object).getCreated();
@@ -153,7 +156,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         // Demand Info
         /***********************************************************************/
         dataGrid.addColumn(new TextCell(), Storage.MSGS.columnDemandTitle(), true, Constants.COL_WIDTH_TITLE,
-            new UniversalAsyncGrid.GetValue<String>() {
+                new UniversalAsyncGrid.GetValue<String>() {
                 @Override
                 public String getValue(Object object) {
                     return ((FullDemandDetail) object).getTitle();
@@ -164,7 +167,7 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         // Locality
         /**********************************************************************/
         dataGrid.addColumn(new TextCell(), Storage.MSGS.columnLocality(), false, LOCALITY_COL_WIDTH,
-            new UniversalAsyncGrid.GetValue<String>() {
+                new UniversalAsyncGrid.GetValue<String>() {
                 @Override
                 public String getValue(Object object) {
                     StringBuilder str = new StringBuilder();
@@ -183,6 +186,18 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
         // Urgence
         /**********************************************************************/
         dataGrid.addUrgentColumn();
+    }
+
+    private SortDataHolder initSort() {
+        List<String> gridColumns = Arrays.asList(new String[]{
+            DemandField.CREATED.getValue(),
+            DemandField.TITLE.getValue(),
+            DemandField.LOCALITIES.getValue(),
+            DemandField.VALID_TO.getValue()
+        });
+        List<SortPair> sortPairs = Arrays.asList(
+                new SortPair(DemandField.CREATED.getValue(), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     /**************************************************************************/

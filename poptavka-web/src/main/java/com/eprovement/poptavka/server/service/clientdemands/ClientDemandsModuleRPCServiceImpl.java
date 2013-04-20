@@ -47,13 +47,16 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.Sort;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +91,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private Converter<Search, SearchDefinition> searchConverter;
     private Converter<Demand, ClientDemandDetail> clientDemandConverter;
     private Converter<Message, FullOfferDetail> fullOfferConverter;
+    private Converter<Sort, SortPair> sortConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -177,6 +181,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         this.fullOfferConverter = fullOfferConverter;
     }
 
+    @Autowired
+    public void setSortConverter(
+            @Qualifier("sortConverter") Converter<Sort, SortPair> sortConverter) {
+        this.sortConverter = sortConverter;
+    }
+
     /**************************************************************************/
     /* Table getter methods                                                   */
     /**************************************************************************/
@@ -237,6 +247,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         demandStatuses.add(DemandStatus.INACTIVE);
         demandStatuses.add(DemandStatus.OFFERED);
         clientDemandsSearch.addFilterIn("status", demandStatuses);
+        if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
+            clientDemandsSearch.addSorts(convertSortList(searchDefinition.getSortOrder(), ""));
+        }
         final List<Demand> clientDemands = Searcher.searchCollection(client.getDemands(), clientDemandsSearch);
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
 
@@ -288,13 +301,13 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         final Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         final Map<UserMessage, ClientConversation> latestSupplierUserMessagesWithUnreadSub =
                 userMessageService.getClientConversationsWithoutOffer(user, root);
+
+        List<UserMessage> sortedList = setSort(
+                new Search(UserMessage.class), "message.",
+                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
         final List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
 
-        for (Map.Entry<UserMessage, ClientConversation> userMessageEntry
-                : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
-
-            final UserMessage userMessage = userMessageEntry.getKey();
-
+        for (UserMessage userMessage : sortedList) {
             // TODO LATER ivlcek - make detail object converter
             // TODO RELEASE vojto - implement search definition
             final ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
@@ -302,7 +315,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setUserMessageId(userMessage.getId());
             cdcd.setIsStarred(userMessage.isStarred());
             cdcd.setIsRead(userMessage.isRead());
-            cdcd.setMessageCount(userMessageEntry.getValue().getMessageCount());
+            cdcd.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             // set Message attributes
             cdcd.setMessageId(userMessage.getMessage().getId());
             cdcd.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
@@ -312,7 +325,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setDemandId(demandID);
             cdcd.setTitle(userMessage.getMessage().getDemand().getTitle());
             // set Supplier attributes
-            final Supplier supplier = findSupplier(userMessageEntry.getValue().getSupplier().getId());
+            final Supplier supplier = findSupplier(
+                    latestSupplierUserMessagesWithUnreadSub.get(userMessage).getSupplier().getId());
             cdcd.setSupplierId(supplier.getId());
             // TODO RELEASE ivlcek - refactor this senderId
             cdcd.setSenderId(supplier.getBusinessUser().getId());
@@ -371,6 +385,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.setSearchClass(Demand.class);
         clientDemandsSearch.addFilterIn("status", DemandStatus.OFFERED);
         clientDemandsSearch.addFilterEqual("client", client);
+        if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
+            clientDemandsSearch.addSorts(convertSortList(searchDefinition.getSortOrder(), ""));
+        }
         List<Demand> clientDemands = generalService.search(clientDemandsSearch);
 
         ArrayList<ClientDemandDetail> cdds = clientDemandConverter.convertToTargetList(clientDemands);
@@ -427,19 +444,20 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         Message root = messageService.getThreadRootMessage(generalService.find(Demand.class, demandID));
         OfferState offerPending = offerService.getOfferState(OfferStateType.PENDING.getValue());
 
-        List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
-
-        Map<Long, Integer> latestSupplierUserMessagesWithUnreadSub =
+        Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
                 messageService.getLatestSupplierUserMessagesWithOfferForDemand(user, root, offerPending);
-        for (Map.Entry<Long, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
-            UserMessage userMessage = (UserMessage) generalService.find(UserMessage.class, userMessageEntry.getKey());
+        List<UserMessage> sortedList = setSort(
+                new Search(UserMessage.class), "message.demand.",
+                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
+        List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
+        for (UserMessage userMessage : sortedList) {
             Offer offer = userMessage.getMessage().getOffer();
             // TODO LATER ivlcek - refactor and create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
             codod.setIsStarred(userMessage.isStarred());
-            codod.setMessageCount(userMessageEntry.getValue());
+            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage));
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             codod.setUserMessageId(userMessage.getId());
             // set Supplier attributes
@@ -528,8 +546,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
                 userMessageService.getSupplierConversationsWithAcceptedOffer(user, offerAccepted, offerCompleted);
-        for (Map.Entry<UserMessage, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
-            UserMessage userMessage = userMessageEntry.getKey();
+        List<UserMessage> sortedList = setSort(
+                new Search(UserMessage.class), "message.demand.",
+                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
+        for (UserMessage userMessage : sortedList) {
             Offer offer = userMessage.getMessage().getOffer();
             // TODO LATER ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
@@ -537,7 +557,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setIsRead(userMessage.isRead());
             codod.setIsStarred(userMessage.isStarred());
             codod.setUserMessageId(userMessage.getId());
-            codod.setMessageCount(userMessageEntry.getValue());
+            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage));
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
@@ -600,8 +620,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
                 userMessageService.getSupplierConversationsWithClosedDemands(user, offerClosed);
-        for (Map.Entry<UserMessage, Integer> userMessageEntry : latestSupplierUserMessagesWithUnreadSub.entrySet()) {
-            UserMessage userMessage = userMessageEntry.getKey();
+        List<UserMessage> sortedList = setSort(
+                new Search(UserMessage.class), "message.demand.",
+                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
+        for (UserMessage userMessage : sortedList) {
             Offer offer = userMessage.getMessage().getOffer();
             // TODO LATER ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
@@ -609,7 +631,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setIsRead(userMessage.isRead());
             codod.setIsStarred(userMessage.isStarred());
             codod.setUserMessageId(userMessage.getId());
-            codod.setMessageCount(userMessageEntry.getValue());
+            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage));
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
@@ -671,6 +693,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         clientDemandsSearch.addFilterIn("status", DemandStatus.CLOSED, DemandStatus.PENDINGCOMPLETION);
         clientDemandsSearch.addFilterEqual("client", client);
         clientDemandsSearch.addFilterNotNull("rating");
+        if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
+            clientDemandsSearch.addSorts(convertSortList(searchDefinition.getSortOrder(), ""));
+        }
         List<Demand> demandsWithRating = generalService.search(clientDemandsSearch);
 
         ArrayList<DemandRatingsDetail> ratings = new ArrayList<DemandRatingsDetail>();
@@ -1042,5 +1067,24 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         cdd.setUnreadMessagesClosedDemandsCount(((Long) generalService.searchUnique(search4)).intValue());
 
         return cdd;
+    }
+
+    private List<UserMessage> setSort(
+            Search search, String pathToAttributes, SearchDefinition searchDefinition, Set set) {
+        List<UserMessage> sortedList = new ArrayList<UserMessage>(set);
+        if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
+            search.addSorts(convertSortList(searchDefinition.getSortOrder(), pathToAttributes));
+            Searcher.sortList(search, sortedList);
+        }
+        return sortedList;
+    }
+
+    private Sort[] convertSortList(ArrayList<SortPair> sortPairs, String pathToAttributes) {
+        List<Sort> sorts = new ArrayList<Sort>();
+        for (SortPair pair : sortPairs) {
+            pair.setPathToAttributes(pathToAttributes);
+            sorts.add(sortConverter.convertToSource(pair));
+        }
+        return sorts.toArray(new Sort[sorts.size()]);
     }
 }

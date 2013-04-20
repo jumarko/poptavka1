@@ -279,7 +279,7 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param threadRoot
      * @return
      */
-    Map<Long, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
+    Map<UserMessage, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
             OfferState pendingState);
 
 }

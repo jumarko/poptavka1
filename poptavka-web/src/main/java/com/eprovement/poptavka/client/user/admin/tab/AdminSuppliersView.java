@@ -9,8 +9,11 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.BusinessType;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
@@ -112,7 +115,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         GWT.log("init AdminSuppliers DataGrid initialized");
 
         // TABLE
-        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns);
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, initSort());
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
@@ -193,6 +196,11 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
                         return ((FullSupplierDetail) object).getUserData().getVerification().name();
                     }
                 });
+    }
+
+    private SortDataHolder initSort() {
+        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     //*************************************************************************/

@@ -6,9 +6,14 @@ import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -90,16 +95,12 @@ public class ClientDemandsView extends Composite
      * Initialize this example.
      */
     private void initDemandTableAndPager() {
-        List<String> gridColumns = Arrays.asList(
-                new String[]{
-                    "status", "title", "price", "finnishDate", "validTo"
-                });
         // Create a Pager.
         demandPager = new UniversalPagerWidget();
         // Create a Table.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
-                gridColumns, demandPager.getPageSize(), resource);
+                initSort(), demandPager.getPageSize(), resource);
         demandGrid.setWidth("100%");
         demandGrid.setHeight("100%");
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
@@ -133,6 +134,19 @@ public class ClientDemandsView extends Composite
         conversationPager.setDisplay(conversationGrid);
 
         initConversationTableColumns();
+    }
+
+    private SortDataHolder initSort() {
+        List<String> gridColumns = Arrays.asList(new String[]{
+            DemandField.DEMAND_STATUS.getValue(),
+            DemandField.TITLE.getValue(),
+            DemandField.PRICE.getValue(),
+            DemandField.END_DATE.getValue(),
+            DemandField.VALID_TO.getValue()
+        });
+        List<SortPair> sortPairs = Arrays.asList(
+                new SortPair(FullDemandDetail.DemandField.CREATED.getValue(), OrderType.DESC));
+        return new SortDataHolder(sortPairs, gridColumns);
     }
 
     /**
@@ -199,7 +213,7 @@ public class ClientDemandsView extends Composite
         // Supplier name column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnSupplierName(),
-                true, SUPPLIER_NAME_COL_WIDTH,
+                false, SUPPLIER_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
                     public String getValue(Object object) {

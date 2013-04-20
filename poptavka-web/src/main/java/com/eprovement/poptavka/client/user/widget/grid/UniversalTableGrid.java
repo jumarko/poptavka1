@@ -2,7 +2,11 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
+import com.eprovement.poptavka.shared.search.SortDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
@@ -12,6 +16,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +53,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private static final String COLUMN_DEMAND_TITLE = DemandField.TITLE.getValue();
     private static final String COLUMN_RATING = "rating";
     private static final String COLUMN_PRICE = DemandField.PRICE.getValue();
-    private static final String COLUMN_URGENCY = DemandField.VALID_TO_DATE.getValue();
+    private static final String COLUMN_URGENCY = DemandField.VALID_TO.getValue();
     private static final String COLUMN_RECEIVED_DATE = "receivedDate"; //Prijate
     private static final String COLUMN_FINNISH_DATE = "finnishDate"; //Dodanie/dorucenie
     private List<String> gridColumns = new ArrayList<String>();
@@ -66,7 +71,13 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     public UniversalTableGrid(ProvidesKey<IUniversalDetail> keyProvider,
             int loadedView, int pageSize, Resources resources) {
         super(pageSize, resources);
+
+        initTable(keyProvider);
+        //create columns (also fills gridColumns list)
         switch (loadedView) {
+            case Constants.CLIENT_DEMAND_DISCUSSIONS:
+                initDemandDiscussions();
+                break;
             case Constants.CLIENT_OFFERED_DEMANDS:
                 initClientOffers();
                 break;
@@ -85,7 +96,6 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
             default:
                 break;
         }
-        initTable(keyProvider);
         setDataGridRowStyles();
     }
 
@@ -93,13 +103,10 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      * Initialize table: universalAsyncGrid.
      */
     private void initTable(ProvidesKey<IUniversalDetail> keyProvider) {
-        setGridColumns(gridColumns);
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         selectionModel = new MultiSelectionModel<IUniversalDetail>(keyProvider);
         setSelectionModel(selectionModel, DefaultSelectionEventManager.<IUniversalDetail>createCheckboxManager());
-
-        initTableColumns();
     }
 
     /**
@@ -118,6 +125,20 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     }
 
     /**
+     * Generate table schema for ClientDemandDiscussions widget.
+     */
+    private void initDemandDiscussions() {
+        gridColumns.clear();
+        gridColumns.add(COLUMN_CHECK_BOX);
+        gridColumns.add(COLUMN_STAR);
+        gridColumns.add(""); //company name, first name, last name
+        gridColumns.add(MessageField.BODY.getValue());
+        gridColumns.add("demand.".concat(DemandField.RATING.getValue())); //demand rating
+        gridColumns.add(MessageField.SENT.getValue());
+        initSort(new SortPair("demand.".concat(COLUMN_RATING), OrderType.DESC));
+    }
+
+    /**
      * Generate table schema for ClientAcceptedOffers widget.
      */
     private void initClientOffers() {
@@ -129,6 +150,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(COLUMN_RATING);
         gridColumns.add(COLUMN_FINNISH_DATE);
         gridColumns.add(COLUMN_RECEIVED_DATE);
+        initSort(new SortPair(COLUMN_RATING, OrderType.DESC));
+        initTableColumns();
     }
 
     /**
@@ -143,6 +166,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(COLUMN_FINNISH_DATE);
         gridColumns.add(COLUMN_RATING);
         gridColumns.add(COLUMN_RECEIVED_DATE);
+        initSort(new SortPair(COLUMN_FINNISH_DATE, OrderType.DESC));
+        initTableColumns();
     }
 
     /**
@@ -156,6 +181,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(COLUMN_RATING);
         gridColumns.add(COLUMN_PRICE);
         gridColumns.add(COLUMN_URGENCY);
+        initSort(new SortPair(COLUMN_URGENCY, OrderType.DESC));
+        initTableColumns();
     }
 
     /**
@@ -170,6 +197,8 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(COLUMN_PRICE);
         gridColumns.add(COLUMN_FINNISH_DATE);
         gridColumns.add(COLUMN_RECEIVED_DATE);
+        initSort(new SortPair(COLUMN_RATING, OrderType.DESC));
+        initTableColumns();
     }
 
     /**
@@ -184,6 +213,12 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         gridColumns.add(COLUMN_PRICE);
         gridColumns.add(COLUMN_FINNISH_DATE);
         gridColumns.add(COLUMN_RECEIVED_DATE);
+        initSort(new SortPair(COLUMN_FINNISH_DATE, OrderType.DESC));
+        initTableColumns();
+    }
+
+    private void initSort(SortPair sortPair) {
+        setGridColumns(new SortDataHolder(Arrays.asList(sortPair), gridColumns));
     }
 
     /**
