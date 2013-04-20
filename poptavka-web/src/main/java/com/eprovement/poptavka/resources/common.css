@@ -522,6 +522,74 @@ a.toolbar-button-grey {
     color: #000000;
 }
 
+.validation-container .well {
+    background: #ffffff;
+    border: 1px solid #d2cdbb;
+    border-top: none;
+    border-bottom: 1px solid #aca799;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    padding: 0 0 8px;
+}
+.validation-container .well.no-header-form {
+    padding-top: 8px;
+}
+
+.validation-container .well-container {
+    height: 99%;
+    margin: 0;
+    padding: 0;
+}
+
+.validation-container .well-container input[type="checkbox"] {
+    margin: 1px 4px 0 0;
+}
+
+.validation-container .well h4 {
+    margin: 0 0 24px;
+    height: 53px;
+    line-height: 53px;
+    padding: 0 25px;
+    background: url(images/header.gif) repeat-x left top;
+    color: #6f6b59;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+
+.validation-container .well .gwt-Label {
+    padding: 0 0 0 25px;
+    color: #237e00;
+    font-size: 14px;
+    line-height: 40px;
+}
+
+.validation-container .formContainer {
+    background: #e2ddca;
+}
+
+.validation-container .formHeader {
+    background: #e2ddca;
+    height: 20px;
+    margin: 20px 0 0 0;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+
+.validation-container .settings-container {
+    max-width: 1100px;
+}
+
+.validation-container .well input[type="text"],
+.validation-container .well input[type="password"],
+.validation-container .well textarea {
+    width: 92%;
+    max-width: 92%;
+    height: 40px;
+}
+
 /* how it works */
 .how-it-works-container {
     width: 1000px;

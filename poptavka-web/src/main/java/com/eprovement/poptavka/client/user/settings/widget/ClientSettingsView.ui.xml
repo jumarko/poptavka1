@@ -9,19 +9,31 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
-
+    
+    <ui:style>
+        .container-width {
+        width: 700px;        
+        }
+    </ui:style>
+    
     <b:FluidContainer>
         <b:FluidRow>
-            <b:Column size="1">
-                <g:Label>
-                    <ui:msg key='formRating'>Rating:</ui:msg>
-                </g:Label>
+            <b:Column size="6">
+                <b:FluidRow>
+                    <b:WellForm addStyleNames='no-header-form'>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key='formRating'>Rating:</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <g:TextBox ui:field='clientRating' />
+                            </b:Column> 
+                        </b:FluidRow>                       
+                    </b:WellForm>
+                </b:FluidRow>
             </b:Column>
-            <b:Column size="1">
-                <g:TextBox ui:field='clientRating' />
-            </b:Column>
-            <b:Column size="10"/>
         </b:FluidRow>
     </b:FluidContainer>
-
 </ui:UiBinder>

@@ -9,7 +9,7 @@
     <ui:style>
         .header-image {
         margin: 10px 0 0 14px;
-        }
+        }        
     </ui:style>
 
     <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
@@ -70,26 +70,29 @@
             </g:DockLayoutPanel>
         </g:west>
         <g:center>
-            <g:DockLayoutPanel unit="PX">
+            <g:DockLayoutPanel unit="PX" styleName='{res.common.validationContainer}'>
                 <g:west size="20">
                     <g:HTMLPanel></g:HTMLPanel>
                 </g:west>
-                <g:north size="65" class='{res.layout.toolbarHeader}'>
+                <g:north size="50" class='{res.layout.toolbarHeader}'>
                     <g:HTMLPanel styleName='{res.layout.toolbarItemsBlock}'>
                         <g:Button ui:field='updateButton' styleName='{res.common.toolbarButtonGreen}'>
                             <ui:msg key='settingsUpdateButton'>Update Profile</ui:msg>
                         </g:Button>
                     </g:HTMLPanel>
                 </g:north>
-                <g:center>
-                    <g:ScrollPanel>
-                        <b:FluidContainer>
+                <g:center>      
+                    <g:ScrollPanel>              
+                        <b:FluidContainer styleName='settings-container'>
+                            <b:FluidRow>
+                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
+                            </b:FluidRow>
                             <b:FluidRow>
                                 <b:Column size="12">
-                                    <g:SimplePanel ui:field="contentPanel" />
+                                    <g:SimplePanel ui:field="contentPanel" styleName='formContainer'/>
                                 </b:Column>
                             </b:FluidRow>
-                        </b:FluidContainer>
+                        </b:FluidContainer>                    
                     </g:ScrollPanel>
                 </g:center>
                 <g:south size="36">
