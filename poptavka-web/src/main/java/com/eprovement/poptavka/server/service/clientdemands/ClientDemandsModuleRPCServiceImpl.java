@@ -762,26 +762,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         generalService.save(demand);
     }
 
-    /**
-     * Message sent by supplier about a query to potential demand.
-     *
-     * @param messageDetailImpl
-     * @return message
-     */
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws RPCException,
-            ApplicationSecurityException {
-        Message m = messageService.newReply(this.messageService.getById(
-                messageDetailImpl.getParentId()),
-                this.generalService.find(User.class, messageDetailImpl.getSenderId()));
-        m.setBody(messageDetailImpl.getBody());
-        m.setSubject(messageDetailImpl.getSubject());
-        // TODO RELEASE ivlcek: test if id is set correctly
-        MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
-        return messageDetailFromDB;
-    }
-
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
     private Client findClient(long userId) {
         final User user = generalService.find(User.class, userId);

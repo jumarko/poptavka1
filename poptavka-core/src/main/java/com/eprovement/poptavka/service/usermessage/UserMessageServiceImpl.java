@@ -53,7 +53,11 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         Validate.notNull(user, "user cannot be null!");
         final UserMessage userMessage = new UserMessage();
         userMessage.setRead(false);
-        userMessage.setStarred(false);
+        if (message.getParent() != null) {
+            userMessage.setStarred(this.getUserMessage(message.getParent(), user).isStarred());
+        } else {
+            userMessage.setStarred(false);
+        }
         userMessage.setMessage(message);
         userMessage.setUser(user);
         generalService.save(userMessage);

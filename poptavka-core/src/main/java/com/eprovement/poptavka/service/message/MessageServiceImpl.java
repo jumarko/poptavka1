@@ -52,7 +52,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
-    public Message newThreadRoot(User user) {
+    public UserMessage newThreadRoot(User user) {
         try {
             LOGGER.debug("action=new_thread_root_async status=start user={}");
             Message message = new Message();
@@ -66,9 +66,8 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
             userMessage.setMessage(message);
             userMessage.setUser(user);
             userMessage.setRead(true);
-            userMessageService.create(userMessage);
             LOGGER.debug("action=new_thread_root_async status=finish user={} message={}", user, message);
-            return message;
+            return userMessageService.create(userMessage);
         } catch (MessageException ex) {
             LOGGER.error(ex.getMessage(), ex);
             return null;
@@ -77,8 +76,10 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
-    public Message newReply(Message inReplyTo, User sender) {
-        Message message = this.newThreadRoot(sender);
+    public UserMessage newReply(Message inReplyTo, User sender) {
+        UserMessage userMessage = this.newThreadRoot(sender);
+        userMessage.setStarred(userMessageService.getUserMessage(inReplyTo, sender).isStarred());
+        Message message = userMessage.getMessage();
         message.setParent(inReplyTo);
         message.setThreadRoot(inReplyTo.getThreadRoot());
         if (inReplyTo.getDemand() != null) {
@@ -106,7 +107,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         messageUserRoles.add(messageUserRole);
         message.setRoles(messageUserRoles);
         update(message);
-        return message;
+        return userMessageService.update(userMessage);
     }
 
     @Override

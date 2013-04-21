@@ -55,7 +55,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private static final String COLUMN_PRICE = DemandField.PRICE.getValue();
     private static final String COLUMN_URGENCY = DemandField.VALID_TO.getValue();
     private static final String COLUMN_RECEIVED_DATE = "receivedDate"; //Prijate
-    private static final String COLUMN_FINNISH_DATE = "finnishDate"; //Dodanie/dorucenie
+    private static final String COLUMN_FINNISH_DATE = "endDate"; //Dodanie/dorucenie
     private List<String> gridColumns = new ArrayList<String>();
     //Other
     private MultiSelectionModel<IUniversalDetail> selectionModel;
