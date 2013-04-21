@@ -132,6 +132,7 @@ public class SupplierCreationView extends OverflowComposite
                 + "</div><hr /><div style='text-align: center' id='button'></div>");
         HTML content = new HTML(StyleResource.INSTANCE.conditions().getText());
         Button closeButton = new Button(Storage.MSGS.commonBtnClose());
+        closeButton.addStyleName(StyleResource.INSTANCE.common().buttonGrey());
         contentPanel.add(content, "text");
         contentPanel.add(closeButton, "button");
         panel.setWidget(contentPanel);
@@ -201,6 +202,7 @@ class AggreementDialogBox extends PopupPanel {
                 hide();
             }
         });
+        closeButton.addStyleName(StyleResource.INSTANCE.common().buttonGrey());
         vp.add(closeButton);
 
         if (LocaleInfo.getCurrentLocale().isRTL()) {

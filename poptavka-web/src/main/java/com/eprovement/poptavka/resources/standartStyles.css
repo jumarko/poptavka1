@@ -33,7 +33,7 @@ body {
 }
 
 a,a:visited,a:hover {
-    color: #0000AA;
+    color: #177F03;
 }
 
 /**
@@ -484,12 +484,38 @@ a,a:visited,a:hover {
 }
 
 .gwt-PopupPanel {
-    border: 1px solid #8a8267;
-    padding: 10px;
     background: white;
+    border: 10px solid #000000;    
     box-shadow: 0 0 6px #000000;
     min-width: 0;
+    padding: 10px;
     z-index: 10000;
+    border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
+}
+
+.gwt-PopupPanel h3,
+.gwt-PopupPanel h4 {
+    color: #6F6B59;
+}
+
+.gwt-PopupPanel .popupContent {
+    background: #F1ECDA;
+    padding: 20px; 
+    border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
+}
+
+.gwt-PopupPanel .gwt-Label {
+    padding: 0 0 15px 0;
+}
+
+.gwt-PopupPanel .gwt-Button {
+    padding: 0;
+    margin: 0 auto;
+    float: none;
 }
 
 .gwt-DecoratedPopupPanel .popupContent {
@@ -589,8 +615,8 @@ a,a:visited,a:hover {
 
 .gwt-PopupPanelGlass {
     background-color: #000;
-    opacity: 0.3;
-    filter: alpha(opacity\=30);
+    opacity: 0.8;
+    filter: alpha(opacity\=80);
     z-index: 9000;
 }
 

@@ -54,7 +54,11 @@
 }
 
 .error-field {
-    background-color: #ffcece;
+    background-color: #f93535;
+}
+
+.error-field a.gwt-Anchor {
+    color: #ffffff !important;
 }
 
 .loading-popup {
