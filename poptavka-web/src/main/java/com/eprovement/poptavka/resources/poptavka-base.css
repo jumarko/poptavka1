@@ -384,24 +384,26 @@ body>div {
 }
 
 .logout-menu-bar {
-    background: url(images/logout-menubar.png) no-repeat scroll 0 0 transparent;
-    border: medium none;
+    background: url(images/logout-menubar.png) no-repeat scroll right top transparent;
+    border: medium none;    
     color: #FFFFFF;
-    height: 157px;
-    left: -118px;
+    left: -132px;
     padding: 10px 0 0;
     position: absolute;
     top: 0;
-    width: 199px;
+    box-shadow: 0 2px 2px #bbbbbb;
+    -moz-box-shadow: 0 2px 2px #bbbbbb;
+    -webkit-box-shadow: 0 2px 2px #bbbbbb;
+    border-radius: 5px 0 5px 5px;
+    -moz-border-radius: 5px 0 5px 5px;
+    -webkit-border-radius: 5px 0 5px 5px;    
 }
 
 .logout-menu-bar td {
     color: #FFFFFF;
     display: block;
-    float: left;
     line-height: 28px;
     padding: 0 15px;
-    width: 169px;
 }
 
 .logout-menu-bar td:hover {
