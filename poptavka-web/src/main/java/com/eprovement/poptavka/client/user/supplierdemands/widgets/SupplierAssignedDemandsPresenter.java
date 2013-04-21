@@ -143,7 +143,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
         };
-        ThankYouPopup.create(Storage.MSGS.thankYouFeedback(), additionalAction);
+        ThankYouPopup.create(Storage.MSGS.thankYouFinishDemand(), additionalAction);
     }
 
     /**
