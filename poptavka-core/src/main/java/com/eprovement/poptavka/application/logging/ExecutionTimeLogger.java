@@ -24,7 +24,7 @@ import org.springframework.util.StopWatch;
 public class ExecutionTimeLogger {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionTimeLogger.class);
 
-    @Pointcut("execution(* com.eprovement.poptavka.service.jobs..JobTask+.execute())")
+    @Pointcut("execution(* com.eprovement.poptavka.service.jobs.base.Job+.execute())")
     private void jobs() { }
 
     @Around("jobs()")
@@ -37,7 +37,7 @@ public class ExecutionTimeLogger {
 
         stopWatch.stop();
 
-        final StringBuffer logMessage = new StringBuffer();
+        final StringBuilder logMessage = new StringBuilder();
         logMessage.append(joinPoint.getTarget());
         logMessage.append(".");
         logMessage.append(joinPoint.getSignature().getName());
