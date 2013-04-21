@@ -170,11 +170,11 @@
                             </b:FluidRow>
                             <b:FluidRow>
                                 <b:Column size="12">
-                                    <g:HTMLPanel styleName='formFooter'>
+                                    <g:HTMLPanel styleName='formFooter formFooter2'>
                                         <g:HorizontalPanel ui:field="agreementPanel" >
                                             <g:CheckBox ui:field="agreedCheck" />
                                             <g:Anchor ui:field="conditionLink">
-                                                <ui:msg key="supplierCreationAgreementConditions">Agreement</ui:msg>
+                                                <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
                                             </g:Anchor>
                                         </g:HorizontalPanel>
                                     </g:HTMLPanel>

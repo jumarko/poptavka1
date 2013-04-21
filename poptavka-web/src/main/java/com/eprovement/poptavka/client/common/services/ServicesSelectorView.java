@@ -107,7 +107,7 @@ public class ServicesSelectorView extends Composite
 //        }, Storage.MSGS.columnDuration());
 
         //Set table and columns sizes
-        table.setSize("100%", "245px");
+        table.setSize("100%", "125px");
         table.setColumnWidth(0, "35px");
         table.setColumnWidth(1, "55px");
         table.setColumnWidth(2, "210px");
