@@ -1053,7 +1053,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
         Message message = messageService.newReply(this.messageService.getById(
                 questionMessageToSend.getParentId()),
-                this.generalService.find(User.class, questionMessageToSend.getSenderId()));
+                this.generalService.find(User.class, questionMessageToSend.getSenderId())).getMessage();
         message.setBody(questionMessageToSend.getBody());
         message.setSubject(questionMessageToSend.getSubject());
         messageService.send(message);

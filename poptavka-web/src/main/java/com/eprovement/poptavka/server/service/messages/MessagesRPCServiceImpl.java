@@ -91,7 +91,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     public MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException {
         Message m = messageService.newReply(this.messageService.getById(
                 messageDetailImpl.getThreadRootId()),
-                this.generalService.find(User.class, messageDetailImpl.getSenderId()));
+                this.generalService.find(User.class, messageDetailImpl.getSenderId())).getMessage();
         m.setBody(messageDetailImpl.getBody());
         m.setSubject(INTERNAL_MESSAGE);
         // TODO LATER ivlcek: for message module

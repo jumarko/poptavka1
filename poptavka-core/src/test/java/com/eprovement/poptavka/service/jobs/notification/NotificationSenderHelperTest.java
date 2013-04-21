@@ -51,9 +51,9 @@ public class NotificationSenderHelperTest extends BasicIntegrationTest {
     public void setUp() throws Exception {
         this.notificationSenderHelper = new NotificationSenderHelper(userMessageService, notificationServiceMock);
         final User user = saveOrGetUser();
-        testMessage1 = messageService.newThreadRoot(user);
-        testMessage2 = messageService.newThreadRoot(user);
-        testMessage3 = messageService.newThreadRoot(user);
+        testMessage1 = messageService.newThreadRoot(user).getMessage();
+        testMessage2 = messageService.newThreadRoot(user).getMessage();
+        testMessage3 = messageService.newThreadRoot(user).getMessage();
     }
 
 

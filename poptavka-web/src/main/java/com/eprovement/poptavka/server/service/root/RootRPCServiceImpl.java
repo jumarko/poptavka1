@@ -396,15 +396,12 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     private ReplyMessage sendReplyMessage(MessageDetail replyMessageToSend) {
         final User sender = this.generalService.find(User.class, replyMessageToSend.getSenderId());
         final Message originalMessage = this.messageService.getById(replyMessageToSend.getParentId());
-        final Message replyMessage = messageService.newReply(originalMessage, sender);
+        // TODO RELEASE ivlcek - refactor with userMessage that is returned bellow
+        final UserMessage replyUserMessage = messageService.newReply(originalMessage, sender);
+        final Message replyMessage = replyUserMessage.getMessage();
         replyMessage.setBody(replyMessageToSend.getBody());
         replyMessage.setSubject(replyMessageToSend.getSubject());
         messageService.send(replyMessage);
-
-        // update isStarred for latest user message
-        final UserMessage replyUserMessage = updateIsStarredForUserMessage(originalMessage,
-                sender, replyMessage);
-
         return new ReplyMessage(replyMessage, replyUserMessage);
     }
 
@@ -418,27 +415,6 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
             this.message = message;
             this.userMessage = userMessage;
         }
-    }
-
-
-    /**
-     * Method retrieves the original UserMessage and sets the isStarred attribute for new UserMessage.
-     *
-     * TODO LATER ivlcek - maybe we could move this logic in MessageService method Message newThreadRoot(User user)
-     * where we could add new parameter inReplyTo in order to save one Database query and set isStarred attribute
-     * immediately when new UserMessage is being created. Method would be newThreadRoot(User user, Message inReplyTo)
-     *
-     * @param originalMessage from which isStarred attribute will be retrieved
-     * @param sender user who sends message
-     * @param newMessage new UserMessage that will carry the same isStarred value as original UserMessage
-     * @return new UserMessage with updated isStarred attribute
-     */
-    private UserMessage updateIsStarredForUserMessage(Message originalMessage, User sender, Message newMessage) {
-        final UserMessage originalUserMessage = userMessageService.getUserMessage(originalMessage, sender);
-        final UserMessage newUserMessage = userMessageService.getUserMessage(newMessage, sender);
-        newUserMessage.setStarred(originalUserMessage.isStarred());
-        userMessageService.update(newUserMessage);
-        return newUserMessage;
     }
 
     private MessageDetail getMessageDetail(ReplyMessage replyMessage) {

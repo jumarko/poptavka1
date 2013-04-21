@@ -372,7 +372,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testMessageLifeCycle() throws MessageException {
         final User user = this.generalService.find(User.class, 111111111L);
         final User user2 = this.generalService.find(User.class, 111111112L);
-        long messageId = messageService.newThreadRoot(user).getId();
+        long messageId = messageService.newThreadRoot(user).getMessage().getId();
         Message message = messageService.getById(messageId);
         Assert.assertNotNull("Test message wasn't created.", message);
 
@@ -401,7 +401,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 + ".", MessageState.SENT, message.getMessageState());
         testUserMessagePresent(message, user2);
 
-        Message reply = messageService.newReply(message, user2);
+        Message reply = messageService.newReply(message, user2).getMessage();
 
         testUserMessagePresent(reply, user2);
         testUserMessageNull(reply, user);

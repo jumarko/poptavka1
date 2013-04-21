@@ -5,7 +5,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -224,9 +223,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     /* Messages methods                                                       */
     /**************************************************************************/
-    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws RPCException,
-            ApplicationSecurityException;
-
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/

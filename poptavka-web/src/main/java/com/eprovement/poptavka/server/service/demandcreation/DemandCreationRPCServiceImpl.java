@@ -15,6 +15,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -132,7 +133,8 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         final Demand newDemandFromDB = demandService.create(demand);
 
         // create demand thread root message
-        Message demandMessage = messageService.newThreadRoot(clientService.getById(cliendId).getBusinessUser());
+        UserMessage demandUserMessage = messageService.newThreadRoot(clientService.getById(cliendId).getBusinessUser());
+        Message demandMessage = demandUserMessage.getMessage();
         demandMessage.setDemand(demand);
         demandMessage.setBody(demand.getDescription());
         demandMessage.setSubject(demand.getTitle());

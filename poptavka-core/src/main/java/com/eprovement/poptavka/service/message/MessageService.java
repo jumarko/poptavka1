@@ -26,23 +26,23 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * see and work with the message.
      *
      * @param user The user who composes (and will send) the message
-     * @return the message, whose subject, body... should then be filled and
+     * @return the userMessage, whose message's subject, body... should then be filled and
      * which should then be sent
      */
-    Message newThreadRoot(User user);
+    UserMessage newThreadRoot(User user);
     /**
      * Creates a new message in a reply to a message provided. It constructs
      * the subject from the original message's sbject by prefixing "Re: " to it
      * (if it hasn't been done so before) It also sets the recipient to the
      * sender of the original message
-     * It creates a <code>UserMessage</code> for the sneder so that they can
+     * It creates and returns a <code>UserMessage</code> for the sender so that they can
      * see and work with the message.
      *
      * @param inReplyTo the message to which the new reply should be created
      * @param user the sender of the reply
-     * @return the reply message to be completed and sent
+     * @return the reply userMessage to be completed and sent
      */
-    Message newReply(Message inReplyTo, User user);
+    UserMessage newReply(Message inReplyTo, User user);
 
     /**
      * For given message {@code inReplyTo} and {@code sender} which wants to send reply for {@code inReplyTo}
