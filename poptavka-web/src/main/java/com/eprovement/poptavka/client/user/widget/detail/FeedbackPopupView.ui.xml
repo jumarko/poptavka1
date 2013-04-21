@@ -11,8 +11,8 @@
 
     <g:HTMLPanel>
         <b:Modal ui:field="popupFeedback" addStyleNames='{res.modal.feedbackModal} {res.common.validationContainer}'>
-            <b:Heading size="2">Please enter your feedback.</b:Heading>            
-                        
+            <b:Heading size="2">Please enter your feedback.</b:Heading>
+
             <b:FluidContainer addStyleNames='feedback-content'>
                 <b:FluidRow>
                     <b:Column size="8">
@@ -142,7 +142,7 @@
                                     width="268" height="358"/>
                     </b:Column>
                 </b:FluidRow>
-            </b:FluidContainer>            
+            </b:FluidContainer>
 
             <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
                 <g:Button ui:field="rateBtn" styleName='{res.common.buttonGreen}' visible="false">

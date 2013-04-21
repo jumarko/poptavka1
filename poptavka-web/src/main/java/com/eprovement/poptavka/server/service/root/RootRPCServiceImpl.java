@@ -396,7 +396,6 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
     private ReplyMessage sendReplyMessage(MessageDetail replyMessageToSend) {
         final User sender = this.generalService.find(User.class, replyMessageToSend.getSenderId());
         final Message originalMessage = this.messageService.getById(replyMessageToSend.getParentId());
-        // TODO RELEASE ivlcek - refactor with userMessage that is returned bellow
         final UserMessage replyUserMessage = messageService.newReply(originalMessage, sender);
         final Message replyMessage = replyUserMessage.getMessage();
         replyMessage.setBody(replyMessageToSend.getBody());
