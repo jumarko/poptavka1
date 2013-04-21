@@ -77,7 +77,8 @@ body>div {
     list-style: none;    
 }
 
-.body-full-container .list-style li {
+.body-full-container .list-style li,
+.body-full-container .list-style .gwt-Label {
     background: url(images/list-arrow.png) no-repeat scroll left 8px transparent;
     padding: 0 0 0 10px;
 }
