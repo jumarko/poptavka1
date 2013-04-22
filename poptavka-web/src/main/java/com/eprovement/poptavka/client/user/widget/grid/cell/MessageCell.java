@@ -31,7 +31,7 @@ public class MessageCell extends AbstractCell<MessageDetail> {
 
     interface MyUiRenderer extends UiRenderer {
 
-        void render(SafeHtmlBuilder sb, String cssBall, String cssColor, String sender, String date, String body);
+        void render(SafeHtmlBuilder sb, String cssColor, String sender, String date, String body);
 
         void onBrowserEvent(MessageCell o, NativeEvent e, Element p, MessageDetail n);
 
@@ -55,16 +55,13 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     /**************************************************************************/
     @Override
     public void render(Context context, MessageDetail value, SafeHtmlBuilder sb) {
-        String cssBall;
         String cssColor;
         if (Storage.getUser().getUserId() == value.getSenderId()) {
-            cssBall = Storage.RSCS.detailViews().conversationDetailRed();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderRed();
         } else {
-            cssBall = Storage.RSCS.detailViews().conversationDetailGreen();
             cssColor = Storage.RSCS.detailViews().conversationDetailHeaderGreen();
         }
-        renderer.render(sb, cssBall, cssColor, value.getSender(),
+        renderer.render(sb, cssColor, value.getSender(),
                 getSentText(value.getSent()), getBodyText(value.getBody()));
     }
 
