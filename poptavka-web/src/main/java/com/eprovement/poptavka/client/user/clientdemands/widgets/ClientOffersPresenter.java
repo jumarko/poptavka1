@@ -389,9 +389,8 @@ public class ClientOffersPresenter
             public String getStyleNames(ClientDemandDetail row, int rowIndex) {
                 if (row.getUnreadSubmessagesCount() > 0) {
                     return Storage.RSCS.grid().unread();
-                } else {
-                    return "";
                 }
+                return "";
             }
         });
     }
