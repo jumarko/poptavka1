@@ -57,6 +57,7 @@
 
 .detail-block .span12 {
     min-height: 25px;
+    margin-left: 10px !important;
 }
 
 .detail-block .detail-header {
@@ -66,7 +67,7 @@
     font-weight: normal;
     height: 40px;
     line-height: 40px;
-    padding: 0 0 0 14px;
+    padding: 0;
     margin: 0;
 }
 

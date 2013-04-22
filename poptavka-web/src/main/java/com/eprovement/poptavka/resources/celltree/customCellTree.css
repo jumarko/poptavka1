@@ -16,7 +16,7 @@
 .cellTreeWidget {
     background: url(images/left-container-top.png) no-repeat scroll left top transparent;
     border: none;
-    padding: 10px 0 0;
+    padding: 15px 0 0;
     color: #443b19;
 }
 
@@ -105,7 +105,13 @@
 }
 
 .cellTreeTopItem.cellTreeSelectedItem {
-    border: none;
+    background: none;
+    border-top: none;
+    border-bottom: 1px solid #AFA580;
+}
+
+.cellTreeTopItem.cellTreeSelectedItem:hover {
+    background: #ffffff;
 }
 
 .cellTreeShowMoreButton {
