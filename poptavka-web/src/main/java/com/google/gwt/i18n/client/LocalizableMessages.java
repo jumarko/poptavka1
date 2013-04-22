@@ -69,6 +69,7 @@ public interface LocalizableMessages extends Messages {
 
     /** Placeholders. **/
     String placeholderDemandDesciption();
+    String placeholderOfferPrice();
 
     /** Form section info labels . **/
     String formAccountInfo();

@@ -1,9 +1,9 @@
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.client.common.validation.DateEqualOrGreater;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,7 +39,7 @@ public class OfferMessageDetail extends MessageDetail {
     @Digits(integer = 12, fraction = 0, message = "{messageDigitsPrice}")
     private BigDecimal price;
     @NotNull(message = "{messageNotNullFinishDate}")
-    @Future(message = "{messageFutureFinishDate}")
+    @DateEqualOrGreater(message = "{messageDateEqualOrGreaterFinishDate}")
     private Date finishDate;
 
     public long getSupplierId() {
