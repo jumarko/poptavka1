@@ -93,7 +93,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     /**************************************************************************/
     private void createCategorySelectorPopup() {
         selectorPopup = new PopupPanel(true);
-        selectorPopup.setSize("300px", "300px");
+        selectorPopup.setSize("1033px", "500px");
         selectorPopup.setGlassEnabled(true);
         selectorPopup.hide();
     }

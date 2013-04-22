@@ -34,6 +34,7 @@ body {
 
 a,a:visited,a:hover {
     color: #177F03;
+    cursor: pointer;
 }
 
 /**
