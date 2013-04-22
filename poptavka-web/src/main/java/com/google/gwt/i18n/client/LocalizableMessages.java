@@ -290,6 +290,7 @@ public interface LocalizableMessages extends Messages {
     String columnExpiration();
     String columnFinnishDate();
     String columnFirstName();
+    String columnFrom();
     String columnID();
     String columnInvoiceNumber();
     String columnKey();

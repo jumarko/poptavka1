@@ -119,7 +119,7 @@ public class MessageListView extends Composite implements MessageListPresenter.M
         grid.addCheckboxColumn(checkHeader);
 
         // Sender name column
-        senderColumn = grid.addColumn(grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnSender(),
+        senderColumn = grid.addColumn(grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnFrom(),
                 true, COL_WIDTH_SENDER,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
@@ -141,7 +141,7 @@ public class MessageListView extends Composite implements MessageListPresenter.M
 
         // Creation date column
         dateColumn = grid.addColumn(
-                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnCreatedDate(),
+                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnReceived(),
                 true, Constants.COL_WIDTH_DATE,
                 new UniversalAsyncGrid.GetValue<String>() {
                     @Override
