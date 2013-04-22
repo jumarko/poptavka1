@@ -330,7 +330,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setSupplierId(supplier.getId());
             // TODO RELEASE ivlcek - refactor this senderId
             cdcd.setSenderId(supplier.getBusinessUser().getId());
-            cdcd.setSupplierName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
+            cdcd.setDisplayName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             cdcd.setRating(supplier.getOveralRating().intValue());
 
             list.add(cdcd);
@@ -462,7 +462,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setUserMessageId(userMessage.getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
-            codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setDisplayName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
             codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
@@ -561,7 +561,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
-            codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setDisplayName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
             codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes
@@ -571,7 +571,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setReceivedDate(offer.getCreated());
             // set Demand attributes
             codod.setDemandId(offer.getDemand().getId());
-            codod.setTitle(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setTitle(offer.getDemand().getTitle());
 
             listCodod.add(codod);
         }
@@ -635,7 +635,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
-            codod.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setDisplayName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
             codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
             // set Offer attributes

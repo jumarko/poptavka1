@@ -16,21 +16,15 @@
             <b:FluidContainer addStyleNames='feedback-content'>
                 <b:FluidRow>
                     <b:Column size="8">
-                        <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
+                        <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
                             <g:HTMLPanel>
-                                <g:Label>
+                                <g:Label ui:field="supplierLabel" visible="false">
                                     <ui:msg key="formSupplierName">Supplier name: </ui:msg>
                                 </g:Label>
-                                <g:Label ui:field="supplierName" addStyleNames='user-info-label'/>
-                            </g:HTMLPanel>                                           
-                        </g:HTMLPanel>
-
-                        <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
-                            <g:HTMLPanel>
-                                <g:Label>
+                                <g:Label ui:field="clientLabel"  visible="false">
                                     <ui:msg key="formClientName">Client name:</ui:msg>
                                 </g:Label>
-                                <g:Label ui:field="clientName" addStyleNames='user-info-label'/>
+                                <g:Label ui:field="displayName" addStyleNames='user-info-label'/>
                             </g:HTMLPanel>
                         </g:HTMLPanel>
                     </b:Column>

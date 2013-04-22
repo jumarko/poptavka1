@@ -219,7 +219,7 @@ public class ClientDemandsView extends Composite
                     public String getValue(Object object) {
                         ClientDemandConversationDetail detail = (ClientDemandConversationDetail) object;
                         StringBuilder str = new StringBuilder();
-                        str.append(detail.getSupplierName());
+                        str.append(detail.getDisplayName());
                         if (detail.getMessageCount() > 0) {
                             str.append(" (");
                             str.append(detail.getMessageCount());

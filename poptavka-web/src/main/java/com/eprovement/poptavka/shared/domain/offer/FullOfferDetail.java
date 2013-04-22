@@ -106,18 +106,13 @@ public class FullOfferDetail implements IsSerializable, TableDisplay, IUniversal
     }
 
     @Override
-    public String getClientName() {
-        return offerDetail.getClientName();
+    public String getDisplayName() {
+        return offerDetail.getDisplayName();
     }
 
     @Override
     public long getSupplierId() {
         return offerDetail.getSupplierId();
-    }
-
-    @Override
-    public String getSupplierName() {
-        return offerDetail.getSupplierName();
     }
 
     @Override

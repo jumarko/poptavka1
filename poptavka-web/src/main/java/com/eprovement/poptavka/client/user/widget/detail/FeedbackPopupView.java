@@ -17,7 +17,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -37,11 +36,8 @@ public class FeedbackPopupView extends Composite {
     @UiField Modal popupFeedback;
     @UiField FluidRow rateRow1, rateRow2, rateRow3, rateRow4, rateRow5;
     @UiField WellForm rateWell1, rateWell2, rateWell3, rateWell4, rateWell5;
-    @UiField HTMLPanel clientPanel, supplierPanel;
-    /** SupplierPanel. **/
-    @UiField Label supplierName;
-    /** ClientPanel. **/
-    @UiField Label clientName;
+    @UiField Label clientLabel, supplierLabel;
+    @UiField Label displayName;
     /** Rate. **/
     @UiField TextArea commentArea;
     @UiField Button rateBtn;
@@ -56,16 +52,8 @@ public class FeedbackPopupView extends Composite {
     public FeedbackPopupView(int rateWhat) {
         initWidget(uiBinder.createAndBindUi(this));
         popupFeedback.show();
-        switch (rateWhat) {
-            case CLIENT:
-                clientPanel.setVisible(true);
-                break;
-            case SUPPLIER:
-                supplierPanel.setVisible(true);
-                break;
-            default:
-                break;
-        }
+        clientLabel.setVisible(rateWhat == CLIENT);
+        supplierLabel.setVisible(rateWhat == SUPPLIER);
         bindHandlers();
     }
 
@@ -128,12 +116,8 @@ public class FeedbackPopupView extends Composite {
         }
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName.setText(supplierName);
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName.setText(clientName);
+    public void setDisplayName(String displayName) {
+        this.displayName.setText(displayName);
     }
 
     /**************************************************************************/

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayDisplayName;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
@@ -13,9 +14,9 @@ import com.google.gwt.view.client.ProvidesKey;
  * @author ivan.vlcek
  */
 public class ClientDemandMessageDetail extends DemandMessageDetail
-        implements IsSerializable, TableDisplay {
+        implements IsSerializable, TableDisplay, TableDisplayDisplayName {
 
-    private String clientName;
+    private String displayName;
     private int clientRating;
 
 
@@ -42,12 +43,13 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 }
             };
 
-    public String getClientName() {
-        return clientName;
+    @Override
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public int getClientRating() {

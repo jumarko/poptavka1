@@ -27,7 +27,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     private long supplierUserId;
     private long userMessageId;
     private boolean isStarred;
-    private String supplierName;
+    private String displayName;
     private BigDecimal price;
     private Integer rating;
     private Date receivedDate;
@@ -35,7 +35,6 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     private int messageCount;
     private long clientId;
     private long senderId;
-    private String clientName;
     private String title;
     //Keyprovider
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
@@ -117,19 +116,13 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
         this.supplierId = supplierId;
     }
 
-    /**
-     * @return the supplierName
-     */
     @Override
-    public String getSupplierName() {
-        return supplierName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    /**
-     * @param supplierName the supplierName to set
-     */
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**
@@ -229,11 +222,6 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     }
 
     @Override
-    public String getClientName() {
-        return this.clientName;
-    }
-
-    @Override
     public long getMessageId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -276,13 +264,6 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
     }
 
     /**
-     * @param clientName the clientName to set
-     */
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    /**
      * @param title the title to set
      */
     public void setTitle(String title) {
@@ -294,7 +275,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
                 + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
                 + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
-                + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
+                + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", isRead="
                 + isRead + '}';
     }

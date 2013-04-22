@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayDisplayName;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 
 import java.util.Date;
@@ -7,9 +8,10 @@ import java.util.Date;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
-public class PotentialDemandMessage extends DemandMessageDetail implements IsSerializable, TableDisplay {
+public class PotentialDemandMessage extends DemandMessageDetail
+    implements IsSerializable, TableDisplay, TableDisplayDisplayName {
 
-    private String clientName;
+    private String displayName;
     private Integer clientRating;
 
     public static final ProvidesKey<PotentialDemandMessage> KEY_PROVIDER =
@@ -31,13 +33,13 @@ public class PotentialDemandMessage extends DemandMessageDetail implements IsSer
         this.clientRating = clientRating;
     }
 
-//    @Override
-    public String getClientName() {
-        return clientName;
+    @Override
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override

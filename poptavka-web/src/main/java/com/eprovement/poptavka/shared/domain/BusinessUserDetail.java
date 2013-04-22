@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayDisplayName;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
 
@@ -20,7 +21,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Beho
  *
  */
-public class BusinessUserDetail extends UserDetail implements IsSerializable {
+public class BusinessUserDetail extends UserDetail implements IsSerializable, TableDisplayDisplayName {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -83,6 +84,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     @Size(min = 1)
     private ArrayList<AddressDetail> addresses;
     /** Others. **/
+    private String displayName;
     private BusinessType businessType;
     private Verification verification;
     @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
@@ -239,25 +241,13 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         this.overalRating = overallRating;
     }
 
-    /**
-     * Display company name if available, if not, display person's name as
-     * concatenated string of first and last name.
-     * @return display string
-     */
+    @Override
     public String getDisplayName() {
-        String result = "";
+        return displayName;
+    }
 
-        if (!getCompanyName().isEmpty()) {
-            result = getCompanyName();
-        } else {
-            if (!getPersonFirstName().isEmpty()) {
-                result = getPersonFirstName();
-            }
-            if (!getPersonLastName().isEmpty()) {
-                result = result.concat(" ").concat(getPersonLastName());
-            }
-        }
-        return result;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**************************************************************************/

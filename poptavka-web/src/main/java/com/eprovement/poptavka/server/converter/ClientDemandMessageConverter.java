@@ -20,7 +20,7 @@ public final class ClientDemandMessageConverter extends AbstractConverter<UserMe
                 && userMessage.getMessage().getDemand().getClient() != null
                 && userMessage.getMessage().getDemand().getClient().getBusinessUser() != null
                 && userMessage.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData() != null) {
-            detail.setClientName(userMessage.getMessage().getDemand()
+            detail.setDisplayName(userMessage.getMessage().getDemand()
                     .getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         }
 

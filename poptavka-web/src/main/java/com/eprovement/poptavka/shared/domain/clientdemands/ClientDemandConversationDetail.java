@@ -28,7 +28,7 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
     private long supplierId;
     private long supplierUserId;
     private Date messageSent;
-    private String supplierName;
+    private String displayName;
     private String messageBody;
     private String demandTitle;
     private boolean isRead;
@@ -98,14 +98,6 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
         this.supplierId = supplierId;
     }
 
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
     public long getUserMessageId() {
         return userMessageId;
     }
@@ -150,8 +142,12 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
     }
 
     @Override
-    public String getClientName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override

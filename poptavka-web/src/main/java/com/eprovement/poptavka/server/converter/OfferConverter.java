@@ -26,7 +26,7 @@ public final class OfferConverter extends AbstractConverter<Offer, OfferDetail> 
         detail.setDemandTitle(source.getDemand().getTitle());
         //supplier info
         detail.setSupplierId(source.getSupplier().getId());
-        detail.setSupplierName(source.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
+        detail.setDisplayName(source.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
         return detail;
     }
 

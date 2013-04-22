@@ -28,7 +28,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     private long userMessageId;
     private boolean isStarred;
     private boolean isRead;
-    private String supplierName;
+    private String displayName;
     private BigDecimal price;
     private String demandTitle;
     private Integer rating;
@@ -115,19 +115,13 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
         this.supplierId = supplierId;
     }
 
-    /**
-     * @return the supplierName
-     */
     @Override
-    public String getSupplierName() {
-        return supplierName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    /**
-     * @param supplierName the supplierName to set
-     */
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**
@@ -227,11 +221,6 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     }
 
     @Override
-    public String getClientName() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public long getMessageId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -276,7 +265,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
                 + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", senderId="
                 + senderId + ", isStarred=" + isStarred + ", supplierName="
-                + supplierName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
+                + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
                 + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", isRead="
                 + isRead + '}';
     }

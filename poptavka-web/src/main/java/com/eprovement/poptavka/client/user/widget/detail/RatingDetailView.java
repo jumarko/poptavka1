@@ -23,8 +23,8 @@ public class RatingDetailView extends Composite {
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField Label clientName, clientCommentDefault, clientCommentAdditional;
-    @UiField Label supplierName, supplierCommentDefault, supplierCommentAdditional;
+    @UiField Label clientDisplayName, clientCommentDefault, clientCommentAdditional;
+    @UiField Label supplierDisplayName, supplierCommentDefault, supplierCommentAdditional;
     @UiField Image clientStarImg, supplierStarImg;
     @UiField Heading clientHeading, supplierHeading;
 
@@ -51,7 +51,7 @@ public class RatingDetailView extends Composite {
     /**************************************************************************/
     private void setClientRatingDetail(DemandRatingsDetail demandDetail) {
         // TODO RELEASE martin - add display name (person first name + last name OR company name)
-        clientName.setText("TODO name");
+        clientDisplayName.setText("TODO name");
         clientStarImg.setVisible(demandDetail.getRatingClient() != null);
         if (demandDetail.getRatingClient() == null) {
             clientHeading.setText(Storage.MSGS.feedbackNotRated());
@@ -65,7 +65,7 @@ public class RatingDetailView extends Composite {
 
     private void setSupplierRatingDetail(DemandRatingsDetail demandDetail) {
         // TODO RELEASE martin - add display name (person first name + last name OR company name)
-        supplierName.setText("TODO name");
+        supplierDisplayName.setText("TODO name");
         supplierStarImg.setVisible(demandDetail.getRatingSupplier() != null);
         if (demandDetail.getRatingSupplier() == null) {
             supplierHeading.setText(Storage.MSGS.feedbackNotRated());

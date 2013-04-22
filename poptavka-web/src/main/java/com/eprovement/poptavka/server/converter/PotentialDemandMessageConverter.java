@@ -15,7 +15,7 @@ public final class PotentialDemandMessageConverter extends AbstractConverter<Use
     @Override
     public PotentialDemandMessage convertToTarget(UserMessage userMessage) {
         final PotentialDemandMessage potentialDemandMessage = new PotentialDemandMessage();
-        potentialDemandMessage.setClientName(userMessage.getMessage().getDemand().getClient()
+        potentialDemandMessage.setDisplayName(userMessage.getMessage().getDemand().getClient()
                 .getBusinessUser().getBusinessUserData().getDisplayName());
         potentialDemandMessage.setClientRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
         return potentialDemandMessage;

@@ -29,7 +29,7 @@
                             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                                 <ui:msg key="formClientName">Client name:</ui:msg>
                             </g:Label>
-                            <g:Label ui:field="clientName" addStyleNames='{res.detailViews.detailStrong}'/>
+                            <g:Label ui:field="clientDisplayName" addStyleNames='{res.detailViews.detailStrong}'/>
                         </b:Column>
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
@@ -79,7 +79,7 @@
                             <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                                 <ui:msg key="formSupplierName">Supplier name:</ui:msg>
                             </g:Label>
-                            <g:Label ui:field="supplierName" addStyleNames='{res.detailViews.detailStrong}'/>
+                            <g:Label ui:field="supplierDisplayName" addStyleNames='{res.detailViews.detailStrong}'/>
                         </b:Column>
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>

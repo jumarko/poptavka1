@@ -14,19 +14,13 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public interface IUniversalDetail extends TableDisplayRating {
+public interface IUniversalDetail extends TableDisplayRating, TableDisplayDisplayName {
 
-    // Client part
+    // Client part & Supplier part
     //--------------------------------------------------------------------------
     long getClientId();
 
-    String getClientName();
-
-    // Supplier part
-    //--------------------------------------------------------------------------
     long getSupplierId();
-
-    String getSupplierName();
 
     // Message part
     //--------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayDisplayName;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public class OfferDetail implements IsSerializable {
+public class OfferDetail implements IsSerializable, TableDisplayDisplayName {
 
     // OfferDetail
     private long id;
@@ -25,8 +26,7 @@ public class OfferDetail implements IsSerializable {
     private String demandTitle;
     //Supplier info
     private long supplierId;
-    private String clientName;
-    private String supplierName;
+    private String displayName;
     private int rating;
 
     /** for serialization. **/
@@ -50,7 +50,6 @@ public class OfferDetail implements IsSerializable {
         demandTitle = detail.getDemandTitle();
         //Supplier info
         supplierId = detail.getSupplierId();
-        supplierName = detail.getSupplierName();
     }
 
     public Date getCreatedDate() {
@@ -126,22 +125,13 @@ public class OfferDetail implements IsSerializable {
         this.state = state;
     }
 
-
-
-    public String getSupplierName() {
-        return supplierName;
+    @Override
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public int getRating() {
@@ -163,6 +153,6 @@ public class OfferDetail implements IsSerializable {
                 + "\n    DemandId=" + Long.toString(demandId)
                 + "\n    DemandTitle=" + demandTitle
                 + "\n    SupplierId=" + Long.toString(supplierId)
-                + "\n    SupplierName=" + supplierName;
+                + "\n    DisplayName=" + displayName;
     }
 }
