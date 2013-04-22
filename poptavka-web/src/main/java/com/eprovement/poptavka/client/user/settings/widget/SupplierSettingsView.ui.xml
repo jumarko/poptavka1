@@ -7,9 +7,8 @@
              ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
              ui:generateLocales='default'>
 
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
-    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     
     <ui:style>
         .button-position {
@@ -31,13 +30,13 @@
                         </b:Column>
                     </b:FluidRow>
                     <b:FluidRow>
-                        <b:Column size="4">
+                        <b:Column size="2">
                             <g:Label>
                                 <ui:msg key='formRating'>Rating:</ui:msg>
                             </g:Label>
                         </b:Column>
-                        <b:Column size="8">
-                            <g:IntegerBox ui:field='supplierRating' />
+                        <b:Column size="10">
+                            <g:Label ui:field='supplierRating' title="{msgs.settingsRatingTooltip}" />
                         </b:Column>                
                     </b:FluidRow>
                     <b:FluidRow>

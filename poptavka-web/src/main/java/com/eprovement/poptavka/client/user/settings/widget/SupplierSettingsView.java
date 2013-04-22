@@ -23,7 +23,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.IntegerBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -48,18 +48,12 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField
-    IntegerBox supplierRating;
-    @UiField
-    SimplePanel servicePanel;
-    @UiField
-    Anchor revert;
-    @UiField(provided = true)
-    CellList categories, localities;
-    @UiField(provided = true)
-    ListChangeMonitor categoriesMonitor, localitiesMonitor;
-    @UiField
-    Button editCatBtn, editLocBtn;
+    @UiField(provided = true) CellList categories, localities;
+    @UiField(provided = true) ListChangeMonitor categoriesMonitor, localitiesMonitor;
+    @UiField Label supplierRating;
+    @UiField SimplePanel servicePanel;
+    @UiField Anchor revert;
+    @UiField Button editCatBtn, editLocBtn;
     //
     private PopupPanel selectorPopup;
 
@@ -76,7 +70,6 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
         initValidationMonitors();
 
         initWidget(uiBinder.createAndBindUi(this));
-        supplierRating.setEnabled(false);
 
         StyleResource.INSTANCE.common().ensureInjected();
     }
@@ -124,7 +117,7 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     public void setSupplierSettings(SettingDetail detail) {
         if (detail.getSupplier() != null
                 && detail.getSupplier().getOverallRating() != null) {
-            supplierRating.setValue(detail.getSupplier().getOverallRating());
+            supplierRating.setText(Integer.toString(detail.getSupplier().getOverallRating()));
             this.categoriesMonitor.setBothValues(detail.getSupplier().getCategories());
             this.localitiesMonitor.setBothValues(detail.getSupplier().getLocalities());
         }
@@ -172,12 +165,6 @@ public class SupplierSettingsView extends Composite implements SupplierSettingsP
     @Override
     public Button getEditLocBtn() {
         return editLocBtn;
-    }
-
-    /** TEXTBOXES. **/
-    @Override
-    public IntegerBox getSupplierRating() {
-        return supplierRating;
     }
 
     /** OTHERES. **/

@@ -588,6 +588,8 @@ public interface LocalizableMessages extends Messages {
     String advSearchSuppliersTab();
 
     /*** 7 - Settings module view *************************************** 7 ***/
+    String settingsRatingTooltip();
+
     /** SettingsView.ui. **/
     String settingsNothingToUpdate();
     String settingsNotificationLeavingPage();
