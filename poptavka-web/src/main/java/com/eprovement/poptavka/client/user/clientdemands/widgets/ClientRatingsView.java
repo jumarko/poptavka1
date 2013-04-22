@@ -87,6 +87,17 @@ public class ClientRatingsView extends Composite
                         return ((DemandRatingsDetail) object).getDemandTitle();
                     }
                 });
+
+        // Demand price
+        /**************************************************************************/
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnPrice(),
+                true, Constants.COL_WIDTH_PRICE,
+                new UniversalAsyncGrid.GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        return Storage.CURRENCY_FORMAT.format(((DemandRatingsDetail) object).getDemandPrice());
+                    }
+                });
     }
 
     private SortDataHolder initSort() {

@@ -513,6 +513,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Demand demand = offer.getDemand();
             drd.setDemandId(demand.getId());
             drd.setDemandTitle(demand.getTitle());
+            drd.setDemandPrice(demand.getPrice());
+            drd.setDemandDescription(demand.getDescription());
             drd.setRatingClient(demand.getRating().getClientRating());
             drd.setRatingSupplier(demand.getRating().getSupplierRating());
             drd.setRatingClientMessage(demand.getRating().getClientMessage());
