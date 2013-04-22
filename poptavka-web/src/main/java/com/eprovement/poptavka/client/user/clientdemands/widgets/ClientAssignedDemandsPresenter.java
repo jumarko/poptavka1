@@ -260,7 +260,7 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
             @Override
             public void onClick(ClickEvent event) {
                 ratePopup = new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
-                ratePopup.setSupplierName(selectedObject.getSupplierName());
+                ratePopup.setDisplayName(selectedObject.getDisplayName());
                 ratePopup.getRateBtn().addClickHandler(new ClickHandler() {
                     @Override
                     public void onClick(ClickEvent event) {

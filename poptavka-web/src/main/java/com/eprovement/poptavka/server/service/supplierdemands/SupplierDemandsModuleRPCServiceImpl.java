@@ -197,7 +197,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // Client part
             detail.setClientId(um.getMessage().getDemand().getClient().getId());
             detail.setSenderId(um.getMessage().getThreadRoot().getSender().getId());
-            detail.setClientName(
+            detail.setDisplayName(
                     um.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             if (um.getMessage().getDemand().getClient().getOveralRating() != null) {
                 detail.setRating(um.getMessage().getDemand().getClient().getOveralRating());
@@ -277,7 +277,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setRating(offer.getDemand().getClient().getOveralRating());
             // client part
             // Client name can be displayed because it contrains only contact person name
-            sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
             sod.setSenderId(latestUserMessage.getMessage().getThreadRoot().getSender().getId());
             // demand part
@@ -352,7 +352,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
             // client part
-            sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
             sod.setSenderId(latestUserMessage.getMessage().getThreadRoot().getSender().getId());
             // demand part
@@ -432,7 +432,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setSupplierId(supplierID);
             sod.setRating(offer.getDemand().getClient().getOveralRating());
             // client part
-            sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+            sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setClientId(offer.getDemand().getClient().getId());
             sod.setSenderId(latestUserMessage.getMessage().getThreadRoot().getSender().getId());
             // demand part
@@ -513,6 +513,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             Demand demand = offer.getDemand();
             drd.setDemandId(demand.getId());
             drd.setDemandTitle(demand.getTitle());
+            drd.setDemandPrice(demand.getPrice());
+            drd.setDemandDescription(demand.getDescription());
             drd.setRatingClient(demand.getRating().getClientRating());
             drd.setRatingSupplier(demand.getRating().getSupplierRating());
             drd.setRatingClientMessage(demand.getRating().getClientMessage());
@@ -608,7 +610,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
         // TODO LATER ivlcek - refactor and create converter. Finish if we need history link for this
         sod.setSupplierId(offer.getSupplier().getId());
-        sod.setClientName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
+        sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         sod.setClientId(offer.getDemand().getClient().getId());
         sod.setDemandId(offer.getDemand().getId());
         sod.setPrice(offer.getPrice());

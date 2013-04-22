@@ -424,8 +424,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             offer.setFinishDate(offerDetail.getFinishDate());
         }
         if (!offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName().equals(
-                offerDetail.getSupplierName())) {
-            offer.getSupplier().getBusinessUser().getBusinessUserData().setCompanyName(offerDetail.getSupplierName());
+                offerDetail.getDisplayName())) {
+            offer.getSupplier().getBusinessUser().getBusinessUserData().setCompanyName(offerDetail.getDisplayName());
         }
         //TODO RELEASE Martin - how to update OfferState? ivlcek: insert OfferService by Dependency Injection and:
         // OfferState newOfferState = offerService.getOfferState(offerDetail.getState().getValue());

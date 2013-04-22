@@ -2,6 +2,7 @@ package com.eprovement.poptavka.shared.domain;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
+import java.math.BigDecimal;
 
 public class DemandRatingsDetail implements IsSerializable {
 
@@ -12,9 +13,14 @@ public class DemandRatingsDetail implements IsSerializable {
     private long demandId;
     private long supplierId;
     private long threadRootId;
+    //Demand
     private String demandTitle;
+    private BigDecimal demandPrice;
+    private String demandDescription;
+    //Client
     private Integer ratingClient;
     private Integer ratingSupplier;
+    //Supplier
     private String ratingClientMessage;
     private String ratingSupplierMessage;
     //KeyProvider
@@ -59,6 +65,22 @@ public class DemandRatingsDetail implements IsSerializable {
 
     public void setDemandTitle(String demandTitle) {
         this.demandTitle = demandTitle;
+    }
+
+    public BigDecimal getDemandPrice() {
+        return demandPrice;
+    }
+
+    public void setDemandPrice(BigDecimal demandPrice) {
+        this.demandPrice = demandPrice;
+    }
+
+    public String getDemandDescription() {
+        return demandDescription;
+    }
+
+    public void setDemandDescription(String demandDescription) {
+        this.demandDescription = demandDescription;
     }
 
     public Integer getRatingClient() {

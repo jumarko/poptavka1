@@ -5,9 +5,8 @@
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-    <ui:with type="com.eprovement.poptavka.resources.StyleResource"
-             field="res">
-    </ui:with>
+    <ui:with field="res" type="com.eprovement.poptavka.resources.StyleResource" />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:HTMLPanel styleName="{res.detailViews.wrapper}">
         <g:HTMLPanel>
@@ -29,9 +28,11 @@
                                 </g:Label>
                             </b:Column>
                             <b:Column size="6">
-                                <cm:ValidationMonitor ui:field="priceMonitor">
-                                    <cm:BigDecimalBox styleName='conversation-input' />
-                                </cm:ValidationMonitor>
+                                <g:HTMLPanel styleName="input-append">
+                                    <cm:ValidationMonitor ui:field="priceMonitor">
+                                        <cm:BigDecimalBox placeholder="{msgs.placeholderOfferPrice}" styleName="conversation-input" />
+                                    </cm:ValidationMonitor>
+                                </g:HTMLPanel>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow ui:field="finishDateRow">

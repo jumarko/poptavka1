@@ -136,11 +136,15 @@ public class BusinessUserData extends DomainObject {
     public String getDisplayName() {
         String result = "";
 
-        if (!getPersonFirstName().isEmpty()) {
-            result = getPersonFirstName();
-        }
-        if (!getPersonLastName().isEmpty()) {
-            result += ", " + getPersonLastName();
+        if (!getCompanyName().isEmpty()) {
+            result = getCompanyName();
+        } else {
+            if (!getPersonFirstName().isEmpty()) {
+                result = getPersonFirstName();
+            }
+            if (!getPersonLastName().isEmpty()) {
+                result = result.concat(" ").concat(getPersonLastName());
+            }
         }
         return result;
     }

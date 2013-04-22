@@ -204,6 +204,6 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("message.notNull.finishDate")
     String messageNotNullFinishDate();
 
-    @Key("message.future.finishDate")
-    String messageFutureFinishDate();
+    @Key("message.dateEqualOrGreater.finishDate")
+    String messageDateEqualOrGreaterFinishDate();
 }

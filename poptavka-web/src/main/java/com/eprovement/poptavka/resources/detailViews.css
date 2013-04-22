@@ -177,10 +177,6 @@
     min-height: 40px;
 }
 
-.conversation-detail-green, .conversation-detail-red {
-    background: none;
-}
-
 .conversation-detail:hover {
     background-color: #effaff;
     box-shadow: 0 0 4px #999999;

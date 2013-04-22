@@ -16,38 +16,29 @@
             <b:FluidContainer addStyleNames='feedback-content'>
                 <b:FluidRow>
                     <b:Column size="8">
-                        <g:HTMLPanel ui:field="supplierPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
+                        <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
                             <g:HTMLPanel>
-                                <g:Label>
+                                <g:Label ui:field="supplierLabel" visible="false">
                                     <ui:msg key="formSupplierName">Supplier name: </ui:msg>
                                 </g:Label>
-                                <g:Label ui:field="supplierName" addStyleNames='user-info-label'/>
-                            </g:HTMLPanel>                                           
-                        </g:HTMLPanel>
-
-                        <g:HTMLPanel ui:field="clientPanel" visible="false" styleName='{res.detailViews.detailBlock}'>
-                            <g:HTMLPanel>
-                                <g:Label>
+                                <g:Label ui:field="clientLabel"  visible="false">
                                     <ui:msg key="formClientName">Client name:</ui:msg>
                                 </g:Label>
-                                <g:Label ui:field="clientName" addStyleNames='user-info-label'/>
+                                <g:Label ui:field="displayName" addStyleNames='user-info-label'/>
                             </g:HTMLPanel>
                         </g:HTMLPanel>
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow>
                     <b:Column size="8">
-                        <b:FluidRow>
-                            <b:WellForm>
+                        <b:FluidRow ui:field="rateRow1">
+                            <b:WellForm ui:field="rateWell1">
                                 <g:HTMLPanel styleName='span-star'>
-                                    <g:ToggleButton ui:field="starBtn1" addStyleNames='hide'>*****</g:ToggleButton>
-                                    <g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>                                       
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                    </g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>                                       
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
                                 </g:HTMLPanel>
                                 <g:HTMLPanel styleName='span-title'>
                                     <b:Heading size="4">
@@ -61,17 +52,14 @@
                                 </g:HTMLPanel>
                             </b:WellForm>
                         </b:FluidRow>
-                        <b:FluidRow>
-                            <b:WellForm>
+                        <b:FluidRow ui:field="rateRow2">
+                            <b:WellForm ui:field="rateWell2">
                                 <g:HTMLPanel styleName='span-star'>
-                                    <g:ToggleButton ui:field="starBtn2" addStyleNames='hide'>****</g:ToggleButton>
-                                    <g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                    </g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
                                 </g:HTMLPanel>
                                 <g:HTMLPanel styleName='span-title'>
                                     <b:Heading size="4">
@@ -85,17 +73,14 @@
                                 </g:HTMLPanel>
                             </b:WellForm>
                         </b:FluidRow>
-                        <b:FluidRow>
-                            <b:WellForm>
+                        <b:FluidRow ui:field="rateRow3">
+                            <b:WellForm ui:field="rateWell3">
                                 <g:HTMLPanel styleName='span-star'>
-                                    <g:ToggleButton ui:field="starBtn3" addStyleNames='hide'>***</g:ToggleButton>
-                                    <g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                    </g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
                                 </g:HTMLPanel>
                                 <g:HTMLPanel styleName='span-title'>
                                     <b:Heading size="4">
@@ -109,17 +94,14 @@
                                 </g:HTMLPanel>
                             </b:WellForm>
                         </b:FluidRow>
-                        <b:FluidRow>
-                            <b:WellForm>
+                        <b:FluidRow ui:field="rateRow4">
+                            <b:WellForm ui:field="rateWell4">
                                 <g:HTMLPanel styleName='span-star'>
-                                    <g:ToggleButton ui:field="starBtn4" addStyleNames='hide'>**</g:ToggleButton>
-                                    <g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                    </g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
                                 </g:HTMLPanel>
                                 <g:HTMLPanel styleName='span-title'>
                                     <b:Heading size="4">
@@ -133,17 +115,14 @@
                                 </g:HTMLPanel>
                             </b:WellForm>
                         </b:FluidRow>
-                        <b:FluidRow>
-                            <b:WellForm>
+                        <b:FluidRow ui:field="rateRow5">
+                            <b:WellForm ui:field="rateWell5">
                                 <g:HTMLPanel styleName='span-star'>
-                                    <g:ToggleButton ui:field="starBtn5" addStyleNames='hide'>*</g:ToggleButton>
-                                    <g:HTMLPanel>
-                                        <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                        <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
-                                    </g:HTMLPanel>
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
+                                    <g:HTMLPanel styleName='grey-star'></g:HTMLPanel>
                                 </g:HTMLPanel>
                                 <g:HTMLPanel styleName='span-title'>
                                     <b:Heading size="4">
@@ -166,11 +145,7 @@
             </b:FluidContainer>            
 
             <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
-                <!--                <g:Anchor ui:field="anchorComment">
-                    <ui:msg key="formRateInsertComment">Insert additional rate commment: </ui:msg>
-                </g:Anchor>-->
-                
-                <g:Button ui:field="rateBtn" styleName='{res.common.buttonGreen}'>
+                <g:Button ui:field="rateBtn" styleName='{res.common.buttonGreen}' visible="false">
                     <ui:msg key="commonBtnRate">Rate</ui:msg>
                 </g:Button>
             </g:HTMLPanel>

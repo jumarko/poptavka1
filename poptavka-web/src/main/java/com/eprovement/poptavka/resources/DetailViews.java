@@ -56,12 +56,6 @@ public interface DetailViews extends CssResource {
     @ClassName("conversation-block")
     String conversationBlock();
 
-    @ClassName("conversation-detail-green")
-    String conversationDetailGreen();
-
-    @ClassName("conversation-detail-red")
-    String conversationDetailRed();
-
     @ClassName("conversation-detail-header")
     String conversationDetailHeader();
 

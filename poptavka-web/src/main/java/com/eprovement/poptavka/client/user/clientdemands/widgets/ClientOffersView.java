@@ -53,7 +53,7 @@ public class ClientOffersView extends Composite
     @UiField(provided = true) UniversalPagerWidget demandPager, offerPager;
     @UiField Button backBtn, acceptBtn;
     @UiField SimplePanel detailPanel, actionBox;
-    @UiField Label demandTableNameLabel, offerTableNameLabel;
+    @UiField Label offerTableTitleLabel;
     @UiField HorizontalPanel demandHeader, offerHeader, offerToolBar;
 
     /**************************************************************************/
@@ -68,7 +68,6 @@ public class ClientOffersView extends Composite
         initOfferTable();
         initWidget(uiBinder.createAndBindUi(this));
 
-        offerTableNameLabel.setText("Offered demands offers table.");
         setOfferTableVisible(false);
     }
 
@@ -215,7 +214,7 @@ public class ClientOffersView extends Composite
         return acceptBtn;
     }
 
-    //Others
+    /** Panels. **/
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
@@ -226,6 +225,12 @@ public class ClientOffersView extends Composite
         return actionBox;
     }
 
+    @Override
+    public HorizontalPanel getOfferToolBar() {
+        return offerToolBar;
+    }
+
+    /** Others. **/
     @Override
     public IsWidget getWidgetView() {
         return this;
@@ -252,10 +257,11 @@ public class ClientOffersView extends Composite
         offerGrid.setVisible(visible);
         offerGrid.redraw();
         offerHeader.setVisible(visible);
+        offerTableTitleLabel.setVisible(visible);
     }
 
     @Override
-    public void setDemandTitleLabel(String text) {
-        demandTableNameLabel.setText(text);
+    public void setOfferTitleLabel(String text) {
+        offerTableTitleLabel.setText(text);
     }
 }

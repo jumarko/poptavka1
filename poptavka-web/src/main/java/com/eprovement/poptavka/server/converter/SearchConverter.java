@@ -39,7 +39,9 @@ public final class SearchConverter implements Converter<Search, SearchDefinition
         convertFirstResult(definition, search);
         convertMaxResult(definition, search);
         convertFilters(definition, search);
-        convertOrderColumns(definition, search);
+        //Temporary disabled - TODO LATER Martin - if all selects will use Search, can use automatic conversion.
+        //Also usage of prefixes must be reconsidered to be used in converter.
+//        convertOrderColumns(definition, search);
 
         return search;
     }

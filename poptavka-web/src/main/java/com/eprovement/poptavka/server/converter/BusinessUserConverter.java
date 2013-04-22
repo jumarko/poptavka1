@@ -60,6 +60,7 @@ public final class BusinessUserConverter extends AbstractConverter<BusinessUser,
         //BusinessUserData
         if (source.getBusinessUserData() != null) {
             detail.setCompanyName(source.getBusinessUserData().getCompanyName());
+            detail.setDisplayName(source.getBusinessUserData().getDisplayName());
             detail.setIdentificationNumber(source.getBusinessUserData().getIdentificationNumber());
             detail.setPersonFirstName(source.getBusinessUserData().getPersonFirstName());
             detail.setPersonLastName(source.getBusinessUserData().getPersonLastName());

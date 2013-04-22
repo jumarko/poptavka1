@@ -25,7 +25,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable, IUniversal
     /**************************************************************************/
     // Client part
     private long clientId;
-    private String clientName; // column 2
+    private String displayName; // column 2
     private int clientRating; // column ?
     // Message part
     private long messageId;
@@ -83,19 +83,13 @@ public class SupplierPotentialDemandDetail implements IsSerializable, IUniversal
         this.clientId = clientId;
     }
 
-    /**
-     * @return the clientName
-     */
     @Override
-    public String getClientName() {
-        return clientName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    /**
-     * @param clientName the clientName to set
-     */
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     // Supplier part
@@ -107,11 +101,6 @@ public class SupplierPotentialDemandDetail implements IsSerializable, IUniversal
 
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
-    }
-
-    @Override
-    public String getSupplierName() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void setRating(int rating) {

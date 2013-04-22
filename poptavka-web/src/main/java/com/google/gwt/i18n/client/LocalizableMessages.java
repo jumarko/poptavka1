@@ -69,6 +69,7 @@ public interface LocalizableMessages extends Messages {
 
     /** Placeholders. **/
     String placeholderDemandDesciption();
+    String placeholderOfferPrice();
 
     /** Form section info labels . **/
     String formAccountInfo();
@@ -633,8 +634,6 @@ public interface LocalizableMessages extends Messages {
     String clientDemandsBackBtn();
 
     /** ClientOffersView.ui. **/
-    String clientOffersTableTitle();
-    String clientOffersBackBtn();
     String clientOffersAcceptBtn();
 
     /** ClientAssignedDemandsView.ui. **/

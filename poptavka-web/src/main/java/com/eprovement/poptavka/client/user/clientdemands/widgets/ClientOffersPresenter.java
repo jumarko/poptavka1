@@ -26,6 +26,7 @@ import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -63,6 +64,9 @@ public class ClientOffersPresenter
 
         SimplePanel getActionBox();
 
+        HorizontalPanel getOfferToolBar();
+
+        //Others
         IsWidget getWidgetView();
 
         //Setter
@@ -70,7 +74,7 @@ public class ClientOffersPresenter
 
         void setOfferTableVisible(boolean visible);
 
-        void setDemandTitleLabel(String text);
+        void setOfferTitleLabel(String text);
     }
     /**************************************************************************/
     /* Attributes                                                             */
@@ -262,7 +266,7 @@ public class ClientOffersPresenter
                     initDetailSection(selected);
                     Storage.setDemandId(selected.getDemandId());
                     Storage.setThreadRootId(selected.getThreadRootId());
-                    view.setDemandTitleLabel(selected.getDemandTitle());
+                    view.setOfferTitleLabel(selected.getDemandTitle());
                     view.getOfferGrid().getDataCount(eventBus, null);
                 }
             }
@@ -280,7 +284,7 @@ public class ClientOffersPresenter
             public void onSelectionChange(SelectionChangeEvent event) {
                 //tool bar items
                 view.getActionBox().setVisible(view.getOfferGrid().getSelectedUserMessageIds().size() > 0);
-                view.getAcceptBtn().setVisible(view.getOfferGrid().getSelectedUserMessageIds().size() == 1);
+                view.getOfferToolBar().setVisible(view.getOfferGrid().getSelectedUserMessageIds().size() == 1);
                 //init details
                 if (view.getOfferGrid().getSelectedUserMessageIds().size() == 1) {
                     selectedOfferedDemandOfferObject = view.getOfferGrid().getSelectedObjects().get(0);
@@ -385,9 +389,8 @@ public class ClientOffersPresenter
             public String getStyleNames(ClientDemandDetail row, int rowIndex) {
                 if (row.getUnreadSubmessagesCount() > 0) {
                     return Storage.RSCS.grid().unread();
-                } else {
-                    return "";
                 }
+                return "";
             }
         });
     }

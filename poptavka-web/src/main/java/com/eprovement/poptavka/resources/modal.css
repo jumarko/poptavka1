@@ -230,21 +230,23 @@
     cursor: pointer;
 }
 
-.feedback-modal .well:hover {
+.feedback-modal .well:hover, .well.act {
     border: 1px solid #199204;
     background: url(images/feedback-selection_bg.gif) repeat-x;
 }
 
 .feedback-modal .well:hover h4,
-.feedback-modal .well:hover p {
+.feedback-modal .well.act h4,
+.feedback-modal .well:hover p,
+.feedback-modal .well.act p {
     color: #ffffff; 
 }
 
-.feedback-modal .well:hover .gold-star {
+.feedback-modal .well:hover .gold-star, .well.act .gold-star {
     background: url(images/feedback-stars.png) no-repeat 0 -40px;
 }
 
-.feedback-modal .well:hover .grey-star {
+.feedback-modal .well:hover .grey-star, .well.act .grey-star {
     background: url(images/feedback-stars.png) no-repeat 0 -120px;
 }
 
