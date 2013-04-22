@@ -633,8 +633,6 @@ public interface LocalizableMessages extends Messages {
     String clientDemandsBackBtn();
 
     /** ClientOffersView.ui. **/
-    String clientOffersTableTitle();
-    String clientOffersBackBtn();
     String clientOffersAcceptBtn();
 
     /** ClientAssignedDemandsView.ui. **/

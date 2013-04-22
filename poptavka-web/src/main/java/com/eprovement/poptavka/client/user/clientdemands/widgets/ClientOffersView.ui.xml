@@ -8,6 +8,16 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
+    <ui:style>
+        .filterLabel {
+            color: #6F6B59;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 30px;
+            padding: 0px 10px 10px;
+        }
+    </ui:style>
+
     <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
         <g:west size="20">
             <g:HTMLPanel></g:HTMLPanel>
@@ -15,25 +25,18 @@
         <g:north size="65">
             <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
                 <g:HorizontalPanel ui:field="demandHeader">
-                    <g:Label styleName='hide'>
-                        <ui:msg key="clientOffersTableTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
-                    </g:Label>
                     <s:UniversalPagerWidget ui:field='demandPager' />
                 </g:HorizontalPanel>
                 <g:HorizontalPanel ui:field="offerHeader">
-                    <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}'>
-                        <ui:msg key="clientOffersBackBtn">Spat na vsetky poptavky s ponukami</ui:msg>
-                    </g:Button>
-                    <g:Label ui:field="demandTableNameLabel" styleName='hide'/>
+                    <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}'/>
+                    <s:UniversalPagerWidget ui:field='offerPager' />
                 </g:HorizontalPanel>
-                <g:HorizontalPanel ui:field="offerToolBar">
-                    <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}' visible="false">
+                <g:HorizontalPanel ui:field="offerToolBar" visible="false">
+                    <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>
                         <img src="images/button-cross-icon.png"/>
                         <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
                     </g:Button>
-                    <g:Label ui:field="offerTableNameLabel" styleName='hide'/>
-                    <g:SimplePanel ui:field="actionBox" visible="false" />
-                    <s:UniversalPagerWidget ui:field='offerPager' />
+                    <g:SimplePanel ui:field="actionBox"/>
                 </g:HorizontalPanel>
             </g:HorizontalPanel>
         </g:north>        
@@ -42,8 +45,11 @@
                 <b:FluidRow>
                     <b:Column size="7">
                         <g:HTMLPanel>
+                            <!--Offered Demands-->
                             <s:UniversalAsyncGrid ui:field="demandGrid" 
                             addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
+                            <!--Demand Offers-->
+                            <g:Label ui:field="offerTableTitleLabel" styleName="{style.filterLabel}" visible="false"/>
                             <s:UniversalTableGrid ui:field="offerGrid" 
                             addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
                         </g:HTMLPanel>
