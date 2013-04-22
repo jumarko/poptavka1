@@ -13,7 +13,7 @@
                 <g:north size="49">
                     <g:HTMLPanel>
                         <h2 class='{res.layout.toolbarHeader}'>
-                            <ui:msg key="supplierDemandsToobarLabel">Menu Supplier</ui:msg>
+                            <ui:msg key="supplierDemandsToobarLabel">Professional Menu</ui:msg>
                         </h2>
                     </g:HTMLPanel>
                 </g:north>
@@ -24,22 +24,22 @@
                             <ul class='{res.layout.submenuList}'>
                                 <li>
                                     <g:Button ui:field="supplierDemands">
-                                        <ui:msg key="menuSupplierDemands">Potential demands</ui:msg>
+                                        <ui:msg key="menuSupplierDemands">Potential Projects</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
                                     <g:Button ui:field="supplierOffers">
-                                        <ui:msg key="menuSupplierOffers">My offers</ui:msg>
+                                        <ui:msg key="menuSupplierOffers">Offers</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
                                     <g:Button ui:field="supplierAssignedDemands">
-                                        <ui:msg key="menuSupplierAssignedDemands">Assigned demands</ui:msg>
+                                        <ui:msg key="menuSupplierAssignedDemands">Assigned Projects</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
                                     <g:Button ui:field="supplierClosedDemands">
-                                        <ui:msg key="menuSupplierClosedDemands">Closed demands</ui:msg>
+                                        <ui:msg key="menuSupplierClosedDemands">Closed Projects</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
@@ -53,8 +53,8 @@
                 </g:center>
             </g:DockLayoutPanel>
         </g:west>
-        <g:center>           
-            <g:SimplePanel ui:field="contentPanel" />                       
+        <g:center>
+            <g:SimplePanel ui:field="contentPanel" />
         </g:center>
         <g:south size="36">
             <g:Widget ui:field="footer" styleName='{res.layout.footerDatagridContainer}'/>

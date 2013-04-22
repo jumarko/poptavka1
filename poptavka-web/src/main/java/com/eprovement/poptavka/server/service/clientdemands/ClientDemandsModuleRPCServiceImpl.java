@@ -899,9 +899,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public FullDemandDetail deleteDemand(long demandId) throws RPCException, ApplicationSecurityException {
+    public FullDemandDetail requestDeleteDemand(long demandId) throws RPCException, ApplicationSecurityException {
         Demand demand = generalService.find(Demand.class, demandId);
-        demand.setStatus(DemandStatus.CLOSED);
+        demand.setStatus(DemandStatus.CANCELED);
         return demandConverter.convertToTarget(generalService.save(demand));
     }
 

@@ -88,6 +88,17 @@ public class ClientOffersPresenter
     private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    public void onStart() {
+        // nothing
+    }
+
+    public void onForward() {
+        eventBus.updateUnreadMessagesCount();
+    }
+
+    /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override

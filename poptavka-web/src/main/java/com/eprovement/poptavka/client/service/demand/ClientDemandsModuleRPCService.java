@@ -247,7 +247,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     FullDemandDetail updateDemand(long demandId, FullDemandDetail updatedDemand) throws
             RPCException, ApplicationSecurityException;
 
-    FullDemandDetail deleteDemand(long demandId) throws RPCException, ApplicationSecurityException;
+    FullDemandDetail requestDeleteDemand(long demandId) throws RPCException, ApplicationSecurityException;
 
     /**
      * Client enters a new feedback for Supplier with respect to given demand and close that demand.

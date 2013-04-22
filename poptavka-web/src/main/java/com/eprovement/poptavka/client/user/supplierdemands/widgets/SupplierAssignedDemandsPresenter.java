@@ -65,6 +65,17 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     private long selectedSupplierAssignedDemandId = -1;
 
     /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    public void onStart() {
+        // nothing
+    }
+
+    public void onForward() {
+        eventBus.updateUnreadMessagesCount();
+    }
+
+    /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override

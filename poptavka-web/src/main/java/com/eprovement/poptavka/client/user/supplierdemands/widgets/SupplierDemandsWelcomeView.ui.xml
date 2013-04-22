@@ -25,11 +25,11 @@
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:Heading size="4">
-                                        Supplier Dashboard
+                                        Professional Dashboard
                                     </b:Heading>
                                 </b:Column>
                             </b:FluidRow>
-                            
+
                             <b:FluidRow addStyleNames='dashboard-block-content'>
                                 <b:Column size="12">
                                     <b:FluidRow>
@@ -65,25 +65,25 @@
                                 </b:Column>
                             </b:FluidRow>
                         </b:Column>
-                            
+
                         <b:Column size="8" addStyleNames='dashboard-block'>
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:Heading size="4">
-                                        Quick guide to client menu
+                                        Quick Guide to Professional Menu
                                     </b:Heading>
                                 </b:Column>
                             </b:FluidRow>
-                            
+
                             <b:FluidRow addStyleNames='dashboard-block-content'>
-                                <b:Column size="12">                            
+                                <b:Column size="12">
                                     <b:FluidRow>
                                         <b:Column size="12">
                                             <g:Label addStyleNames='pull-left'>
-                                                <ui:msg key="menuSupplierDemands">Potential demands</ui:msg>
-                                            </g:Label>                                            
+                                                <ui:msg key="menuSupplierDemands">Potential Projects</ui:msg>
+                                            </g:Label>
                                             <g:Label styleName='description'>
-                                                Lorem ipsum dolor sit amet.                                                
+                                                All projects matching your profession and localities
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -91,10 +91,10 @@
                                     <b:FluidRow>
                                         <b:Column size="12">
                                             <g:Label addStyleNames='pull-left'>
-                                                <ui:msg key="menuSupplierOffers">My offers</ui:msg>
+                                                <ui:msg key="menuSupplierOffers">Offers</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Lorem ipsum dolor sit amet.                                                
+                                                Offers you made for projects that are waiting for Client's decision
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -102,10 +102,10 @@
                                     <b:FluidRow>
                                         <b:Column size="12">
                                             <g:Label addStyleNames='pull-left'>
-                                                <ui:msg key="menuSupplierAssignedDemands">Assigned demands</ui:msg>
+                                                <ui:msg key="menuSupplierAssignedDemands">Assigned Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Lorem ipsum dolor sit amet.                                                
+                                                Projects in progress that are assigned to you
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -113,21 +113,21 @@
                                     <b:FluidRow>
                                         <b:Column size="12">
                                             <g:Label addStyleNames='pull-left'>
-                                                <ui:msg key="menuSupplierClosedDemands">Closed demands</ui:msg>
+                                                <ui:msg key="menuSupplierClosedDemands">Closed Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Lorem ipsum dolor sit amet.                                                
+                                                Finished Projects accepted by Client
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
-                                    
+
                                     <b:FluidRow>
                                         <b:Column size="12">
                                             <g:Label addStyleNames='pull-left'>
                                                 <ui:msg key="menuSupplierRatings">My Ratings</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Lorem ipsum dolor sit amet.                                                
+                                                Here you can check Feedback for Closed Projects
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>

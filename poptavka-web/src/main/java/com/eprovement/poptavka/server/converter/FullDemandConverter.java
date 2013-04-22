@@ -59,8 +59,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
         detail.setMaxSuppliers(source.getMaxSuppliers() == null ? 0 : source.getMaxSuppliers());
         detail.setMinRating(source.getMinRating() == null ? 0 : source.getMinRating());
         if (source.getClient() != null) {
-            detail.setClientRating(source.getClient().getOveralRating() == null
-                    ? 0 : source.getClient().getOveralRating());
+            detail.setClientRating(source.getClient().getOveralRating());
         }
         //categories
         detail.setCategories(categoryConverter.convertToTargetList(source.getCategories()));

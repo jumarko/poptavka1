@@ -13,7 +13,7 @@
                 <g:north size="49">
                     <g:HTMLPanel>
                         <h2 class='{res.layout.toolbarHeader}'>
-                            <ui:msg key="clientDemandsToolbarLabel">Menu Client</ui:msg>
+                            <ui:msg key="clientDemandsToolbarLabel">Client Menu</ui:msg>
                         </h2>
                     </g:HTMLPanel>
                 </g:north>
@@ -24,22 +24,22 @@
                             <ul class='{res.layout.submenuList}'>
                                 <li>
                                     <g:Button ui:field="clientNewDemands">
-                                        <ui:msg key="menuClientDemands">My demands</ui:msg>
+                                        <ui:msg key="menuClientDemands">My Projects</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
                                     <g:Button ui:field="clientOffers">
-                                        <ui:msg key="menuClientOffers">Offered demands</ui:msg>
+                                        <ui:msg key="menuClientOffers">Offers</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
                                     <g:Button ui:field="clientAssignedDemands">
-                                        <ui:msg key="menuClientAssignedDemands">Assigned demands</ui:msg>
+                                        <ui:msg key="menuClientAssignedDemands">Assigned Projects</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
                                     <g:Button ui:field="clientClosedDemands">
-                                        <ui:msg key="menuClientClosedDemands">Closed demands</ui:msg>
+                                        <ui:msg key="menuClientClosedDemands">Closed Projects</ui:msg>
                                     </g:Button>
                                 </li>
                                 <li>
@@ -53,8 +53,8 @@
                 </g:center>
             </g:DockLayoutPanel>
         </g:west>
-        <g:center>            
-            <g:SimplePanel ui:field="contentPanel" />                    
+        <g:center>
+            <g:SimplePanel ui:field="contentPanel" />
         </g:center>
         <g:south size="36">
             <g:Widget ui:field="footer" styleName='{res.layout.footerDatagridContainer}'/>

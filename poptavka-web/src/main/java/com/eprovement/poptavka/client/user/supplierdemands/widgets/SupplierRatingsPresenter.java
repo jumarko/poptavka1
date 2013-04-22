@@ -46,6 +46,17 @@ public class SupplierRatingsPresenter extends LazyPresenter<
     private SearchModuleDataHolder searchDataHolder;
 
     /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    public void onStart() {
+        // nothing
+    }
+
+    public void onForward() {
+        eventBus.updateUnreadMessagesCount();
+    }
+
+    /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override
