@@ -15,7 +15,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -58,7 +57,7 @@ public class ActivationCodePopupPresenter
         StatusIconLabel getStatusLabel();
 
         /** WIDGET. **/
-        Widget getWidgetView();
+        ActivationCodePopupView getWidgetView();
     }
 
     /**************************************************************************/
@@ -87,6 +86,7 @@ public class ActivationCodePopupPresenter
         view.getReportButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                view.getWidgetView().hide();
                 //presmerovat na root module kde sa toto zavola
                 eventBus.sendUsEmail(Constants.SUBJECT_REPORT_ISSUE, (new Date()).toString());
             }

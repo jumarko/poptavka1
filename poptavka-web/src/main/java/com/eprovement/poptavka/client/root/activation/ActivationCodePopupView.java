@@ -91,7 +91,7 @@ public class ActivationCodePopupView extends PopupPanel
 
     /** WIDGET. **/
     @Override
-    public Widget getWidgetView() {
+    public ActivationCodePopupView getWidgetView() {
         return this;
     }
 }
