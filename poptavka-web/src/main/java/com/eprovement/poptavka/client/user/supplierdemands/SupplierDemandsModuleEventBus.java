@@ -14,7 +14,6 @@ import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierRatin
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -116,7 +115,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     @Event(forwardToParent = true)
-    void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);
+    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
 
     /**************************************************************************/
     /* Business events handled by SupplierDemandsModulePresenter.             */

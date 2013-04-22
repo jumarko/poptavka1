@@ -21,8 +21,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -47,9 +45,7 @@ public class MessageListView extends Composite implements MessageListPresenter.M
     /** UiBinder attributes. **/
     @UiField(provided = true) UniversalAsyncGrid grid;
     @UiField(provided = true) UniversalPagerWidget pager;
-    @UiField DropdownButton actionBox;
-    @UiField NavLink actionRead, actionUnread, actionStar, actionUnstar;
-    @UiField SimplePanel wrapperPanel;
+    @UiField SimplePanel wrapperPanel, actionBox;
     @UiField MessageDetailView messageDetailView;
     @UiField HorizontalPanel toolBar;
     @UiField Button replyBtn;
@@ -201,36 +197,15 @@ public class MessageListView extends Composite implements MessageListPresenter.M
         return replyBtn;
     }
 
-    /** Action Box. **/
-    @Override
-    public DropdownButton getActionBox() {
-        return actionBox;
-    }
-
-    @Override
-    public NavLink getActionRead() {
-        return actionRead;
-    }
-
-    @Override
-    public NavLink getActionUnread() {
-        return actionUnread;
-    }
-
-    @Override
-    public NavLink getActionStar() {
-        return actionStar;
-    }
-
-    @Override
-    public NavLink getActionUnstar() {
-        return actionUnstar;
-    }
-
     /** Others. **/
     @Override
     public MessageDetailView getMessageDetailView() {
         return messageDetailView;
+    }
+
+    @Override
+    public SimplePanel getActionBox() {
+        return actionBox;
     }
 
     @Override

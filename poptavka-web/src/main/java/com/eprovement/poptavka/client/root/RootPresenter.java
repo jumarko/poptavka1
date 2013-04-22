@@ -31,7 +31,7 @@ import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -273,7 +273,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         activation.initActivationCodePopup(client, widgetToLoad);
     }
 
-    public void onInitActionBox(SimplePanel holderWidget, UniversalTableGrid grid) {
+    public void onInitActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid) {
         actionBox = eventBus.addHandler(ActionBoxPresenter.class);
         holderWidget.setWidget(actionBox.getView());
         actionBox.initActionBox(grid);

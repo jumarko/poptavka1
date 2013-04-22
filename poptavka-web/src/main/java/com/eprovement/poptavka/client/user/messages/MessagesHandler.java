@@ -109,36 +109,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
             });
     }
 
-    /**
-     * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
-     *
-     * @param list list of demands which read status should be changed
-     * @param newStatus of demandList
-     */
-    public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        messagesService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
-            @Override
-            public void onSuccess(Void result) {
-                //Empty by default
-            }
-        });
-    }
-
-    /**
-     * Changes demands star status. Changes are displayed immediately on frontend. No onSuccess code is needed.
-     *
-     * @param list list od demands which star status should be changed
-     * @param newStatus of demandList
-     */
-    public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        messagesService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
-            @Override
-            public void onSuccess(Void result) {
-                //Empty by default
-            }
-        });
-    }
-
     public void onDeleteMessages(List<Long> messagesIds) {
         messagesService.deleteMessages(messagesIds, new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
             @Override
