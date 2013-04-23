@@ -107,7 +107,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         rootService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
-                //Empty by default
+                eventBus.responseReadStatusUpdate();
             }
         });
     }
@@ -122,7 +122,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         rootService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
-                //Empty by default
+                eventBus.responseStarStatusUpdate();
             }
         });
     }

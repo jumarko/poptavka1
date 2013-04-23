@@ -25,7 +25,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -70,9 +69,6 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         List<CategoryDetail> getCategories();
 
         List<LocalityDetail> getLocalities();
-
-        //TextBoxes
-        IntegerBox getSupplierRating();
 
         //Buttons
         Button getEditCatBtn();

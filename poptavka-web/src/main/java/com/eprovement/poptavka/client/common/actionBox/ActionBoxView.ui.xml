@@ -19,7 +19,7 @@
                     <ui:msg key="commonListStarred">star</ui:msg>
                 </g:MenuItem>
                 <g:MenuItem ui:field="actionUnstar">
-                    <ui:msg key="listUnstarred">unstar</ui:msg>
+                    <ui:msg key="commonListUnstarred">unstar</ui:msg>
                 </g:MenuItem>
             </g:MenuBar>
         </g:MenuItem>

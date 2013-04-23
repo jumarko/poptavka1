@@ -172,6 +172,7 @@ public class SettingsPresenter
         this.settingsDetail = detail;
         //set userSettings widget because it is loaded on startup
         initUserSettings(view.getContentPanel());
+        eventBus.loadingHide();
     }
 
     public void onResponseUpdateSettings(Boolean updated) {

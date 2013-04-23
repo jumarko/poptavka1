@@ -54,9 +54,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public void setAttributeSelectorWidget(IsWidget attributeSearchViewWidget) {
         //If attributeSearchViewWidget is not null -> current view searching is available
         //Therefore set widget to popup
-        advanceSearchContentView.getAttributeSelectorPanel().setWidget(attributeSearchViewWidget);
+        //TODO LATER Martin 22.4.2013 - disbaled for BETA version
+//        advanceSearchContentView.getAttributeSelectorPanel().setWidget(attributeSearchViewWidget);
 
-        advanceSearchContentView.addCustomItemToSearchWhatBox(attributeSearchViewWidget != null);
+//        advanceSearchContentView.addCustomItemToSearchWhatBox(attributeSearchViewWidget != null);
 
     }
 

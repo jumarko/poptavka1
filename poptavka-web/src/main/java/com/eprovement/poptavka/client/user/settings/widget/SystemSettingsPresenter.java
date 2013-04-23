@@ -85,7 +85,6 @@ public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInt
     /**************************************************************************/
     public void onSetSystemSettings(SettingDetail detail) {
         view.setSystemSettings(detail);
-        eventBus.loadingHide();
     }
 
     public SettingDetail updateSystemSettings(SettingDetail detail) {

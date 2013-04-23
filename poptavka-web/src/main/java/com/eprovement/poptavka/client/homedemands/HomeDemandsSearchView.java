@@ -63,7 +63,7 @@ public class HomeDemandsSearchView extends Composite implements
 
     private void createDemandTypeListBox() {
         MyListBoxData demandTypeData = new MyListBoxData();
-        demandTypeData.insertItem(Storage.MSGS.commonListDefault(), 0);
+        demandTypeData.insertItem(Storage.MSGS.columnType(), 0);
         demandTypeData.insertItem(DemandTypeType.NORMAL.getValue(), 1);
         demandTypeData.insertItem(DemandTypeType.ATTRACTIVE.getValue(), 2);
         demandTypes = MyListBox.createListBox(demandTypeData, 0);

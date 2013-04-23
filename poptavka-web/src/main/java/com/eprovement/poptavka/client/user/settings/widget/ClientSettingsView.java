@@ -9,7 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -29,8 +29,7 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField
-    TextBox clientRating;
+    @UiField Label clientRating;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -38,7 +37,6 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-        clientRating.setEnabled(false);
     }
 
     /**************************************************************************/

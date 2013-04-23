@@ -111,7 +111,6 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
     public void onSetUserSettings(SettingDetail detail) {
         this.settingsDetail = detail;
         view.setUserSettings(detail);
-        eventBus.loadingHide();
     }
 
     public void onNotifyAddressWidgetListeners() {

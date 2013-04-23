@@ -77,7 +77,9 @@ public class SimpleIconLabel extends Composite implements HasMouseOverHandlers, 
         public void onMouseOver(MouseOverEvent event) {
             int x = event.getClientX() + 32;
             int y = event.getClientY() - 5;
-            showInfo(x, y);
+            if (!description.isEmpty()) {
+                showInfo(x, y);
+            }
         }
 
         public void onMouseOut(MouseOutEvent event) {

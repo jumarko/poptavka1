@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  *
  * @author ivan.vlcek
  */
-public class MessageDetail implements IsSerializable {
+public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
 
     public enum MessageField {
 
@@ -249,6 +250,7 @@ public class MessageDetail implements IsSerializable {
         this.starred = starred;
     }
 
+    @Override
     public long getUserMessageId() {
         return userMessageId;
     }

@@ -14,7 +14,8 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public interface IUniversalDetail extends TableDisplayRating, TableDisplayDisplayName {
+public interface IUniversalDetail extends TableDisplayRating, TableDisplayDisplayName,
+        TableDisplayUserMessage {
 
     // Client part & Supplier part
     //--------------------------------------------------------------------------
@@ -34,8 +35,6 @@ public interface IUniversalDetail extends TableDisplayRating, TableDisplayDispla
 
     // UserMessage part
     //--------------------------------------------------------------------------
-    long getUserMessageId();
-
     void setUserMessageId(long userMessageId);
 
     boolean isStarred();

@@ -10,6 +10,7 @@
  */
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.actionBox.ActionBoxPresenter;
 import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormPresenter;
@@ -31,7 +32,7 @@ import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
@@ -337,7 +338,7 @@ public interface RootEventBus extends EventBusWithLookup {
     /* ACTION BOX.                                                            */
     /**************************************************************************/
     @Event(handlers = RootPresenter.class)
-    void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);
+    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -411,11 +412,27 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /* Messages                                                               */
     /**************************************************************************/
+    /**
+     * Send/Response method pair
+     * Update message read status.
+     * @param messageToSend
+     */
     @Event(handlers = RootHandler.class)
     void requestReadStatusUpdate(List<Long> userMessageIds, boolean isRead);
 
+    @Event(handlers = ActionBoxPresenter.class)
+    void responseReadStatusUpdate();
+
+    /**
+     * Send/Response method pair
+     * Update message star status.
+     * @param messageToSend
+     */
     @Event(handlers = RootHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
+    @Event(handlers = ActionBoxPresenter.class)
+    void responseStarStatusUpdate();
 
     /**
      * Send/Response method pair

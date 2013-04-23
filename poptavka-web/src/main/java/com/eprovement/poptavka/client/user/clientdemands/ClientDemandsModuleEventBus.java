@@ -14,7 +14,6 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPr
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -133,7 +132,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     @Event(forwardToParent = true)
-    void initActionBox(SimplePanel holderWidget, UniversalTableGrid grid);
+    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
     /**************************************************************************/
     /* Business events handled by ClientDemandsModulePresenter.               */
     /**************************************************************************/

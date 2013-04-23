@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.messages;
 
-import java.util.List;
 
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -19,6 +18,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.ArrayList;
 
@@ -63,6 +63,9 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
+
+    @Event(forwardToParent = true)
+    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
 
     /**************************************************************************/
     /* History events                                                         */
@@ -110,10 +113,4 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
      */
     @Event(handlers = MessagesHandler.class)
     void sendMessage(MessageDetail messageToSend, String action);
-
-    @Event(handlers = MessagesHandler.class)
-    void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
-
-    @Event(handlers = MessagesHandler.class)
-    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 }

@@ -22,8 +22,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -55,19 +53,10 @@ public class MessageListPresenter extends
         /** Buttons. **/
         Button getReplyBtn();
 
-        /** Action Box. **/
-        DropdownButton getActionBox();
-
-        NavLink getActionRead();
-
-        NavLink getActionUnread();
-
-        NavLink getActionStar();
-
-        NavLink getActionUnstar();
-
         /** Others. **/
         MessageDetailView getMessageDetailView();
+
+        SimplePanel getActionBox();
 
         SimplePanel getWrapperPanel();
 
@@ -86,7 +75,6 @@ public class MessageListPresenter extends
     @Override
     public void bindView() {
         addButtonsHandlers();
-        addActionBoxChoiceHandlers();
         addTableSelectionModelClickHandler();
         addTextColumnFieldUpdaters();
     }
@@ -102,6 +90,7 @@ public class MessageListPresenter extends
      */
     public void onInitInbox(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.MESSAGES_INBOX);
+        eventBus.initActionBox(view.getActionBox(), view.getGrid());
         //Set visibility
         eventBus.setUpSearchBar(new MessagesTabViewView());
         searchDataHolder = filter;
@@ -188,35 +177,6 @@ public class MessageListPresenter extends
         view.getReplyBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-            }
-        });
-    }
-
-    /** Action box handers. **/
-    //--------------------------------------------------------------------------
-    private void addActionBoxChoiceHandlers() {
-        view.getActionRead().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnread().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(getSelectedUserMessageIds(), false);
-            }
-        });
-        view.getActionStar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(getSelectedUserMessageIds(), true);
-            }
-        });
-        view.getActionUnstar().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(getSelectedUserMessageIds(), false);
             }
         });
     }
