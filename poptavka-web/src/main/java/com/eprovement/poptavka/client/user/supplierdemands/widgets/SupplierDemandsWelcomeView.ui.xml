@@ -25,7 +25,7 @@
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:Heading size="4">
-                                        Professional Dashboard
+                                        <ui:msg key="professionalDashboard">Professional Dashboard</ui:msg>
                                     </b:Heading>
                                 </b:Column>
                             </b:FluidRow>
@@ -35,7 +35,7 @@
                                     <b:FluidRow>
                                         <b:Column size="12">
                                             <b:Heading size="5">
-                                                Recent News
+                                                <ui:msg key="recentNews">Recent News</ui:msg>
                                             </b:Heading>
                                         </b:Column>
                                     </b:FluidRow>
@@ -70,7 +70,7 @@
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:Heading size="4">
-                                        Quick Guide to Professional Menu
+                                        <ui:msg key="quickGuideToSupplierMenu">Quick Guide to Professional Menu</ui:msg>
                                     </b:Heading>
                                 </b:Column>
                             </b:FluidRow>
@@ -83,7 +83,7 @@
                                                 <ui:msg key="menuSupplierDemands">Potential Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                All projects matching your profession and localities
+                                                <ui:msg key="potentialProjectsDescription">All projects matching your profession and localities</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -94,7 +94,7 @@
                                                 <ui:msg key="menuSupplierOffers">Offers</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Offers you made for projects that are waiting for Client's decision
+                                                <ui:msg key="offersSupplierDescription">Offers you made for projects that are waiting for Client's decision</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -105,7 +105,7 @@
                                                 <ui:msg key="menuSupplierAssignedDemands">Assigned Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Projects in progress that are assigned to you
+                                                <ui:msg key="assignedProjectsSupplierDescription">Projects in progress that are assigned to you</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -116,7 +116,7 @@
                                                 <ui:msg key="menuSupplierClosedDemands">Closed Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Finished Projects accepted by Client
+                                                <ui:msg key="finishedProjectsSupplierDescription">Finished Projects accepted by Client</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -127,7 +127,7 @@
                                                 <ui:msg key="menuSupplierRatings">My Ratings</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Here you can check Feedback for Closed Projects
+                                                <ui:msg key="myRatingsSupplierDescription">Here you can check Feedback for Closed Projects</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>

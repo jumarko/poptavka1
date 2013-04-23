@@ -25,7 +25,7 @@
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:Heading size="4">
-                                        Client Dashboard
+                                        <ui:msg key="clientDashboard">Client Dashboard</ui:msg>
                                     </b:Heading>
                                 </b:Column>
                             </b:FluidRow>
@@ -35,7 +35,7 @@
                                     <b:FluidRow>
                                         <b:Column size="12">
                                             <b:Heading size="5">
-                                                Recent News
+                                                <ui:msg key="recentNews">Recent News</ui:msg>
                                             </b:Heading>
                                         </b:Column>
                                     </b:FluidRow>
@@ -71,7 +71,7 @@
                             <b:FluidRow>
                                 <b:Column size="12">
                                     <b:Heading size="4">
-                                        Quick Guide to Client Menu
+                                        <ui:msg key="quickGuideToClientMenu">Quick Guide to Client Menu</ui:msg>
                                     </b:Heading>
                                 </b:Column>
                             </b:FluidRow>
@@ -84,7 +84,7 @@
                                                 <ui:msg key="menuClientDemands">My Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Projects you posted
+                                                <ui:msg key="myProjectsDescription">Projects you posted</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -95,7 +95,7 @@
                                                 <ui:msg key="menuClientOffers">Offers</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Here you can choose from Offers made by Professionals
+                                                <ui:msg key="offersDescription">Here you can choose from Offers made by Professionals</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -106,7 +106,7 @@
                                                 <ui:msg key="menuClientAssignedDemands">Assigned Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Projects in progress that are assigned to certain Professional
+                                                <ui:msg key="assignedProjectsDescription">Projects in progress that are assigned to certain Professional</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -117,7 +117,7 @@
                                                 <ui:msg key="menuClientClosedDemands">Closed Projects</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Finished Projects you accepted
+                                                <ui:msg key="finishedProjectsDescription">Finished Projects you accepted</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
@@ -128,7 +128,7 @@
                                                 <ui:msg key="menuClientRatings">My Ratings</ui:msg>
                                             </g:Label>
                                             <g:Label styleName='description'>
-                                                Here you can check Feedback for Closed Projects
+                                                <ui:msg key="myRatingsDescription">Here you can check Feedback for Closed Projects</ui:msg>
                                             </g:Label>
                                         </b:Column>
                                     </b:FluidRow>
