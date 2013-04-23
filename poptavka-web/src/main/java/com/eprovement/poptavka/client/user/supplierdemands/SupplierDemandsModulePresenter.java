@@ -14,6 +14,7 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
@@ -54,7 +55,10 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /* General Module events */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        if (!Storage.isTimerStarted()) {
+            this.startNotificationTimer(Storage.TIMER_PERIOD_MILISECONDS);
+            Storage.setTimerStarted(true);
+        }
     }
 
     public void onForward() {
@@ -189,4 +193,25 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     public void onSupplierMenuStyleChange(int loadedWidget) {
         view.supplierMenuStyleChange(loadedWidget);
     }
+
+    /**************************************************************************/
+    /* Helper Methods                                                         */
+    /**************************************************************************/
+
+    /**
+     * Method starts <code>Timer</code> which executes updateUnreadMessagesCount method every period. This will keep
+     * user updated on new messages or notifications.
+     *
+     * @param periodMilis period in miliseconds
+     */
+    private void startNotificationTimer(int periodMilis) {
+        Timer t = new Timer() {
+            public void run() {
+                eventBus.updateUnreadMessagesCount();
+            }
+        };
+        // Schedule the timer to run every period.
+        t.scheduleRepeating(periodMilis);
+    }
+
 }

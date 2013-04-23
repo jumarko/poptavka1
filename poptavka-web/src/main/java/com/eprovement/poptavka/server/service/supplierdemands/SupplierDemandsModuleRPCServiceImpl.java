@@ -199,9 +199,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             detail.setSenderId(um.getMessage().getThreadRoot().getSender().getId());
             detail.setDisplayName(
                     um.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
-            if (um.getMessage().getDemand().getClient().getOveralRating() != null) {
-                detail.setRating(um.getMessage().getDemand().getClient().getOveralRating());
-            }
+            detail.setRating(um.getMessage().getDemand().getClient().getOveralRating());
             // Supplier part
             detail.setSupplierId(supplierId);
             // Message part

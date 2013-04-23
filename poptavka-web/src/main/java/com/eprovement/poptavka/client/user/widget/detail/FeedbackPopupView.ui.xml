@@ -11,18 +11,18 @@
 
     <g:HTMLPanel>
         <b:Modal ui:field="popupFeedback" addStyleNames='{res.modal.feedbackModal} {res.common.validationContainer}'>
-            <b:Heading size="2">Please enter your feedback.</b:Heading>            
-                        
+            <b:Heading size="2">Please enter your feedback.</b:Heading>
+
             <b:FluidContainer addStyleNames='feedback-content'>
                 <b:FluidRow>
                     <b:Column size="8">
                         <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
                             <g:HTMLPanel>
                                 <g:Label ui:field="supplierLabel" visible="false">
-                                    <ui:msg key="formSupplierName">Supplier name: </ui:msg>
+                                    <ui:msg key="formSupplierName">How would you rate Professional:</ui:msg>
                                 </g:Label>
                                 <g:Label ui:field="clientLabel"  visible="false">
-                                    <ui:msg key="formClientName">Client name:</ui:msg>
+                                    <ui:msg key="formClientName">How would you rate Client:</ui:msg>
                                 </g:Label>
                                 <g:Label ui:field="displayName" addStyleNames='user-info-label'/>
                             </g:HTMLPanel>
@@ -34,7 +34,7 @@
                         <b:FluidRow ui:field="rateRow1">
                             <b:WellForm ui:field="rateWell1">
                                 <g:HTMLPanel styleName='span-star'>
-                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>                                       
+                                    <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
                                     <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
                                     <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
                                     <g:HTMLPanel styleName='gold-star'></g:HTMLPanel>
@@ -142,7 +142,7 @@
                                     width="268" height="358"/>
                     </b:Column>
                 </b:FluidRow>
-            </b:FluidContainer>            
+            </b:FluidContainer>
 
             <g:HTMLPanel styleName='{res.detailViews.detailBlock}'>
                 <g:Button ui:field="rateBtn" styleName='{res.common.buttonGreen}' visible="false">

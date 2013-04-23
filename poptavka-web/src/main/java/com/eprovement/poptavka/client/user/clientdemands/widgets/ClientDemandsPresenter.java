@@ -107,6 +107,17 @@ public class ClientDemandsPresenter
     private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    public void onStart() {
+        // nothing
+    }
+
+    public void onForward() {
+        // nothing
+    }
+
+    /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override

@@ -377,7 +377,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /* CRUD operation of demand                                               */
     /**************************************************************************/
     public void onRequestDeleteDemand(long demandId) {
-        clientDemandsService.deleteDemand(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+        clientDemandsService.requestDeleteDemand(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
             @Override
             public void onSuccess(FullDemandDetail result) {
                 eventBus.responseDeleteDemand(result.getDemandStatus() == DemandStatus.CLOSED ? true : false);

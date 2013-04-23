@@ -55,6 +55,17 @@ public class SupplierOffersPresenter extends LazyPresenter<
     private long selectedSupplierOfferId = -1;
 
     /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    public void onStart() {
+        // nothing
+    }
+
+    public void onForward() {
+        // nothing
+    }
+
+    /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override

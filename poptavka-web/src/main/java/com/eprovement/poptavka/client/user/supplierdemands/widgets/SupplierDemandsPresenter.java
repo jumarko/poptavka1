@@ -61,6 +61,17 @@ public class SupplierDemandsPresenter extends LazyPresenter<
     private long selectedSupplierDemandId = -1;
 
     /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    public void onStart() {
+        // nothing
+    }
+
+    public void onForward() {
+        // nothing
+    }
+
+    /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override

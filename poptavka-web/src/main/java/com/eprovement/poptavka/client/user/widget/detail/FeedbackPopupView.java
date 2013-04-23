@@ -117,7 +117,7 @@ public class FeedbackPopupView extends Composite {
     }
 
     public void setDisplayName(String displayName) {
-        this.displayName.setText(displayName);
+        this.displayName.setText(displayName + " ?");
     }
 
     /**************************************************************************/

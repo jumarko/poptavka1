@@ -632,6 +632,15 @@ public interface LocalizableMessages extends Messages {
     SafeHtml noMessage();
     SafeHtml oneMessage();
     SafeHtml manyMessages(String number);
+    String clientDashboard();
+    String recentNews();
+    String quickGuideToClientMenu();
+    String myProjectsDescription();
+    String offersDescription();
+    String assignedProjectsDescription();
+    String finishedProjectsDescription();
+    String myRatingsDescription();
+
     /** ClientDemandsView.ui. **/
     String clientDemandsTableTitle();
     String clientDemandsBackBtn();
@@ -644,6 +653,15 @@ public interface LocalizableMessages extends Messages {
     String clientAssignedDemandsCloseBtn();
 
     /*** 9 - Supplier Demands module view ******************************* 9 ***/
+    /** SupplierDemandsWelcomeView.ui **/
+    String professionalDashboard();
+    String quickGuideToSupplierMenu();
+    String potentialProjectsDescription();
+    String offersSupplierDescription();
+    String assignedProjectsSupplierDescription();
+    String finishedProjectsSupplierDescription();
+    String myRatingsSupplierDescription();
+
     String supplierDemandsToolbarLabel();
     /** SupplierDemandsView.ui. **/
     String supplierPotentialDemandsTableTitle();

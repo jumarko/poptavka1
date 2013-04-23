@@ -93,18 +93,13 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             //client settings
             if (role instanceof Client) {
                 Client client = (Client) role;
-                if (client.getOveralRating() != null) {
-                    settingsDetail.setClientRating(client.getOveralRating());
-                }
-
+                settingsDetail.setClientRating(client.getOveralRating());
             }
             //supplier settings
             if (role instanceof Supplier) {
                 Supplier supplier = (Supplier) role;
                 SupplierDetail supplierDetail = new SupplierDetail();
-                if (supplier.getOveralRating() != null) {
-                    supplierDetail.setOverallRating(supplier.getOveralRating());
-                }
+                supplierDetail.setOverallRating(supplier.getOveralRating());
                 supplierDetail.setLocalities(localityConverter.convertToTargetList(supplier.getLocalities()));
                 supplierDetail.setCategories(categoryConverter.convertToTargetList(supplier.getCategories()));
                 settingsDetail.setSupplier(supplierDetail);
