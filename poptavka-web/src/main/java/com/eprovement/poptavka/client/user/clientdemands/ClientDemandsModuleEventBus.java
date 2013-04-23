@@ -156,12 +156,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     void displayClientDemandConversations(List<ClientDemandConversationDetail> result);
 
     @Event(handlers = ClientDemandsPresenter.class)
-    void selectClientDemand(ClientDemandDetail detail);
-
-    @Event(handlers = ClientDemandsPresenter.class)
-    void selectClientDemandConversation(ClientDemandConversationDetail detail);
-
-    @Event(handlers = ClientDemandsPresenter.class)
     void responseConversationNoData();
 
     /**************************************************************************/
@@ -173,20 +167,11 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientOffersPresenter.class)
     void displayClientOfferedDemandOffers(List<ClientOfferedDemandOffersDetail> result);
 
-    @Event(handlers = ClientOffersPresenter.class)
-    void selectClientOfferedDemand(ClientDemandDetail detail);
-
-    @Event(handlers = ClientOffersPresenter.class)
-    void selectClientOfferedDemandOffer(ClientOfferedDemandOffersDetail detail);
-
     /**************************************************************************/
     /* Business events handled by ClientAssignedDemandsPresenter.             */
     /**************************************************************************/
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void displayClientAssignedDemands(List<ClientOfferedDemandOffersDetail> result);
-
-    @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void selectClientAssignedDemand(ClientOfferedDemandOffersDetail detail);
 
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void responseFeedback();
@@ -212,21 +197,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void updateUnreadMessagesCount();
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getClientDemand(long clientDemandID);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getClientDemandConversation(long clientDemandConversationID);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getClientOfferedDemand(long clientDemandID);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getClientOfferedDemandOffer(long clientOfferedDemandOfferID);
-
-    @Event(handlers = ClientDemandsModuleHandler.class)
-    void getClientAssignedDemand(long offerID);
 
     @Event(handlers = ClientDemandsModuleHandler.class)
     void requestCloseAndRateSupplier(long demandID, long offerID, Integer rating, String comment);

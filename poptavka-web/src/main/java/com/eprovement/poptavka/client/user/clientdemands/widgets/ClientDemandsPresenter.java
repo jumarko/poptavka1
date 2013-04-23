@@ -101,9 +101,6 @@ public class ClientDemandsPresenter
     private SearchModuleDataHolder searchDataHolder;
     private ClientDemandDetail selectedDemandObject;
     private IUniversalDetail selectedConversationObject;
-    private long selectedClientDemandId = -1;
-    private long selectedClientDemandConversationId = -1;
-    //
     private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
@@ -240,10 +237,6 @@ public class ClientDemandsPresenter
 
         view.getDemandGrid().getDataProvider().updateRowData(
                 view.getDemandGrid().getStart(), data);
-
-        if (selectedClientDemandId != -1) {
-            eventBus.getClientDemand(selectedClientDemandId);
-        }
     }
 
     /**
@@ -264,10 +257,6 @@ public class ClientDemandsPresenter
 
             view.getConversationGrid().getDataProvider().updateRowData(
                     view.getConversationGrid().getStart(), data);
-
-            if (selectedClientDemandConversationId != -1) {
-                eventBus.getClientDemandConversation(selectedClientDemandConversationId);
-            }
         }
     }
 
@@ -290,18 +279,6 @@ public class ClientDemandsPresenter
                 detailSection.initDetails(selectedDemandObject.getDemandId());
             }
         }
-    }
-
-    public void onSelectClientDemand(ClientDemandDetail detail) {
-        view.getDemandGrid().getSelectionModel().setSelected(detail, true);
-    }
-
-    public void onSelectClientDemandConversation(ClientDemandConversationDetail detail) {
-        eventBus.setHistoryStoredForNextOne(false); //don't create token
-        //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
-        //nejak vytvorit event na upadatefieldoch
-        //Dolezite je len detail, ostatne atributy sa nepouzivaju
-        textFieldUpdater.update(-1, detail, null);
     }
 
     /**************************************************************************/

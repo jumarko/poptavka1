@@ -52,7 +52,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
     private SearchModuleDataHolder searchDataHolder;
     private FieldUpdater textFieldUpdater;
     private IUniversalDetail selectedObject = null;
-    private long selectedSupplierOfferId = -1;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -144,15 +143,6 @@ public class SupplierOffersPresenter extends LazyPresenter<
 
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), data);
-
-        if (selectedSupplierOfferId != -1) {
-            eventBus.getSupplierOffer(selectedSupplierOfferId);
-        }
-    }
-
-    public void onSelectSupplierOffer(SupplierOffersDetail detail) {
-        eventBus.setHistoryStoredForNextOne(false);
-        textFieldUpdater.update(-1, detail, null);
     }
 
     /**************************************************************************/

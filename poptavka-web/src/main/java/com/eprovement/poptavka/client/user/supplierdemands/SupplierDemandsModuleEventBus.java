@@ -135,26 +135,17 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierDemandsPresenter.class)
     void displaySupplierDemands(List<SupplierPotentialDemandDetail> result);
 
-    @Event(handlers = SupplierDemandsPresenter.class)
-    void selectSupplierDemand(SupplierPotentialDemandDetail detail);
-
     /**************************************************************************/
     /* Business events handled by SupplierOffersPresenter.                      */
     /**************************************************************************/
     @Event(handlers = SupplierOffersPresenter.class)
     void displaySupplierOffers(List<SupplierOffersDetail> result);
 
-    @Event(handlers = SupplierOffersPresenter.class)
-    void selectSupplierOffer(SupplierOffersDetail detail);
-
     /**************************************************************************/
     /* Business events handled by SupplierAssignedDemandsPresenter.           */
     /**************************************************************************/
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void displaySupplierAssignedDemands(List<SupplierOffersDetail> result);
-
-    @Event(handlers = SupplierAssignedDemandsPresenter.class)
-    void selectSupplierAssignedDemand(SupplierOffersDetail detail);
 
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void responseFeedback();
@@ -185,15 +176,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     //Getters
     //--------------------------------------------------------------------------
-    @Event(handlers = SupplierDemandsModuleHandler.class)
-    void getSupplierDemand(long demandID);
-
-    @Event(handlers = SupplierDemandsModuleHandler.class)
-    void getSupplierOffer(long offerID);
-
-    @Event(handlers = SupplierDemandsModuleHandler.class)
-    void getSupplierAssignedDemand(long offerID);
-
     @Event(handlers = SupplierDemandsModuleHandler.class)
     void getSupplierDashboardDetail();
 

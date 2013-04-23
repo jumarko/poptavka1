@@ -4,7 +4,6 @@
  */
 package com.eprovement.poptavka.server.service.supplierdemands;
 
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.Rating;
@@ -573,66 +572,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return unreadMessagesDetail;
     }
 
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    @Override
-    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID)
-        throws RPCException, ApplicationSecurityException {
-        //TODO RELEASE ivlcek: check workflow of this method and test UI
-        return new SupplierPotentialDemandDetail();
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public SupplierOffersDetail getSupplierOffer(long supplierDemandID)
-        throws RPCException, ApplicationSecurityException {
-        return new SupplierOffersDetail();
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public SupplierOffersDetail getSupplierAssignedDemand(long assignedDemandID) throws RPCException,
-            ApplicationSecurityException {
-        long supplierID = Storage.getSupplierId();
-        Supplier supplier = generalService.find(Supplier.class, supplierID);
-        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
-        Search supplierOffersSearch = new Search(Offer.class);
-        supplierOffersSearch.addFilterEqual("supplier.id", supplierID);
-        supplierOffersSearch.addFilterEqual("state", offerAccepted);
-        supplierOffersSearch.addFilterEqual("demand.id", assignedDemandID);
-        Offer offer = (Offer) generalService.searchUnique(supplierOffersSearch);
-
-        SupplierOffersDetail sod = new SupplierOffersDetail();
-
-        // TODO LATER ivlcek - refactor and create converter. Finish if we need history link for this
-        sod.setSupplierId(offer.getSupplier().getId());
-        sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
-        sod.setClientId(offer.getDemand().getClient().getId());
-        sod.setDemandId(offer.getDemand().getId());
-        sod.setPrice(offer.getPrice());
-        sod.setDeliveryDate(offer.getFinishDate());
-        sod.setOfferId(offer.getId());
-        sod.setReceivedDate(offer.getCreated());
-        sod.setRating(offer.getSupplier().getOveralRating());
-
-        // load latest userMessage in conversation
-        Search conversationMessagesSearch = new Search(UserMessage.class);
-        conversationMessagesSearch.addFilterEqual("message.demand.id", offer.getDemand().getId());
-        conversationMessagesSearch.addFilterEqual("user.id", offer.getSupplier().getBusinessUser().getId());
-        conversationMessagesSearch.addSortDesc("id", false);
-        List<UserMessage> conversationMessages = (generalService.search(conversationMessagesSearch));
-        UserMessage latestUserMessage = conversationMessages.get(0);
-        sod.setMessageCount(conversationMessages.size());
-        sod.setIsRead(latestUserMessage.isRead());
-        sod.setUserMessageId(latestUserMessage.getId());
-        // latestUserMessage object
-        sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
-        return sod;
-    }
-
-    @Override
     /**
      * Suppier enters a new feedback for Client with respect to given demand.
      *
@@ -642,6 +581,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
+    @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public void finishOfferAndEnterFeedbackForClient(final long demandID, final long offerID,
             final Integer supplierRating, final String supplierMessage)

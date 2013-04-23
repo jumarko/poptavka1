@@ -7,7 +7,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -71,15 +70,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
             AsyncCallback<List<DemandRatingsDetail>> callback);
 
     /**************************************************************************/
-    /* Other getter methods                                                   */
-    /**************************************************************************/
-    void getFullDemandDetail(long demandId,
-            AsyncCallback<ClientOfferedDemandOffersDetail> callback);
-
-    void getFullSupplierDetail(long supplierId,
-            AsyncCallback<FullSupplierDetail> callback);
-
-    /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
     void acceptOffer(long offerId, AsyncCallback<Void> callback);
@@ -88,21 +78,6 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /* Messages methods                                                       */
     /**************************************************************************/
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
-
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    void getClientDemand(long id, AsyncCallback<ClientDemandDetail> calback);
-
-    void getClientDemandConversation(long id, AsyncCallback<ClientDemandConversationDetail> calback);
-
-    void getClientOfferedDemand(long id, AsyncCallback<ClientDemandDetail> calback);
-
-    void getClientOfferedDemandOffer(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
-
-    void getClientAssignedDemand(long id, AsyncCallback<ClientOfferedDemandOffersDetail> calback);
-
-    void getClientDashboardDetail(long userId, AsyncCallback<ClientDashboardDetail> calback);
 
     /**************************************************************************/
     /* CRUD operation of demand                                               */
@@ -115,4 +90,10 @@ public interface ClientDemandsModuleRPCServiceAsync {
 
     void closeDemandAndEnterFeedbackForSupplier(long demandID, long offerID, Integer supplierRating,
             String supplierMessage, AsyncCallback<Void> calback);
+
+    /**************************************************************************/
+    /* Other getter methods                                                   */
+    /**************************************************************************/
+    void getClientDashboardDetail(long userId, AsyncCallback<ClientDashboardDetail> calback);
+
 }
