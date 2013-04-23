@@ -106,6 +106,7 @@ public class UniversalPagerWidget extends Composite {
     private void initPager() {
         SimplePager.Resources pagerResources = GWT.create(UniversalPager.class);
         pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
+        pager.setRangeLimited(false);
     }
 
     /**************************************************************************/
