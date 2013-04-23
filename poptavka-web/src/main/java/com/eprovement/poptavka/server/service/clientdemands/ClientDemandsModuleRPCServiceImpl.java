@@ -897,6 +897,15 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return demandConverter.convertToTarget(generalService.save(demand));
     }
 
+    /**
+     * Delete demand in a way that CANCELED <code>DemandStatus</code> is assigned to this demand. Canceled demands
+     * are not dipslayed anywhere.
+     *
+     * @param demandId
+     * @return
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public FullDemandDetail requestDeleteDemand(long demandId) throws RPCException, ApplicationSecurityException {

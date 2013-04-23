@@ -72,7 +72,7 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     }
 
     public void onForward() {
-        eventBus.updateUnreadMessagesCount();
+        // nothing
     }
 
     /**************************************************************************/

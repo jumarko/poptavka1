@@ -35,9 +35,12 @@ public final class Storage {
     private static boolean calledDueToHistory = false;
     private static String forwardHistory = "";
     private static Boolean appCalledByURL = null;
+    private static boolean timerStarted = false;
+
     //
     public static final String BACK = "back";
     public static final String FORWARD = "forward";
+    public static final int TIMER_PERIOD_MILISECONDS = 30000;
     /**************************************************************************/
     //global constants
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -149,6 +152,20 @@ public final class Storage {
      */
     public static void setSupplierId(long aSupplierId) {
         supplierId = aSupplierId;
+    }
+
+    /**
+     * @return the timesStarted
+     */
+    public static boolean isTimerStarted() {
+        return timerStarted;
+    }
+
+    /**
+     * @param aTimesStarted the timesStarted to set
+     */
+    public static void setTimerStarted(boolean aTimerStarted) {
+        timerStarted = aTimerStarted;
     }
 
     //getters for global final classes

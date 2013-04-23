@@ -53,7 +53,7 @@ public class SupplierRatingsPresenter extends LazyPresenter<
     }
 
     public void onForward() {
-        eventBus.updateUnreadMessagesCount();
+        // nothing
     }
 
     /**************************************************************************/

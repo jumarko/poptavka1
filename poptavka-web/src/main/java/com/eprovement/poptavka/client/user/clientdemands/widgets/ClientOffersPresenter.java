@@ -95,7 +95,7 @@ public class ClientOffersPresenter
     }
 
     public void onForward() {
-        eventBus.updateUnreadMessagesCount();
+        // nothing
     }
 
     /**************************************************************************/
