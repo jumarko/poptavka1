@@ -232,37 +232,4 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     public void onUpdateOfferStatus(OfferDetail offerDetail) {
         //TODO LATER ivlcek: consider removing. Supplier shouldn't change his offer status
     }
-
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    public void onGetSupplierDemand(long demandID) {
-        supplierDemandsService.getSupplierDemand(demandID,
-                new SecuredAsyncCallback<SupplierPotentialDemandDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(SupplierPotentialDemandDetail result) {
-                        eventBus.selectSupplierDemand(result);
-                    }
-                });
-    }
-
-    public void onGetSupplierOffer(long offerID) {
-        supplierDemandsService.getSupplierOffer(offerID,
-                new SecuredAsyncCallback<SupplierOffersDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(SupplierOffersDetail result) {
-                        eventBus.selectSupplierOffer(result);
-                    }
-                });
-    }
-
-    public void onGetSupplierAssignedDemand(long demandID) {
-        supplierDemandsService.getSupplierAssignedDemand(demandID,
-                new SecuredAsyncCallback<SupplierOffersDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(SupplierOffersDetail result) {
-                        eventBus.selectSupplierAssignedDemand(result);
-                    }
-                });
-    }
 }

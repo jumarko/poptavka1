@@ -716,21 +716,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**************************************************************************/
-    /* Other getter methods                                                   */
-    /**************************************************************************/
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException {
-        return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException {
-        return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
-    }
-
-    /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
     /**
@@ -842,47 +827,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         unreadMessagesDetail.setUnreadSystemMessageCount((
                 (Long) generalService.searchUnique(unreadSystemMessagesSearch)).intValue());
         return unreadMessagesDetail;
-    }
-
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public ClientDemandDetail getClientDemand(long clientDemandID) throws RPCException, ApplicationSecurityException {
-        return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) throws
-            RPCException, ApplicationSecurityException {
-        //TODO RELEASE ivlcek: check the flow of this method, where it is used and test if it works correctly
-        //- Neviem ako a z coho to zickat este, mozno nakoniec to nemusi byt ani ClientDemandConversationDetail();
-        return new ClientDemandConversationDetail();
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public ClientDemandDetail getClientOfferedDemand(long clientDemandID) throws RPCException,
-            ApplicationSecurityException {
-        return clientDemandConverter.convertToTarget(generalService.find(Demand.class, clientDemandID));
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public ClientOfferedDemandOffersDetail getClientOfferedDemandOffer(long clientOfferedDemandOfferID) throws
-            RPCException, ApplicationSecurityException {
-        //TODO LATER - if history in Client Demands will be supported again
-        return new ClientOfferedDemandOffersDetail();
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public ClientOfferedDemandOffersDetail getClientAssignedDemand(long assignedDemandID) throws
-            RPCException, ApplicationSecurityException {
-        //TODO LATER - if history in Client Demands will be supported again
-        return new ClientOfferedDemandOffersDetail();
     }
 
     /**************************************************************************/

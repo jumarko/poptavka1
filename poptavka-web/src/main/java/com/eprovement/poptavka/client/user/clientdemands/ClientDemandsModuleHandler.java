@@ -322,58 +322,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     }
 
     /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    public void onGetClientDemand(long clientDemandID) {
-        clientDemandsService.getClientDemand(clientDemandID, new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
-            @Override
-            public void onSuccess(ClientDemandDetail result) {
-                eventBus.selectClientDemand(result);
-            }
-        });
-    }
-
-    public void onGetClientDemandConversation(long clientDemandConversationID) {
-        clientDemandsService.getClientDemandConversation(clientDemandConversationID,
-                new SecuredAsyncCallback<ClientDemandConversationDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(ClientDemandConversationDetail result) {
-                        eventBus.selectClientDemandConversation(result);
-                    }
-                });
-    }
-
-    public void onGetClientOfferedDemand(long clientDemandID) {
-        clientDemandsService.getClientOfferedDemand(clientDemandID,
-                new SecuredAsyncCallback<ClientDemandDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(ClientDemandDetail result) {
-                        eventBus.selectClientOfferedDemand(result);
-                    }
-                });
-    }
-
-    public void onGetClientOfferedDemandOffer(long clientOfferedDemandOfferID) {
-        clientDemandsService.getClientOfferedDemandOffer(clientOfferedDemandOfferID,
-                new SecuredAsyncCallback<ClientOfferedDemandOffersDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(ClientOfferedDemandOffersDetail result) {
-                        eventBus.selectClientOfferedDemandOffer(result);
-                    }
-                });
-    }
-
-    public void onGetClientAssignedDemand(long demandID) {
-        clientDemandsService.getClientAssignedDemand(demandID,
-                new SecuredAsyncCallback<ClientOfferedDemandOffersDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(ClientOfferedDemandOffersDetail result) {
-                        eventBus.selectClientAssignedDemand(result);
-                    }
-                });
-    }
-
-    /**************************************************************************/
     /* CRUD operation of demand                                               */
     /**************************************************************************/
     public void onRequestDeleteDemand(long demandId) {

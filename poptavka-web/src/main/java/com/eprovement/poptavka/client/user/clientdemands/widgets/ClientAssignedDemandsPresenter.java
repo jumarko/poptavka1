@@ -62,7 +62,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
     private IUniversalDetail selectedObject;
     private FeedbackPopupView ratePopup;
     private boolean assignedDemandsMode = false;
-    private long selectedClientAssignedDemandId = -1;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -168,19 +167,6 @@ public class ClientAssignedDemandsPresenter extends LazyPresenter<
 
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), data);
-
-        if (selectedClientAssignedDemandId != -1) {
-            eventBus.getClientAssignedDemand(selectedClientAssignedDemandId);
-        }
-    }
-
-    public void onSelectClientAssignedDemand(ClientOfferedDemandOffersDetail detail) {
-//        view.getDataGrid().getSelectionModel().setSelected(detail, true);
-        eventBus.setHistoryStoredForNextOne(false); //don't create token
-        //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
-        //nejak vytvorit event na upadatefieldoch
-        //Dolezite je len detail, ostatne atributy sa nepouzivaju
-        textFieldUpdater.update(-1, detail, null);
     }
 
     /**************************************************************************/

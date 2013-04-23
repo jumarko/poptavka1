@@ -83,8 +83,6 @@ public class ClientOffersPresenter
     private SearchModuleDataHolder searchDataHolder;
     private ClientDemandDetail selectedDemandObject;
     private IUniversalDetail selectedOfferedDemandOfferObject;
-    private long selectedClientOfferedDemandId = -1;
-    private long selectedClientOfferedDemandOfferId = -1;
     private FieldUpdater textFieldUpdater;
 
     /**************************************************************************/
@@ -208,10 +206,6 @@ public class ClientOffersPresenter
 
         view.getDemandGrid().getDataProvider().updateRowData(
                 view.getDemandGrid().getStart(), data);
-
-        if (selectedClientOfferedDemandId != -1) {
-            eventBus.getClientOfferedDemand(selectedClientOfferedDemandId);
-        }
     }
 
     public void onDisplayClientOfferedDemandOffers(List<IUniversalDetail> data) {
@@ -224,23 +218,7 @@ public class ClientOffersPresenter
 
             view.getOfferGrid().getDataProvider().updateRowData(
                     view.getOfferGrid().getStart(), data);
-
-            if (selectedClientOfferedDemandOfferId != -1) {
-                eventBus.getClientOfferedDemand(selectedClientOfferedDemandOfferId);
-            }
         }
-    }
-
-    public void onSelectClientOfferedDemand(ClientDemandDetail detail) {
-        view.getDemandGrid().getSelectionModel().setSelected(detail, true);
-    }
-
-    public void onSelectClientOfferedDemandOffer(ClientOfferedDemandOffersDetail detail) {
-        eventBus.setHistoryStoredForNextOne(false); //don't create token
-        //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
-        //nejak vytvorit event na upadatefieldoch
-        //Dolezite je len detail, ostatne atributy sa nepouzivaju
-        textFieldUpdater.update(-1, detail, null);
     }
 
     public void onResponseAcceptOffer() {

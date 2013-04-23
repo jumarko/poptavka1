@@ -67,15 +67,6 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    void getSupplierDemand(long id, AsyncCallback<SupplierPotentialDemandDetail> calback);
-
-    void getSupplierOffer(long id, AsyncCallback<SupplierOffersDetail> calback);
-
-    void getSupplierAssignedDemand(long id, AsyncCallback<SupplierOffersDetail> calback);
-
     void finishOfferAndEnterFeedbackForClient(long demandID, long offerID, Integer rating,
             String message, AsyncCallback<Void> calback);
 

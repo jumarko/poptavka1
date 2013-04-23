@@ -173,16 +173,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     /**************************************************************************/
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException;
 
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    SupplierPotentialDemandDetail getSupplierDemand(long supplierDemandID) throws
-            RPCException, ApplicationSecurityException;
-
-    SupplierOffersDetail getSupplierOffer(long supplierDemandID) throws RPCException, ApplicationSecurityException;
-
-    SupplierOffersDetail getSupplierAssignedDemand(long demandID) throws RPCException, ApplicationSecurityException;
-
     /**
      * Supplier enters a new feedback for Client with respect to given demand and finnish that demand.
      *

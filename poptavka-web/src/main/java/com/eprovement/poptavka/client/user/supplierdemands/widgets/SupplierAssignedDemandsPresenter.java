@@ -61,8 +61,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
     private FieldUpdater textFieldUpdater;
     private FeedbackPopupView ratePopup;
     private IUniversalDetail selectedObject = null;
-    private long lastOpenedAssignedDemand = -1;
-    private long selectedSupplierAssignedDemandId = -1;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -166,19 +164,6 @@ public class SupplierAssignedDemandsPresenter extends LazyPresenter<
 
         view.getDataGrid().getDataProvider().updateRowData(
                 view.getDataGrid().getStart(), data);
-
-        if (selectedSupplierAssignedDemandId != -1) {
-            eventBus.getSupplierAssignedDemand(selectedSupplierAssignedDemandId);
-        }
-    }
-
-    public void onSelectSupplierAssignedDemand(SupplierOffersDetail detail) {
-//        view.getDataGrid().getSelectionModel().setSelected(detail, true);
-        eventBus.setHistoryStoredForNextOne(false); //don't create token
-        //nestaci oznacit v modeli, pretoze ten je viazany na checkboxy a akcie, musim
-        //nejak vytvorit event na upadatefieldoch
-        //Dolezite je len detail, ostatne atributy sa nepouzivaju
-        textFieldUpdater.update(-1, detail, null);
     }
 
     /**************************************************************************/

@@ -7,7 +7,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -209,13 +208,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
-    /* Other getter methods                                                   */
-    /**************************************************************************/
-    FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException;
-
-    FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException;
-
-    /**************************************************************************/
     /* Setter methods                                                         */
     /**************************************************************************/
     void acceptOffer(long offerId) throws RPCException, ApplicationSecurityException;
@@ -224,22 +216,6 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
     /* Messages methods                                                       */
     /**************************************************************************/
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
-
-    /**************************************************************************/
-    /* Get Detail object for selecting in selection models                    */
-    /**************************************************************************/
-    ClientDemandDetail getClientDemand(long clientDemandID) throws RPCException, ApplicationSecurityException;
-
-    ClientDemandConversationDetail getClientDemandConversation(long clientDemandConversationID) throws RPCException,
-            ApplicationSecurityException;
-
-    ClientDemandDetail getClientOfferedDemand(long clientDemandID) throws RPCException, ApplicationSecurityException;
-
-    ClientOfferedDemandOffersDetail getClientOfferedDemandOffer(long clientDemandOfferID) throws RPCException,
-            ApplicationSecurityException;
-
-    ClientOfferedDemandOffersDetail getClientAssignedDemand(long offerID) throws RPCException,
-            ApplicationSecurityException;
 
     /**************************************************************************/
     /* CRUD operation of demand                                               */
