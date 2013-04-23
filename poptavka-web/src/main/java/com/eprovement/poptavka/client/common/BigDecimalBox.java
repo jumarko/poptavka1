@@ -127,7 +127,7 @@ public class BigDecimalBox extends BigDecimalBoxBase implements HasPlaceholder {
      */
     @Override
     public void setValue(BigDecimal value, boolean fireEvents) {
-        super.setText(value.toString());
+        super.setText(value.toString().replace(".00", ""));
         BigDecimal oldValue = null;
         try {
             oldValue = getValueOrThrow();
