@@ -64,7 +64,7 @@
                 </b:Column>
                 <b:Column size="11">
                     <g:Label>
-                        <ui:msg key="formDemandType">Demand Type:</ui:msg>
+                        <ui:msg key="formDemandType">Project Type:</ui:msg>
                     </g:Label>
                     <mlb:MyListBox ui:field="demandTypes" styleName='selector-box full-width' />
                 </b:Column>
@@ -76,7 +76,7 @@
                 </b:Column>
                 <b:Column size="11">
                     <g:Label>
-                        <ui:msg key="formCreationDate">Creation date:</ui:msg>
+                        <ui:msg key="formCreationDate">Created:</ui:msg>
                     </g:Label>
                     <mlb:MyListBox ui:field="creationDate" styleName='selector-box full-width' />
                 </b:Column>
