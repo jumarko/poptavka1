@@ -78,6 +78,7 @@ public class SettingsView extends Composite implements
         vp.add(notifyInfoMessage);
         //Button
         Button closeBtn = new Button(Storage.MSGS.commonBtnClose());
+        closeBtn.addStyleName(StyleResource.INSTANCE.common().buttonGrey());
         closeBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

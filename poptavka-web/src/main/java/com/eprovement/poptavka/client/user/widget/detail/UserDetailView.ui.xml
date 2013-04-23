@@ -88,10 +88,10 @@
                         <ui:msg key="formCategories">Categories</ui:msg>
                     </b:Heading>
                 </b:Column>
-
-                <c:CellList ui:field="categories"
-                            styleName='{res.detailViews.detailCategoryLabel}' />
-
+                <b:Column size='12'>
+                    <c:CellList ui:field="categories"
+                                styleName='{res.detailViews.detailCategoryLabel}' />
+                </b:Column>
             </g:HTMLPanel>
         </b:FluidRow>
 
@@ -102,8 +102,10 @@
                         <ui:msg key="formLocalities">Localities</ui:msg>
                     </b:Heading>
                 </b:Column>
-                <c:CellList ui:field="localities"
-                            styleName='{res.detailViews.detailLocalityLabel}' />
+                <b:Column size='12'>
+                    <c:CellList ui:field="localities"
+                                styleName='{res.detailViews.detailLocalityLabel}' />
+                </b:Column>
             </g:HTMLPanel>
         </b:FluidRow>
 
@@ -167,8 +169,9 @@
                     <ui:msg key="formDescription">Description: </ui:msg>
                 </b:Heading>
             </b:Column>
-
-            <g:Label ui:field="description" />
+            <b:Column size='12'>
+                <g:Label ui:field="description" />
+            </b:Column>
         </b:FluidRow>
     </b:FluidContainer>
 </ui:UiBinder>

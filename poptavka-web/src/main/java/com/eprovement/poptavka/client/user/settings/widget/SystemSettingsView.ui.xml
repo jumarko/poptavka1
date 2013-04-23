@@ -9,29 +9,24 @@
              type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <ui:style>
-        .decorationPanel {
-        width: 100%;
-        }
-    </ui:style>
-
-    <g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
-        <g:ScrollPanel>
-            <b:FluidContainer>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <b:Label>
-                            <ui:msg key='userSettingsNotifications'>Notifications:</ui:msg>
-                        </b:Label>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <g:VerticalPanel ui:field="notifications" />
-                    </b:Column>
-                </b:FluidRow>
-            </b:FluidContainer>
-        </g:ScrollPanel>
-    </g:DecoratorPanel>
-
+    <b:FluidContainer>
+        <b:FluidRow>
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='userSettingsNotifications'>Notifications:</ui:msg>                                                                
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <g:VerticalPanel ui:field="notifications" />
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>       
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

@@ -45,6 +45,9 @@
         .logout-button {
         border-top: 1px solid #75be68;
         padding: 5px 15px !important;
+        border-radius: 0 0 5px 5px;
+        -moz-border-radius: 0 0 5px 5px;
+        -webkit-border-radius: 0 0 5px 5px;
         }
 
         .logout-button-act {

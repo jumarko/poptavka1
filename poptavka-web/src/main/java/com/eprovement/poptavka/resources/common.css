@@ -54,7 +54,11 @@
 }
 
 .error-field {
-    background-color: #ffcece;
+    background-color: #f93535;
+}
+
+.error-field a.gwt-Anchor {
+    color: #ffffff !important;
 }
 
 .loading-popup {
@@ -513,12 +517,12 @@ a.toolbar-button-grey {
     border: 1px solid #C09853;
 }
 
-.GKRGINQDCC .selector-box[readonly] {
+.validation-container .selector-box[readonly] {
     cursor: pointer;
     background: url(images/advanced-search-triangle-icon.png) no-repeat scroll right 7px #F8F4E4;
 }
 
-.GKRGINQDCC .selector-box[readonly].act {
+.validation-container .selector-box[readonly].act {
     color: #000000;
 }
 

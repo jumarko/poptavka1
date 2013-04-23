@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.error;
 import com.eprovement.poptavka.client.error.interfaces.IErrorView;
 import com.eprovement.poptavka.client.error.interfaces.IErrorView.IErrorPresenter;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.http.client.Response;
@@ -38,7 +39,7 @@ public class ErrorView extends ReverseCompositeView<IErrorPresenter> implements 
     /* Attributes                                                             */
     /**************************************************************************/
     @UiField(provided = false)
-    Label errorTitle;
+    Heading errorTitle;
     @UiField(provided = false)
     Label errorDescription;
     @UiField(provided = false)

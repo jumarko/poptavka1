@@ -208,11 +208,15 @@
     font-size: 24px;
 }
 
-.feedback-modal h4 {
+.feedback-modal .feedback-content .well h4 {
+    background: none;
+    color: #242117;
     font-size: 24px;
     font-weight: normal;
+    height: 24px;
+    line-height: 24px;
     margin: 9px 0 0;
-    color: #242117;
+    padding: 0;
 }
 
 .feedback-modal .feedback-content {
