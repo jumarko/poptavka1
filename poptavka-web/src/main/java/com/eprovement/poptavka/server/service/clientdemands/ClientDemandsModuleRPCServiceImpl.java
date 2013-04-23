@@ -866,7 +866,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         demand.setValidTo(updatedDemand.getValidTo());
         demand.setMaxSuppliers(updatedDemand.getMaxSuppliers());
         demand.setMinRating(updatedDemand.getMinRating());
-        demand.setCreatedDate(updatedDemand.getCreated());
         demand.setCategories(categoryConverter.convertToSourceList(updatedDemand.getCategories()));
         demand.setLocalities(localityConverter.convertToSourceList(updatedDemand.getLocalities()));
         return demand;

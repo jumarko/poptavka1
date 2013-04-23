@@ -17,7 +17,7 @@
             padding: 0px 10px 10px;
         }
     </ui:style>
-    
+
     <g:DockLayoutPanel unit="PX"
                        styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
         <g:west size="330">
@@ -55,11 +55,11 @@
                                 <g:Label ui:field="filterLabel" styleName="{style.filterLabel}">
                                     <ui:msg key="searchResultInfoLabel">Search filter is on!</ui:msg>
                                 </g:Label>
-                                <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer}'>                            
+                                <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer}'>
                                     <g:center>
                                         <c:DataGrid ui:field="dataGrid"
                                                     addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
-                                    </g:center>                                    
+                                    </g:center>
                                 </g:DockLayoutPanel>
                             </b:Column>
                             <b:Column size="5">
@@ -71,7 +71,7 @@
                                 <g:DockLayoutPanel ui:field="detailPanel" unit="PX" styleName='{res.layout.fullSize}' visible="false">
                                     <g:north size="53">
                                         <b:Heading size='4' styleName="{res.detailViews.demandDetailSectionHeader}">
-                                            <ui:msg key="formDemandInfo">Demand information</ui:msg>
+                                            <ui:msg key="formDemandInfo">Project Description</ui:msg>
                                         </b:Heading>
                                     </g:north>
                                     <g:center>
