@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -67,10 +66,6 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
     private Column<AccessRoleDetail, String> nameColumn;
     private Column<AccessRoleDetail, String> descriptionColumn;
     private Column<AccessRoleDetail, String> permissionsColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "code", "name", "description", "permissions"
-            });
     // The key provider that provides the unique ID of a AccessRoleDetail.
     private static final ProvidesKey<AccessRoleDetail> KEY_PROVIDER = new ProvidesKey<AccessRoleDetail>() {
 
@@ -188,8 +183,9 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

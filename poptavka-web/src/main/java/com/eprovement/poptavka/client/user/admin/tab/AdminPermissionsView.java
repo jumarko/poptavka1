@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -64,10 +63,6 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     // Editable Columns
     private Column<PermissionDetail, String> descriptionColumn;
     private Column<PermissionDetail, String> nameColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "code", "name", "description"
-            });
     // The key provider that provides the unique ID of a PermissionDetail.
     private static final ProvidesKey<PermissionDetail> KEY_PROVIDER = new ProvidesKey<PermissionDetail>() {
 
@@ -167,8 +162,9 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

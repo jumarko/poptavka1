@@ -15,7 +15,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.MessageDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
@@ -93,15 +92,14 @@ public class MessageListView extends Composite implements MessageListPresenter.M
     }
 
     private SortDataHolder initSort() {
-        List<String> gridColumns = Arrays.asList(new String[]{
-            "", //check box column
-            MessageField.SENDER.getValue(),
-            MessageField.SUBJECT.getValue(),
-            MessageField.CREATED.getValue()
-        });
-        List<SortPair> sortPairs = Arrays.asList(
-                new SortPair(MessageField.CREATED.getValue(), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList(
+                null, //check box column
+                new SortPair(MessageField.SENDER),
+                new SortPair(MessageField.SUBJECT),
+                new SortPair(MessageField.CREATED));
+        List<SortPair> defaultSort = Arrays.asList(
+                new SortPair(MessageField.CREATED));
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     /**

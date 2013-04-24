@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -72,10 +71,6 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
     private Column<OfferDetail, String> offerStatusColumn;
     private Column<OfferDetail, Date> offerCreationDateColumn;
     private Column<OfferDetail, Date> offerFinishDateColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "demand.id", "supplier.id", "price", "state", "", "finnishDate"
-            });
     // i18n
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
@@ -216,8 +211,9 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

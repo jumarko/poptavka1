@@ -5,10 +5,9 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -115,15 +114,14 @@ public class ClientOffersView extends Composite
     }
 
     private SortDataHolder initSort() {
-        List<String> gridColumns = Arrays.asList(new String[]{
-            FullDemandDetail.DemandField.TITLE.getValue(),
-            FullDemandDetail.DemandField.PRICE.getValue(),
-            FullDemandDetail.DemandField.END_DATE.getValue(),
-            FullDemandDetail.DemandField.VALID_TO.getValue()
-        });
-        List<SortPair> sortPairs = Arrays.asList(
-                new SortPair(FullDemandDetail.DemandField.CREATED.getValue(), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList(
+                new SortPair(DemandField.TITLE),
+                new SortPair(DemandField.PRICE),
+                new SortPair(DemandField.END_DATE),
+                new SortPair(DemandField.VALID_TO));
+        List<SortPair> defaultSort = Arrays.asList(
+                new SortPair(DemandField.VALID_TO));
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     /**

@@ -151,7 +151,7 @@ public class ClientDemandConversationDetail implements IsSerializable, TableDisp
     }
 
     @Override
-    public int getRating() {
+    public int getOveralRating() {
         return rating;
     }
 

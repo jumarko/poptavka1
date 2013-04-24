@@ -6,12 +6,12 @@ import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableGrid;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
@@ -100,7 +100,7 @@ public class ClientDemandsView extends Composite
         // Create a Table.
         DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
         demandGrid = new UniversalAsyncGrid<ClientDemandDetail>(
-                initSort(), demandPager.getPageSize(), resource);
+                initDemandTableSort(), demandPager.getPageSize(), resource);
         demandGrid.setWidth("100%");
         demandGrid.setHeight("100%");
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
@@ -130,23 +130,37 @@ public class ClientDemandsView extends Composite
                 resource);
         conversationGrid.setWidth("100%");
         conversationGrid.setHeight("100%");
+        initConversationTableSort();
         // Bind pager to Table
         conversationPager.setDisplay(conversationGrid);
 
         initConversationTableColumns();
     }
 
-    private SortDataHolder initSort() {
-        List<String> gridColumns = Arrays.asList(new String[]{
-            DemandField.DEMAND_STATUS.getValue(),
-            DemandField.TITLE.getValue(),
-            DemandField.PRICE.getValue(),
-            DemandField.END_DATE.getValue(),
-            DemandField.VALID_TO.getValue()
-        });
-        List<SortPair> sortPairs = Arrays.asList(
-                new SortPair(FullDemandDetail.DemandField.CREATED.getValue(), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+    private SortDataHolder initDemandTableSort() {
+        List<SortPair> sortColumns = Arrays.asList(
+                new SortPair(DemandField.DEMAND_STATUS),
+                new SortPair(DemandField.TITLE),
+                new SortPair(DemandField.PRICE),
+                new SortPair(DemandField.END_DATE),
+                new SortPair(DemandField.VALID_TO));
+        List<SortPair> defaultSort = Arrays.asList(
+                new SortPair(DemandField.CREATED));
+        return new SortDataHolder(defaultSort, sortColumns);
+    }
+
+    private void initConversationTableSort() {
+        //TODO LATER MARTIN 24.4.2013 - how to sort displayName??
+        List<SortPair> sortColumns = Arrays.asList(
+                null, //check box column
+                null, //star column
+                null, //company name, first name, last name
+                new SortPair(MessageField.BODY),
+                new SortPair(SupplierField.OVERALL_RATING),
+                new SortPair(MessageField.CREATED));
+        List<SortPair> defaultSort = Arrays.asList(
+                new SortPair(DemandField.CREATED));
+        conversationGrid.initSort(new SortDataHolder(defaultSort, sortColumns));
     }
 
     /**

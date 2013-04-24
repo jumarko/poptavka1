@@ -43,13 +43,14 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         VALID_TO("validTo"),
         MAX_OFFERS("maxSuppliers"),
         MIN_RATING("minRating"),
-        RATING("rating"),
         DEMAND_TYPE("type"),
         CATEGORIES("categories"),
         LOCALITIES("localities"),
         DEMAND_STATUS("status"),
         CREATED("createdDate"),
         EXCLUDE_SUPPLIER("excludedSuppliers");
+
+        public static final String SEARCH_CLASS = "demand";
         private String value;
 
         private DemandField(String value) {

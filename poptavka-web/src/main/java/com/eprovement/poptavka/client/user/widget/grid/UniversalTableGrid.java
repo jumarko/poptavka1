@@ -2,9 +2,11 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -47,17 +49,19 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     private Column<IUniversalDetail, Date> urgencyColumn;
     private Column<IUniversalDetail, String> receiveDateColumn;
     private Column<IUniversalDetail, String> finnishDateColumn;
-    //table column contants
-    private static final String COLUMN_CHECK_BOX = "";
-    private static final String COLUMN_STAR = "";
-    private static final String COLUMN_DEMAND_TITLE = DemandField.TITLE.getValue();
-    private static final String COLUMN_RATING = "rating";
-    private static final String COLUMN_PRICE = DemandField.PRICE.getValue();
-    private static final String COLUMN_URGENCY = DemandField.VALID_TO.getValue();
-    private static final String COLUMN_RECEIVED_DATE = "receivedDate"; //Prijate
-    private static final String COLUMN_FINNISH_DATE = "endDate"; //Dodanie/dorucenie
-    private List<String> gridColumns = new ArrayList<String>();
     //Other
+    private boolean addColumnCheckBox = false;
+    private boolean addColumnStar = false;
+    private boolean addColumnDemandTitle = false;
+    private boolean addColumnClientRating = false;
+    private boolean addColumnSupplierRating = false;
+    private boolean addColumnPrice = false;
+    private boolean addColumnUrgency = false;
+    private boolean addColumnMesasgeReceived = false;
+    private boolean addColumnOfferReceived = false;
+    private boolean addColumnFinnishDate = false;
+    private List<SortPair> sortColumns = new ArrayList<SortPair>();
+    private List<SortPair> defaultSort = new ArrayList<SortPair>();
     private MultiSelectionModel<IUniversalDetail> selectionModel;
 
     /**************************************************************************/
@@ -76,7 +80,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
         //create columns (also fills gridColumns list)
         switch (loadedView) {
             case Constants.CLIENT_DEMAND_DISCUSSIONS:
-                initDemandDiscussions();
+                initClientDemandDiscussions();
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:
                 initClientOffers();
@@ -96,6 +100,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
             default:
                 break;
         }
+        initSort();
         setDataGridRowStyles();
     }
 
@@ -127,30 +132,23 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
     /**
      * Generate table schema for ClientDemandDiscussions widget.
      */
-    private void initDemandDiscussions() {
-        gridColumns.clear();
-        gridColumns.add(COLUMN_CHECK_BOX);
-        gridColumns.add(COLUMN_STAR);
-        gridColumns.add(""); //company name, first name, last name
-        gridColumns.add(MessageField.BODY.getValue());
-        gridColumns.add("demand.".concat(DemandField.RATING.getValue())); //demand rating
-        gridColumns.add(MessageField.SENT.getValue());
-        initSort(new SortPair("demand.".concat(COLUMN_RATING), OrderType.DESC));
+    private void initClientDemandDiscussions() {
+        // nothing by default
     }
 
     /**
      * Generate table schema for ClientAcceptedOffers widget.
      */
     private void initClientOffers() {
-        gridColumns.clear();
-        gridColumns.add(COLUMN_CHECK_BOX);
-        gridColumns.add(COLUMN_STAR);
-        gridColumns.add(COLUMN_DEMAND_TITLE);
-        gridColumns.add(COLUMN_PRICE);
-        gridColumns.add(COLUMN_RATING);
-        gridColumns.add(COLUMN_FINNISH_DATE);
-        gridColumns.add(COLUMN_RECEIVED_DATE);
-        initSort(new SortPair(COLUMN_RATING, OrderType.DESC));
+        sortColumns.clear();
+        addColumnCheckBox = true;
+        addColumnStar = true;
+        addColumnDemandTitle = true;
+        addColumnPrice = true;
+        addColumnSupplierRating = true;
+        addColumnOfferReceived = true;
+        addColumnFinnishDate = true;
+        defaultSort = Arrays.asList(new SortPair(OfferField.CREATED));
         initTableColumns();
     }
 
@@ -158,15 +156,15 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      * Generate table schema for ClientAssignedDemands widget.
      */
     private void initClientAssignedDemands() {
-        gridColumns.clear();
-        gridColumns.add(COLUMN_CHECK_BOX);
-        gridColumns.add(COLUMN_STAR);
-        gridColumns.add(COLUMN_DEMAND_TITLE);
-        gridColumns.add(COLUMN_PRICE);
-        gridColumns.add(COLUMN_FINNISH_DATE);
-        gridColumns.add(COLUMN_RATING);
-        gridColumns.add(COLUMN_RECEIVED_DATE);
-        initSort(new SortPair(COLUMN_FINNISH_DATE, OrderType.DESC));
+        sortColumns.clear();
+        addColumnCheckBox = true;
+        addColumnStar = true;
+        addColumnDemandTitle = true;
+        addColumnPrice = true;
+        addColumnSupplierRating = true;
+        addColumnOfferReceived = true;
+        addColumnFinnishDate = true;
+        defaultSort = Arrays.asList(new SortPair(OfferField.FINNISH_DATE));
         initTableColumns();
     }
 
@@ -174,14 +172,15 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      * Generate table schema for SupplierPotentialDemands widget.
      */
     private void initSupplierPotentialDemands() {
-        gridColumns.clear();
-        gridColumns.add(COLUMN_CHECK_BOX);
-        gridColumns.add(COLUMN_STAR);
-        gridColumns.add(COLUMN_DEMAND_TITLE);
-        gridColumns.add(COLUMN_RATING);
-        gridColumns.add(COLUMN_PRICE);
-        gridColumns.add(COLUMN_URGENCY);
-        initSort(new SortPair(COLUMN_URGENCY, OrderType.DESC));
+        sortColumns.clear();
+        addColumnCheckBox = true;
+        addColumnStar = true;
+        addColumnDemandTitle = true;
+        addColumnClientRating = true;
+        addColumnPrice = true;
+        addColumnUrgency = true;
+        defaultSort = Arrays.asList(
+                new SortPair(DemandField.VALID_TO));
         initTableColumns();
     }
 
@@ -189,15 +188,15 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      * Generate table schema for SupplierOffers widget.
      */
     private void initSupplierOffers() {
-        gridColumns.clear();
-        gridColumns.add(COLUMN_CHECK_BOX);
-        gridColumns.add(COLUMN_STAR);
-        gridColumns.add(COLUMN_DEMAND_TITLE);
-        gridColumns.add(COLUMN_RATING);
-        gridColumns.add(COLUMN_PRICE);
-        gridColumns.add(COLUMN_FINNISH_DATE);
-        gridColumns.add(COLUMN_RECEIVED_DATE);
-        initSort(new SortPair(COLUMN_RATING, OrderType.DESC));
+        sortColumns.clear();
+        addColumnCheckBox = true;
+        addColumnStar = true;
+        addColumnDemandTitle = true;
+        addColumnClientRating = true;
+        addColumnPrice = true;
+        addColumnOfferReceived = true;
+        addColumnFinnishDate = true;
+        defaultSort = Arrays.asList(new SortPair(ClientField.OVERALL_RATING));
         initTableColumns();
     }
 
@@ -205,48 +204,68 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
      * Generate table schema for SupplierAssignedDemands widget.
      */
     private void initSupplierAssignedDemands() {
-        gridColumns.clear();
-        gridColumns.add(COLUMN_CHECK_BOX);
-        gridColumns.add(COLUMN_STAR);
-        gridColumns.add(COLUMN_DEMAND_TITLE);
-        gridColumns.add(COLUMN_RATING);
-        gridColumns.add(COLUMN_PRICE);
-        gridColumns.add(COLUMN_FINNISH_DATE);
-        gridColumns.add(COLUMN_RECEIVED_DATE);
-        initSort(new SortPair(COLUMN_FINNISH_DATE, OrderType.DESC));
+        sortColumns.clear();
+        addColumnCheckBox = true;
+        addColumnStar = true;
+        addColumnDemandTitle = true;
+        addColumnClientRating = true;
+        addColumnPrice = true;
+        addColumnOfferReceived = true;
+        addColumnFinnishDate = true;
+        defaultSort = Arrays.asList(new SortPair(OfferField.FINNISH_DATE));
         initTableColumns();
     }
 
-    private void initSort(SortPair sortPair) {
-        setGridColumns(new SortDataHolder(Arrays.asList(sortPair), gridColumns));
+    private void initSort() {
+        setGridColumns(new SortDataHolder(defaultSort, sortColumns));
+    }
+
+    public void initSort(SortDataHolder sortDataHolder) {
+        setGridColumns(sortDataHolder);
     }
 
     /**
      * Create all columns to the grid according to needed schema represented by gridColumns attribute.
      */
     public void initTableColumns() {
-        if (gridColumns.contains(COLUMN_CHECK_BOX)) {
+        if (addColumnCheckBox) {
+            sortColumns.add(null);
             checkColumn = this.addCheckboxColumn();
         }
-        if (gridColumns.contains(COLUMN_STAR)) {
+        if (addColumnStar) {
+            sortColumns.add(null);
             starColumn = super.addStarColumn();
         }
-        if (gridColumns.contains(COLUMN_DEMAND_TITLE)) {
+        if (addColumnDemandTitle) {
+            sortColumns.add(new SortPair(DemandField.TITLE));
             demandTitleColumn = this.addDemandTitleColumn();
         }
-        if (gridColumns.contains(COLUMN_RATING)) {
+        if (addColumnSupplierRating) {
+            sortColumns.add(new SortPair(ClientField.OVERALL_RATING));
             ratingColumn = super.addRatingColumn();
         }
-        if (gridColumns.contains(COLUMN_PRICE)) {
+        if (addColumnClientRating) {
+            sortColumns.add(new SortPair(SupplierField.OVERALL_RATING));
+            ratingColumn = super.addRatingColumn();
+        }
+        if (addColumnPrice) {
+            sortColumns.add(new SortPair(DemandField.PRICE));
             priceColumn = this.addPriceColumn();
         }
-        if (gridColumns.contains(COLUMN_URGENCY)) {
+        if (addColumnUrgency) {
+            sortColumns.add(new SortPair(DemandField.VALID_TO));
             urgencyColumn = super.addUrgentColumn();
         }
-        if (gridColumns.contains(COLUMN_RECEIVED_DATE)) {
+        if (addColumnMesasgeReceived) {
+            sortColumns.add(new SortPair(MessageField.SENT));
             receiveDateColumn = this.addReceivedDateColumn();
         }
-        if (gridColumns.contains(COLUMN_FINNISH_DATE)) {
+        if (addColumnOfferReceived) {
+            sortColumns.add(new SortPair(OfferField.CREATED));
+            receiveDateColumn = this.addReceivedDateColumn();
+        }
+        if (addColumnFinnishDate) {
+            sortColumns.add(new SortPair(OfferField.FINNISH_DATE));
             finnishDateColumn = this.addFinnishDateColumn();
         }
     }

@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
@@ -81,10 +80,6 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private Column<FullDemandDetail, String> statusColumn;
     private Column<FullDemandDetail, Date> demandExpirationColumn;
     private Column<FullDemandDetail, Date> demandEndColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "client.id", "title", "type", "status", "validTo", "endDate"
-            });
     // The key provider that provides the unique ID of a FullDemandDetail.
     private static final ProvidesKey<FullDemandDetail> KEY_PROVIDER = new ProvidesKey<FullDemandDetail>() {
 
@@ -230,8 +225,9 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

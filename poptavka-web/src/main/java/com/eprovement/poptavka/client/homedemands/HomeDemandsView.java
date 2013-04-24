@@ -14,7 +14,6 @@ import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.celltree.CustomCellTree;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
@@ -189,15 +188,14 @@ public class HomeDemandsView extends OverflowComposite implements ReverseViewInt
     }
 
     private SortDataHolder initSort() {
-        List<String> gridColumns = Arrays.asList(new String[]{
-            DemandField.CREATED.getValue(),
-            DemandField.TITLE.getValue(),
-            DemandField.LOCALITIES.getValue(),
-            DemandField.VALID_TO.getValue()
-        });
-        List<SortPair> sortPairs = Arrays.asList(
-                new SortPair(DemandField.CREATED.getValue(), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList(
+                new SortPair(DemandField.CREATED),
+                new SortPair(DemandField.TITLE),
+                new SortPair(DemandField.LOCALITIES),
+                new SortPair(DemandField.VALID_TO));
+        List<SortPair> defaultSort = Arrays.asList(
+                new SortPair(DemandField.CREATED));
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     /**************************************************************************/

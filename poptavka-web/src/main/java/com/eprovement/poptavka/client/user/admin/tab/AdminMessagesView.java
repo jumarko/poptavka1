@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.MessageState;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
@@ -77,11 +76,6 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     private Column<MessageDetail, String> typeColumn;
     private Column<MessageDetail, Date> createdColumn;
     private Column<MessageDetail, Date> sentColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "demand.id", "parent.id", "sender.id",
-                "subject", "messageState", "", "sent", "body"
-            });
     // The key provider that provides the unique ID of a MessageDetail.
     private static final ProvidesKey<MessageDetail> KEY_PROVIDER = new ProvidesKey<MessageDetail>() {
 
@@ -276,8 +270,9 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

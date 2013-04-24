@@ -402,7 +402,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         Column<T, Integer> ratingCol = new Column<T, Integer>(new RatingCell()) {
             @Override
             public Integer getValue(T object) {
-                return ((TableDisplayRating) object).getRating();
+                return ((TableDisplayRating) object).getOveralRating();
             }
         };
         //set column style

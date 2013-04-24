@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayDisplayName;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
@@ -12,8 +11,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -40,6 +37,8 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
         OVERALL_RATING("overalRating"),
         TAX_ID("taxId"),
         WEBSITE("website");
+
+        public static final String SEARCH_CLASS = "businessUserData";
         private String value;
 
         private UserField(String value) {
@@ -87,9 +86,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
     private String displayName;
     private BusinessType businessType;
     private Verification verification;
-    @Min(value = 0, message = "{ratingMin}", groups = SearchGroup.class)
-    @Max(value = 100, message = "{ratingMax}", groups = SearchGroup.class)
-    private int overalRating = -1;
 
     /**************************************************************************/
     /* Constuctors                                                            */
@@ -233,14 +229,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
         this.verification = Verification.valueOf(verification);
     }
 
-    public int getOveralRating() {
-        return overalRating;
-    }
-
-    public void setOveralRating(int overallRating) {
-        this.overalRating = overallRating;
-    }
-
     @Override
     public String getDisplayName() {
         return displayName;
@@ -268,7 +256,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
         str.append(", addresses=" + addresses);
         str.append(", verification=" + verification);
         str.append(", businessType=" + businessType);
-        str.append(", ranking=" + overalRating);
         str.append('}');
         return str.toString();
     }

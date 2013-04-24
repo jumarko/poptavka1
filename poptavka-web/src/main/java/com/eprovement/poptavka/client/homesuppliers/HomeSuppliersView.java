@@ -13,7 +13,6 @@ import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -204,16 +203,14 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     private SortDataHolder initSort() {
-        List<String> gridColumns = Arrays.asList(new String[]{
-            "", //Logo
-            Constants.PATH_TO_BUSINESS_DATA.concat(UserField.COMPANY_NAME.getValue()),
-            UserField.OVERALL_RATING.getValue(),
-            "", //Address
-        });
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(
-                UserField.OVERALL_RATING.getValue(),
-                OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList(
+                null, //Logo
+                new SortPair(UserField.COMPANY_NAME),
+                new SortPair(UserField.OVERALL_RATING),
+                null); //Address
+        List<SortPair> defaultSort = Arrays.asList(
+                new SortPair(UserField.OVERALL_RATING));
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     /**************************************************************************/

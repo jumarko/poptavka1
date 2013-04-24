@@ -116,7 +116,7 @@ public class FullOfferDetail implements IsSerializable, TableDisplay, IUniversal
     }
 
     @Override
-    public int getRating() {
+    public int getOveralRating() {
         return offerDetail.getRating();
     }
 

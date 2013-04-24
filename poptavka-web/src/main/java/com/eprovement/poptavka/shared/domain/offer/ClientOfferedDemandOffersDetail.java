@@ -143,7 +143,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
      * @return the rating
      */
     @Override
-    public int getRating() {
+    public int getOveralRating() {
         return rating;
     }
 

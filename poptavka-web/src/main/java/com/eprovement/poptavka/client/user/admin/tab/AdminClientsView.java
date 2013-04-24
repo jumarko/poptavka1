@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -69,11 +68,6 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private Column<ClientDetail, String> firstNameColumn;
     private Column<ClientDetail, String> lastNameColumn;
     private Column<ClientDetail, String> ratingColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "businessUser.businessUserData.companyName", "businessUser.businessUserData.firstName",
-                "businessUser.businessUserData.lastName", "overalRating"
-            });
     // The key provider that provides the unique ID of a ClientDetail.
     private static final ProvidesKey<ClientDetail> KEY_PROVIDER = new ProvidesKey<ClientDetail>() {
 
@@ -188,8 +182,9 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

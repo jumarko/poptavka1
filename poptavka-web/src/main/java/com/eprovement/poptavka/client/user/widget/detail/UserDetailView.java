@@ -60,10 +60,10 @@ public class UserDetailView extends Composite {
     }
 
     public void setSupplierDetail(FullClientDetail detail) {
-        if (detail.getUserData().getOveralRating() == -1) {
+        if (detail.getOveralRating() == -1) {
             overallRating.setText("Not ranked");
         } else {
-            overallRating.setText(Integer.toString(detail.getUserData().getOveralRating()));
+            overallRating.setText(Integer.toString(detail.getOveralRating()));
         }
         if (detail.getUserData().getBusinessType() != null) {
             businessType.setText(detail.getUserData().getBusinessType().getValue());
@@ -87,10 +87,10 @@ public class UserDetailView extends Composite {
     }
 
     public void setSupplierDetail(FullSupplierDetail detail) {
-        if (detail.getUserData().getOveralRating() == -1) {
+        if (detail.getOveralRating() == -1) {
             overallRating.setText(Storage.MSGS.commonNotRanked());
         } else {
-            overallRating.setText(Integer.toString(detail.getUserData().getOveralRating()));
+            overallRating.setText(Integer.toString(detail.getOveralRating()));
         }
         if (detail.getUserData().getBusinessType() != null) {
             businessType.setText(detail.getUserData().getBusinessType().getValue());

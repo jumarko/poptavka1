@@ -4,37 +4,31 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.server.DomainObjectsMaping;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.googlecode.genericdao.search.Sort;
+import java.util.ArrayList;
+import java.util.Collection;
 
-public final class SortConverter extends AbstractConverter<Sort, SortPair> {
+public final class SortConverter {
 
     private SortConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
-    @Override
-    public SortPair convertToTarget(Sort source) {
-        throw new UnsupportedOperationException("Convertion ResultCriteria to SearchDefinition failed!");
-    }
-
-    @Override
-    public Sort convertToSource(SortPair target) {
+    public Sort convertToSource(Class<?> searchClass, SortPair target) {
+        String path = DomainObjectsMaping.getInstance().getPath(searchClass, target.getSearchClass());
         return new Sort(
-                checkPath(target.getPathToAttributes()).concat(target.getColumnName()),
+                path.concat(target.getColumnName()),
                 target.getColumnOrderType() == OrderType.DESC,
                 true);
     }
 
-    private String checkPath(String pathToAttribute) {
-        if (pathToAttribute == null) {
-            return "";
-        } else {
-            if (pathToAttribute.isEmpty() || pathToAttribute.endsWith(".")) {
-                return pathToAttribute;
-            } else {
-                return pathToAttribute.concat(".");
-            }
+    public Sort[] convertToSourceList(Class<?> searchClass, Collection<SortPair> detailObjects) {
+        final ArrayList<Sort> domainObjects = new ArrayList<Sort>();
+        for (SortPair detailObject : detailObjects) {
+            domainObjects.add(convertToSource(searchClass, detailObject));
         }
+        return domainObjects.toArray(new Sort[domainObjects.size()]);
     }
 }

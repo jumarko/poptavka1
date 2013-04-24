@@ -144,7 +144,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail {
      * @return the rating
      */
     @Override
-    public int getRating() {
+    public int getOveralRating() {
         return rating;
     }
 

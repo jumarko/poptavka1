@@ -13,6 +13,7 @@ import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.converter.SortConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -56,6 +57,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<Filter, FilterItem> filterConverter;
+    private SortConverter sortConverter;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -103,6 +105,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     public void setFilterConverter(
             @Qualifier("filterConverter") Converter<Filter, FilterItem> filterConverter) {
         this.filterConverter = filterConverter;
+    }
+
+    @Autowired
+    public void setSortConverter(@Qualifier("sortConverter") SortConverter sortConverter) {
+        this.sortConverter = sortConverter;
     }
 
     /**************************************************************************/
@@ -269,7 +276,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getSortOrder(), "");
+            Search search = this.getSupplierFilter(definition);
             search.addField("id", Field.OP_COUNT);
             search.setResultMode(Search.RESULT_SINGLE);
             return (Long) this.generalService.searchUnique(search);
@@ -309,7 +316,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
-            Search search = this.getSortSearch(this.getSupplierFilter(definition), definition.getSortOrder(), "");
+            Search search = this.getSupplierFilter(definition);
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
             return supplierConverter.convertToTargetList(this.generalService.search(search));
@@ -355,9 +362,8 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     private Search getCategoryFilter(SearchDefinition definition) {
         Search categorySearch = new Search(SupplierCategory.class);
-
+        //filters
         List<Category> allSubCategories = new ArrayList<Category>();
-
         for (CategoryDetail cat : definition.getFilter().getCategories()) {
             allSubCategories = Arrays.asList(getAllSubCategories(cat.getId()));
         }
@@ -366,8 +372,10 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         if (!definition.getFilter().getAttributes().isEmpty()) {
             categorySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(definition)));
         }
-
-        return this.getSortSearch(categorySearch, definition.getSortOrder(), "supplier");
+        //sorts
+        categorySearch.addSorts(sortConverter.convertToSourceList(
+                categorySearch.getSearchClass(), definition.getSortOrder()));
+        return categorySearch;
     }
 
     /**
@@ -378,7 +386,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      */
     private Search getLocalityFilter(SearchDefinition definition) {
         Search localitySearch = new Search(SupplierLocality.class);
-
+        //filters
         List<Locality> allSubLocalities = new ArrayList<Locality>();
         for (LocalityDetail loc : definition.getFilter().getLocalities()) {
             allSubLocalities = Arrays.asList(
@@ -389,8 +397,10 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         if (!definition.getFilter().getAttributes().isEmpty()) {
             localitySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(definition)));
         }
-
-        return this.getSortSearch(localitySearch, definition.getSortOrder(), "supplier");
+        //sorts
+        localitySearch.addSorts(sortConverter.convertToSourceList(
+                localitySearch.getSearchClass(), definition.getSortOrder()));
+        return localitySearch;
     }
 
     /**
@@ -416,6 +426,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
                 demands.add(demandCat);
             }
         }
+        //TODO LATER MARTIN 24.4.2013 - how to sort intersection??
         return demands;
     }
 
@@ -429,25 +440,10 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         Search search = new Search(Supplier.class);
 
         ArrayList<Filter> filtersOr = filterConverter.convertToSourceList(definition.getFilter().getAttributes());
+        //filters
         search.addFilterAnd(filtersOr.toArray(new Filter[filtersOr.size()]));
-        return search;
-    }
-
-    private Search getSortSearch(Search search, ArrayList<SortPair> orderColumns, String prefix) {
-        String prefixedItem;
-        if (orderColumns != null) {
-            for (SortPair item : orderColumns) {
-                prefixedItem = item.getColumnName();
-                if (prefix != null && !prefix.isEmpty()) {
-                    prefixedItem = prefix.concat(".").concat(item.getColumnName());
-                }
-                if (item.getColumnOrderType() == OrderType.ASC) {
-                    search.addSortAsc(prefixedItem, true);
-                } else {
-                    search.addSortDesc(prefixedItem, true);
-                }
-            }
-        }
+        //sorts
+        search.addSorts(sortConverter.convertToSourceList(search.getSearchClass(), definition.getSortOrder()));
         return search;
     }
 
