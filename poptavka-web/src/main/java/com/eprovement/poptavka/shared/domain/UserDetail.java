@@ -22,11 +22,11 @@ public class UserDetail implements IsSerializable {
      * Logged user must always has non-null id set!
      */
     private long userId;
-    @NotBlank(message = "{userNotBlankEmail}")
-    @Email(message = "{userEmail}")
+    @NotBlank(message = "{emailNotBlank}")
+    @Email(message = "{emailEmail}")
     private String email;
-    @NotBlank(message = "{userNotBlankPassword}")
-    @Length(min = 5, message = "{userLengthPassword}")
+    @NotBlank(message = "{passwordNotBlank}")
+    @Length(min = 5, message = "{passwordLength}")
     private String password;
     private ArrayList<AccessRoleDetail> accessRoles;
 

@@ -359,7 +359,7 @@ public class ChangeMonitor<T> extends Composite implements HasWidgets, HasChange
     }
 
     private boolean validateNumberException() {
-        setValidationStyles(false, Storage.VMSGS.commonNumberFormat());
+        setValidationStyles(false, Storage.VMSGS.numberFormat());
         return false;
     }
 }

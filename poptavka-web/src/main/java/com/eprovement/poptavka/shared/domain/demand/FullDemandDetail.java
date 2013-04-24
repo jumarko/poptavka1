@@ -87,7 +87,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     private ArrayList<LocalityDetail> localities;
     private ArrayList<CategoryDetail> categories;
     private long clientId;
-    @Min(value = 0, message = "{demandMinPrice}")
+    @Min(value = 0, message = "{maxSuppliersMin}")
     private int maxSuppliers;
     private int minRating;
     private int clientRating;
@@ -103,22 +103,22 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     private int unreadSubmessagesCount;
     private Date created;
     //Basic Demand Info
-    @NotBlank(message = "{demandNotBlankTitle}")
-    @Size(min = 5, max = 50, message = "{demandSizeTitle}")
+    @NotBlank(message = "{titleNotBlank}")
+    @Size(min = 5, max = 50, message = "{titleSize}")
     private String title;
-    @NotNull(message = "{demandNotNullPrice}")
-    @Min(value = 0, message = "{demandMinPrice}", groups = {Default.class, SearchGroup.class })
-    @Digits(integer = 12, fraction = 0, message = "{demandDigitsPrice}",
+    @NotNull(message = "{priceNotNull}")
+    @Min(value = 0, message = "{priceMin}", groups = {Default.class, SearchGroup.class })
+    @Digits(integer = 12, fraction = 0, message = "{priceDigits}",
     groups = {Default.class, SearchGroup.class })
     private BigDecimal price;
-    @NotNull(message = "{demandNotNullEndDate}")
-    @Future(message = "{demandFutureEndDate}")
+    @NotNull(message = "{endDateNotNull}")
+    @Future(message = "{endDateFuture}")
     private Date endDate;
-    @NotNull(message = "{demandNotNullValidToDate}")
-    @Future(message = "{demandFutureValidToDate}")
+    @NotNull(message = "{validToNotNull}")
+    @Future(message = "{validToFuture}")
     private Date validTo;
-    @NotBlank(message = "{demandNotBlankDescription}")
-    @Size(min = 20, max = 1500, message = "{demandSizeDescription}")
+    @NotBlank(message = "{descriptinoNotBlank}")
+    @Size(min = 20, max = 1500, message = "{descriptoinSize}")
     private String description;
     //
     private List<FullSupplierDetail> excludedSuppliers;
