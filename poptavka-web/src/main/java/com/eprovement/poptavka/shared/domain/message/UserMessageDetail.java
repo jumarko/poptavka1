@@ -7,13 +7,26 @@ package com.eprovement.poptavka.shared.domain.message;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
-
 /**
  *
  * @author Martin Slavkovsky
  */
 public class UserMessageDetail implements IsSerializable {
 
+    public enum UserMessageField {
+
+        STARRED("starred");
+        public static final String SEARCH_CLASS = "userMessage";
+        private String value;
+
+        private UserMessageField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
     private Long id;
     private boolean isRead;
     private boolean isStarred;
@@ -27,7 +40,6 @@ public class UserMessageDetail implements IsSerializable {
     public UserMessageDetail(UserMessageDetail detail) {
         this.updateWholeUserMessage(detail);
     }
-
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeUserMessage(UserMessageDetail detail) {
@@ -91,9 +103,7 @@ public class UserMessageDetail implements IsSerializable {
                 + "starred: " + isStarred
                 + "messageDetail" + messageDetail.toString();
     }
-
     public static final ProvidesKey<UserMessageDetail> KEY_PROVIDER = new ProvidesKey<UserMessageDetail>() {
-
         @Override
         public Object getKey(UserMessageDetail item) {
             return item == null ? null : item.getId();

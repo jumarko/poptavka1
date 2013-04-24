@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
+import com.eprovement.poptavka.shared.domain.message.UserMessageDetail.UserMessageField;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -233,7 +234,7 @@ public class UniversalTableGrid extends UniversalAsyncGrid<IUniversalDetail> {
             checkColumn = this.addCheckboxColumn();
         }
         if (addColumnStar) {
-            sortColumns.add(null);
+            sortColumns.add(new SortPair(UserMessageField.STARRED));
             starColumn = super.addStarColumn();
         }
         if (addColumnDemandTitle) {

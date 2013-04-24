@@ -14,6 +14,7 @@ import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
+import com.eprovement.poptavka.shared.domain.message.UserMessageDetail.UserMessageField;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -60,6 +61,7 @@ public final class DomainObjectsMaping {
         mapingPairs.add(new MapingPair(UserMessage.class, SupplierField.SEARCH_CLASS, "message.offer.supplier."));
         mapingPairs.add(new MapingPair(UserMessage.class, OfferField.SEARCH_CLASS, "message.offer."));
         mapingPairs.add(new MapingPair(UserMessage.class, MessageField.SEARCH_CLASS, "message."));
+        mapingPairs.add(new MapingPair(UserMessage.class, UserMessageField.SEARCH_CLASS, ""));
         mapingPairs.add(new MapingPair(UserMessage.class, UserField.SEARCH_CLASS, "businessUser.businessUserData."));
     }
 

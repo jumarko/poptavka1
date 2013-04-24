@@ -434,6 +434,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 return obj.isStarred();
             }
         };
+        starColumn.setSortable(true);
         //set column style
         starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
         starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());

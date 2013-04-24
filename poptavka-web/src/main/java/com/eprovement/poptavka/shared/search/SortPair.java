@@ -10,6 +10,7 @@ import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
+import com.eprovement.poptavka.shared.domain.message.UserMessageDetail.UserMessageField;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -62,6 +63,12 @@ public class SortPair implements IsSerializable {
         this.columnName = messageField.getValue();
         this.columnOrderType = OrderType.DESC;
         this.searchClass = MessageField.SEARCH_CLASS;
+    }
+
+    public SortPair(UserMessageField userMessageField) {
+        this.columnName = userMessageField.getValue();
+        this.columnOrderType = OrderType.DESC;
+        this.searchClass = UserMessageField.SEARCH_CLASS;
     }
 
     public SortPair(OfferField offerField) {
