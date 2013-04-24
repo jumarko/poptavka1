@@ -60,7 +60,7 @@
         z-index: 1500;
         }
 
-        .search-label {        
+        .search-label {
         float: right;
         line-height: 34px;
         margin: 0 5px;
@@ -70,37 +70,37 @@
 
     <g:HTMLPanel>
         <g:HTMLPanel styleName='{style.advanced-toolbar}'>
-            <g:Button ui:field="searchBtn" styleName='{style.search-button}'></g:Button>            
+            <g:Button ui:field="searchBtn" styleName='{style.search-button}'></g:Button>
             <g:MenuBar vertical="false" styleName='{style.search-list}'>
                 <g:MenuItem ui:field="searchWhatItem" styleName='{style.search-list-item}'>
-                    <ui:msg key="searchMenuDemand">Demand</ui:msg>
+                    <ui:msg key="searchMenuDemand">Project</ui:msg>
                     <g:MenuBar vertical="true" ui:field="searchWhatList"
                                styleName='{style.search-list-dropdown}'>
                         <g:MenuItem ui:field="demand">
-                            <ui:msg key="searchMenuDemand">Demand</ui:msg>
+                            <ui:msg key="searchMenuDemand">In Projects</ui:msg>
                         </g:MenuItem>
                         <g:MenuItem ui:field="supplier">
-                            <ui:msg key="searchMenuSupplier">Supplier</ui:msg>
+                            <ui:msg key="searchMenuSupplier">In Professionals</ui:msg>
                         </g:MenuItem>
                     </g:MenuBar>
                 </g:MenuItem>
             </g:MenuBar>
             <g:Label styleName='{style.search-label}'>
                 <ui:msg key="searchBtnSearch">Search</ui:msg>
-            </g:Label>            
+            </g:Label>
         </g:HTMLPanel>
         <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX'
                           barHeight='42' animationDuration="1000"
                           styleName="{res.advancedSearchTabPanel.advancedSearchTabPanel}">
             <g:tab>
                 <g:header>
-                    <ui:msg key="advSearchDemandsTab">Demand's table attributes</ui:msg>
+                    <ui:msg key="advSearchDemandsTab">Projects</ui:msg>
                 </g:header>
                 <homeDemands:HomeDemandsSearchView ui:field="demandsAttributeSelectorWidget" />
             </g:tab>
             <g:tab>
                 <g:header>
-                    <ui:msg key="advSearchSuppliersTab">Supplier's table attributes</ui:msg>
+                    <ui:msg key="advSearchSuppliersTab">Professionals</ui:msg>
                 </g:header>
                 <homeSuppliers:HomeSuppliersSearchView ui:field="suppliersAttributeSelectorWidget" />
             </g:tab>
