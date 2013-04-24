@@ -22,6 +22,7 @@
     cursor: pointer;
 }
 
+.detailTabPanel .gwt-TabLayoutPanelTab:hover .gwt-HTML,
 .detailTabPanel .gwt-TabLayoutPanelTab-selected .gwt-TabLayoutPanelTabInner .gwt-HTML {
     background: url(images/header.gif) repeat-x top right;
     cursor: pointer;
