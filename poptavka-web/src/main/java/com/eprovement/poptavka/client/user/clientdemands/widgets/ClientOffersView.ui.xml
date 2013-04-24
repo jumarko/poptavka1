@@ -32,8 +32,7 @@
                     <s:UniversalPagerWidget ui:field='offerPager' />
                 </g:HorizontalPanel>
                 <g:HorizontalPanel ui:field="offerToolBar" visible="false">
-                    <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>
-                        <img src="images/button-cross-icon.png"/>
+                    <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>                        
                         <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
                     </g:Button>
                     <g:SimplePanel ui:field="actionBox"/>

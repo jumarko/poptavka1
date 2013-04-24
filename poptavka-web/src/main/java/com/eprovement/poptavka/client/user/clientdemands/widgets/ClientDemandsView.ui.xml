@@ -13,7 +13,16 @@
             <g:HTMLPanel></g:HTMLPanel>
         </g:west>
         <g:north size="65">
-            <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
+            <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>     
+                <!--conversation table header-->
+                <g:HorizontalPanel ui:field="conversationHeader">
+                    <b:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}'/>
+                    <g:Label ui:field="demandTitlelabel" styleName='hide'/>
+                    
+                    <g:SimplePanel ui:field="actionBox" visible="false" />
+                    <s:UniversalPagerWidget ui:field='conversationPager'/>
+                </g:HorizontalPanel>
+                                               
                 <!--Edit demand func buttons-->
                 <g:HTMLPanel ui:field="choiceButtonsPanel" visible="false">
                     <b:Button ui:field="editDemandButton" styleName='{res.common.toolbarButtonGrey}'>
@@ -30,17 +39,7 @@
                         <ui:msg key="clientDemandsTableTitle">Vypis klientovych poptaviek</ui:msg>
                     </g:Label>
                     <s:UniversalPagerWidget ui:field='demandPager' />
-                </g:HorizontalPanel>
-                <!--conversation table header-->
-                <g:HorizontalPanel ui:field="conversationHeader">
-                    <b:Button ui:field="backBtn" type="PRIMARY" icon="ARROW_LEFT">
-                        <ui:msg key="clientDemandsBackBtn">Spat na vsetky nove poptavky</ui:msg>
-                    </b:Button>
-                    <g:Label ui:field="demandTitlelabel" styleName='hide'/>
-                    
-                    <g:SimplePanel ui:field="actionBox" visible="false" />
-                    <s:UniversalPagerWidget ui:field='conversationPager'/>
-                </g:HorizontalPanel>
+                </g:HorizontalPanel>                
             </g:HorizontalPanel>
         </g:north>        
         <g:center>
