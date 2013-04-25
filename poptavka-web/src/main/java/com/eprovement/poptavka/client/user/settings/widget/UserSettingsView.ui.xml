@@ -74,6 +74,30 @@
                             </b:Column>
                         </b:FluidRow>
                     </b:WellForm>
+                    <b:WellForm>
+                        <b:FluidRow>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    <ui:msg key='formCommonInfo'>Common info:</ui:msg>
+                                </b:Heading>
+                            </b:Column>
+                        </b:FluidRow>                                            
+                        <b:FluidRow>
+                            <b:Column size="12">
+                                <g:Label>
+                                    <ui:msg key='formDescription'>Description:</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="1"></b:Column>
+                            <b:Column size="11">
+                                <cm:ChangeMonitor ui:field='descriptionMonitor'>
+                                    <g:TextArea width="450px" height="130px"/>
+                                </cm:ChangeMonitor>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:WellForm>
                 </b:Column>
                 <b:Column size="6">
                     <b:WellForm>
@@ -149,23 +173,51 @@
                         <b:FluidRow>
                             <b:Column size="12">
                                 <b:Heading size="4">
-                                    <ui:msg key='formCommonInfo'>Common info:</ui:msg>
+                                    <ui:msg key='formPasswordInfo'>Change password:</ui:msg>
                                 </b:Heading>
                             </b:Column>
                         </b:FluidRow>                                            
                         <b:FluidRow>
-                            <b:Column size="12">
+                            <b:Column size="4">
                                 <g:Label>
-                                    <ui:msg key='formDescription'>Description:</ui:msg>
+                                    <ui:msg key='formPasswordCurrent'>Current password:</ui:msg>
                                 </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <cm:ValidationMonitor ui:field='passwordCurrentMonitor'>
+                                    <g:PasswordTextBox />
+                                </cm:ValidationMonitor>
                             </b:Column>
                         </b:FluidRow>
                         <b:FluidRow>
-                            <b:Column size="1"></b:Column>
-                            <b:Column size="11">
-                                <cm:ChangeMonitor ui:field='descriptionMonitor'>
-                                    <g:TextArea width="450px" height="130px"/>
-                                </cm:ChangeMonitor>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="formPassword">New password</ui:msg>:
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <cm:ValidationMonitor ui:field="passwordNewMonitor">
+                                    <g:PasswordTextBox />
+                                </cm:ValidationMonitor>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="formPasswordConfirm">New password Again</ui:msg>:
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="8">
+                                <cm:ValidationMonitor ui:field="passwordNewConfirmMonitor">
+                                    <g:PasswordTextBox />
+                                </cm:ValidationMonitor>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow>
+                            <b:Column size="12">
+                                <g:Button ui:field="changeBtn" styleName='{res.common.buttonGreen}'>
+                                    <ui:msg key="commonBtnChange">Change</ui:msg>
+                                </g:Button>
                             </b:Column>
                         </b:FluidRow>
                     </b:WellForm>

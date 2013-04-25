@@ -39,10 +39,27 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
 
     public void onRequestUpdateSettings(SettingDetail settingsDetail) {
         settingsService.updateSettings(settingsDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
-
             @Override
             public void onSuccess(Boolean result) {
                 eventBus.responseUpdateSettings(result);
+            }
+        });
+    }
+
+    public void onRequestCheckCurrentPassword(long userId, String password) {
+        settingsService.checkCurrentPassword(userId, password, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean correct) {
+                eventBus.responseCheckCurrentPassword(correct.booleanValue());
+            }
+        });
+    }
+
+    public void onRequestResetPassword(long userId, String newPassword) {
+        settingsService.resetPassword(userId, newPassword, new SecuredAsyncCallback<Boolean>(eventBus) {
+            @Override
+            public void onSuccess(Boolean result) {
+                eventBus.responseResetPassword(result.booleanValue());
             }
         });
     }

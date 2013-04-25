@@ -12,4 +12,8 @@ public interface SettingsRPCServiceAsync {
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 
     void updateSettings(SettingDetail settingsDetail, AsyncCallback<Boolean> callback);
+
+    void checkCurrentPassword(long userId, String password, AsyncCallback<Boolean> callback);
+
+    void resetPassword(long userId, String newPassword, AsyncCallback<Boolean> callback);
 }

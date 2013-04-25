@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.common.userRegistration;
 
 import com.eprovement.poptavka.client.common.ValidationMonitor;
 import com.eprovement.poptavka.client.common.address.AddressSelectorView;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -58,9 +59,6 @@ public class UserRegistrationFormView extends Composite
     private List<ValidationMonitor> validationMonitorsPersonalOnly;
     private List<ValidationMonitor> validationMonitorsCompanyOnly;
     private boolean companySelected;
-    //Constants
-    private static final int SHORT_PASSWORD = 5;
-    private static final int LONG_PASSWORD = 8;
 
     /**************************************************************************/
     /* Constructor                                                            */
@@ -253,13 +251,13 @@ public class UserRegistrationFormView extends Composite
     private void initVisualPasswordCheck(KeyUpEvent event) {
         password.setHideErrorPanel(false);
         int passwordLength = ((String) password.getValue()).length();
-        if ((passwordLength <= LONG_PASSWORD) && (passwordLength > SHORT_PASSWORD)) {
+        if ((passwordLength <= Constants.LONG_PASSWORD) && (passwordLength > Constants.SHORT_PASSWORD)) {
             password.getErrorPanel().setVisible(true);
             password.getControlGroup().setType(ControlGroupType.WARNING);
             password.getErrorLabel().setText(Storage.MSGS.formUserRegSemiStrongPassword());
             password.getErrorLabel().setType(LabelType.WARNING);
         }
-        if (passwordLength > LONG_PASSWORD) {
+        if (passwordLength > Constants.LONG_PASSWORD) {
             password.getErrorPanel().setVisible(true);
             password.getControlGroup().setType(ControlGroupType.SUCCESS);
             password.getErrorLabel().setText(Storage.MSGS.formUserRegStrongPassword());

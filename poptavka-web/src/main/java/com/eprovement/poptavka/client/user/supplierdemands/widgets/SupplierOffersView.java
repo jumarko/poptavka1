@@ -14,7 +14,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,7 +35,6 @@ public class SupplierOffersView extends Composite
     @UiField(provided = true) UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel, actionBox;
     @UiField HorizontalPanel toolBar;
-    @UiField Label tableNameLabel;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -48,8 +46,6 @@ public class SupplierOffersView extends Composite
 
         initTable();
         initWidget(uiBinder.createAndBindUi(this));
-
-        tableNameLabel.setText(Storage.MSGS.supplierOffersTableTitle());
     }
 
     private void initTable() {

@@ -14,13 +14,13 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -376,10 +376,12 @@ public class ClientDemandsView extends Composite
         conversationGrid.setVisible(visible);
         conversationGrid.redraw();
         conversationHeader.setVisible(visible);
+        backBtn.setVisible(visible);
     }
 
     @Override
     public void setDemandTitleLabel(String text) {
+        demandTitlelabel.setVisible(!text.isEmpty());
         demandTitlelabel.setText(text);
     }
 }

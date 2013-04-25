@@ -24,18 +24,25 @@
         </g:west>
         <g:north size="65">
             <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>
+                <!--Demand table header-->
                 <g:HorizontalPanel ui:field="demandHeader">
                     <s:UniversalPagerWidget ui:field='demandPager' />
                 </g:HorizontalPanel>
-                <g:HorizontalPanel ui:field="offerHeader">
-                    <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}'/>
-                    <s:UniversalPagerWidget ui:field='offerPager' />
-                </g:HorizontalPanel>
+
+                <!--Back button-->
+                <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}' visible="false"/>
+                
+                <!--ToolBar button section-->
                 <g:HorizontalPanel ui:field="offerToolBar" visible="false">
                     <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'>                        
                         <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
                     </g:Button>
                     <g:SimplePanel ui:field="actionBox"/>
+                </g:HorizontalPanel>
+                
+                <!--Offer table header-->
+                <g:HorizontalPanel ui:field="offerHeader">
+                    <s:UniversalPagerWidget ui:field='offerPager' />
                 </g:HorizontalPanel>
             </g:HorizontalPanel>
         </g:north>        

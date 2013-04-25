@@ -29,6 +29,7 @@ public interface LocalizableMessages extends Messages {
     /** Common button names. **/
     String commonBtnBack();
     String commonBtnCancel();
+    String commonBtnChange();
     String commonBtnClear();
     String commonBtnClose();
     String commonBtnDelete();
@@ -84,6 +85,7 @@ public interface LocalizableMessages extends Messages {
     String formDetailInfo();
     String formMessageInfo();
     String formInvoiceInfo();
+    String formPasswordInfo();
     String formPriceInfo();
     String formRatingInfo();
     String formSupplierInfo();
@@ -130,6 +132,7 @@ public interface LocalizableMessages extends Messages {
     String formMinSupplierRating();
     String formPassword();
     String formPasswordConfirm();
+    String formPasswordCurrent();
     String formPaymentMethod();
     String formPhone();
     String formPrice();
@@ -611,6 +614,9 @@ public interface LocalizableMessages extends Messages {
     /** UserSettingsView.ui. **/
     String userSettingsBillingDetails();
     String userSettingsNotifications();
+    String userSettingsPasswordIncorrect();
+    String userSettingsPasswordChangedSucceeded();
+    String userSettingsPasswordChangedFailed();
 
     /** ClientSettingsView.ui. **/
 
@@ -642,17 +648,17 @@ public interface LocalizableMessages extends Messages {
     String myRatingsDescription();
 
     /** ClientDemandsView.ui. **/
-    String clientDemandsTableTitle();
     String clientDemandsBackBtn();
 
     /** ClientOffersView.ui. **/
     String clientOffersAcceptBtn();
 
     /** ClientAssignedDemandsView.ui. **/
-    String clientAssignedDemandsTitle();
     String clientAssignedDemandsCloseBtn();
 
     /*** 9 - Supplier Demands module view ******************************* 9 ***/
+    String supplierDemandsToolbarLabel();
+
     /** SupplierDemandsWelcomeView.ui **/
     String professionalDashboard();
     String quickGuideToSupplierMenu();
@@ -661,13 +667,6 @@ public interface LocalizableMessages extends Messages {
     String assignedProjectsSupplierDescription();
     String finishedProjectsSupplierDescription();
     String myRatingsSupplierDescription();
-
-    String supplierDemandsToolbarLabel();
-    /** SupplierDemandsView.ui. **/
-    String supplierPotentialDemandsTableTitle();
-
-    /** SupplierOffersView.ui. **/
-    String supplierOffersTableTitle();
 
     /** SupplierAssignedDemandsView.ui. **/
     String supplierAssignedDemandsFinnishBtn();

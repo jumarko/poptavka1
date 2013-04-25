@@ -217,4 +217,7 @@ public final class Constants {
     public static final int REGISTER_MAX_LOCALITIES = 5;
     public static final String PATH_TO_BUSINESS_DATA = "businessUser.businessUserData.";
     public static final String PATH_TO_TOKEN_FOR_VIEWS = "homeWelcome/view?";
+
+    public static final int SHORT_PASSWORD = 5;
+    public static final int LONG_PASSWORD = 8;
 }

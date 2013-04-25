@@ -15,7 +15,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -38,7 +37,6 @@ public class SupplierDemandsView extends Composite
     @UiField(provided = true) UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel, actionBox;
     @UiField HorizontalPanel toolBar;
-    @UiField Label tableNameLabel;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
 
@@ -52,8 +50,6 @@ public class SupplierDemandsView extends Composite
 
         initTable();
         initWidget(uiBinder.createAndBindUi(this));
-
-        tableNameLabel.setText(Storage.MSGS.supplierPotentialDemandsTableTitle());
     }
 
     private void initTable() {

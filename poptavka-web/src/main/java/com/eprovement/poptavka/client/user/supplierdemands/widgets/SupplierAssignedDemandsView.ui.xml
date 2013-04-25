@@ -14,7 +14,6 @@
         <g:north size="65">
             <g:HTMLPanel ui:field="toolBar"
                          styleName='{res.layout.toolbarItemsBlock}'>
-                <g:Label ui:field="tableNameLabel" styleName='hide'/>
                 <g:Button ui:field="finnishBtn" visible="false" 
                           styleName="{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}">
                     <i class="icon-ok-sign icon-white"></i>

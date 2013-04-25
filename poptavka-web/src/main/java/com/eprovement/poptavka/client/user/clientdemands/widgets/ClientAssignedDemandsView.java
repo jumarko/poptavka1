@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -37,7 +36,6 @@ public class ClientAssignedDemandsView extends Composite
     @UiField(provided = true) UniversalPagerWidget pager;
     @UiField SimplePanel detailPanel, actionBox;
     @UiField HorizontalPanel toolBar;
-    @UiField Label tableNameLabel;
     @UiField Button closeBtn;
 
     /**************************************************************************/

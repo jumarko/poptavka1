@@ -8,38 +8,46 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
+    <ui:style>
+        .filterLabel {
+            color: #6F6B59;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 30px;
+            padding: 0px 10px 10px;
+        }
+    </ui:style>
+
     <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
         <g:west size="20">
             <g:HTMLPanel></g:HTMLPanel>
         </g:west>
         <g:north size="65">
             <g:HorizontalPanel styleName='{res.layout.toolbarItemsBlock}'>     
-                <!--conversation table header-->
+                <!--Demand table header-->
+                <g:HorizontalPanel ui:field="demandHeader">
+                    <s:UniversalPagerWidget ui:field='demandPager' />
+                </g:HorizontalPanel>                
+
+                <!--Back button-->
+                <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}' visible="false"/>
+
+                <!--ToolBar button section-->
+                <g:HTMLPanel ui:field="choiceButtonsPanel" visible="false">
+                    <g:Button ui:field="editDemandButton" styleName='{res.common.toolbarButtonGrey}'>
+                        <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field="deleteDemandButton" styleName='{res.common.toolbarButtonGrey}'>
+                        <ui:msg key="commonBtnDelete">Delete</ui:msg>
+                    </g:Button>
+                </g:HTMLPanel>
+
+                <!--Conversation table header-->
                 <g:HorizontalPanel ui:field="conversationHeader">
-                    <b:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}'/>
-                    <g:Label ui:field="demandTitlelabel" styleName='hide'/>
-                    
                     <g:SimplePanel ui:field="actionBox" visible="false" />
                     <s:UniversalPagerWidget ui:field='conversationPager'/>
                 </g:HorizontalPanel>
                                                
-                <!--Edit demand func buttons-->
-                <g:HTMLPanel ui:field="choiceButtonsPanel" visible="false">
-                    <b:Button ui:field="editDemandButton" styleName='{res.common.toolbarButtonGrey}'>
-                        <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                    </b:Button>
-                    <b:Button ui:field="deleteDemandButton" styleName='{res.common.toolbarButtonGrey}'>
-                        <ui:msg key="commonBtnDelete">Delete</ui:msg>
-                    </b:Button>
-                </g:HTMLPanel>
-                
-                <!--demand table header-->
-                <g:HorizontalPanel ui:field="demandHeader">
-                    <g:Label styleName='hide'>
-                        <ui:msg key="clientDemandsTableTitle">Vypis klientovych poptaviek</ui:msg>
-                    </g:Label>
-                    <s:UniversalPagerWidget ui:field='demandPager' />
-                </g:HorizontalPanel>                
             </g:HorizontalPanel>
         </g:north>        
         <g:center>
@@ -48,9 +56,10 @@
                     <b:Column size="7">
                         <g:HTMLPanel>
                             <s:UniversalAsyncGrid ui:field="demandGrid" 
-                            addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
+                                                  addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
+                            <g:Label ui:field="demandTitlelabel" styleName="{style.filterLabel}" visible="false"/>
                             <s:UniversalAsyncGrid ui:field="conversationGrid" 
-                            addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
+                                                  addStyleNames='{res.layout.layoutUser}  {res.layout.dataGridContainer}'/>
                         </g:HTMLPanel>
                     </b:Column>
                     <b:Column size="5">

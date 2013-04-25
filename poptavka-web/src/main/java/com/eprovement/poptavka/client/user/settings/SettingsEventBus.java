@@ -124,4 +124,31 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
 
     @Event(handlers = SettingsHandler.class)
     void requestUpdateSettings(SettingDetail settingsDetail);
+
+    /**************************************************************************/
+    /* Request/response pairs                                                 */
+    /**************************************************************************/
+    /**
+     * Send/Response method pair for checking whether given password match current user's password.
+     * @param userId - user whose password is going to be checked
+     * @param password - provided password to be checked
+     * @param correct - true if given password matches user's current password, false if not
+     */
+    @Event(handlers = SettingsHandler.class)
+    void requestCheckCurrentPassword(long userId, String password);
+
+    @Event(handlers = UserSettingsPresenter.class)
+    void responseCheckCurrentPassword(boolean correct);
+
+    /**
+     * Send/Response method pair for changing password.
+     * Send request to change the password and notify user.
+     * @param userId - user whose password is going to be reset
+     * @param newPassword - user's new password
+     */
+    @Event(handlers = SettingsHandler.class)
+    void requestResetPassword(long userId, String newPassword);
+
+    @Event(handlers = UserSettingsPresenter.class)
+    void responseResetPassword(boolean result);
 }
