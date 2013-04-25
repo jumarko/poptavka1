@@ -19,7 +19,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
@@ -31,6 +30,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -434,6 +434,7 @@ public class ClientDemandsPresenter
         }
         selectedDemandObject = null;
         selectedConversationObject = null;
+        view.setDemandTitleLabel("");
         view.getConversationGrid().getSelectionModel().clear();
         view.getChoiceButtonsPanel().setVisible(false);
         view.getDemandPager().startLoading();

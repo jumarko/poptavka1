@@ -648,17 +648,17 @@ public interface LocalizableMessages extends Messages {
     String myRatingsDescription();
 
     /** ClientDemandsView.ui. **/
-    String clientDemandsTableTitle();
     String clientDemandsBackBtn();
 
     /** ClientOffersView.ui. **/
     String clientOffersAcceptBtn();
 
     /** ClientAssignedDemandsView.ui. **/
-    String clientAssignedDemandsTitle();
     String clientAssignedDemandsCloseBtn();
 
     /*** 9 - Supplier Demands module view ******************************* 9 ***/
+    String supplierDemandsToolbarLabel();
+
     /** SupplierDemandsWelcomeView.ui **/
     String professionalDashboard();
     String quickGuideToSupplierMenu();
@@ -667,13 +667,6 @@ public interface LocalizableMessages extends Messages {
     String assignedProjectsSupplierDescription();
     String finishedProjectsSupplierDescription();
     String myRatingsSupplierDescription();
-
-    String supplierDemandsToolbarLabel();
-    /** SupplierDemandsView.ui. **/
-    String supplierPotentialDemandsTableTitle();
-
-    /** SupplierOffersView.ui. **/
-    String supplierOffersTableTitle();
 
     /** SupplierAssignedDemandsView.ui. **/
     String supplierAssignedDemandsFinnishBtn();
