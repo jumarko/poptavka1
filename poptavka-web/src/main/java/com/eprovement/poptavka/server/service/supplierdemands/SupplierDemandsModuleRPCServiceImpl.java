@@ -19,6 +19,7 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.converter.SortConverter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
@@ -37,11 +38,9 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDe
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.shared.search.SortPair;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Search;
-import com.googlecode.genericdao.search.Sort;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter;
     private Converter<Search, SearchDefinition> searchConverter;
-    private Converter<Sort, SortPair> sortConverter;
+    private SortConverter sortConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -133,8 +132,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     }
 
     @Autowired
-    public void setSortConverter(
-            @Qualifier("sortConverter") Converter<Sort, SortPair> sortConverter) {
+    public void setSortConverter(@Qualifier("sortConverter") SortConverter sortConverter) {
         this.sortConverter = sortConverter;
     }
 
@@ -186,8 +184,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         ArrayList<SupplierPotentialDemandDetail> supplierPotentialDemands =
                 new ArrayList<SupplierPotentialDemandDetail>();
 
-        List<UserMessage> sortedList = setSort(
-                new Search(UserMessage.class), "message.demand.",
+        List<UserMessage> sortedList = sortInMemory(new Search(UserMessage.class),
                 searchDefinition, latestUserMessagesWithCount.keySet());
 
         // TODO LATER ivlcek - refactor with detail converter
@@ -259,8 +256,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithOffer(user, pendingState);
 
-        List<UserMessage> sortedList = setSort(
-                new Search(UserMessage.class), "message.demand.",
+        List<UserMessage> sortedList = sortInMemory(new Search(UserMessage.class),
                 searchDefinition, latestUserMessagesWithCount.keySet());
 
         // TODO LATER ivlcek - refactor with detail converter
@@ -336,8 +332,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
                 userMessageService.getSupplierConversationsWithAcceptedOffer(
                 supplier.getBusinessUser(), offerAccepted, offerCompleted);
 
-        List<UserMessage> sortedList = setSort(
-                new Search(UserMessage.class), "message.demand.", searchDefinition, latestUserMessages.keySet());
+        List<UserMessage> sortedList = sortInMemory(new Search(UserMessage.class),
+                searchDefinition, latestUserMessages.keySet());
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
         for (UserMessage latestUserMessage : sortedList) {
@@ -416,8 +412,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         Map<UserMessage, Integer> latestUserMessages =
                 userMessageService.getSupplierConversationsWithClosedDemands(supplier.getBusinessUser(), offerClosed);
 
-        List<UserMessage> sortedList = setSort(
-                new Search(UserMessage.class), "message.demand.", searchDefinition, latestUserMessages.keySet());
+        List<UserMessage> sortedList = sortInMemory(new Search(UserMessage.class),
+                searchDefinition, latestUserMessages.keySet());
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
 
         for (UserMessage latestUserMessage : sortedList) {
@@ -499,7 +495,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         supplierClosedDemandsSearch.addFilterIn("state", offerClosed, offerCompleted);
         supplierClosedDemandsSearch.addFilterNotNull("demand.rating");
         if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
-            supplierClosedDemandsSearch.addSorts(convertSortList(searchDefinition.getSortOrder(), "demand."));
+            supplierClosedDemandsSearch.addSorts(sortConverter.convertToSourceList(
+                    supplierClosedDemandsSearch.getSearchClass(), searchDefinition.getSortOrder()));
         }
         List<Offer> offersWithRating = generalService.search(supplierClosedDemandsSearch);
 
@@ -714,22 +711,13 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         generalService.save(client);
     }
 
-    private List<UserMessage> setSort(
-            Search search, String pathToAttributes, SearchDefinition searchDefinition, Set set) {
+    private List<UserMessage> sortInMemory(Search search, SearchDefinition searchDefinition, Set set) {
         List<UserMessage> sortedList = new ArrayList<UserMessage>(set);
         if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
-            search.addSorts(convertSortList(searchDefinition.getSortOrder(), pathToAttributes));
+            search.addSorts(sortConverter.convertToSourceList(
+                    search.getSearchClass(), searchDefinition.getSortOrder()));
             Searcher.sortList(search, sortedList);
         }
         return sortedList;
-    }
-
-    private Sort[] convertSortList(ArrayList<SortPair> sortPairs, String pathToAttributes) {
-        List<Sort> sorts = new ArrayList<Sort>();
-        for (SortPair pair : sortPairs) {
-            pair.setPathToAttributes(pathToAttributes);
-            sorts.add(sortConverter.convertToSource(pair));
-        }
-        return sorts.toArray(new Sort[sorts.size()]);
     }
 }

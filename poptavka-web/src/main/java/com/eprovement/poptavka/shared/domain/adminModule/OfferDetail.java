@@ -14,6 +14,24 @@ import java.util.Date;
  */
 public class OfferDetail implements IsSerializable, TableDisplayDisplayName {
 
+    /** Enums. **/
+    public enum OfferField {
+
+        CREATED("created"),
+        FINNISH_DATE("finishDate");
+
+        public static final String SEARCH_CLASS = "offer";
+        private String value;
+
+        private OfferField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     // OfferDetail
     private long id;
 //    private BigDecimal price;

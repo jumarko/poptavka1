@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.BusinessType;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
@@ -74,11 +73,6 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private Column<FullSupplierDetail, String> supplierTypeColumn;
     private Column<FullSupplierDetail, Boolean> certifiedColumn;
     private Column<FullSupplierDetail, String> verificationColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "businessUser.businessUserData.companyName",
-                "businessUser.businessType.businessType", "certified", "verification"
-            });
     // The key provider that provides the unique ID of a FullSupplierDetail.
     private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
 
@@ -199,8 +193,9 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

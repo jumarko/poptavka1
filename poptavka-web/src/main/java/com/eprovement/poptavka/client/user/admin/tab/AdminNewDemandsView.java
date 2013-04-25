@@ -6,7 +6,6 @@ import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -64,10 +63,6 @@ public class AdminNewDemandsView extends Composite
     private Column<FullDemandDetail, String> demnadTitleColumn;
     private Column<FullDemandDetail, String> localityColumn;
     private MultiSelectionModel selectionModel;
-    private static final List<String> GRID_COLUMNS = Arrays.asList(
-            new String[]{
-                "createdDate", "title", "locality", "endDate"
-            });
     private LoadingDiv loadingDiv = new LoadingDiv();
     /** Constants. **/
     private static final String LOCALITY_COL_WIDTH = "150px";
@@ -164,8 +159,9 @@ public class AdminNewDemandsView extends Composite
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(GRID_COLUMNS.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, GRID_COLUMNS);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     /**************************************************************************/

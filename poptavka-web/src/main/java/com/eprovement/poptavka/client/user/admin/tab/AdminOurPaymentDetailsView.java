@@ -7,7 +7,6 @@ package com.eprovement.poptavka.client.user.admin.tab;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentDetail;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -59,10 +58,6 @@ public class AdminOurPaymentDetailsView extends Composite
     private Column<PaymentDetail, String> bankCodeColumn;
     private Column<PaymentDetail, String> ibanColumn;
     private Column<PaymentDetail, String> swiftCodeColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "bankAccount", "bankCode", "iban", "swiftCode"
-            });
     // The key provider that provides the unique ID of a PaymentDetail.
     private static final ProvidesKey<PaymentDetail> KEY_PROVIDER = new ProvidesKey<PaymentDetail>() {
 
@@ -164,8 +159,9 @@ public class AdminOurPaymentDetailsView extends Composite
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     @Override

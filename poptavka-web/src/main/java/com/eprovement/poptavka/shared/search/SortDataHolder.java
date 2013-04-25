@@ -32,14 +32,14 @@ public class SortDataHolder {
      * Represents all table columns. Even those that don't support sorting.
      * Those values can be represented by empty string, but column order must be correct.
      */
-    private List<String> gridColumns;
+    private List<SortPair> sortColumns;
     private boolean useDefaultSortOrder;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
-    public SortDataHolder(List<SortPair> defaultSortOrder, List<String> gridColumns) {
-        this.gridColumns = gridColumns;
+    public SortDataHolder(List<SortPair> defaultSortOrder, List<SortPair> sortColumns) {
+        this.sortColumns = sortColumns;
         this.defaultSortOrder = defaultSortOrder;
         this.customSortOrder = new ArrayList<SortPair>();
         this.useDefaultSortOrder = true;
@@ -53,7 +53,9 @@ public class SortDataHolder {
     }
 
     public void addCustomSortOrder(int idx, OrderType sortOrder) {
-        this.customSortOrder.add(new SortPair(this.gridColumns.get(idx), sortOrder));
+        SortPair custom = this.sortColumns.get(idx);
+        custom.setColumnOrderType(sortOrder);
+        this.customSortOrder.add(custom);
     }
 
     public void useDefaultSortOrder() {

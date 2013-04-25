@@ -26,6 +26,7 @@ public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
         MESSAGE_STATE("messageState"),
         MESSAGE_TYPE("messageType");
 
+        public static final String SEARCH_CLASS = "message";
         private String value;
 
         private MessageField(String value) {

@@ -36,6 +36,7 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
     public FullSupplierDetail convertToTarget(Supplier source) {
         FullSupplierDetail detail = new FullSupplierDetail();
         detail.setSupplierId(source.getId());
+        detail.setOveralRating(source.getOveralRating());
         if (source.isCertified() != null) {
             detail.setCertified(source.isCertified());
         }
@@ -44,7 +45,6 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         //TODO LATER ivlcek: services
         if (source.getBusinessUser() != null) {
             detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
-            detail.getUserData().setOveralRating(source.getOveralRating());
         }
         return detail;
 

@@ -108,7 +108,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable, IUniversal
     }
 
     @Override
-    public int getRating() {
+    public int getOveralRating() {
         return clientRating;
     }
 

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
+import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayRating;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
@@ -11,6 +12,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
@@ -18,6 +21,23 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    /** Enums. **/
+    public enum SupplierField {
+
+        OVERALL_RATING("overalRating");
+
+        public static final String SEARCH_CLASS = "supplier";
+        private String value;
+
+        private SupplierField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     private long supplierId;
     /** BusinessUserDetail. **/
     private BusinessUserDetail userData;
@@ -33,6 +53,9 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
     private ArrayList<ServiceDetail> services = new ArrayList<ServiceDetail>();
     /** Others. **/
     private boolean certified = false;
+    @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
+    @Max(value = 100, message = "{userMaxRating}", groups = SearchGroup.class)
+    private int overalRating = -1;
 
     /**************************************************************************/
     /* Constuctors                                                            */
@@ -93,8 +116,12 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
     }
 
     @Override
-    public int getRating() {
-        return userData.getOveralRating();
+    public int getOveralRating() {
+        return overalRating;
+    }
+
+    public void setOveralRating(int overallRating) {
+        this.overalRating = overallRating;
     }
 
     /**************************************************************************/

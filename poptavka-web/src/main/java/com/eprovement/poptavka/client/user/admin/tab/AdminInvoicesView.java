@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
@@ -74,10 +73,6 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     private Column<InvoiceDetail, String> varSymbolColumn;
     private Column<InvoiceDetail, String> payMethodColumn;
     private Column<InvoiceDetail, String> invoiceNumberColumn;
-    private List<String> gridColumns = Arrays.asList(
-            new String[]{
-                "id", "invoiceNumber", "variableSymbol", "totalPrice", "paymentMethod"
-            });
     // i18n
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(messages.formatCurrency());
@@ -195,8 +190,9 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     }
 
     private SortDataHolder initSort() {
-        List<SortPair> sortPairs = Arrays.asList(new SortPair(gridColumns.get(0), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList();
+        List<SortPair> defaultSort = Arrays.asList();
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     //*************************************************************************/

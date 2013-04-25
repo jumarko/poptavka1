@@ -1,10 +1,14 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.client.common.validation.SearchGroup;
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayRating;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
  * Represents full detail of domain object <b>Client</b> used in <i>Administration Module</i>.
@@ -14,7 +18,23 @@ import java.util.Collection;
  * @author Martin Slavkovsky
  *
  */
-public class FullClientDetail implements IsSerializable {
+public class FullClientDetail implements IsSerializable, TableDisplayRating {
+
+    /** Enums. **/
+    public enum ClientField {
+
+        OVERALL_RATING("overalRating");
+        public static final String SEARCH_CLASS = "client";
+        private String value;
+
+        private ClientField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 
     private Long clientId;
     /** BusinessUserDetail. **/
@@ -23,6 +43,10 @@ public class FullClientDetail implements IsSerializable {
     private ArrayList<InvoiceDetail> invoices;
     private ArrayList<Long> supplierBlackListIds;
     private ArrayList<Long> demandsIds;
+    /** Others. **/
+    @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
+    @Max(value = 100, message = "{userMaxRating}", groups = SearchGroup.class)
+    private int overalRating = -1;
 
     /**************************************************************************/
     /* Constuctors                                                            */
@@ -72,6 +96,15 @@ public class FullClientDetail implements IsSerializable {
 
     public void setUserData(BusinessUserDetail userData) {
         this.userData = userData;
+    }
+
+    @Override
+    public int getOveralRating() {
+        return overalRating;
+    }
+
+    public void setOveralRating(int overallRating) {
+        this.overalRating = overallRating;
     }
 
     /**************************************************************************/

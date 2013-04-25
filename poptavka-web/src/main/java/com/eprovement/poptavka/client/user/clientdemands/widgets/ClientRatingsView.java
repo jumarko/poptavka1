@@ -5,10 +5,9 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.RatingDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
 import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.TextCell;
@@ -101,12 +100,12 @@ public class ClientRatingsView extends Composite
     }
 
     private SortDataHolder initSort() {
-        List<String> gridColumns = Arrays.asList(new String[]{
-            FullDemandDetail.DemandField.TITLE.getValue(),
-        });
-        List<SortPair> sortPairs = Arrays.asList(
-                new SortPair(FullDemandDetail.DemandField.CREATED.getValue(), OrderType.DESC));
-        return new SortDataHolder(sortPairs, gridColumns);
+        List<SortPair> sortColumns = Arrays.asList(
+                new SortPair(DemandField.TITLE),
+                new SortPair(DemandField.PRICE));
+        List<SortPair> defaultSort = Arrays.asList(
+                new SortPair(DemandField.CREATED));
+        return new SortDataHolder(defaultSort, sortColumns);
     }
 
     /**************************************************************************/

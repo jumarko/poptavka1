@@ -10,5 +10,5 @@ package com.eprovement.poptavka.client.user.widget.grid;
  */
 public interface TableDisplayRating {
 
-    int getRating();
+    int getOveralRating();
 }
