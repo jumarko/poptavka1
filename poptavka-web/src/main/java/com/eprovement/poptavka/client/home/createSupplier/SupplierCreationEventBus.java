@@ -6,6 +6,7 @@
  */
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -74,9 +75,6 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);
 
     @Event(forwardToParent = true)
-    void initAddressWidget(SimplePanel holderWidget);
-
-    @Event(forwardToParent = true)
     void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(forwardToParent = true)
@@ -92,5 +90,5 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /* Business events handled by Presenter.                                  */
     /**************************************************************************/
     @Event(handlers = SupplierCreationPresenter.class)
-    void notifyAddressWidgetListeners();
+    void notifyAddressWidgetListeners(AddressSelectorPresenter.AddressSelectorInterface addressWidget);
 }

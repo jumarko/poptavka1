@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.ChangeMonitor;
 import com.eprovement.poptavka.client.common.ValidationMonitor;
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
 import com.eprovement.poptavka.client.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
@@ -147,8 +148,8 @@ public class UserSettingsPresenter extends LazyPresenter<UserSettingsViewInterfa
         view.setUserSettings(detail);
     }
 
-    public void onNotifyAddressWidgetListeners() {
-        view.setAddressSettings(settingsDetail.getUser().getAddresses().get(0));
+    public void onNotifyAddressWidgetListeners(AddressSelectorInterface addressWidget) {
+        addressWidget.setChangeMonitorsEnabled(true);
         setAddressMonitorsChangeHandlers();
     }
 
