@@ -145,12 +145,12 @@
 }
 
 .loader-modal .loader-logo-label {
-    color: #4c4c4c;
     padding-bottom: 10px;
     margin-bottom: 10px;
     font-size: 16px;
     text-align: center;
-    border-bottom: 1px solid #202020;
+    border-bottom: 1px solid #3B3B3B;
+    color: #A3A3A3;
 }
 
 .loader-modal .loader-logo-icon {

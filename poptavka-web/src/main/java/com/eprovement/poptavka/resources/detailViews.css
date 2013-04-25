@@ -56,11 +56,14 @@
 }
 
 .detail-block .span12 {
-    min-height: 25px;
-    margin-left: 10px !important;
+    min-height: 25px;    
 }
 
 .detail-block .detail-header {
+    margin-left: 2.5641%;
+}
+
+.detail-block h5 {
     background: url(images/detail-block-header.png) no-repeat 19px 13px;
     color: #237e00;
     font-size: 17px;
