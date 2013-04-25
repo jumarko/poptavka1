@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.server.service.settings;
 
+import com.eprovement.poptavka.application.security.Encryptor;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         implements SettingsRPCService {
 
     private GeneralService generalService;
+    private Encryptor encryptor;
     private Converter<Locality, LocalityDetail> localityConverter;
     private Converter<Category, CategoryDetail> categoryConverter;
     private Converter<Address, AddressDetail> addressConverter;
@@ -52,6 +54,11 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
+    }
+
+    @Autowired
+    public void setEncryptor(Encryptor encryptor) {
+        this.encryptor = encryptor;
     }
 
     @Autowired
@@ -204,6 +211,29 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         }
         user.getSettings().setNotificationItems(notificationsItems);
 
+        generalService.save(user);
+        return true;
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public Boolean checkCurrentPassword(long userId, String password) throws
+            RPCException, ApplicationSecurityException {
+        User user = generalService.find(User.class, userId);
+        return encryptor.matches(password, user.getPassword());
+    }
+
+    /**
+     * Set new password for user.
+     * @param userId whose password will be set
+     * @param newPassword new password to be set
+     * @return new random password
+     */
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public Boolean resetPassword(long userId, String newPassword) throws RPCException, ApplicationSecurityException {
+        final User user = this.generalService.find(User.class, userId);
+        user.setPassword(newPassword);
         generalService.save(user);
         return true;
     }

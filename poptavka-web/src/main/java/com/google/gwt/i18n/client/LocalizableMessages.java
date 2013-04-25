@@ -29,6 +29,7 @@ public interface LocalizableMessages extends Messages {
     /** Common button names. **/
     String commonBtnBack();
     String commonBtnCancel();
+    String commonBtnChange();
     String commonBtnClear();
     String commonBtnClose();
     String commonBtnDelete();
@@ -84,6 +85,7 @@ public interface LocalizableMessages extends Messages {
     String formDetailInfo();
     String formMessageInfo();
     String formInvoiceInfo();
+    String formPasswordInfo();
     String formPriceInfo();
     String formRatingInfo();
     String formSupplierInfo();
@@ -130,6 +132,7 @@ public interface LocalizableMessages extends Messages {
     String formMinSupplierRating();
     String formPassword();
     String formPasswordConfirm();
+    String formPasswordCurrent();
     String formPaymentMethod();
     String formPhone();
     String formPrice();
@@ -611,6 +614,9 @@ public interface LocalizableMessages extends Messages {
     /** UserSettingsView.ui. **/
     String userSettingsBillingDetails();
     String userSettingsNotifications();
+    String userSettingsPasswordIncorrect();
+    String userSettingsPasswordChangedSucceeded();
+    String userSettingsPasswordChangedFailed();
 
     /** ClientSettingsView.ui. **/
 

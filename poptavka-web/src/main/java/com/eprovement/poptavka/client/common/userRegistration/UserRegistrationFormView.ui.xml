@@ -51,7 +51,7 @@
                     <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
-                                <ui:msg key="formPassword">Password</ui:msg>*
+                                <ui:msg key="formPassword">Password</ui:msg>*:
                             </g:Label>
                         </b:Column>
                         <b:Column size="8">
@@ -63,7 +63,7 @@
                     <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
-                                <ui:msg key="formPasswordConfirm">Password Again</ui:msg>*
+                                <ui:msg key="formPasswordConfirm">Password Again</ui:msg>*:
                             </g:Label>
                         </b:Column>
                         <b:Column size="8">
