@@ -101,6 +101,9 @@ public class ClientOffersPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
+        // Buttons Actions
+        addBackButtonHandler();
+        addAcceptOfferButtonHandler();
         // Selection Handlers
         addDemandTableSelectionHandler();
         addOfferGridSelectionModelHandler();
@@ -108,9 +111,6 @@ public class ClientOffersPresenter
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
-        // Buttons Actions
-        addBackButtonHandler();
-        addAcceptOfferButtonHandler();
         // Row styles
         addDemandGridRowStyles();
     }
@@ -122,6 +122,9 @@ public class ClientOffersPresenter
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.initActionBox(view.getActionBox(), view.getOfferGrid());
+        //Set visibility
+        view.setOfferTableVisible(false);
+        view.setDemandTableVisible(true);
 
         eventBus.setUpSearchBar(new Label("Client's contests attibure's selector will be here."));
         searchDataHolder = filter;
