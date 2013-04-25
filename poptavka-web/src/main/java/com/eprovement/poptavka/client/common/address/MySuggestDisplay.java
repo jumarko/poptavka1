@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
@@ -30,7 +31,7 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     private static final int OFFSET_LEFT = 0;
-    private static final int OFFSET_TOP = 20;
+    private static final int OFFSET_TOP = 45;
     private SimpleIconLabel loader = new SimpleIconLabel();
     private CitySuggestOracle oracle = null;
     private PopupPanel loadingPopup = new PopupPanel(true);
@@ -39,7 +40,7 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     public MySuggestDisplay() {
-        loader.setImageResource(Storage.RSCS.images().loadIcon32());
+        loader.setImageResource(Storage.RSCS.images().loaderIcon33());
     }
 
     /**************************************************************************/
@@ -78,6 +79,7 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
         });
         vp.add(anchor);
         loadingPopup.setWidget(vp);
+        loadingPopup.removeStyleName(StyleResource.INSTANCE.modal().smallLoaderModal());
         loadingPopup.show();
     }
 
@@ -93,11 +95,13 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
         });
         vp.add(anchor);
         loadingPopup.setWidget(vp);
+        loadingPopup.removeStyleName(StyleResource.INSTANCE.modal().smallLoaderModal());
         loadingPopup.show();
     }
 
     public void showLoading() {
         loadingPopup.setWidget(loader);
+        loadingPopup.addStyleName(StyleResource.INSTANCE.modal().smallLoaderModal());        
         loadingPopup.show();
     }
 
