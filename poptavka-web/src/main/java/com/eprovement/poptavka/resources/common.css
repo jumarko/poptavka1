@@ -292,17 +292,13 @@ a.toolbar-button-grey {
     width: 93px;
 }
 
-.toolbar-menubar.pager-button {
-    width: 48px;
-}
-
 .toolbar-menubar {
     background: #ffffff;
     border: 1px solid #C2C8D2;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 0 3px #DDDDDD;
     line-height: 20px;
-    margin: 3px 0 0 -9px;
+    margin: 0 0 0 -9px;
     width: 93px;
 }
 
@@ -323,6 +319,37 @@ a.toolbar-button-grey {
 
 .toolbar-menubar td:hover {
     color: #bd0000;    
+}
+
+.universal-pager {
+    background: #2b2e31;
+    border: 1px solid #1a1d1e;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 0 3px #DDDDDD;
+    line-height: 20px;
+    margin: 0 0 0 -9px;
+    width: 48px;
+}
+
+.universal-pager table {
+    width: 100%;
+}
+
+.universal-pager tr:first-child td {
+    border-top: none;
+}
+
+.universal-pager td {
+    width: 100%;
+    border-top: 1px solid #52585c;
+    border-bottom: 1px solid #111111;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #D5D5D5;
+}
+
+.universal-pager td:hover {
+    color: #ffffff;
 }
 
 /* CellBrowser selected item styles  */

@@ -86,6 +86,9 @@ public interface CommonResource extends CssResource {
     @ClassName("toolbar-menubar")
     String toolbarMenubar();
 
+    @ClassName("universal-pager")
+    String universalPager();
+
     @ClassName("selected-items-widget")
     String selectedItemsWidget();
 

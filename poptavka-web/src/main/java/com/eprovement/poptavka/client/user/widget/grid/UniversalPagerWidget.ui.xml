@@ -52,7 +52,7 @@
         <c:SimplePager ui:field='pager' styleName='{style.toolbar-item-pager}' />
         <g:MenuBar vertical="false" styleName='{style.dropdown-select} {style.float10}'>
             <g:MenuItem ui:field="pageSize" styleName='{style.dropdown-item}'>
-                <g:MenuBar vertical="true" ui:field="pageSizeList" styleName='{res.common.toolbarMenubar} pager-button'/>
+                <g:MenuBar vertical="true" ui:field="pageSizeList" styleName='{res.common.universalPager}'/>
             </g:MenuItem>
         </g:MenuBar>
     </g:HTMLPanel>
