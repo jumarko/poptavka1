@@ -31,15 +31,15 @@ public class OfferMessageDetail extends MessageDetail {
     /* Attibutes                                                              */
     /**************************************************************************/
     private long supplierId;
-    @NotBlank(message = "{messageNotBlankBody}")
-    @Size(min = 2, max = 1500, message = "{messageSizeBody}")
+    @NotBlank(message = "{bodyNotBlank}")
+    @Size(min = 2, max = 1500, message = "{bodySize}")
     private String body;
-    @NotNull(message = "{messageNotNullPrice}")
-    @Min(value = 0, message = "{messageMinPrice}")
-    @Digits(integer = 12, fraction = 0, message = "{messageDigitsPrice}")
+    @NotNull(message = "{priceNotNull}")
+    @Min(value = 0, message = "{priceMin}")
+    @Digits(integer = 12, fraction = 0, message = "{priceDigits}")
     private BigDecimal price;
-    @NotNull(message = "{messageNotNullFinishDate}")
-    @DateEqualOrGreater(message = "{messageDateEqualOrGreaterFinishDate}")
+    @NotNull(message = "{finishDateNotNull}")
+    @DateEqualOrGreater(message = "{finishDateEqualOrGreater}")
     private Date finishDate;
 
     public long getSupplierId() {

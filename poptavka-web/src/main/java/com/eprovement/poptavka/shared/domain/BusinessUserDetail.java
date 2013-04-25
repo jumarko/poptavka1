@@ -59,24 +59,24 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
     private Long clientId = -1L;
     private Long supplierId = -1L;
     /** BusinessUserData. **/
-    @NotBlank(message = "{userNotBlankCompanyName}")
+    @NotBlank(message = "{companyNameNotBlank}")
     private String companyName;
-    @NotBlank(message = "{userNotBlankIdentifNumber}")
+    @NotBlank(message = "{identifNumberNotBlank}")
     private String identificationNumber;
-    @NotBlank(message = "{userNotBlankFirstName}")
+    @NotBlank(message = "{firstNameNotBlank}")
     private String personFirstName;
-    @NotBlank(message = "{userNotBlankLastName}")
+    @NotBlank(message = "{lastNameNotBlank}")
     private String personLastName;
-    @Pattern(regexp = "[0-9]+", message = "{userPatternPhone}")
-    @NotBlank(message = "{userNotBlankPhone}")
+    @Pattern(regexp = "[0-9]+", message = "{patternString}")
+    @NotBlank(message = "{phoneNotBlank}")
     private String phone;
-    @Size(min = 20, message = "{userSizeDescription}")
-    @NotBlank(message = "{userNotBlankDescription}")
+    @Size(min = 20, message = "{descriptionSize}")
+    @NotBlank(message = "{descriptionNotBlank}")
     private String description;
-    @NotBlank(message = "{userNotBlankTaxNumber}")
+    @NotBlank(message = "{taxNumberNotBlank}")
     private String taxId;
     @Pattern(regexp = "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
-            message = "{userPatternWebsite}")
+            message = "{patternWebsite}")
     private String website;
     /** Class lists. **/
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();
@@ -87,8 +87,8 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
     private String displayName;
     private BusinessType businessType;
     private Verification verification;
-    @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
-    @Max(value = 100, message = "{userMaxRating}", groups = SearchGroup.class)
+    @Min(value = 0, message = "{ratingMin}", groups = SearchGroup.class)
+    @Max(value = 100, message = "{ratingMax}", groups = SearchGroup.class)
     private int overalRating = -1;
 
     /**************************************************************************/

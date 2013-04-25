@@ -24,22 +24,22 @@ public class AddressDetail implements IsSerializable {
         }
     }
     private static final int ZIP_SIZE = 4;
-    @NotEmpty(message = "{addressNotBlankCountry}")
+    @NotEmpty(message = "{countryNotBlank}")
     private String country;
-    @NotEmpty(message = "{addressNotBlankRegion}")
+    @NotEmpty(message = "{regionNotBlank}")
     private String region;
-    @NotEmpty(message = "{addressNotBlankCity}")
+    @NotEmpty(message = "{cityNotBlank}")
     private String city;
     private Long cityId;
-    @NotEmpty(message = "{addressNotBlankDistrict}")
+    @NotEmpty(message = "{districtNotBlank}")
     private String district;
     //
-    @NotEmpty(message = "{addressNotBlankStreet}")
+    @NotEmpty(message = "{streetNotBlank}")
     private String street;
     private String houseNum;
-    @NotEmpty(message = "{addressNotBlankZipCode}")
-    @Pattern(regexp = "[0-9]+", message = "{addressPatternZipCode}")
-    @Size(min = ZIP_SIZE, message = "{addressSizeZipCode}")
+    @NotEmpty(message = "{zipCodeNotBlank}")
+    @Pattern(regexp = "[0-9]+", message = "{patternString}")
+    @Size(min = ZIP_SIZE, message = "{zipCodeSize}")
     private String zipCode;
 
     public AddressDetail() {

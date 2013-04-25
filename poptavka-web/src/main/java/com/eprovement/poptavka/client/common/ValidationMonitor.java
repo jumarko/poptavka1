@@ -359,7 +359,7 @@ public class ValidationMonitor<T> extends Composite
 
     private boolean validateNumberException() {
         valid = false;
-        setValidationStyles(valid, Storage.VMSGS.commonNumberFormat());
+        setValidationStyles(valid, Storage.VMSGS.numberFormat());
         return valid;
     }
 }

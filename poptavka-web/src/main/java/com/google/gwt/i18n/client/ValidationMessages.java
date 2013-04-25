@@ -19,191 +19,165 @@ package com.google.gwt.i18n.client;
  * Custom validation messages. Interface to represent the constants contained in
  * resource bundle:
  * 'com/google/gwt/sample/validation/client/ValidationMessages.properties'
- * TODO(nchalko) move this to the root package so client and server can share
- * the same properties files.
  */
 public interface ValidationMessages extends ConstantsWithLookup {
 
-    @Key("common.number.format")
-    String commonNumberFormat();
+    /*******************************************************************  B  **/
+    @Key("body.notBlank")
+    String bodyNotBlank();
 
-    /**
-     * Translated "Name must be at least {size} characters long.".
-     *
-     * @return translated "Name must be at least {min} characters long."
-     */
-    /**************************************************************************/
-    /** Create Demand Module - error messages.                                */
-    /**************************************************************************/
-    @Key("country.noMatch")
-    String countryNotMatch();
+    @Key("body.size")
+    String bodySize();
 
-    @Key("region.notMatch")
-    String regionNotMatch();
+    /*******************************************************************  C  **/
+    @Key("city.notBlank")
+    String cityNotBlank();
 
     @Key("city.notMatch")
     String cityNotMatch();
 
-    @Key("address.notBlank.country")
-    String addressNotBlankCountry();
+    @Key("companyName.notBlank")
+    String companyNameNotBlank();
 
-    @Key("address.notBlank.region")
-    String addressNotBlankRegion();
+    @Key("country.notBlank")
+    String countryNotBlank();
 
-    @Key("address.notBlank.city")
-    String addressNotBlankCity();
+    @Key("country.notMatch")
+    String countryNotMatch();
 
-    @Key("address.notBlank.district")
-    String addressNotBlankDistrict();
+    /*******************************************************************  D **/
+    @Key("description.notBlank")
+    String descriptionNotBlank();
 
-    @Key("address.notBlank.street")
-    String addressNotBlankStreet();
+    @Key("description.size")
+    String descriptionSize();
 
-    @Key("address.notBlank.zipCode")
-    String addressNotBlankZipCode();
+    @Key("district.notBlank")
+    String districtNotBlank();
 
-    @Key("address.size.zipCode")
-    String addressSizeZipCode();
+    /*******************************************************************  E **/
+    @Key("email.notBlank")
+    String emailNotBlank();
 
-    @Key("address.pattern.zipCode")
-    String addressPatternZipCode();
+    @Key("email.email")
+    String emailEmail();
 
-    /**************************************************************************/
-    /** Create Demand Module - error messages.                                */
-    /**************************************************************************/
-    //Preco musi byt ten key?
-    @Key("demand.notBlank.title")
-    String demandNotBlankTitle();
+    @Key("endDate.notNull")
+    String endDateNotNull();
 
-    @Key("demand.size.title")
-    String demandSizeTitle();
+    @Key("endDate.future")
+    String endDateFuture();
 
-    @Key("demand.notNull.price")
-    String demandNotNullPrice();
+    /*******************************************************************  F **/
+    @Key("firstName.notBlank")
+    String firstNameNotBlank();
 
-    @Key("demand.min.price")
-    String demandMinPrice();
+    @Key("finishDate.notNull")
+    String finishDateNotNull();
 
-    @Key("demand.digits.price")
-    String demandDigitsPrice();
+    @Key("finishDate.dateEqualOrGreater")
+    String finishDateEqualOrGreater();
 
-    @Key("demand.notNull.endDate")
-    String demandNotNullEndDate();
+    /*******************************************************************  I **/
+    @Key("identifNumber.notBlank")
+    String identifNumberNotBlankIdentif();
 
-    @Key("demand.future.endDate")
-    String demandFutureEndDate();
+    /*******************************************************************  L **/
+    @Key("lastName.notBlank")
+    String lastNameNotBlank();
 
-    @Key("demand.notNull.validToDate")
-    String demandNotNullValidToDate();
+    /*******************************************************************  M **/
+    @Key("maxSuppliers.min")
+    String maxSuppliersMin();
 
-    @Key("demand.future.validToDate")
-    String demandFutureValidToDate();
+    @Key("message.notNull")
+    String messageNotNull();
 
-    @Key("demand.notBlank.description")
-    String demandNotBlankDescription();
+    @Key("message.size")
+    String messageSize();
 
-    @Key("demand.size.description")
-    String demandSizeDescription();
+    /*******************************************************************  N **/
+    @Key("number.format")
+    String numberFormat();
 
-    @Key("demand.pattern")
-    String demandPattern();
+    /*******************************************************************  P **/
+    @Key("pattern.string")
+    String patternString();
 
-    /**************************************************************************/
-    /** User Detail - error messages.                                         */
-    /**************************************************************************/
-    @Key("user.notBlank.password")
-    String userNotBlankPassword();
+    @Key("pattern.website")
+    String patternWebsite();
 
-    @Key("user.length.password")
-    String userLengthPassword();
+    @Key("password.notBlank")
+    String passwordNotBlank();
 
-    @Key("user.notBlank.email")
-    String userNotBlankEmail();
+    @Key("password.length")
+    String passwordLength();
 
-    @Key("user.email")
-    String userEmail();
+    @Key("passwordConfirm.notBlank")
+    String passwordConfirmNotBlank();
 
-    /**************************************************************************/
-    /** User Detail - error messages.                                     */
-    /**************************************************************************/
-    @Key("user.notBlank.companyName")
-    String userNotBlankCompanyName();
+    @Key("phone.notBlank")
+    String phoneNotBlank();
 
-    @Key("user.notBlank.identifNumber")
-    String userNotBlankIdentifNumber();
+    @Key("phone.pattern")
+    String phonePattern();
 
-    @Key("user.notBlank.taxNumber")
-    String userNotBlankTaxNumber();
+    @Key("price.notNull")
+    String priceNotNull();
 
-    @Key("user.notBlank.firstName")
-    String userNotBlankFirstName();
+    @Key("price.min")
+    String priceMin();
 
-    @Key("user.notBlank.lastName")
-    String userNotBlankLastName();
+    @Key("price.digits")
+    String priceDigits();
 
-    @Key("user.notBlank.phone")
-    String userNotBlankPhone();
+    /*******************************************************************  R **/
+    @Key("rating.min")
+    String ratingMin();
 
-    @Key("user.pattern.phone")
-    String userPatternPhone();
+    @Key("rating.max")
+    String ratingMax();
 
-    @Key("user.notBlank.description")
-    String userNotBlankDescription();
+    @Key("reEmail.notBlank")
+    String reRmailNotBlank();
 
-    @Key("user.size.description")
-    String userSizeDescription();
+    @Key("reEmail.email")
+    String reEmailEmail();
 
-    @Key("user.pattern.website")
-    String userPatternWebsite();
+    @Key("region.notBlank")
+    String regionNotBlank();
 
-    @Key("user.min.rating")
-    String userMinRating();
+    @Key("region.notMatch")
+    String regionNotMatch();
 
-    @Key("user.max.rating")
-    String userMaxRating();
+    /*******************************************************************  S **/
+    @Key("street.notBlank")
+    String streetNotBlank();
 
-    /**************************************************************************/
-    /** Email Dialog Popup - error messages.                                  */
-    /**************************************************************************/
-    @Key("email.dialog.notBlank.email")
-    String emailDialogNotBlankEmail();
+    /*******************************************************************  T **/
+    @Key("taxNumber.notBlank")
+    String taxNumberNotBlank();
 
-    @Key("email.dialog.email")
-    String emailDialogEmail();
+    @Key("title.notBlank")
+    String titleNotBlank();
 
-    @Key("reEmail.dialog.notBlank.email")
-    String reRmailDialogNotBlankEmail();
+    @Key("title.size")
+    String titleSize();
 
-    @Key("reEmail.dialog.email")
-    String reEmailDialogEmail();
+    /*******************************************************************  V **/
+    @Key("validTo.notNull")
+    String validToNotNull();
 
-    @Key("email.dialog.notNull.message")
-    String emailDialogNotNullMessage();
+    @Key("validTo.future")
+    String validToFuture();
 
-    @Key("email.dialog.size.message")
-    String emailDialogSizeMessage();
+    /*******************************************************************  Z **/
+    @Key("zipCode.notBlank")
+    String zipCodeNotBlank();
 
-    /**************************************************************************/
-    /** Messaging - error messages.                                           */
-    /**************************************************************************/
-    @Key("message.notBlank.body")
-    String messageNotBlankBody();
+    @Key("zipCode.size")
+    String zipCodeSize();
 
-    @Key("message.size.body")
-    String messageSizeBody();
-
-    @Key("message.notNull.price")
-    String messageNotNullPrice();
-
-    @Key("message.min.price")
-    String messageMinPrice();
-
-    @Key("message.digits.price")
-    String messageDigitsPrice();
-
-    @Key("message.notNull.finishDate")
-    String messageNotNullFinishDate();
-
-    @Key("message.dateEqualOrGreater.finishDate")
-    String messageDateEqualOrGreaterFinishDate();
+    @Key("zipCode.pattern")
+    String zipCodePattern();
 }
