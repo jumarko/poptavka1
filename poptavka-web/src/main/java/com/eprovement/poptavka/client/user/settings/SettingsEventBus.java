@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.settings;
 
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
@@ -75,7 +76,7 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus 
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Event(handlers = UserSettingsPresenter.class)
-    void notifyAddressWidgetListeners();
+    void notifyAddressWidgetListeners(AddressSelectorInterface addressWidget);
 
     @Event(handlers = SupplierSettingsPresenter.class)
     void nofityServicesWidgetListeners();

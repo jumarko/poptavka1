@@ -9,7 +9,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.github.gwtbootstrap.client.ui.Column;
-import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiConstructor;
@@ -39,7 +38,6 @@ public class DemandDetailView extends Composite {
     @UiField Label demandName, price, endDate, description, clientRating;
     @UiField Column ratingColumn;
     @UiField Image urgency;
-    @UiField Tooltip urgencyTooltip;
     /** Class attributes. **/
     private FullDemandDetail demandDetail;
     /** Constants. **/
@@ -86,16 +84,16 @@ public class DemandDetailView extends Composite {
         int daysBetween = CalendarUtil.getDaysBetween(now, validTo);
         if (daysBetween < 0) {
             urgency.setResource(Storage.RSCS.images().urgencyHeader());
-            urgencyTooltip.setTitle(Storage.MSGS.urgencyExpiredDesc());
+            urgency.setTitle(Storage.MSGS.urgencyExpiredDesc());
         } else if (daysBetween <= Constants.DAYS_URGENCY_HIGH) {
             urgency.setResource(Storage.RSCS.images().urgencyRed());
-            urgencyTooltip.setTitle(Storage.MSGS.urgencyHighDesc());
+            urgency.setTitle(Storage.MSGS.urgencyHighDesc());
         } else if (daysBetween <= Constants.DAYS_URGENCY_HIGHER) {
             urgency.setResource(Storage.RSCS.images().urgencyOrange());
-            urgencyTooltip .setTitle(Storage.MSGS.urgencyHigherDesc());
+            urgency .setTitle(Storage.MSGS.urgencyHigherDesc());
         } else {
             urgency.setResource(Storage.RSCS.images().urgencyGreen());
-            urgencyTooltip.setTitle(Storage.MSGS.urgencyNormalDesc());
+            urgency.setTitle(Storage.MSGS.urgencyNormalDesc());
         }
     }
 

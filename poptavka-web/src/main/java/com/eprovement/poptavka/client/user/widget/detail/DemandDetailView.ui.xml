@@ -45,9 +45,7 @@
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formUrgency">Urgency: </ui:msg>
                 </g:Label>
-                <b:Tooltip ui:field="urgencyTooltip">
-                    <g:Image ui:field="urgency" />
-                </b:Tooltip>
+                <g:Image ui:field="urgency" />
             </b:Column>
             <b:Column size='12' ui:field="ratingColumn">
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>

@@ -3,8 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
@@ -15,7 +14,8 @@
             <g:HTMLPanel ui:field="toolBar"
                          styleName='{res.layout.toolbarItemsBlock}'>
                 <g:Button ui:field="finnishBtn" visible="false" 
-                          styleName="{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}">
+                          styleName="{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}"
+                          title="{msgs.tooltipFinish}">
                     <i class="icon-ok-sign icon-white"></i>
                     <ui:msg key="supplierAssignedDemandsFinnishBtn">Finnish</ui:msg>
                 </g:Button>

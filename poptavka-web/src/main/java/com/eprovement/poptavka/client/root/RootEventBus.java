@@ -11,6 +11,7 @@
 package com.eprovement.poptavka.client.root;
 
 import com.eprovement.poptavka.client.common.actionBox.ActionBoxPresenter;
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
 import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
 import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormPresenter;
@@ -316,8 +317,9 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void initAddressWidget(SimplePanel embedToWidget);
 
-    @Event(forwardToModules = {SupplierCreationModule.class, SettingsModule.class }, passive = true)
-    void notifyAddressWidgetListeners();
+    @Event(forwardToModules = {SupplierCreationModule.class, DemandCreationModule.class, SettingsModule.class },
+    passive = true)
+    void notifyAddressWidgetListeners(AddressSelectorInterface addressWidget);
 
     /**************************************************************************/
     /* SERVICE SELECTOR WIDGET.                                               */

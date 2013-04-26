@@ -6,6 +6,7 @@
  */
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -70,9 +71,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
     @Event(forwardToParent = true)
-    void initAddressWidget(SimplePanel embedToWidget);
-
-    @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
         List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
 
@@ -97,6 +95,9 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
 
     @Event(handlers = DemandCreationPresenter.class)
     void restoreDefaultFirstTab();
+
+    @Event(handlers = DemandCreationPresenter.class)
+    void notifyAddressWidgetListeners(AddressSelectorPresenter.AddressSelectorInterface addressWidget);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

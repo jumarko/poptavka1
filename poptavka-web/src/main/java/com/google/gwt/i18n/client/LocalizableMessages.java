@@ -45,6 +45,13 @@ public interface LocalizableMessages extends Messages {
     String commonBtnSubmit();
     String commonBtnQuestion();
 
+    /** Common tooltips. **/
+    String tooltipReply();
+    String tooltipOffer();
+    String tooltipAccept();
+    String tooltipFinish();
+    String tooltipClose();
+
     /** Common labels. **/
     String commonCategoriesLabel();
     String commonCategorySelectionRestriction();
@@ -651,6 +658,7 @@ public interface LocalizableMessages extends Messages {
     String clientDemandsBackBtn();
 
     /** ClientOffersView.ui. **/
+    String clientOffersBackBtn();
     String clientOffersAcceptBtn();
 
     /** ClientAssignedDemandsView.ui. **/

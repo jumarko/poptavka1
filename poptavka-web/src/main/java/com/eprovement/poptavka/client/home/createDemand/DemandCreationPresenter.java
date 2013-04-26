@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
@@ -301,6 +302,14 @@ public class DemandCreationPresenter
         }
         demandAdvForm = eventBus.addHandler(FormDemandAdvPresenter.class);
         demandAdvForm.initDemandAdvForm(holderWidget);
+    }
+
+    /**
+     * Perform some additional action after Address selector widget has loaded.
+     * In this case, disabled change monitoring for Address selector widget.
+     */
+    public void onNotifyAddressWidgetListeners(AddressSelectorInterface addressWidget) {
+        addressWidget.setChangeMonitorsEnabled(false);
     }
 
     // Responses

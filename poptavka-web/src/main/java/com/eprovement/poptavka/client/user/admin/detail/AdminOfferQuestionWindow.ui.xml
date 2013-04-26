@@ -5,9 +5,8 @@
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
-    <ui:with type="com.eprovement.poptavka.resources.StyleResource"
-             field="res">
-    </ui:with>
+    <ui:with field="res" type="com.eprovement.poptavka.resources.StyleResource" />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
         
     <b:FluidContainer styleName="{res.detailViews.wrapper}">
@@ -49,7 +48,8 @@
         <!-- Message actions content -->
         <b:FluidRow ui:field="header" styleName="{res.detailViews.messageButtonsContainer}">
             <b:Column size="12">
-                <g:Button styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
+                <g:Button styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn"
+                          title="{msgs.tooltipReply}">
                     <img src="images/messages-reply-icon.png"/>
                     <ui:msg key="commonBtnQuestion">Question</ui:msg>
                 </g:Button>

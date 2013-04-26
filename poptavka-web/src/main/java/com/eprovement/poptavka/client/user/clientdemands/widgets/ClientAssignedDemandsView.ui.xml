@@ -27,7 +27,8 @@
         </g:west>
         <g:north size="65">
             <g:HorizontalPanel ui:field="toolBar" styleName="{res.layout.toolbarItemsBlock}">
-                <g:Button ui:field="closeBtn" visible="false" styleName="{style.button}">
+                <g:Button ui:field="closeBtn" visible="false" styleName="{style.button}"
+                          title="{msgs.tooltipClose}">
                     <ui:msg key="clientAssignedDemandsCloseBtn">Close</ui:msg>
                 </g:Button>
                 <g:SimplePanel ui:field="actionBox" visible="false" />

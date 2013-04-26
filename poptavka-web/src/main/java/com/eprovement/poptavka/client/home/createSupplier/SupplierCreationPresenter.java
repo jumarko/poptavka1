@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.common.address.AddressSelectorView;
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
 import com.eprovement.poptavka.client.common.category.CategoryCell;
 import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
@@ -249,10 +249,7 @@ public class SupplierCreationPresenter
      * Perform some additional action after Address selector widget has loaded.
      * In this case, disabled change monitoring for Address selector widget.
      */
-    public void onNotifyAddressWidgetListeners() {
-        UserRegistrationFormView accountInfo =
-                (UserRegistrationFormView) view.getHolderPanel(FIRST_TAB_USER_REGISTRATION).getWidget();
-        AddressSelectorView addressWidget = (AddressSelectorView) accountInfo.getAddressHolder().getWidget();
+    public void onNotifyAddressWidgetListeners(AddressSelectorInterface addressWidget) {
         addressWidget.setChangeMonitorsEnabled(false);
     }
 }
