@@ -71,11 +71,13 @@
                 </g:HTMLPanel>
             </g:HTMLPanel>
             <g:HTMLPanel ui:field="header" styleName="{res.detailViews.messageButtonsContainer}">
-                <g:Button styleName='{res.detailViews.replyButton}' ui:field="offerReplyBtn" visible="false">
+                <g:Button styleName='{res.detailViews.replyButton}' ui:field="offerReplyBtn" visible="false"
+                          title="{msgs.tooltipOffer}">
                     <img src="images/messages-reply-icon.png"/>
                     <ui:msg key="commonBtnOffer">Offer</ui:msg>
                 </g:Button>
-                <g:Button styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn">
+                <g:Button styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn"
+                          title="{msgs.tooltipReply}">
                     <img src="images/messages-reply-icon.png"/>
                     <ui:msg key="commonBtnQuestion">Question</ui:msg>
                 </g:Button>

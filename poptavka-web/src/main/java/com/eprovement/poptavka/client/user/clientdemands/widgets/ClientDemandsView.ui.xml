@@ -30,7 +30,8 @@
                 </g:HorizontalPanel>                
 
                 <!--Back button-->
-                <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}' visible="false"/>
+                <g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}'
+                          title="{msgs.clientDemandsBackBtn}" visible="false"/>
 
                 <!--ToolBar button section-->
                 <g:HTMLPanel ui:field="choiceButtonsPanel" visible="false">
