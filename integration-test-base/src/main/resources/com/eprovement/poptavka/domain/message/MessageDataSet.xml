@@ -11,7 +11,8 @@
              FIRSTBORN_ID="3"
              SUBJECT="Dnes nepridem - zajtra"
              THREADROOT_ID="1"
-             DEMAND_ID="2" />
+             DEMAND_ID="2"
+             OFFER_ID="[NULL]" />
 
     <!-- Reply to the original (thread root) message -->
     <MESSAGE ID="3" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
@@ -21,7 +22,8 @@
              SENDER_ID="111111111"
              FIRSTBORN_ID="2"
              THREADROOT_ID="1"
-             DEMAND_ID="2" />
+             DEMAND_ID="2"
+             OFFER_ID="[NULL]" />
 
     <!-- Reply to the reply of original (thread root) message -->
     <MESSAGE ID="2"
@@ -32,7 +34,8 @@
              SENDER_ID="111111112"
              NEXTSIBLING_ID="4"
              THREADROOT_ID="1"
-             DEMAND_ID="2" />
+             DEMAND_ID="2"
+             OFFER_ID="[NULL]" />
 
     <!-- Second Reply to the reply to the original (thread root) message -->
     <MESSAGE ID="4"
@@ -42,7 +45,8 @@
              PARENT_ID="3"
              SENDER_ID="111111112"
              THREADROOT_ID="1"
-             DEMAND_ID="2" />
+             DEMAND_ID="2"
+             OFFER_ID="[NULL]" />
 
     <MESSAGEUSERROLE ID="2" MESSAGE_ID="1" USER_ID="111111111" TYPE="TO"/>
     <MESSAGEUSERROLE ID="4" MESSAGE_ID="2" USER_ID="111111111" TYPE="TO"/>
@@ -104,7 +108,7 @@
              FIRSTBORN_ID="[NULL]"
              THREADROOT_ID="200"
              SUBJECT="Dnes nepridem - zajtra"
-             DEMAND_ID="2" />
+             DEMAND_ID="21" />
 
     <MESSAGEUSERROLE ID="202" MESSAGE_ID="200" USER_ID="111111111" TYPE="TO"/>
 
@@ -120,7 +124,7 @@
              FIRSTBORN_ID="301"
              THREADROOT_ID="300"
              SUBJECT="Dnes nepridem - zajtra"
-             DEMAND_ID="2" />
+             DEMAND_ID="22" />
 
     <!-- Reply to the original (thread root) message -->
     <MESSAGE ID="301" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
@@ -130,7 +134,7 @@
              SENDER_ID="111111111"
              FIRSTBORN_ID="[NULL]"
              THREADROOT_ID="300"
-             DEMAND_ID="2"
+             DEMAND_ID="22"
              OFFER_ID="11" />
 
     <MESSAGEUSERROLE ID="302" MESSAGE_ID="300" USER_ID="111111111" TYPE="TO"/>

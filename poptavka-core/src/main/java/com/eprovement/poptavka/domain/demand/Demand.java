@@ -94,7 +94,43 @@ import java.util.List;
     @NamedQuery(name = "getClientDemandsWithOffer",
                 query = "select demand from Demand as demand, Offer as offer"
                         + " where demand.client = :client"
-                        + " and offer.demand = demand")
+                        + " and offer.demand = demand"),
+        @NamedQuery(name = "getClientDemandsWithUnreadSubMsgs",
+                query = "select demand, ("
+                        + "select count(subUserMessage.id) from UserMessage as subUserMessage"
+                        + " left join subUserMessage.message.offer as offer\n"
+                        + "where subUserMessage.message.demand = demand"
+                        + " and subUserMessage.isRead = false"
+                        + " and offer is null"
+                        + " and subUserMessage.user = :user"
+                        + ")\n"
+                        + "from Demand as demand\n"
+                        + "where demand.client.businessUser = :user"
+                        + " and (demand.status = 'ACTIVE' or demand.status = 'OFFERED')"),
+        @NamedQuery(name = "getClientDemandsCount",
+                query = "select count(demand.id)\n"
+                        + "from Demand as demand\n"
+                        + "where demand.client.businessUser = :user"
+                        + " and (demand.status = 'ACTIVE' or demand.status = 'OFFERED'"
+                        + " or demand.status = 'NEW' or demand.status = 'INACTIVE'"
+                        + " or demand.status = 'INVALID')"),
+        @NamedQuery(name = "getClientOfferedDemandsWithUnreadOfferSubMsgs",
+                query = "select demand, ("
+                        + "select count(subUserMessage.id) from UserMessage as subUserMessage"
+                        + " inner join subUserMessage.message.offer as offer\n"
+                        + "where subUserMessage.message.demand = demand"
+                        + " and subUserMessage.isRead = false"
+                        + " and subUserMessage.user = :user"
+                        + ")\n"
+                        + "from Demand as demand\n"
+                        + "where demand.client.businessUser = :user"
+                        + " and demand.status = 'OFFERED'"),
+        @NamedQuery(name = "getClientOfferedDemands",
+                query = "select count(demand.id)\n"
+                        + "from Demand as demand\n"
+                        + "where demand.client.businessUser = :user"
+                        + " and demand.status = 'OFFERED'"),
+
 })
 public class Demand extends DomainObject {
 

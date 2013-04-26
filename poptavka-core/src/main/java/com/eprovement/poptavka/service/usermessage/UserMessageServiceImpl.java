@@ -229,7 +229,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(BusinessUser user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConversationsWithoutOffer(user);
     }
@@ -237,14 +237,14 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user, Search search) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(BusinessUser user, Search search) {
         return Searcher.searchMapByKeys(getSupplierConversationsWithoutOffer(user), search);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
 
         return getDao().getSupplierConversationsWithOffer(user, pendingState);
@@ -253,7 +253,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState,
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState,
             Search search) {
         return Searcher.searchMapByKeys(getSupplierConversationsWithOffer(user, pendingState),
                 search);
@@ -262,7 +262,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public int getSupplierConversationsWithoutOfferCount(User user) {
+    public int getSupplierConversationsWithoutOfferCount(BusinessUser user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return (int) getDao().getSupplierConversationsWithoutOfferCount(user);
     }
@@ -270,7 +270,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public int getSupplierConversationsWithOfferCount(User user) {
+    public int getSupplierConversationsWithOfferCount(BusinessUser user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return (int) getDao().getSupplierConversationsWithOfferCount(user);
     }
@@ -278,7 +278,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
             OfferState offerStateAccepted, OfferState offerStateCompleted) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
         return getDao().getSupplierConversationsWithAcceptedOffer(user, offerStateAccepted,
@@ -288,7 +288,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
             OfferState offerStateAccepted, OfferState offerStateCompleted, Search search) {
         return Searcher.searchMapByKeys(getSupplierConversationsWithAcceptedOffer(user, offerStateAccepted,
                 offerStateCompleted), search);
@@ -297,15 +297,17 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed) {
-        Preconditions.checkNotNull("User specified must not be empty.", user);
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
+            OfferState offerClosed) {
+        Preconditions.checkNotNull("BusinessUser specified must not be empty.", user);
         return getDao().getSupplierConversationsWithClosedDemands(user, offerClosed);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed,
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
+            OfferState offerClosed,
         Search search) {
         return Searcher.searchMapByKeys(getSupplierConversationsWithClosedDemands(user, offerClosed), search);
     }
@@ -314,29 +316,45 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user, Message root) {
-        return getDao().getClientConversationsWithoutOffer(user, root);
+            BusinessUser user, Demand demand) {
+        return getDao().getClientConversationsWithoutOffer(user, demand);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user, Message root, Search search) {
-        return Searcher.searchMapByKeys(getClientConversationsWithoutOffer(user, root), search);
+            BusinessUser user, Demand demand, Search search) {
+        return Searcher.searchMapByKeys(getClientConversationsWithoutOffer(user, demand), search);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public int getClientConversationsWithoutOfferCount(User user) {
-        return (int) getDao().getClientConversationsWithoutOfferCount(user);
+    public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand) {
+        return getDao().getClientConversationsWithOffer(user, demand);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public int getClientConversationsWithOfferCount(User user, Demand demand) {
+    public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, OfferState offerState) {
+        return getDao().getClientConversationsWithOffer(user, demand, offerState);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public int getClientConversationsWithoutOfferCount(BusinessUser user, Demand demand) {
+        return (int) getDao().getClientConversationsWithoutOfferCount(user, demand);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public int getClientConversationsWithOfferCount(BusinessUser user, Demand demand) {
         return (int) getDao().getClientConversationsWithOfferCount(user, demand);
     }
 

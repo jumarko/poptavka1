@@ -46,7 +46,7 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetAllWithNoCriteria() {
         // no restrictions
         final List<Demand> allDemands = this.demandService.getAll(ResultCriteria.EMPTY_CRITERIA);
-        Assert.assertEquals(12, allDemands.size());
+        Assert.assertEquals(14, allDemands.size());
     }
 
 
@@ -102,16 +102,18 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
                 .firstResult(firstResult)
                 .orderByColumns(Arrays.asList("id"))
                 .build());
-        Assert.assertEquals(4, allDemandsMaxResults.size());
+        Assert.assertEquals(6, allDemandsMaxResults.size());
         checkDemandExistence(9L, allDemandsMaxResults);
         checkDemandExistence(10L, allDemandsMaxResults);
         checkDemandExistence(18L, allDemandsMaxResults);
+        checkDemandExistence(21L, allDemandsMaxResults);
+        checkDemandExistence(22L, allDemandsMaxResults);
     }
 
     @Test
     public void testGetAllWithFirstResultBeyondMaximum() {
         // restrict number of demands - no ordering is guaranteed!
-        final int firstResult = 12;
+        final int firstResult = 14;
         final List<Demand> allDemands = this.demandService.getAll(new ResultCriteria.Builder()
                 .firstResult(firstResult)
                 .orderByColumns(Arrays.asList("id"))
@@ -128,7 +130,7 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.localityService.getCount());
         Assert.assertEquals("Category count is incorrect.", 17,
                 this.categoryService.getCount());
-        Assert.assertEquals("Demand count is incorrect.", 12,
+        Assert.assertEquals("Demand count is incorrect.", 14,
                 this.demandService.getCount());
     }
 

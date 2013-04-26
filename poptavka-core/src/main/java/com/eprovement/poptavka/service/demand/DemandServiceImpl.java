@@ -13,14 +13,17 @@ import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
+import com.eprovement.poptavka.util.search.Searcher;
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.genericdao.search.Search;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -303,6 +306,41 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         update(demand);
     }
 
+    @Override
+    public Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser) {
+        return getDao().getClientDemandsWithUnreadSubMsgs(businessUser);
+
+    }
+
+    @Override
+    public Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser,
+            Search search) {
+        return Searcher.searchMapByKeys(getDao().getClientDemandsWithUnreadSubMsgs(businessUser), search);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getClientDemandsCount(BusinessUser businessUser) {
+        return getDao().getClientDemandsCount(businessUser);
+    }
+
+    @Override
+    public Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser) {
+        return getDao().getClientOfferedDemandsWithUnreadOfferSubMsgs(businessUser);
+    }
+
+    @Override
+    public Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser,
+            Search search) {
+        return Searcher.searchMapByKeys(getDao().getClientOfferedDemandsWithUnreadOfferSubMsgs(businessUser), search);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getClientOfferedDemandsCount(BusinessUser businessUser) {
+        return getDao().getClientOfferedDemandsCount(businessUser);
+    }
+
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
@@ -321,6 +359,5 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private boolean isNewClient(Demand demand) {
         return demand.getClient().getId() == null;
     }
-
 
 }

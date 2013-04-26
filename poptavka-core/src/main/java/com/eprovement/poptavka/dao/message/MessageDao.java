@@ -4,11 +4,9 @@ import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Basic interface for dao which is provides methods for messages.
@@ -86,42 +84,6 @@ public interface MessageDao extends GenericDao<Message> {
     List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser);
 
     /**
-     * Gets all the demand messages of the given user along with the number of
-     * ALL the messages that span from the demand message (including the demand
-     * message itself)
-     *
-     * @param user
-     * @return a map keyed by the user's demand messages containing the number
-     * of ALL the messages spanning from the demand message (including the
-     * demand message itself)
-     */
-    Map<Message, Integer> getListOfClientDemandMessagesAll(User user);
-
-    /**
-     * Gets all the demand messages of the given user along with the number of
-     * UNREAD messages that span from the demand message (including the demand
-     * message itself)
-     *
-     * @param user
-     * @return a map keyed by the user's demand messages containing the number
-     * of UNREAD messages spanning from the demand message (including the
-     * demand message itself)
-     */
-    Map<Long, Integer> getListOfClientDemandMessagesUnread(User user);
-
-    /**
-     * Gets all the demand messages with offer of the given user along with the number of
-     * UNREAD messages that span from the demand message (including the demand
-     * message itself)
-     *
-     * @param user
-     * @return a map keyed by the user's demand messages containing the number
-     * of UNREAD messages spanning from the demand message (including the
-     * demand message itself)
-     */
-    Map<Long, Integer> getListOfClientDemandMessagesWithOfferUnreadSub(User user);
-
-    /**
      * Gets all the descendants (not just the children) of every item
      * in the given list of messages
      *
@@ -136,23 +98,4 @@ public interface MessageDao extends GenericDao<Message> {
      * @return
      */
     Message getLastChild(Message parent);
-
-    /**
-     * Gets all latest userMessages from all suppliers who sent some quesstion response to demand.
-     *
-     * @param user
-     * @param threadRoot
-     * @return
-     */
-    Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemand(User user, Message threadRoot);
-
-    /**
-     * Gets all latest userMessages from all suppliers who sent some offer response to demand.
-     *
-     * @param user
-     * @param threadRoot
-     * @return
-     */
-    Map<UserMessage, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
-            OfferState pendingState);
 }

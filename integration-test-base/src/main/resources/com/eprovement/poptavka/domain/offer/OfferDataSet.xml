@@ -2,7 +2,7 @@
 
 <dataset>
     <!--########################################## offers ###########################################-->
-    <OFFER ID="11" DEMAND_ID="2" SUPPLIER_ID="1111111111" PRICE="256" STATE_ID="2" />
+    <OFFER ID="11" DEMAND_ID="22" SUPPLIER_ID="1111111111" PRICE="256" STATE_ID="2" />
     <OFFER ID="12" DEMAND_ID="2" SUPPLIER_ID="1111111114" PRICE="512" STATE_ID="2" />
     <OFFER ID="13" DEMAND_ID="11" SUPPLIER_ID="1111111111" PRICE="512" STATE_ID="5" />
 

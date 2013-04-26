@@ -50,61 +50,6 @@ import org.hibernate.annotations.CascadeType;
                         + " and message.demand is not null"
                         + " and message.sender = :sender\n"),
 
-        @NamedQuery(name = "getListOfClientDemandMessagesSub",
-                query = "select message.id, count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join"
-                        + " subUserMessage.message as subMessage"
-                        + " right join subMessage.threadRoot as message\n"
-                        + "where subUserMessage.user = :user"
-                        + " and message.demand is not null"
-                        + " and message.sender = :sender\n"
-                        + "group by message.id"),
-        @NamedQuery(name = "getLatestSupplierUserMessagesWithoutOfferForDemand",
-                query = "select max(subUserMessage.id), count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join"
-                        + " subUserMessage.message as subMessage"
-                        + " right join subMessage.threadRoot as message\n"
-                        + "where subUserMessage.user = :user"
-                        + " and message.threadRoot = :threadRoot"
-                        + " and message.sender = :user"
-                        + " and subMessage.offer is null\n"
-                        + "group by subMessage.sender.id"),
-        @NamedQuery(name = "getLatestSupplierUserMessagesWithOfferForDemand",
-                query = "select latestUserMessage, count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join\n"
-                        + " subUserMessage.message.threadRoot as rootMessage,"
-                        + "UserMessage as latestUserMessage\n"
-                        + "where latestUserMessage.message.threadRoot = rootMessage"
-                        + " and latestUserMessage.user = :user"
-                        + " and subUserMessage.user = :user"
-                        + " and rootMessage = :threadRoot"
-                        + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.nextSibling is null"
-                        + " and latestUserMessage.message.offer is not null"
-                        + " and latestUserMessage.message.offer.state = :pendingState\n"
-                        + "group by latestUserMessage.id"),
-        @NamedQuery(name = "getListOfClientDemandMessagesUnreadSub",
-                query = "select message.demand.id, count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join"
-                        + " subUserMessage.message as subMessage"
-                        + " right join subMessage.threadRoot as message\n"
-                        + "where subUserMessage.isRead = false"
-                        + " and subUserMessage.user = :user"
-                        + " and message.demand is not null"
-                        + " and subMessage.offer is null"
-                        + " and message.sender = :sender\n"
-                        + "group by message.id"),
-        @NamedQuery(name = "getListOfClientDemandMessagesWithOfferUnreadSub",
-                query = "select message.demand.id, count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join"
-                        + " subUserMessage.message as subMessage"
-                        + " right join subMessage.threadRoot as message\n"
-                        + "where subUserMessage.isRead = false"
-                        + " and subUserMessage.user = :user"
-                        + " and message.demand is not null"
-                        + " and subMessage.offer is not null"
-                        + " and message.sender = :sender\n"
-                        + "group by message.id"),
         @NamedQuery(name = "getLastChild",
                 query = "select message\n"
                         + "from Message as message\n"

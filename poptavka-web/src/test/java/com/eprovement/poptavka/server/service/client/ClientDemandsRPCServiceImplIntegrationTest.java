@@ -137,7 +137,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         final List<ClientDemandDetail> allClientDemands = clientDemandsRPCService.getClientDemands(111111112L, null);
         assertNotNull(allClientDemands);
         // check that there is only one new demand - see DemandsDataSet.xml
-        assertThat(allClientDemands.size(), is(2));
+        assertThat(allClientDemands.size(), is(4));
     }
 
     @Test
@@ -149,26 +149,27 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
                 Long.valueOf(3L), Long.valueOf(count));
         List<ClientOfferedDemandOffersDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
                 111111112L, 2L, 1L, searchDefinition);
-        assertThat(offers.size(), is(2));
+        assertThat(offers.size(), is(3));
         Assert.assertEquals("getClientOfferedDemandOffers size [size=" + offers.size() + "] was not correct",
-                2, offers.size());
+                3, offers.size());
 
-        checkClientOfferedDemandOffersDetailExists(offers, 11, 5);
+        checkClientOfferedDemandOffersDetailExists(offers, 11, 3);
+        checkClientOfferedDemandOffersDetailExists(offers, 11, 7);
         checkClientOfferedDemandOffersDetailExists(offers, 12, 9);
         searchDefinition.setFilter(new SearchModuleDataHolder());
         searchDefinition.getFilter().setSearchText("Fourth");
         offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, 1L, searchDefinition);
-        assertThat(offers.size(), is(2));
+        assertThat(offers.size(), is(3));
     }
 
     @Test
     public void testAcceptOffer() {
         long demandId = 2;
-        long offerToBeAccepted = 11;
+        long offerToBeAccepted = 12;
         Demand demand = generalService.find(Demand.class, demandId);
         Assert.assertEquals("Number of offers [offers.size="
                 + demand.getOffers() + "] for given demand [demandId="
-                + demandId + "] is not as expected", 2, demand.getOffers().size());
+                + demandId + "] is not as expected", 1, demand.getOffers().size());
         for (Offer offer : demand.getOffers()) {
             Assert.assertThat("Unexpected offer state for offer.id=" + offer.getId(),
                     OfferStateType.PENDING.getValue(), is(offer.getState().getCode()));

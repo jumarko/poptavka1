@@ -82,7 +82,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user);
+    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(BusinessUser user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -93,7 +93,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -101,7 +101,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has been made
      */
-    long getSupplierConversationsWithoutOfferCount(User user);
+    long getSupplierConversationsWithoutOfferCount(BusinessUser user);
 
     /** Retrieves the count of supplier's conversations where an offer has not
      * been made
@@ -109,7 +109,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has not been made
      */
-    long getSupplierConversationsWithOfferCount(User user);
+    long getSupplierConversationsWithOfferCount(BusinessUser user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code> id's in each of the given
@@ -121,7 +121,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
             OfferState offerStateAccepted, OfferState offerStateCompleted);
 
     /**
@@ -133,35 +133,67 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed);
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user, OfferState offerClosed);
 
    /**
-    * Gets a list of all client's conversation related to their demands where
+    * Gets a list of all client's conversations related to the given demand where
     * no offer has been made
     *
     * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
     * @return A map keyed by the latest <code>UserMessage</code> and mapping
     * to the <code>ClientConversation</code> object containing the number of
-    * messages in the conversation and the <code>User</code> representing
+    * messages in the conversation and the <code>BusinessUser</code> representing
     * the supplier with whom the conversation is being made
     */
     Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user, Message root);
+            BusinessUser user, Demand demand);
 
     /** Retrieves the count of client's conversations where an offer has not
      * been made
      *
      * @param user the client whose conversations to get
+     * @param demand the demand for which to get the conversations
      * @return number of client's conversations where an offer has not been made
      */
-    long getClientConversationsWithoutOfferCount(User user);
+    long getClientConversationsWithoutOfferCount(BusinessUser user, Demand demand);
+
+   /**
+    * Gets a list of all client's conversations related to the given demand where
+    * an offer has been made
+    *
+    * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>BusinessUser</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand);
+
+   /**
+    * Gets a list of all client's conversations related to the given demand where
+    * an offer has been made
+    *
+    * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
+    * @param offerState the state of the offer linked to the latest conversation
+    * messages
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>BusinessUser</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, OfferState offerState);
 
      /** Retrieves the count of client's conversations where an offer has
      * been made for given demand.
      *
      * @param user the client whose conversations to get
-     * @param demand the demand for which conversations to get
+     * @param demand the demand for which to get the conversations
      * @return number of client's conversations where an offer has been made
      */
-    long getClientConversationsWithOfferCount(User user, Demand demand);
+    long getClientConversationsWithOfferCount(BusinessUser user, Demand demand);
 }

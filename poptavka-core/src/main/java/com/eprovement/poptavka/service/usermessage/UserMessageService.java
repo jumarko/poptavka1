@@ -192,7 +192,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user);
+    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(BusinessUser user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -204,7 +204,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user, Search search);
+    Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(BusinessUser user, Search search);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -215,7 +215,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState);
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -227,7 +227,8 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState, Search search);
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user,
+            OfferState pendingState, Search search);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -235,7 +236,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has been made
      */
-    int getSupplierConversationsWithoutOfferCount(User user);
+    int getSupplierConversationsWithoutOfferCount(BusinessUser user);
 
     /** Retrieves the count of supplier's conversations where an offer has not
      * been made
@@ -243,7 +244,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has not been made
      */
-    int getSupplierConversationsWithOfferCount(User user);
+    int getSupplierConversationsWithOfferCount(BusinessUser user);
 
 
     /**
@@ -256,7 +257,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
             OfferState offerStateAccepted, OfferState offerStateCompleted);
 
     /**
@@ -270,7 +271,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
             OfferState offerStateAccepted, OfferState offerStateCompleted, Search search);
 
     /**
@@ -282,7 +283,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed);
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user, OfferState offerClosed);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -294,52 +295,85 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed,
-            Search search);
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
+            OfferState offerClosed, Search search);
 
    /**
-    * Gets a list of all client's conversation related to their demands where
+    * Gets a list of all client's conversations related to the given demand where
     * no offer has been made
     *
     * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
     * @return A map keyed by the latest <code>UserMessage</code> and mapping
     * to the <code>ClientConversation</code> object containing the number of
-    * messages in the conversation and the <code>User</code> representing
+    * messages in the conversation and the <code>BusinessUser</code> representing
     * the supplier with whom the conversation is being made
     */
     Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user, Message root);
+            BusinessUser user, Demand demand);
 
    /**
-    * Gets a list of all client's conversation related to their demands where
+    * Gets a list of all client's conversations related to the given demand where
     * no offer has been made
     *
     * @param user The client whose demands to get
-     * @param search defines how to filter, sort and trim the result
+    * @param demand the demand for which to get the conversations
+    * @param search to search in the result
     * @return A map keyed by the latest <code>UserMessage</code> and mapping
     * to the <code>ClientConversation</code> object containing the number of
-    * messages in the conversation and the <code>User</code> representing
+    * messages in the conversation and the <code>BusinessUser</code> representing
     * the supplier with whom the conversation is being made
     */
     Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user, Message root, Search search);
+            BusinessUser user, Demand demand, Search search);
 
     /** Retrieves the count of client's conversations where an offer has not
      * been made
      *
      * @param user the client whose conversations to get
+     * @param demand the demand for which to get the conversations
      * @return number of client's conversations where an offer has not been made
      */
-    int getClientConversationsWithoutOfferCount(User user);
+    int getClientConversationsWithoutOfferCount(BusinessUser user, Demand demand);
 
-     /** Retrieves the count of client's conversations where an offer has
+   /**
+    * Gets a list of all client's conversations related to the given demand where
+    * an offer has been made
+    *
+    * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>BusinessUser</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand);
+
+   /**
+    * Gets a list of all client's conversations related to the given demand where
+    * an offer has been made
+    *
+    * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
+    * @param offerState the state of the offer linked to the latest conversation
+    * messages
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>BusinessUser</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, OfferState offerState);
+
+    /** Retrieves the count of client's conversations where an offer has
      * been made for given demand
      *
      * @param user the client whose conversations to get
-     * @param demand the demand which conversations to get
+     * @param demand the demand for which to get the conversations
      * @return number of client's conversations where an offer has been made
      */
-    int getClientConversationsWithOfferCount(User user, Demand demand);
+    int getClientConversationsWithOfferCount(BusinessUser user, Demand demand);
 
     /**
      * Creates a <code>UserMessage</code> for a given <code>Message</code>

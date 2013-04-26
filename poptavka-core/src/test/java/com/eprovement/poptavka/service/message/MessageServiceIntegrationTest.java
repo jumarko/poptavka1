@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GeneralService;
@@ -185,74 +186,6 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 potentialDemandConversationUserMessages.get(2).getMessage().getId(), is(1L));
         assertThat("Unxpected UserMessage by order specified in Search definition",
                 potentialDemandConversationUserMessages.get(3).getMessage().getId(), is(3L));
-    }
-
-    @Test
-    public void testGetLatestSupplierUserMessagesWithoutOfferForDemand() {
-        final Message threadRoot = this.messageService.getById(1L);
-        final User clientUser = this.generalService.find(User.class, 111111112L);
-        final Map<Long, Integer> latestSupplierUserMessages =
-                this.messageService.getLatestSupplierUserMessagesWithoutOfferForDemand(clientUser, threadRoot);
-        // TODO RELEASE ivlcek, vojto - this will be removed once vojto finishes his new select for this scenario
-//        Assert.assertEquals(1, latestSupplierUserMessages.size());
-//        for (Long key : latestSupplierUserMessages.keySet()) {
-//            Assert.assertEquals("UserMessage [id=" + key + "] expected to be in map ["
-//                    + latestSupplierUserMessages + "] is not there.", Long.valueOf(5), key);
-//            Assert.assertEquals("Unread UserMessage count [count=" + latestSupplierUserMessages.get(key) + "] "
-//                    + "expected to be in map [" + latestSupplierUserMessages + "] is not there.",
-//                    Integer.valueOf(1), latestSupplierUserMessages.get(key));
-//        }
-    }
-
-    @Test
-    public void testGetListOfClientDemandMessagesAll() {
-        final Message threadRoot1 = this.messageService.getById(1L);
-        final Message threadRoot200 = this.messageService.getById(200L);
-        final Message threadRoot300 = this.messageService.getById(300L);
-        final User client = this.generalService.find(User.class, 111111112L);
-        final Map<Message, Integer> listOfClientDemandMessages =
-                this.messageService.getListOfClientDemandMessagesAll(client);
-        assertThat("Inacurrate number of threadRoot messages selected", listOfClientDemandMessages.size(), is(6));
-        checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
-        assertThat("Inacurrate number of subMessages selected", listOfClientDemandMessages.get(threadRoot1), is(4));
-        checkUserMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
-        assertThat("Inacurrate number of subMessages selected", listOfClientDemandMessages.get(threadRoot200), is(1));
-        checkUserMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
-        assertThat("Inacurrate number of subMessages selected", listOfClientDemandMessages.get(threadRoot300), is(2));
-    }
-
-    @Test
-    public void testGetListOfClientDemandMessagesUnread() {
-        final Message threadRoot1 = this.messageService.getById(1L);
-        final Message threadRoot200 = this.messageService.getById(200L);
-        final Message threadRoot300 = this.messageService.getById(300L);
-        final Demand demand = this.generalService.find(Demand.class, 2L);
-        final User client = this.generalService.find(User.class, 111111112L);
-        final Map<Long, Integer> listOfClientDemandMessages =
-                this.messageService.getListOfClientDemandMessagesUnread(client);
-        Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                1, listOfClientDemandMessages.size());
-
-        checkUserMessageIdExists(demand.getId(), listOfClientDemandMessages.keySet());
-        Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1, (Object) listOfClientDemandMessages.get(demand.getId()));
-    }
-
-    @Test
-    public void testGetListOfClientDemandMessagesWithOfferUnread() {
-        final Message threadRoot1 = this.messageService.getById(1L);
-        final Message threadRoot200 = this.messageService.getById(200L);
-        final Message threadRoot300 = this.messageService.getById(300L);
-        final User client = this.generalService.find(User.class, 111111112L);
-        final Demand demand = (Demand) this.generalService.find(Demand.class, 2L);
-        final Map<Long, Integer> listOfClientDemandMessagesWithOffer =
-                this.messageService.getListOfClientDemandMessagesWithOfferUnreadSub(client);
-        Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                1, listOfClientDemandMessagesWithOffer.size());
-
-        checkUserMessageIdExists(demand.getId(), listOfClientDemandMessagesWithOffer.keySet());
-        Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1, (Object) listOfClientDemandMessagesWithOffer.get(demand.getId()));
     }
 
     @Test
@@ -465,7 +398,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSupplierConversationsWithClosedDemands() {
-        User userWithClosedDemands = new User();
+        BusinessUser userWithClosedDemands = new BusinessUser();
         userWithClosedDemands.setId(111111112L);
         OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
 
@@ -503,23 +436,6 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                     @Override
                     public boolean evaluate(Object object) {
                         return messageId.equals(((Message) object).getId());
-                    }
-                }));
-    }
-
-    /**
-     * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
-     *
-     * @param messageId
-     * @param allUserMessages
-     */
-    private void checkUserMessageIdExists(final Long messageId, Collection<Long> allUserMessages) {
-        Assert.assertTrue(
-                "Message [id=" + messageId + "] expected to be in collection [" + allUserMessages + "] is not there.",
-                CollectionUtils.exists(allUserMessages, new Predicate() {
-                    @Override
-                    public boolean evaluate(Object object) {
-                        return messageId.equals(((Long) object));
                     }
                 }));
     }

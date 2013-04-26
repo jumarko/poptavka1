@@ -50,9 +50,10 @@ import static org.junit.Assert.assertThat;
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/offer/OfferDataSet.xml" },
+        "classpath:com/eprovement/poptavka/domain/offer/OfferDataSet.xml" ,
+        "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml" },
         dtd = "classpath:test.dtd",
-        disableForeignKeyChecks = false)
+        disableForeignKeyChecks = true)
 public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
@@ -374,7 +375,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllDemands() {
-        Assert.assertEquals(12, this.demandService.getAll().size());
+        Assert.assertEquals(14, this.demandService.getAll().size());
     }
 
     @Test
@@ -386,7 +387,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                         .orderByColumns(new HashMap<String, OrderType>() { {  put("createdDate", OrderType.DESC);  } })
                         .build();
 
-        Assert.assertEquals(12, this.demandService.getAll(resultCriteria).size());
+        Assert.assertEquals(14, this.demandService.getAll(resultCriteria).size());
     }
 
 
@@ -495,7 +496,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetClientDemandsWithOffer() {
         Client client = generalService.find(Client.class, 111111112L);
-        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 2, client.getDemands().size());
+        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 5, client.getDemands().size());
         Client client2 = generalService.find(Client.class, 111111113L);
         Assert.assertEquals("Number of client demands [" + client2.toString() + "]", 1, client2.getDemands().size());
 
@@ -518,6 +519,46 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testActivateDemandsForAlreadyActivatedDemand() throws Exception {
         final Demand activatedDemand = demandService.getById(2L);
         this.demandService.activateDemand(activatedDemand);
+    }
+
+    @Test
+    public void testGetClientDemandsWithUnreadSubMsgs() {
+        final Demand demand2 = this.demandService.getById(2L);
+        final Demand demand10 = this.demandService.getById(10L);
+        final Demand demand21 = this.demandService.getById(21L);
+        final Demand demand22 = this.demandService.getById(22L);
+        final BusinessUser client = this.generalService.find(BusinessUser.class, 111111112L);
+        final Map<Demand, Integer> clientDemands =
+                this.demandService.getClientDemandsWithUnreadSubMsgs(client);
+        Assert.assertEquals("Inacurrate number of threadRoot messages selected",
+                4, clientDemands.size());
+
+        checkDemandExists(demand2, clientDemands.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 1, (Object) clientDemands.get(demand2));
+        checkDemandExists(demand10, clientDemands.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 0, (Object) clientDemands.get(demand10));
+        checkDemandExists(demand21, clientDemands.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 1, (Object) clientDemands.get(demand21));
+        checkDemandExists(demand22, clientDemands.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 0, (Object) clientDemands.get(demand22));
+    }
+
+    @Test
+    public void testGetClientDemandsWithUnreadOfferSubMsgs() {
+        final Demand demand22 = this.demandService.getById(22L);
+        final BusinessUser client = this.generalService.find(BusinessUser.class, 111111112L);
+        final Map<Demand, Integer> clientDemandsWithOffer =
+                this.demandService.getClientOfferedDemandsWithUnreadOfferSubMsgs(client);
+        Assert.assertEquals("Inacurrate number of demands selected",
+                1, clientDemandsWithOffer.size());
+
+        checkDemandExists(demand22, clientDemandsWithOffer.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 1, (Object) clientDemandsWithOffer.get(demand22));
     }
 
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
@@ -663,4 +704,16 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                 demandsCountForAllCategories.get(this.categoryService.getCategory(categoryId)));
     }
 
+    /**
+     * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
+     *
+     * @param messageId
+     * @param allUserMessages
+     */
+    private void checkDemandExists(final Demand demand, Collection<Demand> allDemands) {
+        Assert.assertTrue(
+                "Demand [id=" + demand.getId() + "] expected to be in collection [" + allDemands + "] is not there.",
+                allDemands.contains(demand)
+        );
+    }
 }
