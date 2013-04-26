@@ -101,7 +101,7 @@ public class MySuggestDisplay extends SuggestBox.DefaultSuggestionDisplay {
 
     public void showLoading() {
         loadingPopup.setWidget(loader);
-        loadingPopup.addStyleName(StyleResource.INSTANCE.modal().smallLoaderModal());        
+        loadingPopup.addStyleName(StyleResource.INSTANCE.modal().smallLoaderModal());
         loadingPopup.show();
     }
 

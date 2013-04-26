@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-@def selectionBorderWidth   2px ;
+@def selectionBorderWidth 2px;
 
 .dataGridWidget {
 
@@ -102,15 +102,20 @@
 }
 
 .dataGridSortedHeaderAscending {
-    gwt-image: 'dataGridSortedHeaderAscending';
+    gwt-image: 'dataGridSortedHeaderAscending';    
 }
 
 .dataGridSortedHeaderDescending {
-    gwt-image: 'dataGridSortedHeaderDescending';
+    gwt-image: 'dataGridSortedHeaderDescending';    
+}
+.dataGridLastColumnHeader.dataGridSortedHeaderAscending,
+.dataGridLastColumnHeader.dataGridSortedHeaderDescending {
+    background: url(images/dataGridLastSortableHeaderActive.gif) top right;
 }
 
 .dataGridEvenRow {
     background: #faf7eb;
+    white-space:nowrap;
 }
 
 .dataGridEvenRowCell {
@@ -122,6 +127,7 @@
 
 .dataGridOddRow {
     background: #faf7eb;
+    white-space:nowrap;
 }
 
 .dataGridOddRowCell {
