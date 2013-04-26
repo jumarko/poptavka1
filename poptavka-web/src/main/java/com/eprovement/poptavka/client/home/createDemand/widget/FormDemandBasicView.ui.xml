@@ -68,7 +68,7 @@
                                 </b:Column>
                                 <b:Column size="8">
                                     <vm:ValidationMonitor ui:field="priceMonitor">
-                                        <cm:BigDecimalBox />
+                                        <cm:BigDecimalBox addStyleNames='append-dollar'/>
                                     </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>
@@ -80,7 +80,7 @@
                                 </b:Column>
                                 <b:Column size="8">
                                     <vm:ValidationMonitor ui:field="endDateMonitor">
-                                        <p1:DateBox />
+                                        <p1:DateBox addStyleNames='append-date'/>
                                     </vm:ValidationMonitor>
                                 </b:Column>
                             </b:FluidRow>

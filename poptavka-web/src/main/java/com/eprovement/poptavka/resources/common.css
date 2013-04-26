@@ -621,6 +621,18 @@ a.toolbar-button-grey {
     height: 40px;
 }
 
+.validation-container input.append-dollar {
+    background: url(images/advanced-search-dollar-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.validation-container input.append-date {
+    background: url(images/advanced-search-date-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.validation-container input.append-star {
+    background: url(images/advanced-search-star-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
 /* how it works */
 .how-it-works-container {
     width: 1000px;
