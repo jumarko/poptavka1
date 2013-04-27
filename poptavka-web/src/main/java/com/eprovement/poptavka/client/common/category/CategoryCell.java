@@ -17,8 +17,8 @@ public class CategoryCell extends AbstractCell<CategoryDetail> {
     public static final int DISPLAY_COUNT_OF_SUPPLIERS = 1;
     public static final int DISPLAY_COUNT_DISABLED = -1;
     // Display string Constants
-    public static final String LEFT_BRACE = "<span style=\"float: right;\">";
-    public static final String RIGHT_BRACE = "</span>";
+    public static final String LEFT_BRACE = "<span style=\"padding-left: 10px;\">(";
+    public static final String RIGHT_BRACE = ")</span>";
     public static final String SPACE = " ";
     //
     private int displayCountOfWhat = -1;

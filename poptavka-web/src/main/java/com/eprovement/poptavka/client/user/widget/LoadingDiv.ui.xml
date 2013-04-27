@@ -2,26 +2,15 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
 
     <ui:style>
-        .border {
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            bottom: 0px;
-            left: 0px;
-            height: 50px;
-        }
-
         .loader {
             position: absolute;
-            width: 100%;
+            width: 99%;
             height: 100%;
-            background: url(images/loader-transparent.gif) center center no-repeat;
+            background: url(images/app-loader.gif) center center no-repeat #666666;
         }
     </ui:style>
     <div ui:field="loading" class="{style.loader}">
-        <div class="{style.border}"
-            style="background-color: #000; opacity: 0.3; filter: alpha(opacity=30);">
-        </div>
-        <div class="{style.border} {style.loader}"></div>
+        <div style="background-color: #666; opacity: 0.3; filter: alpha(opacity=30);">
+        </div>        
     </div>
 </ui:UiBinder>
