@@ -21,6 +21,8 @@ public final class GATracker {
     //
     // Methods that you use for customizing all aspects of Google Analytics reporting.
     //
+    // TODO LATER ivlcek - implement some features provided by this class in our GWT code to better monitor
+    // required actions, events, etc.
     //********************************************************************************************
     /**
      * Returns the Google Analytics ID for this tracker object. If you are tracking pages on your website in multiple
