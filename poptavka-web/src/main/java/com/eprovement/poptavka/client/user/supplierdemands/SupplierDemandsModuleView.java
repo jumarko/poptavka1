@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.root.footer.FooterView;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -36,6 +37,8 @@ public class SupplierDemandsModuleView extends Composite
     public void createView() {
         footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
+
+        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     /**************************************************************************/

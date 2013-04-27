@@ -9,6 +9,13 @@
 
 }
 
+.empty-view {
+    background: url(images/logo-motto.png) no-repeat;
+    height: 200px;
+    margin: 25% auto;
+    width: 200px;
+}
+
 /*  DEMAND DETAIL SECTION  */
 .demandDetailSectionHeader {
     border-left: 1px solid #E2DFD2;
