@@ -108,9 +108,9 @@
 .dataGridSortedHeaderDescending {
     gwt-image: 'dataGridSortedHeaderDescending';    
 }
-.dataGridLastColumnHeader.dataGridSortedHeaderAscending,
-.dataGridLastColumnHeader.dataGridSortedHeaderDescending {
-    background: url(images/dataGridLastSortableHeaderActive.gif) top right;
+.dataGridSortedHeaderAscending,
+.dataGridSortedHeaderDescending {
+    background: url(images/dataGridHeader.gif) no-repeat top right;
 }
 
 .dataGridEvenRow {
