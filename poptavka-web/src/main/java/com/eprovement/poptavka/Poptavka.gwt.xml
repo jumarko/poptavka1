@@ -39,6 +39,8 @@
 	<inherits name='com.eprovement.poptavka.DomainEnums' />
 	<inherits name='com.eprovement.poptavka.Exception' />
 
+        <!-- Google analytics js built into build so we can call immediately on load -->
+        <script src="../ga.js"/>
 	<entry-point class="com.eprovement.poptavka.client.Poptavka" />
 
 	<source path="client" />
