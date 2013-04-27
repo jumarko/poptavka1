@@ -34,6 +34,26 @@
                         the idea of filling the gap on U.S. marketplace in the
                         area of close and mutual connection between companies and customers.
                     </g:Label>
+                    <g:HTMLPanel>
+                        <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+                        <script type="IN/MemberProfile" data-id="http://cz.linkedin.com/pub/ivan-vlcek/23/835/666" data-format="inline" data-related="false"></script>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel>
+                        <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+                        <script type="IN/MemberProfile" data-id="http://cz.linkedin.com/pub/juraj-martinka/26/168/699" data-format="inline" data-related="false"></script>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel>
+                        <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+                        <script type="IN/MemberProfile" data-id="http://cz.linkedin.com/pub/vojtech-hubr/27/ab5/680" data-format="inline" data-related="false"></script>
+                    </g:HTMLPanel>
+                    <g:HTMLPanel>
+                        <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+                        <script type="IN/MemberProfile" data-id="http://sk.linkedin.com/pub/martin-slavkovsky/39/22b/355" data-format="inline" data-related="false"></script>
+                    </g:HTMLPanel>                                                                       
+                    <g:HTMLPanel>                        
+                        <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+                        <script type="IN/MemberProfile" data-id="http://www.linkedin.com/pub/jaroslav-krivu%C5%A1/52/479/a8a" data-format="inline" data-related="false"></script> 
+                    </g:HTMLPanel>
                 </g:HTMLPanel>
             </g:ScrollPanel>
         </g:center>
