@@ -82,7 +82,7 @@
                         </b:FluidRow>
                     </b:FluidContainer>
                 </g:center>
-                <g:south size="36">
+                <g:south size="24">
                     <g:Widget ui:field="footer" styleName='{res.layout.footerDatagridContainer}' />
                 </g:south>
             </g:DockLayoutPanel>

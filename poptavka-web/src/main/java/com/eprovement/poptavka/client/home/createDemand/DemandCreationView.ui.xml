@@ -244,7 +244,7 @@
                 </g:tab>
             </g:TabLayoutPanel>
         </g:center>
-        <g:south size="30">
+        <g:south size="24">
             <g:Widget ui:field="footer"/>
         </g:south>
     </g:DockLayoutPanel>
