@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.common.GATracker;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
@@ -10,7 +9,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
@@ -33,10 +31,6 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         eventBus.setUpSearchBar(null);
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
         view.getCategorySelectionModel().clear();
-        Window.alert("GATracker account:"
-                + GATracker.getAccount() + ", name:"
-                + GATracker.getName() + ", acount:"
-                + GATracker.getAccount());
     }
 
     @Override
