@@ -289,12 +289,13 @@ a.toolbar-button-grey {
 
 /* menuBar styles */
 .toolbar-menubar.action-button {
-    width: 93px;
+    width: 118px;
 }
 
 .toolbar-menubar {
     background: #ffffff;
     border: 1px solid #C2C8D2;
+    border-bottom: none;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 0 3px #DDDDDD;
     line-height: 20px;
@@ -310,15 +311,16 @@ a.toolbar-button-grey {
     border-top: none;
 }
 
-.toolbar-menubar td {
-    width: 100%;
-    border-top: 1px solid #DADADA;
+.toolbar-menubar td {    
+    border-bottom: 1px solid #DADADA;
+    border-top: 1px solid #FFFFFF;
     padding: 5px 10px;
     cursor: pointer;
+    width: 100%;
 }
 
 .toolbar-menubar td:hover {
-    color: #bd0000;    
+    color: #199204;
 }
 
 .universal-pager {
@@ -750,14 +752,15 @@ a.toolbar-button-grey {
     padding: 0 0 0 12px;
 }
 
-/* MyListBox */
+/* MyListBox - used for custom select-box */
 .myListBox {    
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #C2C8D2;
+    background: #F8F4E4;
+    border: 1px solid #D2C9A9;
+    border-bottom: none;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 0 3px #DDDDDD;
     line-height: 20px;
-    margin: 3px 0 0 -9px;
+    margin: 3px 0 0 0;
     z-index: 1060;
     min-width: 0;
 }
@@ -767,12 +770,14 @@ a.toolbar-button-grey {
 }
 
 .myListBox .suggestPopupMiddleCenter td {
-    border-top: 1px solid #DADADA;
+    border-bottom: 1px solid #D2C9A9;
+    border-top: 1px solid #FFFFFF;
     cursor: pointer;
     padding: 5px 10px;
     width: 100%;
+    color: #555555;
 }   
 
 .myListBox .suggestPopupMiddleCenter td:hover {
-    color: #bd0000;
+    color: #199204;
 }

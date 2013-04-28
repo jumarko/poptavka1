@@ -544,7 +544,7 @@ body>div {
 .popup-dropdown-container table {
     background: #ffffff;
     padding: 10px;
-    margin: 3px 0 0 -9px;
+    margin: 0;
     line-height: 20px;
     border: 1px solid #C2C8D2;
     border-radius: 4px;
