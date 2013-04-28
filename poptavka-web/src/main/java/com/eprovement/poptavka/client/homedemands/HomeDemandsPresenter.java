@@ -597,7 +597,8 @@ public class HomeDemandsPresenter
                 filterHolder.getCategories().add(selected);
                 //Retrieve data
                 view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
-                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(filterHolder));
+                view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
+                        0, view.getPager().getPageSize(), filterHolder, view.getDataGrid().getSort().getSortOrder()));
             }
         }
 

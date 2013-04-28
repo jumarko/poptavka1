@@ -36,7 +36,7 @@
                 <!--ToolBar button section-->
                 <g:HorizontalPanel ui:field="offerToolBar" visible="false">
                     <g:Button ui:field="acceptBtn" styleName='{res.common.toolbarButtonGreen} {res.layout.toolbarItem}'
-                              title="tooltipAccept">
+                              title="{msgs.tooltipAccept}">
                         <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
                     </g:Button>
                     <g:SimplePanel ui:field="actionBox"/>

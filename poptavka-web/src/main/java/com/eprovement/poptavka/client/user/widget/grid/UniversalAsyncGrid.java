@@ -479,6 +479,15 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     }
 
     /**
+     * Gets sort order.
+     *
+     * @return
+     */
+    public SortDataHolder getSort() {
+        return sort;
+    }
+
+    /**
      * Gets start index of pagination.
      *
      * @return start index
