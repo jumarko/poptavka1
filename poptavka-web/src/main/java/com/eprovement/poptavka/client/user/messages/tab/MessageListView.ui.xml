@@ -44,11 +44,7 @@
                     </b:Column>
                     <b:Column size="5">                        
                         <g:SimplePanel ui:field="wrapperPanel">
-                            <g:HTMLPanel>
-                                <div>
-                                    <strong>Message Detail panel</strong>
-                                </div>
-                            </g:HTMLPanel>
+                            <g:HTMLPanel styleName='{res.detailViews.emptyView}' />
                         </g:SimplePanel>
                         <d:MessageDetailView ui:field="messageDetailView" visible="false" />                        
                     </b:Column>                    

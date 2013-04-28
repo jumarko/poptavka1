@@ -83,18 +83,6 @@
     margin: 0;
 }
 
-.advancedSearchTabPanel .input-append .append-dollar {
-    background: url(images/advanced-search-dollar-icon.png) no-repeat scroll right 7px #F8F4E4
-}
-
-.advancedSearchTabPanel .input-append .append-date {
-    background: url(images/advanced-search-date-icon.png) no-repeat scroll right 7px #F8F4E4
-}
-
-.advancedSearchTabPanel .input-append .append-star {
-    background: url(images/advanced-search-star-icon.png) no-repeat scroll right 7px #F8F4E4
-}
-
 .advancedSearchTabPanel .clear-button {
     margin: 5px 40px 0 0;
 }

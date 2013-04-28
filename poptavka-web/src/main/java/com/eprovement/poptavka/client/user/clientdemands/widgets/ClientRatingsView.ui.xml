@@ -41,16 +41,7 @@
                     </b:Column>
                     <b:Column size="5">
                         <g:SimplePanel ui:field="detailPanel">
-                            <g:HTMLPanel>
-                                <div>
-                                    <strong>Defail detail panel</strong>
-                                    <br />
-                                    <br />
-                                    <div>
-                                        Default content....can contain some advertisements.
-                                    </div>
-                                </div>
-                            </g:HTMLPanel>
+                            <g:HTMLPanel styleName='{res.detailViews.emptyView}' />
                         </g:SimplePanel>
                         <d:RatingDetailView ui:field="ratingDetail" visible="false" />
                     </b:Column>       

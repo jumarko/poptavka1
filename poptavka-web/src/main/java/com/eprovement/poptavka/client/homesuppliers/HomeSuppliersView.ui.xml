@@ -63,7 +63,7 @@
                             </b:Column>
                             <b:Column size="5">
                                 <g:HTMLPanel styleName='{res.layout.detailInfo}'>
-                                    <g:Label ui:field="reklama">Reklama</g:Label>
+                                    <g:Label ui:field="reklama" styleName='{res.detailViews.emptyView}'></g:Label>
                                 </g:HTMLPanel>
                                 <g:DockLayoutPanel ui:field="detailPanel" unit="PX" styleName='{res.layout.fullSize}' visible="false">
                                     <g:north size="53">
@@ -81,7 +81,7 @@
                         </b:FluidRow>
                     </b:FluidContainer>
                 </g:center>
-                <g:south size="36">
+                <g:south size="24">
                     <g:Widget ui:field="footer" styleName='{res.layout.footerDatagridContainer}'/>
                 </g:south>
             </g:DockLayoutPanel>

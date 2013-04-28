@@ -15,6 +15,9 @@ public interface DetailViews extends CssResource {
     @ClassName("common-detail-container")
     String commonDetailContainer();
 
+    @ClassName("empty-view")
+    String emptyView();
+
     /* DEMANDS DETAIL SECTION */
     @ClassName("detail-block")
     String detailBlock();

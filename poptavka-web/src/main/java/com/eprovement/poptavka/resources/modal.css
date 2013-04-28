@@ -135,6 +135,7 @@
     margin: -250px 0 0 -120px;
     width: 200px;
     background: #000000;
+    min-width: 0;
 }
 
 .loader-modal .loader-logo {
@@ -171,6 +172,16 @@
     color: #909090;
     padding: 10px 0 0 0;
     text-align: center;
+}
+
+.small-loader-modal {
+    padding: 0;
+    margin: 0;
+    background: #000000;
+}
+
+.small-loader-modal .popupContent {
+    background: #000000;
 }
 
 /* Advanced search modal styles */ 

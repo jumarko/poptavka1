@@ -36,7 +36,7 @@ public class LocalitySelectorView extends ReverseCompositeView<LocalitySelectorP
     /**************************************************************************/
     /* ATTRIBUTES                                                              */
     /**************************************************************************/
-    /** UiBinder attirbutes. **/
+    /** UiBinder attributes. **/
     @UiField HTML loader;
     @UiField Label selectedCountLabel;
     @UiField SimplePanel cellBrowserHolder;

@@ -7,8 +7,9 @@
     <ui:style>
         .footer-block {
         display: block;
-        padding: 8px;
+        padding: 4px 8px;
         color: #443b19;
+        font-size: 12px;
         }
 
         .footerButton {
@@ -16,7 +17,8 @@
         border: none;
         float: right;
         color: #827a5e;
-        padding: 8px;
+        padding: 2px 8px;
+        font-size: 12px;
         }
 
         .footerButton:hover {
@@ -30,7 +32,8 @@
         border: none;
         float: right;
         color: #827a5e;
-        padding: 8px 0;
+        padding: 2px 0;
+        font-size: 12px;
         }
     </ui:style>
 

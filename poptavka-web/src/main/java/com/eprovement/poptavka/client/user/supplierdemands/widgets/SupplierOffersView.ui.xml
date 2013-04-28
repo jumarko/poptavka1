@@ -26,16 +26,7 @@
                     </b:Column>
                     <b:Column size="5">
                         <g:SimplePanel ui:field="detailPanel">
-                            <g:HTMLPanel styleName='{res.layout.detailInfo}'>
-                                <div>
-                                    <strong>Defail detail panel</strong>
-                                    <br />
-                                    <br />
-                                    <div>
-                                        Default content....can contain some advertisements.
-                                    </div>
-                                </div>
-                            </g:HTMLPanel>
+                            <g:HTMLPanel styleName='{res.detailViews.emptyView}' />
                         </g:SimplePanel>
                     </b:Column>
                 </b:FluidRow>

@@ -8,20 +8,6 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <ui:style>
-        .button {
-        background: url(images/new-offer-green.png) no-repeat;
-        padding: 0 0 1px 23px;
-        border: none;
-        color: #FFFFFF;
-        font-weight: bold;
-        height: 31px;
-        width: 119px;
-        float: left;
-        }
-
-    </ui:style>
-
     <g:DockLayoutPanel styleName='{res.layout.layoutUser}'>
         <g:west size="20">
             <g:HTMLPanel></g:HTMLPanel>
@@ -41,16 +27,7 @@
                     </b:Column>
                     <b:Column size="5">
                         <g:SimplePanel ui:field="detailPanel">
-                            <g:HTMLPanel>
-                                <div>
-                                    <strong>Defail detail panel</strong>
-                                    <br />
-                                    <br />
-                                    <div>
-                                        Default content....can contain some advertisements.
-                                    </div>
-                                </div>
-                            </g:HTMLPanel>
+                            <g:HTMLPanel styleName='{res.detailViews.emptyView}' />
                         </g:SimplePanel>
                         <d:RatingDetailView ui:field="ratingDetail" visible="false" />
                     </b:Column>
