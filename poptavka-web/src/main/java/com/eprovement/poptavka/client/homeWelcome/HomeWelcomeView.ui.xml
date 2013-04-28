@@ -41,8 +41,8 @@
         position: relative;
         }
 
-        .banner3 {
-        background: url(images/homepage/banner3.png) no-repeat;
+        .banner3 {        
+        background: #e1dcc8;
         display: block;
         float: left;
         height: 252px;
@@ -163,15 +163,15 @@
                             </ui:msg>
                         </g:Label>
                         <g:Button ui:field="suppliersBtn"
-                          addStyleNames="{style.banner-link} {style.banner-link1-position}">
+                                  addStyleNames="{style.banner-link} {style.banner-link1-position}">
                             <ui:msg key="allProfessionals">All Professionals</ui:msg>
                         </g:Button>
                         <g:Button ui:field="howItWorksSupplierBtn"
-                          addStyleNames="{style.banner-link} {style.banner-link2-position}">
+                                  addStyleNames="{style.banner-link} {style.banner-link2-position}">
                             <ui:msg key="howItWorks">How it works?</ui:msg>
                         </g:Button>
                         <g:Button ui:field="registerSupplierBtn"
-                          addStyleNames="{style.banner-button}">
+                                  addStyleNames="{style.banner-button}">
                             <ui:msg key="signUpAsPro">Sign up as Professional</ui:msg>
                         </g:Button>
                     </g:HTMLPanel>
@@ -189,19 +189,55 @@
                             </ui:msg>
                         </g:Label>
                         <g:Button ui:field="demandsBtn"
-                          addStyleNames="{style.banner-link} {style.banner-link1-position}">
+                                  addStyleNames="{style.banner-link} {style.banner-link1-position}">
                             <ui:msg key="allProjects">All Projects</ui:msg>
                         </g:Button>
                         <g:Button ui:field="howItWorksDemandBtn"
-                          addStyleNames="{style.banner-link} {style.banner-link2-position}">
+                                  addStyleNames="{style.banner-link} {style.banner-link2-position}">
                             <ui:msg key="howItWorks">How it works?</ui:msg>
                         </g:Button>
                         <g:Button ui:field="registerDemandBtn"
-                          addStyleNames="{style.banner-button}">
+                                  addStyleNames="{style.banner-button}">
                             <ui:msg key="placeProjects">Place Project</ui:msg>
                         </g:Button>
                     </g:HTMLPanel>
-                    <g:HTMLPanel styleName="{style.banner3}"></g:HTMLPanel>
+                    <g:HTMLPanel  styleName="{style.banner3}">
+                        <div id="wrapper" class="wrapper">
+                            <div id="my-cute-slider" class="cute-slider" data-width="980" data-height="252">
+                                <ul data-type="slides">
+                                    <li data-delay="7" data-trans3d="tr2,tr20,tr57" data-trans2d="tr1,tr14,tr26">
+                                        <img src="images/homepage/1.jpg" data-thumb="images/homepage/thumbs/1.jpg"/>
+                                        <ul data-type="captions">                                            
+                                        </ul>
+                                    </li>
+                                    <li data-delay="7" data-trans3d="tr4,tr21,tr62" data-trans2d="tr5,tr23,tr30">
+                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/2.jpg" data-thumb="images/homepage/thumbs/2.jpg"/>
+                                        <ul data-type="captions">                                            
+                                        </ul>
+                                    </li>
+                                    <li data-delay="7" data-trans3d="tr17,tr46,tr64" data-trans2d="tr7,tr32,tr40">
+                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/3.jpg" data-thumb="images/homepage/thumbs/3.jpg"/>
+                                        <ul data-type="captions">                                            
+                                        </ul>
+                                    </li>
+                                    <li data-delay="7" data-trans3d="tr8,tr19" data-trans2d="tr15,tr3,tr38">
+                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/4.jpg" data-thumb="images/homepage/thumbs/4.jpg"/>
+                                        <ul data-type="captions">                                            
+                                        </ul>	
+                                    </li>                                    
+                                </ul>
+                                <ul data-type="controls">
+                                    <li data-type="link"> </li>
+                                    <li data-type="slideinfo"> </li>
+                                    <li data-type="next"> </li>
+                                    <li data-type="previous"> </li>
+                                    <li data-type="slidecontrol"> </li>
+                                    <li data-type="bartimer"> </li>				
+                                </ul>
+                            </div>
+                        </div>
+                                             
+                    </g:HTMLPanel>
                     <g:FlowPanel ui:field="categorySection" styleName="{style.category-list}" >
                         <c:CellList ui:field="categoryList" />
                     </g:FlowPanel>
