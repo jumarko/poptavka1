@@ -7,15 +7,20 @@
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     
     <ui:style>
-        .urgency-container {
-        }        
-        
-        .urgency-container span img {
+        .urgency-container img {
         margin: 0 0 0 30px;
         }
         
-        .urgency-container input[type="radio"], input[type="checkbox"] {
+        .urgency-container input[type="radio"] {
         margin: 13px 0 0 40px;
+        }
+        
+        .label {
+        color: #237E00;
+        font-size: 14px;
+        line-height: 40px;
+        text-align: center;
+        width: 100%;    
         }
     </ui:style>
 
@@ -29,25 +34,25 @@
                         </g:Label>
                     </b:Column>
                     <b:Column size="2">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             Normal
                         </g:Label>
                         <g:Image resource='{res.images.urgencyGreen}' title='{msgs.urgencyNormalDesc}' />
                     </b:Column>
                     <b:Column size="2">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             Higher
                         </g:Label>
                         <g:Image resource='{res.images.urgencyOrange}' title='{msgs.urgencyHigherDesc}'/>
                     </b:Column>
                     <b:Column size="2">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             High
                         </g:Label>
                         <g:Image resource='{res.images.urgencyRed}' title='{msgs.urgencyHighDesc}'/>
                     </b:Column>
                     <b:Column size="2" ui:field="labelColumn4">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             Expired
                         </g:Label>
                         <g:Image resource='{res.images.urgencyHeader}' title='{msgs.urgencyExpiredDesc}'/>
