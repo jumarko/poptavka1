@@ -173,11 +173,11 @@
                     <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
-                                <ui:msg key="formVatNumner">Vat Number</ui:msg>*
+                                <ui:msg key="formTaxNumber">Tax Number</ui:msg>*
                             </g:Label>
                         </b:Column>
                         <b:Column size="8">
-                            <vm:ValidationMonitor ui:field="identificationNumber">
+                            <vm:ValidationMonitor ui:field="taxId">
                                 <g:TextBox />
                             </vm:ValidationMonitor>
                         </b:Column>
@@ -185,11 +185,11 @@
                     <b:FluidRow>
                         <b:Column size="4">
                             <g:Label>
-                                <ui:msg key="formTaxNumber">Tax Number</ui:msg>*
+                                <ui:msg key="formVatNumner">Vat Number</ui:msg>
                             </g:Label>
                         </b:Column>
                         <b:Column size="8">
-                            <vm:ValidationMonitor ui:field="taxId">
+                            <vm:ValidationMonitor ui:field="identificationNumber">
                                 <g:TextBox />
                             </vm:ValidationMonitor>
                         </b:Column>

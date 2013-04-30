@@ -40,11 +40,11 @@ public class EmailDialogDetail implements IsSerializable {
     // TODO RELEASE ivlcek: test it and resolve,
     // chceme rozlisovat, v ktorom okne?
     // Pri moznej zmene alebo preklade bude treba menit na viacerych miestach
-    @NotBlank(message = "{emailNotBlank}")
-    @Email(message = "{emailEmail}")
+    @NotBlank(message = "{emailDialogEmailNotBlank}")
+    @Email(message = "{emailDialogEmail}")
     private String emailFrom;
-    @NotBlank(message = "{emailDialogNotNullMessage}")
-    @Size(max = 1000, message = "{emailDialogSizeMessage}")
+    @NotBlank(message = "{emailDialogMessageNotBlank}")
+    @Size(max = 1000, message = "{emailDialogMessageSize}")
     private String message;
 
     public EmailDialogDetail() {
