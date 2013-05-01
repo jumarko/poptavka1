@@ -68,6 +68,9 @@ public interface CommonResource extends CssResource {
     @ClassName("button-grey")
     String buttonGrey();
 
+    @ClassName("button-long-grey")
+    String buttonLongGrey();
+
     @ClassName("button-green")
     String buttonGreen();
 

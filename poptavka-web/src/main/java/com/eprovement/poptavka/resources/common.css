@@ -181,6 +181,31 @@
 
 .button-grey:hover {
     color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.button-long-grey {
+    background: url(images/button-long-grey.png) repeat;
+    display: block;
+    float: right;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin: 18px 15px 0 0;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff; 
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: none;
+    padding: 0 15px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+.button-long-grey:hover {
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -206,6 +231,7 @@ button.button-green {
 
 .button-green:hover {
     color: #ffffff;
+    background-color: transparent !important;
     text-decoration: none;
 }
 
