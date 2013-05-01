@@ -59,20 +59,43 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
     private Long supplierId = -1L;
     /** BusinessUserData. **/
     @NotBlank(message = "{companyNameNotBlank}")
+    @Size(max = 20, message = "{comapanyNameSize}")
     private String companyName;
-    @NotBlank(message = "{identifNumberNotBlank}")
+    @Size(max = 20, message = "{identifNumberSize}")
     private String identificationNumber;
     @NotBlank(message = "{firstNameNotBlank}")
+    @Pattern(regexp = "\\D+", message = "{patternNonNumber}")
     private String personFirstName;
     @NotBlank(message = "{lastNameNotBlank}")
+    @Pattern(regexp = "\\D+", message = "{patternNonNumber}")
     private String personLastName;
-    @Pattern(regexp = "[0-9]+", message = "{patternString}")
+    /**
+     * The following regular expression for validating US and Canada phone number formats.
+     * Link: http://sanjaal.com/java/tag/united-states-phone-number-validation-regex-java/
+     * The regular expression used can handle the following rules:
+     * <ul>
+     *      <li>The starting character may be ‘+’ but is optional,</li>
+     *      <li>If the country code is used, it can be either 0 or 1 and is optional,</li>
+     *      <li>Various codes (country, area) might be separated with ‘-’ or ‘.’ but is optional,</li>
+     *      <li>Area code should not start with 0 but may be optionally enclosed in round brackets.</li>
+     * </ul>
+     */
+    @Pattern(regexp = "^[+]?[01]?[- .]?(\\\\([2-9]\\\\d{2}\\\\)|[2-9]\\\\d{2})[- .]?\\\\d{3}[- .]?\\\\d{4}$",
+            message = "{patternPhone}")
     @NotBlank(message = "{phoneNotBlank}")
     private String phone;
-    @Size(min = 20, message = "{descriptionSize}")
     @NotBlank(message = "{descriptionNotBlank}")
+    @Size(min = 20, message = "{descriptionSize}")
     private String description;
     @NotBlank(message = "{taxNumberNotBlank}")
+    /**
+     * Individual Taxpayer Identification Number (or ITIN) it's a nine-digit number that begins with
+     * the number 9 and has a range of 70 to 99 (excluding 89 and 93) in the fourth and fifth digit,
+     * example 9XX-70-XXXX or 9XX-99-XXXX
+     * Link: http://en.wikipedia.org/wiki/Individual_Taxpayer_Identification_Number
+     */
+    @Pattern(regexp = "^(9\\d{2})([\\ \\-]?)(7\\d+|8[0-8]|9([0-2]|[4-9]))([\\ \\-]?)(\\d{4})$",
+            message = "{patternItin}")
     private String taxId;
     @Pattern(regexp = "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
             message = "{patternWebsite}")

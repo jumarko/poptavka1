@@ -72,7 +72,7 @@ public class UserRegistrationFormView extends Composite
         //set validation monitors as array for easier access.
         validationMonitorsPersonalOnly = Arrays.asList(
                 phone, email, firstName, lastName, password, passwordConfirm, description);
-        validationMonitorsCompanyOnly = Arrays.asList(companyName, identificationNumber, taxId,
+        validationMonitorsCompanyOnly = Arrays.asList(companyName, taxId,
                 phone, email, firstName, lastName, password, passwordConfirm, description);
 
         setCompanyPanelVisibility(false);

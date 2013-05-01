@@ -39,6 +39,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("companyName.notBlank")
     String companyNameNotBlank();
 
+    @Key("companyName.size")
+    String companyNameSize();
+
     @Key("country.notBlank")
     String countryNotBlank();
 
@@ -56,11 +59,17 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String districtNotBlank();
 
     /*******************************************************************  E **/
-    @Key("email.notBlank")
-    String emailNotBlank();
+    @Key("emailDialog.email.notBlank")
+    String emailDialogEmailNotBlank();
 
-    @Key("email.email")
-    String emailEmail();
+    @Key("emailDialog.email")
+    String emailDialogEmail();
+
+    @Key("emailDialog.message.notBlank")
+    String emailDialogMessageNotBlank();
+
+    @Key("emailDialog.message.size")
+    String emailDialogMessageSize();
 
     @Key("endDate.notNull")
     String endDateNotNull();
@@ -79,8 +88,8 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String finishDateEqualOrGreater();
 
     /*******************************************************************  I **/
-    @Key("identifNumber.notBlank")
-    String identifNumberNotBlankIdentif();
+    @Key("identifNumber.size")
+    String identifNumberSize();
 
     /*******************************************************************  L **/
     @Key("lastName.notBlank")
@@ -101,11 +110,20 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String numberFormat();
 
     /*******************************************************************  P **/
-    @Key("pattern.string")
-    String patternString();
+    @Key("pattern.itin")
+    String patternItin();
+
+    @Key("pattern.nonnumber")
+    String patternNonNumber();
+
+    @Key("pattern.nonstring")
+    String patternNonString();
 
     @Key("pattern.website")
     String patternWebsite();
+
+    @Key("pattern.phone")
+    String patternPhone();
 
     @Key("password.notBlank")
     String passwordNotBlank();
@@ -118,9 +136,6 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("phone.notBlank")
     String phoneNotBlank();
-
-    @Key("phone.pattern")
-    String phonePattern();
 
     @Key("price.notNull")
     String priceNotNull();

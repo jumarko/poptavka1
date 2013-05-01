@@ -38,7 +38,7 @@ public class AddressDetail implements IsSerializable {
     private String street;
     private String houseNum;
     @NotEmpty(message = "{zipCodeNotBlank}")
-    @Pattern(regexp = "[0-9]+", message = "{patternString}")
+    @Pattern(regexp = "\\d+", message = "{patternNonString}")
     @Size(min = ZIP_SIZE, message = "{zipCodeSize}")
     private String zipCode;
 
