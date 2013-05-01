@@ -100,6 +100,12 @@
     width: 108px;
 }
 
+.detail-block-label.edit {
+    color: #237E00;
+    line-height: 40px;    
+    padding: 0;
+}
+
 .detail-date-label {
     background: url(images/detail-date-label.png) no-repeat 1px 1px;
     padding: 0 0 0 24px;

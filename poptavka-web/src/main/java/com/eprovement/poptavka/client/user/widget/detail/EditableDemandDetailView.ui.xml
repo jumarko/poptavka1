@@ -9,7 +9,7 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent}'>
+    <b:FluidContainer addStyleNames='{res.detailViews.demandDetailContent} {res.common.validationContainer}'>
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
                 <b:Heading size='5' styleName='{res.detailViews.detailHeader}'>
@@ -18,34 +18,52 @@
             </b:Column>
 
             <b:Column size='12'>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                    <ui:msg key="formDemandTitle">Demand title</ui:msg>
-                </g:Label>
-                <cm:ChangeMonitor ui:field='titleMonitor'>
-                    <g:TextBox />
-                </cm:ChangeMonitor>
+                <b:FluidRow>
+                    <b:Column size='4'>
+                        <g:Label styleName='{res.detailViews.detailBlockLabel} edit'>
+                            <ui:msg key="formDemandTitle">Demand title</ui:msg>
+                        </g:Label>                        
+                    </b:Column>
+                    <b:Column size='8'>
+                        <cm:ChangeMonitor ui:field='titleMonitor'>
+                            <g:TextBox />
+                        </cm:ChangeMonitor>                                                
+                    </b:Column>                    
+                </b:FluidRow>                
             </b:Column>
 
             <b:Column size='12'>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                    <ui:msg key="formPrice">Price:</ui:msg>
-                </g:Label>
-                <cm:ChangeMonitor ui:field='priceMonitor'>
-                    <cm:BigDecimalBox />
-                </cm:ChangeMonitor>
-                <g:Label>$</g:Label>
+                <b:FluidRow>
+                    <b:Column size='4'>
+                        <g:Label styleName='{res.detailViews.detailBlockLabel} edit'>
+                            <ui:msg key="formPrice">Price:</ui:msg>
+                        </g:Label>
+                    </b:Column>                    
+                    <b:Column size='8'>
+                        <cm:ChangeMonitor ui:field='priceMonitor'>
+                            <cm:BigDecimalBox addStyleNames='append-dollar' />
+                        </cm:ChangeMonitor>
+                    </b:Column>                    
+                </b:FluidRow>                
             </b:Column>
                     
             <b:Column size='12'>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                    <ui:msg key="formEndDate">End date:</ui:msg>
-                </g:Label>
-                <cm:ChangeMonitor ui:field='endDateMonitor'>
-                    <d:DateBox />
-                </cm:ChangeMonitor>
+                <b:FluidRow>
+                    <b:Column size='4'>
+                        <g:Label styleName='{res.detailViews.detailBlockLabel} edit'>
+                            <ui:msg key="formEndDate">End date:</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size='8'>
+                        <cm:ChangeMonitor ui:field='endDateMonitor'>
+                            <d:DateBox addStyleNames='append-date' />
+                        </cm:ChangeMonitor>
+                    </b:Column>
+                </b:FluidRow>
             </b:Column>
+            
             <b:Column size='12'>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
+                <g:Label styleName='{res.detailViews.detailBlockLabel} edit'>
                     <ui:msg key="formUrgency">Urgency: </ui:msg>
                 </g:Label>
                 <cm:UrgencySelectorView ui:field="urgencySelector" advancedView="true"/>
@@ -66,7 +84,7 @@
             </b:Column>
                         
             <b:Column size='12'>
-                <b:Button ui:field="editCatBtn" type="PRIMARY">
+                <b:Button ui:field="editCatBtn" styleName='{res.common.toolbarButtonGrey}'>
                     <ui:msg key="commonBtnEdit">Edit</ui:msg>
                 </b:Button>
             </b:Column>
@@ -86,8 +104,8 @@
             </b:Column>
                         
             <b:Column size='12'>
-                <b:Button ui:field="editLocBtn" type="PRIMARY">
-                    <ui:msg key="commonBtnEdit">Edit    </ui:msg>
+                <b:Button ui:field="editLocBtn" styleName='{res.common.toolbarButtonGrey}'>
+                    <ui:msg key="commonBtnEdit">Edit</ui:msg>
                 </b:Button>
             </b:Column>
         </b:FluidRow>
@@ -95,60 +113,64 @@
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
                 <b:Heading size='5'
-                                       styleName='{res.detailViews.detailHeader}'>
+                           styleName='{res.detailViews.detailHeader}'>
                     <ui:msg key="formDetailInfo">Detail info: </ui:msg>
                 </b:Heading>
             </b:Column>
 
-            <b:Column size='12'>
+            <b:Column size='12' addStyleNames='hide'>
                 <g:Label styleName='{res.detailViews.detailBlockLabel}'>
                     <ui:msg key="formMaxSuppliers">Maximal number of suppliers:</ui:msg>
                 </g:Label>
             </b:Column>
                         
-            <b:Column size='12'>
+            <b:Column size='12' addStyleNames='hide'>
                 <cm:ChangeMonitor ui:field='maxOffersMonitor'>
                     <cm:MyIntegerBox />
                 </cm:ChangeMonitor>
             </b:Column>
-
+            
             <b:Column size='12'>
-                <g:Label styleName='{res.detailViews.detailBlockLabel}'>
-                    <ui:msg key="formMinSupplierRating">Minimal supplier rating: </ui:msg>
-                </g:Label>
-            </b:Column>
-                        
-            <b:Column size='12'>
-                <cm:ChangeMonitor ui:field='minRatingMonitor'>
-                    <cm:MyIntegerBox />
-                </cm:ChangeMonitor>
-                <g:Label>%</g:Label>
+                <b:FluidRow>
+                    <b:Column size='4'>
+                        <g:Label styleName='{res.detailViews.detailBlockLabel} edit'>
+                            <ui:msg key="formMinSupplierRating">Minimal supplier rating: </ui:msg>
+                        </g:Label>                        
+                    </b:Column>
+                    <b:Column size='8'>
+                        <cm:ChangeMonitor ui:field='minRatingMonitor'>
+                            <cm:MyIntegerBox addStyleNames='gwt-TextBox append-percent'/>
+                        </cm:ChangeMonitor>                
+                    </b:Column>
+                </b:FluidRow>
             </b:Column>
         </b:FluidRow>
 
         <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
             <b:Column size='12'>
                 <b:Heading size='5'
-                                       styleName='{res.detailViews.detailHeader}'>
+                           styleName='{res.detailViews.detailHeader}'>
                     <ui:msg key="formDescription">Description: </ui:msg>
                 </b:Heading>
             </b:Column>
                         
             <b:Column size='12'>
                 <cm:ChangeMonitor ui:field='descriptionMonitor'>
-                    <g:TextArea />
+                    <g:TextArea width="87%" />
                 </cm:ChangeMonitor>
             </b:Column>
-        </b:FluidRow>
-
-        <b:FluidRow ui:field="editButtonsPanel" addStyleNames='{res.detailViews.detailBlock}'>
+            
             <b:Column size='12'>
-                <b:Button ui:field="submitButton" type="PRIMARY" icon="SAVE">
-                    <ui:msg key="commonBtnSubmit">Submit</ui:msg>
-                </b:Button>
-                <b:Button ui:field="cancelButton" type="PRIMARY" icon="REMOVE">
-                    <ui:msg key="commonBtnCancel">Cancel</ui:msg>
-                </b:Button>
+                <b:FluidRow ui:field="editButtonsPanel" addStyleNames='{res.detailViews.detailBlock}'>            
+                    <b:Column size='12'>
+                        <b:Button ui:field="submitButton" styleName='{res.common.toolbarButtonGreen}'>
+                            <ui:msg key="commonBtnSubmit">Submit</ui:msg>
+                        </b:Button>
+                        <b:Button ui:field="cancelButton" styleName='{res.common.toolbarButtonGrey}'>
+                            <ui:msg key="commonBtnCancel">Cancel</ui:msg>
+                        </b:Button>
+                    </b:Column>
+                </b:FluidRow>
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>                    

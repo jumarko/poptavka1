@@ -447,24 +447,24 @@ a.toolbar-button-grey {
 }
 
 .changeMonitorStyle .control-group .gwt-TextBox {
-    width: 350px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-TextArea {
     height: 200px;
-    width: 500px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-BigDecimalTextBox {
-    width: 322px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-IntegerTextBox {
-    width: 322px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-DateBox {
-    width: 350px;
+    width: 80%;
 }
 
 .changed {
@@ -518,6 +518,7 @@ a.toolbar-button-grey {
 .validation-container select {
     background: none repeat scroll 0 0 #F8F4E4;
     border: 1px solid #D2C9A9;
+    height: 40px;
 }
 
 .validation-container input[type="text"]:focus,
@@ -633,6 +634,10 @@ a.toolbar-button-grey {
 
 .validation-container input.append-star {
     background: url(images/advanced-search-star-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.validation-container input.append-percent {
+    background: url(images/advanced-search-percent-icon.png) no-repeat scroll right 7px #F8F4E4
 }
 
 /* how it works */

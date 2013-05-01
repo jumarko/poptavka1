@@ -7,20 +7,27 @@
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     
     <ui:style>
+        .urgency-container {
+        padding: 0px;
+        }
+        
         .urgency-container img {
-        margin: 0 0 0 30px;
+        margin: 0 auto;
+        display: block;
         }
         
         .urgency-container input[type="radio"] {
-        margin: 13px 0 0 40px;
-        }
+        margin: 6px auto;
+        display: block;
+        }       
         
         .label {
         color: #237E00;
         font-size: 14px;
         line-height: 40px;
         text-align: center;
-        width: 100%;    
+        width: 100%;
+        padding: 0 !important;
         }
     </ui:style>
 
@@ -28,7 +35,7 @@
         <b:FluidRow>
             <b:Column size="12">
                 <b:FluidRow>
-                    <b:Column size="4">
+                    <b:Column size="3">
                         <g:Label>
                             Urgency level:
                         </g:Label>
@@ -59,7 +66,7 @@
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow>
-                    <b:Column size="4">
+                    <b:Column size="3">
                         <g:Label>
                             Selected:
                         </g:Label>
