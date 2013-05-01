@@ -79,7 +79,7 @@
                 <g:Button styleName='{res.detailViews.replyButton}' ui:field="questionReplyBtn"
                           title="{msgs.tooltipReply}">
                     <img src="images/messages-reply-icon.png"/>
-                    <ui:msg key="commonBtnQuestion">Question</ui:msg>
+                    <ui:msg key="commonBtnReply">Reply</ui:msg>
                 </g:Button>
             </g:HTMLPanel>
         </g:HTMLPanel>
