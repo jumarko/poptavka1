@@ -226,6 +226,7 @@ public interface LocalizableMessages extends Messages {
     String supportWantSomethingEmail();
 
     /** # ThankYouPopup.ui **/
+    String thankYouActivationClose();
     String thankYouAcceptOffer();
     String thankYouContactUs();
     String thankYouCreateDemand();
@@ -540,6 +541,7 @@ public interface LocalizableMessages extends Messages {
     String supplierCreationAgreementConditions();
     String supplierCreationAgreementMessage();
     String supplierCreationRegisterBtn();
+    String supplierCreationSelectService();
 
     /** FormUserRegistrationView.ui. **/
     String formUserRegMailAvailable();

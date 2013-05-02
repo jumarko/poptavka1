@@ -31,7 +31,7 @@ public class MessageCell extends AbstractCell<MessageDetail> {
 
     interface MyUiRenderer extends UiRenderer {
 
-        void render(SafeHtmlBuilder sb, String cssColor, String sender, String date, String body);
+        void render(SafeHtmlBuilder sb, String cssColor, String sender, String sent, String body);
 
         void onBrowserEvent(MessageCell o, NativeEvent e, Element p, MessageDetail n);
 

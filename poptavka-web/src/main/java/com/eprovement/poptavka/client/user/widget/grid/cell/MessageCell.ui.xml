@@ -1,9 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
-    <!--xmlns:g="urn:import:com.google.gwt.user.client.ui"> -->
 
-    <ui:with field="res"
-                 type="com.eprovement.poptavka.resources.StyleResource" />
+    <ui:with field="res" type="com.eprovement.poptavka.resources.StyleResource" />
 
     <ui:with field="cssColor" type="java.lang.String" />
     <ui:with field="sender" type="java.lang.String" />
@@ -12,11 +10,11 @@
 
     <div class='{res.detailViews.conversationDetail}'>
         <div class='{res.detailViews.conversationLeftBlock}'>
-            <span ui:field='senderSpan' class='{res.detailViews.conversationDetailHeader} {cssColor}'>
+            <span class='{res.detailViews.conversationDetailHeader} {cssColor}'>
                 <ui:text from='{sender}' />
             </span>
             <span class='{res.detailViews.conversationDetailTime}'>
-                <ui:date from='{sent}' />
+                <ui:text from='{sent}' />
             </span>
         </div>
         <div ui:field='bodySpan' class='{res.detailViews.conversationDetailContent}'>

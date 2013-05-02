@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
+import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.resources.StyleResource;
@@ -11,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -156,15 +156,24 @@ public class SupplierCreationView extends OverflowComposite
         panel.show();
     }
 
+    @Override
     public boolean isAgreementChecked() {
         if (agreedCheck.getValue()) {
             return agreedCheck.getValue();
         } else {
-            AggreementDialogBox b = new AggreementDialogBox();
-            b.show();
+            new AggreementDialogBox(Storage.MSGS.supplierCreationAgreementMessage());
             agreementPanel.setStyleName(StyleResource.INSTANCE.common().errorField());
             return false;
         }
+    }
+
+    @Override
+    public boolean isServiceSelected() {
+        if (((ServicesSelectorView) contentHolder4.getWidget()).getSelectedService() == null) {
+            new AggreementDialogBox(Storage.MSGS.supplierCreationSelectService());
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -186,17 +195,15 @@ public class SupplierCreationView extends OverflowComposite
 
 class AggreementDialogBox extends PopupPanel {
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-
-    public AggreementDialogBox() {
+    public AggreementDialogBox(String message) {
         // Create a table to layout the content
         VerticalPanel vp = new VerticalPanel();
 
         // Add some text to the top of the dialog
-        vp.add(new Label(MSGS.supplierCreationAgreementMessage()));
+        vp.add(new Label(message));
 
         // Add a close button at the bottom of the dialog
-        Button closeButton = new Button(MSGS.commonBtnClose(), new ClickHandler() {
+        Button closeButton = new Button(Storage.MSGS.commonBtnClose(), new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 hide();
