@@ -1,12 +1,13 @@
 package com.eprovement.poptavka.client.root.activation;
 
-import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
+import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -53,10 +54,9 @@ public class ActivationCodePopupPresenter
 
         Button getReportButton();
 
-        /** LABEL. **/
-        StatusIconLabel getStatusLabel();
-
         /** WIDGET. **/
+        Alert getStatus();
+
         ActivationCodePopupView getWidgetView();
     }
 
@@ -69,6 +69,13 @@ public class ActivationCodePopupPresenter
             @Override
             public void onClick(ClickEvent event) {
                 ((PopupPanel) view.getWidgetView()).hide();
+                Timer additionalAction = new Timer() {
+                    @Override
+                    public void run() {
+                        eventBus.goToHomeWelcomeModule();
+                    }
+                };
+                ThankYouPopup.create(Storage.MSGS.thankYouActivationClose(), additionalAction);
             }
         });
         view.getActivateButton().addClickHandler(new ClickHandler() {
@@ -99,14 +106,18 @@ public class ActivationCodePopupPresenter
     public void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad) {
         this.user = user;
         this.widgetToLoad = widgetToLoad;
-        view.getStatusLabel().setMessage(MSGS.activationCodeSent() + " " + user.getEmail());
+        view.getStatus().setHeading(MSGS.activationCodeSent() + " " + user.getEmail());
     }
 
     /**************************************************************************/
     /* Response methods                                                       */
     /**************************************************************************/
     public void onResponseActivateUser(UserActivationResult activationResult) {
-        view.getStatusLabel().setPassedSmall(activated);
+        if (activated) {
+            view.getStatus().setType(AlertType.SUCCESS);
+        } else {
+            view.getStatus().setType(AlertType.ERROR);
+        }
 
         //inform user
         switch (activationResult) {
@@ -129,11 +140,15 @@ public class ActivationCodePopupPresenter
     }
 
     public void onResponseSendActivationCodeAgain(boolean sent) {
-        view.getStatusLabel().setPassedSmall(sent);
+        if (sent) {
+            view.getStatus().setType(AlertType.SUCCESS);
+        } else {
+            view.getStatus().setType(AlertType.ERROR);
+        }
 
         //inform user
         if (sent) {
-            view.getStatusLabel().setMessage(
+            view.getStatus().setHeading(
                     MSGS.activationNewCodeSent() + " " + user.getEmail());
         } else {
             reportActivationFailure(MSGS.activationFailedSentNewCode());
@@ -141,8 +156,8 @@ public class ActivationCodePopupPresenter
     }
 
     private void reportActivationSuccessAndLoginUser() {
-        view.getStatusLabel().setMessage(MSGS.activationPassed());
-        view.getStatusLabel().setState(StatusIconLabel.State.ACCEPT_24);
+        view.getStatus().setHeading(MSGS.activationPassed());
+        view.getStatus().setType(AlertType.SUCCESS);
         //close activation popup
         ((PopupPanel) view.getWidgetView()).hide();
         //login user automatically
@@ -159,8 +174,8 @@ public class ActivationCodePopupPresenter
     }
 
     private void reportActivationFailure(String errorMessage) {
-        view.getStatusLabel().setMessage(errorMessage);
-        view.getStatusLabel().setState(StatusIconLabel.State.ERROR_24);
+        view.getStatus().setHeading(errorMessage);
+        view.getStatus().setType(AlertType.ERROR);
         view.getReportButton().setVisible(true);
     }
 }

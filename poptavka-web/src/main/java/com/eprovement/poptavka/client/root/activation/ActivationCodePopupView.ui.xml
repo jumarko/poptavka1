@@ -1,14 +1,14 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
 
     <!-- injecting style resources -->
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:VerticalPanel>
-        <cm:StatusIconLabel ui:field='statusLabel' style='{res.common.infoMessage}'/>
+        <b:Alert ui:field='status' type="INFO" close="false" animation="true" addStyleNames='info-block'/>
         <g:Label>
             <ui:msg key="activationEnterActivationCode">Please enter the activation code below:</ui:msg>
         </g:Label>

@@ -1,8 +1,7 @@
 package com.eprovement.poptavka.client.root.activation;
 
-import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -28,15 +27,10 @@ public class ActivationCodePopupView extends PopupPanel
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    /** Class attributes. **/
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     /** UiBinder attributes. **/
-    @UiField
-    StatusIconLabel statusLabel;
-    @UiField
-    TextBox activationCodeBox;
-    @UiField
-    Button closeButton, activateButton, sendAgainButton, reportButton;
+    @UiField Alert status;
+    @UiField TextBox activationCodeBox;
+    @UiField Button closeButton, activateButton, sendAgainButton, reportButton;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -83,13 +77,12 @@ public class ActivationCodePopupView extends PopupPanel
         return reportButton;
     }
 
-    /** LABEL. **/
+    /** WIDGET. **/
     @Override
-    public StatusIconLabel getStatusLabel() {
-        return statusLabel;
+    public Alert getStatus() {
+        return status;
     }
 
-    /** WIDGET. **/
     @Override
     public ActivationCodePopupView getWidgetView() {
         return this;
