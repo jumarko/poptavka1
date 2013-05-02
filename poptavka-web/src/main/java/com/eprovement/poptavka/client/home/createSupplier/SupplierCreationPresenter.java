@@ -63,6 +63,8 @@ public class SupplierCreationPresenter
 
         boolean isAgreementChecked();
 
+        boolean isServiceSelected();
+
         Widget getWidgetView();
     }
 
@@ -236,8 +238,7 @@ public class SupplierCreationPresenter
     private boolean canContinue(int step) {
         boolean valid = true;
         if (step == FOURTH_TAB_SERVICES) {
-            //is aggreement terms checked?
-            valid = view.isAgreementChecked();
+            valid = view.isAgreementChecked() && view.isServiceSelected();
         }
 
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
