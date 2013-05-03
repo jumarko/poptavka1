@@ -166,6 +166,19 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = SupplierDemandsModule.class)
     void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
 
+    @Event(forwardToModules = SupplierDemandsModule.class)
+    void startSupplierNotificationTimer();
+
+    @Event(forwardToModules = ClientDemandsModule.class)
+    void startClientNotificationTimer();
+
+    @Event(forwardToModules = SupplierDemandsModule.class)
+    void stopSupplierNotificationTimer();
+
+    @Event(forwardToModules = ClientDemandsModule.class)
+    void stopClientNotificationTimer();
+
+
     /**
      * @param filter - provided by search module
      */
