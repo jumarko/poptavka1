@@ -7,13 +7,11 @@ package com.eprovement.poptavka.server.service.suppliercreation;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.demand.Category;
-import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
@@ -167,6 +165,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         newSupplier.setLocalities(localityConverter.convertToSourceList(supplier.getLocalities()));
     }
 
+
     private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
         newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
     }
@@ -175,10 +174,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         final List<Address> addresses = new ArrayList<Address>();
         for (AddressDetail detail : supplier.getAddresses()) {
             //Ziskaj mesto typu Locality (String -> Locality)
-            final Locality cityLoc = (Locality) generalService.searchUnique(
-                    new Search(Locality.class)
-                        .addFilterEqual("name", detail.getCity())
-                        .addFilterEqual("type", LocalityType.CITY));
+            final Locality cityLoc = generalService.find(Locality.class, detail.getCityId());
 
             final Address address = new Address();
             address.setCity(cityLoc);
