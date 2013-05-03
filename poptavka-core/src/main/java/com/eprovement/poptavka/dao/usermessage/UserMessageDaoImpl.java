@@ -83,14 +83,14 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(User user) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(BusinessUser user) {
         return getSupplierConversationsHelper(user,
                 "getSupplierConversationsWithoutOffer");
     }
 
     /** {@inheritDoc} */
     @Override
-    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user, OfferState pendingState) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
         queryParams.put("pendingState", pendingState);
@@ -105,14 +105,14 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         return unreadMap;
     }
 
-    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(User user) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user) {
         return getSupplierConversationsHelper(user,
                 "getSupplierConversationsWithOffer");
     }
 
     /** {@inheritDoc} */
     @Override
-    public long getSupplierConversationsWithOfferCount(User user) {
+    public long getSupplierConversationsWithOfferCount(BusinessUser user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
 
@@ -123,7 +123,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public long getSupplierConversationsWithoutOfferCount(User user) {
+    public long getSupplierConversationsWithoutOfferCount(BusinessUser user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
 
@@ -134,7 +134,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(User user,
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
         OfferState offerStateAccepted, OfferState offerStateCompleted) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
@@ -155,7 +155,8 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(User user, OfferState offerClosed) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
+            OfferState offerClosed) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
         queryParams.put("closedStatus", DemandStatus.CLOSED);
@@ -171,7 +172,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         return unreadMap;
     }
 
-    private Map<UserMessage, Integer> getSupplierConversationsHelper(User user,
+    private Map<UserMessage, Integer> getSupplierConversationsHelper(BusinessUser user,
             String queryName) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
@@ -189,23 +190,42 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
     /** {@inheritDoc} */
     @Override
     public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            User user, Message root) {
-        return getClientConversationsHelper(user, root,
-                "getClientConversationsWithoutOffer");
+            BusinessUser user, Demand demand) {
+        return getClientConversationsHelper(user, demand,
+                "getClientConversationsForDemandWithoutOffer", null);
     }
 
-    private Map<UserMessage, ClientConversation> getClientConversationsHelper(User user, Message root,
-            String queryName) {
+    /** {@inheritDoc} */
+    @Override
+    public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand) {
+        return getClientConversationsHelper(user, demand,
+                "getClientConversationsForDemandWithOffer", null);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, OfferState offerState) {
+        return getClientConversationsHelper(user, demand,
+                "getClientConversationsForDemandWithOfferState", offerState);
+    }
+
+    private Map<UserMessage, ClientConversation> getClientConversationsHelper(BusinessUser user, Demand demand,
+            String queryName, OfferState offerState) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
-        queryParams.put("root", root);
+        queryParams.put("demand", demand);
+        if (offerState != null) {
+            queryParams.put("offerState", offerState);
+        }
         List<Object[]> conversations = runNamedQuery(
                 queryName,
                 queryParams);
         Map<UserMessage, ClientConversation> userMessageMap = new HashMap();
         for (Object[] entry : conversations) {
             userMessageMap.put((UserMessage) entry[0], new ClientConversation(
-                    (UserMessage) entry[0], (User) entry[1],
+                    (UserMessage) entry[0], (BusinessUser) entry[1],
                     ((Long) entry[2]).intValue()));
         }
         return userMessageMap;
@@ -213,24 +233,25 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public long getClientConversationsWithoutOfferCount(User user) {
-        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
-        queryParams.put("user", user);
-
-        return ((Long) runNamedQueryForSingleResult(
-                "getClientConversationsWithoutOfferCount",
-                queryParams));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public long getClientConversationsWithOfferCount(User user, Demand demand) {
+    public long getClientConversationsWithoutOfferCount(BusinessUser user, Demand demand) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
         queryParams.put("demand", demand);
 
         return ((Long) runNamedQueryForSingleResult(
-                "getClientConversationsWithOfferCount",
+                "getClientConversationsForDemandWithoutOfferCount",
+                queryParams));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getClientConversationsWithOfferCount(BusinessUser user, Demand demand) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+        queryParams.put("demand", demand);
+
+        return ((Long) runNamedQueryForSingleResult(
+                "getClientConversationsForDemandWithOfferCount",
                 queryParams));
     }
 

@@ -12,8 +12,10 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GenericService;
+import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
 import java.util.Map;
@@ -246,4 +248,73 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     void activateDemand(Demand demand) throws IllegalArgumentException;
 
+
+    /**
+     * Gets all the demands of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param businessUser
+     * @return a map keyed by the user's demands containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser);
+
+    /**
+     * Gets all the demands of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param businessUser
+     * @param search to be performed on the result
+     * @return a map keyed by the user's demands containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser,
+            Search search);
+
+    /**
+     * Gets the count of all ACTIVE, OFFERED, NEW, INACTIVE or INVALID demands of the given business user
+     *
+     * @param businessUser
+     * @return count of user's demands
+     */
+    long getClientDemandsCount(BusinessUser businessUser);
+
+    /**
+     * Gets all the demands with offer of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param businessUser
+     * @param search search to be performed on the result
+     * @return a map keyed by the user's demands containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser);
+    /**
+     * Gets all the demands with offer of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param businessUser
+     * @param search to be performed on the result
+     * @return a map keyed by the user's demands containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser,
+            Search search);
+
+
+    /**
+     * Gets the count of all OFFERED demands of the given business user
+     *
+     * @param businessUser
+     * @return count of user's demands
+     */
+    long getClientOfferedDemandsCount(BusinessUser businessUser);
 }

@@ -9,7 +9,6 @@ import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
@@ -20,7 +19,6 @@ import com.eprovement.poptavka.util.strings.ToStringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.lang.Validate;
@@ -193,42 +191,6 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Transactional(readOnly = true)
     public List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser) {
         return getDao().getPotentialOfferConversation(threadRoot, supplierUser);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<Message, Integer> getListOfClientDemandMessagesAll(User user) {
-        return getDao().getListOfClientDemandMessagesAll(user);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<Long, Integer> getListOfClientDemandMessagesUnread(User user) {
-        return getDao().getListOfClientDemandMessagesUnread(user);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<Long, Integer> getLatestSupplierUserMessagesWithoutOfferForDemand(User user, Message threadRoot) {
-        return getDao().getLatestSupplierUserMessagesWithoutOfferForDemand(user, threadRoot);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getLatestSupplierUserMessagesWithOfferForDemand(User user, Message threadRoot,
-        OfferState pendingState) {
-        return getDao().getLatestSupplierUserMessagesWithOfferForDemand(user, threadRoot, pendingState);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<Long, Integer> getListOfClientDemandMessagesWithOfferUnreadSub(User user) {
-        return getDao().getListOfClientDemandMessagesWithOfferUnreadSub(user);
     }
 
     /** {@inheritDoc} */

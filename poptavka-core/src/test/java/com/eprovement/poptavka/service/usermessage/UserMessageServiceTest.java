@@ -11,7 +11,6 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
-import com.eprovement.poptavka.service.user.SupplierService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -43,14 +42,14 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     private GeneralService generalService;
     @Autowired
     private UserMessageService userMessageService;
-    @Autowired
-    private SupplierService supplierService;
 
     private User user;
     private BusinessUser businessUser;
     private User user2;
     private BusinessUser businessUser2;
-    private User userClient;
+    private BusinessUser businessUser4;
+    private BusinessUser businessUserClient;
+    private Demand demand2;
 
 
     @Before
@@ -64,8 +63,12 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         user2.setId(111111114L);
         this.businessUser2 = new BusinessUser();
         businessUser2.setId(111111114L);
-        this.userClient = new User();
-        userClient.setId(111111112L);
+        this.businessUser4 = new BusinessUser();
+        businessUser4.setId(111111114L);
+        this.businessUserClient = new BusinessUser();
+        businessUserClient.setId(111111112L);
+        this.demand2 = new Demand();
+        demand2.setId(2L);
     }
 
 
@@ -116,11 +119,11 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
         // test for businessUser
         final List<UserMessage> potentialDemands = this.userMessageService.getPotentialDemands(businessUser);
-        Assert.assertEquals(4, potentialDemands.size());
+        Assert.assertEquals(3, potentialDemands.size());
         checkUserMessageExists(2L, potentialDemands);
         checkUserMessageExists(202L, potentialDemands);
-        checkUserMessageExists(302L, potentialDemands);
         checkUserMessageExists(503L, potentialDemands);
+        checkUserMessageDoesntExists(302L, potentialDemands);
         checkUserMessageDoesntExists(501L, potentialDemands);
         checkUserMessageDoesntExists(502L, potentialDemands);
         checkUserMessageDoesntExists(501L, potentialDemands);
@@ -134,7 +137,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageDoesntExists(4L, potentialDemands);
 
         // test for businessUser2
-        final List<UserMessage> potentialDemands2 = this.userMessageService.getPotentialDemands(businessUser2);
+        final List<UserMessage> potentialDemands2 = this.userMessageService.getPotentialDemands(businessUser4);
         Assert.assertEquals(2, potentialDemands2.size());
         checkUserMessageExists(501L, potentialDemands2);
         checkUserMessageExists(502L, potentialDemands2);
@@ -158,10 +161,10 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
         final long potentialDemandsCount = this.userMessageService
                 .getPotentialDemandsCount(this.businessUser);
-        Assert.assertEquals(4L, potentialDemandsCount);
+        Assert.assertEquals(3L, potentialDemandsCount);
         // test for businessUser2
         final long potentialDemandsCount2 = this.userMessageService
-                .getPotentialDemandsCount(this.businessUser2);
+                .getPotentialDemandsCount(this.businessUser4);
         Assert.assertEquals(2L, potentialDemandsCount2);
     }
 
@@ -175,7 +178,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     @Test
     public void testGetSupplierConversationsWithoutOffer() {
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
-                .getSupplierConversationsWithoutOffer(this.user);
+                .getSupplierConversationsWithoutOffer(this.businessUser);
         Assert.assertEquals(3, supplierConversations.size());
         checkUserMessageIdAndCount(8L, 4, supplierConversations);
         checkUserMessageIdAndCount(202L, 1, supplierConversations);
@@ -186,7 +189,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithOffer() {
         final OfferState pendingState = generalService.find(OfferState.class, 2L);
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
-                .getSupplierConversationsWithOffer(this.user, pendingState);
+                .getSupplierConversationsWithOffer(this.businessUser, pendingState);
         Assert.assertEquals(1, supplierConversations.size());
         checkUserMessageIdAndCount(304L, 2, supplierConversations);
     }
@@ -194,28 +197,27 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     @Test
     public void testGetSupplierConversationsWithoutOfferCount() {
         final int supplierConversationsCount = this.userMessageService
-                .getSupplierConversationsWithoutOfferCount(this.user);
+                .getSupplierConversationsWithoutOfferCount(this.businessUser);
         Assert.assertEquals(3, supplierConversationsCount);
     }
 
     @Test
     public void testGetSupplierConversationsWithOfferCount() {
         final int supplierConversationsCount = this.userMessageService
-                .getSupplierConversationsWithOfferCount(this.user);
+                .getSupplierConversationsWithOfferCount(this.businessUser);
         Assert.assertEquals(2, supplierConversationsCount);
     }
 
     @Test
     public void testGetClientConversationsWithoutOffer() {
-        final Message root = generalService.find(Message.class, 1L);
         final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
-                .getClientConversationsWithoutOffer(this.userClient, root);
+                .getClientConversationsWithoutOffer(this.businessUserClient, demand2);
         Assert.assertEquals(2, clientConversations.size());
         checkUserMessageIdAndCountAndSupplierId(7L, 4, 111111111L, clientConversations);
 
-        final Message root2 = generalService.find(Message.class, 200L);
+        final Demand demand21 = generalService.find(Demand.class, 21L);
         final Map<UserMessage, ClientConversation> clientConversations2 = this.userMessageService
-                .getClientConversationsWithoutOffer(this.userClient, root2);
+                .getClientConversationsWithoutOffer(this.businessUserClient, demand21);
         Assert.assertEquals(1, clientConversations2.size());
         checkUserMessageIdAndCountAndSupplierId(201L, 1, 111111111L, clientConversations2);
     }
@@ -223,19 +225,20 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     @Test
     public void testGetClientConversationsWithoutOfferCount() {
         final int clientConversationsCount = this.userMessageService
-                .getClientConversationsWithoutOfferCount(this.userClient);
+                .getClientConversationsWithoutOfferCount(this.businessUserClient, demand2);
         Assert.assertEquals("The count of client's [id="
-                + this.userClient.getId() + "] conversations without offer is"
-                + " incorrect.", 3, clientConversationsCount);
+                + this.businessUserClient.getId() + "] and demand's [id=" + demand2.getId()
+                + "] conversations without offer is"
+                + " incorrect.", 2, clientConversationsCount);
     }
 
     @Test
     public void testGetClientConversationsWithOfferCount() {
-        Demand demand = this.generalService.find(Demand.class, 2L);
+        Demand demand22 = this.generalService.find(Demand.class, 22L);
         final int clientConversationsCount = this.userMessageService
-                .getClientConversationsWithOfferCount(this.userClient, demand);
+                .getClientConversationsWithOfferCount(this.businessUserClient, demand22);
         Assert.assertEquals("The count of client's (id="
-                + this.userClient.getId() + "conversations with offer is"
+                + this.businessUserClient.getId() + "conversations with offer is"
                 + " incorrect.", 1, clientConversationsCount);
     }
 

@@ -10,6 +10,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 
 import java.util.List;
@@ -270,4 +271,46 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return client's demands with offers
      */
     List<Demand> getClientDemandsWithOffer(Client client);
+
+    /**
+     * Gets all the demands of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param businessUser
+     * @return a map keyed by the user's demands containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser);
+
+    /**
+     * Gets the count of all ACTIVE, OFFERED, NEW, INACTIVE or INVALID demands
+     * of the given business user
+     *
+     * @param businessUser
+     * @return count of user's demands
+     */
+    long getClientDemandsCount(BusinessUser businessUser);
+
+    /**
+     * Gets all the demands with offer of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param businessUser
+     * @return a map keyed by the user's demands containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser);
+
+    /**
+     * Gets the count of all OFFERED demands of the given business user
+     *
+     * @param businessUser
+     * @return count of user's demands
+     */
+    long getClientOfferedDemandsCount(BusinessUser businessUser);
+
 }

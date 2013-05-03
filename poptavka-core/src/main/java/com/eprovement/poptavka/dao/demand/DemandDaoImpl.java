@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
 
@@ -191,8 +192,67 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return  runNamedQuery("getClientDemandsWithOffer", params);
     }
 
+    @Override
+    public Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser) {
+        return getUnreadSubMessagesForDemandMessageHelper(businessUser, "getClientDemandsWithUnreadSubMsgs");
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getClientDemandsCount(BusinessUser businessUser) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", businessUser);
+
+        return ((Long) runNamedQueryForSingleResult(
+                "getClientDemandsCount",
+                queryParams));
+    }
+
+    @Override
+    public Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser) {
+        return getUnreadSubMessagesForDemandMessageHelper(businessUser,
+                "getClientOfferedDemandsWithUnreadOfferSubMsgs");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getClientOfferedDemandsCount(BusinessUser businessUser) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", businessUser);
+
+        return ((Long) runNamedQueryForSingleResult(
+                "getClientOfferedDemands",
+                queryParams));
+    }
+
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
     public void setTreeItemDao(TreeItemDao treeItemDao) {
         this.treeItemDao = treeItemDao;
     }
+
+    //---------------------------------------------- HELPER METHODS ----------------------------------------------------
+    /**
+     * Retrieves a map of client's demands with number of their associated
+     * unread sub-messages.
+     *
+     * @param user
+     * @param queryName
+     * @return map of thread demands number of their corresponding unread sub-messages
+     */
+    private Map<Demand, Integer> getUnreadSubMessagesForDemandMessageHelper(BusinessUser businessUser,
+            String queryName) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", businessUser);
+
+        List<Object[]> unread = runNamedQuery(
+                queryName,
+                queryParams);
+        Map<Demand, Integer> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((Demand) entry[0], ((Long) entry[1]).intValue());
+        }
+        return unreadMap;
+    }
+
 }

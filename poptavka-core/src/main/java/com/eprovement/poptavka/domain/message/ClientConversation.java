@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.domain.message;
 
-import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 
 /**
  *
@@ -8,10 +8,10 @@ import com.eprovement.poptavka.domain.user.User;
  */
 public class ClientConversation {
     private UserMessage latestUserMessage;
-    private User supplier;
+    private BusinessUser supplier;
     private int messageCount;
 
-    public ClientConversation(UserMessage latestUserMessage, User supplier,
+    public ClientConversation(UserMessage latestUserMessage, BusinessUser supplier,
             int messageCount) {
         this.latestUserMessage = latestUserMessage;
         this.supplier = supplier;
@@ -26,11 +26,11 @@ public class ClientConversation {
         this.latestUserMessage = latestUserMessage;
     }
 
-    public User getSupplier() {
+    public BusinessUser getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(User supplier) {
+    public void setSupplier(BusinessUser supplier) {
         this.supplier = supplier;
     }
 

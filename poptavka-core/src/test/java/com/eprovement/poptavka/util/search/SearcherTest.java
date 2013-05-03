@@ -40,17 +40,20 @@ public class SearcherTest extends DBUnitIntegrationTest {
     private UserMessageService userMessageService;
 
     private User user;
-    private Demand demand;
-    private Demand demand10;
+    private Demand demand2;
+    private Demand demand21;
+    private Demand demand22;
 
     @Before
     public void setUp() {
         this.user = new User();
-        this.demand = new Demand();
-        this.demand10 = new Demand();
+        this.demand2 = new Demand();
+        this.demand21 = new Demand();
+        this.demand22 = new Demand();
         user.setId(111111111L);
-        demand.setId(2L);
-        demand10.setId(10L);
+        demand2.setId(2L);
+        demand21.setId(21L);
+        demand22.setId(22L);
     }
 
     @Test
@@ -69,12 +72,17 @@ public class SearcherTest extends DBUnitIntegrationTest {
         checkUserMessageExists(202L, inboxFiltered);
 
         search = new Search(UserMessage.class);
-        search.addFilter(new Filter("message.demand", demand));
+        List<Demand> demands = new ArrayList();
+        demands.add(demand2);
+        demands.add(demand21);
+        demands.add(demand22);
+        search.addFilter(new Filter("message.demand", demands, Filter.OP_IN));
         search.addSort("message.body", false);
         search.addSort("message.created", true);
         search.addSort("message.threadRoot.id", true);
         inboxFiltered = Searcher.searchCollection(
                 inbox, search);
+
         Assert.assertEquals(5, inboxFiltered.size());
         checkUserMessageExists(2L, inboxFiltered);
         checkUserMessageExists(4L, inboxFiltered);
@@ -116,30 +124,14 @@ public class SearcherTest extends DBUnitIntegrationTest {
 
         // the two above combined
         search = new Search(UserMessage.class);
-        search.addFilter(new Filter("message.demand", demand));
+        search.addFilter(new Filter("message.demand", demand2));
         Filter filter = new Filter("isRead", false);
         filter.setOperator(Filter.OP_NOT_EQUAL);
         search.addFilter(filter);
         inboxFiltered = Searcher.searchCollection(
                 inbox, search);
-        Assert.assertEquals(2, inboxFiltered.size());
+        Assert.assertEquals(1, inboxFiltered.size());
         checkUserMessageExists(2L, inboxFiltered);
-        checkUserMessageExists(302L, inboxFiltered);
-
-        search = new Search(UserMessage.class);
-        List<Demand> demands = new ArrayList();
-        demands.add(demand);
-        demands.add(demand10);
-        search.addFilter(new Filter("message.demand", demands, Filter.OP_IN));
-        inboxFiltered = Searcher.searchCollection(
-                inbox, search);
-        Assert.assertEquals(6, inboxFiltered.size());
-        checkUserMessageExists(2L, inboxFiltered);
-        checkUserMessageExists(4L, inboxFiltered);
-        checkUserMessageExists(8L, inboxFiltered);
-        checkUserMessageExists(202L, inboxFiltered);
-        checkUserMessageExists(302L, inboxFiltered);
-        checkUserMessageExists(503L, inboxFiltered);
     }
 
     @Test
