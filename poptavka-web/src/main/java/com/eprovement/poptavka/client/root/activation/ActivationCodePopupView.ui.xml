@@ -25,7 +25,7 @@
 
     <g:VerticalPanel styleName='{res.common.validationContainer}'>
         <g:HTMLPanel styleName='{style.info-block}'>
-            <cm:StatusIconLabel ui:field='statusLabel'/>
+            <b:Alert ui:field='status'/>
             <g:HTMLPanel>
                 <ui:msg key="activationEnterActivationCode">Please enter the activation code below:</ui:msg>
             </g:HTMLPanel>
