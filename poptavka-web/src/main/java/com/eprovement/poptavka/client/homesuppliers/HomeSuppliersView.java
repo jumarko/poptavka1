@@ -17,6 +17,7 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.ImageResourceCell;
@@ -209,7 +210,7 @@ public class HomeSuppliersView extends OverflowComposite
                 new SortPair(UserField.OVERALL_RATING),
                 null); //Address
         List<SortPair> defaultSort = Arrays.asList(
-                new SortPair(UserField.OVERALL_RATING));
+                new SortPair(SupplierField.OVERALL_RATING));
         return new SortDataHolder(defaultSort, sortColumns);
     }
 
