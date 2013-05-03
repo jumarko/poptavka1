@@ -9,6 +9,9 @@ import com.eprovement.poptavka.domain.demand.DemandCategory;
 import com.eprovement.poptavka.domain.demand.DemandLocality;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
+import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.SupplierCategory;
+import com.eprovement.poptavka.domain.user.SupplierLocality;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
@@ -52,10 +55,17 @@ public final class DomainObjectsMaping {
      * Initialize mapping.
      */
     private DomainObjectsMaping() {
+        //Demand
         mapingPairs.add(new MapingPair(Demand.class, DemandField.SEARCH_CLASS, ""));
         mapingPairs.add(new MapingPair(DemandCategory.class, DemandField.SEARCH_CLASS, "demand."));
         mapingPairs.add(new MapingPair(DemandLocality.class, DemandField.SEARCH_CLASS, "demand."));
+        //Supplier
+        mapingPairs.add(new MapingPair(Supplier.class, SupplierField.SEARCH_CLASS, ""));
+        mapingPairs.add(new MapingPair(SupplierCategory.class, SupplierField.SEARCH_CLASS, "supplier."));
+        mapingPairs.add(new MapingPair(SupplierLocality.class, SupplierField.SEARCH_CLASS, "supplier."));
+        //Offer
         mapingPairs.add(new MapingPair(Offer.class, DemandField.SEARCH_CLASS, "demand."));
+        //UserMessage
         mapingPairs.add(new MapingPair(UserMessage.class, DemandField.SEARCH_CLASS, "message.demand."));
         mapingPairs.add(new MapingPair(UserMessage.class, ClientField.SEARCH_CLASS, "message.demand.client."));
         mapingPairs.add(new MapingPair(UserMessage.class, SupplierField.SEARCH_CLASS, "message.offer.supplier."));
