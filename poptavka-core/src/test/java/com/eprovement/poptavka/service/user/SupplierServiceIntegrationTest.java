@@ -44,13 +44,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  *         Date: 12.2.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/user/SupplierDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml" },
+        "classpath:com/eprovement/poptavka/domain/user/SupplierDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
@@ -293,6 +293,9 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // change certification to opposite value
         supplierToModify.setCertified(!isCertified);
+        // we need to set also categories and localities to ensure that validation will pass when updating supplier
+        supplierToModify.setCategories(categoryService.getRootCategories());
+        supplierToModify.setLocalities(localityService.getLocalities(LocalityType.COUNTRY));
         this.supplierService.update(supplierToModify);
 
         final List<Supplier> persistedSupplier = this.supplierService.searchByCriteria(

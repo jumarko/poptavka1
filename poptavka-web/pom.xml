@@ -357,7 +357,7 @@
 					<!--<i18nConstantsWithLookupBundle>com.google.gwt.i18n.client.ValidationMessages</i18nConstantsWithLookupBundle> -->
 
 					<!-- <servicePattern>cz/poptavka/sample/client/service/*RPCService.java</servicePattern> -->
-					<extraJvmArgs>-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</extraJvmArgs>
+					<extraJvmArgs>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m</extraJvmArgs>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<runTarget>Poptavka.html</runTarget>
 					<compileReport>true</compileReport>

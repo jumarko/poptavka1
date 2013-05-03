@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <!--Aspects are defined via annotations and in aop.xml file-->
+    <!--<context:load-time-weaver />-->
 
     <!-- aspects' beans' -->
     <bean id="exceptionLogger" class="com.eprovement.poptavka.application.logging.ExceptionLogger" factory-method="aspectOf">
@@ -23,5 +25,7 @@
     </bean>
     
     <bean id="executionTimeLogger" class="com.eprovement.poptavka.application.logging.ExecutionTimeLogger" factory-method="aspectOf" />
+
+    <bean id="enableFilterAspect" class="com.eprovement.poptavka.application.persistence.EnableFilterAspect" factory-method="aspectOf" />
 
 </beans>

@@ -1,0 +1,14 @@
+<!DOCTYPE aspectj PUBLIC
+        "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<!-- LOAD TIME WEAVING CONFIGURATION:
+     LTW should be used only for external classes, because in that case the compile time weaving is cumbersome to use. -->
+<aspectj>
+    <weaver>
+        <!-- only weave classes in this package -->
+        <include within="org.hibernate..*" />
+    </weaver>
+    <aspects>
+        <!-- use only this aspect for weaving -->
+        <aspect name="com.eprovement.poptavka.application.persistence.EnableFilterAspect" />
+    </aspects>
+</aspectj>

@@ -223,15 +223,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-
-			<dependency>
-				<groupId>com.eprovement</groupId>
-				<artifactId>dbunit-dtd-generator-plugin</artifactId>
-				<version>${project.version}</version>
-				<!--TODO LATER: because of ApplicationContextHolder cannot use test scope -->
-				<!--<scope>test</scope> -->
-			</dependency>
-
 			<dependency>
 				<groupId>com.eprovement</groupId>
 				<artifactId>integration-test-base</artifactId>
@@ -490,11 +481,6 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aspects</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-instrument</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
@@ -914,7 +900,7 @@
 				<plugin>
 					<groupId>com.eprovement</groupId>
 					<artifactId>dbunit-dtd-generator-plugin</artifactId>
-					<version>1.0-SNAPSHOT</version>
+					<version>1.0</version>
 					<configuration>
 						<outputDirectory>${project.parent.basedir}/integration-test-base/src/main/resources</outputDirectory>
 						<dataSourceBeanName>poptavkaDataSource</dataSourceBeanName>
@@ -980,9 +966,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"</argLine>
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                </configuration>
 			</plugin>
 
-			<!-- aspectj -->
+			<!-- aspectj plugin configuration for compile-time weaving.
+			     Note that there is also load-time weaving used for classes outside poptavka's codebase,
+			     because compile-time weaving for this classes would be hardly manageable -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
@@ -1009,7 +1002,6 @@
                     <encoding>UTF-8</encoding>
                     <outxml>true</outxml>
                     <outxmlfile>target/aspectj-out.xml</outxmlfile>
-
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -1022,6 +1014,7 @@
                     <execution>
                         <goals>
                             <goal>compile</goal>
+                            <!-- test-compile goal is also necessary to ensure proper weaving when running unit tests via maven -->
                             <goal>test-compile</goal>
                         </goals>
                         <phase>compile</phase>
@@ -1042,5 +1035,12 @@
 
 		</plugins>
 	</build>
+
+
+    <scm>
+        <connection>scm:git:git@bitbucket.org:poptavka/poptavka-app.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:poptavka/poptavka-app.git</developerConnection>
+        <url>https://bitbucket.org/poptavka/poptavka-app</url>
+    </scm>
 
 </project>

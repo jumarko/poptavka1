@@ -16,9 +16,6 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class NotificationItem extends DomainObject {
-    // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
-    @Column(columnDefinition = "BIT")
-    private boolean enabled;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
@@ -27,13 +24,6 @@ public class NotificationItem extends DomainObject {
     @ManyToOne
     private Notification notification;
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public Period getPeriod() {
         return period;
@@ -55,7 +45,7 @@ public class NotificationItem extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("NotificationItem");
-        sb.append("{enabled=").append(enabled);
+        sb.append("{enabled=").append(isEnabled());
         sb.append(", period=").append(period);
         sb.append(", notification=").append(notification);
         sb.append('}');

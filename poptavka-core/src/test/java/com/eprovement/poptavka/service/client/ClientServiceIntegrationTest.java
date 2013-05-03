@@ -57,7 +57,6 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
         final List<Client> clients = this.clientService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
                         .withEmail("elvira@email.com")
-                        .withPassword(null)
                         .build());
         Assert.assertEquals(1, clients.size());
         Assert.assertEquals("Elv\u00edra",
