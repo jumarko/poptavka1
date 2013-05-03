@@ -54,15 +54,12 @@ public class ClientDemandsModulePresenter
     private ClientAssignedDemandsPresenter clientAssigendDemands = null;
     private ClientRatingsPresenter clientRatings = null;
     private LoadingDiv loadingDiv = new LoadingDiv();
+    private Timer timer;
 
     /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        if (!Storage.isTimerStarted()) {
-            this.startNotificationTimer(Storage.TIMER_PERIOD_MILISECONDS);
-            Storage.setTimerStarted(true);
-        }
     }
 
     public void onForward() {
@@ -208,6 +205,14 @@ public class ClientDemandsModulePresenter
         }
     }
 
+    public void onStartClientNotificationTimer() {
+        this.startClientNotificationTimer(Storage.TIMER_PERIOD_MILISECONDS);
+    }
+
+    public void onStopClientNotificationTimer() {
+        this.timer.cancel();
+    }
+
     /**************************************************************************/
     /* Business events handled by eventbus or RPC */
     /**************************************************************************/
@@ -228,14 +233,15 @@ public class ClientDemandsModulePresenter
      *
      * @param periodMilis period in miliseconds
      */
-    private void startNotificationTimer(int periodMilis) {
-        Timer t = new Timer() {
+    private void startClientNotificationTimer(int periodMilis) {
+        timer = new Timer() {
+            @Override
             public void run() {
-                eventBus.updateUnreadMessagesCount();
+//                eventBus.updateUnreadMessagesCount();
             }
         };
         // Schedule the timer to run every period.
-        t.scheduleRepeating(periodMilis);
+        timer.scheduleRepeating(periodMilis);
     }
 
 }

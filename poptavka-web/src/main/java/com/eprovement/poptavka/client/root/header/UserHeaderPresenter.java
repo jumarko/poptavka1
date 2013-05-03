@@ -85,7 +85,7 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
         GWT.log("UserHeader presenter loaded");
         eventBus.setHeader(view);
         view.getUsername().setText(Storage.getUser().getEmail());
-
+        startStopUserTimer(true);
     }
 
     /**
@@ -131,6 +131,7 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
      * Logs out and user is forwarded to HomeWelcomModule.
      */
     public void onLogout(final int widgetToLoad) {
+        startStopUserTimer(false);
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getLogoutUrl());
         rb.setCallback(new RequestCallback() {
             @Override
@@ -191,4 +192,31 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
                 break;
         }
     }
+
+    /**
+     * Starts or stops timer for Client or Supplier based on the user's role which is logged in.
+     * @param start true if Timer should be started, false if timer should be stopped
+     */
+    private void startStopUserTimer(boolean start) {
+        if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.SUPPLIER)) {
+            // timer for supplier
+            if (start) {
+                eventBus.startSupplierNotificationTimer();
+            } else {
+                eventBus.stopSupplierNotificationTimer();
+            }
+        } else {
+            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.CLIENT)) {
+                // timer for client
+                if (start) {
+                    eventBus.startClientNotificationTimer();
+                } else {
+                    eventBus.stopClientNotificationTimer();
+                }
+            }
+        }
+    }
+
 }

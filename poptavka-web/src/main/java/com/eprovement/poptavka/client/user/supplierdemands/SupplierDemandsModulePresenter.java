@@ -50,15 +50,12 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     private SupplierOffersPresenter supplierOffers = null;
     private SupplierAssignedDemandsPresenter supplierAssigendDemands = null;
     private SupplierRatingsPresenter supplierRatings = null;
+    private Timer timer;
 
     /**************************************************************************/
     /* General Module events */
     /**************************************************************************/
     public void onStart() {
-        if (!Storage.isTimerStarted()) {
-            this.startNotificationTimer(Storage.TIMER_PERIOD_MILISECONDS);
-            Storage.setTimerStarted(true);
-        }
     }
 
     public void onForward() {
@@ -184,6 +181,14 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
         }
     }
 
+    public void onStartSupplierNotificationTimer() {
+        this.startSupplierNotificationTimer(Storage.TIMER_PERIOD_MILISECONDS);
+    }
+
+    public void onStopSupplierNotificationTimer() {
+        this.timer.cancel();
+    }
+
     /**************************************************************************/
     /* Business events handled by eventbus or RPC */
     /**************************************************************************/
@@ -204,14 +209,14 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
      *
      * @param periodMilis period in miliseconds
      */
-    private void startNotificationTimer(int periodMilis) {
-        Timer t = new Timer() {
+    private void startSupplierNotificationTimer(int periodMilis) {
+        timer = new Timer() {
             public void run() {
-                eventBus.updateUnreadMessagesCount();
+//                eventBus.updateUnreadMessagesCount();
             }
         };
         // Schedule the timer to run every period.
-        t.scheduleRepeating(periodMilis);
+        timer.scheduleRepeating(periodMilis);
     }
 
 }

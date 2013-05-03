@@ -140,6 +140,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModulePresenter.class)
     void displayView(IsWidget content);
 
+    @Event(handlers = ClientDemandsModulePresenter.class)
+    void startClientNotificationTimer();
+
+    @Event(handlers = ClientDemandsModulePresenter.class)
+    void stopClientNotificationTimer();
+
     /**************************************************************************/
     /* Business events handled by ClientWelcomePresenter.                     */
     /**************************************************************************/

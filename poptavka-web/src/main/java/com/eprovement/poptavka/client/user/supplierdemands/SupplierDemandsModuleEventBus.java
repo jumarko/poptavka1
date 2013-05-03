@@ -129,6 +129,12 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierDemandsWelcomePresenter.class)
     void loadSupplierDashboardDetail(SupplierDashboardDetail result);
 
+    @Event(handlers = SupplierDemandsModulePresenter.class)
+    void startSupplierNotificationTimer();
+
+    @Event(handlers = SupplierDemandsModulePresenter.class)
+    void stopSupplierNotificationTimer();
+
     /**************************************************************************/
     /* Business events handled by SupplierDemandsPresenter.                   */
     /**************************************************************************/
