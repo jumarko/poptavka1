@@ -168,4 +168,5 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
+
 }

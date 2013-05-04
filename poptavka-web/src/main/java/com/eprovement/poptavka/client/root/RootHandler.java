@@ -68,8 +68,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * @param threadId
      * @param userId
      */
-    public void onRequestConversation(Long threadId, final Long userId) {
-        rootService.getConversation(threadId, userId,
+    public void onRequestConversation(long threadRootId, long loggedUserId, long counterPartyUserId) {
+        rootService.getConversation(threadRootId, loggedUserId, counterPartyUserId,
                 new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<MessageDetail> result) {

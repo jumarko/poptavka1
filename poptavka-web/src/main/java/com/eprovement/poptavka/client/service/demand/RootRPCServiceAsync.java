@@ -33,7 +33,8 @@ public interface RootRPCServiceAsync {
 
     void getFullSupplierDetail(long supplierId, AsyncCallback<FullSupplierDetail> callback);
 
-    void getConversation(long threadId, long userId, AsyncCallback<List<MessageDetail>> callback);
+    void getConversation(long threadRootId, long loggedUserId, long counterPartyUserId,
+            AsyncCallback<List<MessageDetail>> callback);
 
     void updateUserMessagesReadStatus(long userId, List<MessageDetail> messages, AsyncCallback<Void> callback);
 

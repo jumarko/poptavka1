@@ -409,14 +409,15 @@ public interface RootEventBus extends EventBusWithLookup {
     void responseSupplierDetail(FullSupplierDetail supplierDetail);
 
     /*
-     * Request/Response method pair
-     * Fetch and display chat(conversation) for supplier new demands list
-     * @param messageId
-     * @param userMessageId
-     * @param userId
+     * Request conversation messages for detail section tab: Conversations between currently logged user and its
+     * counterparty.
+     *
+     * @param threadRootId - root message i.e. first demand message in the conversation always created by client
+     * @param loggedUserId - userId of currently logged user
+     * @param counterPartyUserId - userId of counterparty
      */
     @Event(handlers = RootHandler.class)
-    void requestConversation(Long threadId, Long userId);
+    void requestConversation(long threadRootId, long loggedUserId, long counterPartyUserId);
 
     @Event(handlers = RootHandler.class)
     void updateUserMessagesReadStatus(Long userId, List<MessageDetail> messages);

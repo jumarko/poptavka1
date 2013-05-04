@@ -144,15 +144,12 @@ public class DetailsWrapperPresenter
      * @param supplierId
      * @param threadRootId
      */
-    public void initDetails(long demandId, long supplierId, long threadRootId, long senderId) {
+    public void initDetails(long demandId, long supplierId, long threadRootId, long supplierUserId) {
         reset();
         this.demandId = demandId;
         this.supplierId = supplierId;
         this.threadRootId = threadRootId;
-        // senderId is always supplier's userId for ClientDemandsPresenter, ClientAssignedPresenter
-        // and ClientOffersPresenter so that Conversation can be loaded for ThreadRootId and SupplierId which uniquely
-        // defines only 2 users for demand conversation.
-        this.senderId = senderId;
+        this.senderId = supplierUserId;
         view.getContainer().selectTab(CONVERSATION_TAB, false);
         requestActualTabData();
     }
@@ -166,15 +163,12 @@ public class DetailsWrapperPresenter
      * @param supplierId
      * @param threadRootId
      */
-    public void initDetails(long demandId, long threadRootId, long senderId) {
+    public void initDetails(long demandId, long threadRootId, long clientUserId) {
         reset();
         view.getContainer().getTabWidget(USER_DETAIL_TAB).getParent().setVisible(false);
         this.demandId = demandId;
         this.threadRootId = threadRootId;
-        // senderId is always client's userId for SupplierDemandsPresenter, SupplierAssignedPresenter
-        // and SupplierOffersPresenter
-        // TODO RELEASE ivlcek - always use current if when called from supplier menu
-        this.senderId = Storage.getBusinessUserDetail().getUserId();
+        this.senderId = clientUserId;
         view.getContainer().selectTab(CONVERSATION_TAB, false);
         requestActualTabData();
     }
@@ -206,7 +200,7 @@ public class DetailsWrapperPresenter
                 requestSupplierDetail(supplierId);
                 break;
             case CONVERSATION_TAB:
-                requestConversation(threadRootId);
+                requestConversation(threadRootId, Storage.getUser().getUserId(), this.senderId);
                 break;
             default:
                 break;
@@ -296,21 +290,18 @@ public class DetailsWrapperPresenter
     /**
      * Request conversation messages for detail section tab: Conversations.
      * Loads conversation between client and supplier. Each conversation begins
-     * with threadRoot message that must be passed here as a parameter.
+     * with threadRoot message that must be passed here as a parameter. Other paramters contain userId of currently
+     * logged user and userId of counterParty.
      *
-     * Please note that user is defined by senderId which is always passed from from 2nd level table to
-     * DetailWrapperPresenter. It is important that this senderId is setup correctly when it is called from
-     * SupplierPresenters and when it is called from ClientPresenters.
-     * When ClientPresenter invoke DetailWrapperPresenter the Supplier's userId is passed here as a senderId so that
-     * requestConversation will not display several Suppliers within one conversation.
-     * Check Issue #137 in bitbucket
-    *
      * @param threadRootId - root message i.e. first demand message in the conversation always created by client
+     * @param loggedUserId - userId of currently logged user
+     * @param counterPartyUserId - userId of counterparty
+     *
      */
-    public void requestConversation(long threadRootId) {
+    public void requestConversation(long threadRootId, long loggedUserId, long counterPartyUserId) {
         setMessagePanelVisibility();
         view.loadingDivShow(view.getConversationHolder());
-        eventBus.requestConversation(threadRootId, senderId);
+        eventBus.requestConversation(threadRootId, loggedUserId, counterPartyUserId);
     }
 
     /**************************************************************************/
