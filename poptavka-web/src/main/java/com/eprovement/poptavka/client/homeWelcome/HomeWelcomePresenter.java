@@ -31,6 +31,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         eventBus.setUpSearchBar(null);
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
         view.getCategorySelectionModel().clear();
+        runBanner();
     }
 
     @Override
@@ -168,4 +169,13 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
+
+    /**
+     * Runs banner on HTML page.
+     */
+    public static native void runBanner() /*-{
+     $wnd.startBanner();
+     *
+     }-*/;
+
 }
