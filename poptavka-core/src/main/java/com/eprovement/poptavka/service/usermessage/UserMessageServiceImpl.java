@@ -385,4 +385,10 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         }
         return userMessagesGroupedByUser;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<UserMessage> getConversation(User user, User counterparty, Message rootMessage) {
+        return getDao().getConversation(user, counterparty, rootMessage);
+    }
 }

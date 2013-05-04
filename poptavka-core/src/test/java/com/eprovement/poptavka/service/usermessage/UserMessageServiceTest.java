@@ -242,6 +242,31 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
                 + " incorrect.", 1, clientConversationsCount);
     }
 
+    @Test
+    public void testGetConversation() {
+        Message rootMessage = this.generalService.find(Message.class, 1L);
+        List<UserMessage> conversation = this.userMessageService
+                .getConversation(this.businessUserClient, this.businessUser, rootMessage);
+        Assert.assertEquals("Number of userMessages in the conversation between users of id="
+                + this.businessUserClient.getId() + " and id=" + this.businessUser.getId()
+                + " spanning from rootMessage id=" + rootMessage.getId() + " is "
+                + " incorrect.", 4, conversation.size());
+        checkUserMessageExists(1L, conversation);
+        checkUserMessageDoesntExists(2L, conversation);
+        checkUserMessageExists(3L, conversation);
+        checkUserMessageDoesntExists(4L, conversation);
+        checkUserMessageExists(5L, conversation);
+        checkUserMessageDoesntExists(6L, conversation);
+        checkUserMessageExists(7L, conversation);
+        checkUserMessageDoesntExists(8L, conversation);
+        conversation = this.userMessageService
+                .getConversation(this.businessUserClient, this.businessUser4, rootMessage);
+        Assert.assertEquals("Number of userMessages in the conversation between users of id="
+                + this.businessUserClient.getId() + " and id=" + this.businessUser.getId()
+                + " spanning from rootMessage id=" + rootMessage.getId() + " is "
+                + " incorrect.", 0, conversation.size());
+    }
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
