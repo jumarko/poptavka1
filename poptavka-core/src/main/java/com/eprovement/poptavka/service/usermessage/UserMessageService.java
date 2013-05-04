@@ -393,5 +393,16 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return users mapped to all their user messages which has associated created date staring from given period
      */
     Map<User, List<UserMessage>> getUserMessagesFromDateGroupedByUser(Date dateFrom);
-
+    
+    /**
+     * Gets conversation of the <code>user</code> with the <code>counetrparty</<code>
+     * that originated in the <code>threadRoot</code>
+     * @param user the user 
+     * for whom to get the UserMessages
+     * @param counterparty the user with whom we are communicating
+     * @param rootMessage the first (topmost) message in the conversation
+     * @return  list of UserMessages belonging to <code>user</code> in the order from
+     * the newest to the oldest
+     */
+    public List<UserMessage> getConversation(User user, User counterparty, Message rootMessage);
 }

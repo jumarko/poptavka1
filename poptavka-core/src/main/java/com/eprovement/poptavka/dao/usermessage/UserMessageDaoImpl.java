@@ -14,6 +14,7 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Criteria;
@@ -255,6 +256,23 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
                 queryParams));
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public List<UserMessage> getConversation(User user, User counterparty, Message rootMessage) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+        queryParams.put("counterparty", counterparty);
+        queryParams.put("rootMessage", rootMessage);
+
+        List<Object[]> conversationRaw = runNamedQuery(
+                "getConversationWithCounterparty",
+                queryParams);
+        List<UserMessage> usermessages = new ArrayList();
+        for (Object entry : conversationRaw) {
+            usermessages.add((UserMessage) entry);
+        }
+        return usermessages;
+    }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**

@@ -46,7 +46,18 @@ import javax.persistence.NamedQuery;
                         // either message itself is thread root or it has given thread root
                         + " (userMessage.message = :threadRoot OR userMessage.message.threadRoot = :threadRoot)"
                         + "   and userMessage.user = :user"),
-
+        @NamedQuery(name = "getConversationWithCounterparty",
+                query = "select userMessage"
+                        + " from UserMessage userMessage"
+                        + " left join userMessage.message.roles toRole\n"
+                        + "where userMessage.message.threadRoot = :rootMessage"
+                        + " and ((userMessage.message.sender = :user"
+                        + " and toRole.user = :counterparty"
+                        + " and toRole.type = 'TO')"
+                        + " or (userMessage.message.sender != :user"
+                        + " and userMessage.message.sender = :counterparty))"
+                        + " and userMessage.user = :user\n"
+                        + "order by userMessage.message.sent desc"),
         @NamedQuery(name = "getPotentialOfferConversation",
                 query = " select userMessage.message"
                         + " from UserMessage userMessage"
