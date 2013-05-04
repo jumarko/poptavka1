@@ -340,8 +340,26 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, Search search) {
+        return Searcher.searchMapByKeys(getDao().getClientConversationsWithOffer(
+                user, demand), search);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
             BusinessUser user, Demand demand, OfferState offerState) {
         return getDao().getClientConversationsWithOffer(user, demand, offerState);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, OfferState offerState, Search search) {
+        return Searcher.searchMapByKeys(getDao().getClientConversationsWithOffer(
+                user, demand, offerState), search);
     }
 
     /** {@inheritDoc} */
@@ -388,6 +406,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public List<UserMessage> getConversation(User user, User counterparty, Message rootMessage) {
         return getDao().getConversation(user, counterparty, rootMessage);
     }

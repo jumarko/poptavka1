@@ -356,6 +356,21 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     *
     * @param user The client whose demands to get
     * @param demand the demand for which to get the conversations
+    * @param search to search in the result
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>BusinessUser</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, Search search);
+
+   /**
+    * Gets a list of all client's conversations related to the given demand where
+    * an offer has been made
+    *
+    * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
     * @param offerState the state of the offer linked to the latest conversation
     * messages
     * @return A map keyed by the latest <code>UserMessage</code> and mapping
@@ -365,6 +380,23 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     */
     Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
             BusinessUser user, Demand demand, OfferState offerState);
+
+   /**
+    * Gets a list of all client's conversations related to the given demand where
+    * an offer has been made
+    *
+    * @param user The client whose demands to get
+    * @param demand the demand for which to get the conversations
+    * @param offerState the state of the offer linked to the latest conversation
+    * messages
+    * @param search to search in the result
+    * @return A map keyed by the latest <code>UserMessage</code> and mapping
+    * to the <code>ClientConversation</code> object containing the number of
+    * messages in the conversation and the <code>BusinessUser</code> representing
+    * the supplier with whom the conversation is being made
+    */
+    Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
+            BusinessUser user, Demand demand, OfferState offerState, Search search);
 
     /** Retrieves the count of client's conversations where an offer has
      * been made for given demand
