@@ -5,12 +5,12 @@ import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.cell.MessageCell;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -41,7 +41,7 @@ public class DetailsWrapperView extends Composite
     @UiField UserDetailView userDetail;
     @UiField(provided = true) CellList messageList;
     @UiField OfferQuestionWindow replyHolder;
-    @UiField HTMLPanel conversationHolder;
+    @UiField FluidContainer conversationHolder;
     /** Class attribute. **/
     private LoadingDiv loadingDiv = new LoadingDiv();
     private ListDataProvider messageProvider = new ListDataProvider(MessageDetail.KEY_PROVIDER);
@@ -66,14 +66,14 @@ public class DetailsWrapperView extends Composite
         if (loadingDiv == null) {
             loadingDiv = new LoadingDiv();
         }
-        holderWidget.getElement().appendChild(loadingDiv.getElement());
+        holderWidget.getParent().getParent().getElement().appendChild(loadingDiv.getElement());
     }
 
     @Override
     public void loadingDivHide(Widget holderWidget) {
         GWT.log("  - loading div removed");
-        if (holderWidget.getElement().isOrHasChild(loadingDiv.getElement())) {
-            holderWidget.getElement().removeChild(loadingDiv.getElement());
+        if (holderWidget.getParent().getParent().getElement().isOrHasChild(loadingDiv.getElement())) {
+            holderWidget.getParent().getParent().getElement().removeChild(loadingDiv.getElement());
         }
     }
 
@@ -101,11 +101,6 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public CellList getMessagePanel() {
-        return messageList;
-    }
-
-    @Override
     public ListDataProvider getMessageProvider() {
         return messageProvider;
     }
@@ -116,7 +111,7 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public HTMLPanel getConversationHolder() {
+    public FluidContainer getConversationHolder() {
         return conversationHolder;
     }
 
