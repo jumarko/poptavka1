@@ -88,11 +88,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     //----------------------------------  Methods for DemandType-s -----------------------------------------------------
     @Override
+    @Transactional(readOnly = true)
     public List<DemandType> getDemandTypes() {
         return this.registerService.getAllValues(DemandType.class);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DemandType getDemandType(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand type is empty!");
         return this.registerService.getValue(code, DemandType.class);
@@ -100,11 +102,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     //----------------------------------  Methods for DemandOrigin-s ---------------------------------------------------
     @Override
+    @Transactional(readOnly = true)
     public List<DemandOrigin> getDemandOrigins() {
         return this.registerService.getAllValues(DemandOrigin.class);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DemandOrigin getDemandOrigin(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand origin is empty!");
         return this.registerService.getValue(code, DemandOrigin.class);
@@ -192,6 +196,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public Set<Demand> getDemands(ResultCriteria resultCriteria, Category... categories) {
         return this.getDao().getDemands(categories, resultCriteria);
     }
@@ -248,34 +253,40 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getAllDemandsCount() {
         return this.getDao().getAllDemandsCount();
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getOfferCount(Demand demand) {
         return demand.getOffers().size();
     }
 
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Demand> getDemands(ResultCriteria resultCriteria, List<Category> categories, List<Locality> localities) {
         return this.getDao().getDemands(categories, localities, resultCriteria);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getDemandsCount(List<Category> categories, List<Locality> localities) {
         return this.getDao().getDemandsCount(categories, localities, ResultCriteria.EMPTY_CRITERIA);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
                                                   ResultCriteria resultCriteria) {
         return this.getDao().getDemandsIncludingParents(categories, localities, resultCriteria);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getClientDemandsWithOfferCount(Client client) {
         Preconditions.checkNotNull(client, "Client must be specified for finding potential demands");
         LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
@@ -287,6 +298,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Demand> getClientDemandsWithOffer(Client client) {
         Preconditions.checkNotNull(client, "Client must be specified for finding potential demands");
         LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
@@ -307,12 +319,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser) {
         return getDao().getClientDemandsWithUnreadSubMsgs(businessUser);
 
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser,
             Search search) {
         return Searcher.searchMapByKeys(getDao().getClientDemandsWithUnreadSubMsgs(businessUser), search);
@@ -320,16 +334,19 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getClientDemandsCount(BusinessUser businessUser) {
         return getDao().getClientDemandsCount(businessUser);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser) {
         return getDao().getClientOfferedDemandsWithUnreadOfferSubMsgs(businessUser);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser,
             Search search) {
         return Searcher.searchMapByKeys(getDao().getClientOfferedDemandsWithUnreadOfferSubMsgs(businessUser), search);
@@ -337,6 +354,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getClientOfferedDemandsCount(BusinessUser businessUser) {
         return getDao().getClientOfferedDemandsCount(businessUser);
     }
