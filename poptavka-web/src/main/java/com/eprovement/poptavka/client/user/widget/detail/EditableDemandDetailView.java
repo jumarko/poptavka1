@@ -102,7 +102,7 @@ public class EditableDemandDetailView extends Composite implements
     //Popup
     private void createSelectorWidgetPopup() {
         selectorWidgetPopup = new PopupPanel(true);
-        selectorWidgetPopup.setSize("300px", "300px");
+        selectorWidgetPopup.setSize("1032px", "500px");
         selectorWidgetPopup.setGlassEnabled(true);
         selectorWidgetPopup.hide();
     }

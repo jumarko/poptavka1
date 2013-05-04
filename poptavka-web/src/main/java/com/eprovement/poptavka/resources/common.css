@@ -181,6 +181,31 @@
 
 .button-grey:hover {
     color: #ffffff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.button-long-grey {
+    background: url(images/button-long-grey.png) repeat;
+    display: block;
+    float: right;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin: 18px 15px 0 0;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff; 
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: none;
+    padding: 0 15px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+.button-long-grey:hover {
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -206,6 +231,7 @@ button.button-green {
 
 .button-green:hover {
     color: #ffffff;
+    background-color: transparent !important;
     text-decoration: none;
 }
 
@@ -447,24 +473,24 @@ a.toolbar-button-grey {
 }
 
 .changeMonitorStyle .control-group .gwt-TextBox {
-    width: 350px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-TextArea {
     height: 200px;
-    width: 500px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-BigDecimalTextBox {
-    width: 322px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-IntegerTextBox {
-    width: 322px;
+    width: 80%;
 }
 
 .changeMonitorStyle .control-group .gwt-DateBox {
-    width: 350px;
+    width: 80%;
 }
 
 .changed {
@@ -518,6 +544,7 @@ a.toolbar-button-grey {
 .validation-container select {
     background: none repeat scroll 0 0 #F8F4E4;
     border: 1px solid #D2C9A9;
+    height: 40px;
 }
 
 .validation-container input[type="text"]:focus,
@@ -633,6 +660,10 @@ a.toolbar-button-grey {
 
 .validation-container input.append-star {
     background: url(images/advanced-search-star-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
+.validation-container input.append-percent {
+    background: url(images/advanced-search-percent-icon.png) no-repeat scroll right 7px #F8F4E4
 }
 
 /* how it works */

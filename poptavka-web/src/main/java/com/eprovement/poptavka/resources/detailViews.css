@@ -100,6 +100,12 @@
     width: 108px;
 }
 
+.detail-block-label.edit {
+    color: #237E00;
+    line-height: 40px;    
+    padding: 0;
+}
+
 .detail-date-label {
     background: url(images/detail-date-label.png) no-repeat 1px 1px;
     padding: 0 0 0 24px;
@@ -183,7 +189,7 @@
 
 .conversation-detail {
     border-top: 1px solid #f2efe7;
-    padding: 20px 30px;
+    padding: 10px 30px;
     cursor: pointer;
     min-height: 40px;
 }
@@ -246,7 +252,7 @@
     cursor: hand;
     border-radius: 5px;    
     padding: 10px 7px 10px 29px;
-    min-height: 50px;
+    min-height: 40px;
     -webkit-box-top-left-radius: 7px;
     -webkit-box-top-right-radius: 7px;
     -moz-border-topleft-radius: 7px;

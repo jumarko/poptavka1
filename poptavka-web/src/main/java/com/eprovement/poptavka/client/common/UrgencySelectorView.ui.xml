@@ -8,14 +8,26 @@
     
     <ui:style>
         .urgency-container {
-        }        
-        
-        .urgency-container span img {
-        margin: 0 0 0 30px;
+        padding: 0px;
         }
         
-        .urgency-container input[type="radio"], input[type="checkbox"] {
-        margin: 13px 0 0 40px;
+        .urgency-container img {
+        margin: 0 auto;
+        display: block;
+        }
+        
+        .urgency-container input[type="radio"] {
+        margin: 6px auto;
+        display: block;
+        }       
+        
+        .label {
+        color: #237E00;
+        font-size: 14px;
+        line-height: 40px;
+        text-align: center;
+        width: 100%;
+        padding: 0 !important;
         }
     </ui:style>
 
@@ -23,38 +35,38 @@
         <b:FluidRow>
             <b:Column size="12">
                 <b:FluidRow>
-                    <b:Column size="4">
+                    <b:Column size="3">
                         <g:Label>
                             Urgency level:
                         </g:Label>
                     </b:Column>
                     <b:Column size="2">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             Normal
                         </g:Label>
                         <g:Image resource='{res.images.urgencyGreen}' title='{msgs.urgencyNormalDesc}' />
                     </b:Column>
                     <b:Column size="2">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             Higher
                         </g:Label>
                         <g:Image resource='{res.images.urgencyOrange}' title='{msgs.urgencyHigherDesc}'/>
                     </b:Column>
                     <b:Column size="2">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             High
                         </g:Label>
                         <g:Image resource='{res.images.urgencyRed}' title='{msgs.urgencyHighDesc}'/>
                     </b:Column>
                     <b:Column size="2" ui:field="labelColumn4">
-                        <g:Label>
+                        <g:Label addStyleNames='{style.label}'>
                             Expired
                         </g:Label>
                         <g:Image resource='{res.images.urgencyHeader}' title='{msgs.urgencyExpiredDesc}'/>
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow>
-                    <b:Column size="4">
+                    <b:Column size="3">
                         <g:Label>
                             Selected:
                         </g:Label>

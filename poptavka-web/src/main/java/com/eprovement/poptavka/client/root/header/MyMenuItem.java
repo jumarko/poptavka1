@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.MenuItem;
  */
 public class MyMenuItem extends MenuItem {
 
-    private static final int LEFT_OFFSET = 40;
+    private static final int LEFT_OFFSET = 10;
 
     /**
      * Creates an instance with no text (label) and a null sub-MenuBar.
@@ -28,6 +28,6 @@ public class MyMenuItem extends MenuItem {
      */
     @Override
     public int getAbsoluteLeft() {
-        return super.getAbsoluteLeft() - LEFT_OFFSET;
+        return super.getAbsoluteLeft() + super.getOffsetWidth() - super.getSubMenu().getOffsetWidth() - LEFT_OFFSET;
     }
 }
