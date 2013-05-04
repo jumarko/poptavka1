@@ -196,7 +196,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return number of client's conversations where an offer has been made
      */
     long getClientConversationsWithOfferCount(BusinessUser user, Demand demand);
-    
+
     /**
      * Gets conversation of the <code>user</code> with the <code>counetrparty</<code>
      * that originated in the <code>threadRoot</code>
@@ -206,5 +206,5 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return  list of UserMessages belonging to <code>user</code> in the order from
      * the newest to the oldest
      */
-    public List<UserMessage> getConversation(User user, User counterparty, Message rootMessage);
+    List<UserMessage> getConversation(User user, User counterparty, Message rootMessage);
 }
