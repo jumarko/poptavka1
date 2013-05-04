@@ -13,14 +13,13 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -67,11 +66,9 @@ public class DetailsWrapperPresenter
 
         OfferQuestionWindow getReplyHolder();
 
-        CellList getMessagePanel();
-
         ListDataProvider getMessageProvider();
 
-        HTMLPanel getConversationHolder();
+        FluidContainer getConversationHolder();
 
         void loadingDivShow(Widget holderWidget);
 
@@ -311,6 +308,7 @@ public class DetailsWrapperPresenter
      * @param threadRootId - root message i.e. first demand message in the conversation always created by client
      */
     public void requestConversation(long threadRootId) {
+        setMessagePanelVisibility();
         view.loadingDivShow(view.getConversationHolder());
         eventBus.requestConversation(threadRootId, senderId);
     }
@@ -355,8 +353,8 @@ public class DetailsWrapperPresenter
      */
     public void onResponseConversation(List<MessageDetail> chatMessages) {
         setMessageList(new LinkedList<MessageDetail>(chatMessages), true);
-        view.loadingDivHide(view.getConversationHolder());
         eventBus.updateUserMessagesReadStatus(Storage.getUser().getUserId(), chatMessages);
+        view.loadingDivHide(view.getConversationHolder());
     }
 
     /**************************************************************************/
@@ -377,9 +375,9 @@ public class DetailsWrapperPresenter
      */
     private void setMessagePanelVisibility() {
         if (view.getMessageProvider().getList().isEmpty()) {
-            view.getMessagePanel().getElement().getStyle().setDisplay(Style.Display.NONE);
+            view.getConversationHolder().getElement().getStyle().setDisplay(Style.Display.NONE);
         } else {
-            view.getMessagePanel().getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            view.getConversationHolder().getElement().getStyle().setDisplay(Style.Display.BLOCK);
         }
     }
 

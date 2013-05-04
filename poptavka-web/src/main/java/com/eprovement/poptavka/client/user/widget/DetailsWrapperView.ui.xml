@@ -36,20 +36,18 @@
                 <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
             </g:header>
             <g:ScrollPanel>
-                <g:HTMLPanel ui:field="conversationHolder" styleName='{res.detailViews.conversationContainer}'>
-                    <b:FluidContainer>
-                        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
-                            <b:Column size='12'>
-                                <d:OfferQuestionWindow ui:field="replyHolder" styleName='{res.detailViews.conversationBlock}'/>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
-                            <b:Column size='12'>
-                                <c:CellList ui:field="messageList" styleName='{res.detailViews.conversationBlock}'/>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:FluidContainer>
-                </g:HTMLPanel>
+                <b:FluidContainer ui:field="conversationHolder" addStyleNames='{res.detailViews.conversationContainer}'>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                        <b:Column size='12'>
+                            <d:OfferQuestionWindow ui:field="replyHolder" styleName='{res.detailViews.conversationBlock}'/>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='{res.detailViews.detailBlock}'>
+                        <b:Column size='12'>
+                            <c:CellList ui:field="messageList" styleName='{res.detailViews.conversationBlock}'/>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
             </g:ScrollPanel>
         </g:tab>
     </g:TabLayoutPanel>
