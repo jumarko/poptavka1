@@ -106,7 +106,9 @@ import java.util.List;
                         + ")\n"
                         + "from Demand as demand\n"
                         + "where demand.client.businessUser = :user"
-                        + " and (demand.status = 'ACTIVE' or demand.status = 'OFFERED')"),
+                        + " and (demand.status = 'ACTIVE' or demand.status = 'OFFERED'"
+                        + " or demand.status = 'NEW' or demand.status = 'INACTIVE'"
+                        + " or demand.status = 'INVALID')"),
         @NamedQuery(name = "getClientDemandsCount",
                 query = "select count(demand.id)\n"
                         + "from Demand as demand\n"

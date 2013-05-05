@@ -523,6 +523,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetClientDemandsWithUnreadSubMsgs() {
+        final Demand demand1 = this.demandService.getById(1L);
         final Demand demand2 = this.demandService.getById(2L);
         final Demand demand10 = this.demandService.getById(10L);
         final Demand demand21 = this.demandService.getById(21L);
@@ -531,8 +532,11 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Map<Demand, Integer> clientDemands =
                 this.demandService.getClientDemandsWithUnreadSubMsgs(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                4, clientDemands.size());
+                5, clientDemands.size());
 
+        checkDemandExists(demand1, clientDemands.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 0, (Object) clientDemands.get(demand1));
         checkDemandExists(demand2, clientDemands.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
                 (Object) 1, (Object) clientDemands.get(demand2));
