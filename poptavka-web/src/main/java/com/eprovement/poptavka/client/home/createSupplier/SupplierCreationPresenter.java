@@ -20,6 +20,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -59,6 +60,8 @@ public class SupplierCreationPresenter
         /** Other. **/
         Anchor getConditionLink();
 
+        CheckBox getAgreedCheck();
+
         void showConditions();
 
         boolean isAgreementChecked();
@@ -86,6 +89,7 @@ public class SupplierCreationPresenter
             eventBus.userMenuStyleChange(Constants.CREATE_SUPPLIER);
         }
         maxSelectedTab = 1;
+        view.getAgreedCheck().setValue(false);
     }
 
     @Override
