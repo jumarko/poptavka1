@@ -56,10 +56,10 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /* General Module events */
     /**************************************************************************/
     public void onStart() {
-        if (!Storage.isTimerStarted()) {
-            this.onStartSupplierNotificationTimer();
-            Storage.setTimerStarted(true);
-        }
+//        if (!Storage.isTimerStarted()) {
+//            this.onStartSupplierNotificationTimer();
+//            Storage.setTimerStarted(true);
+//        }
     }
 
     public void onForward() {

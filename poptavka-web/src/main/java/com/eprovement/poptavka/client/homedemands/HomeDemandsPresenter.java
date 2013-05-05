@@ -593,7 +593,7 @@ public class HomeDemandsPresenter
                 //cancel filtering if user selected category from celltree
                 view.getFilterLabel().setVisible(false);
                 //Set selected category as filter and pass it to filter through that category
-                SearchModuleDataHolder filterHolder = new SearchModuleDataHolder();
+                SearchModuleDataHolder filterHolder = SearchModuleDataHolder.getSearchModuleDataHolder();
                 filterHolder.getCategories().add(selected);
                 //Retrieve data
                 view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider

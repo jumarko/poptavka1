@@ -28,7 +28,7 @@ public class CategoryDetail implements IListDetailObject {
     /**************************************************************************/
     /* Initialization                                                          */
     /**************************************************************************/
-    public CategoryDetail() {
+    private CategoryDetail() {
     }
 
     public CategoryDetail(Long id, String name) {

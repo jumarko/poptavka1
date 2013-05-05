@@ -15,7 +15,7 @@ public class SearchDefinition implements IsSerializable {
     private SearchModuleDataHolder filter;
     private ArrayList<SortPair> sortPairs;
 
-    public SearchDefinition() {
+    private SearchDefinition() {
     }
 
     public SearchDefinition(SearchModuleDataHolder filter) {

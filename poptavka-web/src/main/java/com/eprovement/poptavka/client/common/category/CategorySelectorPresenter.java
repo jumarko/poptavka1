@@ -134,6 +134,6 @@ public class CategorySelectorPresenter
                 return selectedCategory;
             }
         }
-        return new CategoryDetail();
+        return null;
     }
 }

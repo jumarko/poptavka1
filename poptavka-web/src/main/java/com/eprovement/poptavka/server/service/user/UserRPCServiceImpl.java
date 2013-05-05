@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.server.service.user;
 
 import com.eprovement.poptavka.client.service.demand.UserRPCService;
-import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
@@ -13,12 +12,10 @@ import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
-import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -73,15 +70,13 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     }
 
     @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public BusinessUserDetail getBusinessUserById(Long userId) throws RPCException, ApplicationSecurityException {
+    public BusinessUserDetail getBusinessUserById(Long userId) throws RPCException {
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, userId));
     }
 
 
     @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public UserDetail getUserById(Long userId) throws RPCException, ApplicationSecurityException {
+    public UserDetail getUserById(Long userId) throws RPCException {
         return userConverter.convertToTarget(generalService.find(User.class, userId));
     }
 
@@ -94,8 +89,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
      * @throws ApplicationSecurityException
      */
     @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public UserDetail getLoggedUser() throws RPCException, ApplicationSecurityException {
+    public UserDetail getLoggedUser() throws RPCException {
         User user = generalService.find(User.class, getLoggedUserId());
         return new UserDetail(user.getId(), user.getEmail(),
                 accessRoleConverter.convertToTargetList(user.getAccessRoles()));
@@ -109,8 +103,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
      * @throws ApplicationSecurityException
      */
     @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public BusinessUserDetail getLoggedBusinessUser() throws RPCException, ApplicationSecurityException {
+    public BusinessUserDetail getLoggedBusinessUser() throws RPCException {
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, getLoggedUserId()));
     }
 

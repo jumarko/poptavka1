@@ -46,9 +46,9 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
     /**************************************************************************/
     @Override
     public LocalityDetail convertToTarget(Locality locality) {
-        LocalityDetail detail = new LocalityDetail();
-        detail.setId(locality.getId());
-        detail.setName(locality.getName());
+        LocalityDetail detail = new LocalityDetail(locality.getName(), locality.getId());
+//        detail.setId(locality.getId());
+//        detail.setName(locality.getName());
         detail.setLocalityType(locality.getType());
         detail.setDemandsCount(demandService.getDemandsCountQuick(locality));
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(locality));
