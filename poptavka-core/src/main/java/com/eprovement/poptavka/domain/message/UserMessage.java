@@ -160,7 +160,7 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and latestUserMessage.message.offer is not null\n"
                         + " and (latestUserMessage.message.offer.state.code = :statusAccepted"
-                        + " or latestUserMessage.message.offer.state = :statusCompleted)\n"
+                        + " or latestUserMessage.message.offer.state.code = :statusCompleted)\n"
                         + "group by latestUserMessage.id"),
         @NamedQuery(name = "getSupplierConversationsWithClosedDemands",
                 query = "select latestUserMessage, count(subUserMessage.id)\n"
