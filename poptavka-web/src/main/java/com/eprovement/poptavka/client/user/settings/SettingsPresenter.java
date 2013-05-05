@@ -152,10 +152,9 @@ public class SettingsPresenter
         eventBus.loadingShow(Storage.MSGS.loading());
         eventBus.setNavigationConfirmation(this);
 
-        if (!Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.SUPPLIER)) {
-            view.setClientButtonVisibility(false);
-        }
+        view.setClientButtonVisibility(
+                Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.SUPPLIER));
 
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
 

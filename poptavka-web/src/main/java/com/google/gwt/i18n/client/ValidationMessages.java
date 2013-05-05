@@ -59,11 +59,8 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String districtNotBlank();
 
     /*******************************************************************  E **/
-    @Key("emailDialog.email.notBlank")
-    String emailDialogEmailNotBlank();
-
-    @Key("emailDialog.email")
-    String emailDialogEmail();
+    @Key("email.notBlank")
+    String emailNotBlank();
 
     @Key("emailDialog.message.notBlank")
     String emailDialogMessageNotBlank();
@@ -110,6 +107,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String numberFormat();
 
     /*******************************************************************  P **/
+    @Key("pattern.email")
+    String patternEmail();
+
     @Key("pattern.itin")
     String patternItin();
 

@@ -18,6 +18,8 @@ public class ServicesSelectorPresenter extends LazyPresenter<
 
         void setServices(ArrayList<ServiceDetail> services);
 
+        void setService(ServiceDetail service);
+
         ServiceDetail getSelectedService();
 
         UniversalGrid getTable();
@@ -30,7 +32,13 @@ public class ServicesSelectorPresenter extends LazyPresenter<
         embedToWidget.setWidget(view.getWidgetView());
     }
 
+    /**
+     * Set retrieved services and select the first one.
+     *
+     * @param services
+     */
     public void onSetServices(ArrayList<ServiceDetail> services) {
         view.setServices(services);
+        view.setService(services.get(0));
     }
 }
