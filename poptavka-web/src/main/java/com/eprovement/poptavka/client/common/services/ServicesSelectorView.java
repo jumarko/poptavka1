@@ -42,12 +42,14 @@ public class ServicesSelectorView extends Composite
     /** Class attributes. **/
     private ServiceDetail originalSelected;
     private ServiceDetail selected;
+    private FieldUpdater fieldUpdater;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
+        initFieldUpdater();
         initTable();
 
         initWidget(uiBinder.createAndBindUi(this));
@@ -60,22 +62,7 @@ public class ServicesSelectorView extends Composite
 
         /** Column initialization. **/
         //Radio column
-        Column<ServiceDetail, Boolean> radioButton = new Column<ServiceDetail, Boolean>(new RadioCell()) {
-            @Override
-            public Boolean getValue(ServiceDetail object) {
-                return false;
-            }
-        };
-        radioButton.setFieldUpdater(new FieldUpdater<ServiceDetail, Boolean>() {
-            @Override
-            public void update(int index, ServiceDetail object, Boolean value) {
-                if (value) {
-                    selected = object;
-                    DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getWidget());
-                }
-            }
-        });
-        table.addColumn(radioButton);
+        table.addColumn(createRadioColumn());
         //Service title column
         table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
             @Override
@@ -114,6 +101,18 @@ public class ServicesSelectorView extends Composite
 //        table.setColumnWidth(3, "55px");
     }
 
+    private void initFieldUpdater() {
+        fieldUpdater = new FieldUpdater<ServiceDetail, Boolean>() {
+            @Override
+            public void update(int index, ServiceDetail object, Boolean value) {
+                if (value) {
+                    selected = object;
+                    DomEvent.fireNativeEvent(Document.get().createChangeEvent(), getWidget());
+                }
+            }
+        };
+    }
+
     /**************************************************************************/
     /* HasChangeHandlers                                                      */
     /**************************************************************************/
@@ -125,14 +124,24 @@ public class ServicesSelectorView extends Composite
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Set retrieved services in Table.
+     * @param services
+     */
     @Override
     public void setServices(ArrayList<ServiceDetail> services) {
         table.getDataProvider().setList(services);
     }
 
+    /**
+     * Select service in table.
+     * @param service to be selected
+     */
+    @Override
     public void setService(ServiceDetail service) {
         originalSelected = service;
         selected = service;
+        fieldUpdater.update(0, selected, true);
     }
 
     /**************************************************************************/
@@ -163,5 +172,19 @@ public class ServicesSelectorView extends Composite
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /* Helper method                                                          */
+    /**************************************************************************/
+    private Column<ServiceDetail, Boolean> createRadioColumn() {
+        Column<ServiceDetail, Boolean> radioButton = new Column<ServiceDetail, Boolean>(new RadioCell()) {
+            @Override
+            public Boolean getValue(ServiceDetail object) {
+                return object.equals(selected);
+            }
+        };
+        radioButton.setFieldUpdater(fieldUpdater);
+        return radioButton;
     }
 }
