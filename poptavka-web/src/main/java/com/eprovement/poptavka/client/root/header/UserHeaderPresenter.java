@@ -85,7 +85,6 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
         GWT.log("UserHeader presenter loaded");
         eventBus.setHeader(view);
         view.getUsername().setText(Storage.getUser().getEmail());
-        startStopUserTimer(true);
     }
 
     /**

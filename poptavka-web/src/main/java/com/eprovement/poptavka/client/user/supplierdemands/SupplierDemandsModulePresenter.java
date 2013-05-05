@@ -56,13 +56,13 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
     /* General Module events */
     /**************************************************************************/
     public void onStart() {
+        if (!Storage.isTimerStarted()) {
+            this.onStartSupplierNotificationTimer();
+            Storage.setTimerStarted(true);
+        }
     }
 
     public void onForward() {
-        //Must be set before any widget start initialize because of autoDisplay feature
-        if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
-            eventBus.updateUnreadMessagesCount();
-        }
         eventBus.setBody(view.getWidgetView());
         eventBus.setUpSearchBar(null);
         eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
@@ -211,8 +211,9 @@ public class SupplierDemandsModulePresenter extends LazyPresenter<
      */
     private void startSupplierNotificationTimer(int periodMilis) {
         timer = new Timer() {
+            @Override
             public void run() {
-//                eventBus.updateUnreadMessagesCount();
+                eventBus.updateUnreadMessagesCount();
             }
         };
         // Schedule the timer to run every period.

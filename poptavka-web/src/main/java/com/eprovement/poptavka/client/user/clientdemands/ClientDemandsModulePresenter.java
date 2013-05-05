@@ -60,13 +60,13 @@ public class ClientDemandsModulePresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
+        if (!Storage.isTimerStarted()) {
+            this.onStartClientNotificationTimer();
+            Storage.setTimerStarted(true);
+        }
     }
 
     public void onForward() {
-        //Must be set before any widget start initialize because of autoDisplay feature
-        if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
-            eventBus.updateUnreadMessagesCount();
-        }
         eventBus.setBody(view.getWidgetView());
         eventBus.setUpSearchBar(null);
         eventBus.userMenuStyleChange(Constants.USER_CLIENT_MODULE);
@@ -237,7 +237,7 @@ public class ClientDemandsModulePresenter
         timer = new Timer() {
             @Override
             public void run() {
-//                eventBus.updateUnreadMessagesCount();
+                eventBus.updateUnreadMessagesCount();
             }
         };
         // Schedule the timer to run every period.

@@ -35,6 +35,7 @@ public final class Storage {
     private static boolean calledDueToHistory = false;
     private static String forwardHistory = "";
     private static Boolean appCalledByURL = null;
+    private static boolean timerStarted;
 
     public static final String BACK = "back";
     public static final String FORWARD = "forward";
@@ -207,6 +208,7 @@ public final class Storage {
         setAppCalledByURL(null);
         setDemandId(-1L);
         setCurrentlyLoadedView(-1);
+        setTimerStarted(false);
     }
 
     /**
@@ -225,5 +227,19 @@ public final class Storage {
         } else {
             throw new NullPointerException("userDetail or businessUserDetail in Storage were not initialized.");
         }
+    }
+
+    /**
+     * @return the timerStarted
+     */
+    public static boolean isTimerStarted() {
+        return timerStarted;
+    }
+
+    /**
+     * @param timerStarted the timerStarted to set
+     */
+    public static void setTimerStarted(boolean timerStartedValue) {
+        timerStarted = timerStartedValue;
     }
 }
