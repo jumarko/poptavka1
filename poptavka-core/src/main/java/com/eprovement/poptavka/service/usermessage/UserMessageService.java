@@ -257,8 +257,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
-            OfferState offerStateAccepted, OfferState offerStateCompleted);
+    Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -272,7 +271,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * messages in each conversation
      */
     Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
-            OfferState offerStateAccepted, OfferState offerStateCompleted, Search search);
+            Search search);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -283,7 +282,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user, OfferState offerClosed);
+    Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -296,7 +295,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * messages in each conversation
      */
     Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
-            OfferState offerClosed, Search search);
+            Search search);
 
    /**
     * Gets a list of all client's conversations related to the given demand where

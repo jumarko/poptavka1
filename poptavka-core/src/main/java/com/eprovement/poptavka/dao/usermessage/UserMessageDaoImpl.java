@@ -7,7 +7,7 @@ package com.eprovement.poptavka.dao.usermessage;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -135,15 +135,11 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
-        OfferState offerStateAccepted, OfferState offerStateCompleted) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
-        queryParams.put("statusAccepted", offerStateAccepted);
-        queryParams.put("statusCompleted", offerStateCompleted);
-        queryParams.put("pendingCompletionStatus", DemandStatus.PENDINGCOMPLETION);
-        queryParams.put("assignedStatus", DemandStatus.ASSIGNED);
-
+        queryParams.put("statusAccepted", OfferStateType.ACCEPTED.getValue());
+        queryParams.put("statusCompleted", OfferStateType.COMPLETED.getValue());
         List<Object[]> unread = runNamedQuery(
                 "getSupplierConversationsWithAcceptedOffer",
                 queryParams);
@@ -156,12 +152,10 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     /** {@inheritDoc} */
     @Override
-    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
-            OfferState offerClosed) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", user);
-        queryParams.put("closedStatus", DemandStatus.CLOSED);
-        queryParams.put("offerStatusClosed", offerClosed);
+        queryParams.put("offerStatusClosed", OfferStateType.CLOSED.getValue());
 
         List<Object[]> unread = runNamedQuery(
                 "getSupplierConversationsWithClosedDemands",
