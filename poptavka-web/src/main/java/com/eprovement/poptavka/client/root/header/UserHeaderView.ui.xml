@@ -93,6 +93,8 @@
                     <g:downFace image='{res.images.envelopeImage}' />
                     <g:downHoveringFace image='{res.images.envelopeImage}' />
                 </g:PushButton>
+            </g:HTMLPanel>
+            <g:HTMLPanel styleName='{style.newMessageContainer}'>
                 <g:Label ui:field="newSystemMessagesCount" styleName='{style.newMessageCount}'></g:Label>
                 <g:PushButton ui:field='pushSystemButton' enabled='true'
                               styleName='{style.pushButton}'>

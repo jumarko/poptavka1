@@ -125,78 +125,7 @@
                     </b:FluidRow>
                 </b:WellForm>
             </b:Column>
-        </b:FluidRow>
-
-        <b:WellForm addStyleNames='no-header-form'> 
-            <b:FluidRow>
-                <b:Column size="2" addStyleNames='{style.form-indent}'>
-                    <g:Label addStyleNames='{style.left-label}'>
-                        <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
-                    </g:Label>
-                </b:Column>
-                <b:Column size="2">
-                    <g:HTMLPanel ui:field="companyChoicePanel" addStyleNames='{res.common.switchLeft}'>
-                        <g:Button ui:field="personBtn"></g:Button>
-                        <g:Button ui:field="companyBtn"></g:Button>
-                    </g:HTMLPanel>
-                </b:Column>
-                <b:Column size="2">
-                    <g:Label addStyleNames='{style.right-label}'>
-                        <ui:msg key="formUserRegCompany">Company</ui:msg>
-                    </g:Label>
-                </b:Column>
-            </b:FluidRow>
-        </b:WellForm>
-
-        <b:FluidRow ui:field="companyInfoPanel">
-            <b:Column size="6">
-                <b:WellForm>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <b:Heading size="4">
-                                <ui:msg key="formCompanyInfo">Company Info</ui:msg>
-                            </b:Heading>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="4">
-                            <g:Label>
-                                <ui:msg key="formCompanyName">Company Name</ui:msg>*
-                            </g:Label>
-                        </b:Column>
-                        <b:Column size="8">
-                            <vm:ValidationMonitor ui:field="companyName">
-                                <g:TextBox />
-                            </vm:ValidationMonitor>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="4">
-                            <g:Label>
-                                <ui:msg key="formTaxNumber">Tax Number</ui:msg>*
-                            </g:Label>
-                        </b:Column>
-                        <b:Column size="8">
-                            <vm:ValidationMonitor ui:field="taxId">
-                                <g:TextBox />
-                            </vm:ValidationMonitor>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="4">
-                            <g:Label>
-                                <ui:msg key="formVatNumner">Vat Number</ui:msg>
-                            </g:Label>
-                        </b:Column>
-                        <b:Column size="8">
-                            <vm:ValidationMonitor ui:field="identificationNumber">
-                                <g:TextBox />
-                            </vm:ValidationMonitor>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:WellForm>
-            </b:Column>
-        </b:FluidRow>
+        </b:FluidRow>        
 
         <b:FluidRow>
             <b:Column size="6">
@@ -242,6 +171,77 @@
                         <b:Column size="8">
                             <vm:ValidationMonitor ui:field="description">
                                 <g:TextArea height="110px" width="92%" />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:WellForm>
+            </b:Column>
+        </b:FluidRow>
+        
+        <b:WellForm addStyleNames='no-header-form'> 
+            <b:FluidRow>
+                <b:Column size="2" addStyleNames='{style.form-indent}'>
+                    <g:Label addStyleNames='{style.left-label}'>
+                        <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="2">
+                    <g:HTMLPanel ui:field="companyChoicePanel" addStyleNames='{res.common.switchLeft}'>
+                        <g:Button ui:field="personBtn"></g:Button>
+                        <g:Button ui:field="companyBtn"></g:Button>
+                    </g:HTMLPanel>
+                </b:Column>
+                <b:Column size="2">
+                    <g:Label addStyleNames='{style.right-label}'>
+                        <ui:msg key="formUserRegCompany">Company</ui:msg>
+                    </g:Label>
+                </b:Column>
+            </b:FluidRow>
+        </b:WellForm>
+        
+        <b:FluidRow ui:field="companyInfoPanel">
+            <b:Column size="6">
+                <b:WellForm>
+                    <b:FluidRow>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key="formCompanyInfo">Company Info</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formCompanyName">Company Name</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="companyName">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formTaxNumber">Tax Number</ui:msg>*
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="taxId">
+                                <g:TextBox />
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formVatNumner">Vat Number</ui:msg>
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="identificationNumber">
+                                <g:TextBox />
                             </vm:ValidationMonitor>
                         </b:Column>
                     </b:FluidRow>

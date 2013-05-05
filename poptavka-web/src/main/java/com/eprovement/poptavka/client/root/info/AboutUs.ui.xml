@@ -52,7 +52,7 @@
         border-left: 1px solid #D1CCBB;
         border-radius: 0 0 5px 5px;
         border-right: 1px solid #D1CCBB;
-        padding: 15px 131px 5px 10px;
+        padding: 10px 131px 10px 10px;
         height: 78px;
         color: #887c7f;
         }
@@ -92,8 +92,7 @@
                                     <g:HTMLPanel styleName='{style.members-inside-block}'>
                                         <h4>Ivan Vlček</h4>
                                         <g:HTMLPanel styleName='{style.members-content}'>
-                                         Team leader, project coordinator, backend and frontend
-                                            developer.
+                                         Team leader and developer
                                         </g:HTMLPanel>
                                         <img src="images/team-members/ivan.jpg" alt="Ivan" />
                                     </g:HTMLPanel>                        
@@ -104,7 +103,7 @@
                                     <g:HTMLPanel styleName='{style.members-inside-block}'>
                                         <h4>Juraj Martinka</h4>
                                         <g:HTMLPanel styleName='{style.members-content}'>
-                                            Backend developer.
+                                            Backend developer
                                         </g:HTMLPanel>
                                         <img src="images/team-members/juraj.jpg" />
                                     </g:HTMLPanel>                        
@@ -115,7 +114,7 @@
                                     <g:HTMLPanel styleName='{style.members-inside-block}'>
                                         <h4>Vojtěch Hubr</h4>
                                         <g:HTMLPanel styleName='{style.members-content}'>
-                                            Backend developer.
+                                            Backend developer
                                         </g:HTMLPanel>
                                         <img src="images/team-members/vojto.jpg" />
                                     </g:HTMLPanel>                        
@@ -131,7 +130,7 @@
                                     <g:HTMLPanel styleName='{style.members-inside-block}'>
                                         <h4>Martin Slavkovský</h4>
                                         <g:HTMLPanel styleName='{style.members-content}'>
-                                            Frontend developer.
+                                            Frontend developer
                                         </g:HTMLPanel>
                                         <img src="images/team-members/martin.jpg" />
                                     </g:HTMLPanel>                        
@@ -142,9 +141,9 @@
                                     <g:HTMLPanel styleName='{style.members-inside-block}'>
                                         <h4>Jaroslav Krivuš</h4>
                                         <g:HTMLPanel styleName='{style.members-content}'>
-                                            Frontend developer.
+                                            Frontend developer
                                         </g:HTMLPanel>
-                                        <img src="images/team-members/jaroslav.jpg" />
+                                        <img src="images/team-members/jaro.jpg" />
                                     </g:HTMLPanel>                        
                                 </g:HTMLPanel>
                             </b:Column>                                                                                    

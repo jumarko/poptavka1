@@ -554,7 +554,7 @@ a.toolbar-button-grey {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(158, 151, 126, 0.6);
     outline: none;
 }
-    
+
 .validation-container .error .controls input[type="text"],
 .validation-container .error .controls input[type="password"],
 .validation-container .error .controls textarea {
@@ -696,7 +696,7 @@ a.toolbar-button-grey {
     font-weight: 300;
     height: 100%;
     line-height: 34px;
-    padding: 0 0 28px;
+    padding: 0 5px 28px;
     text-transform: uppercase;
 }
 
@@ -811,4 +811,37 @@ a.toolbar-button-grey {
 
 .myListBox .suggestPopupMiddleCenter td:hover {
     color: #199204;
+}
+
+/* Alert Box styles */
+.alert-container {
+
+}
+
+.alert-container .alert {
+    background: url(images/login-popup/info-icon.gif) no-repeat 15px 8px #DDD8C5;
+    border: medium none;
+    border-radius: 5px 5px 5px 5px;
+    color: #000000;
+    min-height: 27px;
+    margin: 0;
+    padding: 17px 35px 8px 60px;
+}
+
+.alert-container .alert .gwt-Label {
+    background: none;
+    border: medium none;
+    color: #232016;
+    line-height: 20px;
+    padding: 0;
+    text-shadow: none; 
+}
+
+.alert-container .alert.alert-error {
+    background: url(images/login-popup/error-icon.gif) no-repeat scroll 15px 8px #DD5B56;
+    border: 1px solid #D70000;
+}
+
+.alert-container .alert.alert-error .gwt-Label {
+    color: #ffffff;
 }

@@ -205,26 +205,31 @@
                         <div id="wrapper" class="wrapper">
                             <div id="my-cute-slider" class="cute-slider" data-width="980" data-height="252">
                                 <ul data-type="slides">
-                                    <li data-delay="7" data-trans3d="tr2,tr20,tr57" data-trans2d="tr1,tr14,tr26">
+                                    <li data-delay="6" data-trans3d="tr2,tr20,tr57" data-trans2d="tr1,tr14,tr26">
                                         <img src="images/homepage/1.jpg" data-thumb="images/homepage/thumbs/1.jpg"/>
                                         <ul data-type="captions">                                            
                                         </ul>
                                     </li>
-                                    <li data-delay="7" data-trans3d="tr4,tr21,tr62" data-trans2d="tr5,tr23,tr30">
+                                    <li data-delay="6" data-trans3d="tr4,tr21,tr62" data-trans2d="tr5,tr23,tr30">
                                         <img src="cute-theme/blank.jpg" data-src="images/homepage/2.jpg" data-thumb="images/homepage/thumbs/2.jpg"/>
-                                        <ul data-type="captions">                                            
+                                        <ul data-type="captions">
                                         </ul>
                                     </li>
-                                    <li data-delay="7" data-trans3d="tr17,tr46,tr64" data-trans2d="tr7,tr32,tr40">
+                                    <li data-delay="6" data-trans3d="tr17,tr46,tr64" data-trans2d="tr7,tr32,tr40">
                                         <img src="cute-theme/blank.jpg" data-src="images/homepage/3.jpg" data-thumb="images/homepage/thumbs/3.jpg"/>
                                         <ul data-type="captions">                                            
                                         </ul>
                                     </li>
-                                    <li data-delay="7" data-trans3d="tr8,tr19" data-trans2d="tr15,tr3,tr38">
+                                    <li data-delay="5" data-trans3d="tr8,tr19" data-trans2d="tr15,tr3,tr38">
                                         <img src="cute-theme/blank.jpg" data-src="images/homepage/4.jpg" data-thumb="images/homepage/thumbs/4.jpg"/>
                                         <ul data-type="captions">                                            
                                         </ul>	
-                                    </li>                                    
+                                    </li>
+                                    <li data-delay="5" data-trans3d="tr5,tr15" data-trans2d="tr15,tr3,tr38">
+                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/5.jpg" data-thumb="images/homepage/thumbs/5.jpg"/>
+                                        <ul data-type="captions">
+                                        </ul>	
+                                    </li>                                 
                                 </ul>
                                 <ul data-type="controls">
                                     <li data-type="link"> </li>

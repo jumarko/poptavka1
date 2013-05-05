@@ -66,16 +66,6 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(158, 151, 126, 0.6);
 }
 
-.login-modal .info-block {
-    background: url(images/login-popup/info-icon.gif) no-repeat 15px 8px #DDD8C5;
-    border: medium none;
-    border-radius: 5px 5px 5px 5px;
-    color: #000000;
-    min-height: 27px;
-    margin: 0;
-    padding: 17px 35px 8px 60px;
-}
-
 .login-modal .control-group.error .control-label {
     color: #d70000;
     text-shadow: none;
@@ -90,16 +80,6 @@
 .login-modal .control-group.error .controls .gwt-PasswordTextBox:focus
 {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
-}
-
-.login-modal .info-block.alert-error {
-    background: url(images/login-popup/error-icon.gif) no-repeat 15px 8px #dd5b56;
-    border: 1px solid #d70000;
-}
-
-.login-modal .info-block.alert-error .gwt-Label {
-    color: #ffffff;
-    text-shadow: none;
 }
 
 .login-modal .gwt-DisclosurePanel {
