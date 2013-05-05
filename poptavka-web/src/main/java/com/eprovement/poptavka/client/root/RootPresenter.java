@@ -147,8 +147,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
-        showDevelUserInfoPopupThatShouldBedeletedAfter();
-        // notify all components that user has logged in
+        // TODO LATER ivlcek: comment for production
+//        showDevelUserInfoPopupThatShouldBedeletedAfter();
     }
 
     public void onAtHome() {
@@ -298,7 +298,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         eventBus.nofityServicesWidgetListeners();
     }
 
-    // TODO RELEASE ivlcek: comment for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
         final DialogBox userInfoPanel = new DialogBox(false, false);
         userInfoPanel.setText("User Info Box");
