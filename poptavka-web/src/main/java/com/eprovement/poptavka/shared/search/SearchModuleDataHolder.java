@@ -16,7 +16,7 @@ import java.util.Collection;
  *
  * @author Martin Slavkovsky
  */
-public class SearchModuleDataHolder implements IsSerializable {
+public final class SearchModuleDataHolder implements IsSerializable {
 
     //1. part of search bar ... store string for fulltext search
     private String searchText = "";
@@ -27,7 +27,10 @@ public class SearchModuleDataHolder implements IsSerializable {
     //4. part of search bar ... store additional filters on certaing domain object attribute
     private ArrayList<FilterItem> attributes = new ArrayList<FilterItem>();
 
-    public SearchModuleDataHolder() {
+    public static SearchModuleDataHolder getSearchModuleDataHolder() {
+        return new SearchModuleDataHolder();
+    }
+    private SearchModuleDataHolder() {
     }
 
     /**************************************************************************/

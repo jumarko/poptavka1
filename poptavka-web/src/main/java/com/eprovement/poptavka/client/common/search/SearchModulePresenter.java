@@ -151,7 +151,7 @@ public class SearchModulePresenter
      */
     private void executeSearch() {
         if (!view.getSearchContent().getText().isEmpty()) {
-            SearchModuleDataHolder filter = new SearchModuleDataHolder();
+            SearchModuleDataHolder filter = SearchModuleDataHolder.getSearchModuleDataHolder();
             //set search content text for full text search
             filter.setSearchText(view.getSearchContent().getText());
             forwardToCurrentView(filter);

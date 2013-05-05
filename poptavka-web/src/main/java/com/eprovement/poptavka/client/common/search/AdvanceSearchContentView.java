@@ -197,7 +197,7 @@ public class AdvanceSearchContentView extends Composite
 
     @Override
     public SearchModuleDataHolder getSearchModuleDataHolder() {
-        SearchModuleDataHolder search = new SearchModuleDataHolder();
+        SearchModuleDataHolder search = SearchModuleDataHolder.getSearchModuleDataHolder();
         if (mainPanel.getTabWidget(DEMANDS_SELECTOR_WIDGET).getParent().isVisible()) {
             search.setAttributes(demandsAttributeSelectorWidget.getFilter());
         }

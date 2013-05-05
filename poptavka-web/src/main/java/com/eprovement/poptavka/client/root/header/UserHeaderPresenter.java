@@ -130,7 +130,7 @@ public class UserHeaderPresenter extends BasePresenter<IUserHeaderView, RootEven
      * Logs out and user is forwarded to HomeWelcomModule.
      */
     public void onLogout(final int widgetToLoad) {
-        startStopUserTimer(false);
+//        startStopUserTimer(false);
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getLogoutUrl());
         rb.setCallback(new RequestCallback() {
             @Override

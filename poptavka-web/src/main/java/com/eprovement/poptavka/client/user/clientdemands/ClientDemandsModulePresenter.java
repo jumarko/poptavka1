@@ -60,10 +60,10 @@ public class ClientDemandsModulePresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        if (!Storage.isTimerStarted()) {
-            this.onStartClientNotificationTimer();
-            Storage.setTimerStarted(true);
-        }
+//        if (!Storage.isTimerStarted()) {
+//            this.onStartClientNotificationTimer();
+//            Storage.setTimerStarted(true);
+//        }
     }
 
     public void onForward() {

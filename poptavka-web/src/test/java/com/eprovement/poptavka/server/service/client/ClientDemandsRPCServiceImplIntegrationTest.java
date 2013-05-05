@@ -143,7 +143,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
     @Test
     public void testGetClientOfferedDemandOffers() {
         // final List<FullOfferDetail> allClientProjects = clientDemandsRPCService.getClientProjects(111111111L, null);
-        SearchDefinition searchDefinition = new SearchDefinition();
+        SearchDefinition searchDefinition = new SearchDefinition(SearchModuleDataHolder.getSearchModuleDataHolder());
         long count = clientDemandsRPCService.getClientOfferedDemandOffersCount(111111112L, 2L, searchDefinition);
         Assert.assertEquals("getClientOfferedDemandOffersCount [count=" + count + "] was not correct",
                 Long.valueOf(3L), Long.valueOf(count));
@@ -156,7 +156,6 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         checkClientOfferedDemandOffersDetailExists(offers, 11, 3);
         checkClientOfferedDemandOffersDetailExists(offers, 11, 7);
         checkClientOfferedDemandOffersDetailExists(offers, 12, 9);
-        searchDefinition.setFilter(new SearchModuleDataHolder());
         searchDefinition.getFilter().setSearchText("Fourth");
         offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, 1L, searchDefinition);
         assertThat(offers.size(), is(3));

@@ -135,6 +135,6 @@ public class LocalitySelectorPresenter
                 return selectedLocality;
             }
         }
-        return new LocalityDetail();
+        return null;
     }
 }

@@ -37,7 +37,7 @@ public class LocalityDetail implements IListDetailObject {
     /**************************************************************************/
     /* Initialize                                                             */
     /**************************************************************************/
-    public LocalityDetail() {
+    private LocalityDetail() {
     }
 
     public LocalityDetail(String name, Long id) {

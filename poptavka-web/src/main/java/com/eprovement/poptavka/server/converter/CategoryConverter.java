@@ -46,9 +46,9 @@ public final class CategoryConverter extends AbstractConverter<Category, Categor
     /**************************************************************************/
     @Override
     public CategoryDetail convertToTarget(Category category) {
-        CategoryDetail detail = new CategoryDetail();
-        detail.setId(category.getId());
-        detail.setName(category.getName());
+        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName());
+//        detail.setId(category.getId());
+//        detail.setName(category.getName());
         detail.setDemandsCount(demandService.getDemandsCountQuick(category));
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(category));
         detail.setLevel(category.getLevel());
