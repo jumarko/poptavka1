@@ -23,7 +23,7 @@ public class UserDetail implements IsSerializable {
      */
     private long userId;
     @NotBlank(message = "{emailNotBlank}")
-    @Email(message = "{emailEmail}")
+    @Email(message = "{patternEmail}")
     private String email;
     @NotBlank(message = "{passwordNotBlank}")
     @Length(min = 5, message = "{passwordLength}")

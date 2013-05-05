@@ -80,8 +80,10 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
      *      <li>Area code should not start with 0 but may be optionally enclosed in round brackets.</li>
      * </ul>
      */
-    @Pattern(regexp = "^[+]?[01]?[- .]?(\\([2-9]\\d{2}\\)|[2-9]\\d{2})[- .]?\\d{3}[- .]?\\d{4}$",
-            message = "{patternPhone}")
+//    Commented this strict regex, but leaving here for furthture usage...maybe
+//    @Pattern(regexp = "^[+]?[01]?[- .]?(\\([2-9]\\d{2}\\)|[2-9]\\d{2})[- .]?\\d{3}[- .]?\\d{4}$",
+//            message = "{patternPhone}")
+    @Pattern(regexp = "[+]?\\d{8,10}", message = "{patternPhone}")
     @NotBlank(message = "{phoneNotBlank}")
     private String phone;
     @NotBlank(message = "{descriptionNotBlank}")
