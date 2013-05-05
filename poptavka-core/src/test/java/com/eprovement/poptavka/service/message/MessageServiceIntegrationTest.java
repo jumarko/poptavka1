@@ -6,11 +6,9 @@ import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
@@ -400,10 +398,9 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithClosedDemands() {
         BusinessUser userWithClosedDemands = new BusinessUser();
         userWithClosedDemands.setId(111111112L);
-        OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
 
         Map<UserMessage, Integer> closedDemandsMap = userMessageService.getSupplierConversationsWithClosedDemands(
-                userWithClosedDemands, offerClosed);
+                userWithClosedDemands);
         long count = closedDemandsMap.size();
         Assert.assertEquals("Expected count of different conversations with closed demands [count=" + count
                 + "] for user was different", 1L, count);

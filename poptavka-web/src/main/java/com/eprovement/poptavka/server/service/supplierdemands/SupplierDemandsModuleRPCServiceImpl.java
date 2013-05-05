@@ -326,11 +326,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         Supplier supplier = generalService.find(Supplier.class, supplierID);
 
-        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
-        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
         Map<UserMessage, Integer> latestUserMessages =
                 userMessageService.getSupplierConversationsWithAcceptedOffer(
-                supplier.getBusinessUser(), offerAccepted, offerCompleted);
+                supplier.getBusinessUser());
 
         List<UserMessage> sortedList = sortInMemory(new Search(UserMessage.class),
                 searchDefinition, latestUserMessages.keySet());
@@ -407,10 +405,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public List<SupplierOffersDetail> getSupplierClosedDemands(long supplierID,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         Supplier supplier = generalService.find(Supplier.class, supplierID);
-        OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
 
         Map<UserMessage, Integer> latestUserMessages =
-                userMessageService.getSupplierConversationsWithClosedDemands(supplier.getBusinessUser(), offerClosed);
+                userMessageService.getSupplierConversationsWithClosedDemands(supplier.getBusinessUser());
 
         List<UserMessage> sortedList = sortInMemory(new Search(UserMessage.class),
                 searchDefinition, latestUserMessages.keySet());

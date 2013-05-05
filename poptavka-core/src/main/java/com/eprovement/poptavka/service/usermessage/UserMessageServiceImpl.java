@@ -278,38 +278,33 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
-            OfferState offerStateAccepted, OfferState offerStateCompleted) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
-        return getDao().getSupplierConversationsWithAcceptedOffer(user, offerStateAccepted,
-                offerStateCompleted);
+        return getDao().getSupplierConversationsWithAcceptedOffer(user);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
-            OfferState offerStateAccepted, OfferState offerStateCompleted, Search search) {
-        return Searcher.searchMapByKeys(getSupplierConversationsWithAcceptedOffer(user, offerStateAccepted,
-                offerStateCompleted), search);
+            Search search) {
+        return Searcher.searchMapByKeys(getSupplierConversationsWithAcceptedOffer(user), search);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
-            OfferState offerClosed) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user) {
         Preconditions.checkNotNull("BusinessUser specified must not be empty.", user);
-        return getDao().getSupplierConversationsWithClosedDemands(user, offerClosed);
+        return getDao().getSupplierConversationsWithClosedDemands(user);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
-            OfferState offerClosed,
-        Search search) {
-        return Searcher.searchMapByKeys(getSupplierConversationsWithClosedDemands(user, offerClosed), search);
+            Search search) {
+        return Searcher.searchMapByKeys(getSupplierConversationsWithClosedDemands(user), search);
     }
 
     /** {@inheritDoc} */

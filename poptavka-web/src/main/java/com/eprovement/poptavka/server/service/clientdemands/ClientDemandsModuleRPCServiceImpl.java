@@ -522,14 +522,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientOfferedDemandOffersDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        OfferState offerAccepted = offerService.getOfferState(OfferStateType.ACCEPTED.getValue());
-        OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
 
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
         Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getSupplierConversationsWithAcceptedOffer(businessUser,
-                offerAccepted, offerCompleted);
+                userMessageService.getSupplierConversationsWithAcceptedOffer(businessUser);
         List<UserMessage> sortedList = searchInMemory(new Search(UserMessage.class),
                 searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
         for (UserMessage userMessage : sortedList) {
@@ -597,12 +594,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
 
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
         Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getSupplierConversationsWithClosedDemands(businessUser, offerClosed);
+                userMessageService.getSupplierConversationsWithClosedDemands(businessUser);
         List<UserMessage> sortedList = searchInMemory(new Search(UserMessage.class),
                 searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
         for (UserMessage userMessage : sortedList) {
