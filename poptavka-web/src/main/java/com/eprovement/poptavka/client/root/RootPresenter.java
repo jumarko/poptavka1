@@ -103,13 +103,10 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             GWT.log("++++++++++++++++++++++++++++NORMAL START OF APP");
             // normal start of app
             Storage.setAppCalledByURL(false);
-            eventBus.goToHomeWelcomeModule();
         } else {
             // start of app by entering URL token
             GWT.log("++++++++++++++++++++++++++++START BY URL OF APP");
             Storage.setAppCalledByURL(true);
-            // populate Storage by UserDetail and BusinessUserDetail
-
         }
     }
 
