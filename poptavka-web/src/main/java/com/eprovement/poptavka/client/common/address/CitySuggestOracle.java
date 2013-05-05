@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.shared.domain.LocalitySuggestionDetail;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Callback;
 import com.google.gwt.user.client.ui.SuggestOracle.Request;
@@ -31,9 +32,25 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
     private AddressSelectorPresenter addressSelectorPresenter = null;
     private Request suggestRequest = null;
     private Callback callback = null;
+    private Timer timer  = null;
 
     public CitySuggestOracle(AddressSelectorPresenter presenter) {
         this.addressSelectorPresenter = presenter;
+        this.timer = new Timer() {
+                @Override
+                public void run() {
+                    addressSelectorPresenter.getCitySuggestionPopup().showLoading();
+                    addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(
+                            getCityFromQuery(suggestRequest.getQuery()), Constants.MIN_CHARS_TO_SEARCH,
+                            new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(
+                            addressSelectorPresenter.getEventBus()) {
+                            @Override
+                            public void onSuccess(List<LocalitySuggestionDetail> result) {
+                                responseSuggestions(suggestRequest, callback, result);
+                            }
+                        });
+                }
+            };
     }
 
     @Override
@@ -45,16 +62,11 @@ public class CitySuggestOracle extends MultiWordSuggestOracle {
             addressSelectorPresenter.getCitySuggestionPopup().showShortCitiesInfo(Constants.MIN_CHARS_TO_SEARCH);
             addressSelectorPresenter.getCitySuggestionPopup().hideSuggestions();
         } else {
-            addressSelectorPresenter.getCitySuggestionPopup().showLoading();
-            addressSelectorPresenter.getLocalityService().getCityWithStateSuggestions(
-                    getCityFromQuery(suggestRequest.getQuery()), Constants.MIN_CHARS_TO_SEARCH,
-                    new SecuredAsyncCallback<List<LocalitySuggestionDetail>>(addressSelectorPresenter.getEventBus()) {
-                        @Override
-                        public void onSuccess(List<LocalitySuggestionDetail> result) {
-                            responseSuggestions(suggestRequest, callback, result);
-                        }
-                    });
+            //If the user keeps triggering this event (e.g., keeps typing), cancel and restart the timer
+            timer.cancel();
+            timer.schedule(Constants.SUGGESTBOX_DELAY);
         }
+
     }
 
     public void requestShortCitySuggestions() {

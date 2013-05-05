@@ -33,6 +33,7 @@ import com.google.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class SupplierCreationView extends OverflowComposite
         implements SupplierCreationPresenter.CreationViewInterface {
 
@@ -125,6 +126,11 @@ public class SupplierCreationView extends OverflowComposite
         return conditionLink;
     }
 
+    @Override
+    public CheckBox getAgreedCheck() {
+        return agreedCheck;
+    }
+
     public void showConditions() {
         final PopupPanel panel = new PopupPanel(true, false);
         HTMLPanel contentPanel =
@@ -192,7 +198,6 @@ public class SupplierCreationView extends OverflowComposite
         mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }
 }
-
 class AggreementDialogBox extends PopupPanel {
 
     public AggreementDialogBox(String message) {
