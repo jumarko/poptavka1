@@ -54,8 +54,9 @@ import javax.persistence.NamedQuery;
                         + " and ((userMessage.message.sender = :user"
                         + " and toRole.user = :counterparty"
                         + " and toRole.type = 'TO')"
-                        + " or (userMessage.message.sender != :user"
-                        + " and userMessage.message.sender = :counterparty))"
+                        + " or (userMessage.message.sender = :counterparty"
+                        + " and toRole.user = :user"
+                        + " and toRole.type = 'TO'))"
                         + " and userMessage.user = :user\n"
                         + "order by userMessage.message.sent desc"),
         @NamedQuery(name = "getPotentialOfferConversation",
