@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.mvp4g.client.annotation.Presenter;
@@ -56,6 +57,8 @@ public class ActivationCodePopupPresenter
 
         /** WIDGET. **/
         Alert getStatus();
+
+        Label getStatusLabel();
 
         ActivationCodePopupView getWidgetView();
     }
@@ -106,7 +109,7 @@ public class ActivationCodePopupPresenter
     public void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad) {
         this.user = user;
         this.widgetToLoad = widgetToLoad;
-        view.getStatus().setHeading(MSGS.activationCodeSent() + " " + user.getEmail());
+        view.getStatusLabel().setText(MSGS.activationCodeSent() + " " + user.getEmail());
     }
 
     /**************************************************************************/
@@ -148,15 +151,14 @@ public class ActivationCodePopupPresenter
 
         //inform user
         if (sent) {
-            view.getStatus().setHeading(
-                    MSGS.activationNewCodeSent() + " " + user.getEmail());
+            view.getStatusLabel().setText(MSGS.activationNewCodeSent() + " " + user.getEmail());
         } else {
             reportActivationFailure(MSGS.activationFailedSentNewCode());
         }
     }
 
     private void reportActivationSuccessAndLoginUser() {
-        view.getStatus().setHeading(MSGS.activationPassed());
+        view.getStatusLabel().setText(MSGS.activationPassed());
         view.getStatus().setType(AlertType.SUCCESS);
         //close activation popup
         ((PopupPanel) view.getWidgetView()).hide();
@@ -174,7 +176,7 @@ public class ActivationCodePopupPresenter
     }
 
     private void reportActivationFailure(String errorMessage) {
-        view.getStatus().setHeading(errorMessage);
+        view.getStatusLabel().setText(errorMessage);
         view.getStatus().setType(AlertType.ERROR);
         view.getReportButton().setVisible(true);
     }

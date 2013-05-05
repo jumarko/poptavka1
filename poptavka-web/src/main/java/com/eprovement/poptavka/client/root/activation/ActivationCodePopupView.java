@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,6 +30,7 @@ public class ActivationCodePopupView extends PopupPanel
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField Alert status;
+    @UiField Label statusLabel;
     @UiField TextBox activationCodeBox;
     @UiField Button closeButton, activateButton, sendAgainButton, reportButton;
 
@@ -81,6 +83,11 @@ public class ActivationCodePopupView extends PopupPanel
     @Override
     public Alert getStatus() {
         return status;
+    }
+
+    @Override
+    public Label getStatusLabel() {
+        return statusLabel;
     }
 
     @Override

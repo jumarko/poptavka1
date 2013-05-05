@@ -113,4 +113,8 @@ public interface CommonResource extends CssResource {
 
     @ClassName("myListBox")
     String myListBox();
+
+    /** Alert Box styles **/
+    @ClassName("alert-container")
+    String alertContainer();
 }

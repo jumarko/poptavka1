@@ -7,28 +7,17 @@
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     
-    <ui:style>
-        .info-block {
-        background: url(images/login-popup/info-icon.gif) no-repeat 15px 8px #DDD8C5;
-        border: medium none;
-        border-radius: 5px 5px 5px 5px;
-        color: #000000;
-        min-height: 27px;
-        margin: 0;
-        padding: 17px 35px 8px 60px;
-        }
-        
+    <ui:style>                
         .input-position {
         margin-top: 10px;
         }
     </ui:style>
 
     <g:VerticalPanel styleName='{res.common.validationContainer}'>
-        <g:HTMLPanel styleName='{style.info-block}'>
-            <b:Alert ui:field='status'/>
-            <g:HTMLPanel>
-                <ui:msg key="activationEnterActivationCode">Please enter the activation code below:</ui:msg>
-            </g:HTMLPanel>
+        <g:HTMLPanel styleName='{res.common.alertContainer}'>
+            <b:Alert ui:field='status' type="WARNING" close="false" animation="true">
+                <g:Label ui:field="statusLabel" />
+            </b:Alert>
         </g:HTMLPanel>
         <g:TextBox ui:field="activationCodeBox" addStyleNames='{style.input-position}'/>
         <g:HTMLPanel>
@@ -38,8 +27,8 @@
             <g:Button ui:field="sendAgainButton" styleName='{res.common.buttonLongGrey}'>
                 <ui:msg key="activationBtnSendAgain">Send again</ui:msg>
             </g:Button>
-            <g:Button ui:field="reportButton" visible="false" styleName='{res.common.buttonLongGrey}'>
-                <ui:msg key="commonBtnReport">Report problem</ui:msg>
+            <g:Button ui:field="reportButton" visible="false" styleName='{res.common.buttonGrey}'>
+                <ui:msg key="commonBtnReport">Report</ui:msg>
             </g:Button>
             <g:Button ui:field="closeButton" styleName='{res.common.buttonGrey}'>
                 <ui:msg key="commonBtnClose">Close</ui:msg>

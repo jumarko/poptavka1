@@ -33,13 +33,15 @@
                             <b:PasswordTextBox ui:field="passwordTextBox" placeholder="Password"/>
                         </b:Controls>
                     </b:ControlGroup>
-
-                    <b:Alert ui:field='status' type="INFO" close="false" animation="true" addStyleNames='info-block'>
-                        <b:ProgressBar ui:field="progressBar" color="SUCCESS" type="ANIMATED" percent="100"/>
-                        <g:Label ui:field='infoLabel'>
-                            Enter email and password to login.
-                        </g:Label>
-                    </b:Alert>
+                    
+                    <g:HTMLPanel styleName='{res.common.alertContainer}'>
+                        <b:Alert ui:field='status' type="INFO" close="false" animation="true" addStyleNames='info-block' >
+                            <b:ProgressBar ui:field="progressBar" color="SUCCESS" type="ANIMATED" percent="100"/>
+                            <g:Label ui:field='infoLabel'>
+                                Enter email and password to login.
+                            </g:Label>
+                        </b:Alert>
+                    </g:HTMLPanel>
                     
                     <b:ControlGroup>
                         <g:DisclosurePanel ui:field="forgotPassword" animationEnabled="true" title="Forgot Your Password" width="100%">
