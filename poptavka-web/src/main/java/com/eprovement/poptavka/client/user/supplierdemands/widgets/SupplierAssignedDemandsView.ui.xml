@@ -14,9 +14,8 @@
             <g:HTMLPanel ui:field="toolBar"
                          styleName='{res.layout.toolbarItemsBlock}'>
                 <g:Button ui:field="finnishBtn" visible="false" 
-                          styleName="{res.layout.toolbarButtonBlue} {res.layout.toolbarItem}"
-                          title="{msgs.tooltipFinish}">
-                    <i class="icon-ok-sign icon-white"></i>
+                          styleName="{res.common.toolbarButtonGreen} {res.layout.toolbarItem}"
+                          title="{msgs.tooltipFinish}">                    
                     <ui:msg key="supplierAssignedDemandsFinnishBtn">Finnish</ui:msg>
                 </g:Button>
                 <g:SimplePanel ui:field="actionBox" visible="false" />

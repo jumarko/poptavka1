@@ -67,9 +67,6 @@
                 </b:FluidRow>
                 <b:FluidRow>
                     <b:Column size="3">
-                        <g:Label>
-                            Selected:
-                        </g:Label>
                     </b:Column>
                     <b:Column size="2">
                         <g:RadioButton name="urgency" ui:field="urgency1" checked="true" />
