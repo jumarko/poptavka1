@@ -375,7 +375,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllDemands() {
-        Assert.assertEquals(14, this.demandService.getAll().size());
+        Assert.assertEquals(15, this.demandService.getAll().size());
     }
 
     @Test
@@ -387,7 +387,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                         .orderByColumns(new HashMap<String, OrderType>() { {  put("createdDate", OrderType.DESC);  } })
                         .build();
 
-        Assert.assertEquals(14, this.demandService.getAll(resultCriteria).size());
+        Assert.assertEquals(15, this.demandService.getAll(resultCriteria).size());
     }
 
 
@@ -496,13 +496,15 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetClientDemandsWithOffer() {
         Client client = generalService.find(Client.class, 111111112L);
-        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 5, client.getDemands().size());
+        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 6, client.getDemands().size());
         Client client2 = generalService.find(Client.class, 111111113L);
         Assert.assertEquals("Number of client demands [" + client2.toString() + "]", 1, client2.getDemands().size());
 
-        Assert.assertEquals("Number of client demands with offer [" + client.toString() + "]", 2L,
+        Assert.assertEquals("Number of client demands with offer [" + client.toString() + "]", 3L,
                 demandService.getClientDemandsWithOfferCount(client));
         checkDemandExists(demandService.getClientDemandsWithOffer(client), 2L);
+        checkDemandExists(demandService.getClientDemandsWithOffer(client), 22L);
+        checkDemandExists(demandService.getClientDemandsWithOffer(client), 23L);
 
         Assert.assertEquals("Number of client demands with offer [" + client2.toString() + "]", 0L,
                 demandService.getClientDemandsWithOfferCount(client2));

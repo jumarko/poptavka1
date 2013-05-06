@@ -397,8 +397,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetSupplierConversationsWithClosedDemands() {
         BusinessUser userWithClosedDemands = new BusinessUser();
-        userWithClosedDemands.setId(111111112L);
-
+        userWithClosedDemands.setId(111111111L);
         Map<UserMessage, Integer> closedDemandsMap = userMessageService.getSupplierConversationsWithClosedDemands(
                 userWithClosedDemands);
         long count = closedDemandsMap.size();
@@ -410,11 +409,11 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
             int countOfSubmessages = entryKey.getValue().intValue();
             Assert.assertEquals("Expected latestUserMessage id [id=" + latestUserMessage.getId() + "] "
                     + " for conversation with closed demands for user was different than expected",
-                    604L, latestUserMessage.getId().longValue());
+                    603L, latestUserMessage.getId().longValue());
             Assert.assertEquals("Expected sumbessages count [count=" + countOfSubmessages
                 + "] for latestUserMessage id [id=" + latestUserMessage.getId() + "] "
                     + " in conversation for closed demands for user was different than expected",
-                    2L, countOfSubmessages);
+                    1L, countOfSubmessages);
         }
     }
 

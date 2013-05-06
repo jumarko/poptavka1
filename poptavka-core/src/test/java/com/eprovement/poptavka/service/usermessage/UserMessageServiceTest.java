@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.googlecode.genericdao.search.Search;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -189,9 +190,9 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithOffer() {
         final OfferState pendingState = generalService.find(OfferState.class, 2L);
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
-                .getSupplierConversationsWithOffer(this.businessUser, pendingState);
+                .getSupplierConversationsWithOffer(this.businessUser);
         Assert.assertEquals(1, supplierConversations.size());
-        checkUserMessageIdAndCount(304L, 2, supplierConversations);
+        checkUserMessageIdAndCount(304L, 1, supplierConversations);
     }
 
     @Test
@@ -240,6 +241,23 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         Assert.assertEquals("The count of client's (id="
                 + this.businessUserClient.getId() + "conversations with offer is"
                 + " incorrect.", 1, clientConversationsCount);
+    }
+
+    @Test
+    public void testGetClientConversationsWithAcceptedOffer() {
+        Search search = new Search(UserMessage.class);
+        final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
+                .getClientConversationsWithAcceptedOffer(this.businessUserClient, search);
+        Assert.assertEquals(0, clientConversations.size());
+    }
+
+    @Test
+    public void testGetClientConversationsWithClosedOffer() {
+        Search search = new Search(UserMessage.class);
+        final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
+                .getClientConversationsWithClosedOffer(this.businessUserClient, search);
+        Assert.assertEquals(1, clientConversations.size());
+        checkUserMessageIdAndCountAndSupplierId(604L, 1, 111111111L, clientConversations);
     }
 
     @Test
