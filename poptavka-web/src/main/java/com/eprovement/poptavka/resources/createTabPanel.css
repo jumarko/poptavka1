@@ -166,7 +166,7 @@
     background: url(images/create-tab-arrow.png) no-repeat right top;
     color: #665D3C;
     font-size: 16px;
-    font-weight: lighter;
+    font-weight:300;
     height: 59px;
     line-height: 59px;
     margin-right: -8px;

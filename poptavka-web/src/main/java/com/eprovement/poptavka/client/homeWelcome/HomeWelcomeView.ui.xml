@@ -54,7 +54,7 @@
         color: #6F6B59;
         font-family: "Open Sans";
         font-size:35px;
-        font-weight:lighter;
+        font-weight:300;
         left:26px;
         position:absolute;
         top:45px;
@@ -110,7 +110,7 @@
         color: #FFFFFF;
         font-family:inherit;
         font-size: 19px;
-        font-weight: lighter;
+        font-weight:300;
         height:49px;
         left:26px;
         line-height: 42px;
