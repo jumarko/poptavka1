@@ -32,7 +32,8 @@ public class SupplierCell extends AbstractCell<FullSupplierDetail> {
         sb.appendHtmlConstant("</div>");
 
         // Display the address in normal text.
-        sb.appendHtmlConstant("<div style=\"padding-left:10px;\">");
+        sb.appendHtmlConstant("<div style=\"padding-left:10px;overflow:hidden;text-overflow: ellipsis;white-space: "
+                + "nowrap;\">");
         String categories = value.getCategories().toString();
         if (!categories.isEmpty()) {
             sb.appendEscaped(categories.substring(1, categories.length() - 1));

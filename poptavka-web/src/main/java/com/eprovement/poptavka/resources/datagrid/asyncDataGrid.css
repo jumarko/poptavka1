@@ -64,6 +64,12 @@
     color: #6f6b59;
 }
 
+.dataGridCell > div {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .dataGridFirstColumnFooter {
 
 }
