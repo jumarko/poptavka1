@@ -103,7 +103,7 @@
     border: medium none;
     color: #FFFFFF;
     font-size: 20px;
-    font-weight: lighter;
+    font-weight:300;
     height: 43px;
     width: 101px;
     padding: 0 0 4px 10px;
@@ -115,7 +115,7 @@
     border: medium none;
     color: #FFFFFF;
     font-size: 20px;
-    font-weight: lighter;
+    font-weight:300;
     height: 50px;
     width: 166px;
 }
@@ -125,7 +125,7 @@
     border: medium none;
     color: #FFFFFF;
     font-size: 20px;
-    font-weight: lighter;
+    font-weight:300;
     height: 50px;
     width: 236px;
     padding: 0 0 0 23px;
@@ -136,7 +136,7 @@
     border: medium none;
     color: #FFFFFF;
     font-size: 20px;
-    font-weight: lighter;
+    font-weight:300;
     height: 43px;
     width: 101px;
     padding: 0 10px 4px 0;
@@ -147,7 +147,7 @@
     border: medium none;
     color: #FFFFFF;
     font-size: 20px;
-    font-weight: lighter;
+    font-weight:300;
     height: 50px;
     width: 166px;
 }
@@ -157,7 +157,7 @@
     border: medium none;
     color: #FFFFFF;
     font-size: 20px;
-    font-weight: lighter;
+    font-weight:300;
     height: 50px;
     width: 236px;
     padding: 0 23px 0 0;
