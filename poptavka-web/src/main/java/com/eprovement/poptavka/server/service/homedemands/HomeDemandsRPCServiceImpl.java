@@ -238,7 +238,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     /**
      * Get demands count by full text search.
      *
-     * @param searchText - text to be searched
+     * @param definition
      * @return demands count
      * @throws RPCException
      */
@@ -365,8 +365,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      */
     private Search getCategoryFilter(SearchDefinition definition) {
         Search categorySearch = new Search(DemandCategory.class);
+        // return only distinct demands
+        categorySearch.addField("demand");
+        categorySearch.setDistinct(true);
         //filters
-        List<Category> allSubCategories = new ArrayList<Category>();
+        List<Category> allSubCategories = new ArrayList<>();
         for (CategoryDetail cat : definition.getFilter().getCategories()) {
             allSubCategories = Arrays.asList(getAllSubCategories(cat.getId()));
         }
@@ -389,6 +392,10 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      */
     private Search getLocalityFilter(SearchDefinition definition) {
         Search localitySearch = new Search(DemandLocality.class);
+        // return only distinct demands
+        localitySearch.addField("demand");
+        localitySearch.setDistinct(true);
+
         //filters
         List<Locality> allSubLocalities = new ArrayList<Locality>();
         for (LocalityDetail loc : definition.getFilter().getLocalities()) {
@@ -452,10 +459,10 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     /**************************************************************************/
     /*  Helper methods - List convertions                                     */
     /**************************************************************************/
-    private ArrayList<FullDemandDetail> createDemandDetailListCat(Collection<DemandCategory> demandsCat) {
+    private ArrayList<FullDemandDetail> createDemandDetailListCat(Collection<Demand> demands) {
         ArrayList<FullDemandDetail> userDetails = new ArrayList<FullDemandDetail>();
-        for (DemandCategory demandCat : demandsCat) {
-            userDetails.add(demandConverter.convertToTarget(demandCat.getDemand()));
+        for (Demand demand : demands) {
+            userDetails.add(demandConverter.convertToTarget(demand));
         }
         return userDetails;
     }
