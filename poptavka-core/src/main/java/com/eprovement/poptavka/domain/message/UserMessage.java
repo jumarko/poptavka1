@@ -114,20 +114,6 @@ import javax.persistence.NamedQuery;
                         + " and subUserMessage.user = :user"
                         + " and latestUserMessage.message.offer is null\n"
                         + "group by latestUserMessage.id"),
-        @NamedQuery(name = "getSupplierConversationsWithOffer",
-                query = "select latestUserMessage, count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join\n"
-                        + " subUserMessage.message.threadRoot as rootMessage,"
-                        + "UserMessage as latestUserMessage\n"
-                        + "where latestUserMessage.message.threadRoot = rootMessage"
-                        + " and latestUserMessage.user = :user"
-                        + " and subUserMessage.user = :user"
-                        + " and rootMessage.demand is not null"
-                        + " and rootMessage.demand.client.businessUser != :user"
-                        + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.offer is not null"
-                        + " and latestUserMessage.message.offer.state = :pendingState\n"
-                        + "group by latestUserMessage.id"),
         @NamedQuery(name = "getSupplierConversationsWithOfferCount",
                 query = "select count(latestUserMessage.id)\n"
                         + "from UserMessage as latestUserMessage\n"
@@ -147,35 +133,20 @@ import javax.persistence.NamedQuery;
                         + "group by userMessage.message.threadRoot"
                         + ")"
                         + " and latestUserMessage.message.offer is null\n"),
-        @NamedQuery(name = "getSupplierConversationsWithAcceptedOffer",
-                query = "select latestUserMessage, count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join\n"
-                        + " subUserMessage.message.threadRoot as rootMessage,"
-                        + "UserMessage as latestUserMessage\n"
-                        + "where latestUserMessage.message.threadRoot = rootMessage"
-                        + " and latestUserMessage.user = :user"
+        @NamedQuery(name = "getSupplierConversationsWithOfferState",
+                query = "select latestUserMessage, ("
+                        + "select count(subUserMessage.id) from UserMessage as subUserMessage\n"
+                        + "where subUserMessage.message.threadRoot = latestUserMessage.message.threadRoot"
+                        + " and subUserMessage.message.offer is not null"
                         + " and subUserMessage.user = :user"
-                        + " and rootMessage.demand is not null"
-                        + " and rootMessage.demand.client.businessUser != :user"
+                        + ")\n"
+                        + "from UserMessage latestUserMessage\n"
+                        + "where latestUserMessage.user = :user"
+                        + " and latestUserMessage.message.threadRoot.demand is not null"
+                        + " and latestUserMessage.message.threadRoot.demand.client.businessUser != :user"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and latestUserMessage.message.offer is not null\n"
-                        + " and (latestUserMessage.message.offer.state.code = :statusAccepted"
-                        + " or latestUserMessage.message.offer.state.code = :statusCompleted)\n"
-                        + "group by latestUserMessage.id"),
-        @NamedQuery(name = "getSupplierConversationsWithClosedDemands",
-                query = "select latestUserMessage, count(subUserMessage.id)\n"
-                        + "from UserMessage as subUserMessage right join\n"
-                        + " subUserMessage.message.threadRoot as rootMessage,"
-                        + "UserMessage as latestUserMessage\n"
-                        + "where latestUserMessage.message.threadRoot = rootMessage"
-                        + " and latestUserMessage.user = :user"
-                        + " and subUserMessage.user = :user"
-                        + " and rootMessage.demand is not null"
-                        + " and rootMessage.demand.client.businessUser != :user"
-                        + " and latestUserMessage.message.firstBorn is null"
-                        + " and latestUserMessage.message.offer is not null"
-                        + " and latestUserMessage.message.offer.state.code = :offerStatusClosed\n"
-                        + "group by latestUserMessage.id"),
+                        + " and latestUserMessage.message.offer.state.code IN (:offerStates)"),
             @NamedQuery(name = "getClientConversationsForDemandWithoutOfferCount",
                 query = "select count(latestUserMessage.id)\n"
                         + "from UserMessage as latestUserMessage\n"
@@ -259,8 +230,30 @@ import javax.persistence.NamedQuery;
                         + "where latestUserMessage.user = :user"
                         + " and latestUserMessage.message.demand = :demand"
                         + " and latestUserMessage.message.demand.client.businessUser = :user"
-                        + " and latestUserMessage.message.firstBorn is null")
-
+                        + " and latestUserMessage.message.firstBorn is null"),
+            @NamedQuery(name = "getClientConversationsForOfferState",
+                query = "select latestUserMessage, supplier,"
+                        + " count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join\n"
+                        + " subUserMessage.message.threadRoot as rootMessage,"
+                        + " UserMessage as latestUserMessage"
+                        + " left join latestUserMessage.message.roles toRole"
+                        + " inner join latestUserMessage.message.offer as offer,"
+                        + " User as supplier\n"
+                        + "where latestUserMessage.message.threadRoot = rootMessage"
+                        + " and rootMessage.demand.client.businessUser = :user"
+                        + " and latestUserMessage.user = :user"
+                        + " and latestUserMessage.message.firstBorn is null"
+                        + " and offer.state.code IN (:offerStates)"
+                        + " and toRole.type = 'TO'"
+                        + " and ((latestUserMessage.message.sender = :user"
+                        + " and toRole.user = supplier)"
+                        + " or (latestUserMessage.message.sender = supplier"
+                        + " and toRole.user = :user))"
+                        + " and subUserMessage.user = supplier"
+                        + " and subUserMessage.message.offer is not null"
+                        + "\n"
+                        + "group by latestUserMessage.id, supplier.id")
 }
 )
 public class UserMessage extends DomainObject {

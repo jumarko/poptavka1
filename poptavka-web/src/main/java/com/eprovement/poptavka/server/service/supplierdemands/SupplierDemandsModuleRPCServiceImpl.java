@@ -250,11 +250,10 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     public List<SupplierOffersDetail> getSupplierOffers(long supplierID, long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         List<SupplierOffersDetail> listSod = new ArrayList<SupplierOffersDetail>();
-        OfferState pendingState = offerService.getOfferState(OfferStateType.PENDING.getValue());
 
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Map<UserMessage, Integer> latestUserMessagesWithCount =
-                userMessageService.getSupplierConversationsWithOffer(businessUser, pendingState);
+                userMessageService.getSupplierConversationsWithOffer(businessUser);
 
         List<UserMessage> sortedList = sortInMemory(new Search(UserMessage.class),
                 searchDefinition, latestUserMessagesWithCount.keySet());

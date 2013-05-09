@@ -93,7 +93,7 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return map of the latest <code>UserMessage</code>s and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState);
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -195,6 +195,22 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return number of client's conversations where an offer has been made
      */
     long getClientConversationsWithOfferCount(BusinessUser user, Demand demand);
+
+    /**
+     * Gets client's conversations where an offer has been ACCEPTED or COMPLETED
+     * @param user the client
+     * @return <code>Map</code> of the latest <code>UserMessage</code> in each conversation
+     * to <code>ClientConversation</code>
+     */
+    Map<UserMessage, ClientConversation> getClientConversationsWithAcceptedOffer(BusinessUser user);
+
+    /**
+     * Gets client's conversations where an offer has been CLOSED
+     * @param user the client
+     * @return <code>Map</code> of the latest <code>UserMessage</code> in each conversation
+     * to <code>ClientConversation</code>
+     */
+    Map<UserMessage, ClientConversation> getClientConversationsWithClosedOffer(BusinessUser user);
 
     /**
      * Gets conversation of the <code>user</code> with the <code>counetrparty</<code>

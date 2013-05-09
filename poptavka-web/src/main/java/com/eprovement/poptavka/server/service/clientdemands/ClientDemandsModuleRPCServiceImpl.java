@@ -522,28 +522,30 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientOfferedDemandOffersDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        Search search = new Search(UserMessage.class);
 
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
-        Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getSupplierConversationsWithAcceptedOffer(businessUser);
+        Map<UserMessage, ClientConversation> latestSupplierUserMessagesWithUnreadSub =
+                userMessageService.getClientConversationsWithAcceptedOffer(businessUser, search);
         List<UserMessage> sortedList = searchInMemory(new Search(UserMessage.class),
                 searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
         for (UserMessage userMessage : sortedList) {
             Offer offer = userMessage.getMessage().getOffer();
+            BusinessUser supplierUser = latestSupplierUserMessagesWithUnreadSub.get(userMessage).getSupplier();
             // TODO LATER ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
             codod.setIsRead(userMessage.isRead());
             codod.setIsStarred(userMessage.isStarred());
             codod.setUserMessageId(userMessage.getId());
-            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage));
+            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
-            codod.setSupplierId(offer.getSupplier().getId());
-            codod.setDisplayName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setSupplierId(supplierUser.getId());
+            codod.setDisplayName(supplierUser.getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
-            codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
+            codod.setSenderId(supplierUser.getId());
             // set Offer attributes
             codod.setOfferId(offer.getId());
             codod.setPrice(offer.getPrice());

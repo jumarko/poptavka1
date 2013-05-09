@@ -38,10 +38,13 @@
     <DEMAND ID="11" TYPE_ID="2" TITLE="Demand 11" DESCRIPTION="11: want something from want-something.com." PRICE="10000"
             STATUS="CLOSED" CLIENT_ID="1111111115" CREATEDDATE="2010-10-01 13:33:34" />
 
-    <DEMAND ID="21" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."
+    <DEMAND ID="21" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="21: Normal request for java application."
             STATUS="ACTIVE" CREATEDDATE="2001-01-01 00:00:01" CLIENT_ID="111111112"/>
-    <DEMAND ID="22" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application." PRICE="10000"
+    <DEMAND ID="22" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="22: Attractive request for java application." PRICE="10000"
             STATUS="OFFERED" CREATEDDATE="2010-10-01 13:33:34" CLIENT_ID="111111112"/>
+    <DEMAND ID="23" TYPE_ID="2" TITLE="Demand 11" DESCRIPTION="23: want something from want-something.com." PRICE="10000"
+            STATUS="CLOSED" CLIENT_ID="111111112" CREATEDDATE="2010-10-01 13:33:34" />
+
 
 
     <!--########################################## demands for localities ###########################################-->

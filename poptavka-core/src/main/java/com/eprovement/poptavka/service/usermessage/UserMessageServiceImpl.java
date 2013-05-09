@@ -244,18 +244,18 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState) {
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user) {
         Preconditions.checkNotNull("Supplier specified must not be empty.", user);
 
-        return getDao().getSupplierConversationsWithOffer(user, pendingState);
+        return getDao().getSupplierConversationsWithOffer(user);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState,
+    public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user,
             Search search) {
-        return Searcher.searchMapByKeys(getSupplierConversationsWithOffer(user, pendingState),
+        return Searcher.searchMapByKeys(getSupplierConversationsWithOffer(user),
                 search);
     }
 
@@ -370,6 +370,23 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public int getClientConversationsWithOfferCount(BusinessUser user, Demand demand) {
         return (int) getDao().getClientConversationsWithOfferCount(user, demand);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<UserMessage, ClientConversation> getClientConversationsWithAcceptedOffer(BusinessUser user,
+            Search search) {
+        return Searcher.searchMapByKeys(getDao().getClientConversationsWithAcceptedOffer(
+                user), search);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<UserMessage, ClientConversation> getClientConversationsWithClosedOffer(BusinessUser user,
+            Search search) {
+        return Searcher.searchMapByKeys(getDao().getClientConversationsWithClosedOffer(
+                user), search);
+    }
+
 
     /** {@inheritDoc} */
     @Override

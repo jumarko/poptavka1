@@ -215,7 +215,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return map of the latest <code>UserMessage</code> ids and number of
      * messages in each conversation
      */
-    Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user, OfferState pendingState);
+    Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
@@ -228,7 +228,7 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * messages in each conversation
      */
     Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user,
-            OfferState pendingState, Search search);
+            Search search);
 
     /** Retrieves the count of supplier's conversations where an offer has been
      * made
@@ -424,6 +424,26 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return users mapped to all their user messages which has associated created date staring from given period
      */
     Map<User, List<UserMessage>> getUserMessagesFromDateGroupedByUser(Date dateFrom);
+
+    /**
+     * Gets client's conversations where an offer has been ACCEPTED or COMPLETED
+     * @param user the client
+     * @param search to search in the result
+     * @return <code>Map</code> of the latest <code>UserMessage</code> in each conversation
+     * to <code>ClientConversation</code>
+     */
+    Map<UserMessage, ClientConversation> getClientConversationsWithAcceptedOffer(BusinessUser user,
+            Search search);
+
+    /**
+     * Gets client's conversations where an offer has been CLOSED
+     * @param user the client
+     * @param search to search in the result
+     * @return <code>Map</code> of the latest <code>UserMessage</code> in each conversation
+     * to <code>ClientConversation</code>
+     */
+    Map<UserMessage, ClientConversation> getClientConversationsWithClosedOffer(BusinessUser user,
+            Search search);
 
     /**
      * Gets conversation of the <code>user</code> with the <code>counetrparty</<code>
