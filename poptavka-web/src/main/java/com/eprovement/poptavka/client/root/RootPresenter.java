@@ -14,10 +14,21 @@ import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 
+/**
+ * Holds business logic for root module.
+ * <b><i>Note:</i></b>
+ * Presenters holds business logic for particular module. They have access to
+ * eventBuses (and through them to other application parts),
+ * and to views that can be swithed easily because everything is defined through interfaces.
+ * @author Mato
+ */
 @Presenter(view = RootView.class)
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
-        implements IRootPresenter {
+    implements IRootPresenter {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private IRootSelectors animation = GWT.create(IRootSelectors.class);
     private boolean runResize = false;
     private boolean isMenuPanelVisible;
@@ -25,57 +36,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
-    @Override
-    public void bind() {
-        /* Advantage - can reset animation styles on resize
-         * Disadvantage - calles each time browser is resized.
-         *              - for changing layout to landscape and vice versa it's called only once, which is good. */
-        //With this we can change view which is more flexible instead of using responsive styles???
-        view.getBody().addResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(ResizeEvent event) {
-                //Don't run resize on browser startup
-                if (runResize) {
-                    eventBus.resize();
-                }
-                runResize = true;
-                //set shorter dates on small screens
-                Storage.get().initDateTimeFormat(event.getWidth() > 1200);
-            }
-        });
-    }
-
-    /**************************************************************************/
-    /* Layout events.                                                         */
-    /**************************************************************************/
-    public void onSetHeader(IsWidget header) {
-        GWT.log("Header widget set");
-        view.setHeader(header);
-    }
-
-    public void onSetToolbar(IsWidget toolbar) {
-        GWT.log("Toolbar widget set");
-        view.setToolbar(toolbar);
-    }
-
-    public void onSetBody(IsWidget body) {
-        GWT.log("Body widget set");
-        view.setBody(body);
-    }
-
-    public void onResize() {
-        animation.getToolbarContainer().removeAttr("style");
-        animation.getBodyContainer().removeAttr("style");
-        isMenuPanelVisible = false;
-    }
-
-    /**************************************************************************/
-    /* General Module events                                                  */
-    /**************************************************************************/
     /**
-     * When your application starts, you may want to automatically fire an event
+     * Invokes actions at module start up.
+     * <b><i>Note:</i></b>
+     * When your module starts, you may want to automatically fire an event
      * so that actions needed at first can occur.
+     * Fires only once at module first run before any other methods.
+     * Must be defined in eventBus by <b>Start</b> anotation
      */
     public void onStart() {
         GWT.log("Root presenter loaded");
@@ -124,17 +91,89 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /**************************************************************************/
-    /* Navigation events                                                      */
+    /* Bind events                                                            */
     /**************************************************************************/
+    @Override
+    public void bind() {
+        /* Advantage - can reset animation styles on resize
+         * Disadvantage - calles each time browser is resized.
+         *              - for changing layout to landscape and vice versa it's called only once, which is good. */
+        //With this we can change view which is more flexible instead of using responsive styles???
+        view.getBody().addResizeHandler(new ResizeHandler() {
+            @Override
+            public void onResize(ResizeEvent event) {
+                //Don't run resize on browser startup
+                if (runResize) {
+                    eventBus.resize();
+                }
+                runResize = true;
+                //set shorter dates on small screens
+                Storage.get().initDateTimeFormat(event.getWidth() > 1200);
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /* Layout events                                                          */
+    /**************************************************************************/
+    /**
+     * Invokes action when user loggs in.
+     */
     public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
         // TODO LATER ivlcek: comment for production
-//        showDevelUserInfoPopupThatShouldBedeletedAfter();
+        //showDevelUserInfoPopupThatShouldBedeletedAfter();
     }
 
+    /**
+     * Invokes action when user loggs out.
+     */
     public void onAtHome() {
-//        HomeWelcomePresenter.startBanner();
-        // notify all components that user has logged out
+        // nothing by default
+    }
+
+    /**************************************************************************/
+    /* Business events.                                                       */
+    /**************************************************************************/
+    /**
+     * Sets widget to header container.
+     * @param header widget
+     */
+    public void onSetHeader(IsWidget header) {
+        GWT.log("Header widget set");
+        view.setHeader(header);
+    }
+
+    /**
+     * Sets widget to toolbar container.
+     * @param toolbar widget
+     */
+    public void onSetToolbar(IsWidget toolbar) {
+        GWT.log("Toolbar widget set");
+        view.setToolbar(toolbar);
+    }
+
+    /**
+     * Sets widget to body container.
+     * @param body widget
+     */
+    public void onSetBody(IsWidget body) {
+        GWT.log("Body widget set");
+        view.setBody(body);
+    }
+
+    /**
+     * Removes animation styles on resize.
+     * When animation is used it overrides application styles with its own.
+     * It is not a problem unless application uses responsive design.
+     * When resizing, responsive design should take care to redesign application,
+     * but it is not if animation took place and overrided them.
+     * Therefore remove them on resize.
+     */
+    public void onResize() {
+        animation.getToolbarContainer().removeAttr("style");
+        animation.getBodyContainer().removeAttr("style");
+        isMenuPanelVisible = false;
     }
 
     /**************************************************************************/

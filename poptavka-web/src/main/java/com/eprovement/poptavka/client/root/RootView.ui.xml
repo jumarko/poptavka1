@@ -9,8 +9,8 @@
     <g:HTMLPanel>
         <g:SimplePanel ui:field='header' styleName='{res.layout.headerContainer}'/>
         <g:SimplePanel ui:field='toolbar' styleName='{res.layout.toolbarContainer}' debugId='toolbarContainer'/>
-        <!--Resize layout because we need to handle resizing event.
-            BodyContainer style must use absolute positioning because we need browser
+        <!--Resize layout is used in order to handle resize event to reset animation.
+            Absolute positioning style must be used for BodyContainer style because we need browser
             to calculate height each time browser resizes for scroll panels to behave correctly-->
         <g:ResizeLayoutPanel ui:field='body' styleName='{res.layout.bodyContainer}' debugId='bodyContainer'/>
     </g:HTMLPanel>
