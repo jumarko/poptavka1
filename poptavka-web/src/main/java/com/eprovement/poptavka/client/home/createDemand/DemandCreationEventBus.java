@@ -6,7 +6,7 @@
  */
 package com.eprovement.poptavka.client.home.createDemand;
 
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.LoginGateway;
 import com.eprovement.poptavka.client.root.gateways.UserRegistrationGateway;

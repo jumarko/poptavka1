@@ -5,7 +5,7 @@ import com.eprovement.poptavka.client.catLocSelector.cellBrowser.CellBrowserPres
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocTreeViewModel;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.cellbrowser.CustomCellBrowser;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;

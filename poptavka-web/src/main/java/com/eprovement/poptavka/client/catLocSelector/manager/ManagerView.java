@@ -7,7 +7,7 @@ import com.eprovement.poptavka.client.catLocSelector.others.CatLocSuggestionDisp
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.selectordatagrid.SelectorDataGrid;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;

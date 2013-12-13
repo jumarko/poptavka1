@@ -1,7 +1,7 @@
 /*
  * This interface contains common methods from Child Modules that are always forwarded to parent Module.
  */
-package com.eprovement.poptavka.client.root;
+package com.eprovement.poptavka.client.common;
 
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
 import com.eprovement.poptavka.client.root.gateways.SearchModuleGateway;

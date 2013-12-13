@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.infoWidgets.widgets;
 
 import com.eprovement.poptavka.client.infoWidgets.interfaces.IErrorView;
 import com.eprovement.poptavka.client.infoWidgets.interfaces.IErrorView.IErrorPresenter;
-import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;

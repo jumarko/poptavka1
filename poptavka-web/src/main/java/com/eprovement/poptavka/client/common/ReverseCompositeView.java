@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.client.root;
+package com.eprovement.poptavka.client.common;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.mvp4g.client.view.ReverseViewInterface;

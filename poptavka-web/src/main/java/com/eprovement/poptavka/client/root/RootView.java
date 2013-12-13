@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,7 +20,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * body's content widget.
  * <b><i>Note:</i></b>
  * Vies should not holds business logic. But they can have independent UI logic.
- * They serves only as presentation layout to provide access for presenter to UI elements. 
+ * They serves only as presentation layout to provide access for presenter to UI elements.
  *
  * @author Beho, Martin Slavkovsky
  */

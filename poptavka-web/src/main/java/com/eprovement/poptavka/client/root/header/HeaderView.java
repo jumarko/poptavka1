@@ -6,7 +6,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.client.root.header.ui.LoginElement;
 import com.eprovement.poptavka.client.root.header.ui.LogoutElement;
 import com.eprovement.poptavka.client.root.header.ui.MenuElement;

@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.search;
 
 import com.eprovement.poptavka.client.search.advanced.AdvanceSearchPresenter;
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.Widget;
