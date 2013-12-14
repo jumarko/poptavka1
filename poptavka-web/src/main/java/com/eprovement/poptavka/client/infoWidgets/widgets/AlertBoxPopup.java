@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.infoWidgets.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -18,6 +21,9 @@ import com.google.inject.Singleton;
 import java.util.Date;
 
 /**
+ * Alert box popup is used to notify user if something unexpected happened.
+ * Contains only error message and report button.
+ *
  * @author ivan
  * @author Martin Slavkovsky
  */
@@ -51,6 +57,9 @@ public final class AlertBoxPopup extends Modal {
     /**************************************************************************/
     /*  Initialization.                                                       */
     /**************************************************************************/
+    /**
+     * Creates alert box popup view's compontents.
+     */
     public AlertBoxPopup() {
         add(uiBinder.createAndBindUi(this));
 
@@ -62,6 +71,11 @@ public final class AlertBoxPopup extends Modal {
     /**************************************************************************/
     /*  Popup                                                                 */
     /**************************************************************************/
+    /**
+     * Creates popup with given error message.
+     * @param eventBus needed for report button
+     * @param message that is shown to user
+     */
     public void create(InfoWidgetsEventBus eventBus, String message) {
         header.setText(Storage.MSGS.errorMsgAlert());
         text.setText(message);
@@ -72,6 +86,12 @@ public final class AlertBoxPopup extends Modal {
     /**************************************************************************/
     /*  Helper methods                                                        */
     /**************************************************************************/
+    /**
+     * Bind report button handler.
+     * This method can be overriden to use additional action along default report button fuctionality.
+     * @param button - report button
+     * @param eventBus - particular eventbus
+     */
     protected static void addReportBtnClickHandler(Button button, final InfoWidgetsEventBus eventBus) {
         button.addClickHandler(new ClickHandler() {
             @Override

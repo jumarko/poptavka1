@@ -12,7 +12,7 @@ import com.eprovement.poptavka.client.service.demand.LoginRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.LoginUnsecRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -285,7 +285,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
      */
     private void sendEmailWithNewPassword(final BusinessUserDetail user, final String newPassword) {
         eventBus.setLoadingProgress(60, null);
-        EmailDialogDetail dialogDetail = new EmailDialogDetail();
+        ContactUsDetail dialogDetail = new ContactUsDetail();
         dialogDetail.setRecipient(user.getEmail());
         dialogDetail.setMessage(Storage.MSGS.resetPasswordEmail(user.getPersonFirstName(), newPassword));
         dialogDetail.setSubject(Storage.MSGS.resetPasswordEmailSubject());

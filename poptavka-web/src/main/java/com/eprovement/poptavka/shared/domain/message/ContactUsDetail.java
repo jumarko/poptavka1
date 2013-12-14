@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Martin
  */
-public class EmailDialogDetail implements IsSerializable {
+public class ContactUsDetail implements IsSerializable {
 
     /** Enums. **/
     public enum Field {
@@ -50,7 +50,7 @@ public class EmailDialogDetail implements IsSerializable {
     @Size(max = 1000, message = "{emailDialogMessageSize}", groups = Extended.class)
     private String message;
 
-    public EmailDialogDetail() {
+    public ContactUsDetail() {
     }
 
     public String getRecipient() {

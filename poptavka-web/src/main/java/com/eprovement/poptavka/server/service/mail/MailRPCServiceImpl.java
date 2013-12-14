@@ -13,7 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import com.eprovement.poptavka.client.service.demand.MailRPCService;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.mail.MailService;
-import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 /**
@@ -44,7 +44,7 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
      * @see #setNotificationMailSender(String)  for setting sender (FROM) for notification emails.
      */
     @Override
-    public Boolean sendMail(EmailDialogDetail emailDialogDetail) throws RPCException {
+    public Boolean sendMail(ContactUsDetail emailDialogDetail) throws RPCException {
         LOGGER.info("Sending mail message to: " + emailDialogDetail.getRecipient());
 
         final SimpleMailMessage notificationMessage = new SimpleMailMessage();

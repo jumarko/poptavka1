@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.infoWidgets.interfaces;
 
@@ -9,11 +8,14 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *
+ * Error view interface.
  * @author ivlcek
  */
 public interface IErrorView extends IsWidget {
 
+    /**
+     * Error presenter interface.
+     */
     public interface IErrorPresenter {
     }
 
