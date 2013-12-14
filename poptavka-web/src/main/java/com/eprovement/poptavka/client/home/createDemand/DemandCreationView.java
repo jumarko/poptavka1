@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
@@ -21,6 +24,11 @@ import com.google.gwt.user.client.ui.Widget;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Demand creation view.
+ *
+ * @author Beho, Martin Slavkovsky
+ */
 public class DemandCreationView extends OverflowComposite implements DemandCreationPresenter.CreationViewInterface {
 
     /**************************************************************************/
@@ -62,6 +70,9 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates demand creation view's components.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -83,7 +94,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     }
 
     /**************************************************************************/
-    /* Other methods                                                          */
+    /* Setter                                                                 */
     /**************************************************************************/
     /**
      * Set first tab visibility.
@@ -97,12 +108,18 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         recalculateTabNumbers();
     }
 
+    /**
+     * Sets login layout.
+     */
     @Override
     public void setLoginLayout() {
         panel2.setVisible(false);
         panel1.setVisible(true);
     }
 
+    /**
+     * Sets register layout.
+     */
     @Override
     public void setRegisterLayout() {
         panel1.setVisible(false);
@@ -113,28 +130,44 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /* Getters                                                                */
     /**************************************************************************/
     /** PANELS. **/
+    /**
+     * @return the tabl layout panel
+     */
     @Override
     public TabLayoutPanel getMainPanel() {
         return mainPanel;
     }
 
+    /**
+     * @param order of holder panel
+     * @return the particular holder panel
+     */
     @Override
     public SimplePanel getHolderPanel(int order) {
         return holderPanels.get(order);
     }
 
     /** HEADERS. **/
+    /**
+     * @return the header label
+     */
     @Override
     public HTML getHeaderLabelTab1() {
         return headerLabelTab1;
     }
 
     /** BUTTONS. **/
+    /**
+     * @return the login button
+     */
     @Override
     public Button getLoginBtn() {
         return buttonsPanel11.getBackBtn();
     }
 
+    /**
+     * @return the register button
+     */
     @Override
     public Button getRegisterBtn() {
         return buttonsPanel11.getNextBtn();
@@ -160,23 +193,33 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
 
     /**
      * Get back button 1 - represents restoring first tab.
-     * @return button
+     * @return the back first button
      */
     @Override
     public Button getBackButtonTab1() {
         return buttonsPanel12.getBackBtn();
     }
 
+    /**
+     * @return the footer container
+     */
     @Override
     public SimplePanel getFooterPanel() {
         return footerPanel;
     }
 
+    /**
+     * @return the wirdget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;
     }
 
+    /**
+     * @param order of the next tooltip
+     * @return the particular next tooltip
+     */
     @Override
     public Tooltip getNextBtnTooltip(int order) {
         return tooltips.get(order);
@@ -187,6 +230,8 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /**************************************************************************/
     /**
      * Calculate visible tab numbers.
+     * Logged uses don't have to have first tab - <b>Login or Register</b>,
+     * therefore hide first tab and recalculate tab numbers in this case.
      */
     public void recalculateTabNumbers() {
         int count = 1;
@@ -202,6 +247,9 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Binds handlers.
+     */
     private void bindHandlers() {
         //back click handler
         buttonsPanel12.getBackBtn().addClickHandler(backClickHandler);
@@ -217,10 +265,16 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         buttonsPanel5.getNextBtn().addClickHandler(nextClickHandler);
     }
 
+    /**
+     * Selects text tab.
+     */
     private void selectNextTab() {
         mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
     }
 
+    /**
+     * Selects previous tab.
+     */
     private void selectPreviousTab() {
         mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }

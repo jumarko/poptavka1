@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
@@ -16,6 +15,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * Represents <b>back</b> and <b>next</b> buttons pair in either demand creation or supplier creation widgets.
  *
  * @author Martin Slavkovsky
  */
@@ -28,6 +28,7 @@ public class ButtonsPanel extends Composite {
 
     interface ButtonsPanelUiBinder extends UiBinder<Widget, ButtonsPanel> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -37,7 +38,7 @@ public class ButtonsPanel extends Composite {
     @UiField Tooltip nextBtnTooltip;
 
     /**************************************************************************/
-    /* UiConstructor                                                          */
+    /* Initialization                                                         */
     /**************************************************************************/
     @UiConstructor
     public ButtonsPanel(String backBtn, String nextBtn, String nextBtnTooltip, String size) {
@@ -55,14 +56,23 @@ public class ButtonsPanel extends Composite {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the back button
+     */
     public Button getBackBtn() {
         return backBtn;
     }
 
+    /**
+     * @return the next button
+     */
     public Button getNextBtn() {
         return nextBtn;
     }
 
+    /**
+     * @return the next button's tooltip.
+     */
     public Tooltip getNextBtnTooltip() {
         return nextBtnTooltip;
     }

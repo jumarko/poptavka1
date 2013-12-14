@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -19,13 +22,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+/**
+ * Defines form for basic step in demand creation process.
+ * @author Beho, Martin Slavkovsky
+ */
 public class FormDemandBasicView extends Composite
         implements FormDemandBasicPresenter.FormDemandBasicInterface, ProvidesValidate {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     private static FormDemandBasicUiBinder uiBinder = GWT.create(FormDemandBasicUiBinder.class);
 
     interface FormDemandBasicUiBinder extends UiBinder<Widget, FormDemandBasicView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -37,35 +48,14 @@ public class FormDemandBasicView extends Composite
     /**************************************************************************/
     /* Initializatiob                                                         */
     /**************************************************************************/
+    /**
+     * Creates form basic demand view's compontents.
+     */
     @Override
     public void createView() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
         initEndDateDatePricker();
-    }
-
-    private void initValidationMonitors() {
-        titleMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.TITLE.getValue());
-        priceMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.PRICE.getValue());
-        endDateMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.END_DATE.getValue());
-        descriptionMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, DemandField.DESCRIPTION.getValue());
-        monitors = new ArrayList<ValidationMonitor>(
-                Arrays.asList(titleMonitor, priceMonitor, endDateMonitor, descriptionMonitor));
-    }
-
-    private void initEndDateDatePricker() {
-        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.get().getDateTimeFormat()));
-        ((DateBox) endDateMonitor.getWidget()).getDatePicker().getParent().addHandler(
-                new CloseHandler<PopupPanel>() {
-                @Override
-                public void onClose(CloseEvent event) {
-                    endDateMonitor.validate();
-                }
-            }, CloseEvent.getType());
     }
 
     /**************************************************************************/
@@ -92,5 +82,44 @@ public class FormDemandBasicView extends Composite
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /* Helpser methods                                                        */
+    /**************************************************************************/
+    /**
+     * Inits validation monitors.
+     */
+    private void initValidationMonitors() {
+        titleMonitor = createValidationMonitor(DemandField.TITLE);
+        priceMonitor = createValidationMonitor(DemandField.PRICE);
+        endDateMonitor = createValidationMonitor(DemandField.END_DATE);
+        descriptionMonitor = createValidationMonitor(DemandField.DESCRIPTION);
+        monitors = new ArrayList<ValidationMonitor>(
+                Arrays.asList(titleMonitor, priceMonitor, endDateMonitor, descriptionMonitor));
+    }
+
+    /**
+     * Creates validation monitors
+     * @param field - validation field
+     * @param groups - validation groups
+     * @return created validation monitor
+     */
+    private ValidationMonitor createValidationMonitor(DemandField field) {
+        return new ValidationMonitor<FullDemandDetail>(FullDemandDetail.class, field.getValue());
+    }
+
+    /**
+     * Initializes endDate datepicker.
+     */
+    private void initEndDateDatePricker() {
+        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.get().getDateTimeFormat()));
+        ((DateBox) endDateMonitor.getWidget()).getDatePicker().getParent().addHandler(
+                new CloseHandler<PopupPanel>() {
+                @Override
+                public void onClose(CloseEvent event) {
+                    endDateMonitor.validate();
+                }
+            }, CloseEvent.getType());
     }
 }

@@ -1,12 +1,11 @@
 /*
- * DemandCreationEventBus servers all events for module DemandCreationModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> WF zatial chyba
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter;
+import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.LoginGateway;
 import com.eprovement.poptavka.client.root.gateways.UserRegistrationGateway;
@@ -22,6 +21,8 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
+ * DemandCreationEventBus servers all events for module DemandCreationModule.
+ * Provides demand creation process.
  *
  * @author ivan.vlcek
  */
@@ -58,6 +59,18 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     String goToCreateDemandModule();
 
     /**************************************************************************/
+    /* Business events handled by FormDemandBasicPresenter.                   */
+    /**************************************************************************/
+    @Event(generate = FormDemandBasicPresenter.class)
+    void initDemandBasicForm(SimplePanel holderWidget);
+
+    /**************************************************************************/
+    /* Business events handled by FormDemandAdvPresenter.                     */
+    /**************************************************************************/
+    @Event(generate = FormDemandAdvPresenter.class)
+    void initDemandAdvForm(SimplePanel holderWidget);
+
+    /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
@@ -72,12 +85,6 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**************************************************************************/
     /* Business events handled by DemandCreationPresenter.                    */
     /**************************************************************************/
-    @Event(handlers = DemandCreationPresenter.class)
-    void initDemandBasicForm(SimplePanel holderWidget);
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void initDemandAdvForm(SimplePanel holderWidget);
-
     @Event(handlers = DemandCreationPresenter.class)
     void restoreDefaultFirstTab();
 
