@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.root.gateways;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 /**
  * Gateway interface for Address selector module.
- * Defines which methods are accessible to the world.
+ * Defines which methods are accessible to the rest of application.
  *
  * @author Martin Slavkovsky
  */

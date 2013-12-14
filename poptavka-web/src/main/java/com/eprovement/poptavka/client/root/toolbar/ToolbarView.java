@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.toolbar;
 
 import com.eprovement.poptavka.client.root.interfaces.IToolbarView;
@@ -14,9 +17,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Home demands module's view.
- *
- * @author praso, Martin Slavkovsky
+ * Toolbar view
+ * @author Martin Slavkovsky
  */
 public class ToolbarView extends Composite implements IToolbarView {
 
@@ -39,6 +41,9 @@ public class ToolbarView extends Composite implements IToolbarView {
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates widget's components.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -47,6 +52,12 @@ public class ToolbarView extends Composite implements IToolbarView {
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets toolbar's components like title, custom content and enable or disable animation on desponsive designs.
+     * @param title of toolbar
+     * @param content - custom toolbar widget
+     * @param hasAnimationLayout - has 3-layout-responsive-view that can be animated
+     */
     @Override
     public void setToolbarContent(String title, Widget content, boolean hasAnimationLayout) {
         if (!hasAnimationLayout) {
@@ -83,11 +94,19 @@ public class ToolbarView extends Composite implements IToolbarView {
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Gets left sliding menu icon.
+     * @return left menu icon anchor
+     */
     @Override
     public IconAnchor getLeftSlidingMenuIcon() {
         return categoriesAnchor;
     }
 
+    /**
+     * Gets right sliding menu icon.
+     * @return right menu icon anchor
+     */
     @Override
     public IconAnchor getRightSlidingMenuIcon() {
         return detailAnchor;

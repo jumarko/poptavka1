@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.root.gateways;
 
@@ -11,6 +10,9 @@ import com.mvp4g.client.annotation.Event;
 import java.util.List;
 
 /**
+ * Gateway interface for Service selector module.
+ * Defines which methods are accessible to the rest of application.
+ *
  * @author Martin Slavkovsky
  */
 public interface ServiceSelectorGateway {

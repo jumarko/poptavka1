@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.header;
 
 import com.eprovement.poptavka.client.common.CommonAccessRoles;
@@ -19,7 +22,12 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PushButton;
 
-@Presenter(view = HeaderView.class)//, async = SingleSplitter.class)
+/**
+ * Header presenter.
+ *
+ * @author Ivan Vlcek, Martin Slavkovsky
+ */
+@Presenter(view = HeaderView.class)
 public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     implements IHeaderPresenter {
 
@@ -40,6 +48,9 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     /**************************************************************************/
     /* Layout events.                                                         */
     /**************************************************************************/
+    /**
+     * Sets header for unlogged user.
+     */
     public void onAtHome() {
         view.getLogin().setVisible(true);
         view.getLogout().setVisible(false);
@@ -51,6 +62,9 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getSettingsAnchor().setVisible(false);
     }
 
+    /**
+     * Sets header for logged user.
+     */
     public void onAtAccount() {
         view.getLogin().setVisible(false);
         view.getLogout().setVisible(true);
@@ -69,11 +83,20 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     /**************************************************************************/
     /* Business events.                                                       */
     /**************************************************************************/
+    /**
+     * Sets menu widget to header.
+     * There are two types of menu - home menu for unlogged users and user menu for logged users.
+     * @param menu widget
+     */
     public void onSetMenu(IsWidget menu) {
         GWT.log("Menu widget set");
         view.getMenu().setMenu(menu);
     }
 
+    /**
+     * Sets search widget to header.
+     * @param searchBar widget
+     */
     public void onSetSearchBar(IsWidget searchBar) {
         GWT.log("Search bar widget set");
         view.getSearch().setSearchBar(searchBar);
@@ -103,6 +126,10 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         bindNotificationHandlers();
     }
 
+    /**
+     * Bind menu handlers.
+     * On tiny-middle screens, left menu icon is visible and slides hidden left menu panel.
+     */
     private void bindMenuHandlers() {
         view.getMenu().getMenuAnchor().addClickHandler(new ClickHandler() {
             @Override
@@ -112,6 +139,13 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         });
     }
 
+    /**
+     * Bind login handlers. Registers two handlers:
+     * <ul>
+     *    <li>one for <b>button</b> on middle-large screens</li>
+     *    <li>one for <b>icon anchor</b> on tiny-small screens</li>
+     * </ul>
+     */
     private void bindLoginHandlers() {
         view.getLogin().getLoginButton().addClickHandler(new ClickHandler() {
             @Override
@@ -127,6 +161,15 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         });
     }
 
+    /**
+     * Bind logout handlers.
+     * Register tree handlers:
+     * <ul>
+     *    <li>one for <b>button</b> on middle-large screens</li>
+     *    <li>one for <b>icon anchor</b> on tiny-small screens</li>
+     *    <li>one for <b>menu - settings</b> on middle-large screens</li>
+     * </ul>
+     */
     private void bindLogoutHandlers() {
         view.getLogout().getMenuLogOut().setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
@@ -151,6 +194,9 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         });
     }
 
+    /**
+     * Bind search handlers.
+     */
     private void bindSearchHandlers() {
         view.getSearch().getSearchAnchor().addClickHandler(new ClickHandler() {
             @Override
@@ -160,6 +206,11 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         });
     }
 
+    /**
+     * Bind settings handlers.
+     * On tiny-small screens login button with dropdown menu is not visible, therefore
+     * display settings icon anchor for accessing Settings/My Profile.
+     */
     private void bindSettingsHandlers() {
         view.getSettingsAnchor().addClickHandler(new ClickHandler() {
             @Override
@@ -170,6 +221,13 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         });
     }
 
+    /**
+     * Bind notification handlers.
+     * <ul>
+     *   <li>one for <b>system messages</b></li>
+     *   <li>one for <b>messages</b></li>
+     * </ul>
+     */
     private void bindNotificationHandlers() {
         view.getNotifications().getPushButton().addClickHandler(new ClickHandler() {
             @Override

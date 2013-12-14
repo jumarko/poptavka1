@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.header.ui;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -17,6 +20,10 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 
+/**
+ * Login element includes button for middle-large screens and icon anchor for tiny-small screens.
+ * @author Martin Slakvovsky
+ */
 public class LogoutElement extends Composite {
 
     /**************************************************************************/
@@ -26,6 +33,7 @@ public class LogoutElement extends Composite {
 
     interface LogoutElementUiBinder extends UiBinder<Widget, LogoutElement> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -38,6 +46,9 @@ public class LogoutElement extends Composite {
     /**************************************************************************/
     /* Constructors                                                           */
     /**************************************************************************/
+    /**
+     * Creates logout element view's compotents.
+     */
     public LogoutElement() {
         initWidget(uiBinder.createAndBindUi(this));
         bindHandlers();
@@ -46,6 +57,9 @@ public class LogoutElement extends Composite {
     /**************************************************************************/
     /* Bind events                                                            */
     /**************************************************************************/
+    /**
+     * Bind menu dropdown choices handlers.
+     */
     private void bindHandlers() {
         logoutMenuBarBtn.addDomHandler(new ClickHandler() {
 

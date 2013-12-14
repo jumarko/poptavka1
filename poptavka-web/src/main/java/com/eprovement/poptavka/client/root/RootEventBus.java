@@ -1,4 +1,6 @@
 /*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ *
  * RootEventBus servers all events for foot module. This is the starting
  * EventBus that handled the very first event in the app.
  *
@@ -105,11 +107,10 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void setHeader(IsWidget header);
 
-    /**
-     * Pouzitie autodisplay funkcie v RootModule ma za nasledok, ze kazdy modul sa
-     * automaticky nastavi do RootPresentera cez metodu setBody(), ktora reprezentuje
-     * hlavne telo webstranky. Je nutne anotovat tuto metody aby RootModul vedel,
-     * ktora metoda ma nahrat pohlad ChildModulu a zobrazit na webstranke
+    /*
+     * <b><i>Note:</i></b>
+     * AutodisplayChildModules function automatically sets all listed child
+     * modules' views to body using setBody method.
      */
     @DisplayChildModuleView(HomeWelcomeModule.class)
     @Event(handlers = RootPresenter.class)
@@ -134,8 +135,6 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = FooterPresenter.class)
     void setFooter(SimplePanel footerPanel);
 
-    //Notice that user modules should have its own resize because they require logged user
-    //and therefore on browser resize Login is called, which is wrong.
     @Event(handlers = RootPresenter.class)
     void resize();
 

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.header.menu;
 
 import com.google.gwt.core.client.GWT;
@@ -10,12 +13,19 @@ import com.eprovement.poptavka.client.root.interfaces.IMenuView;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Menu view includes buttons for: home, client, supplier, demands, createDemand,
+ * suppliers, createSupplier, inbox, administration.
+ *
+ * @author Martin Slavkovsky
+ */
 public class MenuView extends Composite implements IMenuView {
 
     private static UserMenuViewUiBinder uiBinder = GWT.create(UserMenuViewUiBinder.class);
 
     interface UserMenuViewUiBinder extends UiBinder<Widget, MenuView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -25,6 +35,9 @@ public class MenuView extends Composite implements IMenuView {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates menu view's compontents.
+     */
     public MenuView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -32,46 +45,73 @@ public class MenuView extends Composite implements IMenuView {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the home button
+     */
     @Override
     public Button getHome() {
         return home;
     }
 
+    /**
+     * @return the client button
+     */
     @Override
     public Button getClient() {
         return client;
     }
 
+    /**
+     * @return the supplier button
+     */
     @Override
     public Button getSupplier() {
         return supplier;
     }
 
+    /**
+     * @return the demands button
+     */
     @Override
     public Button getDemands() {
         return demands;
     }
 
+    /**
+     * @return the create demands button
+     */
     @Override
     public Button getCreateDemand() {
         return createDemand;
     }
 
+    /**
+     * @return the suppliers button
+     */
     @Override
     public Button getSuppliers() {
         return suppliers;
     }
 
+    /**
+     * @return the create suppliers button
+     */
     @Override
     public Button getCreateSupplier() {
         return createSupplier;
     }
 
+    /**
+     * @return the inbox/messages button
+     */
     @Override
     public Button getInbox() {
         return inbox;
     }
 
+    /**
+     * @return the administration button
+     */
     @Override
     public Button getAdministration() {
         return administration;
@@ -89,28 +129,28 @@ public class MenuView extends Composite implements IMenuView {
     public void menuStyleChange(int loadedModule) {
         switch (loadedModule) {
             case Constants.USER_CLIENT_MODULE:
-                clientmenuStyleChange();
+                clientMenuStyleChange();
                 break;
             case Constants.USER_SUPPLIER_MODULE:
-                suppliermenuStyleChange();
+                supplierMenuStyleChange();
                 break;
             case Constants.USER_MESSAGES_MODULE:
-                messagesmenuStyleChange();
+                messagesMenuStyleChange();
                 break;
             case Constants.HOME_DEMANDS_MODULE:
-                demandsmenuStyleChange();
+                demandsMenuStyleChange();
                 break;
             case Constants.CREATE_DEMAND:
-                createDemandmenuStyleChange();
+                createDemandMenuStyleChange();
                 break;
             case Constants.HOME_SUPPLIERS_MODULE:
-                suppliersmenuStyleChange();
+                suppliersMenuStyleChange();
                 break;
             case Constants.CREATE_SUPPLIER:
-                createSuppliermenuStyleChange();
+                createSupplierMenuStyleChange();
                 break;
             case Constants.USER_ADMININSTRATION_MODULE:
-                administrationmenuStyleChange();
+                administrationMenuStyleChange();
                 break;
             default:
                 //default style home
@@ -122,6 +162,9 @@ public class MenuView extends Composite implements IMenuView {
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
+    /**
+     * Sets <b>home</b> button active state style.
+     */
     private void homeMenuStyleChange() {
         home.addStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
@@ -134,7 +177,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void clientmenuStyleChange() {
+    /**
+     * Sets <b>client</b> button active state style.
+     */
+    private void clientMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.addStyleName(Constants.ACT);
         supplier.removeStyleName(Constants.ACT);
@@ -146,7 +192,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void suppliermenuStyleChange() {
+    /*
+     * Sets <b>supplier</b> button active state style.
+     */
+    private void supplierMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
         supplier.addStyleName(Constants.ACT);
@@ -158,7 +207,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void messagesmenuStyleChange() {
+    /*
+     * Sets <b>messages</b> button active state style.
+     */
+    private void messagesMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
         supplier.removeStyleName(Constants.ACT);
@@ -170,7 +222,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void demandsmenuStyleChange() {
+    /*
+     * Sets <b>demands</b> button active state style.
+     */
+    private void demandsMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
         supplier.removeStyleName(Constants.ACT);
@@ -182,7 +237,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void createDemandmenuStyleChange() {
+    /*
+     * Sets <b>create demand</b> button active state style.
+     */
+    private void createDemandMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
         supplier.removeStyleName(Constants.ACT);
@@ -194,7 +252,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void suppliersmenuStyleChange() {
+    /*
+     * Sets <b>supplier</b> button active state style.
+     */
+    private void suppliersMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
         supplier.removeStyleName(Constants.ACT);
@@ -206,7 +267,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void createSuppliermenuStyleChange() {
+    /*
+     * Sets <b>create supplier</b> button active state style.
+     */
+    private void createSupplierMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
         supplier.removeStyleName(Constants.ACT);
@@ -218,7 +282,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.removeStyleName(Constants.ACT);
     }
 
-    private void administrationmenuStyleChange() {
+    /*
+     * Sets <b>administrator</b> button active state style.
+     */
+    private void administrationMenuStyleChange() {
         home.removeStyleName(Constants.ACT);
         client.removeStyleName(Constants.ACT);
         supplier.removeStyleName(Constants.ACT);
@@ -230,6 +297,10 @@ public class MenuView extends Composite implements IMenuView {
         administration.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets supplier button vertical line style.
+     * @param noLine true if no line style is used, false otherwise
+     */
     @Override
     public void setSupplierButtonVerticalNoLine(boolean noLine) {
         if (noLine) {

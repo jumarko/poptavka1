@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.footer;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -18,6 +21,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import java.util.Date;
 
+/**
+ * Footer widgets includes multiple UIbinders which represents particular
+ * footer text. This presenter manages setting right UIbinder.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = FooterView.class)
 public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
         implements IFooterPresenter {
@@ -33,6 +42,9 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
     /**************************************************************************/
     /* Bind events                                                            */
     /**************************************************************************/
+    /**
+     * Bind footer links handlers.
+     */
     @Override
     public void bind() {
         view.getContactUs().addClickHandler(new ClickHandler() {
@@ -70,13 +82,12 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Sets footer view to given panel.
+     * @param footerPanel - footer holder panel
+     */
     public void onSetFooter(SimplePanel footerPanel) {
-        //Martin - maybe we don't need to check for user, just set both menu styles should be ok
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
-        } else {
-            eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
-        }
+        eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
         footerPanel.setWidget(view.getWidgetView());
     }
 
@@ -139,6 +150,11 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Creates wanted footer info text.
+     *
+     * @param footerView enum representing footer's texts
+     */
     private void createFooterInfo(final FooterInfoViews footerView) {
 
         GWT.runAsync(FooterInfo.class, new RunAsyncCallback() {

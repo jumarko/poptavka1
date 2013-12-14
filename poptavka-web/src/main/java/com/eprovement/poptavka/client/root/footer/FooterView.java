@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.footer;
 
 import com.google.gwt.core.client.GWT;
@@ -9,7 +12,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 
-//@Singleton
+/**
+ * Footer view includes links to Want-Something page and
+ * links to Want-Something related pages (blogs, social network groups, etc.).
+ *
+ * @author Martin Slavkovsky
+ */
 public class FooterView extends Composite implements IFooterView {
 
     /**************************************************************************/
@@ -19,6 +27,7 @@ public class FooterView extends Composite implements IFooterView {
 
     interface FooterViewUiBinder extends UiBinder<Widget, FooterView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -27,11 +36,10 @@ public class FooterView extends Composite implements IFooterView {
     /**************************************************************************/
     /* Constructors                                                           */
     /**************************************************************************/
+    /**
+     * Creates footer view's composite.
+     */
     public FooterView() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
-
-    public FooterView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -78,6 +86,9 @@ public class FooterView extends Composite implements IFooterView {
         return termsAndConditions;
     }
 
+    /**
+     * @return the widget's view
+     */
     @Override
     public Widget getWidgetView() {
         return this;
