@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homeWelcome.texts;
 
 import com.eprovement.poptavka.client.common.session.CssInjector;
@@ -45,6 +48,7 @@ public class HowItWorks extends Composite {
     interface SupplierBinder extends UiBinder<Widget, HowItWorks> {
     }
     private static SupplierBinder supplierBinder = GWT.create(SupplierBinder.class);
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -54,6 +58,10 @@ public class HowItWorks extends Composite {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates HowItWorks view's compontents.
+     * @param uiBinder to initialize
+     */
     protected HowItWorks(UiBinder<Widget, HowItWorks> uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         CssInjector.INSTANCE.ensureCommonStylesInjected();
@@ -76,19 +84,25 @@ public class HowItWorks extends Composite {
     }
 
     /**************************************************************************/
-    /* SETTERS                                                                */
-    /**************************************************************************/
-    /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the register button
+     */
     public Button getRegisterBtn() {
         return registerBtn;
     }
 
+    /**
+     * @return the footer container
+     */
     public SimplePanel getFooterContainer() {
         return footerContainer;
     }
 
+    /**
+     * @return the widget view
+     */
     public Widget getWidgetView() {
         return this;
     }

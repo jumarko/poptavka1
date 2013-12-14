@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -8,9 +11,17 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.ArrayList;
 
+/**
+ * Manages RPC services calls for HomeWelcome module.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class HomeWelcomeHandler extends BaseEventHandler<HomeWelcomeEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     private HomeWelcomeRPCServiceAsync welcomeService = null;
 
     @Inject

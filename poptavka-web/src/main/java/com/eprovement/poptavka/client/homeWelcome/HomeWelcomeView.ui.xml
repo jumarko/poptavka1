@@ -2,8 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login">
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
