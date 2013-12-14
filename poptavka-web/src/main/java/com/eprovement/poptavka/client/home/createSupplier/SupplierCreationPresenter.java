@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
@@ -31,20 +34,19 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.logging.Logger;
 
+/**
+ * Supplier creation presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = SupplierCreationView.class, multiple = true)
 public class SupplierCreationPresenter
         extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, SupplierCreationEventBus>
         implements NavigationConfirmationInterface {
 
-    // Main Panel Tab Constants
-    private static final int FIRST_TAB_USER_REGISTRATION = 0;
-    private static final int SECOND_TAB_CATEGORY = 1;
-    private static final int THIRD_TAB_LOCALITY = 2;
-    private static final int FOURTH_TAB_SERVICES = 3;
-    private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private int maxSelectedTab = 1;
-
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface CreationViewInterface extends LazyView, IsWidget {
 
         /** Panels. **/
@@ -72,12 +74,26 @@ public class SupplierCreationPresenter
     }
 
     /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private static final int FIRST_TAB_USER_REGISTRATION = 0;
+    private static final int SECOND_TAB_CATEGORY = 1;
+    private static final int THIRD_TAB_LOCALITY = 2;
+    private static final int FOURTH_TAB_SERVICES = 3;
+    private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    private int maxSelectedTab = 1;
+
+    /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        // nothing by default
     }
 
+    /**
+     * Sets body, toolbar, footer, search bar on each module forwad event.
+     */
     public void onForward() {
         LOGGER.info("SupplierCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
@@ -85,11 +101,7 @@ public class SupplierCreationPresenter
         eventBus.setToolbarContent("Became Professional", null, false);
         eventBus.setFooter(view.getFooterPanel());
         eventBus.resetSearchBar(null);
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);
-        } else {
-            eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);
-        }
+        eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);
         maxSelectedTab = 1;
         view.getAgreedCheck().setValue(false);
         view.getRegisterButton().setEnabled(true);
@@ -97,23 +109,7 @@ public class SupplierCreationPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
-    }
-
-    /**************************************************************************/
-    /* Navigation events                                                      */
-    /**************************************************************************/
-    /**
-     * Used to navigate/invoke supplier creation module.
-     */
-    public void onGoToCreateSupplierModule() {
-        view.getMainPanel().selectTab(FIRST_TAB_USER_REGISTRATION);
-        eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));
-        setHeightRegistration();
-        //remove widgets to force widget to init them again
-        view.getHolderPanel(SECOND_TAB_CATEGORY).setWidget(null);
-        view.getHolderPanel(THIRD_TAB_LOCALITY).setWidget(null);
-        view.getHolderPanel(FOURTH_TAB_SERVICES).setWidget(null);
+        // nothing by default
     }
 
     /**************************************************************************/
@@ -127,6 +123,10 @@ public class SupplierCreationPresenter
         addConditionLinkHandler();
     }
 
+    /**
+     * Binds tab layout before selection handlers.
+     * Check if current step is valid before continuing.
+     */
     private void addMainPanelBeforeSelectionHandler() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
             @Override
@@ -154,6 +154,10 @@ public class SupplierCreationPresenter
         });
     }
 
+    /**
+     * Binds tab layout selection handler.
+     * Inits particular step's widget.
+     */
     private void addMainPanelSelectionHandler() {
         view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
             @Override
@@ -163,6 +167,10 @@ public class SupplierCreationPresenter
         });
     }
 
+    /**
+     * Tab layout selection handler inner class.
+     * Inits particular step's widget.
+     */
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
             case FIRST_TAB_USER_REGISTRATION:
@@ -213,6 +221,9 @@ public class SupplierCreationPresenter
         }
     }
 
+    /**
+     * Binds register button hadnler.
+     */
     private void addRegisterButtonHandler() {
         view.getRegisterButton().addClickHandler(new ClickHandler() {
             @Override
@@ -229,6 +240,9 @@ public class SupplierCreationPresenter
         });
     }
 
+    /**
+     * Binds condition link handler.
+     */
     private void addConditionLinkHandler() {
         view.getConditionLink().addClickHandler(new ClickHandler() {
             @Override
@@ -239,6 +253,26 @@ public class SupplierCreationPresenter
 
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Initializes SupplierCreation module.
+     */
+    public void onGoToCreateSupplierModule() {
+        view.getMainPanel().selectTab(FIRST_TAB_USER_REGISTRATION);
+        eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));
+        setHeightRegistration();
+        //remove widgets to force widget to init them again
+        view.getHolderPanel(SECOND_TAB_CATEGORY).setWidget(null);
+        view.getHolderPanel(THIRD_TAB_LOCALITY).setWidget(null);
+        view.getHolderPanel(FOURTH_TAB_SERVICES).setWidget(null);
+    }
+
+    /**
+     * Sets registration form height.
+     * @param company - true if company form is visible
+     */
     public void onSetUserRegistrationHeight(boolean company) {
         if (company) {
             setHeightRegistrationExtended();
@@ -248,8 +282,13 @@ public class SupplierCreationPresenter
     }
 
     /**************************************************************************/
-    /* Business events                                                        */
+    /* Helsper methods                                                        */
     /**************************************************************************/
+    /**
+     * Register supplier.
+     * Creates supplier detail and fill its attributes by calling fill events of
+     * each step.
+     */
     private void registerSupplier() {
         FullSupplierDetail newSupplier = new FullSupplierDetail();
 
@@ -263,6 +302,11 @@ public class SupplierCreationPresenter
         eventBus.loadingShow(MSGS.progressRegisterSupplier());
     }
 
+    /**
+     * Check if current widget's components are valid before continuing.
+     * @param step - current step
+     * @return true if valid, false otherwise
+     */
     private boolean canContinue(int step) {
         boolean valid = true;
         if (step == FOURTH_TAB_SERVICES) {
@@ -273,6 +317,9 @@ public class SupplierCreationPresenter
         return valid && widget.isValid();
     }
 
+    /**
+     * Displays tooltip on next button if something is missing.
+     */
     private void displayTooltip() {
         view.getNextBtnTooltip(view.getMainPanel().getSelectedIndex()).show();
         Timer timer = new Timer() {
@@ -285,26 +332,41 @@ public class SupplierCreationPresenter
         timer.schedule(Constants.VALIDATION_TOOLTIP_DISPLAY_TIME);
     }
 
+    /**
+     * Sets <b>services</b> tab layout height.
+     */
     private void setHeightServices() {
         clearHeight();
         view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightBasic());
     }
 
+    /**
+     * Sets <b>selector</b> tab layout height.
+     */
     private void setHeightSelector() {
         clearHeight();
         view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightSelector());
     }
 
+    /**
+     * Sets <b>registration</b> tab layout height.
+     */
     private void setHeightRegistration() {
         clearHeight();
         view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistration());
     }
 
+    /**
+     * Sets <b>registration extended</b> tab layout height.
+     */
     private void setHeightRegistrationExtended() {
         clearHeight();
         view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistrationExtended());
     }
 
+    /**
+     * Clear tab layout height.
+     */
     private void clearHeight() {
         view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightBasic());
         view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightSelector());

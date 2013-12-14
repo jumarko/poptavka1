@@ -1,8 +1,5 @@
 /*
- * SupplierCreationEventBus servers all events for module SupplierCreationModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> WF zatial chyba
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.home.createSupplier;
 
@@ -19,6 +16,8 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
+ * SupplierCreationEventBus servers all events for module SupplierCreationModule.
+ * Provides supplier creation process.
  *
  * @author ivan.vlcek
  */
