@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -10,13 +13,16 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 /**
- * History converter class. Handles history for HomeSuppliersModule.
+ * Manages history for HomeSuppliers module.
  *
- * @author slavkovsky.martin
+ * @author Martin Slavkovsky
  */
 @History(type = HistoryConverterType.DEFAULT, name = "suppliers")
 public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppliersEventBus> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final String LOCATION_HOME = "home";
     private static final String LOCATION_USER = "user";
     private static final String KEY_CATEGORY = "catId";
@@ -29,6 +35,17 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     //and setModuleByHistory in Handler class.
     private static final String NO_VALUE = "null";
 
+    /**************************************************************************/
+    /* ConvertToToken events                                                  */
+    /**************************************************************************/
+    /**
+     * Creates token for history from search filters, selected category, page, and supplier.
+     * @param searchDataHolder - search filters
+     * @param category - selected category
+     * @param page - selected page
+     * @param supplierDetail - selected supplier
+     * @return created token as string
+     */
     public String onCreateTokenForHistory(SearchModuleDataHolder searchDataHolder,
         ICatLocDetail category, int page, FullSupplierDetail supplierDetail) {
         StringBuilder token = new StringBuilder();
@@ -52,7 +69,11 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         return token.toString();
     }
 
+    /**************************************************************************/
+    /* ConvertFromToken events                                                */
+    /**************************************************************************/
     /**
+     * Convert history token to action.
      * Called either when browser action <b>back</b> or <b>forward</b> is evocated,
      * or by clicking on <b>hyperlink</b> with set token.
      *
@@ -86,6 +107,9 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
             params[2].split(VALUE_SEPARATOR)[1]);
     }
 
+    /**************************************************************************/
+    /*                                                                        */
+    /**************************************************************************/
     @Override
     public boolean isCrawlable() {
         return false;

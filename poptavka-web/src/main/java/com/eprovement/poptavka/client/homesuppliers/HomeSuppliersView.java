@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
@@ -58,12 +61,18 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates home supplier view's components.
+     */
     @Override
     public void createView() {
         initTableAndPager();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**
+     * Creates universal asynchronous table and its pager.
+     */
     private void initTableAndPager() {
         // Create a DataGrid.
         GWT.log("Admin Suppliers initDataGrid initialized");
@@ -127,6 +136,10 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
             new AddressColumn(null));
     }
 
+    /**
+     * Sets table sort column definitions.
+     * @return table sort definition
+     */
     private SortDataHolder initSort() {
         List<SortPair> sortColumns = Arrays.asList(
                 null, //Logo
@@ -142,43 +155,69 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
     /* GETTERS                                                                */
     /**************************************************************************/
     /** Table. **/
+    /**
+     * @return the universal asynchronous grid
+     */
     @Override
     public UniversalAsyncGrid<FullSupplierDetail> getDataGrid() {
         return dataGrid;
     }
 
+    /**
+     * @return the table pager
+     */
     @Override
     public SimplePager getPager() {
         return pager.getPager();
     }
 
     /** Filter. **/
+    /**
+     * @return the filter lable
+     */
     @Override
     public Label getFilterLabel() {
         return filterLabel;
     }
 
     /** Other. **/
+    /**
+     * @return the category tree panel
+     */
     @Override
     public SimplePanel getCategoryTreePanel() {
         return categoryTreePanel;
     }
 
+    /**
+     * @return the detail panel
+     */
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
     }
 
+    /**
+     * @return the footer panel
+     */
     @Override
     public SimplePanel getFooterPanel() {
         return footerPanel;
     }
 
+    /**
+     * Gets toolbar custom content for home suppliers.
+     * Only pager is needed, therefore return just pager.
+     * @return the custom content - pager
+     */
     @Override
     public Widget getToolbarContent() {
         return pager;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

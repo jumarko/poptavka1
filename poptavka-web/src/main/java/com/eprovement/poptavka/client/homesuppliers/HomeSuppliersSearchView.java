@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.ui.WSIntegerBox;
@@ -12,38 +15,65 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import java.util.ArrayList;
 
+/**
+ * Home suppliers search presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 public class HomeSuppliersSearchView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeSuppliersSearchView> {
     }
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) ValidationMonitor companyMonitor, ratingMonitorFrom, ratingMonitorTo;
     @UiField TextBox supplierDescription;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     public HomeSuppliersSearchView() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    private void initValidationMonitors() {
-        Class<?>[] groups = {SearchGroup.class};
-        companyMonitor = new ValidationMonitor<BusinessUserDetail>(
-                BusinessUserDetail.class, groups, BusinessUserDetail.UserField.COMPANY_NAME.getValue());
-        ratingMonitorFrom = new ValidationMonitor<FullSupplierDetail>(
-                FullSupplierDetail.class, groups, BusinessUserDetail.UserField.OVERALL_RATING.getValue());
-        ratingMonitorTo = new ValidationMonitor<FullSupplierDetail>(
-                FullSupplierDetail.class, groups, BusinessUserDetail.UserField.OVERALL_RATING.getValue());
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    /**
+     * Clear view components.
+     */
+    @Override
+    public void clear() {
+        companyMonitor.setValue("");
+        supplierDescription.setText("");
+        ((WSIntegerBox) ratingMonitorFrom.getWidget()).setText("");
+        ratingMonitorFrom.resetValidation();
+        ((WSIntegerBox) ratingMonitorTo.getWidget()).setText("");
+        ratingMonitorTo.resetValidation();
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    /**
+     * Gets search filters.
+     * @return list of search filters
+     */
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
@@ -77,18 +107,34 @@ public class HomeSuppliersSearchView extends Composite implements
         return filters;
     }
 
-    @Override
-    public void clear() {
-        companyMonitor.setValue("");
-        supplierDescription.setText("");
-        ((WSIntegerBox) ratingMonitorFrom.getWidget()).setText("");
-        ratingMonitorFrom.resetValidation();
-        ((WSIntegerBox) ratingMonitorTo.getWidget()).setText("");
-        ratingMonitorTo.resetValidation();
-    }
-
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Inits validation monitors.
+     */
+    private void initValidationMonitors() {
+        Class<?>[] groups = {SearchGroup.class};
+        companyMonitor = createValidationMonitor(BusinessUserDetail.UserField.COMPANY_NAME, groups);
+        ratingMonitorFrom = createValidationMonitor(BusinessUserDetail.UserField.OVERALL_RATING, groups);
+        ratingMonitorTo = createValidationMonitor(BusinessUserDetail.UserField.OVERALL_RATING, groups);
+    }
+
+    /**
+     * Creates validation monitors
+     * @param field - validation field
+     * @param groups - validation groups
+     * @return created validation monitor
+     */
+    private ValidationMonitor createValidationMonitor(BusinessUserDetail.UserField field, Class<?>[] groups) {
+        return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, groups, field.getValue());
     }
 }

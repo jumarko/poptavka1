@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
@@ -69,13 +72,13 @@ public class HomeSuppliersPresenter
 
         Widget getWidgetView();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     private SearchModuleDataHolder searchDataHolder;
     private ICatLocDetail selectedCategory;
-    //FLAGS
-    //--------------------------------------------------------------------------
+    /** Flag attributes. **/
     private long selectedSupplierId = -1;
     private long selectedSupplierIdByHistory = -1;
     private boolean calledFromHistory;
@@ -98,18 +101,18 @@ public class HomeSuppliersPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        //nothing
+        // nothing by default
     }
 
+    /**
+     * Sets body and toolbar, footer.
+     * Inits Detail module and category selector.
+     */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
         eventBus.setToolbarContent("Categories", view.getToolbarContent(), true);
         eventBus.setFooter(view.getFooterPanel());
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
-        } else {
-            eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
-        }
+        eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
         eventBus.initDetailSection(view.getDataGrid(), view.getDetailPanel());
         eventBus.initCatLocSelector(
                 view.getCategoryTreePanel(),
@@ -126,7 +129,7 @@ public class HomeSuppliersPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
@@ -407,6 +410,7 @@ public class HomeSuppliersPresenter
      */
     private void deselectGridSelection() {
         ((SingleSelectionModel) view.getDataGrid().getSelectionModel()).clear();
+        //TODO Martin - remove if not needed
 //        SingleSelectionModel selectionModel = (SingleSelectionModel) view.getDataGrid().getSelectionModel();
 //        FullSupplierDetail supplier = (FullSupplierDetail) (selectionModel).getSelectedObject();
 //        if (supplier != null) {
