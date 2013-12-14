@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.login;
 
 import com.eprovement.poptavka.client.login.LoginPopupPresenter.LoginPopupInterface;
@@ -20,6 +23,11 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Login popup view is a bootstrap modal popup.
+ *
+ * @author Martin Slavkovsky
+ */
 public class LoginPopupView extends Modal implements LoginPopupInterface {
 
     /**************************************************************************/
@@ -54,6 +62,9 @@ public class LoginPopupView extends Modal implements LoginPopupInterface {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates login view's components
+     */
     @Override
     public void createView() {
         add(uiBinder.createAndBindUi(this));
@@ -100,8 +111,8 @@ public class LoginPopupView extends Modal implements LoginPopupInterface {
     }
 
     /**
-     * This method displays error status when some problem occurs in application.
-     * We ask users to try again later.
+     * Displays <b>error</b> status when some <b>problem</b> occurs.
+     * @param message - error message
      */
     @Override
     public void setErrorMessage(String message) {
@@ -115,7 +126,8 @@ public class LoginPopupView extends Modal implements LoginPopupInterface {
     }
 
     /**
-     * This method displays info status.
+     * Displays <b>info</b> status when some <b>status change</b> occurs.
+     * @param message - info message
      */
     @Override
     public void setInfoMessage(String message) {
@@ -128,48 +140,9 @@ public class LoginPopupView extends Modal implements LoginPopupInterface {
         submitBtn.setEnabled(true);
     }
 
-    /**************************************************************************/
-    /* Getters                                                                */
-    /**************************************************************************/
-    //TextBoxes
-    @Override
-    public TextBox getPassword() {
-        return passwordTextBox;
-    }
-
-    @Override
-    public TextBox getLogin() {
-        return emailTextBox;
-    }
-
-    @Override
-    public TextBox getForgotPasswordEmail() {
-        return forgotPasswordEmail;
-    }
-
-    //ProgressBar
-    @Override
-    public ProgressBar getProgressBar() {
-        return progressBar;
-    }
-
-    //Buttons
-    @Override
-    public Button getSubmitBtn() {
-        return submitBtn;
-    }
-
-    @Override
-    public Button getCancelBtn() {
-        return cancelBtn;
-    }
-
-    @Override
-    public Button getResetPasswordButton() {
-        return resetPasswordButton;
-    }
-
-    //Others
+    /**
+     * Reset view by clearing textboxes and info messages.
+     */
     @Override
     public void resetView() {
         emailTextBox.setText("");
@@ -180,11 +153,80 @@ public class LoginPopupView extends Modal implements LoginPopupInterface {
         forgotPassword.setOpen(false);
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    //TextBoxes
+    /**
+     * @return the password textbox
+     */
+    @Override
+    public TextBox getPassword() {
+        return passwordTextBox;
+    }
+
+    /**
+     * @return the login textbox
+     */
+    @Override
+    public TextBox getLogin() {
+        return emailTextBox;
+    }
+
+    /**
+     * @return the forgot password email textbox
+     */
+    @Override
+    public TextBox getForgotPasswordEmail() {
+        return forgotPasswordEmail;
+    }
+
+    //ProgressBar
+    /**
+     * @return the progress bar
+     */
+    @Override
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    //Buttons
+    /**
+     * @return the submit button
+     */
+    @Override
+    public Button getSubmitBtn() {
+        return submitBtn;
+    }
+
+    /**
+     * @return the cancel button
+     */
+    @Override
+    public Button getCancelBtn() {
+        return cancelBtn;
+    }
+
+    /**
+     * @return the reset password button
+     */
+    @Override
+    public Button getResetPasswordButton() {
+        return resetPasswordButton;
+    }
+
+    /**
+     * Validate view components.
+     * @return true if view is valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         return !getLogin().getText().isEmpty() && !getPassword().getText().isEmpty();
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public LoginPopupView getWidget() {
         return this;

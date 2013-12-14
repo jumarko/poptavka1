@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.login.activation;
 
 import com.eprovement.poptavka.resources.StyleResource;
@@ -14,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * Activation code popup is a bootstrap modal popup.
  *
  * @author Martin Slavkovsky
  */
@@ -61,53 +65,84 @@ public class ActivationCodePopupView extends Modal
     /* GETTERS                                                                */
     /**************************************************************************/
     /** TEXTBOX. **/
+    /**
+     * @return the activation cote textbox
+     */
     @Override
     public TextBox getActivationCodeBox() {
         return activationCodeBox;
     }
 
     /** BUTTONS. **/
+    /**
+     * @return the close button
+     */
     @Override
     public Button getCloseButton() {
         return closeButton;
     }
 
+    /**
+     * @return the activate button
+     */
     @Override
     public Button getActivateButton() {
         return activateButton;
     }
 
+    /**
+     * @return the send again button
+     */
     @Override
     public Button getSendAgainButton() {
         return sendAgainButton;
     }
 
+    /**
+     * @return the report button
+     */
     @Override
     public Button getReportButton() {
         return reportButton;
     }
 
     /** WIDGET. **/
+    /**
+     * @return the status alert
+     */
     @Override
     public Alert getStatus() {
         return status;
     }
 
+    /**
+     * @return the control group
+     */
     @Override
     public ControlGroup getControlGroup() {
         return controlGroup;
     }
 
+    /**
+     * @return the status label
+     */
     @Override
     public Label getStatusLabel() {
         return statusLabel;
     }
 
+    /**
+     * Validate view components.
+     * @return true if view is valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         return !activationCodeBox.getText().isEmpty();
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public ActivationCodePopupView getWidgetView() {
         return this;

@@ -1,14 +1,5 @@
 /*
  * Copyright (C), eProvement s.r.o. All rights reserved.
- *
- * RootEventBus servers all events for foot module. This is the starting
- * EventBus that handled the very first event in the app.
- *
- * Root Module countains all child modules, and all initial presenters like
- * Header, HomeMenu, UserMenu, SearchPanel, HomeBody, UserBody, Footer.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/
  */
 package com.eprovement.poptavka.client.root;
 
@@ -68,6 +59,18 @@ import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
+/**
+ * RootEventBus servers all events for foot module. This is the starting
+ * EventBus that handled the very first event in the app.
+ *
+ * Root Module countains all child modules, and all initial presenters like
+ * Header, HomeMenu, UserMenu, SearchPanel, HomeBody, UserBody, Footer.
+ *
+ * Specification:
+ * Wireframe: http://www.webgres.cz/axure/
+ *
+ * @author Beho, Ivan Vlcek, Martin Slavkovsky
+ */
 @Events(startPresenter = RootPresenter.class, historyOnStart = true)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({

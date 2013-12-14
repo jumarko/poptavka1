@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.login.activation;
 
 import com.eprovement.poptavka.client.login.LoginEventBus;

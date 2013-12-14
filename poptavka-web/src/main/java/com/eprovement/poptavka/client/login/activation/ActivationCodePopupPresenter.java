@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.login.activation;
 
 import com.eprovement.poptavka.client.login.LoginEventBus;
@@ -24,7 +27,7 @@ import com.mvp4g.client.view.LazyView;
 import java.util.Date;
 
 /**
- *
+ * Activation code popup presenter.
  * @author Martin Slavkovsky
  */
 @Presenter(view = ActivationCodePopupView.class, multiple = true)
@@ -69,6 +72,9 @@ public class ActivationCodePopupPresenter
     /**************************************************************************/
     /* BIND                                                                   */
     /**************************************************************************/
+    /**
+     * Bind activation code buttons handlers.
+     */
     @Override
     public void bindView() {
         view.getCloseButton().addClickHandler(new ClickHandler() {
@@ -118,6 +124,11 @@ public class ActivationCodePopupPresenter
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Initialize activation code popup.
+     * @param user that has to be activated/authenticated
+     * @param widgetToLoad is a constant of view that will be loaded at the end
+     */
     public void onInitActivationCodePopup(BusinessUserDetail user, int widgetToLoad) {
         this.user = user;
         this.widgetToLoad = widgetToLoad;
@@ -127,6 +138,10 @@ public class ActivationCodePopupPresenter
     /**************************************************************************/
     /* Response methods                                                       */
     /**************************************************************************/
+    /**
+     * Displays result of activation process.
+     * @param activationResult enum of activation process results
+     */
     public void onResponseActivateUser(UserActivationResult activationResult) {
         if (activated) {
             view.getStatus().setType(AlertType.SUCCESS);
@@ -154,6 +169,10 @@ public class ActivationCodePopupPresenter
 
     }
 
+    /**
+     * Notifies user that new activation code has or has not been successfully sent.
+     * @param sent true if resending was successfull, false otherwise
+     */
     public void onResponseSendActivationCodeAgain(boolean sent) {
         view.getSendAgainButton().setEnabled(true);
         if (sent) {
@@ -170,6 +189,12 @@ public class ActivationCodePopupPresenter
         }
     }
 
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Notifies user that activation was successfull and log him.
+     */
     private void reportActivationSuccessAndLoginUser() {
         view.getStatusLabel().setText(MSGS.activationPassed());
         view.getStatus().setType(AlertType.SUCCESS);
@@ -183,6 +208,10 @@ public class ActivationCodePopupPresenter
             widgetToLoad);
     }
 
+    /**
+     * Notifies user that activation was NOT successfull.
+     * @param errorMessage - error message
+     */
     private void reportActivationFailure(String errorMessage) {
         view.getStatusLabel().setText(errorMessage);
         view.getStatus().setType(AlertType.ERROR);

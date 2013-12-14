@@ -271,6 +271,7 @@ public interface LocalizableMessages extends Messages {
     String activationNewCodeSending();
     String activationNewCodeSent();
     String activationPassed();
+    String activationPopupTitle();
 
     /** DetailsWrapperView.ui. **/
     String detailsWrapperTabClientDetail();
