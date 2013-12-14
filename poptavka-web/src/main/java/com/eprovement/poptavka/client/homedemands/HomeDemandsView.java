@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
@@ -56,6 +59,9 @@ public class HomeDemandsView extends OverflowComposite
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates home demands view's components.
+     */
     @Override
     public void createView() {
         initTable();
@@ -90,43 +96,69 @@ public class HomeDemandsView extends OverflowComposite
     /* GETTERS                                                                */
     /**************************************************************************/
     /** Table. **/
+    /**
+     * @return the universal asynchronous grid.
+     */
     @Override
     public UniversalAsyncGrid<FullDemandDetail> getDataGrid() {
         return dataGrid;
     }
 
+    /**
+     * @return the table pager
+     */
     @Override
     public SimplePager getPager() {
         return pager.getPager();
     }
 
     /** Filter. **/
+    /**
+     * @return the filter label
+     */
     @Override
     public Label getFilterLabel() {
         return filterLabel;
     }
 
     /** Other. **/
+    /**
+     * @return the category tree panel
+     */
     @Override
     public SimplePanel getCategoryTreePanel() {
         return categoryTreePanel;
     }
 
+    /**
+     * @return the detail panel
+     */
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
     }
 
+    /**
+     * @return the footer panel
+     */
     @Override
     public SimplePanel getFooterPanel() {
         return footerPanel;
     }
 
+    /**
+     * Gets toolbar custom content for home suppliers.
+     * Only pager is needed, therefore return just pager.
+     * @return the custom content - pager
+     */
     @Override
     public Widget getToolbarContent() {
         return pager;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -12,9 +15,17 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
 
+/**
+ * Handler for HomeDemands module.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     private HomeDemandsRPCServiceAsync homeDemandsService = null;
 
     @Inject
@@ -25,6 +36,10 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
     /**************************************************************************/
     /* Get Suppliers data                                                     */
     /**************************************************************************/
+    /**
+     * Request for selected demand.
+     * @param demandID
+     */
     public void onGetDemand(long demandID) {
         homeDemandsService.getDemand(demandID, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
             @Override
@@ -34,6 +49,11 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         });
     }
 
+    /**
+     * Request table data count.
+     * @param grid to be updated
+     * @param searchDefinition - search filters
+     */
     public void onGetDataCount(final UniversalAsyncGrid grid, final SearchDefinition searchDefinition) {
         homeDemandsService.getDemandsCount(searchDefinition, new SecuredAsyncCallback<Integer>(eventBus) {
             @Override
@@ -43,6 +63,10 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         });
     }
 
+    /**
+     * Request table data.
+     * @param searchDefinition - search filters
+     */
     public void onGetData(SearchDefinition searchDefinition) {
         homeDemandsService.getDemands(searchDefinition,
                 new SecuredAsyncCallback<List<FullDemandDetail>>(eventBus) {
@@ -56,6 +80,14 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
     /**************************************************************************/
     /* Get Categories data                                                    */
     /**************************************************************************/
+    /**
+     * Restore module state from history.
+     *
+     * @param searchDataHolder - search filters
+     * @param categoryIdStr - selected category id
+     * @param pageStr - selected table page
+     * @param supplierIdStr - selected supplier id
+     */
     public void onSetModuleByHistory(final SearchModuleDataHolder searchDataHolder,
             String categoryIdStr, String pageStr, String supplierIdStr) {
         final int categoryId = categoryIdStr.equals("null") ? -1 : Integer.parseInt(categoryIdStr);
