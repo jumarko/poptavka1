@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.messages;
 
 import com.mvp4g.client.annotation.History;
@@ -7,25 +10,34 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 
 /**
- * History converter class. Handles history for MessagesModule.
+ * Manages history for Messages module.
  *
- * @author slavkovsky.martin
+ * @author Martin Slavkovsky
  */
 @History(type = HistoryConverterType.DEFAULT, name = "messages")
 public class MessagesHistoryConverter implements HistoryConverter<MessagesEventBus> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final String MESSAGES_INBOX_TEXT = "messagesInbox";
 
+    /**************************************************************************/
+    /* ConvertToToken events                                                  */
+    /**************************************************************************/
     /**
-     * Created token(URL) for messages module.
-     *
-     * @return token string
+     * Creates history token for Messages module.
+     * @return history token string
      */
     public String onCreateTokenForHistory() {
         return MESSAGES_INBOX_TEXT;
     }
 
+    /**************************************************************************/
+    /* ConvertFromToken events                                                */
+    /**************************************************************************/
     /**
+     * Convert history token into action
      * Called either when browser action <b>back</b> or <b>forward</b> is evocated,
      * or by clicking on <b>hyperlink</b> with set token.
      *
@@ -46,6 +58,9 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
         eventBus.goToMessagesModule(null, Constants.NONE);
     }
 
+    /**************************************************************************/
+    /* Other events                                                           */
+    /**************************************************************************/
     @Override
     public boolean isCrawlable() {
         return false;

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.messages;
 
 import com.mvp4g.client.annotation.Debug;
@@ -17,10 +20,13 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.ArrayList;
 
+/**
+ * Message module - provides internal mailbox to user.
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = MessagesPresenter.class, module = MessagesModule.class)
 public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus,
@@ -60,9 +66,6 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
     /**************************************************************************/
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
-
-    @Event(forwardToParent = true)
-    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
 
     /**************************************************************************/
     /* History events                                                         */
