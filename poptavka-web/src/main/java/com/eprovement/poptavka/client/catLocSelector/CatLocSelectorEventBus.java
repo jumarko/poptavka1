@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.catLocSelector;
 
@@ -22,6 +21,12 @@ import java.util.List;
 
 /**
  * EventBus for <b>CatLoc selector module</b>.
+ * Module can be initialized in tree ways:
+ * <ul>
+ *   <li>CellBrowser - uses cellBrowser to browse and select items.</li>
+ *   <li>TreeBrowser - uses cellTree to browse and select items in a tree.</li>
+ *   <li>Manager - manages selected items in a table</li>
+ * </ul>
  *
  * @author Martin Slavkovsky
  */

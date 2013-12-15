@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
@@ -28,8 +27,13 @@ import java.util.List;
  */
 public class CatLocSuggestOracle extends MultiWordSuggestOracle {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** Constants. **/
     private static final String SUBSTRING_FORMATTER_LEFT = "<strong>";
     private static final String SUBSTRING_FORMATTER_RIGHT = "</strong>";
+    /** Class attibutes. **/
     //Need to provide RPC and EventBus
     private ManagerPresenter presenter = null;
     private Request suggestRequest = null;
@@ -39,6 +43,13 @@ public class CatLocSuggestOracle extends MultiWordSuggestOracle {
     private int currentRequestId = 0;
     private boolean throwAwayAnyReponse;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates CatLocSuggestOracle.
+     * @param managerPresenter the ManagerPresenter
+     */
     public CatLocSuggestOracle(ManagerPresenter managerPresenter) {
         this.presenter = managerPresenter;
         this.timer = new Timer() {
@@ -59,6 +70,12 @@ public class CatLocSuggestOracle extends MultiWordSuggestOracle {
         };
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Request for item's suggestions.
+     */
     @Override
     public void requestSuggestions(final Request suggestRequest, final Callback callback) {
         this.suggestRequest = suggestRequest;
@@ -78,6 +95,9 @@ public class CatLocSuggestOracle extends MultiWordSuggestOracle {
 
     }
 
+    /**
+     * Request for short item's suggestions.
+     */
     public void requestShortCitySuggestions() {
         throwAwayAnyReponse = false;
         presenter.getCatLocSuggestionPopup().showLoading();
@@ -109,6 +129,10 @@ public class CatLocSuggestOracle extends MultiWordSuggestOracle {
         //else - forget the response - throw it away
     }
 
+    /**
+     * Displays suggestions.
+     * @param result list of suggestions
+     */
     private void responseSuggestions(final Request suggestRequest, final Callback callback,
             List<CatLocSuggestionDetail> result) {
         //Deny selecting root Categories by removing them from suggestions
@@ -133,6 +157,13 @@ public class CatLocSuggestOracle extends MultiWordSuggestOracle {
         }
     }
 
+    /**
+     * Formats suggestions before displaying.
+     * Emphatize requested query in suggestions.
+     * @param query to be emphatized
+     * @param candidates - list of suggestions
+     * @return formated suggestions
+     */
     private List<CatLocSuggestionDetail> convertToFormattedSuggestions(String query,
             List<CatLocSuggestionDetail> candidates) {
         List<CatLocSuggestionDetail> suggestions = new ArrayList<CatLocSuggestionDetail>();

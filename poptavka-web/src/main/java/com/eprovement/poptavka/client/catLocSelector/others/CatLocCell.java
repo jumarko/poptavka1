@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorInstanceManager.PresentersInterface;
@@ -18,7 +21,7 @@ import com.google.gwt.view.client.SetSelectionModel;
 /**
  * The cell used to render categories.
  *
- * @author Martin
+ * @author Martin Slavkovsky
  */
 public class CatLocCell extends AbstractCell<ICatLocDetail> {
 
@@ -123,21 +126,26 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
         }
     }
 
-    private SafeHtml prepareCategoryName(ICatLocDetail category) {
+    /**
+     * Prepares item name
+     * @param item selected
+     * @return category name as SafeHtml
+     */
+    private SafeHtml prepareCategoryName(ICatLocDetail item) {
         SafeHtmlBuilder text = new SafeHtmlBuilder();
 
-        text.appendEscaped(category.toString());
+        text.appendEscaped(item.toString());
         switch (presenter.getBuilder().getDisplayCountsOfWhat()) {
             case CatLocSelectorBuilder.COUNTS_DEMANDS:
                 text.appendEscaped(SPACE);
                 text.appendEscaped(LEFT_BRACE);
-                text.append(category.getDemandsCount());
+                text.append(item.getDemandsCount());
                 text.appendEscaped(RIGHT_BRACE);
                 break;
             case CatLocSelectorBuilder.COUNTS_SUPPLIERS:
                 text.appendEscaped(SPACE);
                 text.appendEscaped(LEFT_BRACE);
-                text.append(category.getSuppliersCount());
+                text.append(item.getSuppliersCount());
                 text.appendEscaped(RIGHT_BRACE);
                 break;
             default:
@@ -147,15 +155,25 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
         return text.toSafeHtml();
     }
 
-    private SafeUri prepareImageSource(ICatLocDetail category) {
+    /**
+     * Prepare images source.
+     * @param item selected
+     * @return image source
+     */
+    private SafeUri prepareImageSource(ICatLocDetail item) {
         //if rendering detail object is selected, render selected checbox.
-        if (selectionModel != null && selectionModel.getSelectedSet().contains(category)) {
+        if (selectionModel != null && selectionModel.getSelectedSet().contains(item)) {
             return Storage.RSCS.images().checkboxSelected().getSafeUri();
         } else {
             return Storage.RSCS.images().checkbox().getSafeUri();
         }
     }
 
+    /**
+     * Prepares image style.
+     * @param category selected
+     * @return image style
+     */
     private String prepareImageStyle(ICatLocDetail category) {
         switch (presenter.getBuilder().getCheckboxes()) {
             case CatLocSelectorBuilder.CHECKBOXES:

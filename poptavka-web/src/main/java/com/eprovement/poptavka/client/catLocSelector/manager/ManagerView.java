@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.manager;
 
 import com.eprovement.poptavka.client.catLocSelector.manager.ManagerPresenter.ManagerInterface;
@@ -33,6 +36,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import java.util.LinkedList;
 
+/**
+ * Manager view consists of suggestBox for searching items, Browser button for
+ * invoking any browser widget and table for managing selected items.
+ *
+ * @author Martin Slavkovsky
+ */
 public class ManagerView extends ReverseCompositeView<ManagerPresenter>
         implements ProvidesValidate, ManagerInterface {
 
@@ -68,6 +77,9 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates Manager view's components.
+     */
     @Override
     public void createView() {
         initSuggestBox();
@@ -76,6 +88,9 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**
+     * Inits suggestBox.
+     */
     private void initSuggestBox() {
         searchTextBoxBase = new TextBox();
         searchBox = new SuggestBox(
@@ -84,6 +99,9 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
                 new CatLocSuggestionDisplay());
     }
 
+    /**
+     * Inits table.
+     */
     private void initTable() {
         DataGrid.Resources resource = GWT.create(SelectorDataGrid.class);
         dataGrid = new DataGrid<LinkedList<CatLocTreeItem>>(10, resource);
@@ -92,6 +110,9 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
         initTableColumns();
     }
 
+    /**
+     * Inits table columns.
+     */
     private void initTableColumns() {
         //CatLoc hierarchy
         addColumn(new SafeHtmlCell(), "100%", new GetValue<SafeHtml>() {
@@ -166,6 +187,11 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
                 Storage.MSGS.commonSelected() + " (" + count + "/" + countRestriction + "):");
     }
 
+    /**
+     * Sets selector type.
+     * TODO Martin - add i18n strings
+     * @param selectorType - SELECTOR_TYPE_CATEGORIES or SELECTOR_TYPE_LOCALITIES
+     */
     @Override
     public void setSelectorType(int selectorType) {
         switch (selectorType) {
@@ -189,36 +215,58 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the suggestBox
+     */
     @Override
     public SuggestBox getSearchBox() {
         return searchBox;
     }
 
+    /**
+     * @return the browser button
+     */
     @Override
     public Button getBrowseBtn() {
         return browseBtn;
     }
 
+    /**
+     * @return the selected count label
+     */
     @Override
     public Label getSelectedCountLabel() {
         return selectedCountLabel;
     }
 
+    /**
+     * @return the table (dataGrid)
+     */
     @Override
     public DataGrid<LinkedList<CatLocTreeItem>> getDataGrid() {
         return dataGrid;
     }
 
+    /**
+     * @return the table data provider
+     */
     @Override
     public ListDataProvider<LinkedList<CatLocTreeItem>> getTableDataProvider() {
         return dataProvider;
     }
 
+    /**
+     * Validates view's components.
+     * @return true if valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         return !dataProvider.getList().isEmpty();
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

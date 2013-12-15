@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.treeBrowser;
 
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorEventBus;
@@ -26,11 +29,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Use for browsing and selecting items in a tree hirarchy.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = TreeBrowserView.class, multiple = true)
 public class TreeBrowserPresenter
         extends LazyPresenter<TreeBrowserPresenter.TreeBrowserInterface, CatLocSelectorEventBus>
         implements PresentersInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface TreeBrowserInterface extends LazyView {
 
         void createTreeBrowser();
@@ -41,6 +52,7 @@ public class TreeBrowserPresenter
 
         Widget getWidgetView();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -51,6 +63,7 @@ public class TreeBrowserPresenter
     private boolean cancelNextCloseEvent;
     private CatLocSelectorBuilder builder;
     private int instanceId;
+
     /**************************************************************************/
     /* CatLocRPCServiceAsync                                                */
     /**************************************************************************/
@@ -88,6 +101,9 @@ public class TreeBrowserPresenter
     /**************************************************************************/
     /* Bind                                                                   */
     /**************************************************************************/
+    /**
+     * Binds cellTree open & close handlers.
+     */
     private void bindTreeBrowserHanlders() {
         view.getCellTree().addOpenHandler(new OpenHandler<TreeNode>() {
             @Override
@@ -217,11 +233,17 @@ public class TreeBrowserPresenter
     /**************************************************************************/
     /* Getter methods                                                         */
     /**************************************************************************/
+    /**
+     * @return the instance id
+     */
     @Override
     public int getInstanceId() {
         return instanceId;
     }
 
+    /**
+     * @return the CatLocSelectorBuilder
+     */
     @Override
     public CatLocSelectorBuilder getBuilder() {
         return builder;

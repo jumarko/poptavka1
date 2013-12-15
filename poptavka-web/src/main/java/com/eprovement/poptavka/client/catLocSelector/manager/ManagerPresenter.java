@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.manager;
 
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorEventBus;
@@ -33,10 +36,19 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Manages selected items in a table.
+ * Can be combined to use CellBrowser or TreeBrowser for selecting items.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = ManagerView.class, multiple = true)
 public class ManagerPresenter
         extends LazyPresenter<ManagerPresenter.ManagerInterface, CatLocSelectorEventBus> {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface ManagerInterface extends LazyView {
 
         void setSelectedCountLabel(int count, int countRestriction);
@@ -93,6 +105,15 @@ public class ManagerPresenter
     /**************************************************************************/
     /* Bind                                                                   */
     /**************************************************************************/
+    /**
+     * Bind handlers:
+     * <ul>
+     *   <li>suggestBox focus handler,</li>
+     *   <li>suggestBox selection handler,</li>
+     *   <li>browse button handler,</li>
+     *   <li>submit button handler,</li>
+     * </ul>
+     */
     @Override
     public void bindView() {
         /** FOCUS. **/
@@ -182,6 +203,12 @@ public class ManagerPresenter
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Displays selected item in table.
+     * Displays whole item hierarchy.
+     * @param result item hierarchy as list
+     * @param instanceId instance id
+     */
     public void onResponseHierarchyForManager(LinkedList<CatLocTreeItem> result, int instanceId) {
         if (this.instanceId == instanceId) {
             if (view.getTableDataProvider().getList().size() >= registerRestrition) {
@@ -217,11 +244,21 @@ public class ManagerPresenter
         }
     }
 
+    /**
+     * Same like <b>onAddCatLocs</b> method but clears table fist.
+     * @param catLocs - list of items to be set
+     */
     public void onSetCatLocs(List<ICatLocDetail> catLocs) {
         view.getTableDataProvider().getList().clear();
         onAddCatLocs(catLocs);
     }
 
+    /**
+     * Sets items to table without checking restrictions.
+     * Used for setting manager widget at the begining.
+     * Request for full item hierarchy before adding to table.
+     * @param catLocs list of items to be set
+     */
     public void onAddCatLocs(List<ICatLocDetail> catLocs) {
         updatingTableItemIdx = -1;
         for (ICatLocDetail cat : catLocs) {
@@ -252,14 +289,23 @@ public class ManagerPresenter
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the CatLocSuggestionDsiaply popup
+     */
     public CatLocSuggestionDisplay getCatLocSuggestionPopup() {
         return ((CatLocSuggestionDisplay) view.getSearchBox().getSuggestionDisplay());
     }
 
+    /**
+     * @return the registration restriction number
+     */
     public int getRegisterRestriction() {
         return this.registerRestrition;
     }
 
+    /**
+     * @return the CatLocSelectorBuilder
+     */
     public CatLocSelectorBuilder getBuilder() {
         return this.builder;
     }
@@ -285,6 +331,11 @@ public class ManagerPresenter
         embedToWidget.setWidget(view.getWidgetView());
     }
 
+    /**
+     * Check if item is already selected.
+     * @param catLocDetail - selected item
+     * @return true if selected, false otherwise
+     */
     private boolean isAlreadySelected(ICatLocDetail catLocDetail) {
         for (LinkedList<CatLocTreeItem> item : view.getTableDataProvider().getList()) {
             if (item.getLast().getCatLoc().equals(catLocDetail)) {

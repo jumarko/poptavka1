@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.cellBrowser;
 
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorInstanceManager.PresentersInterface;
@@ -26,7 +29,12 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-
+/**
+ * CellBrowser view consists of CellBrowser for browsing and picking up
+ * categories and CellList as holder and overview of selected categories.
+ *
+ * @author Martin Slavkovsky
+ */
 public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
         implements ProvidesValidate, CellBrowserInterface {
 
@@ -54,6 +62,9 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates CellBrowser view's compontents.
+     */
     @Override
     public void createView() {
         createCellList();
@@ -61,6 +72,9 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**
+     * Creates celllist.
+     */
     private void createCellList() {
         cellListSelectionModel = new SingleSelectionModel<ICatLocDetail>(CatLocDetail.KEY_PROVIDER);
 
@@ -71,6 +85,9 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
         cellListDataProvider.addDataDisplay(cellList);
     }
 
+    /**
+     * Creates cellBrowser.
+     */
     @Override
     public void createCellBrowser() {
         final CellBrowser.Resources resource = GWT.create(CustomCellBrowser.class);
@@ -91,6 +108,11 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets label text which says how many categories selected of how many can be selected.
+     * @param count - how many categories selected already
+     * @param countRestriction - how many categories allowed to be selected.
+     */
     @Override
     public void setSelectedCountLabel(int count, int countRestriction) {
         selectedCountLabel.setText(
@@ -100,36 +122,58 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the cellBrowser
+     */
     @Override
     public CellBrowser getCellBrowser() {
         return cellBrowser;
     }
 
+    /**
+     * @return the cellList
+     */
     @Override
     public CellList getCellList() {
         return cellList;
     }
 
+    /**
+     * @return the cellBrowser selection model
+     */
     @Override
     public MultiSelectionModel<ICatLocDetail> getCellBrowserSelectionModel() {
         return cellBrowserSelectionModel;
     }
 
+    /**
+     * @return the cellList selection model
+     */
     @Override
     public SingleSelectionModel<ICatLocDetail> getCellListSelectionModel() {
         return cellListSelectionModel;
     }
 
+    /**
+     * @return the cellLIst data provider
+     */
     @Override
     public ListDataProvider<ICatLocDetail> getCellListDataProvider() {
         return cellListDataProvider;
     }
 
+    /**
+     * Validate view's compontents.
+     * @return true if valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         return !cellListDataProvider.getList().isEmpty();
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;
@@ -140,6 +184,10 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
  */
 class ItemCell extends AbstractCell<ICatLocDetail> {
 
+    /**
+     * Render selected category
+     * @param value - selected category
+     */
     @Override
     public void render(Context context, ICatLocDetail value, SafeHtmlBuilder sb) {
         // Value can be null, so do a null check..

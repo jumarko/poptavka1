@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorInstanceManager.PresentersInterface;
@@ -12,18 +15,45 @@ import com.google.gwt.view.client.HasData;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * CatLocData provider retrieves items asynchoronously.
+ * In order to have asynchronous data retrieving for CellBrowser and CellTree,
+ * asynchronous data provider must be created.
+ *
+ * @author Martin Slavkovsky
+ */
 public class CatLocDataProvider extends AsyncDataProvider<ICatLocDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final Logger LOGGER = Logger.getLogger(CatLocDataProvider.class.getName());
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private PresentersInterface presenter;
     private ICatLocDetail detail;
 
+    /**************************************************************************/
+    /* Initialiation                                                          */
+    /**************************************************************************/
+    /**
+     * Creates CatLocDataProvider
+     * @param catLocDetail - parent object
+     * @param categoryPresenter the PresentersInterface
+     */
     public CatLocDataProvider(ICatLocDetail catLocDetail, PresentersInterface categoryPresenter) {
         this.detail = catLocDetail;
         this.presenter = categoryPresenter;
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * When range changes, new data are recquired.
+     * Retrieves data asynchronously.
+     * If parent item provided, retrieves its child items.
+     * If no parent item provided, retrieves root items.
+     */
     @Override
     protected void onRangeChanged(HasData<ICatLocDetail> display) {
         if (detail == null) {
