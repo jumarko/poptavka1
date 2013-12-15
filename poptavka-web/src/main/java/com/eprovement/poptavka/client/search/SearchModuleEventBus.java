@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.search;
 
 import com.eprovement.poptavka.client.search.advanced.AdvanceSearchPresenter;
@@ -11,6 +14,12 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
+/**
+ * Search module allows user to fill serach criteria that are used as filters when
+ * retieving data. Doesn't perform search functionality itselft.
+ *
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = SearchModulePresenter.class, module = SearchModule.class)
 public interface SearchModuleEventBus extends EventBus, BaseChildEventBus, CatLocSelectorGateway {

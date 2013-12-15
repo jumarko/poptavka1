@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.search.advanced;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
@@ -22,15 +25,17 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-/*
- * Musi byt mulitple = true, inak advance search views sa nebudu zobrazovat
- * (bude vyhadzovat chybu) -- len v pripade, ze budu dedit
- * SearchModulesViewInterface, co chceme, aby voly Lazy
+/**
+ * Advance Search presenter.
+ * @author Martin Slavkovsky
  */
 @Presenter(view = AdvanceSearchView.class, async = SingleSplitter.class)
 public class AdvanceSearchPresenter
         extends LazyPresenter<AdvanceSearchPresenter.AdvanceSearchInterface, SearchModuleEventBus> {
 
+    /**************************************************************************/
+    /*  View interface                                                        */
+    /**************************************************************************/
     public interface AdvanceSearchInterface extends LazyView {
 
         //Setters
@@ -63,6 +68,16 @@ public class AdvanceSearchPresenter
         AdvanceSearchView getWidgetView();
     }
 
+    /**************************************************************************/
+    /*  Bind handlers                                                         */
+    /**************************************************************************/
+    /**
+     * Binds handlers:
+     * <ul>
+     *   <li>search button handler,</li>
+     *   <li>tabLayout before selection handler</li>
+     * </ul>
+     */
     @Override
     public void bindView() {
         this.addSearchBtnClickHandler();
@@ -86,6 +101,10 @@ public class AdvanceSearchPresenter
     /**************************************************************************/
     /** Navigation events                                                     */
     /**************************************************************************/
+    /**
+     * Inits adnvace search popup.
+     * @param newAttributeSearchWidget - attribute search widget (not supported yet)
+     */
     public void onInitAdvanceSearchPopup(Widget newAttributeSearchWidget) {
         switch(Storage.getCurrentlyLoadedView()) {
             case Constants.HOME_DEMANDS_MODULE:
@@ -111,6 +130,9 @@ public class AdvanceSearchPresenter
         }
     }
 
+    /**
+     * Show popup.
+     */
     public void onShowAdvanceSearchPopup() {
         view.getWidgetView().show();
     }
@@ -134,6 +156,10 @@ public class AdvanceSearchPresenter
         }
     }
 
+    /**
+     * Fills search criteria
+     * @param filter - search criteria that will be updated
+     */
     private void fillSearchCriteria(SearchModuleDataHolder filter) {
         //fill attributes
         view.fillAttributes(filter);
@@ -144,7 +170,7 @@ public class AdvanceSearchPresenter
     }
 
     /**
-     * Advance search.
+     * Binds search & close buttons handlers.
      */
     private void addSearchBtnClickHandler() {
         view.getSearchBtn1().addClickHandler(new ClickHandler() {
@@ -203,6 +229,10 @@ public class AdvanceSearchPresenter
         }
     }
 
+    /**
+     * Binds tab layout before selection handler.
+     * Initialize widgets before selecting tab.
+     */
     private void addTabLayoutPanelBeforeSelectionHandler() {
         view.getTabLayoutPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
             @Override

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.search;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -22,15 +25,21 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 
-/*
- * Musi byt mulitple = true, inak advance search views sa nebudu zobrazovat
- * (bude vyhadzovat chybu) -- len v pripade, ze budu dedit
- * SearchModulesViewInterface, co chceme, aby voly Lazy
+/**
+ * Search module presenter.
+ *
+ * @author Martin Slavkovsky
  */
 @Presenter(view = SearchModuleView.class, multiple = true)
 public class SearchModulePresenter
         extends LazyPresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
 
+    /**************************************************************************/
+    /* Interfaces                                                             */
+    /**************************************************************************/
+    /**
+     * View interface
+     */
     public interface SearchModuleInterface extends LazyView, IsWidget {
 
         //GETTERS - search bar items
@@ -44,8 +53,10 @@ public class SearchModulePresenter
         Widget getWidgetView();
     }
 
-    //Neviem zatial preco, ale nemoze to byt lazy, pretoze sa neinicializuci advace
-    //search views.
+    /**
+     * Advance search view interface.
+     * Martin 1.5.2013 - don't know why but cannot be Lazy because advaced search views are not initializing.
+     */
     public interface SearchModulesViewInterface {
 
         ArrayList<FilterItem> getFilter();
@@ -64,6 +75,14 @@ public class SearchModulePresenter
     /**************************************************************************/
     /** Bind events                                                           */
     /**************************************************************************/
+    /**
+     * Binds handlers:
+     * <ul>
+     *   <li>search button hadnler,</li>
+     *   <li>advaced search button hadnler,</li>
+     *   <li>search texbox keyUp hadnler,</li>
+     * </ul>
+     */
     @Override
     public void bindView() {
         this.addSearchBtnClickHandler();
@@ -75,23 +94,30 @@ public class SearchModulePresenter
     /** General Module events                                                 */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        // nothing by default
     }
 
     public void onForward() {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
     /** Navigation events                                                     */
     /**************************************************************************/
+    /**
+     * Initialize search module.
+     */
     public void onGoToSearchModule() {
         GWT.log("SearchModule loaded");
+        //nothing by default
     }
 
     /**************************************************************************/
     /** Business events                                                       */
     /**************************************************************************/
+    /**
+     * Shows advanced search popup.
+     */
     public void onShowAdvancedSearchPopup() {
         if (resetAdvancePopup) {
             eventBus.initAdvanceSearchPopup(newAttributeSearchWidget);
@@ -100,6 +126,9 @@ public class SearchModulePresenter
         eventBus.showAdvanceSearchPopup();
     }
 
+    /**
+     * Shows <b>No search criteria</b> popup.
+     */
     public void onShowPopupNoSearchCriteria() {
         int left = view.getSearchContent().getElement().getAbsoluteLeft();
         int top = view.getSearchContent().getElement().getAbsoluteTop() + 40;
@@ -112,6 +141,11 @@ public class SearchModulePresenter
         popup.show();
     }
 
+    /**
+     * Resets search bar will sets given attribute widget to advnace search popup
+     * and clears search textbox.
+     * @param newAttributeSearchWidget - new attribute search widget
+     */
     public void onResetSearchBar(Widget newAttributeSearchWidget) {
         view.getSearchContent().setText(null);
         this.resetAdvancePopup = true;
@@ -121,6 +155,9 @@ public class SearchModulePresenter
     /**************************************************************************/
     /** Additional events used in bind method                                 */
     /**************************************************************************/
+    /**
+     * Binds search button handler.
+     */
     private void addSearchBtnClickHandler() {
         view.getSearchBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -130,6 +167,9 @@ public class SearchModulePresenter
         });
     }
 
+    /**
+     * Binds advace search button handler.
+     */
     private void addAdvanceSearchBtnClickHandler() {
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
 
@@ -140,6 +180,9 @@ public class SearchModulePresenter
         });
     }
 
+    /**
+     * Binds search textbox keyUp handler.
+     */
     private void addSearchContentBoxClickHandler() {
         view.getSearchContent().addKeyUpHandler(new KeyUpHandler() {
             @Override
