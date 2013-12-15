@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -9,9 +12,17 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.ArrayList;
 
+/**
+ * Handle RPS calls for ServiceSelector module.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class ServiceSelectorHandler extends BaseEventHandler<ServiceSelectorEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPS services                                                    */
+    /**************************************************************************/
     @Inject
     private ServiceSelectorRPCServiceAsync serviceSelectorService = null;
 
