@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.addressSelector.others;
 
@@ -39,6 +38,9 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates AddressSelectorSuggestDisplay.
+     */
     public AddressSelectorSuggestDisplay() {
         loader.setImageResource(Storage.RSCS.images().loaderIcon33());
         loader.addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
@@ -47,6 +49,9 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the suggestion display popup panel
+     */
     @Override
     public PopupPanel getPopupPanel() {
         return super.getPopupPanel();
@@ -55,10 +60,18 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets SuggestOracle.
+     * @param oracle - AddressSelectorSuggestOracle
+     */
     public void setOracle(AddressSelectorSuggestOracle oracle) {
         this.oracle = oracle;
     }
 
+    /**
+     * Sets suggestion displa popup panel position according to given suggest box.
+     * @param suggestBox
+     */
     public void setLoadingPopupPosition(SuggestBox suggestBox) {
         loadingPopup.setPopupPosition(
                 DOM.getAbsoluteLeft(suggestBox.getElement()) + OFFSET_LEFT,
@@ -68,6 +81,10 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
     /**************************************************************************/
     /* SHOW                                                                   */
     /**************************************************************************/
+    /**
+     * Displays <b>No cities fount</b> widget inside suggestion display popup.
+     * @param eventbus - appropriate eventbus to bind reply handlers
+     */
     public void showNoCitiesFound(final AddressSelectorEventBus eventbus) {
         VerticalPanel vp = new VerticalPanel();
         vp.addStyleName(StyleResource.INSTANCE.modal().suggestModal());
@@ -85,6 +102,10 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
         loadingPopup.show();
     }
 
+    /**
+     * Displays <b>Short cities</b> widget inside suggestion display popup.
+     * @param minCityChars - city length number
+     */
     public void showShortCitiesInfo(int minCityChars) {
         VerticalPanel vp = new VerticalPanel();
         vp.addStyleName(StyleResource.INSTANCE.modal().suggestModal());
@@ -102,6 +123,9 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
         loadingPopup.show();
     }
 
+    /**
+     * Show loading.
+     */
     public void showLoading() {
         hideSuggestions();
         loadingPopup.setWidget(loader);
@@ -112,11 +136,17 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
     /**************************************************************************/
     /* HIDE                                                                   */
     /**************************************************************************/
+    /**
+     * Hide suggestions popup.
+     */
     @Override
     public void hideSuggestions() {
         super.hideSuggestions();
     }
 
+    /**
+     * Hide loading popup.
+     */
     public void hideLoadingPopup() {
         loadingPopup.hide();
     }
