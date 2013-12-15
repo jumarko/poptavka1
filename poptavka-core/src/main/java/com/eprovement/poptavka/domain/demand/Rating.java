@@ -5,12 +5,7 @@ import com.eprovement.poptavka.domain.common.DomainObject;
 import javax.persistence.Entity;
 
 /**
- * The rating of supply of some demand.
- * There are two perspectives of rating>
- * <ul>
- *   <li>from client's point of view</li>
- *   <li>from supplier's point of view</li>
- * </ul>
+ * Rating of the client and supplier of a demand
  *
  * @author Juraj Martinka
  *         Date: 12.2.11

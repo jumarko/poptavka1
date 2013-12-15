@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 /**
  * Very simple template containing only one (potentially long) string
- * which is reffered as a <code>prefilledInputs</code>
+ * which is referred as a <code>prefilledInputs</code>
  * <p>
  * This template can be used for various purposes.
  *

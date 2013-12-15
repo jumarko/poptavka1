@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.demand;
 
 import com.eprovement.poptavka.domain.address.Locality;
@@ -47,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The core domain class which represents demand entered by client.
+ * The core domain class which represents a demand (project) a client would like to have realized.
  *
  * @author Juraj Martinka
  */

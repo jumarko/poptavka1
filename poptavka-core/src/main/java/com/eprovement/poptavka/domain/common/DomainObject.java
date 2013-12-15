@@ -13,12 +13,12 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
- * Base class for al domain objects.
+ * Base class for all domain objects.
  * Main responsibilities:
  * <ol>
  *     <li>Handles ID field mapping at one place.</li>
  *     <li>Defines "caseAccentInsensitiveAnalyzer" which enables case and accent insensitive fulltext search
- *         to be available on all domain objects. Particular object must use this Analyzer through annotation
+ *         to be available on all domain objects. Particular objects must use this Analyzer through annotation
  *        {@link org.hibernate.search.annotations.Analyzer}.
  *        See also {@link com.eprovement.poptavka.service.fulltext.HibernateFulltextSearchService}
  *     </li>
@@ -30,7 +30,7 @@ import java.io.Serializable;
  */
 @Analyzer(impl = CzechAnalyzer.class)
 @MappedSuperclass
-// filter all disabled objects - both '1' and NULL are considered as being enabled, object has to be disabled explicitly
+// filters out all disabled objects - both '1' and NULL are considered as being enabled, objects have to be disabled explicitly
 @FilterDef(name = DomainObject.ENABLED_FILTER_NAME,
         defaultCondition = "(enabled = '1' OR enabled IS NULL)")
 @Filter(name = DomainObject.ENABLED_FILTER_NAME)
@@ -45,7 +45,7 @@ public abstract class DomainObject implements Serializable {
 
     /**
      * Determines whether this entity should be considered at all or not.
-     * By default each entity is enabled unless explicitly made disabled.
+     * By default each entity is enabled unless disabled explicitly.
      * Enabled flag is a less offensive substitution for deleting from database.
      *
      * This attribute has associated "columnDefinition" BIT which serves as a workaround, see:
@@ -67,7 +67,7 @@ public abstract class DomainObject implements Serializable {
     }
 
     /**
-     * By default all domain objects should be enabled so this method returns true even if {@code enabled} is unset.
+     * By default, all domain objects should be enabled so this method returns true even if {@code enabled} is unset.
       * @return true if {@code enabled} flag is true or null, false otherwise
      */
     public Boolean isEnabled() {

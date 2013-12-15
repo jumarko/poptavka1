@@ -18,6 +18,11 @@ import javax.persistence.OneToOne;
 import java.util.List;
 
 /**
+ * Categorizes goods and services the portal supports.
+ * Categories form a tree structure.
+ * They denote the area of interest of a supplier and the area within which a demand falls
+ * and may be used to link potential suppliers to demands.
+ * 
  * @author Juraj Martinka
  *         Date: 31.1.11
  *

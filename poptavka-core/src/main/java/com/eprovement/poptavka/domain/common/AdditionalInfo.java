@@ -3,12 +3,14 @@ package com.eprovement.poptavka.domain.common;
 import javax.persistence.Entity;
 
 /**
- * Represents additional information that can be gattered for domain object, especially for
+ * Represents additional information gathered for domain object, especially for
  * {@link com.eprovement.poptavka.domain.demand.Category} and
  * {@link com.eprovement.poptavka.domain.address.Locality}.
  *
  * @see com.eprovement.poptavka.domain.demand.Category
  * @see com.eprovement.poptavka.domain.address.Locality
+ * 
+ * This information is generated automatically by a recurring job.
  *
  * @author Juraj Martinka
  *         Date: 12.2.11

@@ -9,6 +9,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
+ * Category under which the demand falls
+ * 
  * @author Juraj Martinka
  *         Date: 13.2.11
  */

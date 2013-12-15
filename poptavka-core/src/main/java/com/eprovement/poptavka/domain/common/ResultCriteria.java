@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Additional criteria that can be applied on the result - primary on operations that load data from database.
+ * Additional criteria that can be applied on the result - used primary for operations that load data from database.
  *
  * @author Juraj Martinka
  *         Date: 30.4.11
@@ -15,7 +15,7 @@ import java.util.Map;
 public final class ResultCriteria implements Serializable {
 
     /**
-     * Handy constant - maiinly for testing purposes.
+     * Handy constant - mainly for testing purposes.
      */
     public static final ResultCriteria EMPTY_CRITERIA = new ResultCriteria.Builder().build();
 
@@ -25,7 +25,7 @@ public final class ResultCriteria implements Serializable {
      * Map contains pairs (propertyName, OrderType). Ordering direction is specified by OrderType. Default OrderType
      * is ascending.
      * <p/>
-     * It is a full responsibility of programmer (client) that each column specify in this collection
+     * It is a full responsibility of the programmer (client) that each column specify in this collection
      * represents some property on target entity.
      * <p/>
      *
@@ -35,7 +35,7 @@ public final class ResultCriteria implements Serializable {
 
 
     /**
-     * Maximum number of results that should be return.
+     * Maximum number of results that should be returned.
      */
     private Integer maxResults;
 
@@ -47,7 +47,7 @@ public final class ResultCriteria implements Serializable {
 
 
     /**
-     * Checks whether criteria given as parameter have set up some order by policy.
+     * Checks whether criteria passed as parameter include an order by definition
      *
      * @return true if criteria has set at least one column which should be used for ordering, false otherwise.
      */
@@ -62,7 +62,7 @@ public final class ResultCriteria implements Serializable {
     }
 
     private ResultCriteria(Builder builder) {
-        // fill all atributes from builder
+        // fill all the atributes from builder
         this.orderByColumns = builder.orderByColumns;
         this.maxResults = builder.maxResults;
         this.firstResult = builder.firstResult;
