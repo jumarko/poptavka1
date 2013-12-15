@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail.views;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLogSimpleCell;
@@ -18,23 +21,45 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * User detail view for displaying data from FullClient or FullSupplier details.
+ * @author Martin Slavkovsky
+ */
 public class UserDetailView extends Composite {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static UserDetailViewUiBinder uiBinder = GWT.create(UserDetailViewUiBinder.class);
 
     interface UserDetailViewUiBinder extends UiBinder<Widget, UserDetailView> {
     }
-    private static final String EMPTY = "";
+
+    /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        StyleResource.INSTANCE.details().ensureInjected();
+    }
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
     @UiField(provided = true) CellList categories, localities;
     @UiField HTMLPanel categoryPanel, localityPanel;
     @UiField FluidRow invoiceRow;
     @UiField Column businessTypeColumn, certifiedColumn, phoneColumn, emailColumn;
     @UiField Label overalRating, description, email, companyName, taxId, identificationNumber,
     firstName, lastName, phone, website, street, city, zipCode, certified, businessType;
+    /** Constants. **/
+    private static final String EMPTY = "";
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     /**
-     * Detail view of user (client/supplier/..).
-     *
+     * Creates user detail view's components.
      * @param advancedView true to show fields for admin, false to show fields for clients
      */
     @UiConstructor
@@ -48,11 +73,16 @@ public class UserDetailView extends Composite {
         phoneColumn.setVisible(advancedView);
         emailColumn.setVisible(advancedView);
         invoiceRow.setVisible(advancedView);
-
-        StyleResource.INSTANCE.details().ensureInjected();
     }
 
-    public void setSupplierDetail(FullClientDetail detail) {
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    /**
+     * Sets client detail data.
+     * @param detail the FullClientDetail object
+     */
+    public void setClientDetail(FullClientDetail detail) {
         if (detail.getOveralRating() == null) {
             overalRating.setText("Not ranked");
         } else {
@@ -79,6 +109,10 @@ public class UserDetailView extends Composite {
         taxId.setText(detail.getUserData().getTaxId());
     }
 
+    /**
+     * Sets supplier detail data.
+     * @param detail the FullSupplierDetail object
+     */
     public void setSupplierDetail(FullSupplierDetail detail) {
         if (detail.getOveralRating() == null) {
             overalRating.setText(Storage.MSGS.commonNotRanked());
@@ -107,6 +141,9 @@ public class UserDetailView extends Composite {
         taxId.setText(detail.getUserData().getTaxId());
     }
 
+    /**
+     * Clears view's components data.
+     */
     public void clear() {
         description.setText(EMPTY);
         localities.setRowCount(0);

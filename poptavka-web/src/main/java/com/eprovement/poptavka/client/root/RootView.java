@@ -43,6 +43,7 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
      * <b><i>Note:</i></b>
      * No need to use static definition.
      * This have one advantage and that is more nicer code.
+     * Take it as onStart but for Views.
      */
     static {
         StyleResource.INSTANCE.initialStandartStyles().ensureInjected();

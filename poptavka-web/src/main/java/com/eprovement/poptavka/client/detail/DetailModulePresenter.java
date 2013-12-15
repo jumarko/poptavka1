@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -32,6 +35,10 @@ import com.mvp4g.client.view.LazyView;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Detail module presenter.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = DetailModuleView.class)
 public class DetailModulePresenter
     extends LazyPresenter<DetailModulePresenter.IDetailWrapper, DetailModuleEventBus> {
@@ -81,20 +88,19 @@ public class DetailModulePresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
+        // nothing by default
     }
 
     public void onForward() {
-    }
-
-    /**************************************************************************/
-    /* Initialization                                                         */
-    /**************************************************************************/
-    public void onGoToDetailModule() {
+        // nothing by default
     }
 
     /**************************************************************************/
     /* BIND                                                                   */
     /**************************************************************************/
+    /**
+     * Binds handlers.
+     */
     @Override
     public void bindView() {
         view.getReplyHolder().getSubmitBtn().addClickHandler(new ClickHandler() {
@@ -139,7 +145,7 @@ public class DetailModulePresenter
     }
 
     /**************************************************************************/
-    /* INITIALIZATION                                                         */
+    /* Business events                                                        */
     /**************************************************************************/
     /**
      * Initialize widget and sets his type.
@@ -175,6 +181,10 @@ public class DetailModulePresenter
         requestActualTabData();
     }
 
+    /**
+     * Request for detail for particular tab.
+     * If tab is selected, request for tab detail object.
+     */
     private void requestActualTabData() {
         switch (view.getContainer().getSelectedIndex()) {
             case DetailModuleBuilder.DEMAND_DETAIL_TAB:
@@ -201,7 +211,7 @@ public class DetailModulePresenter
     /* Business events                                                        */
     /**************************************************************************/
     /**
-     * Sent message is displayed and reply window is enabled again.
+     * Displayes question message and enables reply window again.
      *
      * @param sentMessage
      */
@@ -219,6 +229,9 @@ public class DetailModulePresenter
         table.redraw();
     }
 
+    /**
+     * Displays thank you poup for placing offer and forwards to your <b>offers</b> widget.
+     */
     public void onResponseSendOfferMessage() {
         Timer additionalAction = new Timer() {
             @Override
@@ -255,6 +268,10 @@ public class DetailModulePresenter
         }
     }
 
+    /**
+     * Resets tabs to its default widgets.
+     * Removes all custom widgets set and restores default widgets.
+     */
     private void ensureDefaultTabWidgets() {
         //Default Demand
         if (!(view.getDemandDetailHolder().getWidget() instanceof DemandDetailView)) {
@@ -266,7 +283,7 @@ public class DetailModulePresenter
     }
 
     /**
-     * Set additional custom selection handler.
+     * Sets additional custom selection handler.
      * @param selectionHandler
      */
     public void onSetCustomSelectionHandler(SelectionHandler<Integer> selectionHandler) {
@@ -274,14 +291,14 @@ public class DetailModulePresenter
     }
 
     /**
-     * Allow sending offer by making sending offer button visible.
+     * Allows sending offer by making sending offer button visible.
      */
     public void onAllowSendingOffer() {
         view.getReplyHolder().setSendingOfferEnabled(true);
     }
 
     /**
-     * Set all tabs visible and clear tabs' widgets' attributes.
+     * Sets all tabs visible and clear tabs' widgets' attributes.
      */
     public void reset() {
         ensureDefaultTabWidgets();
@@ -293,7 +310,7 @@ public class DetailModulePresenter
     /* Request methods                                                        */
     /**************************************************************************/
     /**
-     * Request demand detail for detail section tab: Demand.
+     * Requests demand detail for detail section tab: Demand.
      *
      * @param demandId
      */
@@ -304,7 +321,7 @@ public class DetailModulePresenter
     }
 
     /**
-     * Request client detail for detail section tab: User - Client.
+     * Requests client detail for detail section tab: User - Client.
      *
      * @param clientId
      */
@@ -315,7 +332,7 @@ public class DetailModulePresenter
     }
 
     /**
-     * Request supplier detail for detail section tab: User - Supplier.
+     * Requests supplier detail for detail section tab: User - Supplier.
      *
      * @param supplierId
      */
@@ -326,7 +343,7 @@ public class DetailModulePresenter
     }
 
     /**
-     * Request rating detail for detail section tab: RATING.
+     * Requests rating detail for detail section tab: RATING.
      *
      * @param demandId
      */
@@ -337,7 +354,7 @@ public class DetailModulePresenter
     }
 
     /**
-     * Request conversation messages for detail section tab: Conversations.
+     * Requests conversation messages for detail section tab: Conversations.
      * Loads conversation between client and supplier. Each conversation begins
      * with threadRoot message that must be passed here as a parameter. Other paramters contain userId of currently
      * logged user and userId of counterParty.
@@ -373,7 +390,7 @@ public class DetailModulePresenter
      * @param clientDetail to be displayed
      */
     public void onResponseClientDetail(FullClientDetail clientDetail) {
-        view.getSupplierDetail().setSupplierDetail(clientDetail);
+        view.getSupplierDetail().setClientDetail(clientDetail);
         view.getSupplierDetail().setVisible(true);
         view.loadingDivHide(view.getSupplierDetail().getParent());
     }
@@ -417,10 +434,19 @@ public class DetailModulePresenter
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Sets tab visibility.
+     * @param tab index
+     * @param visible - true if visibile, false otherwise
+     */
     private void setTabVisibility(int tab, boolean visible) {
         view.getContainer().getTabWidget(tab).getParent().setVisible(visible);
     }
 
+    /**
+     * Displays advertisement.
+     * Selects tab with advertisement.
+     */
     public void onDisplayAdvertisement() {
         setTabVisibility(DetailModuleBuilder.DEMAND_DETAIL_TAB, false);
         setTabVisibility(DetailModuleBuilder.USER_DETAIL_TAB, false);
@@ -431,7 +457,7 @@ public class DetailModulePresenter
     }
 
     /**
-     * Clear detail section means reseting widget's attributes of all tabs widgets.
+     * Clears detail section means reseting widget's attributes of all tabs widgets.
      */
     private void clear() {
         view.getDemandDetail().clear();

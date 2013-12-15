@@ -4,8 +4,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     
     <ui:style>
         .ratingLabel {
@@ -13,7 +12,7 @@
         }
         
         .position {
-            margin: -7px 0 0 -7px;
+        margin: -7px 0 0 -7px;
         }
     </ui:style>
 
@@ -54,7 +53,7 @@
                     <g:Image ui:field="urgency" />
                 </g:HTMLPanel>
                 <g:Label styleName='{res.details.detailDateLabel}'
-                             ui:field="urgencyLabel" />
+                         ui:field="urgencyLabel" />
             </b:Column>
             <b:Column size='12' ui:field="ratingColumn">
                 <g:Label styleName='{res.details.detailBlockLabel}'>
@@ -84,8 +83,7 @@
                 </b:Heading>
             </b:Column>
             <b:Column size='12'>
-                <c:CellList ui:field="localities"
-                            styleName='{res.details.detailLocalityLabel}' />
+                <c:CellList ui:field="localities" styleName='{res.details.detailLocalityLabel}' />
             </b:Column>
         </b:FluidRow>
 

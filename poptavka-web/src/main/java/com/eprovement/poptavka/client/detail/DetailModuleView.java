@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
@@ -20,9 +23,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
 /**
- * TODO LATER Martin: Loading Indicator while getting detail's data
+ * Detail module view consists of Demand, Supplier, Rating, Conversation, Advertisement tabs.
  *
- * @author Martin
+ * @author Martin Slavkovsky
  */
 public class DetailModuleView extends Composite
         implements DetailModulePresenter.IDetailWrapper {
@@ -33,6 +36,7 @@ public class DetailModuleView extends Composite
     interface DetailsWrapperViewUiBinder extends UiBinder<Widget, DetailModuleView> {
     }
     private static DetailsWrapperViewUiBinder uiBinder = GWT.create(DetailsWrapperViewUiBinder.class);
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -52,6 +56,9 @@ public class DetailModuleView extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates demand module view's compontents.
+     */
     @Override
     public void createView() {
         messageList = new CellList<MessageDetail>(new MessageCell());
@@ -65,6 +72,10 @@ public class DetailModuleView extends Composite
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets loading indicator. This will display the indicator in given panel.
+     * @param holderWidget - loading indicator holder panel
+     */
     @Override
     public void loadingDivShow(Widget holderWidget) {
         GWT.log("  - loading div created");
@@ -74,6 +85,10 @@ public class DetailModuleView extends Composite
         holderWidget.getElement().appendChild(loadingDiv.getElement());
     }
 
+    /**
+     * Hides loading indicator by removing it from given panel.
+     * @param holderWidget - loading indicator holder panel
+     */
     @Override
     public void loadingDivHide(Widget holderWidget) {
         GWT.log("  - loading div removed");
@@ -94,56 +109,89 @@ public class DetailModuleView extends Composite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the tab layout panel
+     */
     @Override
     public TabLayoutPanel getContainer() {
         return container;
     }
 
+    /**
+     * @return the demand detail panel
+     */
     @Override
     public SimplePanel getDemandDetailHolder() {
         return demandDetailHolder;
     }
 
+    /**
+     * @return the advertisement panel
+     */
     @Override
     public SimplePanel getAdvertisementHolder() {
         return advertisementHolder;
     }
 
+    /**
+     * @return the DemandDetailView
+     */
     @Override
     public DemandDetailView getDemandDetail() {
         return demandDetail;
     }
 
+    /**
+     * @return the UserDetailView
+     */
     @Override
     public UserDetailView getSupplierDetail() {
         return userDetail;
     }
 
+    /**
+     * @return the RatingDetailView
+     */
     @Override
     public RatingDetailView getRatingDetail() {
         return ratingDetail;
     }
 
+    /**
+     * @return the conversation cellList
+     */
     @Override
     public CellList getMessageList() {
         return messageList;
     }
 
+    /**
+     * @return the conversation list data provider
+     */
     @Override
     public ListDataProvider getMessageProvider() {
         return messageProvider;
     }
 
+    /**
+     * @return the conversation OfferQuestionWindow
+     */
     @Override
     public OfferQuestionWindow getReplyHolder() {
         return replyHolder;
     }
 
+    /**
+     * @return the conversation fluid container
+     */
     @Override
     public FluidContainer getConversationHolder() {
         return conversationHolder;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

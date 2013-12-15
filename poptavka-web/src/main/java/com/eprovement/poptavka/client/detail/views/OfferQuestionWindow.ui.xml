@@ -15,10 +15,6 @@
             border-top: 1px solid #f2efe7;
             padding: 10px 30px;
         }
-        
-        .input-width {
-        width: 100%;
-        }
     </ui:style>
 
     <g:HTMLPanel>

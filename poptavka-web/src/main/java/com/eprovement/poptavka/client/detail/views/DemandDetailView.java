@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail.views;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLogSimpleCell;
@@ -20,6 +23,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.Date;
 
+/**
+ * Demand detail view for displaying data from FullDemandDetail objects.
+ *
+ * @author Martin Slavkovsky
+ */
 public class DemandDetailView extends Composite {
 
     /**************************************************************************/
@@ -29,6 +37,14 @@ public class DemandDetailView extends Composite {
 
     interface DemandDetailViewUiBinder extends UiBinder<Widget, DemandDetailView> {
     }
+
+    /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        StyleResource.INSTANCE.details().ensureInjected();
+    }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -46,11 +62,9 @@ public class DemandDetailView extends Composite {
     /* INITIALIZATON                                                          */
     /**************************************************************************/
     /**
-     * Detail view of demand
-     *
+     * Creates demand detail view's components.
      * @param advancedView true to show fields for admin, false to show fields for clients
      */
-
     @UiConstructor
     public DemandDetailView(boolean advancedView) {
         categories = new CellList<ICatLocDetail>(new CatLogSimpleCell());
@@ -58,13 +72,15 @@ public class DemandDetailView extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         ratingColumn.setVisible(advancedView);
-
-        StyleResource.INSTANCE.details().ensureInjected();
     }
 
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets data from FullDemandDetail object
+     * @param demandDetail the FullDemandDetail object
+     */
     public void setDemanDetail(FullDemandDetail demandDetail) {
         GWT.log("detail detail" + demandDetail.toString());
         this.demandDetail = demandDetail;
@@ -78,6 +94,10 @@ public class DemandDetailView extends Composite {
         description.setText(demandDetail.getDescription());
     }
 
+    /**
+     * Sets ValidTo date to Urgency Selector widget.
+     * @param validTo date
+     */
     private void setValidTo(Date validTo) {
         if (validTo == null) {
             urgencyLabel.setText(Storage.MSGS.commonNotDefined());
@@ -102,16 +122,9 @@ public class DemandDetailView extends Composite {
         urgency.setVisible(validTo != null);
     }
 
-    /**************************************************************************/
-    /* GETTERS                                                                */
-    /**************************************************************************/
-    public FullDemandDetail getDemandDetail() {
-        return demandDetail;
-    }
-
-    /**************************************************************************/
-    /* OTHERS                                                                 */
-    /**************************************************************************/
+    /**
+     * Clears view's compontents data.
+     */
     public void clear() {
         demandName.setText(EMPTY);
         price.setText(EMPTY);
@@ -120,5 +133,15 @@ public class DemandDetailView extends Composite {
         categories.setRowCount(0);
         localities.setRowCount(0);
         description.setText(EMPTY);
+    }
+
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    /**
+     * @return the FullDemandDetail
+     */
+    public FullDemandDetail getDemandDetail() {
+        return demandDetail;
     }
 }
