@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -80,6 +83,9 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /**************************************************************************/
     /* Bind helper methods                                                    */
     /**************************************************************************/
+    /**
+     * Bind table selection model handlers.
+     */
     public void addTableSelectionModelClickHandler() {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -93,6 +99,9 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         });
     }
 
+    /**
+     * Bind toolbar buttons handlers.
+     */
     private void buttonClickHandlers() {
         view.getToolbar().getApproveBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -144,6 +153,10 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Inits table.
+     * @return table
+     */
     @Override
     protected UniversalAsyncGrid initTable() {
         return new UniversalGridFactory.Builder<NewDemandDetail>()

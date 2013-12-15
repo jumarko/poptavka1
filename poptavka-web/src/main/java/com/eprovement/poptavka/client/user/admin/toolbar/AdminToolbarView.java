@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin.toolbar;
 
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -13,16 +16,21 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
 /**
+ * Custom toolbar for Admin section..
  *
  * @author Martin Slavkovsky
  */
 @Singleton
 public class AdminToolbarView extends Composite implements IsWidget {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     private static AdminToolbarViewUiBinder uiBinder = GWT.create(AdminToolbarViewUiBinder.class);
 
     interface AdminToolbarViewUiBinder extends UiBinder<Widget, AdminToolbarView> {
     }
+
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
@@ -34,6 +42,9 @@ public class AdminToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates AdminToolbar view's components.
+     */
     public AdminToolbarView() {
         pager = new UniversalPagerWidget();
         initWidget(uiBinder.createAndBindUi(this));
@@ -42,6 +53,10 @@ public class AdminToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Binds pager to table.
+     * @param table
+     */
     public void bindPager(UniversalAsyncGrid table) {
         pager.setDisplay(table);
     }
@@ -66,22 +81,37 @@ public class AdminToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the approve button
+     */
     public Button getApproveBtn() {
         return approveBtn;
     }
 
+    /**
+     * @return the create conversation button
+     */
     public Button getCreateConversationBtn() {
         return createConversationBtn;
     }
 
+    /**
+     * @return the action box panel
+     */
     public SimplePanel getActionBox() {
         return actionBox;
     }
 
+    /**
+     * @return the universal pager widget
+     */
     public UniversalPagerWidget getPager() {
         return pager;
     }
 
+    /**
+     * @return the widget view
+     */
     public Widget getWdigetView() {
         return this;
     }

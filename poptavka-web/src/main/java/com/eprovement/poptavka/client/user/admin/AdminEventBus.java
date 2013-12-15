@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
@@ -51,6 +54,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Admin section for Want-Something.com
+ * <b><i>Note:</i></b>
+ * Not all widgets are used. Actice are only <b>NewDemand</b> and <b>ActiveDemand</b> widgets.
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
 public interface AdminEventBus extends EventBusWithLookup, IEventBusData,

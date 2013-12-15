@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -10,7 +13,6 @@ import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -21,11 +23,19 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * Admin presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AdminView.class)
 public class AdminPresenter
     extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus>
     implements NavigationConfirmationInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface AdminModuleInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         void setContent(Widget contentWidget);
@@ -62,6 +72,7 @@ public class AdminPresenter
 
         Widget getWidgetView();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -70,6 +81,9 @@ public class AdminPresenter
     /**************************************************************************/
     /* Bind handlers                                                          */
     /**************************************************************************/
+    /**
+     * Binds menu buttons handlers
+     */
     @Override
     public void bindView() {
         view.getActiveDemandsBtn().addClickHandler(new ClickHandler() {
@@ -162,12 +176,13 @@ public class AdminPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        // nothing by default
     }
 
     /**
      * Every call of onForward method invokes updateUnreadMessagesCount event that is secured thus user without
      * particular access role can't access it and loginPopupView will be displayed.
+     * Sets body, toolbar
      */
     public void onForward() {
         //Must be set before any widget start initialize because of autoDisplay feature
@@ -175,19 +190,24 @@ public class AdminPresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
+        //TODO Martin - add i18n string
         eventBus.setToolbarContent("Admin Menu", view.getToolbarContent(), true);
         eventBus.menuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
     }
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        Window.confirm("Admin confirm method.");
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
+    /**
+     * Creates admin module.
+     * @param filter - search criteria
+     * @param loadWidget - admin widget id
+     */
     public void onGoToAdminModule(SearchModuleDataHolder filter, int loadWidget) {
         GWT.log("onGoToAdminModule - som tu");
 
@@ -250,6 +270,9 @@ public class AdminPresenter
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
+    /**
+     * Toogle body loading.
+     */
     public void onToggleLoading() {
         if (loading == null) {
             GWT.log("  - loading created");
@@ -261,6 +284,10 @@ public class AdminPresenter
         }
     }
 
+    /**
+     * Displays body.
+     * @param content widget
+     */
     public void onDisplayView(Widget content) {
         view.setContent(content);
     }
@@ -268,10 +295,18 @@ public class AdminPresenter
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Inits active demands widget.
+     * @param filter - search criteria
+     */
     private void initActiveDemands(SearchModuleDataHolder filter) {
         eventBus.initActiveDemands(filter);
     }
 
+    /**
+     * Inits new demands widget.
+     * @param filter - search criteria
+     */
     private void initNewDemands(SearchModuleDataHolder filter) {
         eventBus.initNewDemands(filter);
     }
