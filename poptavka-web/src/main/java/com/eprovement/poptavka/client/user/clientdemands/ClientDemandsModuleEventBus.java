@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.clientdemands;
 
@@ -33,6 +32,11 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
+/**
+ * Client section for managing projects.
+ *
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class)
 public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData,

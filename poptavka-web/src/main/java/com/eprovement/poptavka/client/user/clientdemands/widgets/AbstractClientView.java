@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -21,8 +24,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Common UI elements for ClientDemandsModule.
+ * @author Martin Slavkovsky
+ */
 public class AbstractClientView extends Composite implements IAbstractClientView {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static AbstractClientViewUiBinder uiBinder = GWT.create(AbstractClientViewUiBinder.class);
 
     interface AbstractClientViewUiBinder extends UiBinder<Widget, AbstractClientView> {
@@ -37,6 +47,7 @@ public class AbstractClientView extends Composite implements IAbstractClientView
         //for popups created of image hover in datagrid
         Storage.RSCS.modal().ensureInjected();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -52,6 +63,9 @@ public class AbstractClientView extends Composite implements IAbstractClientView
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates AbstractClient view's components.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -77,7 +91,10 @@ public class AbstractClientView extends Composite implements IAbstractClientView
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
-    //netreba lebo vonversationTableVisible setuje viditelnost oboch tabuliek
+    /**
+     * Sets parent table visibility.
+     * @param visible true to show, false to hide.
+     */
     @Override
     public void setParentTableVisible(boolean visible) {
         parentTable.setVisible(visible);
@@ -91,6 +108,10 @@ public class AbstractClientView extends Composite implements IAbstractClientView
         }
     }
 
+    /**
+     * Sets child table visibility.
+     * @param visible true to show, false to hide.
+     */
     @Override
     public void setChildTableVisible(boolean visible) {
         ((MultiSelectionModel) childTable.getSelectionModel()).clear();
@@ -99,6 +120,10 @@ public class AbstractClientView extends Composite implements IAbstractClientView
         childTableLabel.setVisible(visible);
     }
 
+    /**
+     * Sets demand title label text.
+     * @param text
+     */
     @Override
     public void setDemandTitleLabel(String text) {
         childTableLabel.setText(text);
@@ -107,6 +132,9 @@ public class AbstractClientView extends Composite implements IAbstractClientView
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return child table selected userMessage ids.
+     */
     @Override
     public List<Long> getChildTableSelectedUserMessageIds() {
         List<Long> idList = new ArrayList<Long>();
@@ -118,37 +146,58 @@ public class AbstractClientView extends Composite implements IAbstractClientView
         return idList;
     }
 
+    /**
+     * @return child table selected objects
+     */
     @Override
     public Set getChildTableSelectedObjects() {
         MultiSelectionModel model = (MultiSelectionModel) childTable.getSelectionModel();
         return model.getSelectedSet();
     }
 
+    /**
+     * @return the parent table
+     */
     @Override
     public UniversalAsyncGrid getParentTable() {
         return parentTable;
     }
 
+    /**
+     * @return the child table
+     */
     @Override
     public UniversalAsyncGrid getChildTable() {
         return childTable;
     }
 
+    /**
+     * @return the footer container
+     */
     @Override
     public SimplePanel getFooterContainer() {
         return footerContainer;
     }
 
+    /**
+     * @return the detail panel
+     */
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
     }
 
+    /**
+     * @return the ClientToolbarView
+     */
     @Override
     public ClientToolbarView getToolbar() {
         return toolbar;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public IsWidget getWidgetView() {
         return this;

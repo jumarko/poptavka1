@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -23,6 +26,10 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Displays client's demands with accpeted offer.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractClientView.class)
 public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
 
@@ -36,6 +43,13 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Binds handlers:
+     * <ul>
+     *   <li>table selection handler</li>
+     *   <li>close button handler</li>
+     * </ul>
+     */
     @Override
     public void bindView() {
         super.bindView();
@@ -48,6 +62,10 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
+    /**
+     * Creates client assigned demands widget.
+     * @param filter - search criteria
+     */
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
@@ -61,6 +79,10 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         initWidget(filter);
     }
 
+    /**
+     * Creates client closed demands widget.
+     * @param filter - search criteria
+     */
     public void onInitClientClosedDemands(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_CLOSED_DEMANDS);
@@ -73,6 +95,9 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         initWidget(filter);
     }
 
+    /**
+     * Displays thank you popup and forwards user to closed demands.
+     */
     public void onResponseFeedback() {
         Timer additionalAction = new Timer() {
             @Override
@@ -100,6 +125,10 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Creates common parts of ClientAssigendDemands and ClientClosedDemands widgets.
+     * @param filter - saerch criteria
+     */
     private void initWidget(SearchModuleDataHolder filter) {
         eventBus.resetSearchBar(new Label("Client's closed projects attibure's selector will be here."));
         eventBus.createTokenForHistory();
@@ -117,6 +146,9 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    /**
+     * Binds table selection. Set close button visibility.
+     */
     public void addTableSelectionModelClickHandler() {
         view.getChildTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -133,6 +165,10 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         });
     }
 
+    /**
+     * Binds close button handler.
+     * Closes demand and rates supplier.
+     */
     private void addCloseButtonHandler() {
         view.getToolbar().getCloseBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -152,13 +188,20 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         });
     }
 
+    /**
+     * Sets child table visibility.
+     * @param visible true to show, false to hide
+     */
     @Override
     protected void setChildTableVisible(boolean visible) {
         super.setChildTableVisible(visible);
         view.getToolbar().getBackBtn().setVisible(false);
     }
+
     /**
+     * Inits parent table.
      * Client demands user case - child table - conversation table
+     * @return parent table
      */
     @Override
     UniversalAsyncGrid initParentTable() {
@@ -166,6 +209,10 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         return new UniversalGridFactory.Builder<ClientOfferedDemandOffersDetail>().build();
     }
 
+    /**
+     * Inits child table.
+     * @return child table
+     */
     @Override
     UniversalAsyncGrid initChildTable() {
         return new UniversalGridFactory.Builder<ClientOfferedDemandOffersDetail>()

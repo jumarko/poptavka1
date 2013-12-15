@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -7,9 +10,9 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 /**
- * History converter class. Handles history for ClientDemandsModule.
+ * Manages history for ClientDemands module.
  *
- * @author slavkovsky.martin
+ * @author Martin Slavkovsky
  */
 @History(type = HistoryConverterType.DEFAULT, name = "clientDemands")
 public class ClientDemandsModuleHistoryConverter implements HistoryConverter<ClientDemandsModuleEventBus> {
@@ -29,7 +32,7 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
     /**************************************************************************/
     /**
      * Creates token with current loaded view's name in it.
-     * @return
+     * @return history token
      */
     public String onCreateTokenForHistory() {
         switch (Storage.getCurrentlyLoadedView()) {
@@ -51,6 +54,9 @@ public class ClientDemandsModuleHistoryConverter implements HistoryConverter<Cli
     /**************************************************************************/
     /* Convert from token method.                                             */
     /**************************************************************************/
+    /**
+     * Creates history token into action.
+     */
     @Override
     public void convertFromToken(String historyName, String param, ClientDemandsModuleEventBus eventBus) {
         eventBus.menuStyleChange(Constants.USER_CLIENT_MODULE);

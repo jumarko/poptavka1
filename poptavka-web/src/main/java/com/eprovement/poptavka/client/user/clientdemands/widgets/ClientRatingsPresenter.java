@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
@@ -23,12 +22,19 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Displays all ratings of client's demands.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractClientView.class)
 public class ClientRatingsPresenter extends AbstractClientPresenter {
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * bind parent table selection handler.
+     */
     @Override
     public void bindView() {
         view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -43,6 +49,10 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
+    /**
+     * Create ClientRatings widget.
+     * @param filter - search criteria
+     */
     public void onInitClientRatings(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.CLIENT_RATINGS);
@@ -76,6 +86,10 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Inits detail section - rating detail.
+     * @param selectedDetail
+     */
     private void initDetailSection(RatingDetail selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addRatingTab(selectedDetail.getDemandId())
@@ -83,6 +97,10 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
             .build());
     }
 
+    /**
+     * Inits parent table.
+     * @return table
+     */
     @Override
     protected UniversalAsyncGrid initParentTable() {
         return new UniversalGridFactory.Builder<RatingDetail>()
@@ -93,6 +111,13 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
             .build();
     }
 
+    /**
+     * Inits child table.
+     * Child table is no needed for this widget.
+     * But in order to use abstractClientView, use workarount.
+     *
+     * @return empty table
+     */
     @Override
     protected UniversalAsyncGrid initChildTable() {
         //return empty table

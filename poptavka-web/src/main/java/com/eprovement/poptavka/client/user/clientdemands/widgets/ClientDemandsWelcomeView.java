@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
@@ -13,6 +12,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * Client's Dasboard.
  *
  * @author Martin Slavkovsky
  */
@@ -37,6 +37,9 @@ public class ClientDemandsWelcomeView extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates ClientDemandsWelcome view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -46,48 +49,75 @@ public class ClientDemandsWelcomeView extends Composite
     /* Getters                                                                */
     /**************************************************************************/
     /** FLUIDROW. **/
+    /**
+     * @return the my demands html
+     */
     @Override
     public HTML getMyDemandsUnreadMessages() {
         return myDemandsUnreadMessages;
     }
 
+    /**
+     * @return the offered demands html
+     */
     @Override
     public HTML getOfferedDemandsUnreadMessages() {
         return offeredDemandsUnreadMessages;
     }
 
+    /**
+     * @return the assigned demands html
+     */
     @Override
     public HTML getAssignedDemandsUnreadMessages() {
         return assignedDemandsUnreadMessages;
     }
 
+    /**
+     * @return the closed demands html
+     */
     @Override
     public HTML getClosedDemandsUnreadMessages() {
         return closedDemandsUnreadMessages;
     }
 
     /** FLUIDROW. **/
+    /**
+     * @return the my demands row
+     */
     @Override
     public FluidRow getMyDemandsRow() {
         return myDemandsRow;
     }
 
+    /**
+     * @return the offered demands row
+     */
     @Override
     public FluidRow getOfferedDemandsRow() {
         return offeredDemandsRow;
     }
 
+    /**
+     * @return the assigened demands row
+     */
     @Override
     public FluidRow getAssignedDemandsRow() {
         return assignedDemandsRow;
     }
 
+    /**
+     * @return the closed demands row
+     */
     @Override
     public FluidRow getClosedDemandsRow() {
         return closedDemandsRow;
     }
 
     /** OTHERS. **/
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;
