@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common;
 
@@ -15,18 +14,35 @@ import java.util.Date;
  */
 public final class DateUtils {
 
+    /**
+     * Creates DateUtils.
+     */
     private DateUtils() {
+        // nothing by default
     }
 
+    /**
+     * Get date difference between given and current date in milliseconds.
+     * @param date that is compared to today's date
+     * @return days in milliseconds
+     */
     public static long diffDaysInMillis(Date date) {
         Date now = new Date();
         return now.getTime() - date.getTime();
     }
 
+    /**
+     * Get current date.
+     * @return current date
+     */
     public static Date getNowDate() {
         return new Date();
     }
 
+    /**
+     * Get yesterday date.
+     * @return yesterday date
+     */
     public static Date getYesterdayDate() {
         Date yesterday = new Date();
         CalendarUtil.addDaysToDate(yesterday, -1);

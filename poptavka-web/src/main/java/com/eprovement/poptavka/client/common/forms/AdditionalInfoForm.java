@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.forms;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -24,6 +27,7 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
 
     interface CompanyInfoFormUiBinder extends UiBinder<Widget, AdditionalInfoForm> {
     }
+
     /**************************************************************************/
     /* Attribute                                                              */
     /**************************************************************************/
@@ -33,6 +37,9 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates AdditionalInfoForm view's compotnents.
+     */
     public AdditionalInfoForm() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
@@ -46,6 +53,11 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
         description = createValidationMonitor(UserField.DESCRIPTION);
     }
 
+    /**
+     * Creates validation monitor.
+     * @param field - validation field
+     * @return validation monitor
+     */
     private ValidationMonitor createValidationMonitor(UserField field) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, field.getValue());
     }
@@ -53,14 +65,23 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the website validation mointor
+     */
     public ValidationMonitor getWebsite() {
         return website;
     }
 
+    /**
+     * @return the description validation monitor
+     */
     public ValidationMonitor getDescription() {
         return description;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return website.isValid() && description.isValid();

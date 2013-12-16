@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common.monitors;
 
@@ -63,6 +62,12 @@ public abstract class AbstractValidationMonitor<T> extends AbstractMonitor imple
         initValidationMonitor(beanType, groups, field);
     }
 
+    /**
+     * Inits validation monitors.
+     * @param beanType - validation class
+     * @param beanGroups - validation group
+     * @param field - validation field
+     */
     private void initValidationMonitor(Class<T> beanType, Class<?>[] beanGroups, String field) {
         this.beanType = beanType;
         this.beanGroups = beanGroups;

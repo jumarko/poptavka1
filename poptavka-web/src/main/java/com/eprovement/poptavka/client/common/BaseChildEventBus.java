@@ -1,5 +1,5 @@
 /*
- * This interface contains common methods from Child Modules that are always forwarded to parent Module.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common;
 
@@ -11,6 +11,9 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 
+/**
+ * This interface contains common methods from Child Modules that are always forwarded to parent Module.
+ */
 public interface BaseChildEventBus extends SearchModuleGateway, LoginGateway, InfoWidgetsGateway {
 
     @Event(forwardToParent = true)

@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common.actionBox;
 
@@ -13,7 +12,13 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *
+ * View consists of dropdown menu:
+ * <ul>
+ *   <li>mark as read</li>
+ *   <li>mark as unread</li>
+ *   <li>mark as starred</li>
+ *   <li>mark as unstarred</li>
+ * </ul
  * @author Martin Slavkovsky
  */
 public class ActionBoxView extends Composite
@@ -26,6 +31,7 @@ public class ActionBoxView extends Composite
 
     interface ActionBoxViewUiBinder extends UiBinder<Widget, ActionBoxView> {
     }
+
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
@@ -34,6 +40,9 @@ public class ActionBoxView extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates ActionBox view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -44,21 +53,33 @@ public class ActionBoxView extends Composite
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the read menu item
+     */
     @Override
     public MenuItem getActionRead() {
         return actionRead;
     }
 
+    /**
+     * @return the unread menu item
+     */
     @Override
     public MenuItem getActionUnread() {
         return actionUnread;
     }
 
+    /**
+     * @return the star menu item
+     */
     @Override
     public MenuItem getActionStar() {
         return actionStar;
     }
 
+    /**
+     * @return the unstar menu item
+     */
     @Override
     public MenuItem getActionUnstar() {
         return actionUnstar;

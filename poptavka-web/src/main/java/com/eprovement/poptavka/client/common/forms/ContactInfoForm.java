@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.forms;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -29,6 +32,7 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
 
     interface ContactInfoFormUiBinder extends UiBinder<Widget, ContactInfoForm> {
     }
+
     /**************************************************************************/
     /* Attribute                                                              */
     /**************************************************************************/
@@ -49,6 +53,9 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates ContanctInfoForm view's compotnents.
+     */
     public ContactInfoForm() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
@@ -64,6 +71,11 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
         phone = createValidationMonitor(UserField.PHONE);
     }
 
+    /**
+     * Creates validation monitor.
+     * @param field - validation field
+     * @return validation monitor
+     */
     private ValidationMonitor createValidationMonitor(UserField field) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, field.getValue());
     }
@@ -85,18 +97,30 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the phone validation monitor
+     */
     public ValidationMonitor getPhone() {
         return phone;
     }
 
+    /**
+     * @return the first name validation monitor
+     */
     public ValidationMonitor getFirstName() {
         return firstName;
     }
 
+    /**
+     * @return the last name validation monitor
+     */
     public ValidationMonitor getLastName() {
         return lastName;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return firstName.isValid() && lastName.isValid() && phone.isValid();

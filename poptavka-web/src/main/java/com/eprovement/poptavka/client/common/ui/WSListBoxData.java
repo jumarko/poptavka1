@@ -1,9 +1,14 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.ui;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Provides data for WSListBox.
+ * Object holds data as <item key, item tex> pairs.
  *
  * @author Martin Slavkovsky
  */
@@ -18,8 +23,13 @@ public class WSListBoxData {
         items = new HashMap<Integer, String>();
     }
 
-    public void insertItem(String item, Integer value) {
-        items.put(value, item);
+    /**
+     * Inserts item with its key.
+     * @param item text
+     * @param key - item's key
+     */
+    public void insertItem(String item, Integer key) {
+        items.put(key, item);
     }
 
     /**

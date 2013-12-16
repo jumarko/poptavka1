@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.smallPopups;
 
 import com.eprovement.poptavka.client.common.session.CssInjector;
@@ -13,6 +16,11 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * SimpleConfirm popup consists of content area, submit and close buttons.
+ * Used not to build popup each time we need popup layout for widget.
+ * Mainly used for displaying widget for editing categories and localities.
+ * Usage: Created and use getter methods to place widget and add additional submit action.
+ *
  * @author Martin Slavkovsky
  */
 public class SimpleConfirmPopup extends Modal {
@@ -42,6 +50,9 @@ public class SimpleConfirmPopup extends Modal {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates SimpleConfirm popup.
+     */
     public SimpleConfirmPopup() {
         add(uiBinder.createAndBindUi(this));
 
@@ -53,11 +64,17 @@ public class SimpleConfirmPopup extends Modal {
     /**************************************************************************/
     /* UiHanlders                                                             */
     /**************************************************************************/
+    /**
+     * Hides popup.
+     */
     @UiHandler("submitBtn")
     public void submitBtnClickHandler(ClickEvent e) {
         hide();
     }
 
+    /**
+     * Hides popup.
+     */
     @UiHandler("cancelBtn")
     public void cancelBtnClickHandler(ClickEvent e) {
         hide();
@@ -66,10 +83,16 @@ public class SimpleConfirmPopup extends Modal {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the selector container
+     */
     public SimplePanel getSelectorPanel() {
         return selectorPanel;
     }
 
+    /**
+     * @return the submit button
+     */
     public Button getSubmitBtn() {
         return submitBtn;
     }

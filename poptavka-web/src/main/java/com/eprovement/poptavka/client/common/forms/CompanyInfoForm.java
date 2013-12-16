@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.forms;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -29,6 +32,7 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
 
     interface CompanyInfoFormUiBinder extends UiBinder<Widget, CompanyInfoForm> {
     }
+
     /**************************************************************************/
     /* Attribute                                                              */
     /**************************************************************************/
@@ -47,6 +51,9 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates CompanyInfoForm view's compotnents.
+     */
     public CompanyInfoForm() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
@@ -62,6 +69,11 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
         vatNumber = createValidationMonitor(UserField.VAT_NUMBER);
     }
 
+    /**
+     * Creates validation monitor.
+     * @param field - validation field
+     * @return validation monitor
+     */
     private ValidationMonitor createValidationMonitor(UserField field) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, field.getValue());
     }
@@ -82,18 +94,30 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the company name validation monitor
+     */
     public ValidationMonitor getCompanyName() {
         return companyName;
     }
 
+    /**
+     * @return the vat number validation monitor
+     */
     public ValidationMonitor getVatNumber() {
         return vatNumber;
     }
 
+    /**
+     * @return the taxt number validation monitor
+     */
     public ValidationMonitor getTaxNumber() {
         return taxNumber;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return companyName.isValid() && taxNumber.isValid() && vatNumber.isValid();

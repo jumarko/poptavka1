@@ -31,7 +31,7 @@
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='well-content'>
                         <b:Column size="12">
-                            <co:UrgencySelectorView ui:field="urgencySelector" advanced="false" title='true' debugId="urgencySelector"/>
+                            <co:UrgencySelectorView ui:field="urgencySelector" advanced="false" debugId="urgencySelector"/>
                         </b:Column>
                     </b:FluidRow>
                 </g:HTMLPanel>

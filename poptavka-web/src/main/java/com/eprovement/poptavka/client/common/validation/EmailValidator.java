@@ -1,4 +1,6 @@
-//$Id: EmailValidator.java 19796 2010-06-23 11:23:07Z hardy.ferentschik $
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.validation;
 
 import com.google.gwt.regexp.shared.RegExp;
@@ -37,10 +39,16 @@ public class EmailValidator
             + IP_DOMAIN
             + ")\\s*$", "i");
 
+    /**
+     * @{@inheritDoc}
+     */
     @Override
     public void initialize(com.eprovement.poptavka.client.common.validation.Email annotation) {
     }
 
+    /**
+     * @{@inheritDoc}
+     */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null || value.length() == 0) {

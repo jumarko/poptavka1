@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.forms;
 
 import com.google.gwt.core.client.GWT;
@@ -22,6 +25,7 @@ public class RatingInfoForm extends Composite {
 
     interface RatingInfoFormUiBinder extends UiBinder<Widget, RatingInfoForm> {
     }
+
     /**************************************************************************/
     /* Attribute                                                              */
     /**************************************************************************/
@@ -32,6 +36,9 @@ public class RatingInfoForm extends Composite {
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates RatingInfoForm view's compotnents.
+     */
     public RatingInfoForm() {
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -39,6 +46,10 @@ public class RatingInfoForm extends Composite {
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Sets rating data.
+     * @param rating value
+     */
     public void setRating(Integer rating) {
         ratingText.setText(rating.toString());
         ratingIndicator.setWidth(rating.toString() + "%");

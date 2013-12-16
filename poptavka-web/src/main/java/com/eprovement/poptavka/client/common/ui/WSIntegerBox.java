@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.ui;
 
 import com.github.gwtbootstrap.client.ui.IntegerBox;
@@ -12,6 +15,10 @@ import java.text.ParseException;
  */
 public class WSIntegerBox extends IntegerBox {
 
+    /*
+     * @{inheritDoc}
+     * Sets Integer value.
+     */
     @Override
     public void setValue(Integer value, boolean fireEvents) {
         super.setText(value.toString());

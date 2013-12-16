@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common.monitors;
 
@@ -29,6 +28,7 @@ public abstract class AbstractMonitor extends Composite implements HasWidgets {
     interface AbstractMonitorUiBinder extends UiBinder<Widget, AbstractMonitor> {
     }
     private static AbstractMonitorUiBinder uiBinder = GWT.create(AbstractMonitorUiBinder.class);
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -52,11 +52,18 @@ public abstract class AbstractMonitor extends Composite implements HasWidgets {
     /**************************************************************************/
     /* HasWidgets                                                             */
     /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Widget getWidget() {
         return holder.getWidget();
     }
 
+    /**
+     * @{inheritDoc}
+     * Adds validation and change handlers to given widget.
+     */
     @Override
     public void setWidget(Widget w) {
         addValidationHandlers(w);
@@ -64,6 +71,10 @@ public abstract class AbstractMonitor extends Composite implements HasWidgets {
         holder.setWidget(w);
     }
 
+    /**
+     * @{inheritDoc}
+     * Adds validation and change handlers to given widget.
+     */
     @Override
     public void add(Widget w) {
         addValidationHandlers(w);
@@ -71,13 +82,16 @@ public abstract class AbstractMonitor extends Composite implements HasWidgets {
         holder.add(w);
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean remove(Widget w) {
         return holder.remove(w);
     }
 
     /**
-     * Clear component that is validated.
+     * @{inheritDoc}
      */
     @Override
     public void clear() {
@@ -85,8 +99,7 @@ public abstract class AbstractMonitor extends Composite implements HasWidgets {
     }
 
     /**
-     * Not supported yet.
-     * @return
+     * @{inheritDoc}
      */
     @Override
     public Iterator<Widget> iterator() {

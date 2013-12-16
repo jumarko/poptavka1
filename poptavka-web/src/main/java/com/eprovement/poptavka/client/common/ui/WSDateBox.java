@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common.ui;
 
@@ -20,15 +19,24 @@ public class WSDateBox extends DateBox implements HasPlaceholder {
 
     private PlaceholderHelper placeholderHelper = GWT.create(PlaceholderHelper.class);
 
+    /**
+     * Creates WSDateBox.
+     */
     public WSDateBox() {
         super.setFormat(new DefaultFormat(Storage.get().getDateTimeFormat()));
     }
 
+    /*
+     * @{inheritDoc}
+     */
     @Override
     public void setPlaceholder(String placeholder) {
         placeholderHelper.setPlaceholer(getElement(), placeholder);
     }
 
+    /*
+     * @{inheritDoc}
+     */
     @Override
     public String getPlaceholder() {
         return placeholderHelper.getPlaceholder(getElement());
